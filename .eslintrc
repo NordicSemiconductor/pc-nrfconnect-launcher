@@ -1,0 +1,38 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "airbnb"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "linebreak-style": "off",
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "strict": "off",
+        "no-console": "off"
+    },
+    "no-undef": 1,
+    "no-unused-vars": 1,
+    "plugins": [
+        "react"
+    ],
+    "env": {
+        "es6": true
+    }
+}
