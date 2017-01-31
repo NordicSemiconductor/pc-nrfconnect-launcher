@@ -37,11 +37,21 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+
+export default class AdapterSelector extends React.Component {
+    render() {
+        const adapterIndicator = 'green';
+        return (
+          <span title='Select serial port (Alt+P)'>
+            <div className='padded-row'>
+              <DropdownButton id='navbar-dropdown' className='btn-primary btn-nordic' title="TODO" ref='comPortDropdown'>
+              </DropdownButton>
+              <div className={'indicator ' + adapterIndicator}></div>
+            </div>
+          </span>
+        );
+    }
+}

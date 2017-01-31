@@ -42,6 +42,7 @@
     "less-loader": "2.2.3",
     "raw-loader": "0.5.1",
     "react": "15.3.1",
+    "react-bootstrap": "0.30.3",
     "react-dom": "15.3.1",
     "react-infinite": "NordicSemiconductor/react-infinite#998e3a5",
     "react-redux": "4.4.5",

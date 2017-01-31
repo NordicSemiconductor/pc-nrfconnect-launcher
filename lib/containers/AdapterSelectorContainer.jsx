@@ -37,11 +37,20 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+import AdapterSelector from '../components/AdapterSelector';
+
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps)(AdapterSelector);

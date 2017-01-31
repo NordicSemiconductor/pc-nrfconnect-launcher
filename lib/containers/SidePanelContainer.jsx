@@ -37,11 +37,19 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import SidePanel from '../components/SidePanel';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SidePanel);

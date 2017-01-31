@@ -37,11 +37,12 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+export default class MainView extends React.Component {
+    render() {
+        return (
+          <div id="mainView" />
+        );
+    }
+}

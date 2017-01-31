@@ -37,11 +37,21 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
+import { Provider } from 'react-redux';
+import App from '../components/App';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+export default class RootContainer extends React.Component {
+    render() {
+        const { store } = this.props;
+        return (
+          <Provider store={store}>
+            <App />
+          </Provider>
+        );
+    }
+}
+
+RootContainer.propTypes = {
+    store: PropTypes.object.isRequired,
+};

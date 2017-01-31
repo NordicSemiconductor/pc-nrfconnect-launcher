@@ -37,11 +37,17 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+export default class LogViewer extends React.Component {
+    render() {
+        return (
+          <div className="log-wrap">
+            <div className="log-header">
+              <div className="log-header-text">Log</div>
+              <div className="padded-row log-header-buttons" />
+            </div>
+          </div>
+        );
+    }
+}

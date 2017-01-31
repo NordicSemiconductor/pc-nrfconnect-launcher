@@ -7,13 +7,11 @@ const fs = require('fs');
 // http://jlongster.com/Backend-Apps-with-Webpack--Part-I
 function createExternals(moduleDirectories) {
     const externals = {};
-    moduleDirectories.forEach(function (directory) {
+    moduleDirectories.forEach(directory => {
         fs.readdirSync(directory)
-            .filter(function(x) {
-                return ['.bin'].indexOf(x) === -1;
-            })
-            .forEach(function(mod) {
-                externals[mod] = 'commonjs ' + mod;
+            .filter(x => ['.bin'].indexOf(x) === -1)
+            .forEach(mod => {
+                externals[mod] = `commonjs ${mod}`;
             });
     });
     return externals;
@@ -26,36 +24,36 @@ const config = {
     ],
     output: {
         path: path.resolve('dist'),
-        publicPath: '/',
+        publicPath: './dist/',
         filename: 'bundle.js',
     },
     module: {
         loaders: [{
             test: /\.(js|jsx)$/,
             loader: 'babel-loader?cacheDirectory',
-            exclude: /node_modules/
+            exclude: /node_modules/,
         }, {
             test: /\.json$/,
-            loader: 'json-loader'
+            loader: 'json-loader',
         }, {
             test: /\.less$/,
-            loader: 'style-loader!css-loader!less-loader'
+            loader: 'style-loader!css-loader!less-loader',
         }, {
             test: /\.(png|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-            loader: 'file-loader'
-        }]
+            loader: 'file-loader',
+        }],
     },
     resolve: {
         modules: [
-            path.resolve(__dirname, "node_modules"),
+            path.resolve(__dirname, 'node_modules'),
         ],
-        extensions: ['.js', '.jsx', '.json']
+        extensions: ['.js', '.jsx', '.json'],
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
     ],
     externals: createExternals([
-        __dirname + '/node_modules'
+        `${__dirname}/node_modules`,
     ]),
     target: 'electron-renderer',
 };

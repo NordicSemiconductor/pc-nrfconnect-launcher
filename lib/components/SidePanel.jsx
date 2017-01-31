@@ -38,20 +38,11 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Provider } from 'react-redux';
-import App from './App';
 
-export default class Root extends React.Component {
+export default class SidePanel extends React.Component {
     render() {
-        const { store } = this.props;
         return (
-          <Provider store={store}>
-            <App />
-          </Provider>
+          <div id="sidePanelContainer" />
         );
     }
 }
-
-Root.propTypes = {
-    store: PropTypes.object.isRequired,
-};

@@ -37,11 +37,26 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
 import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+import logo from '../../resources/nordiclogo_neg.png';
+import AdapterSelectorContainer from '../containers/AdapterSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+
+export default class NavBar extends React.Component {
+    render() {
+        return (
+          <div className="nav-bar">
+            <div>
+              <a href="http://www.nordicsemi.com/nRFConnect" target="_blank"><img className="nrfconnect-logo" src={logo} /></a>
+            </div>
+            <div className="nav-section">
+              <div className="padded-row">
+                <AdapterSelectorContainer />
+              </div>
+            </div>
+            <NavMenuContainer />
+          </div>
+        );
+    }
+}

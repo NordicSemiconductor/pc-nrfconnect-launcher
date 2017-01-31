@@ -37,11 +37,27 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from './store/configureStore';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import NavMenu from '../components/NavMenu';
+import * as NavigationActions from '../actions/navigationActions';
 
-const store = configureStore();
-render(<RootContainer store={store} />, document.getElementById('app'));
+function mapStateToProps(state) {
+    const { navigation } = state.core;
+
+    return {
+        selectedMainView: navigation.selectedMainView,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return Object.assign(
+        bindActionCreators(NavigationActions, dispatch),
+    );
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(NavMenu);
