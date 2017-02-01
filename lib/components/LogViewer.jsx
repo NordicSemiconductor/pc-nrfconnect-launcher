@@ -37,17 +37,17 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 
 export default class LogViewer extends React.Component {
     render() {
         return (
-          <div className="log-wrap">
-            <div className="log-header">
-              <div className="log-header-text">Log</div>
-              <div className="padded-row log-header-buttons" />
+            <div className="log-wrap">
+                <div className="log-header">
+                    <div className="log-header-text">Log</div>
+                    <div className="padded-row log-header-buttons"/>
+                </div>
             </div>
-          </div>
         );
     }
 }

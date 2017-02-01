@@ -37,21 +37,26 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import {DropdownButton, MenuItem} from 'react-bootstrap';
 
 export default class AdapterSelector extends React.Component {
     render() {
         const adapterIndicator = 'green';
+        const DEFAULT_ADAPTER_STATUS = 'Select serial port';
         return (
-          <span title='Select serial port (Alt+P)'>
-            <div className='padded-row'>
-              <DropdownButton id='navbar-dropdown' className='btn-primary btn-nordic' title="TODO" ref='comPortDropdown'>
-              </DropdownButton>
-              <div className={'indicator ' + adapterIndicator}></div>
-            </div>
-          </span>
+            <span title="Select serial port (Alt+P)">
+                <div className="padded-row">
+                    <DropdownButton
+                        id="navbar-dropdown"
+                        className="btn-primary btn-nordic"
+                        title={DEFAULT_ADAPTER_STATUS}
+                        ref="comPortDropdown">
+                    </DropdownButton>
+                    <div className={`indicator ${adapterIndicator}`}></div>
+                </div>
+            </span>
         );
     }
 }

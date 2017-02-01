@@ -40,7 +40,7 @@
 import '../../resources/css/styles.less';
 import '../../resources/css/ble-styles.less';
 
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
@@ -50,22 +50,22 @@ import MainViewContainer from '../containers/MainViewContainer';
 export default class App extends React.Component {
     render() {
         return (
-          <div id="main-area-wrapper">
-            <NavBar />
-            <div className="main-layout">
-              <div>
-                <div>
-                  <MainViewContainer />
+            <div id="main-area-wrapper">
+                <NavBar />
+                <div className="main-layout">
+                    <div>
+                        <div>
+                            <MainViewContainer />
+                        </div>
+                        <div>
+                            <LogViewerContainer />
+                        </div>
+                    </div>
+                    <div>
+                        <SidePanelContainer />
+                    </div>
                 </div>
-                <div>
-                  <LogViewerContainer />
-                </div>
-              </div>
-              <div>
-                <SidePanelContainer />
-              </div>
             </div>
-          </div>
         );
     }
 }

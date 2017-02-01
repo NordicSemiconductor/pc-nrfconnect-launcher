@@ -46,17 +46,19 @@ import NavMenuContainer from '../containers/NavMenuContainer';
 export default class NavBar extends React.Component {
     render() {
         return (
-          <div className="nav-bar">
-            <div>
-              <a href="http://www.nordicsemi.com/nRFConnect" target="_blank"><img className="nrfconnect-logo" src={logo} /></a>
+            <div className="nav-bar">
+                <div className="nav-section">
+                    <div className="padded-row">
+                        <AdapterSelectorContainer />
+                    </div>
+                </div>
+                <NavMenuContainer />
+                <div className="nav-logo-container">
+                    <a href="http://www.nordicsemi.com/nRFConnect" target="_blank">
+                        <img className="nrfconnect-logo" src={logo} alt="nRF Connect" />
+                    </a>
+                </div>
             </div>
-            <div className="nav-section">
-              <div className="padded-row">
-                <AdapterSelectorContainer />
-              </div>
-            </div>
-            <NavMenuContainer />
-          </div>
         );
     }
 }

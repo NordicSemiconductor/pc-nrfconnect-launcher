@@ -10,7 +10,11 @@
  *
  */
 
-@import "./styles.less";
+@import "./variables.less";
+
+html, body, #app {
+  height: 100%;
+}
 
 .nomargin {
     margin: 0px;
@@ -203,16 +207,17 @@
 #main-area-wrapper {
   background-color: @background-color;
   width: 100%;
+  height: 100%;
   min-width: 930px;
+  display: flex;
+  flex-flow: column;
 }
 
 .nav-bar {
+  width: 100%;
   background-color: @brand-primary;
-
-  .nrfconnect-logo {
-    float: right;
-    height: 55px;
-  }
+  display: flex;
+  height: 60px;
 
   .settings-menu {
     float: right;
@@ -231,31 +236,39 @@
       border-left: 1px solid @brand-primary-dark;
     }
   }
-}
 
-.main-layout > div:nth-child(1) {
-    flex: 1;
-    display: flex;
-    flex-flow: row;
+  .nrfconnect-logo {
+    height: 55px;
+  }
+
+  .nav-logo-container {
+    margin-left: auto;
+  }
 }
 
 .main-layout {
   display: flex;
   flex-flow: row;
+  height: 100%;
+
   > div:nth-child(1) {
     flex: 1;
     display: flex;
     flex-flow: column;
+
     > div:nth-child(1) { //main
       flex: 1;
       border-top: 1px solid gray;
       box-shadow: inset -0px 0px 6px 0px gray;
+      overflow: hidden;
     }
+
     > div:nth-child(2) { //log
       border-top: 1px solid gray;
       overflow: hidden;
+      width: 100%;
+    }
   }
-}
 
   > div:nth-child(2) { //device details
     box-shadow: inset 0px 5px 6px -5px gray;
@@ -282,6 +295,10 @@
   &.error {
     background-color: @brand-danger;
   }
+}
+
+.main-view {
+  padding: 10px 15px;
 }
 
 #discoveredDevicesContainer {
