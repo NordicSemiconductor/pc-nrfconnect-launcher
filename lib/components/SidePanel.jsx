@@ -42,7 +42,7 @@ import React, {PropTypes} from 'react';
 export default class SidePanel extends React.Component {
     render() {
         return (
-            <div id="discoveredDevicesContainer">
+            <div className="side-panel">
                 Side panel
             </div>
         );
