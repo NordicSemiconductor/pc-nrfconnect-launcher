@@ -37,14 +37,10 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-export default class SidePanel extends React.Component {
-    render() {
-        return (
-            <div className="side-panel">
-                Side panel
-            </div>
-        );
-    }
-}
+export default () => (
+    <div className="side-panel">
+        Side panel
+    </div>
+);

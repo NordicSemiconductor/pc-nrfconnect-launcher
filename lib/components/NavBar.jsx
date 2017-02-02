@@ -43,22 +43,18 @@ import logo from '../../resources/nordiclogo_neg.png';
 import AdapterSelectorContainer from '../containers/AdapterSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 
-export default class NavBar extends React.Component {
-    render() {
-        return (
-            <div className="nav-bar">
-                <div className="nav-section">
-                    <div className="padded-row">
-                        <AdapterSelectorContainer />
-                    </div>
-                </div>
-                <NavMenuContainer />
-                <div className="nav-logo-container">
-                    <a href="http://www.nordicsemi.com/nRFConnect" target="_blank">
-                        <img className="nrfconnect-logo" src={logo} alt="nRF Connect" />
-                    </a>
-                </div>
+export default () => (
+    <div className="nav-bar">
+        <div className="nav-section">
+            <div className="padded-row">
+                <AdapterSelectorContainer />
             </div>
-        );
-    }
-}
+        </div>
+        <NavMenuContainer />
+        <div className="nav-logo-container">
+            <a href="http://www.nordicsemi.com/nRFConnect" target="_blank" rel="noopener noreferrer">
+                <img className="nrfconnect-logo" src={logo} alt="nRF Connect" />
+            </a>
+        </div>
+    </div>
+);

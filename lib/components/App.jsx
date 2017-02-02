@@ -37,31 +37,28 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <div className="main-area-wrapper">
-                <NavBar />
-                <div className="main-layout">
-                    <div>
-                        <div>
-                            <MainViewContainer />
-                        </div>
-                        <div>
-                            <LogViewerContainer />
-                        </div>
-                    </div>
-                    <div>
-                        <SidePanelContainer />
-                    </div>
+export default () => (
+    <div className="main-area-wrapper">
+        <NavBar />
+        <div className="main-layout">
+            <div>
+                <div>
+                    <MainViewContainer />
+                </div>
+                <div>
+                    <LogViewerContainer />
                 </div>
             </div>
-        );
-    }
-}
+            <div>
+                <SidePanelContainer />
+            </div>
+        </div>
+    </div>
+);
+

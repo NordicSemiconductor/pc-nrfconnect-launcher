@@ -37,15 +37,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MainView from '../components/MainView';
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
     return {};
 }
 

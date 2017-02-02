@@ -37,14 +37,10 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
 
-export default class MainView extends React.Component {
-    render() {
-        return (
-            <div className="main-view">
-                Main view
-            </div>
-        );
-    }
-}
+export default () => (
+    <div className="main-view">
+        Main view
+    </div>
+);

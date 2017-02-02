@@ -37,21 +37,17 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from "react";
+import React from 'react';
 
-export default class NavMenu extends React.Component {
-    render() {
-        return (
-            <div className="nav-section bl padded-row">
-                <button title="Connection map (Alt+1)" className="btn btn-primary btn-nordic padded-row">
-                    <span className="icon-columns"/>
-                    <span>Connection map</span>
-                </button>
-                <button title="Server setup (Alt+2)" className="btn btn-primary btn-nordic padded-row">
-                    <span className="icon-indent-right"/>
-                    <span>Server setup</span>
-                </button>
-            </div>
-        );
-    }
-}
+export default () => (
+    <div className="nav-section bl padded-row">
+        <button title="Connection map (Alt+1)" className="btn btn-primary btn-nordic padded-row">
+            <span className="icon-columns" />
+            <span>Connection map</span>
+        </button>
+        <button title="Server setup (Alt+2)" className="btn btn-primary btn-nordic padded-row">
+            <span className="icon-indent-right" />
+            <span>Server setup</span>
+        </button>
+    </div>
+);

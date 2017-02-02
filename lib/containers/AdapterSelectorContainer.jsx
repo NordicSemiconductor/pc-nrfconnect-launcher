@@ -37,17 +37,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import AdapterSelector from '../components/AdapterSelector';
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
     return {};
 }
 

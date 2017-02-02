@@ -41,17 +41,14 @@ import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import App from '../components/App';
 
-export default class RootContainer extends React.Component {
-    render() {
-        const { store } = this.props;
-        return (
-          <Provider store={store}>
-            <App />
-          </Provider>
-        );
-    }
-}
+const RootContainer = ({ store }) => (
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
 
 RootContainer.propTypes = {
-    store: PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
+
+export default RootContainer;
