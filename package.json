@@ -33,6 +33,7 @@
     "css-loader": "0.26.1",
     "electron": "1.4.13",
     "electron-rebuild": "1.5.7",
+    "enzyme": "2.7.1",
     "eslint": "3.14.1",
     "eslint-loader": "^1.6.1",
     "file-loader": "0.10.0",
@@ -42,6 +43,8 @@
     "less": "2.7.2",
     "less-loader": "2.2.3",
     "raw-loader": "0.5.1",
+    "react-addons-test-utils": "15.4.2",
+    "react-test-renderer": "15.4.2",
     "rimraf": "^2.5.4",
     "semver": "5.3.0",
     "style-loader": "0.13.1",
@@ -71,7 +74,6 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
       "\\.(css|less)$": "<rootDir>/mocks/styleMock.js"
-    },
-    "testResultsProcessor": "node_modules/jest-bamboo-formatter"
+    }
   }
 }
