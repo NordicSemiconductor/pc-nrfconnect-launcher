@@ -30,7 +30,10 @@ const config = {
     module: {
         loaders: [{
             test: /\.(js|jsx)$/,
-            loader: 'babel-loader?cacheDirectory',
+            loaders: [
+                'babel-loader?cacheDirectory',
+                'eslint-loader',
+            ],
             exclude: /node_modules/,
         }, {
             test: /\.json$/,
