@@ -2,6 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProd = nodeEnv === 'production';
+
+
 // TODO: Replace with package.json dependencies for production
 // Add all node modules as externals, but keep the require behavior.
 // http://jlongster.com/Backend-Apps-with-Webpack--Part-I
@@ -18,7 +22,7 @@ function createExternals(moduleDirectories) {
 }
 
 const config = {
-    devtool: 'inline-eval-cheap-source-map',
+    devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: [
         './lib/index',
     ],
@@ -53,6 +57,11 @@ const config = {
         extensions: ['.js', '.jsx', '.json'],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(nodeEnv),
+            },
+        }),
         new webpack.NamedModulesPlugin(),
     ],
     externals: createExternals([
