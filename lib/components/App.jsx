@@ -37,11 +37,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import '../../resources/css/styles.less';
-import '../../resources/css/ble-styles.less';
-
 import React, {PropTypes} from 'react';
-
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
@@ -50,7 +46,7 @@ import MainViewContainer from '../containers/MainViewContainer';
 export default class App extends React.Component {
     render() {
         return (
-            <div id="main-area-wrapper">
+            <div className="main-area-wrapper">
                 <NavBar />
                 <div className="main-layout">
                     <div>
