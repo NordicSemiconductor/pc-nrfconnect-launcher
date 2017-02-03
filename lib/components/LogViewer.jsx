@@ -40,7 +40,6 @@
 import React, { PropTypes } from 'react';
 import Infinite from 'react-infinite';
 import Immutable from 'immutable';
-import uuidV4 from 'uuid-v4';
 import LogEntry from '../components/LogEntry';
 
 const LogViewer = ({ autoScroll, logEntries }) => (
@@ -56,7 +55,7 @@ const LogViewer = ({ autoScroll, logEntries }) => (
             className="infinite-log"
             autoScroll={autoScroll}
         >
-            {logEntries.map(entry => <LogEntry {...{ entry }} key={uuidV4()} />)}
+            {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
         </Infinite>
     </div>
 );
