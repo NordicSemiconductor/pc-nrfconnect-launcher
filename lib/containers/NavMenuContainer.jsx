@@ -40,13 +40,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NavMenu from '../components/NavMenu';
-import * as NavigationActions from '../actions/navigationActions';
+import * as NavigationActions from '../actions/navMenuActions';
 
 function mapStateToProps(state) {
-    const { navigation } = state.core;
+    const { navMenu } = state.core;
 
     return {
-        selectedMainView: navigation.selectedMainView,
+        menuItems: navMenu.menuItems,
+        selectedMainView: navMenu.selectedMainView,
     };
 }
 
