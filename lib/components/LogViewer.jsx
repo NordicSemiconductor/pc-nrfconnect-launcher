@@ -37,13 +37,33 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import Infinite from 'react-infinite';
+import Immutable from 'immutable';
+import uuidV4 from 'uuid-v4';
+import LogEntry from '../components/LogEntry';
 
-export default () => (
+const LogViewer = ({ autoScroll, logEntries }) => (
     <div className="log-wrap">
         <div className="log-header">
             <div className="log-header-text">Log</div>
             <div className="padded-row log-header-buttons" />
         </div>
+        <Infinite
+            elementHeight={20}
+            containerHeight={155}
+            infiniteLoadBeginEdgeOffset={135}
+            className="infinite-log"
+            autoScroll={autoScroll}
+        >
+            {logEntries.map(entry => <LogEntry {...{ entry }} key={uuidV4()} />)}
+        </Infinite>
     </div>
 );
+
+LogViewer.propTypes = {
+    logEntries: PropTypes.instanceOf(Immutable.List).isRequired,
+    autoScroll: PropTypes.bool.isRequired,
+};
+
+export default LogViewer;

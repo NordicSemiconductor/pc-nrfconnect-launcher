@@ -37,23 +37,48 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import LogViewer from '../components/LogViewer';
+import React, { PropTypes } from 'react';
+import moment from 'moment';
 
-function mapStateToProps(state) {
-    const { log } = state.core;
-
-    return {
-        logEntries: log.entries,
-        autoScroll: log.autoScroll,
-    };
+function entryClassName(entry) {
+    switch (entry.level) {
+        case 0:
+            return 'log-trace';
+        case 1:
+            return 'log-debug';
+        case 2:
+            return 'log-info';
+        case 3:
+            return 'log-warning';
+        case 4:
+            return 'log-error';
+        case 5:
+            return 'log-fatal';
+        default:
+            return 'log-unknown';
+    }
 }
 
-function mapDispatchToProps() {
-    return {};
-}
+const LogEntry = ({ entry }) => {
+    const className = `log-entry ${entryClassName(entry)}`;
+    const time = moment(new Date(entry.time)).format('HH:mm:ss.SSSS');
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(LogViewer);
+    return (
+        <div className={className}>
+            <div className="time">{time}</div>
+            <div className="message">{entry.message}</div>
+        </div>
+    );
+};
+
+LogEntry.propTypes = {
+    entry: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        time: PropTypes.string.isRequired,
+        level: PropTypes.number.isRequired,
+        message: PropTypes.string.isRequired,
+        meta: PropTypes.string,
+    }).isRequired,
+};
+
+export default LogEntry;
