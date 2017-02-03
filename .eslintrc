@@ -33,7 +33,8 @@
             "as-needed"
         ],
         "strict": "off",
-        "no-console": "off"
+        "no-console": "off",
+        "import/no-extraneous-dependencies": 0
     },
     "no-undef": 1,
     "no-unused-vars": 1,
