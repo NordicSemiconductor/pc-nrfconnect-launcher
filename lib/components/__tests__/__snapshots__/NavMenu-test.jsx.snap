@@ -1,0 +1,56 @@
+exports[`NavMenu should render menu with no items 1`] = `
+<div
+  className="nav-section bl padded-row" />
+`;
+
+exports[`NavMenu should render menu with two items, and none selected 1`] = `
+<div
+  className="nav-section bl padded-row">
+  <button
+    className="btn btn-primary btn-nordic padded-row "
+    onClick={[Function]}
+    title="Connection map">
+    <span
+      className="icon-columns" />
+    <span>
+      Connection map
+    </span>
+  </button>
+  <button
+    className="btn btn-primary btn-nordic padded-row "
+    onClick={[Function]}
+    title="Server setup">
+    <span
+      className="icon-indent-right" />
+    <span>
+      Server setup
+    </span>
+  </button>
+</div>
+`;
+
+exports[`NavMenu should render menu with two items, and one selected 1`] = `
+<div
+  className="nav-section bl padded-row">
+  <button
+    className="btn btn-primary btn-nordic padded-row active"
+    onClick={[Function]}
+    title="Connection map">
+    <span
+      className="icon-columns" />
+    <span>
+      Connection map
+    </span>
+  </button>
+  <button
+    className="btn btn-primary btn-nordic padded-row "
+    onClick={[Function]}
+    title="Server setup">
+    <span
+      className="icon-indent-right" />
+    <span>
+      Server setup
+    </span>
+  </button>
+</div>
+`;

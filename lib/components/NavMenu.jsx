@@ -37,17 +37,38 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import Immutable from 'immutable';
+import NavMenuItem from './NavMenuItem';
 
-export default () => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected }) => (
     <div className="nav-section bl padded-row">
-        <button title="Connection map (Alt+1)" className="btn btn-primary btn-nordic padded-row">
-            <span className="icon-columns" />
-            <span>Connection map</span>
-        </button>
-        <button title="Server setup (Alt+2)" className="btn btn-primary btn-nordic padded-row">
-            <span className="icon-indent-right" />
-            <span>Server setup</span>
-        </button>
+        {
+            menuItems.map(item =>
+                <NavMenuItem
+                    key={item.id}
+                    id={item.id}
+                    isSelected={item.id === selectedItemId}
+                    text={item.text}
+                    title={item.text}
+                    iconClass={item.iconClass}
+                    onClick={onItemSelected}
+                />)
+        }
     </div>
 );
+
+NavMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    onItemSelected: PropTypes.func.isRequired,
+    selectedItemId: PropTypes.number,
+};
+
+NavMenu.defaultProps = {
+    selectedItemId: -1,
+};
+
+export default NavMenu;

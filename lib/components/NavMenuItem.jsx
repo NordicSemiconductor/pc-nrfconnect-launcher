@@ -37,11 +37,26 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const ITEM_SELECTED = 'NAV_MENU_ITEM_SELECTED';
+import React, { PropTypes } from 'react';
 
-export function menuItemSelected(id) {
-    return {
-        type: ITEM_SELECTED,
-        id,
-    };
+function getClassName(isSelected) {
+    return `btn btn-primary btn-nordic padded-row ${isSelected ? 'active' : ''}`;
 }
+
+const NavMenuItem = ({ id, text, title, iconClass, isSelected, onClick }) => (
+    <button title={title} className={getClassName(isSelected)} onClick={() => onClick(id)}>
+        <span className={iconClass} />
+        <span>{text}</span>
+    </button>
+);
+
+NavMenuItem.propTypes = {
+    isSelected: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
+
+export default NavMenuItem;

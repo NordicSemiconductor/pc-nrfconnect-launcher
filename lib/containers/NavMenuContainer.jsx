@@ -38,23 +38,22 @@
  */
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import NavMenu from '../components/NavMenu';
-import * as NavigationActions from '../actions/navMenuActions';
+import * as NavMenuActions from '../actions/navMenuActions';
 
 function mapStateToProps(state) {
     const { navMenu } = state.core;
 
     return {
         menuItems: navMenu.menuItems,
-        selectedMainView: navMenu.selectedMainView,
+        selectedItemId: navMenu.selectedItemId,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return Object.assign(
-        bindActionCreators(NavigationActions, dispatch),
-    );
+    return {
+        onItemSelected: id => dispatch(NavMenuActions.menuItemSelected(id)),
+    };
 }
 
 export default connect(
