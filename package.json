@@ -79,6 +79,7 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
       "\\.(css|less)$": "<rootDir>/mocks/styleMock.js"
-    }
+    },
+    "testResultsProcessor": "./node_modules/jest-bamboo-formatter"
   }
 }
