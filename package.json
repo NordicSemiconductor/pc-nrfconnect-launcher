@@ -13,7 +13,8 @@
     "dev": "webpack --watch",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint main lib",
-    "test": "jest"
+    "test": "jest",
+    "clean": "npm install rimraf && rimraf \"node_modules/!(rimraf|.bin)\""
   },
   "author": "Nordic Semiconductor ASA",
   "license": "Proprietary",
