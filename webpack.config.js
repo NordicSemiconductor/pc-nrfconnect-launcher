@@ -1,31 +1,23 @@
 const webpack = require('webpack');
 const path = require('path');
-const fs = require('fs');
+const dependencies = require('./package.json').dependencies;
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 
-
-// TODO: Replace with package.json dependencies for production
-// Add all node modules as externals, but keep the require behavior.
-// http://jlongster.com/Backend-Apps-with-Webpack--Part-I
-function createExternals(moduleDirectories) {
+function createExternals() {
+    // Add production dependencies as externals, but keep the require behavior.
+    // http://jlongster.com/Backend-Apps-with-Webpack--Part-I
     const externals = {};
-    moduleDirectories.forEach(directory => {
-        fs.readdirSync(directory)
-            .filter(x => ['.bin'].indexOf(x) === -1)
-            .forEach(mod => {
-                externals[mod] = `commonjs ${mod}`;
-            });
+    Object.keys(dependencies).forEach(dependency => {
+        externals[dependency] = `commonjs ${dependency}`;
     });
     return externals;
 }
 
-const config = {
+module.exports = {
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
-    entry: [
-        './lib/index',
-    ],
+    entry: './lib/index',
     output: {
         path: path.resolve('dist'),
         publicPath: './dist/',
@@ -44,17 +36,18 @@ const config = {
             loader: 'json-loader',
         }, {
             test: /\.less$/,
-            loader: 'style-loader!css-loader!less-loader',
+            loaders: [
+                'style-loader',
+                'css-loader',
+                'less-loader',
+            ],
         }, {
             test: /\.(png|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
             loader: 'file-loader',
         }],
     },
     resolve: {
-        modules: [
-            path.resolve(__dirname, 'node_modules'),
-        ],
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx'],
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -62,12 +55,8 @@ const config = {
                 NODE_ENV: JSON.stringify(nodeEnv),
             },
         }),
-        new webpack.NamedModulesPlugin(),
     ],
-    externals: createExternals([
-        `${__dirname}/node_modules`,
-    ]),
+    externals: createExternals(),
     target: 'electron-renderer',
 };
 
-module.exports = config;
