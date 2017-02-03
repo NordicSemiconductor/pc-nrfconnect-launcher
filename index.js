@@ -42,6 +42,7 @@
 const electron = require('electron');
 const browser = require('./main/browser');
 const createMenu = require('./main/menu').createMenu;
+const packageJson = require('./package.json');
 
 const app = electron.app;
 const Menu = electron.Menu;
@@ -50,17 +51,12 @@ app.on('window-all-closed', () => {
     app.quit();
 });
 
-function getVersion() {
-    const packageJson = require('./package.json');
-    return packageJson.version;
-}
-
 function initBrowserWindow() {
     const applicationMenu = Menu.buildFromTemplate(createMenu(app));
     Menu.setApplicationMenu(applicationMenu);
 
     browser.createWindow({
-        title: `nRF Connect v${getVersion()}`,
+        title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/index.html`,
         splashScreen: true,
     });

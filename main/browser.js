@@ -1,6 +1,7 @@
+'use strict';
+
 const electron = require('electron');
 const settings = require('./settings');
-const menu = require('./menu');
 
 function createSplashScreen() {
     let splashScreen = new electron.BrowserWindow({
@@ -11,10 +12,10 @@ function createSplashScreen() {
         skipTaskbar: true,
         resizable: false,
         show: false,
-        transparent: true
+        transparent: true,
     });
-    splashScreen.loadURL('file://' + __dirname + '/../resources/splashScreen.html');
-    splashScreen.on('closed', function () {
+    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
+    splashScreen.on('closed', () => {
         splashScreen = null;
     });
     splashScreen.show();
@@ -42,17 +43,17 @@ function createWindow(options) {
 
     browserWindow.loadURL(options.url);
 
-    browserWindow.on('close', function () {
+    browserWindow.on('close', () => {
         if (options.keepWindowSettings !== false) {
             settings.storeLastWindow(browserWindow);
         }
     });
 
-    browserWindow.on('closed', function () {
+    browserWindow.on('closed', () => {
         browserWindow = null;
     });
 
-    browserWindow.webContents.on('did-finish-load', function () {
+    browserWindow.webContents.on('did-finish-load', () => {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
         }
@@ -61,7 +62,7 @@ function createWindow(options) {
             browserWindow.maximize();
         }
 
-        let title = options.title || 'nRF Connect';
+        const title = options.title || 'nRF Connect';
         browserWindow.setTitle(title);
         browserWindow.show();
     });
@@ -70,5 +71,5 @@ function createWindow(options) {
 }
 
 module.exports = {
-    createWindow: createWindow
+    createWindow,
 };

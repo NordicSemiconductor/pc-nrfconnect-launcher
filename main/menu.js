@@ -40,14 +40,14 @@
 'use strict';
 
 function createMenu(app) {
-    let menuTemplate = [
+    const menuTemplate = [
         {
             label: '&File',
             submenu: [
                 {
                     label: '&Quit',
                     accelerator: 'CmdOrCtrl+Q',
-                    click: function () {
+                    click: () => {
                         app.quit();
                     },
                 },
@@ -68,7 +68,7 @@ function createMenu(app) {
                 {
                     label: '&Reload',
                     accelerator: 'CmdOrCtrl+R',
-                    click: function (item, focusedWindow) {
+                    click: (item, focusedWindow) => {
                         if (focusedWindow) {
                             focusedWindow.reload();
                         }
@@ -76,8 +76,8 @@ function createMenu(app) {
                 },
                 {
                     label: 'Toggle &Full Screen',
-                    accelerator: process.platform == 'darwin' ? 'Ctrl+Command+F' : 'F11',
-                    click: function (item, focusedWindow) {
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11',
+                    click: (item, focusedWindow) => {
                         if (focusedWindow) {
                             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
                         }
@@ -85,9 +85,9 @@ function createMenu(app) {
                 },
                 {
                     label: 'Toggle &Developer Tools',
-                    accelerator: process.platform == 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+                    accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
                     visible: false,
-                    click: function (item, focusedWindow) {
+                    click: (item, focusedWindow) => {
                         if (focusedWindow) {
                             focusedWindow.toggleDevTools();
                         }
@@ -97,14 +97,14 @@ function createMenu(app) {
         },
     ];
 
-    if (process.platform == 'darwin') {
+    if (process.platform === 'darwin') {
         menuTemplate.unshift({
             label: 'Electron',
             submenu: [
                 {
                     label: 'Quit',
                     accelerator: 'Command+Q',
-                    click: function () {
+                    click: () => {
                         app.quit();
                     },
                 },
