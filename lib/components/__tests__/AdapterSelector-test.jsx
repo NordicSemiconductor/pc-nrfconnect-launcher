@@ -4,9 +4,7 @@ import AdapterSelector from '../AdapterSelector';
 
 describe('AdapterSelector', () => {
     it('should render correctly', () => {
-        const tree = renderer.create(
-            <AdapterSelector />
-        ).toJSON();
+        const tree = renderer.create(<AdapterSelector />).toJSON();
 
         expect(tree).toMatchSnapshot();
     });
