@@ -14,7 +14,9 @@
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint main lib",
     "test": "jest",
-    "clean": "npm install rimraf && rimraf \"node_modules/!(rimraf|.bin)\""
+    "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
+    "clean-dist": "rimraf dist",
+    "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
   },
   "author": "Nordic Semiconductor ASA",
   "license": "Proprietary",
