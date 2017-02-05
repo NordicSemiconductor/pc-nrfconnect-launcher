@@ -76,7 +76,6 @@
     "redux-thunk": "2.2.0",
     "serialport": "4.0.7",
     "sqlite3": "3.1.8",
-    "uuid-v4": "0.1.0",
     "winston": "2.3.1"
   },
   "jest": {
