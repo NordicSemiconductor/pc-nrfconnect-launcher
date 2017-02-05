@@ -43,8 +43,8 @@ function getClassName(isSelected) {
     return `btn btn-primary btn-nordic padded-row ${isSelected ? 'active' : ''}`;
 }
 
-const NavMenuItem = ({ id, text, title, iconClass, isSelected, onClick }) => (
-    <button title={title} className={getClassName(isSelected)} onClick={() => onClick(id)}>
+const NavMenuItem = ({ text, title, iconClass, isSelected, onClick }) => (
+    <button title={title} className={getClassName(isSelected)} onClick={onClick}>
         <span className={iconClass} />
         <span>{text}</span>
     </button>
@@ -52,7 +52,6 @@ const NavMenuItem = ({ id, text, title, iconClass, isSelected, onClick }) => (
 
 NavMenuItem.propTypes = {
     isSelected: PropTypes.bool.isRequired,
-    id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     iconClass: PropTypes.string.isRequired,

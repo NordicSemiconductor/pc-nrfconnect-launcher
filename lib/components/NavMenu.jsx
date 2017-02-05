@@ -41,19 +41,26 @@ import React, { PropTypes } from 'react';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
 
-const NavMenu = ({ menuItems, selectedItemId, onItemSelected }) => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey }) => (
     <div className="nav-section bl padded-row">
         {
-            menuItems.map(item =>
-                <NavMenuItem
-                    key={item.id}
-                    id={item.id}
-                    isSelected={item.id === selectedItemId}
-                    text={item.text}
-                    title={item.text}
-                    iconClass={item.iconClass}
-                    onClick={onItemSelected}
-                />)
+            menuItems.map((item, index) => {
+                const hotkey = `Alt+${index + 1}`;
+                const onSelected = () => onItemSelected(item.id);
+                bindHotkey(hotkey.toLowerCase(), onSelected);
+
+                return (
+                    <NavMenuItem
+                        key={item.id}
+                        id={item.id}
+                        isSelected={item.id === selectedItemId}
+                        text={item.text}
+                        title={`${item.text} (${hotkey})`}
+                        iconClass={item.iconClass}
+                        onClick={onSelected}
+                    />
+                );
+            })
         }
     </div>
 );
@@ -64,6 +71,7 @@ NavMenu.propTypes = {
         PropTypes.instanceOf(Immutable.Iterable),
     ]).isRequired,
     onItemSelected: PropTypes.func.isRequired,
+    bindHotkey: PropTypes.func.isRequired,
     selectedItemId: PropTypes.number,
 };
 

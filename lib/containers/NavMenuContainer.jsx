@@ -40,6 +40,7 @@
 import { connect } from 'react-redux';
 import NavMenu from '../components/NavMenu';
 import * as NavMenuActions from '../actions/navMenuActions';
+import withHotkey from '../util/withHotkey';
 
 function mapStateToProps(state) {
     const { navMenu } = state.core;
@@ -59,4 +60,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(NavMenu);
+)(withHotkey(NavMenu));

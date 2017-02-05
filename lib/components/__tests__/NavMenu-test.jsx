@@ -4,17 +4,6 @@ import { mount } from 'enzyme';
 import Immutable from 'immutable';
 import NavMenu from '../NavMenu';
 
-function renderComponent(menuItems, selectedItemId, onItemSelected) {
-    const onSelected = onItemSelected || (() => {});
-    return renderer.create(
-        <NavMenu
-            menuItems={menuItems}
-            selectedItemId={selectedItemId}
-            onItemSelected={onSelected}
-        />,
-    ).toJSON();
-}
-
 const menuItems = Immutable.List([
     {
         id: 1,
@@ -29,20 +18,45 @@ const menuItems = Immutable.List([
 
 describe('NavMenu', () => {
     it('should render menu with no items', () => {
-        expect(renderComponent([])).toMatchSnapshot();
+        expect(renderer.create(
+            <NavMenu
+                menuItems={[]}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
 
     it('should render menu with two items, and none selected', () => {
-        expect(renderComponent(menuItems)).toMatchSnapshot();
+        expect(renderer.create(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
 
     it('should render menu with two items, and one selected', () => {
-        expect(renderComponent(menuItems, 1)).toMatchSnapshot();
+        expect(renderer.create(
+            <NavMenu
+                menuItems={menuItems}
+                selectedItemId={1}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
 
     it('should invoke onItemSelected when item has been selected', () => {
         const onItemSelected = jest.fn();
-        const wrapper = mount(<NavMenu menuItems={menuItems} onItemSelected={onItemSelected} />);
+        const wrapper = mount(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={onItemSelected}
+                bindHotkey={() => {}}
+            />,
+        );
         wrapper.find('button').first().simulate('click');
 
         expect(onItemSelected).toHaveBeenCalledWith(menuItems.first().id);
