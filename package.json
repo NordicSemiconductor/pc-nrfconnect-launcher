@@ -13,7 +13,8 @@
     "dev": "webpack --watch",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "eslint main lib",
-    "test": "jest",
+    "test": "jest --testResultsProcessor jest-bamboo-formatter",
+    "test-watch": "jest --watch",
     "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
     "clean-dist": "rimraf dist",
     "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
@@ -83,7 +84,6 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
       "\\.(css|less)$": "<rootDir>/mocks/styleMock.js"
-    },
-    "testResultsProcessor": "./node_modules/jest-bamboo-formatter"
+    }
   }
 }
