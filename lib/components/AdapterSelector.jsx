@@ -37,23 +37,115 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-
+import React, { PropTypes } from 'react';
 import { DropdownButton } from 'react-bootstrap';
+import { Iterable } from 'immutable';
+import AdapterSelectorItem from './AdapterSelectorItem';
 
-export default () => {
-    const adapterIndicator = 'off';
-    const DEFAULT_ADAPTER_STATUS = 'Select serial port';
-    return (
-        <span title="Select serial port (Alt+P)">
-            <div className="padded-row">
-                <DropdownButton
-                    id="navbar-dropdown"
-                    className="btn-primary btn-nordic"
-                    title={DEFAULT_ADAPTER_STATUS}
+class AdapterSelector extends React.Component {
+    componentDidMount() {
+        const {
+            bindHotkey,
+            toggleExpanded,
+            hotkeyExpand,
+        } = this.props;
+
+        bindHotkey(hotkeyExpand.toLowerCase(), toggleExpanded);
+    }
+
+    renderAdapterItems() {
+        const {
+            adapters,
+            onSelect,
+            isLoading,
+        } = this.props;
+
+        if (!isLoading) {
+            return adapters.map(adapter => (
+                <AdapterSelectorItem
+                    key={adapter.comName}
+                    adapter={adapter}
+                    onSelect={onSelect}
                 />
-                <div className={`indicator ${adapterIndicator}`} />
-            </div>
-        </span>
-    );
+            ));
+        }
+        return null;
+    }
+
+    renderCloseItem() {
+        const {
+            selectedAdapter,
+            onDeselect,
+        } = this.props;
+
+        if (selectedAdapter) {
+            return (
+                <AdapterSelectorItem
+                    key="closeAdapter"
+                    adapter={{
+                        comName: 'Close adapter',
+                        serialNumber: '',
+                    }}
+                    onSelect={onDeselect}
+                />
+            );
+        }
+        return null;
+    }
+
+    render() {
+        const {
+            selectedAdapter,
+            adapterIndicator,
+            toggleExpanded,
+            isExpanded,
+            hotkeyExpand,
+        } = this.props;
+
+        const selectorText = selectedAdapter || 'Select serial port';
+
+        return (
+            <span title={`Select serial port (${hotkeyExpand})`}>
+                <div className="padded-row">
+                    <DropdownButton
+                        id="navbar-dropdown"
+                        className="btn-primary btn-nordic"
+                        title={selectorText}
+                        open={isExpanded}
+                        onToggle={toggleExpanded}
+                    >
+                        { this.renderAdapterItems() }
+                        { this.renderCloseItem() }
+                    </DropdownButton>
+                    <div className={`indicator ${adapterIndicator}`} />
+                </div>
+            </span>
+        );
+    }
+}
+
+AdapterSelector.propTypes = {
+    adapters: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Iterable),
+    ]).isRequired,
+    selectedAdapter: PropTypes.string,
+    adapterIndicator: PropTypes.string,
+    isLoading: PropTypes.bool,
+    isExpanded: PropTypes.bool,
+    toggleExpanded: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onDeselect: PropTypes.func.isRequired,
+    bindHotkey: PropTypes.func.isRequired,
+    hotkeyExpand: PropTypes.string,
 };
+
+AdapterSelector.defaultProps = {
+    selectedAdapter: '',
+    isExpanded: false,
+    isLoading: false,
+    adapterIndicator: 'off',
+    hotkeyExpand: 'Alt+P',
+};
+
+export default AdapterSelector;

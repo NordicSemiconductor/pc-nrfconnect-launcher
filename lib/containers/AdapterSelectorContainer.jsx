@@ -39,15 +39,30 @@
 
 import { connect } from 'react-redux';
 import AdapterSelector from '../components/AdapterSelector';
+import withHotkey from '../util/withHotkey';
+import * as AdapterActions from '../actions/adapterActions';
 
-function mapStateToProps() {
-    return {};
+function mapStateToProps(state) {
+    const { adapter } = state.core;
+
+    return {
+        adapters: adapter.adapters,
+        selectedAdapter: adapter.selectedAdapter,
+        isExpanded: adapter.isSelectorExpanded,
+        isLoading: adapter.isLoading,
+    };
 }
 
-function mapDispatchToProps() {
-    return {};
+function mapDispatchToProps(dispatch) {
+    return {
+        onSelect: serialPort => dispatch(AdapterActions.selectAdapter(serialPort)),
+        onDeselect: () => dispatch(AdapterActions.deselectAdapter()),
+        onExpand: () => dispatch(AdapterActions.loadAdapters()),
+        toggleExpanded: () => dispatch(AdapterActions.toggleSelectorExpanded()),
+    };
 }
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps)(AdapterSelector);
+    mapDispatchToProps,
+)(withHotkey(AdapterSelector));

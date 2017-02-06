@@ -1,30 +1,149 @@
-exports[`AdapterSelector should render correctly 1`] = `
+exports[`AdapterSelector should render empty adapter list, expanded 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={true}
+      title="Select serial port" />
     <div
-      className="dropdown btn-group">
-      <button
-        aria-expanded={false}
-        aria-haspopup={true}
-        className="btn-primary btn-nordic dropdown-toggle btn btn-default"
-        disabled={false}
-        id="navbar-dropdown"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="button"
-        type="button">
-        Select serial port
-         
-        <span
-          className="caret" />
-      </button>
-      <ul
-        aria-labelledby="navbar-dropdown"
-        className="dropdown-menu"
-        role="menu" />
-    </div>
+      className="indicator off" />
+  </div>
+</span>
+`;
+
+exports[`AdapterSelector should render empty adapter list, not expanded 1`] = `
+<span
+  title="Select serial port (Alt+P)">
+  <div
+    className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={false}
+      title="Select serial port" />
+    <div
+      className="indicator off" />
+  </div>
+</span>
+`;
+
+exports[`AdapterSelector should render empty list while loading 1`] = `
+<span
+  title="Select serial port (Alt+P)">
+  <div
+    className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={true}
+      title="Select serial port" />
+    <div
+      className="indicator off" />
+  </div>
+</span>
+`;
+
+exports[`AdapterSelector should render two adapters 1`] = `
+<span
+  title="Select serial port (Alt+P)">
+  <div
+    className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={true}
+      title="Select serial port">
+      <MenuItem
+        className="btn-primary"
+        eventKey="/dev/tty0"
+        onSelect={[Function]}>
+        <div
+          className="serialPort">
+          /dev/tty0
+        </div>
+        <div
+          className="serialSerialnumber">
+          123456
+        </div>
+      </MenuItem>
+      <MenuItem
+        className="btn-primary"
+        eventKey="/dev/tty1"
+        onSelect={[Function]}>
+        <div
+          className="serialPort">
+          /dev/tty1
+        </div>
+        <div
+          className="serialSerialnumber">
+          456789
+        </div>
+      </MenuItem>
+    </DropdownButton>
+    <div
+      className="indicator off" />
+  </div>
+</span>
+`;
+
+exports[`AdapterSelector should render two adapters, one selected 1`] = `
+<span
+  title="Select serial port (Alt+P)">
+  <div
+    className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={true}
+      title="/dev/tty1">
+      <MenuItem
+        className="btn-primary"
+        eventKey="/dev/tty0"
+        onSelect={[Function]}>
+        <div
+          className="serialPort">
+          /dev/tty0
+        </div>
+        <div
+          className="serialSerialnumber">
+          123456
+        </div>
+      </MenuItem>
+      <MenuItem
+        className="btn-primary"
+        eventKey="/dev/tty1"
+        onSelect={[Function]}>
+        <div
+          className="serialPort">
+          /dev/tty1
+        </div>
+        <div
+          className="serialSerialnumber">
+          456789
+        </div>
+      </MenuItem>
+      <MenuItem
+        className="btn-primary"
+        eventKey="Close adapter"
+        onSelect={[Function]}>
+        <div
+          className="serialPort">
+          Close adapter
+        </div>
+        <div
+          className="serialSerialnumber">
+          
+        </div>
+      </MenuItem>
+    </DropdownButton>
     <div
       className="indicator off" />
   </div>
