@@ -57,7 +57,6 @@ function mapDispatchToProps(dispatch) {
     return {
         onSelect: serialPort => dispatch(AdapterActions.selectAdapter(serialPort)),
         onDeselect: () => dispatch(AdapterActions.deselectAdapter()),
-        onExpand: () => dispatch(AdapterActions.loadAdapters()),
         toggleExpanded: () => dispatch(AdapterActions.toggleSelectorExpanded()),
     };
 }
