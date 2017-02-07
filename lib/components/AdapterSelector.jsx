@@ -82,10 +82,7 @@ class AdapterSelector extends React.Component {
             return (
                 <AdapterSelectorItem
                     key="closeAdapter"
-                    adapter={{
-                        comName: 'Close adapter',
-                        serialNumber: '',
-                    }}
+                    adapter={{ comName: 'Close adapter' }}
                     onSelect={onDeselect}
                 />
             );

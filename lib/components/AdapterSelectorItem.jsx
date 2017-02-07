@@ -9,14 +9,14 @@ const AdapterSelectorItem = ({ adapter, onSelect }) => (
         onSelect={() => onSelect(adapter.comName)}
     >
         <div className="serialPort">{adapter.comName}</div>
-        <div className="serialSerialnumber">{adapter.serialNumber}</div>
+        <div className="serialSerialnumber">{adapter.serialNumber || ''}</div>
     </MenuItem>
 );
 
 AdapterSelectorItem.propTypes = {
     adapter: PropTypes.shape({
         comName: PropTypes.string.isRequired,
-        serialNumber: PropTypes.string.isRequired,
+        serialNumber: PropTypes.string,
     }).isRequired,
     onSelect: PropTypes.func.isRequired,
 };
