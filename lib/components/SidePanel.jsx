@@ -37,10 +37,29 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default () => (
-    <div className="side-panel">
-        Side panel
+const SidePanel = ({ children, cssClass, width }) => (
+    <div className={cssClass} style={{ width: `${width}px` }}>
+        { children ||
+            <div>
+                <h4>Side panel</h4>
+                <p>Implement <code>decorateSidePanel</code> to add your own content here.</p>
+            </div>
+        }
     </div>
 );
+
+SidePanel.propTypes = {
+    width: PropTypes.number,
+    children: PropTypes.node,
+    cssClass: PropTypes.string,
+};
+
+SidePanel.defaultProps = {
+    width: 260,
+    children: null,
+    cssClass: 'side-panel',
+};
+
+export default SidePanel;
