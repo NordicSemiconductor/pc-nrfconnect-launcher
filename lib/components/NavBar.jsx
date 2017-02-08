@@ -37,24 +37,51 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-
+import React, { PropTypes } from 'react';
 import logo from '../../resources/nordiclogo_neg.png';
 import AdapterSelectorContainer from '../containers/AdapterSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 
-export default () => (
-    <div className="nav-bar">
-        <div className="nav-section">
-            <div className="padded-row">
-                <AdapterSelectorContainer />
-            </div>
+const NavBar = ({
+    logoSrc,
+    logoHref,
+    logoAlt,
+    cssClass,
+    logoContainerCssClass,
+    navSectionCssClass,
+    logoCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={navSectionCssClass}>
+            <AdapterSelectorContainer />
         </div>
         <NavMenuContainer />
-        <div className="nav-logo-container">
-            <a href="http://www.nordicsemi.com/nRFConnect" target="_blank" rel="noopener noreferrer">
-                <img className="nrfconnect-logo" src={logo} alt="nRF Connect" />
+        <div className={logoContainerCssClass}>
+            <a href={logoHref} target="_blank" rel="noopener noreferrer">
+                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
             </a>
         </div>
     </div>
 );
+
+NavBar.propTypes = {
+    logoSrc: PropTypes.string,
+    logoHref: PropTypes.string,
+    logoAlt: PropTypes.string,
+    cssClass: PropTypes.string,
+    logoContainerCssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
+    logoCssClass: PropTypes.string,
+};
+
+NavBar.defaultProps = {
+    logoSrc: logo,
+    logoHref: 'http://www.nordicsemi.com/nRFConnect',
+    logoAlt: 'nRF Connect',
+    cssClass: 'nav-bar',
+    navSectionCssClass: 'nav-section padded-row',
+    logoContainerCssClass: 'nav-logo-container',
+    logoCssClass: 'nrfconnect-logo',
+};
+
+export default NavBar;

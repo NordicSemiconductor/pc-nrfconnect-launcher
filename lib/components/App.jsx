@@ -42,10 +42,13 @@ import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
+import { decorate } from '../util/plugins';
+
+const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
 export default () => (
     <div className="main-area-wrapper">
-        <NavBar />
+        <DecoratedNavBar />
         <div className="main-layout">
             <div>
                 <div>
