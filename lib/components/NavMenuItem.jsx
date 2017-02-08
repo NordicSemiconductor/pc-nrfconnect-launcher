@@ -39,12 +39,12 @@
 
 import React, { PropTypes } from 'react';
 
-function getClassName(isSelected) {
-    return `btn btn-primary btn-nordic padded-row ${isSelected ? 'active' : ''}`;
+function getClassName(baseClass, isSelected) {
+    return `${baseClass} ${isSelected ? 'active' : ''}`;
 }
 
-const NavMenuItem = ({ text, title, iconClass, isSelected, onClick }) => (
-    <button title={title} className={getClassName(isSelected)} onClick={onClick}>
+const NavMenuItem = ({ text, title, iconClass, isSelected, onClick, cssClass }) => (
+    <button title={title} className={getClassName(cssClass, isSelected)} onClick={onClick}>
         <span className={iconClass} />
         <span>{text}</span>
     </button>
@@ -56,6 +56,11 @@ NavMenuItem.propTypes = {
     title: PropTypes.string.isRequired,
     iconClass: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+};
+
+NavMenuItem.defaultProps = {
+    cssClass: 'btn btn-primary btn-nordic padded-row',
 };
 
 export default NavMenuItem;
