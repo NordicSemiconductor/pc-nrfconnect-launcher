@@ -41,6 +41,9 @@ import { connect } from 'react-redux';
 import NavMenu from '../components/NavMenu';
 import * as NavMenuActions from '../actions/navMenuActions';
 import withHotkey from '../util/withHotkey';
+import { decorate } from '../util/plugins';
+
+const DecoratedNavMenu = decorate(NavMenu, 'NavMenu');
 
 function mapStateToProps(state) {
     const { navMenu } = state.core;
@@ -60,4 +63,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withHotkey(NavMenu));
+)(withHotkey(DecoratedNavMenu));
