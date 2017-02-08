@@ -1,8 +1,14 @@
 /* eslint-disable import/first */
 
+// Do not render react-bootstrap components in tests
 jest.mock('react-bootstrap', () => ({
     DropdownButton: 'DropdownButton',
     MenuItem: 'MenuItem',
+}));
+
+// Do not decorate components
+jest.mock('../../util/plugins', () => ({
+    decorate: component => component,
 }));
 
 import React from 'react';

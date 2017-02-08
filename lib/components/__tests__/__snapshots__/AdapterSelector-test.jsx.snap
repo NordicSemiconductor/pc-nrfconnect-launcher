@@ -64,12 +64,15 @@ exports[`AdapterSelector should render two adapters 1`] = `
         className="btn-primary"
         eventKey="/dev/tty0"
         onSelect={[Function]}>
-        <div
-          className="serialPort">
+        <div>
           /dev/tty0
         </div>
         <div
-          className="serialSerialnumber">
+          style={
+            Object {
+              "fontSize": "small",
+            }
+          }>
           123456
         </div>
       </MenuItem>
@@ -77,12 +80,15 @@ exports[`AdapterSelector should render two adapters 1`] = `
         className="btn-primary"
         eventKey="/dev/tty1"
         onSelect={[Function]}>
-        <div
-          className="serialPort">
+        <div>
           /dev/tty1
         </div>
         <div
-          className="serialSerialnumber">
+          style={
+            Object {
+              "fontSize": "small",
+            }
+          }>
           456789
         </div>
       </MenuItem>
@@ -108,12 +114,15 @@ exports[`AdapterSelector should render two adapters, one selected 1`] = `
         className="btn-primary"
         eventKey="/dev/tty0"
         onSelect={[Function]}>
-        <div
-          className="serialPort">
+        <div>
           /dev/tty0
         </div>
         <div
-          className="serialSerialnumber">
+          style={
+            Object {
+              "fontSize": "small",
+            }
+          }>
           123456
         </div>
       </MenuItem>
@@ -121,12 +130,15 @@ exports[`AdapterSelector should render two adapters, one selected 1`] = `
         className="btn-primary"
         eventKey="/dev/tty1"
         onSelect={[Function]}>
-        <div
-          className="serialPort">
+        <div>
           /dev/tty1
         </div>
         <div
-          className="serialSerialnumber">
+          style={
+            Object {
+              "fontSize": "small",
+            }
+          }>
           456789
         </div>
       </MenuItem>
@@ -134,12 +146,15 @@ exports[`AdapterSelector should render two adapters, one selected 1`] = `
         className="btn-primary"
         eventKey="Close adapter"
         onSelect={[Function]}>
-        <div
-          className="serialPort">
+        <div>
           Close adapter
         </div>
         <div
-          className="serialSerialnumber">
+          style={
+            Object {
+              "fontSize": "small",
+            }
+          }>
           
         </div>
       </MenuItem>

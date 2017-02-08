@@ -41,6 +41,9 @@ import React, { PropTypes } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 import { Iterable } from 'immutable';
 import AdapterSelectorItem from './AdapterSelectorItem';
+import { decorate } from '../util/plugins';
+
+const DecoratedAdapterSelectorItem = decorate(AdapterSelectorItem, 'AdapterSelectorItem');
 
 class AdapterSelector extends React.Component {
     componentDidMount() {
@@ -58,14 +61,16 @@ class AdapterSelector extends React.Component {
             adapters,
             onSelect,
             isLoading,
+            menuItemCssClass,
         } = this.props;
 
         if (!isLoading) {
             return adapters.map(adapter => (
-                <AdapterSelectorItem
+                <DecoratedAdapterSelectorItem
                     key={adapter.comName}
                     adapter={adapter}
                     onSelect={onSelect}
+                    cssClass={menuItemCssClass}
                 />
             ));
         }
@@ -76,14 +81,15 @@ class AdapterSelector extends React.Component {
         const {
             selectedAdapter,
             onDeselect,
+            menuItemCssClass,
         } = this.props;
 
         if (selectedAdapter) {
             return (
-                <AdapterSelectorItem
-                    key="closeAdapter"
+                <DecoratedAdapterSelectorItem
                     adapter={{ comName: 'Close adapter' }}
                     onSelect={onDeselect}
+                    cssClass={menuItemCssClass}
                 />
             );
         }
@@ -93,20 +99,24 @@ class AdapterSelector extends React.Component {
     render() {
         const {
             selectedAdapter,
+            showAdapterIndicator,
             adapterIndicator,
             toggleExpanded,
             isExpanded,
             hotkeyExpand,
+            cssClass,
+            dropdownCssClass,
         } = this.props;
 
         const selectorText = selectedAdapter || 'Select serial port';
+        const indicatorCssClass = `indicator ${adapterIndicator}`;
 
         return (
             <span title={`Select serial port (${hotkeyExpand})`}>
-                <div className="padded-row">
+                <div className={cssClass}>
                     <DropdownButton
                         id="navbar-dropdown"
-                        className="btn-primary btn-nordic"
+                        className={dropdownCssClass}
                         title={selectorText}
                         open={isExpanded}
                         onToggle={toggleExpanded}
@@ -114,7 +124,9 @@ class AdapterSelector extends React.Component {
                         { this.renderAdapterItems() }
                         { this.renderCloseItem() }
                     </DropdownButton>
-                    <div className={`indicator ${adapterIndicator}`} />
+                    {
+                        showAdapterIndicator ? <div className={indicatorCssClass} /> : <div />
+                    }
                 </div>
             </span>
         );
@@ -127,6 +139,7 @@ AdapterSelector.propTypes = {
         PropTypes.instanceOf(Iterable),
     ]).isRequired,
     selectedAdapter: PropTypes.string,
+    showAdapterIndicator: PropTypes.bool,
     adapterIndicator: PropTypes.string,
     isLoading: PropTypes.bool,
     isExpanded: PropTypes.bool,
@@ -135,14 +148,21 @@ AdapterSelector.propTypes = {
     onDeselect: PropTypes.func.isRequired,
     bindHotkey: PropTypes.func.isRequired,
     hotkeyExpand: PropTypes.string,
+    cssClass: PropTypes.string,
+    dropdownCssClass: PropTypes.string,
+    menuItemCssClass: PropTypes.string,
 };
 
 AdapterSelector.defaultProps = {
     selectedAdapter: '',
+    showAdapterIndicator: true,
     isExpanded: false,
     isLoading: false,
     adapterIndicator: 'off',
     hotkeyExpand: 'Alt+P',
+    cssClass: 'padded-row',
+    dropdownCssClass: 'btn-primary btn-nordic',
+    menuItemCssClass: 'btn-primary',
 };
 
 export default AdapterSelector;
