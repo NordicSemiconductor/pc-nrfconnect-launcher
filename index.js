@@ -47,6 +47,8 @@ const packageJson = require('./package.json');
 const app = electron.app;
 const Menu = electron.Menu;
 
+global.homeDir = app.getPath('home');
+
 app.on('window-all-closed', () => {
     app.quit();
 });
