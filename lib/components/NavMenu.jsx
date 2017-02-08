@@ -40,9 +40,12 @@
 import React, { PropTypes } from 'react';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
+import { decorate } from '../util/plugins';
 
-const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey }) => (
-    <div className="nav-section bl padded-row">
+const DecoratedNavMenuItem = decorate(NavMenuItem, 'NavMenuItem');
+
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
+    <div className={cssClass}>
         {
             menuItems.map((item, index) => {
                 const hotkey = `Alt+${index + 1}`;
@@ -50,7 +53,7 @@ const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey }) => (
                 bindHotkey(hotkey.toLowerCase(), onSelected);
 
                 return (
-                    <NavMenuItem
+                    <DecoratedNavMenuItem
                         key={item.id}
                         id={item.id}
                         isSelected={item.id === selectedItemId}
@@ -73,10 +76,12 @@ NavMenu.propTypes = {
     onItemSelected: PropTypes.func.isRequired,
     bindHotkey: PropTypes.func.isRequired,
     selectedItemId: PropTypes.number,
+    cssClass: PropTypes.string,
 };
 
 NavMenu.defaultProps = {
     selectedItemId: -1,
+    cssClass: 'nav-section bl padded-row',
 };
 
 export default NavMenu;

@@ -1,3 +1,10 @@
+/* eslint-disable import/first */
+
+// Do not decorate components
+jest.mock('../../util/plugins', () => ({
+    decorate: component => component,
+}));
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
