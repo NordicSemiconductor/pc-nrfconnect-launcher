@@ -42,17 +42,29 @@ import Infinite from 'react-infinite';
 import Immutable from 'immutable';
 import LogEntry from '../components/LogEntry';
 
-const LogViewer = ({ autoScroll, logEntries }) => (
-    <div className="log-wrap">
-        <div className="log-header">
-            <div className="log-header-text">Log</div>
-            <div className="padded-row log-header-buttons" />
+const LogViewer = ({
+    autoScroll,
+    logEntries,
+    containerHeight,
+    elementHeight,
+    infiniteLoadBeginEdgeOffset,
+    headerText,
+    cssClass,
+    headerCssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+    infiniteLogCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerCssClass}>
+            <div className={headerTextCssClass}>{headerText}</div>
+            <div className={headerButtonsCssClass} />
         </div>
         <Infinite
-            elementHeight={20}
-            containerHeight={155}
-            infiniteLoadBeginEdgeOffset={135}
-            className="infinite-log"
+            elementHeight={elementHeight}
+            containerHeight={containerHeight}
+            infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
+            className={infiniteLogCssClass}
             autoScroll={autoScroll}
         >
             {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
@@ -63,6 +75,27 @@ const LogViewer = ({ autoScroll, logEntries }) => (
 LogViewer.propTypes = {
     logEntries: PropTypes.instanceOf(Immutable.List).isRequired,
     autoScroll: PropTypes.bool.isRequired,
+    containerHeight: PropTypes.number,
+    elementHeight: PropTypes.number,
+    infiniteLoadBeginEdgeOffset: PropTypes.number,
+    headerText: PropTypes.string,
+    cssClass: PropTypes.string,
+    headerCssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
+    infiniteLogCssClass: PropTypes.string,
+};
+
+LogViewer.defaultProps = {
+    containerHeight: 155,
+    elementHeight: 20,
+    infiniteLoadBeginEdgeOffset: 135,
+    headerText: 'Log',
+    cssClass: 'log-wrap',
+    headerCssClass: 'log-header',
+    headerTextCssClass: 'log-header-text',
+    headerButtonsCssClass: 'padded-row log-header-buttons',
+    infiniteLogCssClass: 'infinite-log',
 };
 
 export default LogViewer;
