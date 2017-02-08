@@ -37,10 +37,27 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default () => (
-    <div className="main-view">
-        Main view
+const MainView = ({ children, cssClass }) => (
+    <div className={cssClass}>
+        { children ||
+            <div>
+                <h4>Main view</h4>
+                <p>Implement <code>decorateMainView</code> to add your own content here.</p>
+            </div>
+        }
     </div>
 );
+
+MainView.propTypes = {
+    children: PropTypes.node,
+    cssClass: PropTypes.string,
+};
+
+MainView.defaultProps = {
+    children: null,
+    cssClass: 'main-view',
+};
+
+export default MainView;
