@@ -39,6 +39,10 @@
 
 import { connect } from 'react-redux';
 import LogViewer from '../components/LogViewer';
+import withHotkey from '../util/withHotkey';
+import { decorate } from '../util/plugins';
+
+const DecoratedLogViewer = decorate(LogViewer, 'LogViewer');
 
 function mapStateToProps(state) {
     const { log } = state.core;
@@ -56,4 +60,4 @@ function mapDispatchToProps() {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(LogViewer);
+)(withHotkey(DecoratedLogViewer));

@@ -39,6 +39,10 @@
 
 import { connect } from 'react-redux';
 import MainView from '../components/MainView';
+import withHotkey from '../util/withHotkey';
+import { decorate } from '../util/plugins';
+
+const DecoratedMainView = decorate(MainView, 'MainView');
 
 function mapStateToProps() {
     return {};
@@ -51,4 +55,4 @@ function mapDispatchToProps() {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MainView);
+)(withHotkey(DecoratedMainView));

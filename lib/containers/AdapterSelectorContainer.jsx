@@ -39,8 +39,11 @@
 
 import { connect } from 'react-redux';
 import AdapterSelector from '../components/AdapterSelector';
-import withHotkey from '../util/withHotkey';
 import * as AdapterActions from '../actions/adapterActions';
+import withHotkey from '../util/withHotkey';
+import { decorate } from '../util/plugins';
+
+const DecoratedAdapterSelector = decorate(AdapterSelector, 'AdapterSelector');
 
 function mapStateToProps(state) {
     const { adapter } = state.core;
@@ -64,4 +67,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withHotkey(AdapterSelector));
+)(withHotkey(DecoratedAdapterSelector));

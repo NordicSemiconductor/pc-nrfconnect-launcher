@@ -39,6 +39,10 @@
 
 import { connect } from 'react-redux';
 import SidePanel from '../components/SidePanel';
+import withHotkey from '../util/withHotkey';
+import { decorate } from '../util/plugins';
+
+const DecoratedSidePanel = decorate(SidePanel, 'SidePanel');
 
 function mapStateToProps() {
     return {};
@@ -51,4 +55,4 @@ function mapDispatchToProps() {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(SidePanel);
+)(withHotkey(DecoratedSidePanel));
