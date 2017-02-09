@@ -40,28 +40,9 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 
-function entryClassName(entry) {
-    switch (entry.level) {
-        case 0:
-            return 'log-trace';
-        case 1:
-            return 'log-debug';
-        case 2:
-            return 'log-info';
-        case 3:
-            return 'log-warning';
-        case 4:
-            return 'log-error';
-        case 5:
-            return 'log-fatal';
-        default:
-            return 'log-unknown';
-    }
-}
-
 const LogEntry = ({ entry }) => {
-    const className = `log-entry ${entryClassName(entry)}`;
-    const time = moment(new Date(entry.time)).format('HH:mm:ss.SSSS');
+    const className = `log-entry log-${entry.level}`;
+    const time = moment(entry.time).format('HH:mm:ss.SSSS');
 
     return (
         <div className={className}>
@@ -74,10 +55,9 @@ const LogEntry = ({ entry }) => {
 LogEntry.propTypes = {
     entry: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        time: PropTypes.string.isRequired,
-        level: PropTypes.number.isRequired,
+        time: PropTypes.instanceOf(Date).isRequired,
+        level: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
-        meta: PropTypes.string,
     }).isRequired,
 };
 

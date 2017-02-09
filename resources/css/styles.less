@@ -220,16 +220,12 @@ html, body, #app {
     }
   }
 
-  .log-trace, .log-debug,.log-info,.log-warning {
+  .log-silly, .log-debug, .log-verbose, .log-info, .log-warn {
     background-color: white;
   }
-  .log-error,.log-fatal {
+  .log-error {
     color: @state-danger-text;
     background-color: @state-danger-bg;
-  }
-  .log-unknown {
-    color: @state-info-text;
-    background-color: @state-info-bg;
   }
   .log-header {
     display: flex;

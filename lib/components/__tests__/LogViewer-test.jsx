@@ -16,13 +16,13 @@ describe('LogViewer', () => {
         const entries = Immutable.List([
             {
                 id: 1,
-                level: 2,
-                time: '2017-02-03T12:41:36.020Z',
+                level: 'info',
+                time: new Date('2017-02-03T12:41:36.020Z'),
                 message: 'Info message',
             }, {
                 id: 2,
-                level: 4,
-                time: '2017-02-03T13:41:36.020Z',
+                level: 'error',
+                time: new Date('2017-02-03T13:41:36.020Z'),
                 message: 'Error message',
             },
         ]);
