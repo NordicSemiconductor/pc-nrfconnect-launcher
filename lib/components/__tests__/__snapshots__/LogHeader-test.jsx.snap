@@ -1,0 +1,73 @@
+exports[`LogHeader should render autoScroll disabled 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Log
+  </div>
+  <div
+    className="padded-row log-header-buttons">
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Open log file">
+      <span
+        aria-hidden="true"
+        className="icon-doc-text" />
+    </button>
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Clear log">
+      <span
+        aria-hidden="true"
+        className="icon-trash" />
+    </button>
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Scroll automatically">
+      <span
+        aria-hidden="true"
+        className="icon-down" />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`LogHeader should render autoScroll enabled 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Log
+  </div>
+  <div
+    className="padded-row log-header-buttons">
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Open log file">
+      <span
+        aria-hidden="true"
+        className="icon-doc-text" />
+    </button>
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Clear log">
+      <span
+        aria-hidden="true"
+        className="icon-trash" />
+    </button>
+    <button
+      className="btn btn-primary btn-xs btn-nordic active"
+      onClick={[Function]}
+      title="Scroll automatically">
+      <span
+        aria-hidden="true"
+        className="icon-down" />
+    </button>
+  </div>
+</div>
+`;

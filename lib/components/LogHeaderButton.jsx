@@ -38,28 +38,37 @@
  */
 
 import React, { PropTypes } from 'react';
-import moment from 'moment';
 
-const LogEntry = ({ entry }) => {
-    const className = `log-entry log-${entry.level}`;
-    const time = moment(entry.time).format('HH:mm:ss.SSSS');
+const LogHeaderButton = ({
+    title,
+    cssClass,
+    iconCssClass,
+    selectedCssClass,
+    isSelected,
+    onClick,
+}) => (
+    <button
+        title={title}
+        className={`${cssClass} ${isSelected ? selectedCssClass : ''}`}
+        onClick={onClick}
+    >
+        <span className={iconCssClass} aria-hidden="true" />
+    </button>
+);
 
-    return (
-        <div className={className}>
-            <div className="time">{time}</div>
-            <div className="message">{entry.message}</div>
-        </div>
-    );
+LogHeaderButton.propTypes = {
+    title: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    iconCssClass: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool,
+    cssClass: PropTypes.string,
+    selectedCssClass: PropTypes.string,
 };
 
-LogEntry.propTypes = {
-    entry: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        time: PropTypes.instanceOf(Date).isRequired,
-        level: PropTypes.string.isRequired,
-        message: PropTypes.string.isRequired,
-        meta: PropTypes.object,
-    }).isRequired,
+LogHeaderButton.defaultProps = {
+    isSelected: false,
+    cssClass: 'btn btn-primary btn-xs btn-nordic',
+    selectedCssClass: 'active',
 };
 
-export default LogEntry;
+export default LogHeaderButton;

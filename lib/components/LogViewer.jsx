@@ -39,8 +39,13 @@
 
 import React, { PropTypes } from 'react';
 import Infinite from 'react-infinite';
-import Immutable from 'immutable';
-import LogEntry from '../components/LogEntry';
+import { Iterable } from 'immutable';
+import LogHeader from './LogHeader';
+import LogEntry from './LogEntry';
+import { decorate } from '../util/plugins';
+
+const DecoratedLogHeader = decorate(LogHeader, 'LogHeader');
+const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
 class LogViewer extends React.Component {
     componentDidMount() {
@@ -59,23 +64,24 @@ class LogViewer extends React.Component {
         const {
             autoScroll,
             logEntries,
+            onOpenLogFile,
+            onClearLog,
+            onToggleAutoScroll,
             containerHeight,
             elementHeight,
             infiniteLoadBeginEdgeOffset,
-            headerText,
             cssClass,
-            headerCssClass,
-            headerTextCssClass,
-            headerButtonsCssClass,
             infiniteLogCssClass,
         } = this.props;
 
         return (
             <div className={cssClass}>
-                <div className={headerCssClass}>
-                    <div className={headerTextCssClass}>{headerText}</div>
-                    <div className={headerButtonsCssClass} />
-                </div>
+                <DecoratedLogHeader
+                    autoScroll={autoScroll}
+                    onOpenLogFile={onOpenLogFile}
+                    onClearLog={onClearLog}
+                    onToggleAutoScroll={onToggleAutoScroll}
+                />
                 <Infinite
                     elementHeight={elementHeight}
                     containerHeight={containerHeight}
@@ -83,7 +89,7 @@ class LogViewer extends React.Component {
                     className={infiniteLogCssClass}
                     autoScroll={autoScroll}
                 >
-                    {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
+                    {logEntries.map(entry => <DecoratedLogEntry {...{ entry }} key={entry.id} />)}
                 </Infinite>
             </div>
         );
@@ -93,30 +99,29 @@ class LogViewer extends React.Component {
 LogViewer.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
-    logEntries: PropTypes.instanceOf(Immutable.List).isRequired,
+    logEntries: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Iterable),
+    ]).isRequired,
     autoScroll: PropTypes.bool.isRequired,
+    onOpenLogFile: PropTypes.func.isRequired,
+    onClearLog: PropTypes.func.isRequired,
+    onToggleAutoScroll: PropTypes.func.isRequired,
     containerHeight: PropTypes.number,
     elementHeight: PropTypes.number,
     infiniteLoadBeginEdgeOffset: PropTypes.number,
-    headerText: PropTypes.string,
     cssClass: PropTypes.string,
-    headerCssClass: PropTypes.string,
-    headerTextCssClass: PropTypes.string,
-    headerButtonsCssClass: PropTypes.string,
     infiniteLogCssClass: PropTypes.string,
 };
 
 LogViewer.defaultProps = {
     onMount: null,
     onUnmount: null,
+    headerButtons: [],
     containerHeight: 155,
     elementHeight: 20,
     infiniteLoadBeginEdgeOffset: 135,
-    headerText: 'Log',
     cssClass: 'log-wrap',
-    headerCssClass: 'log-header',
-    headerTextCssClass: 'log-header-text',
-    headerButtonsCssClass: 'padded-row log-header-buttons',
     infiniteLogCssClass: 'infinite-log',
 };
 

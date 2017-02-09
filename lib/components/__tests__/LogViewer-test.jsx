@@ -1,15 +1,17 @@
-jest.mock('react-infinite', () => 'Infinite');
-
 /* eslint-disable import/first */
+
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../LogHeader', () => 'LogHeader');
+
+// Do not decorate components
+jest.mock('../../util/plugins', () => ({
+    decorate: component => component,
+}));
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 import Immutable from 'immutable';
 import LogViewer from '../LogViewer';
-/* eslint-enable import/first */
-
-function renderComponent(entries) {
-    return renderer.create(<LogViewer logEntries={entries} autoScroll />).toJSON();
-}
 
 describe('LogViewer', () => {
     it('should render log entries', () => {
@@ -26,6 +28,14 @@ describe('LogViewer', () => {
                 message: 'Error message',
             },
         ]);
-        expect(renderComponent(entries)).toMatchSnapshot();
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
     });
 });
