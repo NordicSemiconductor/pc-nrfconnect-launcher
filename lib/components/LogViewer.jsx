@@ -40,11 +40,10 @@
 import React, { PropTypes } from 'react';
 import Infinite from 'react-infinite';
 import { Iterable } from 'immutable';
-import LogHeader from './LogHeader';
+import LogHeaderContainer from '../containers/LogHeaderContainer';
 import LogEntry from './LogEntry';
 import { decorate } from '../util/plugins';
 
-const DecoratedLogHeader = decorate(LogHeader, 'LogHeader');
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
 class LogViewer extends React.Component {
@@ -64,9 +63,6 @@ class LogViewer extends React.Component {
         const {
             autoScroll,
             logEntries,
-            onOpenLogFile,
-            onClearLog,
-            onToggleAutoScroll,
             containerHeight,
             elementHeight,
             infiniteLoadBeginEdgeOffset,
@@ -76,12 +72,7 @@ class LogViewer extends React.Component {
 
         return (
             <div className={cssClass}>
-                <DecoratedLogHeader
-                    autoScroll={autoScroll}
-                    onOpenLogFile={onOpenLogFile}
-                    onClearLog={onClearLog}
-                    onToggleAutoScroll={onToggleAutoScroll}
-                />
+                <LogHeaderContainer />
                 <Infinite
                     elementHeight={elementHeight}
                     containerHeight={containerHeight}
@@ -104,9 +95,6 @@ LogViewer.propTypes = {
         PropTypes.instanceOf(Iterable),
     ]).isRequired,
     autoScroll: PropTypes.bool.isRequired,
-    onOpenLogFile: PropTypes.func.isRequired,
-    onClearLog: PropTypes.func.isRequired,
-    onToggleAutoScroll: PropTypes.func.isRequired,
     containerHeight: PropTypes.number,
     elementHeight: PropTypes.number,
     infiniteLoadBeginEdgeOffset: PropTypes.number,
@@ -117,7 +105,6 @@ LogViewer.propTypes = {
 LogViewer.defaultProps = {
     onMount: null,
     onUnmount: null,
-    headerButtons: [],
     containerHeight: 155,
     elementHeight: 20,
     infiniteLoadBeginEdgeOffset: 135,

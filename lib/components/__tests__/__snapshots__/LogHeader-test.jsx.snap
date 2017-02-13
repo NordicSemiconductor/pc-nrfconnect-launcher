@@ -1,4 +1,4 @@
-exports[`LogHeader should render autoScroll disabled 1`] = `
+exports[`LogHeader should render when buttons are provided 1`] = `
 <div
   className="log-header">
   <div
@@ -10,32 +10,24 @@ exports[`LogHeader should render autoScroll disabled 1`] = `
     <button
       className="btn btn-primary btn-xs btn-nordic "
       onClick={[Function]}
-      title="Open log file">
+      title="Foo button">
       <span
         aria-hidden="true"
-        className="icon-doc-text" />
+        className="foo-btn-class" />
     </button>
     <button
       className="btn btn-primary btn-xs btn-nordic "
       onClick={[Function]}
-      title="Clear log">
+      title="Bar button">
       <span
         aria-hidden="true"
-        className="icon-trash" />
-    </button>
-    <button
-      className="btn btn-primary btn-xs btn-nordic "
-      onClick={[Function]}
-      title="Scroll automatically">
-      <span
-        aria-hidden="true"
-        className="icon-down" />
+        className="bar-btn-class" />
     </button>
   </div>
 </div>
 `;
 
-exports[`LogHeader should render autoScroll enabled 1`] = `
+exports[`LogHeader should render when selected button is provided 1`] = `
 <div
   className="log-header">
   <div
@@ -45,29 +37,25 @@ exports[`LogHeader should render autoScroll enabled 1`] = `
   <div
     className="padded-row log-header-buttons">
     <button
-      className="btn btn-primary btn-xs btn-nordic "
-      onClick={[Function]}
-      title="Open log file">
-      <span
-        aria-hidden="true"
-        className="icon-doc-text" />
-    </button>
-    <button
-      className="btn btn-primary btn-xs btn-nordic "
-      onClick={[Function]}
-      title="Clear log">
-      <span
-        aria-hidden="true"
-        className="icon-trash" />
-    </button>
-    <button
       className="btn btn-primary btn-xs btn-nordic active"
       onClick={[Function]}
-      title="Scroll automatically">
+      title="Foo button">
       <span
         aria-hidden="true"
-        className="icon-down" />
+        className="foo-btn-class" />
     </button>
   </div>
+</div>
+`;
+
+exports[`LogHeader should render when text and no buttons provided 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Foobar log header
+  </div>
+  <div
+    className="padded-row log-header-buttons" />
 </div>
 `;

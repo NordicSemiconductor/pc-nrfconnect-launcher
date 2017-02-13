@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 
 jest.mock('react-infinite', () => 'Infinite');
-jest.mock('../LogHeader', () => 'LogHeader');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
 
 // Do not decorate components
 jest.mock('../../util/plugins', () => ({

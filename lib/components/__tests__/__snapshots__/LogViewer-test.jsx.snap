@@ -1,11 +1,7 @@
 exports[`LogViewer should render log entries 1`] = `
 <div
   className="log-wrap">
-  <LogHeader
-    autoScroll={true}
-    onClearLog={[Function]}
-    onOpenLogFile={[Function]}
-    onToggleAutoScroll={[Function]} />
+  <LogHeaderContainer />
   <Infinite
     autoScroll={true}
     className="infinite-log"

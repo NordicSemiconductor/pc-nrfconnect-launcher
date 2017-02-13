@@ -11,73 +11,67 @@ import renderer from 'react-test-renderer';
 import LogHeader from '../LogHeader';
 
 describe('LogHeader', () => {
-    it('should render autoScroll enabled', () => {
+    it('should render when text and no buttons provided', () => {
         expect(renderer.create(
             <LogHeader
-                autoScroll
-                onOpenLogFile={() => {}}
-                onClearLog={() => {}}
-                onToggleAutoScroll={() => {}}
+                text="Foobar log header"
+                onButtonClicked={() => {}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should render autoScroll disabled', () => {
+    it('should render when buttons are provided', () => {
         expect(renderer.create(
             <LogHeader
-                autoScroll={false}
-                onOpenLogFile={() => {}}
-                onClearLog={() => {}}
-                onToggleAutoScroll={() => {}}
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                    },
+                    {
+                        id: 'bar',
+                        title: 'Bar button',
+                        iconCssClass: 'bar-btn-class',
+                    },
+                ]}
+                onButtonClicked={() => {}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should invoke onOpenLogFile when openLogFileButton has been clicked', () => {
-        const onOpenLogFile = jest.fn();
-        const wrapper = mount(
+    it('should render when selected button is provided', () => {
+        expect(renderer.create(
             <LogHeader
-                autoScroll
-                onOpenLogFile={onOpenLogFile}
-                onClearLog={() => {}}
-                onToggleAutoScroll={() => {}}
-                openLogFileButtonTitle="Open log file"
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                        isSelected: true,
+                    },
+                ]}
+                onButtonClicked={() => {}}
             />,
-        );
-        wrapper.find('[title="Open log file"]').simulate('click');
-
-        expect(onOpenLogFile).toHaveBeenCalled();
+        )).toMatchSnapshot();
     });
 
-    it('should invoke onClearLog when clearLogButton has been clicked', () => {
-        const onClearLog = jest.fn();
+    it('should invoke onButtonClicked with button id when button is clicked', () => {
+        const onButtonClicked = jest.fn();
         const wrapper = mount(
             <LogHeader
-                autoScroll
-                onOpenLogFile={() => {}}
-                onClearLog={onClearLog}
-                onToggleAutoScroll={() => {}}
-                clearLogButtonTitle="Clear log"
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                    },
+                ]}
+                onButtonClicked={onButtonClicked}
             />,
         );
-        wrapper.find('[title="Clear log"]').simulate('click');
+        wrapper.find('[title="Foo button"]').simulate('click');
 
-        expect(onClearLog).toHaveBeenCalled();
-    });
-
-    it('should invoke onToggleAutoScroll when autoScrollButton has been clicked', () => {
-        const onToggleAutoScroll = jest.fn();
-        const wrapper = mount(
-            <LogHeader
-                autoScroll
-                onOpenLogFile={() => {}}
-                onClearLog={() => {}}
-                onToggleAutoScroll={onToggleAutoScroll}
-                autoScrollButtonTitle="Toggle autoscroll"
-            />,
-        );
-        wrapper.find('[title="Toggle autoscroll"]').simulate('click');
-
-        expect(onToggleAutoScroll).toHaveBeenCalled();
+        expect(onButtonClicked).toHaveBeenCalledWith('foo');
     });
 });
