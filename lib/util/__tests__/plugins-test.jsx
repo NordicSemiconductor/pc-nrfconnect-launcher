@@ -3,17 +3,19 @@
 jest.mock('../fileUtil', () => {});
 
 import React, { PropTypes } from 'react';
-import { setPlugin, decorate } from '../plugins';
+import { Provider } from 'react-redux';
+import { setPlugin, decorate, connect } from '../plugins';
 import renderer from 'react-test-renderer';
 
-const FooComponent = ({ id }) => (
-    <div id={id} />
-);
-FooComponent.propTypes = { id: PropTypes.string };
-FooComponent.defaultProps = { id: 'foo' };
-
 describe('decorate', () => {
+    const FooComponent = ({ id }) => (
+        <div id={id} />
+    );
+    FooComponent.propTypes = { id: PropTypes.string };
+    FooComponent.defaultProps = { id: 'foo' };
+
     it('should render default component when plugin is not loaded', () => {
+        setPlugin(null);
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo />).toJSON();
 
@@ -113,6 +115,118 @@ describe('decorate', () => {
         expect(rendered).toEqual({
             type: 'p',
             props: { id: 'baz' },
+            children: null,
+        });
+    });
+});
+
+
+describe('connect', () => {
+    const FooComponent = ({ id, onClick }) => (
+        <button id={id} onClick={onClick} />
+    );
+    FooComponent.propTypes = {
+        id: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired,
+    };
+
+    const defaultStateProps = { id: 'foo' };
+    const defaultDispatchProps = { onClick: () => {} };
+    const mapStateToProps = () => defaultStateProps;
+    const mapDispatchToProps = () => defaultDispatchProps;
+
+    // The react-redux connect function requires that a Provider component
+    // has been rendered higher up in the component hierarchy. In our app
+    // we do this in the Root container. We have to do the same when testing
+    // containers.
+    const storeFake = () => ({
+        default: () => {},
+        subscribe: () => {},
+        dispatch: () => {},
+        getState: () => {},
+    });
+    const renderWithProvider = Component => (
+        renderer.create(
+            <Provider store={storeFake()}>
+                <Component />
+            </Provider>,
+        ).toJSON()
+    );
+
+    it('should render with default props when plugin is not loaded', () => {
+        setPlugin(null);
+
+        const ConnectedFoo = connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        )(FooComponent, 'Foo');
+
+        expect(renderWithProvider(ConnectedFoo)).toEqual({
+            type: 'button',
+            props: {
+                ...defaultStateProps,
+                ...defaultDispatchProps,
+            },
+            children: null,
+        });
+    });
+
+    it('should render with default props when plugin does not implement mapToProps functions', () => {
+        setPlugin({});
+
+        const ConnectedFoo = connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        )(FooComponent, 'Foo');
+
+        expect(renderWithProvider(ConnectedFoo)).toEqual({
+            type: 'button',
+            props: {
+                ...defaultStateProps,
+                ...defaultDispatchProps,
+            },
+            children: null,
+        });
+    });
+
+    it('should render with new state props when plugin implements mapStateToProps', () => {
+        const pluginStateProps = { id: 'bar' };
+        setPlugin({
+            mapFooState: () => pluginStateProps,
+        });
+
+        const ConnectedFoo = connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        )(FooComponent, 'Foo');
+
+        expect(renderWithProvider(ConnectedFoo)).toEqual({
+            type: 'button',
+            props: {
+                ...pluginStateProps,
+                ...defaultDispatchProps,
+            },
+            children: null,
+        });
+    });
+
+    it('should render with new dispatch props when plugin implements mapDispatchToProps', () => {
+        const pluginDispatchProps = { onClick: () => {} };
+        setPlugin({
+            mapFooDispatch: () => pluginDispatchProps,
+        });
+
+        const ConnectedFoo = connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        )(FooComponent, 'Foo');
+
+        expect(renderWithProvider(ConnectedFoo)).toEqual({
+            type: 'button',
+            props: {
+                ...defaultStateProps,
+                ...pluginDispatchProps,
+            },
             children: null,
         });
     });
