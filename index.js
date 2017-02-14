@@ -48,6 +48,7 @@ const app = electron.app;
 const Menu = electron.Menu;
 
 global.homeDir = app.getPath('home');
+global.userDataDir = app.getPath('userData');
 
 app.on('window-all-closed', () => {
     app.quit();

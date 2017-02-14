@@ -39,62 +39,76 @@
 
 import React, { PropTypes } from 'react';
 import Infinite from 'react-infinite';
-import Immutable from 'immutable';
-import LogEntry from '../components/LogEntry';
+import { Iterable } from 'immutable';
+import LogHeaderContainer from '../containers/LogHeaderContainer';
+import LogEntry from './LogEntry';
+import { decorate } from '../util/plugins';
 
-const LogViewer = ({
-    autoScroll,
-    logEntries,
-    containerHeight,
-    elementHeight,
-    infiniteLoadBeginEdgeOffset,
-    headerText,
-    cssClass,
-    headerCssClass,
-    headerTextCssClass,
-    headerButtonsCssClass,
-    infiniteLogCssClass,
-}) => (
-    <div className={cssClass}>
-        <div className={headerCssClass}>
-            <div className={headerTextCssClass}>{headerText}</div>
-            <div className={headerButtonsCssClass} />
-        </div>
-        <Infinite
-            elementHeight={elementHeight}
-            containerHeight={containerHeight}
-            infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
-            className={infiniteLogCssClass}
-            autoScroll={autoScroll}
-        >
-            {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
-        </Infinite>
-    </div>
-);
+const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
+
+class LogViewer extends React.Component {
+    componentDidMount() {
+        if (this.props.onMount) {
+            this.props.onMount();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.onUnmount) {
+            this.props.onUnmount();
+        }
+    }
+
+    render() {
+        const {
+            autoScroll,
+            logEntries,
+            containerHeight,
+            elementHeight,
+            infiniteLoadBeginEdgeOffset,
+            cssClass,
+            infiniteLogCssClass,
+        } = this.props;
+
+        return (
+            <div className={cssClass}>
+                <LogHeaderContainer />
+                <Infinite
+                    elementHeight={elementHeight}
+                    containerHeight={containerHeight}
+                    infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
+                    className={infiniteLogCssClass}
+                    autoScroll={autoScroll}
+                >
+                    {logEntries.map(entry => <DecoratedLogEntry {...{ entry }} key={entry.id} />)}
+                </Infinite>
+            </div>
+        );
+    }
+}
 
 LogViewer.propTypes = {
-    logEntries: PropTypes.instanceOf(Immutable.List).isRequired,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
+    logEntries: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Iterable),
+    ]).isRequired,
     autoScroll: PropTypes.bool.isRequired,
     containerHeight: PropTypes.number,
     elementHeight: PropTypes.number,
     infiniteLoadBeginEdgeOffset: PropTypes.number,
-    headerText: PropTypes.string,
     cssClass: PropTypes.string,
-    headerCssClass: PropTypes.string,
-    headerTextCssClass: PropTypes.string,
-    headerButtonsCssClass: PropTypes.string,
     infiniteLogCssClass: PropTypes.string,
 };
 
 LogViewer.defaultProps = {
+    onMount: null,
+    onUnmount: null,
     containerHeight: 155,
     elementHeight: 20,
     infiniteLoadBeginEdgeOffset: 135,
-    headerText: 'Log',
     cssClass: 'log-wrap',
-    headerCssClass: 'log-header',
-    headerTextCssClass: 'log-header-text',
-    headerButtonsCssClass: 'padded-row log-header-buttons',
     infiniteLogCssClass: 'infinite-log',
 };
 

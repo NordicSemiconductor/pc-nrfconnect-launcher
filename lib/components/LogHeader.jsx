@@ -38,28 +38,57 @@
  */
 
 import React, { PropTypes } from 'react';
-import moment from 'moment';
+import LogHeaderButton from './LogHeaderButton';
+import { decorate } from '../util/plugins';
 
-const LogEntry = ({ entry }) => {
-    const className = `log-entry log-${entry.level}`;
-    const time = moment(entry.time).format('HH:mm:ss.SSSS');
+const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 
-    return (
-        <div className={className}>
-            <div className="time">{time}</div>
-            <div className="message">{entry.message}</div>
+const LogHeader = ({
+    text,
+    buttons,
+    onButtonClicked,
+    cssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerTextCssClass}>{text}</div>
+        <div className={headerButtonsCssClass}>
+            {
+                buttons.map(button => (
+                    <DecoratedLogHeaderButton
+                        key={button.id}
+                        title={button.title}
+                        iconCssClass={button.iconCssClass}
+                        isSelected={button.isSelected}
+                        onClick={() => onButtonClicked(button.id)}
+                    />
+                ))
+            }
         </div>
-    );
+    </div>
+);
+
+LogHeader.propTypes = {
+    text: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        iconCssClass: PropTypes.string,
+        isSelected: PropTypes.bool,
+    })),
+    onButtonClicked: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
 };
 
-LogEntry.propTypes = {
-    entry: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        time: PropTypes.instanceOf(Date).isRequired,
-        level: PropTypes.string.isRequired,
-        message: PropTypes.string.isRequired,
-        meta: PropTypes.object,
-    }).isRequired,
+LogHeader.defaultProps = {
+    text: 'Log',
+    buttons: [],
+    cssClass: 'log-header',
+    headerTextCssClass: 'log-header-text',
+    headerButtonsCssClass: 'padded-row log-header-buttons',
 };
 
-export default LogEntry;
+export default LogHeader;

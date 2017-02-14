@@ -1,0 +1,61 @@
+exports[`LogHeader should render when buttons are provided 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Log
+  </div>
+  <div
+    className="padded-row log-header-buttons">
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Foo button">
+      <span
+        aria-hidden="true"
+        className="foo-btn-class" />
+    </button>
+    <button
+      className="btn btn-primary btn-xs btn-nordic "
+      onClick={[Function]}
+      title="Bar button">
+      <span
+        aria-hidden="true"
+        className="bar-btn-class" />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`LogHeader should render when selected button is provided 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Log
+  </div>
+  <div
+    className="padded-row log-header-buttons">
+    <button
+      className="btn btn-primary btn-xs btn-nordic active"
+      onClick={[Function]}
+      title="Foo button">
+      <span
+        aria-hidden="true"
+        className="foo-btn-class" />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`LogHeader should render when text and no buttons provided 1`] = `
+<div
+  className="log-header">
+  <div
+    className="log-header-text">
+    Foobar log header
+  </div>
+  <div
+    className="padded-row log-header-buttons" />
+</div>
+`;
