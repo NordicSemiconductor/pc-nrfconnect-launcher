@@ -4,7 +4,7 @@ jest.mock('../fileUtil', () => {});
 
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
-import { setPlugin, decorate, connect } from '../plugins';
+import { setPlugin, decorate, decorateReducer, connect } from '../plugins';
 import renderer from 'react-test-renderer';
 
 describe('decorate', () => {
@@ -229,5 +229,105 @@ describe('connect', () => {
             },
             children: null,
         });
+    });
+});
+
+
+describe('decorateReducer', () => {
+    const initialState = {};
+    const FOO_ACTIION = 'FOO_ACTION';
+
+    const fooReducer = (state, action) => {
+        switch (action.type) {
+            case FOO_ACTIION:
+                return Object.assign({}, state, {
+                    foo: action.value,
+                });
+            default:
+                return state;
+        }
+    };
+
+    it('should handle default action when plugin is not loaded', () => {
+        setPlugin(null);
+        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
+
+        const state = decoratedReducer(initialState, {
+            type: FOO_ACTIION,
+            value: 'foobar',
+        });
+
+        expect(state.foo).toEqual('foobar');
+    });
+
+    it('should handle default action when plugin does not decorate reducer', () => {
+        setPlugin({});
+        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
+
+        const state = decoratedReducer(initialState, {
+            type: FOO_ACTIION,
+            value: 'foobar',
+        });
+
+        expect(state.foo).toEqual('foobar');
+    });
+
+    it('should throw error if reducer is not a function', () => {
+        setPlugin({
+            reduceFoo: {},
+        });
+        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
+
+        expect(() => decoratedReducer(initialState, {
+            type: FOO_ACTIION,
+            value: 'foobar',
+        })).toThrow(/Not a function/);
+    });
+
+    it('should override value set by default reducer when plugin decorates reducer with new value', () => {
+        setPlugin({
+            reduceFoo: (state, action) => {
+                switch (action.type) {
+                    case FOO_ACTIION:
+                        return Object.assign({}, state, {
+                            foo: `${action.value} override!`,
+                        });
+                    default:
+                        return state;
+                }
+            },
+        });
+        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
+
+        const state = decoratedReducer(initialState, {
+            type: FOO_ACTIION,
+            value: 'foobar',
+        });
+
+        expect(state.foo).toEqual('foobar override!');
+    });
+
+    it('should handle new action when plugin decorates reducer with new action', () => {
+        const BAR_ACTION = 'BAR_ACTION';
+        setPlugin({
+            reduceFoo: (state, action) => {
+                switch (action.type) {
+                    case BAR_ACTION:
+                        return Object.assign({}, state, {
+                            bar: action.value,
+                        });
+                    default:
+                        return state;
+                }
+            },
+        });
+        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
+
+        const state = decoratedReducer(initialState, {
+            type: BAR_ACTION,
+            value: 1337,
+        });
+
+        expect(state.bar).toEqual(1337);
     });
 });
