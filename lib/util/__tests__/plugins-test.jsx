@@ -235,11 +235,11 @@ describe('connect', () => {
 
 describe('decorateReducer', () => {
     const initialState = {};
-    const FOO_ACTIION = 'FOO_ACTION';
+    const FOO_ACTION = 'FOO_ACTION';
 
     const fooReducer = (state, action) => {
         switch (action.type) {
-            case FOO_ACTIION:
+            case FOO_ACTION:
                 return Object.assign({}, state, {
                     foo: action.value,
                 });
@@ -253,7 +253,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
@@ -265,7 +265,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
@@ -279,7 +279,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         expect(() => decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         })).toThrow(/Not a function/);
     });
@@ -288,7 +288,7 @@ describe('decorateReducer', () => {
         setPlugin({
             reduceFoo: (state, action) => {
                 switch (action.type) {
-                    case FOO_ACTIION:
+                    case FOO_ACTION:
                         return Object.assign({}, state, {
                             foo: `${action.value} override!`,
                         });
@@ -300,7 +300,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
