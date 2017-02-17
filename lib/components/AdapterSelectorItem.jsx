@@ -6,7 +6,7 @@ const AdapterSelectorItem = ({ adapter, onSelect, menuItemCssClass }) => (
         key={adapter.comName}
         className={menuItemCssClass}
         eventKey={adapter.comName}
-        onSelect={() => onSelect(adapter.comName)}
+        onSelect={() => onSelect(adapter)}
     >
         <div>{adapter.comName}</div>
         <div style={{ fontSize: 'small' }}>{adapter.serialNumber || ''}</div>
