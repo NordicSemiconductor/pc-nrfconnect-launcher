@@ -3,6 +3,7 @@
 jest.mock('../fileUtil', () => {});
 
 import React, { PropTypes } from 'react';
+import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { setPlugin, decorate, decorateReducer, connect } from '../plugins';
 import renderer from 'react-test-renderer';
@@ -235,11 +236,11 @@ describe('connect', () => {
 
 describe('decorateReducer', () => {
     const initialState = {};
-    const FOO_ACTIION = 'FOO_ACTION';
+    const FOO_ACTION = 'FOO_ACTION';
 
-    const fooReducer = (state, action) => {
+    const fooReducer = (state = initialState, action) => {
         switch (action.type) {
-            case FOO_ACTIION:
+            case FOO_ACTION:
                 return Object.assign({}, state, {
                     foo: action.value,
                 });
@@ -253,7 +254,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
@@ -265,7 +266,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
@@ -279,7 +280,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         expect(() => decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         })).toThrow(/Not a function/);
     });
@@ -288,7 +289,7 @@ describe('decorateReducer', () => {
         setPlugin({
             reduceFoo: (state, action) => {
                 switch (action.type) {
-                    case FOO_ACTIION:
+                    case FOO_ACTION:
                         return Object.assign({}, state, {
                             foo: `${action.value} override!`,
                         });
@@ -300,7 +301,7 @@ describe('decorateReducer', () => {
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
         const state = decoratedReducer(initialState, {
-            type: FOO_ACTIION,
+            type: FOO_ACTION,
             value: 'foobar',
         });
 
@@ -329,5 +330,56 @@ describe('decorateReducer', () => {
         });
 
         expect(state.bar).toEqual(1337);
+    });
+
+    it('should combine reducers when plugin decorates with combineReducers', () => {
+        const BAR_ACTION = 'BAR_ACTION';
+        const BAZ_ACTION = 'BAZ_ACTION';
+        const pluginReducer = (state = {}) => state;
+        const barReducer = (state = initialState, action) => {
+            switch (action.type) {
+                case BAR_ACTION:
+                    return Object.assign({}, state, {
+                        value: action.value,
+                    });
+                default:
+                    return state;
+            }
+        };
+        const bazReducer = (state = initialState, action) => {
+            switch (action.type) {
+                case BAZ_ACTION:
+                    return Object.assign({}, state, {
+                        value: action.value,
+                    });
+                default:
+                    return state;
+            }
+        };
+        setPlugin({
+            reducePlugin: combineReducers({
+                bar: barReducer,
+                baz: bazReducer,
+            }),
+        });
+        const decoratedReducer = decorateReducer(pluginReducer, 'Plugin');
+
+        const firstState = decoratedReducer(initialState, {
+            type: BAR_ACTION,
+            value: 'bar',
+        });
+        const secondState = decoratedReducer(firstState, {
+            type: BAZ_ACTION,
+            value: 'baz',
+        });
+
+        expect(secondState).toEqual({
+            bar: {
+                value: 'bar',
+            },
+            baz: {
+                value: 'baz',
+            },
+        });
     });
 });
