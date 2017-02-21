@@ -1,6 +1,7 @@
 import path from 'path';
 import { Application } from 'spectron';
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 const appPath = path.resolve(__dirname, '../../');
 
 let electronPath;
