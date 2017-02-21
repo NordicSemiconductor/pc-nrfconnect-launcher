@@ -15,6 +15,7 @@
         "lint": "eslint main lib",
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
         "test-watch": "jest --watch",
+        "test-e2e": "jest --runInBand --config test/setup/jest-e2e.json",
         "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
         "clean-dist": "rimraf dist",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
@@ -54,6 +55,7 @@
         "react-test-renderer": "15.4.2",
         "rimraf": "^2.5.4",
         "semver": "5.3.0",
+        "spectron": "3.6.0",
         "style-loader": "0.13.1",
         "util": "0.10.3",
         "webpack": "2.2.1"
