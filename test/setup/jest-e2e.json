@@ -1,0 +1,4 @@
+{
+  "testPathDirs": ["test"],
+  "testRegex": "-test.*js$"
+}
