@@ -2,7 +2,13 @@ import path from 'path';
 import { Application } from 'spectron';
 
 const appPath = path.resolve(__dirname, '../../');
-const electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
+
+let electronPath;
+if (process.platform === 'win32') {
+    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron.cmd');
+} else {
+    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
+}
 
 function startApplication() {
     const app = new Application({
