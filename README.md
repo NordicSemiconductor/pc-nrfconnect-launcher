@@ -102,9 +102,17 @@ TODO.
 
 ## Testing
 
-Unit testing can be performed by running:
+Run unit tests:
 
     npm test
+
+Run unit tests and watch for changes:
+
+    npm run test-watch
+
+Run end-to-end tests:
+
+    npm run test-e2e
 
 # Related projects
 nRF Connect builds on top of other sub components that live in their own GitHub repositories:
