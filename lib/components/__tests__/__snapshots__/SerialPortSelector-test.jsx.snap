@@ -1,4 +1,4 @@
-exports[`AdapterSelector should render empty adapter list, expanded 1`] = `
+exports[`SerialPortSelector should render empty list while loading 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
@@ -15,7 +15,24 @@ exports[`AdapterSelector should render empty adapter list, expanded 1`] = `
 </span>
 `;
 
-exports[`AdapterSelector should render empty adapter list, not expanded 1`] = `
+exports[`SerialPortSelector should render empty port list, expanded 1`] = `
+<span
+  title="Select serial port (Alt+P)">
+  <div
+    className="padded-row">
+    <DropdownButton
+      className="btn-primary btn-nordic"
+      id="navbar-dropdown"
+      onToggle={[Function]}
+      open={true}
+      title="Select serial port" />
+    <div
+      className="indicator off" />
+  </div>
+</span>
+`;
+
+exports[`SerialPortSelector should render empty port list, not expanded 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
@@ -32,24 +49,7 @@ exports[`AdapterSelector should render empty adapter list, not expanded 1`] = `
 </span>
 `;
 
-exports[`AdapterSelector should render empty list while loading 1`] = `
-<span
-  title="Select serial port (Alt+P)">
-  <div
-    className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
-      onToggle={[Function]}
-      open={true}
-      title="Select serial port" />
-    <div
-      className="indicator off" />
-  </div>
-</span>
-`;
-
-exports[`AdapterSelector should render two adapters 1`] = `
+exports[`SerialPortSelector should render two ports 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
@@ -99,7 +99,7 @@ exports[`AdapterSelector should render two adapters 1`] = `
 </span>
 `;
 
-exports[`AdapterSelector should render two adapters, one selected 1`] = `
+exports[`SerialPortSelector should render two ports, one selected 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
@@ -144,10 +144,10 @@ exports[`AdapterSelector should render two adapters, one selected 1`] = `
       </MenuItem>
       <MenuItem
         className="btn-primary"
-        eventKey="Close adapter"
+        eventKey="Close serial port"
         onSelect={[Function]}>
         <div>
-          Close adapter
+          Close serial port
         </div>
         <div
           style={

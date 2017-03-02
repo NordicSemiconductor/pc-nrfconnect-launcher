@@ -39,7 +39,7 @@
 
 import React, { PropTypes } from 'react';
 import logo from '../../resources/nordiclogo_neg.png';
-import AdapterSelectorContainer from '../containers/AdapterSelectorContainer';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 
 const NavBar = ({
@@ -53,7 +53,7 @@ const NavBar = ({
 }) => (
     <div className={cssClass}>
         <div className={navSectionCssClass}>
-            <AdapterSelectorContainer />
+            <SerialPortSelectorContainer />
         </div>
         <NavMenuContainer />
         <div className={logoContainerCssClass}>

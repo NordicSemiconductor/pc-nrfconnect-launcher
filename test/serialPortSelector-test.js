@@ -2,7 +2,7 @@ import { startApplication, stopApplication } from './setup';
 
 let app;
 
-describe('adapter selector', () => {
+describe('port selector', () => {
     beforeEach(() => (
         startApplication()
             .then(application => {
@@ -14,7 +14,7 @@ describe('adapter selector', () => {
         stopApplication(app);
     });
 
-    it('should show adapter list when adapter selector has been clicked', () => (
+    it('should show port list when port selector has been clicked', () => (
         app.client.windowByIndex(1)
             .click('#navbar-dropdown')
             .isVisible('.dropdown-menu')
