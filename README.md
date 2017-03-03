@@ -46,6 +46,12 @@ To build the project on Ubuntu Linux, the following packages need to be installe
 * libx11-dev
 * libxkbfile-dev
 
+### Windows
+
+Install all the required tools and configurations using Microsoft's windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator):
+
+    npm install --global --production windows-build-tools
+
 ## Building Boost
 
 Before building nRF Connect you will need to have Boost installed and some of its libraries statically compiled. To install and compile Boost, please follow the instructions here:
