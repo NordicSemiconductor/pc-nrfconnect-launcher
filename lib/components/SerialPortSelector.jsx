@@ -40,12 +40,12 @@
 import React, { PropTypes } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 import { Iterable } from 'immutable';
-import AdapterSelectorItem from './AdapterSelectorItem';
+import SerialPortSelectorItem from './SerialPortSelectorItem';
 import { decorate } from '../util/plugins';
 
-const DecoratedAdapterSelectorItem = decorate(AdapterSelectorItem, 'AdapterSelectorItem');
+const DecoratedSerialPortSelectorItem = decorate(SerialPortSelectorItem, 'SerialPortSelectorItem');
 
-class AdapterSelector extends React.Component {
+class SerialPortSelector extends React.Component {
     componentDidMount() {
         const {
             bindHotkey,
@@ -56,19 +56,19 @@ class AdapterSelector extends React.Component {
         bindHotkey(hotkeyExpand.toLowerCase(), toggleExpanded);
     }
 
-    renderAdapterItems() {
+    renderSerialPortItems() {
         const {
-            adapters,
+            ports,
             onSelect,
             isLoading,
             menuItemCssClass,
         } = this.props;
 
         if (!isLoading) {
-            return adapters.map(adapter => (
-                <DecoratedAdapterSelectorItem
-                    key={adapter.comName}
-                    adapter={adapter}
+            return ports.map(port => (
+                <DecoratedSerialPortSelectorItem
+                    key={port.comName}
+                    port={port}
                     onSelect={onSelect}
                     cssClass={menuItemCssClass}
                 />
@@ -79,15 +79,15 @@ class AdapterSelector extends React.Component {
 
     renderCloseItem() {
         const {
-            selectedAdapter,
+            selectedPort,
             onDeselect,
             menuItemCssClass,
         } = this.props;
 
-        if (selectedAdapter) {
+        if (selectedPort) {
             return (
-                <DecoratedAdapterSelectorItem
-                    adapter={{ comName: 'Close adapter' }}
+                <DecoratedSerialPortSelectorItem
+                    port={{ comName: 'Close serial port' }}
                     onSelect={onDeselect}
                     cssClass={menuItemCssClass}
                 />
@@ -98,9 +98,9 @@ class AdapterSelector extends React.Component {
 
     render() {
         const {
-            selectedAdapter,
-            showAdapterIndicator,
-            adapterIndicator,
+            selectedPort,
+            showPortIndicator,
+            portIndicatorStatus,
             toggleExpanded,
             isExpanded,
             hotkeyExpand,
@@ -108,8 +108,8 @@ class AdapterSelector extends React.Component {
             dropdownCssClass,
         } = this.props;
 
-        const selectorText = selectedAdapter || 'Select serial port';
-        const indicatorCssClass = `indicator ${adapterIndicator}`;
+        const selectorText = selectedPort || 'Select serial port';
+        const indicatorCssClass = `indicator ${portIndicatorStatus}`;
 
         return (
             <span title={`Select serial port (${hotkeyExpand})`}>
@@ -121,11 +121,11 @@ class AdapterSelector extends React.Component {
                         open={isExpanded}
                         onToggle={toggleExpanded}
                     >
-                        { this.renderAdapterItems() }
+                        { this.renderSerialPortItems() }
                         { this.renderCloseItem() }
                     </DropdownButton>
                     {
-                        showAdapterIndicator ? <div className={indicatorCssClass} /> : <div />
+                        showPortIndicator ? <div className={indicatorCssClass} /> : <div />
                     }
                 </div>
             </span>
@@ -133,14 +133,14 @@ class AdapterSelector extends React.Component {
     }
 }
 
-AdapterSelector.propTypes = {
-    adapters: PropTypes.oneOfType([
+SerialPortSelector.propTypes = {
+    ports: PropTypes.oneOfType([
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Iterable),
     ]).isRequired,
-    selectedAdapter: PropTypes.string,
-    showAdapterIndicator: PropTypes.bool,
-    adapterIndicator: PropTypes.string,
+    selectedPort: PropTypes.string,
+    showPortIndicator: PropTypes.bool,
+    portIndicatorStatus: PropTypes.string,
     isLoading: PropTypes.bool,
     isExpanded: PropTypes.bool,
     toggleExpanded: PropTypes.func.isRequired,
@@ -153,16 +153,16 @@ AdapterSelector.propTypes = {
     menuItemCssClass: PropTypes.string,
 };
 
-AdapterSelector.defaultProps = {
-    selectedAdapter: '',
-    showAdapterIndicator: true,
+SerialPortSelector.defaultProps = {
+    selectedPort: '',
+    showPortIndicator: true,
     isExpanded: false,
     isLoading: false,
-    adapterIndicator: 'off',
+    portIndicatorStatus: 'off',
     hotkeyExpand: 'Alt+P',
     cssClass: 'padded-row',
     dropdownCssClass: 'btn-primary btn-nordic',
     menuItemCssClass: 'btn-primary',
 };
 
-export default AdapterSelector;
+export default SerialPortSelector;

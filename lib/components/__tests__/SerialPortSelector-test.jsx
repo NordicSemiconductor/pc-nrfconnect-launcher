@@ -13,13 +13,13 @@ jest.mock('../../util/plugins', () => ({
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import AdapterSelector from '../AdapterSelector';
+import SerialPortSelector from '../SerialPortSelector';
 
-describe('AdapterSelector', () => {
-    it('should render empty adapter list, not expanded', () => {
+describe('SerialPortSelector', () => {
+    it('should render empty port list, not expanded', () => {
         expect(renderer.create(
-            <AdapterSelector
-                adapters={[]}
+            <SerialPortSelector
+                ports={[]}
                 toggleExpanded={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
@@ -28,10 +28,10 @@ describe('AdapterSelector', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render empty adapter list, expanded', () => {
+    it('should render empty port list, expanded', () => {
         expect(renderer.create(
-            <AdapterSelector
-                adapters={[]}
+            <SerialPortSelector
+                ports={[]}
                 isExpanded
                 toggleExpanded={() => {}}
                 onSelect={() => {}}
@@ -41,10 +41,10 @@ describe('AdapterSelector', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render two adapters', () => {
+    it('should render two ports', () => {
         expect(renderer.create(
-            <AdapterSelector
-                adapters={[
+            <SerialPortSelector
+                ports={[
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
@@ -62,10 +62,10 @@ describe('AdapterSelector', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render two adapters, one selected', () => {
+    it('should render two ports, one selected', () => {
         expect(renderer.create(
-            <AdapterSelector
-                adapters={[
+            <SerialPortSelector
+                ports={[
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
@@ -74,7 +74,7 @@ describe('AdapterSelector', () => {
                         serialNumber: '456789',
                     },
                 ]}
-                selectedAdapter={'/dev/tty1'}
+                selectedPort={'/dev/tty1'}
                 isExpanded
                 toggleExpanded={() => {}}
                 onSelect={() => {}}
@@ -86,8 +86,8 @@ describe('AdapterSelector', () => {
 
     it('should render empty list while loading', () => {
         expect(renderer.create(
-            <AdapterSelector
-                adapters={[
+            <SerialPortSelector
+                ports={[
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
