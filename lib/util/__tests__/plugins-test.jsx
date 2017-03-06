@@ -5,7 +5,7 @@ jest.mock('../fileUtil', () => {});
 import React, { PropTypes } from 'react';
 import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { setPlugin, decorate, decorateReducer, connect } from '../plugins';
+import { setPlugin, decorate, decorateReducer, connect, getPluginConfig } from '../plugins';
 import renderer from 'react-test-renderer';
 
 describe('decorate', () => {
@@ -381,5 +381,24 @@ describe('decorateReducer', () => {
                 value: 'baz',
             },
         });
+    });
+});
+
+describe('getPluginConfig', () => {
+    it('should throw error if no plugin is loaded', () => {
+        setPlugin(null);
+        expect(() => getPluginConfig()).toThrow();
+    });
+
+    it('should throw error if plugin has no \'config\' property', () => {
+        setPlugin({});
+        expect(() => getPluginConfig()).toThrow();
+    });
+
+    it('should return \'config\' property if provided by plugin', () => {
+        setPlugin({
+            config: { foo: 'bar' },
+        });
+        expect(getPluginConfig()).toEqual({ foo: 'bar' });
     });
 });
