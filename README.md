@@ -1,7 +1,7 @@
 # nRF Connect Core
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. This new version of nRF Connect will be a framework that relies on plugins for providing functionality such as BLE, MESH, Thread, etc. For the current stable version (v1), see https://github.com/NordicSemiconductor/pc-yggdrasil.**
+**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. This new version will support adding new functionality by creating plugins.**
 
 nRF Connect is a cross-platform tool that enables testing and development with development kits from Nordic Semiconductor. The application is designed to be used together with the nRF52 DK, nRF51 DK, or the nRF51 Dongle, running a specific connectivity application.
 
