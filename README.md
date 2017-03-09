@@ -157,6 +157,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>decorateLogHeaderButton</code><br />
         <code>decorateLogViewer</code><br />
         <code>decorateMainView</code><br />
+        <code>decorateNavBar</code><br />
         <code>decorateNavMenu</code><br />
         <code>decorateNavMenuItem</code><br />
         <code>decorateSerialPortSelector</code><br />
