@@ -289,7 +289,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>config</code><br />
       </td>
       <td>
-        <p>Plugin configuration.</p>
+        <p>Property that is used for general plugin configuration. This can be added to the plugin object, similar to the methods, and supports the settings described below.</p>
         <table>
           <tbody>
             <tr>
