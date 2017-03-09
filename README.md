@@ -186,6 +186,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>mapLogHeaderDispatch</code><br />
         <code>mapLogViewerDispatch</code><br />
         <code>mapMainViewDispatch</code><br />
+        <code>mapNavMenuDispatch</code><br />
         <code>mapSerialPortSelectorDispatch</code><br />
         <code>mapSidePanelDispatch</code><br />
       </td>
@@ -211,6 +212,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>mapLogHeaderState</code><br />
         <code>mapLogViewerState</code><br />
         <code>mapMainViewState</code><br />
+        <code>mapNavMenuState</code><br />
         <code>mapSerialPortSelectorState</code><br />
         <code>mapSidePanelState</code><br />
       </td>
