@@ -1,0 +1,107 @@
+exports[`ConfirmationDialog should render invisible dialog 1`] = `
+<div>
+  <Modal
+    backdrop={false}
+    onHide={[Function]}
+    show={false}>
+    <ModalHeader
+      closeButton={true}>
+      <ModalTitle>
+        Confirm
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Do you confirm?
+      </p>
+    </ModalBody>
+    <ModalFooter>
+       
+      <Button
+        disabled={false}
+        onClick={[Function]}>
+        OK
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;
+
+exports[`ConfirmationDialog should render visible dialog with text 1`] = `
+<div>
+  <Modal
+    backdrop={false}
+    onHide={[Function]}
+    show={true}>
+    <ModalHeader
+      closeButton={true}>
+      <ModalTitle>
+        Confirm
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Do you confirm?
+      </p>
+    </ModalBody>
+    <ModalFooter>
+       
+      <Button
+        disabled={false}
+        onClick={[Function]}>
+        OK
+      </Button>
+      <Button
+        disabled={false}
+        onClick={[Function]}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;
+
+exports[`ConfirmationDialog should render visible dialog with text and operation in progress 1`] = `
+<div>
+  <Modal
+    backdrop="static"
+    onHide={[Function]}
+    show={true}>
+    <ModalHeader
+      closeButton={false}>
+      <ModalTitle>
+        Confirm
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Do you confirm?
+      </p>
+    </ModalBody>
+    <ModalFooter>
+      <img
+        alt="Loading..."
+        className="spinner"
+        height={16}
+        src="test-file-stub"
+        width={16} />
+       
+      <Button
+        disabled={true}
+        onClick={[Function]}>
+        OK
+      </Button>
+      <Button
+        disabled={true}
+        onClick={[Function]}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;

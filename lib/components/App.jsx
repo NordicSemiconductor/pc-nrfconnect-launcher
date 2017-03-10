@@ -42,6 +42,7 @@ import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
 import { decorate } from '../util/plugins';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
@@ -62,6 +63,7 @@ export default () => (
                 <SidePanelContainer />
             </div>
         </div>
+        <FirmwareDialogContainer />
     </div>
 );
 
