@@ -94,11 +94,11 @@ nRF5x-Command-Line-Tools for Linux and macOS are included in the nrfjprog direct
 
 Linux:
 
-    tar xf nrfjprog/nRF5x-Command-Line-Tools_*_Linux-x86_64.tar --strip-components=2 -C node_modules/electron-prebuilt/dist
+    tar xf nrfjprog/nRF5x-Command-Line-Tools_*_Linux-x86_64.tar --strip-components=2 -C node_modules/electron/dist
 
 macOS:
 
-    tar xf nrfjprog/nRF5x-Command-Line-Tools_*_OSX.tar --strip-components=2 -C node_modules/electron-prebuilt/dist
+    tar xf nrfjprog/nRF5x-Command-Line-Tools_*_OSX.tar --strip-components=2 -C node_modules/electron/dist
 
 This will put the nrfjprog libraries in the same directory as the electron binary in node_modules, so that the application finds them.
 
