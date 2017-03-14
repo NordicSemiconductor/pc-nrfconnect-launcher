@@ -43,8 +43,6 @@ Since building nRF Connect also involves building *pc-ble-driver-js*, please ref
 To build the project on Ubuntu Linux, the following packages need to be installed:
 
 * libudev-dev
-* libx11-dev
-* libxkbfile-dev
 
 ### Windows
 
