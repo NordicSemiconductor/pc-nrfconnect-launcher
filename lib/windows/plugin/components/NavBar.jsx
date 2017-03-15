@@ -39,8 +39,6 @@ import logo from '../../../../resources/nordiclogo_neg.png';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 
-console.log(logo);
-
 const NavBar = ({
     logoSrc,
     logoHref,
