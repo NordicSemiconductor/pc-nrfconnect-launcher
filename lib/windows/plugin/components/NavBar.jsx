@@ -34,43 +34,53 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import React, { PropTypes } from 'react';
+import logo from '../../../../resources/nordiclogo_neg.png';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
 
-import api from '../api';
+console.log(logo);
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
-    });
-}
+const NavBar = ({
+    logoSrc,
+    logoHref,
+    logoAlt,
+    cssClass,
+    logoContainerCssClass,
+    navSectionCssClass,
+    logoCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={navSectionCssClass}>
+            <SerialPortSelectorContainer />
+        </div>
+        <NavMenuContainer />
+        <div className={logoContainerCssClass}>
+            <a href={logoHref} target="_blank" rel="noopener noreferrer">
+                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
+            </a>
+        </div>
+    </div>
+);
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
+NavBar.propTypes = {
+    logoSrc: PropTypes.string,
+    logoHref: PropTypes.string,
+    logoAlt: PropTypes.string,
+    cssClass: PropTypes.string,
+    logoContainerCssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
+    logoCssClass: PropTypes.string,
+};
 
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
+NavBar.defaultProps = {
+    logoSrc: logo,
+    logoHref: 'http://www.nordicsemi.com/nRFConnect',
+    logoAlt: 'nRF Connect',
+    cssClass: 'nav-bar',
+    navSectionCssClass: 'nav-section padded-row',
+    logoContainerCssClass: 'nav-logo-container',
+    logoCssClass: 'nrfconnect-logo',
+};
 
-    return applyMiddleware(...middlewares);
-}
-
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+export default NavBar;

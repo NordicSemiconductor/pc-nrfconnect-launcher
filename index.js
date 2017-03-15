@@ -57,7 +57,7 @@ function initBrowserWindow() {
 
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/index.html`,
+        url: `file://${__dirname}/lib/windows/plugin/index.html`,
         splashScreen: true,
     });
 }
