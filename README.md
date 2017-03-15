@@ -303,6 +303,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
   nrf51: 'nrf51-hex-string',
   nrf52: 'nrf52-hex-string',
 }</pre>
+                <p>Note that <code>firmwareData</code> and <code>firmwarePaths</code> should not be used simultaneously.</p>
               </td>
             </tr>
             <tr>
@@ -314,6 +315,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
   nrf51: './path/to/nrf51-firmware.hex',
   nrf52: './path/to/nrf52-firmware.hex',
 }</pre>
+                <p>Note that <code>firmwareData</code> and <code>firmwarePaths</code> should not be used simultaneously.</p>
               </td>
             </tr>
           </tbody>
