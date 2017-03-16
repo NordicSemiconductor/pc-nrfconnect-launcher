@@ -34,43 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
+/* eslint-disable import/first */
+
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
+
+// Do not decorate components
+jest.mock('../../../../util/plugins', () => ({
+    decorate: component => component,
+}));
+
+import React from 'react';
+import renderer from 'react-test-renderer';
 import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import LogViewer from '../LogViewer';
 
-import api from '../api';
-
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
+describe('LogViewer', () => {
+    it('should render log entries', () => {
+        const entries = Immutable.List([
+            {
+                id: 1,
+                level: 'info',
+                time: new Date('2017-02-03T12:41:36.020Z'),
+                message: 'Info message',
+            }, {
+                id: 2,
+                level: 'error',
+                time: new Date('2017-02-03T13:41:36.020Z'),
+                message: 'Error message',
+            },
+        ]);
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
     });
-}
-
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
-
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
-
-    return applyMiddleware(...middlewares);
-}
-
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+});

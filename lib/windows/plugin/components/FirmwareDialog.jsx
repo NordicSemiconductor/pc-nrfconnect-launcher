@@ -34,43 +34,50 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import React, { PropTypes } from 'react';
 
-import api from '../api';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
-    });
-}
-
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
-
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
+const FirmwareDialog = ({
+    isVisible,
+    text,
+    isInProgress,
+    port,
+    onConfirmUpdateFirmware,
+    onCancel,
+}) => {
+    if (isVisible) {
+        const textToUse = text || `The development kit on ${port.comName} (${port.serialNumber}) ` +
+            'will be programmed with the required firmware. Would you like to proceed?';
+        return (
+            <ConfirmationDialog
+                isVisible={isVisible}
+                isInProgress={isInProgress}
+                text={textToUse}
+                onOk={() => onConfirmUpdateFirmware(port)}
+                onCancel={onCancel}
+            />
+        );
     }
+    return <div />;
+};
 
-    return applyMiddleware(...middlewares);
-}
+FirmwareDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    isInProgress: PropTypes.bool,
+    port: PropTypes.shape({
+        comName: PropTypes.string,
+        serialNumber: PropTypes.string,
+    }),
+    text: PropTypes.string,
+    onConfirmUpdateFirmware: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
 
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+FirmwareDialog.defaultProps = {
+    isInProgress: false,
+    port: null,
+    text: null,
+};
+
+export default FirmwareDialog;

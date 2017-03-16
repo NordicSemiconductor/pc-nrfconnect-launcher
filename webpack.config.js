@@ -17,11 +17,14 @@ function createExternals() {
 
 module.exports = {
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
-    entry: './lib/index',
+    entry: {
+        loader: './lib/windows/loader/index',
+        plugin: './lib/windows/plugin/index',
+    },
     output: {
         path: path.resolve('dist'),
-        publicPath: './dist/',
-        filename: 'bundle.js',
+        publicPath: '../../../dist/',
+        filename: '[name]-window-bundle.js',
     },
     module: {
         loaders: [{

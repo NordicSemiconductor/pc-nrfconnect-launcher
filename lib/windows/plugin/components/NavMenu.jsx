@@ -34,43 +34,51 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
+import React, { PropTypes } from 'react';
 import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import NavMenuItem from './NavMenuItem';
+import { decorate } from '../../../util/plugins';
 
-import api from '../api';
+const DecoratedNavMenuItem = decorate(NavMenuItem, 'NavMenuItem');
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
-    });
-}
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
+    <div className={cssClass}>
+        {
+            menuItems.map((item, index) => {
+                const hotkey = `Alt+${index + 1}`;
+                const onSelected = () => onItemSelected(item.id);
+                bindHotkey(hotkey.toLowerCase(), onSelected);
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
+                return (
+                    <DecoratedNavMenuItem
+                        key={item.id}
+                        id={item.id}
+                        isSelected={item.id === selectedItemId}
+                        text={item.text}
+                        title={`${item.text} (${hotkey})`}
+                        iconClass={item.iconClass}
+                        onClick={onSelected}
+                    />
+                );
+            })
+        }
+    </div>
+);
 
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
+NavMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    onItemSelected: PropTypes.func.isRequired,
+    bindHotkey: PropTypes.func.isRequired,
+    selectedItemId: PropTypes.number,
+    cssClass: PropTypes.string,
+};
 
-    return applyMiddleware(...middlewares);
-}
+NavMenu.defaultProps = {
+    selectedItemId: -1,
+    cssClass: 'nav-section bl padded-row',
+};
 
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+export default NavMenu;

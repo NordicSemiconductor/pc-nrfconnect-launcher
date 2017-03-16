@@ -34,43 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import React, { PropTypes } from 'react';
+import LogHeaderButton from './LogHeaderButton';
+import { decorate } from '../../../util/plugins';
 
-import api from '../api';
+const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
-    });
-}
+const LogHeader = ({
+    text,
+    buttons,
+    onButtonClicked,
+    cssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerTextCssClass}>{text}</div>
+        <div className={headerButtonsCssClass}>
+            {
+                buttons.map(button => (
+                    <DecoratedLogHeaderButton
+                        key={button.id}
+                        title={button.title}
+                        iconCssClass={button.iconCssClass}
+                        isSelected={button.isSelected}
+                        onClick={() => onButtonClicked(button.id)}
+                    />
+                ))
+            }
+        </div>
+    </div>
+);
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
+LogHeader.propTypes = {
+    text: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        iconCssClass: PropTypes.string,
+        isSelected: PropTypes.bool,
+    })),
+    onButtonClicked: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
+};
 
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
+LogHeader.defaultProps = {
+    text: 'Log',
+    buttons: [],
+    cssClass: 'log-header',
+    headerTextCssClass: 'log-header-text',
+    headerButtonsCssClass: 'padded-row log-header-buttons',
+};
 
-    return applyMiddleware(...middlewares);
-}
-
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+export default LogHeader;

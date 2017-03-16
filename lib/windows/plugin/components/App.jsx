@@ -34,43 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import React from 'react';
+import NavBar from './NavBar';
+import SidePanelContainer from '../containers/SidePanelContainer';
+import LogViewerContainer from '../containers/LogViewerContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import { decorate } from '../../../util/plugins';
 
-import api from '../api';
+const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
-    });
-}
+export default () => (
+    <div className="main-area-wrapper">
+        <DecoratedNavBar />
+        <div className="main-layout">
+            <div>
+                <div>
+                    <MainViewContainer />
+                </div>
+                <div>
+                    <LogViewerContainer />
+                </div>
+            </div>
+            <div>
+                <SidePanelContainer />
+            </div>
+        </div>
+        <FirmwareDialogContainer />
+    </div>
+);
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
-
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
-
-    return applyMiddleware(...middlewares);
-}
-
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );

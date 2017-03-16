@@ -34,43 +34,74 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
+/* eslint-disable import/first */
+
+// Do not decorate components
+jest.mock('../../../../util/plugins', () => ({
+    decorate: component => component,
+}));
+
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+import NavMenu from '../NavMenu';
 
-import api from '../api';
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'Connection map',
+        iconClass: 'icon-columns',
+    }, {
+        id: 2,
+        text: 'Server setup',
+        iconClass: 'icon-indent-right',
+    },
+]);
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
+describe('NavMenu', () => {
+    it('should render menu with no items', () => {
+        expect(renderer.create(
+            <NavMenu
+                menuItems={[]}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
-}
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
+    it('should render menu with two items, and none selected', () => {
+        expect(renderer.create(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
+    it('should render menu with two items, and one selected', () => {
+        expect(renderer.create(
+            <NavMenu
+                menuItems={menuItems}
+                selectedItemId={1}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    return applyMiddleware(...middlewares);
-}
+    it('should invoke onItemSelected when item has been selected', () => {
+        const onItemSelected = jest.fn();
+        const wrapper = mount(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={onItemSelected}
+                bindHotkey={() => {}}
+            />,
+        );
+        wrapper.find('button').first().simulate('click');
 
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+        expect(onItemSelected).toHaveBeenCalledWith(menuItems.first().id);
+    });
+});

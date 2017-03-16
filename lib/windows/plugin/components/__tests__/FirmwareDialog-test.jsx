@@ -34,43 +34,48 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import thunk from 'redux-thunk';
+/* eslint-disable import/first */
 
-import api from '../api';
+// Do not render react-bootstrap components in tests
+jest.mock('../../../../components/ConfirmationDialog', () => 'ConfirmationDialog');
 
-function createReduxLogger() {
-    return createLogger({
-        collapsed: true,
-        stateTransformer: state => {
-            const newState = {};
-            Object.keys(state).forEach(key => {
-                if (Immutable.Iterable.isIterable(state[key])) {
-                    newState[key] = state[key].toJS();
-                } else {
-                    newState[key] = state[key];
-                }
-            });
-            return newState;
-        },
+import React from 'react';
+import renderer from 'react-test-renderer';
+import FirmwareDialog from '../FirmwareDialog';
+
+describe('FirmwareDialog', () => {
+    it('should render empty div if not visible', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible={false}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
-}
 
-function createMiddleware() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const middlewares = [thunk.withExtraArgument(api)];
+    it('should render visible dialog with default text for given port', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                port={{
+                    comName: '/dev/tty1',
+                    serialNumber: '1337',
+                }}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    if (!isProduction) {
-        middlewares.push(createReduxLogger());
-    }
-
-    return applyMiddleware(...middlewares);
-}
-
-export default rootReducer =>
-    createStore(
-        rootReducer,
-        createMiddleware(),
-    );
+    it('should render visible dialog with custom text', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                text="Do you confirm?"
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+});
