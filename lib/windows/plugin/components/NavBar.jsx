@@ -38,6 +38,7 @@ import React, { PropTypes } from 'react';
 import logo from '../../../../resources/nordiclogo_neg.png';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
 
 const NavBar = ({
     logoSrc,
@@ -49,6 +50,7 @@ const NavBar = ({
     logoCssClass,
 }) => (
     <div className={cssClass}>
+        <MainMenuContainer />
         <div className={navSectionCssClass}>
             <SerialPortSelectorContainer />
         </div>
