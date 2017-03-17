@@ -45,13 +45,13 @@ const app = electron.app;
 const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
 
+const applicationMenu = Menu.buildFromTemplate(createMenu(app));
+Menu.setApplicationMenu(applicationMenu);
+
 global.homeDir = app.getPath('home');
 global.userDataDir = app.getPath('userData');
 
 function initBrowserWindow() {
-    const applicationMenu = Menu.buildFromTemplate(createMenu(app));
-    Menu.setApplicationMenu(applicationMenu);
-
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/plugin/index.html`,
@@ -68,12 +68,12 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('open-plugin-manager', () => {
-    // TODO: Implement when multi-window support is available.
-    /*
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader`,
+        url: `file://${__dirname}/lib/windows/loader/index.html`,
+        width: 650,
+        height: 500,
         splashScreen: false,
+        keepWindowSettings: false,
     });
-    */
 });
