@@ -86,7 +86,7 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
     <ModalFooter>
       <img
         alt="Loading..."
-        className="spinner"
+        className="core-spinner"
         height={16}
         src="test-file-stub"
         width={16} />

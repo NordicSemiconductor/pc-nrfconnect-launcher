@@ -54,7 +54,7 @@ MainView.propTypes = {
 
 MainView.defaultProps = {
     children: null,
-    cssClass: 'main-view',
+    cssClass: 'core-main-view',
 };
 
 export default MainView;

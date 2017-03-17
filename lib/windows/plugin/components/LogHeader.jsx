@@ -83,9 +83,9 @@ LogHeader.propTypes = {
 LogHeader.defaultProps = {
     text: 'Log',
     buttons: [],
-    cssClass: 'log-header',
-    headerTextCssClass: 'log-header-text',
-    headerButtonsCssClass: 'padded-row log-header-buttons',
+    cssClass: 'core-log-header',
+    headerTextCssClass: 'core-log-header-text',
+    headerButtonsCssClass: 'core-padded-row core-log-header-buttons',
 };
 
 export default LogHeader;

@@ -38,13 +38,13 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 
 const LogEntry = ({ entry }) => {
-    const className = `log-entry log-${entry.level}`;
+    const className = `core-log-entry core-log-level-${entry.level}`;
     const time = moment(entry.time).format('HH:mm:ss.SSSS');
 
     return (
         <div className={className}>
-            <div className="time">{time}</div>
-            <div className="message">{entry.message}</div>
+            <div className="core-log-time">{time}</div>
+            <div className="core-log-message">{entry.message}</div>
         </div>
     );
 };

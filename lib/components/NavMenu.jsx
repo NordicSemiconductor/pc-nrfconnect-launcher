@@ -75,7 +75,7 @@ NavMenu.propTypes = {
 
 NavMenu.defaultProps = {
     selectedItemId: -1,
-    cssClass: 'nav-section bl padded-row',
+    cssClass: 'core-nav-section core-padded-row',
 };
 
 export default NavMenu;

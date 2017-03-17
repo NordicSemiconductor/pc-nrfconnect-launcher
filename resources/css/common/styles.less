@@ -1,0 +1,64 @@
+@import './variables.less';
+
+.core-logo-container {
+    margin-left: auto;
+}
+
+.core-logo {
+    height: 55px;
+}
+
+.core-padded-row-list(@margin: 5px) {
+    >:not(:last-child) {
+        margin-right: @margin;
+    }
+
+    >:last-child {
+        margin-right: 0;
+    }
+}
+
+.core-padded-row {
+    .core-padded-row-list;
+}
+
+.core-padded-column-list(@margin: 5px) {
+    >:not(:last-child) {
+        margin-bottom: @margin;
+    }
+
+    >:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.core-padded-column {
+    .core-padded-column-list;
+}
+
+.core-btn {
+    border-radius: 0;
+}
+
+.core-dropdown-menu {
+    background-color: @brand-primary;
+
+    li {
+        a {
+            color: white;
+            background-color: @brand-primary;
+        }
+        a:hover {
+            color: white;
+            background-color: @brand-primary-darker;
+        }
+        a:focus {
+            background-color: @brand-primary-darker;
+        }
+    }
+}
+
+// used when tabbing and space
+:focus {
+    outline-color: @gray-medium-lighter !important;
+}

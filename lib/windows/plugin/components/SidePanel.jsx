@@ -56,7 +56,7 @@ SidePanel.propTypes = {
 SidePanel.defaultProps = {
     width: 260,
     children: null,
-    cssClass: 'side-panel',
+    cssClass: 'core-side-panel',
 };
 
 export default SidePanel;

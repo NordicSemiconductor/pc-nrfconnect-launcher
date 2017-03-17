@@ -2,20 +2,20 @@ exports[`SerialPortSelector should render empty list while loading 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
-    className="padded-row">
+    className="core-padded-row">
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
       open={true}>
       <DropdownToggle
-        className="serial-port-selector btn-primary btn-nordic"
+        className="core-serial-port-selector core-btn btn-primary"
         title="Select serial port" />
       <DropdownMenu
-        className="dropdown-menu-nordic"
+        className="core-dropdown-menu"
         id="serial-port-selector-list" />
     </Dropdown>
     <div
-      className="indicator off" />
+      className="core-serial-port-indicator off" />
   </div>
 </span>
 `;
@@ -24,20 +24,20 @@ exports[`SerialPortSelector should render empty port list, expanded 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
-    className="padded-row">
+    className="core-padded-row">
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
       open={true}>
       <DropdownToggle
-        className="serial-port-selector btn-primary btn-nordic"
+        className="core-serial-port-selector core-btn btn-primary"
         title="Select serial port" />
       <DropdownMenu
-        className="dropdown-menu-nordic"
+        className="core-dropdown-menu"
         id="serial-port-selector-list" />
     </Dropdown>
     <div
-      className="indicator off" />
+      className="core-serial-port-indicator off" />
   </div>
 </span>
 `;
@@ -46,20 +46,20 @@ exports[`SerialPortSelector should render empty port list, not expanded 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
-    className="padded-row">
+    className="core-padded-row">
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
       open={false}>
       <DropdownToggle
-        className="serial-port-selector btn-primary btn-nordic"
+        className="core-serial-port-selector core-btn btn-primary"
         title="Select serial port" />
       <DropdownMenu
-        className="dropdown-menu-nordic"
+        className="core-dropdown-menu"
         id="serial-port-selector-list" />
     </Dropdown>
     <div
-      className="indicator off" />
+      className="core-serial-port-indicator off" />
   </div>
 </span>
 `;
@@ -68,16 +68,16 @@ exports[`SerialPortSelector should render two ports 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
-    className="padded-row">
+    className="core-padded-row">
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
       open={true}>
       <DropdownToggle
-        className="serial-port-selector btn-primary btn-nordic"
+        className="core-serial-port-selector core-btn btn-primary"
         title="Select serial port" />
       <DropdownMenu
-        className="dropdown-menu-nordic"
+        className="core-dropdown-menu"
         id="serial-port-selector-list">
         <MenuItem
           className="btn-primary"
@@ -114,7 +114,7 @@ exports[`SerialPortSelector should render two ports 1`] = `
       </DropdownMenu>
     </Dropdown>
     <div
-      className="indicator off" />
+      className="core-serial-port-indicator off" />
   </div>
 </span>
 `;
@@ -123,16 +123,16 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
 <span
   title="Select serial port (Alt+P)">
   <div
-    className="padded-row">
+    className="core-padded-row">
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
       open={true}>
       <DropdownToggle
-        className="serial-port-selector btn-primary btn-nordic"
+        className="core-serial-port-selector core-btn btn-primary"
         title="/dev/tty1" />
       <DropdownMenu
-        className="dropdown-menu-nordic"
+        className="core-dropdown-menu"
         id="serial-port-selector-list">
         <MenuItem
           className="btn-primary"
@@ -185,7 +185,7 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
       </DropdownMenu>
     </Dropdown>
     <div
-      className="indicator off" />
+      className="core-serial-port-indicator off" />
   </div>
 </span>
 `;

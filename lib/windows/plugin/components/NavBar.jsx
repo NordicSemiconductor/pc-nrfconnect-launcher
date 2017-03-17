@@ -63,8 +63,8 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-    cssClass: 'nav-bar',
-    navSectionCssClass: 'nav-section padded-row',
+    cssClass: 'core-nav-bar',
+    navSectionCssClass: 'core-nav-section core-padded-row',
 };
 
 export default NavBar;

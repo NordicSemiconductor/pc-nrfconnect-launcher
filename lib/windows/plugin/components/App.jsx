@@ -45,9 +45,9 @@ import { decorate } from '../../../util/plugins';
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
 export default () => (
-    <div className="main-area-wrapper">
+    <div className="core-main-area">
         <DecoratedNavBar />
-        <div className="main-layout">
+        <div className="core-main-layout">
             <div>
                 <div>
                     <MainViewContainer />

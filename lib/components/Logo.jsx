@@ -27,8 +27,8 @@ Logo.defaultProps = {
     src: logo,
     href: 'http://www.nordicsemi.com/nRFConnect',
     alt: 'nRF Connect',
-    cssClass: 'nrfconnect-logo',
-    containerCssClass: 'logo-container',
+    cssClass: 'core-logo',
+    containerCssClass: 'core-logo-container',
 };
 
 export default Logo;
