@@ -35,7 +35,9 @@
  */
 
 import React, { PropTypes } from 'react';
-import { DropdownButton } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
+import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
+import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import { Iterable } from 'immutable';
 import SerialPortSelectorItem from './SerialPortSelectorItem';
 import { decorate } from '../../../util/plugins';
@@ -103,6 +105,7 @@ class SerialPortSelector extends React.Component {
             hotkeyExpand,
             cssClass,
             dropdownCssClass,
+            dropdownMenuCssClass,
         } = this.props;
 
         const selectorText = selectedPort || 'Select serial port';
@@ -111,16 +114,19 @@ class SerialPortSelector extends React.Component {
         return (
             <span title={`Select serial port (${hotkeyExpand})`}>
                 <div className={cssClass}>
-                    <DropdownButton
-                        id="navbar-dropdown"
-                        className={dropdownCssClass}
-                        title={selectorText}
-                        open={isExpanded}
-                        onToggle={toggleExpanded}
-                    >
-                        { this.renderSerialPortItems() }
-                        { this.renderCloseItem() }
-                    </DropdownButton>
+                    <Dropdown id="serial-port-selector" open={isExpanded} onToggle={toggleExpanded}>
+                        <DropdownToggle
+                            className={dropdownCssClass}
+                            title={selectorText}
+                        />
+                        <DropdownMenu
+                            id="serial-port-selector-list"
+                            className={dropdownMenuCssClass}
+                        >
+                            { this.renderSerialPortItems() }
+                            { this.renderCloseItem() }
+                        </DropdownMenu>
+                    </Dropdown>
                     {
                         showPortIndicator ? <div className={indicatorCssClass} /> : <div />
                     }
@@ -147,6 +153,7 @@ SerialPortSelector.propTypes = {
     hotkeyExpand: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
+    dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
 };
 
@@ -158,7 +165,8 @@ SerialPortSelector.defaultProps = {
     portIndicatorStatus: 'off',
     hotkeyExpand: 'Alt+P',
     cssClass: 'padded-row',
-    dropdownCssClass: 'btn-primary btn-nordic',
+    dropdownCssClass: 'serial-port-selector btn-primary btn-nordic',
+    dropdownMenuCssClass: 'dropdown-menu-nordic',
     menuItemCssClass: 'btn-primary',
 };
 

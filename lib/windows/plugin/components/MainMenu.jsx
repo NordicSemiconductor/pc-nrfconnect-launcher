@@ -35,52 +35,66 @@
  */
 
 import React, { PropTypes } from 'react';
-import logo from '../../../../resources/nordiclogo_neg.png';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
+import Immutable from 'immutable';
+import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
+import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-const NavBar = ({
-    logoSrc,
-    logoHref,
-    logoAlt,
+const renderItems = (menuItems, bindHotkey) => (
+    menuItems.map(item => {
+        if (item.hotkey) {
+            bindHotkey(item.hotkey.toLowerCase(), item.onClick);
+        }
+        return (
+            <MenuItem
+                key={item.id}
+                onClick={item.onClick}
+                divider={item.isDivider}
+                title={item.hotkey ? `${item.text} (${item.hotkey})` : item.text}
+            >
+                {item.text}
+            </MenuItem>
+        );
+    })
+);
+
+const MainMenu = ({
+    menuItems,
+    bindHotkey,
+    glyphiconName,
     cssClass,
-    logoContainerCssClass,
-    navSectionCssClass,
-    logoCssClass,
+    dropdownCssClass,
+    dropdownMenuCssClass,
 }) => (
     <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <div className={logoContainerCssClass}>
-            <a href={logoHref} target="_blank" rel="noopener noreferrer">
-                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
-            </a>
-        </div>
+        <Dropdown id="main-menu">
+            <DropdownToggle className={dropdownCssClass} noCaret>
+                <Glyphicon glyph={glyphiconName} />
+            </DropdownToggle>
+            <DropdownMenu id="main-menu-list" className={dropdownMenuCssClass}>
+                { renderItems(menuItems, bindHotkey) }
+            </DropdownMenu>
+        </Dropdown>
     </div>
 );
 
-NavBar.propTypes = {
-    logoSrc: PropTypes.string,
-    logoHref: PropTypes.string,
-    logoAlt: PropTypes.string,
+MainMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    bindHotkey: PropTypes.func.isRequired,
+    glyphiconName: PropTypes.string,
     cssClass: PropTypes.string,
-    logoContainerCssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
-    logoCssClass: PropTypes.string,
+    dropdownCssClass: PropTypes.string,
+    dropdownMenuCssClass: PropTypes.string,
 };
 
-NavBar.defaultProps = {
-    logoSrc: logo,
-    logoHref: 'http://www.nordicsemi.com/nRFConnect',
-    logoAlt: 'nRF Connect',
-    cssClass: 'nav-bar',
-    navSectionCssClass: 'nav-section padded-row',
-    logoContainerCssClass: 'nav-logo-container',
-    logoCssClass: 'nrfconnect-logo',
+MainMenu.defaultProps = {
+    glyphiconName: 'menu-hamburger',
+    cssClass: 'nav-section bl padded-row',
+    dropdownCssClass: 'main-menu btn-primary btn-nordic',
+    dropdownMenuCssClass: 'dropdown-menu-nordic',
 };
 
-export default NavBar;
+export default MainMenu;

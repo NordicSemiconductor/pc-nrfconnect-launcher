@@ -38,9 +38,11 @@
 
 // Do not render react-bootstrap components in tests
 jest.mock('react-bootstrap', () => ({
-    DropdownButton: 'DropdownButton',
+    Dropdown: 'Dropdown',
     MenuItem: 'MenuItem',
 }));
+jest.mock('react-bootstrap/lib/DropdownToggle', () => 'DropdownToggle');
+jest.mock('react-bootstrap/lib/DropdownMenu', () => 'DropdownMenu');
 
 // Do not decorate components
 jest.mock('../../../../util/plugins', () => ({

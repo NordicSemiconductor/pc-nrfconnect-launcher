@@ -1,0 +1,88 @@
+exports[`MainMenu should render menu with no items 1`] = `
+<div
+  className="nav-section bl padded-row">
+  <div
+    className="dropdown btn-group">
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="main-menu btn-primary btn-nordic dropdown-toggle btn btn-default"
+      disabled={false}
+      id="main-menu"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button">
+      <span
+        className="glyphicon glyphicon-menu-hamburger" />
+    </button>
+    <ul
+      aria-labelledby="main-menu"
+      className="dropdown-menu-nordic dropdown-menu"
+      id="main-menu-list"
+      role="menu" />
+  </div>
+</div>
+`;
+
+exports[`MainMenu should render menu with two items separated by divider 1`] = `
+<div
+  className="nav-section bl padded-row">
+  <div
+    className="dropdown btn-group">
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="main-menu btn-primary btn-nordic dropdown-toggle btn btn-default"
+      disabled={false}
+      id="main-menu"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button">
+      <span
+        className="glyphicon glyphicon-menu-hamburger" />
+    </button>
+    <ul
+      aria-labelledby="main-menu"
+      className="dropdown-menu-nordic dropdown-menu"
+      id="main-menu-list"
+      role="menu">
+      <li
+        className=""
+        role="presentation"
+        style={undefined}>
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+          title="First item">
+          First item
+        </a>
+      </li>
+      <li
+        className="divider"
+        onKeyDown={[Function]}
+        role="separator"
+        style={undefined}
+        title={undefined} />
+      <li
+        className=""
+        role="presentation"
+        style={undefined}>
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+          title="Last item">
+          Last item
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

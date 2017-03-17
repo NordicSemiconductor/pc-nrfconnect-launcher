@@ -34,53 +34,65 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import logo from '../../../../resources/nordiclogo_neg.png';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
+/* eslint-disable import/first */
 
-const NavBar = ({
-    logoSrc,
-    logoHref,
-    logoAlt,
-    cssClass,
-    logoContainerCssClass,
-    navSectionCssClass,
-    logoCssClass,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <div className={logoContainerCssClass}>
-            <a href={logoHref} target="_blank" rel="noopener noreferrer">
-                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
-            </a>
-        </div>
-    </div>
-);
+// Do not decorate components
+jest.mock('../../../../util/plugins', () => ({
+    decorate: component => component,
+}));
 
-NavBar.propTypes = {
-    logoSrc: PropTypes.string,
-    logoHref: PropTypes.string,
-    logoAlt: PropTypes.string,
-    cssClass: PropTypes.string,
-    logoContainerCssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
-    logoCssClass: PropTypes.string,
-};
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import Immutable from 'immutable';
+import MainMenu from '../MainMenu';
 
-NavBar.defaultProps = {
-    logoSrc: logo,
-    logoHref: 'http://www.nordicsemi.com/nRFConnect',
-    logoAlt: 'nRF Connect',
-    cssClass: 'nav-bar',
-    navSectionCssClass: 'nav-section padded-row',
-    logoContainerCssClass: 'nav-logo-container',
-    logoCssClass: 'nrfconnect-logo',
-};
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'First item',
+    }, {
+        id: 2,
+        isDivider: true,
+    }, {
+        id: 3,
+        text: 'Last item',
+    },
+]);
 
-export default NavBar;
+describe('MainMenu', () => {
+    it('should render menu with no items', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={[]}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render menu with two items separated by divider', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={menuItems}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when item has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <MainMenu
+                menuItems={[{
+                    id: 1,
+                    text: 'Foo',
+                    onClick,
+                }]}
+                bindHotkey={() => {}}
+            />,
+        );
+        wrapper.find('a[title="Foo"]').first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
+});

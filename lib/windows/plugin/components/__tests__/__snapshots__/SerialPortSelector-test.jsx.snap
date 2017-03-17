@@ -3,12 +3,17 @@ exports[`SerialPortSelector should render empty list while loading 1`] = `
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
+    <Dropdown
+      id="serial-port-selector"
       onToggle={[Function]}
-      open={true}
-      title="Select serial port" />
+      open={true}>
+      <DropdownToggle
+        className="serial-port-selector btn-primary btn-nordic"
+        title="Select serial port" />
+      <DropdownMenu
+        className="dropdown-menu-nordic"
+        id="serial-port-selector-list" />
+    </Dropdown>
     <div
       className="indicator off" />
   </div>
@@ -20,12 +25,17 @@ exports[`SerialPortSelector should render empty port list, expanded 1`] = `
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
+    <Dropdown
+      id="serial-port-selector"
       onToggle={[Function]}
-      open={true}
-      title="Select serial port" />
+      open={true}>
+      <DropdownToggle
+        className="serial-port-selector btn-primary btn-nordic"
+        title="Select serial port" />
+      <DropdownMenu
+        className="dropdown-menu-nordic"
+        id="serial-port-selector-list" />
+    </Dropdown>
     <div
       className="indicator off" />
   </div>
@@ -37,12 +47,17 @@ exports[`SerialPortSelector should render empty port list, not expanded 1`] = `
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
+    <Dropdown
+      id="serial-port-selector"
       onToggle={[Function]}
-      open={false}
-      title="Select serial port" />
+      open={false}>
+      <DropdownToggle
+        className="serial-port-selector btn-primary btn-nordic"
+        title="Select serial port" />
+      <DropdownMenu
+        className="dropdown-menu-nordic"
+        id="serial-port-selector-list" />
+    </Dropdown>
     <div
       className="indicator off" />
   </div>
@@ -54,45 +69,50 @@ exports[`SerialPortSelector should render two ports 1`] = `
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
+    <Dropdown
+      id="serial-port-selector"
       onToggle={[Function]}
-      open={true}
-      title="Select serial port">
-      <MenuItem
-        className="btn-primary"
-        eventKey="/dev/tty0"
-        onSelect={[Function]}>
-        <div>
-          /dev/tty0
-        </div>
-        <div
-          style={
-            Object {
-              "fontSize": "small",
-            }
-          }>
-          123456
-        </div>
-      </MenuItem>
-      <MenuItem
-        className="btn-primary"
-        eventKey="/dev/tty1"
-        onSelect={[Function]}>
-        <div>
-          /dev/tty1
-        </div>
-        <div
-          style={
-            Object {
-              "fontSize": "small",
-            }
-          }>
-          456789
-        </div>
-      </MenuItem>
-    </DropdownButton>
+      open={true}>
+      <DropdownToggle
+        className="serial-port-selector btn-primary btn-nordic"
+        title="Select serial port" />
+      <DropdownMenu
+        className="dropdown-menu-nordic"
+        id="serial-port-selector-list">
+        <MenuItem
+          className="btn-primary"
+          eventKey="/dev/tty0"
+          onSelect={[Function]}>
+          <div>
+            /dev/tty0
+          </div>
+          <div
+            style={
+              Object {
+                "fontSize": "small",
+              }
+            }>
+            123456
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="btn-primary"
+          eventKey="/dev/tty1"
+          onSelect={[Function]}>
+          <div>
+            /dev/tty1
+          </div>
+          <div
+            style={
+              Object {
+                "fontSize": "small",
+              }
+            }>
+            456789
+          </div>
+        </MenuItem>
+      </DropdownMenu>
+    </Dropdown>
     <div
       className="indicator off" />
   </div>
@@ -104,61 +124,66 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
   title="Select serial port (Alt+P)">
   <div
     className="padded-row">
-    <DropdownButton
-      className="btn-primary btn-nordic"
-      id="navbar-dropdown"
+    <Dropdown
+      id="serial-port-selector"
       onToggle={[Function]}
-      open={true}
-      title="/dev/tty1">
-      <MenuItem
-        className="btn-primary"
-        eventKey="/dev/tty0"
-        onSelect={[Function]}>
-        <div>
-          /dev/tty0
-        </div>
-        <div
-          style={
-            Object {
-              "fontSize": "small",
-            }
-          }>
-          123456
-        </div>
-      </MenuItem>
-      <MenuItem
-        className="btn-primary"
-        eventKey="/dev/tty1"
-        onSelect={[Function]}>
-        <div>
-          /dev/tty1
-        </div>
-        <div
-          style={
-            Object {
-              "fontSize": "small",
-            }
-          }>
-          456789
-        </div>
-      </MenuItem>
-      <MenuItem
-        className="btn-primary"
-        eventKey="Close serial port"
-        onSelect={[Function]}>
-        <div>
-          Close serial port
-        </div>
-        <div
-          style={
-            Object {
-              "fontSize": "small",
-            }
-          }>
-          
-        </div>
-      </MenuItem>
-    </DropdownButton>
+      open={true}>
+      <DropdownToggle
+        className="serial-port-selector btn-primary btn-nordic"
+        title="/dev/tty1" />
+      <DropdownMenu
+        className="dropdown-menu-nordic"
+        id="serial-port-selector-list">
+        <MenuItem
+          className="btn-primary"
+          eventKey="/dev/tty0"
+          onSelect={[Function]}>
+          <div>
+            /dev/tty0
+          </div>
+          <div
+            style={
+              Object {
+                "fontSize": "small",
+              }
+            }>
+            123456
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="btn-primary"
+          eventKey="/dev/tty1"
+          onSelect={[Function]}>
+          <div>
+            /dev/tty1
+          </div>
+          <div
+            style={
+              Object {
+                "fontSize": "small",
+              }
+            }>
+            456789
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="btn-primary"
+          eventKey="Close serial port"
+          onSelect={[Function]}>
+          <div>
+            Close serial port
+          </div>
+          <div
+            style={
+              Object {
+                "fontSize": "small",
+              }
+            }>
+            
+          </div>
+        </MenuItem>
+      </DropdownMenu>
+    </Dropdown>
     <div
       className="indicator off" />
   </div>

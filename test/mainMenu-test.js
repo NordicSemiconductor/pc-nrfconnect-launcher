@@ -34,53 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import logo from '../../../../resources/nordiclogo_neg.png';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
+import { startApplication, stopApplication } from './setup';
 
-const NavBar = ({
-    logoSrc,
-    logoHref,
-    logoAlt,
-    cssClass,
-    logoContainerCssClass,
-    navSectionCssClass,
-    logoCssClass,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <div className={logoContainerCssClass}>
-            <a href={logoHref} target="_blank" rel="noopener noreferrer">
-                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
-            </a>
-        </div>
-    </div>
-);
+let app;
 
-NavBar.propTypes = {
-    logoSrc: PropTypes.string,
-    logoHref: PropTypes.string,
-    logoAlt: PropTypes.string,
-    cssClass: PropTypes.string,
-    logoContainerCssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
-    logoCssClass: PropTypes.string,
-};
+describe('main menu', () => {
+    beforeEach(() => (
+        startApplication()
+            .then(application => {
+                app = application;
+            })
+    ));
 
-NavBar.defaultProps = {
-    logoSrc: logo,
-    logoHref: 'http://www.nordicsemi.com/nRFConnect',
-    logoAlt: 'nRF Connect',
-    cssClass: 'nav-bar',
-    navSectionCssClass: 'nav-section padded-row',
-    logoContainerCssClass: 'nav-logo-container',
-    logoCssClass: 'nrfconnect-logo',
-};
+    afterEach(() => (
+        stopApplication(app)
+    ));
 
-export default NavBar;
+    it('should not show list of main menu items initially', () => (
+        app.client.windowByIndex(1)
+            .isVisible('#main-menu-list')
+            .then(isVisible => expect(isVisible).toEqual(false))
+    ));
+
+    it('should show a plugin manager menu item when main menu button has been clicked', () => (
+        app.client.windowByIndex(1)
+            .click('#main-menu')
+            .isVisible('#main-menu-list a[title*="Plugin manager"]')
+            .then(isVisible => expect(isVisible).toEqual(true))
+    ));
+});

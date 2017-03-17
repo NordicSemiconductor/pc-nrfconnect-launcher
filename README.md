@@ -154,6 +154,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>decorateLogHeader</code><br />
         <code>decorateLogHeaderButton</code><br />
         <code>decorateLogViewer</code><br />
+        <code>decorateMainMenu</code><br />
         <code>decorateMainView</code><br />
         <code>decorateNavBar</code><br />
         <code>decorateNavMenu</code><br />
@@ -183,6 +184,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>mapFirmwareDialogDispatch</code><br />
         <code>mapLogHeaderDispatch</code><br />
         <code>mapLogViewerDispatch</code><br />
+        <code>mapMainMenuDispatch</code><br />
         <code>mapMainViewDispatch</code><br />
         <code>mapNavMenuDispatch</code><br />
         <code>mapSerialPortSelectorDispatch</code><br />
@@ -209,6 +211,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>mapFirmwareDialogState</code><br />
         <code>mapLogHeaderState</code><br />
         <code>mapLogViewerState</code><br />
+        <code>mapMainMenuState</code><br />
         <code>mapMainViewState</code><br />
         <code>mapNavMenuState</code><br />
         <code>mapSerialPortSelectorState</code><br />

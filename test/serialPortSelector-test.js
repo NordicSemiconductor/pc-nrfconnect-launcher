@@ -46,14 +46,14 @@ describe('port selector', () => {
             })
     ));
 
-    afterEach(() => {
-        stopApplication(app);
-    });
+    afterEach(() => (
+        stopApplication(app)
+    ));
 
     it('should show port list when port selector has been clicked', () => (
         app.client.windowByIndex(1)
-            .click('#navbar-dropdown')
-            .isVisible('.dropdown-menu')
+            .click('#serial-port-selector')
+            .isVisible('#serial-port-selector-list')
             .then(isVisible => expect(isVisible).toEqual(true))
     ));
 });
