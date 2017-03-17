@@ -34,15 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-
 import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import rootReducer from './reducers';
-import '../../../resources/css/loader.less';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import Logo from '../../../components/Logo';
 
-const store = configureStore(rootReducer);
-const rootElement = React.createElement(RootContainer, { store });
-render(rootElement, document.getElementById('app'));
+export default () => (
+    <div className="core-main-area">
+        <div className="core-nav-bar">
+            <NavMenuContainer />
+            <Logo />
+        </div>
+        <div className="core-main-layout">
+            <MainViewContainer />
+        </div>
+    </div>
+);

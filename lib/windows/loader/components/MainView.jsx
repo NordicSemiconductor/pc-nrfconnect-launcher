@@ -34,15 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
+import React, { PropTypes } from 'react';
+import PluginListView from './PluginListView';
+import PluginManagementView from './PluginManagementView';
+import SettingsView from './SettingsView';
 
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import rootReducer from './reducers';
-import '../../../resources/css/loader.less';
+const views = {
+    1: <PluginListView />,
+    2: <PluginManagementView />,
+    3: <SettingsView />,
+};
 
-const store = configureStore(rootReducer);
-const rootElement = React.createElement(RootContainer, { store });
-render(rootElement, document.getElementById('app'));
+const MainView = ({ navId }) => views[navId];
+
+MainView.propTypes = {
+    navId: PropTypes.number.isRequired,
+};
+
+export default MainView;

@@ -34,15 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
-
 import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import rootReducer from './reducers';
-import '../../../resources/css/loader.less';
 
-const store = configureStore(rootReducer);
-const rootElement = React.createElement(RootContainer, { store });
-render(rootElement, document.getElementById('app'));
+const PluginListView = () => (
+    <div>
+        Plugin list
+    </div>
+);
+
+export default PluginListView;
