@@ -35,19 +35,17 @@
  */
 
 import React, { PropTypes } from 'react';
-import logo from '../../../../resources/nordiclogo_neg.png';
+import Logo from '../../../components/Logo';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
+import { decorate } from '../../../util/plugins';
+
+const DecoratedLogo = decorate(Logo, 'Logo');
 
 const NavBar = ({
-    logoSrc,
-    logoHref,
-    logoAlt,
     cssClass,
-    logoContainerCssClass,
     navSectionCssClass,
-    logoCssClass,
 }) => (
     <div className={cssClass}>
         <MainMenuContainer />
@@ -55,32 +53,18 @@ const NavBar = ({
             <SerialPortSelectorContainer />
         </div>
         <NavMenuContainer />
-        <div className={logoContainerCssClass}>
-            <a href={logoHref} target="_blank" rel="noopener noreferrer">
-                <img className={logoCssClass} src={logoSrc} alt={logoAlt} />
-            </a>
-        </div>
+        <DecoratedLogo />
     </div>
 );
 
 NavBar.propTypes = {
-    logoSrc: PropTypes.string,
-    logoHref: PropTypes.string,
-    logoAlt: PropTypes.string,
     cssClass: PropTypes.string,
-    logoContainerCssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    logoCssClass: PropTypes.string,
 };
 
 NavBar.defaultProps = {
-    logoSrc: logo,
-    logoHref: 'http://www.nordicsemi.com/nRFConnect',
-    logoAlt: 'nRF Connect',
     cssClass: 'nav-bar',
     navSectionCssClass: 'nav-section padded-row',
-    logoContainerCssClass: 'nav-logo-container',
-    logoCssClass: 'nrfconnect-logo',
 };
 
 export default NavBar;

@@ -150,6 +150,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
     <tr>
       <td>
         <code>decorateFirmwareDialog</code><br />
+        <code>decorateLogo</code><br />
         <code>decorateLogEntry</code><br />
         <code>decorateLogHeader</code><br />
         <code>decorateLogHeaderButton</code><br />
