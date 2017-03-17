@@ -37,9 +37,6 @@
 import React, { PropTypes } from 'react';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
-import { decorate } from '../../../util/plugins';
-
-const DecoratedNavMenuItem = decorate(NavMenuItem, 'NavMenuItem');
 
 const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
     <div className={cssClass}>
@@ -50,7 +47,7 @@ const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssCla
                 bindHotkey(hotkey.toLowerCase(), onSelected);
 
                 return (
-                    <DecoratedNavMenuItem
+                    <NavMenuItem
                         key={item.id}
                         id={item.id}
                         isSelected={item.id === selectedItemId}

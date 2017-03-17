@@ -37,7 +37,7 @@
 /* eslint-disable import/first */
 
 // Do not decorate components
-jest.mock('../../../../util/plugins', () => ({
+jest.mock('../../util/plugins', () => ({
     decorate: component => component,
 }));
 
