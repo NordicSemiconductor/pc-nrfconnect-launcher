@@ -56,10 +56,10 @@ describe('main menu', () => {
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
 
-    it('should show an app manager menu item when main menu button has been clicked', () => (
+    it('should show a "Load other app" item when main menu button has been clicked', () => (
         app.client.windowByIndex(1)
             .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
+            .isVisible('#main-menu-list a[title*="Load other app"]')
             .then(isVisible => expect(isVisible).toEqual(true))
     ));
 });

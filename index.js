@@ -67,7 +67,7 @@ electronApp.on('window-all-closed', () => {
     electronApp.quit();
 });
 
-ipcMain.on('open-app-manager', () => {
+ipcMain.on('open-app-loader', () => {
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/loader/index.html`,
