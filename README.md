@@ -1,13 +1,19 @@
-# nRF Connect Core
+# nRF Connect
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. This new version will support adding new functionality by creating apps.**
+**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. While v1 was a pure BLE tool, v2 will be a framework for creating and loading desktop apps.**
 
-nRF Connect is a cross-platform tool that enables testing and development with development kits from Nordic Semiconductor. The application is designed to be used together with the nRF52 DK, nRF51 DK, or the nRF51 Dongle, running a specific connectivity application.
+nRF Connect is a cross-platform framework for creating desktop apps for use with development kits from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the development kits over serial port. The framework comes with a skeleton that has standard UI components for listing serial ports, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
+
+nRF Connect is designed to be used with:
+
+* nRF52 DK
+* nRF51 DK
+* nRF51 Dongle
 
 # Installation
 
-To install the application you can download binaries from the [nRF Connect product page](http://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-desktop) on Nordic Semiconductor web pages.
+To install nRF Connect you can download binaries from the [nRF Connect product page](http://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-desktop) on Nordic Semiconductor web pages.
 
 nRF Connect currently supports the following operating systems:
 
@@ -114,24 +120,24 @@ Run end-to-end tests:
 
     npm run test-e2e
 
-## Apps
+## Creating apps
 
-**Note: The app API is in development and may change before the final release.**
+**Note: The API for apps is in development and may change before the final release.**
 
-The application is extensible through use of apps. The app architecture is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write a app.
+The nRF Connect framework provides a foundation for creating desktop apps, with a set of core UI components that can be decorated/overridden to suit each app's needs. The API for apps is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write apps.
 
 Apps can:
 
-* Use core API functionality such as BLE operations, programming, and logging.
-* Decorate/override core React components to display their own content.
-* Customize existing behavior and content by passing custom properties to the core React components.
+* Decorate/override the core React components to display custom content.
+* Modify the behavior of the core React components by passing in custom properties.
+* Use the core API for things like BLE operations, programming, and logging.
 * Read and update Redux state by creating custom actions and reducers.
 
-The application looks for apps in `$HOME/.nrfconnect-apps/local`. For now, the application just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
+nRF Connect looks for apps in `$HOME/.nrfconnect-apps/local`. For now, it just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
 
-### App API
+### API for apps
 
-Apps are npm packages that export a plain JavaScript object. The object should have one or more methods or properties, as described in the sections below, and is typically exported by `index.js` in the app directory:
+Apps are npm packages that export a plain JavaScript object. The object should have one or more methods or properties, as described in the sections below, and is typically exported by `index.js` in the app's root directory:
 
     module.exports = {
         // methods and properties
@@ -292,7 +298,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
         <code>config</code><br />
       </td>
       <td>
-        <p>Property that is used for general app configuration. This can be added to the app object, similar to the methods, and supports the settings described below.</p>
+        <p>Property that is used for general configuration. This can be added to the app object, similar to the methods, and supports the settings described below.</p>
         <table>
           <tbody>
             <tr>
@@ -310,7 +316,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
             <tr>
               <td><code>firmwarePaths</code></td>
               <td>
-                <p>Paths to firmware hex files to program when user selects serial port. Paths are relative to the app directory.</p>
+                <p>Paths to firmware hex files to program when user selects serial port. Paths are relative to the app's root directory.</p>
                 <p>Must be an object that has one (or both) of the following properties:</p>
                 <pre>{
   nrf51: './path/to/nrf51-firmware.hex',
@@ -328,7 +334,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
 
 #### API operations
 
-When implementing the `map*Dispatch` methods, apps can create and dispatch their own actions. When dispatching actions, apps get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
+When implementing the `map*Dispatch` methods, apps can create and dispatch custom actions. When dispatching actions, the action creator get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
 
     function logSelectedPort(port) {
         return (dispatch, getState, api) => {
