@@ -41,15 +41,15 @@ const browser = require('./main/browser');
 const createMenu = require('./main/menu').createMenu;
 const packageJson = require('./package.json');
 
-const app = electron.app;
+const electronApp = electron.app;
 const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(app));
+const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 Menu.setApplicationMenu(applicationMenu);
 
-global.homeDir = app.getPath('home');
-global.userDataDir = app.getPath('userData');
+global.homeDir = electronApp.getPath('home');
+global.userDataDir = electronApp.getPath('userData');
 
 function initBrowserWindow() {
     browser.createWindow({
@@ -59,12 +59,12 @@ function initBrowserWindow() {
     });
 }
 
-app.on('ready', () => {
+electronApp.on('ready', () => {
     initBrowserWindow();
 });
 
-app.on('window-all-closed', () => {
-    app.quit();
+electronApp.on('window-all-closed', () => {
+    electronApp.quit();
 });
 
 ipcMain.on('open-app-manager', () => {
