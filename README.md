@@ -1,7 +1,7 @@
 # nRF Connect Core
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. This new version will support adding new functionality by creating plugins.**
+**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. This new version will support adding new functionality by creating apps.**
 
 nRF Connect is a cross-platform tool that enables testing and development with development kits from Nordic Semiconductor. The application is designed to be used together with the nRF52 DK, nRF51 DK, or the nRF51 Dongle, running a specific connectivity application.
 
@@ -114,30 +114,30 @@ Run end-to-end tests:
 
     npm run test-e2e
 
-## Plugins
+## Apps
 
-**Note: The plugin API is in development and may change before the final release.**
+**Note: The app API is in development and may change before the final release.**
 
-The application is extensible through use of plugins. The plugin architecture is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write a plugin.
+The application is extensible through use of apps. The app architecture is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write a app.
 
-Plugins can:
+Apps can:
 
 * Use core API functionality such as BLE operations, programming, and logging.
 * Decorate/override core React components to display their own content.
 * Customize existing behavior and content by passing custom properties to the core React components.
 * Read and update Redux state by creating custom actions and reducers.
 
-The application looks for plugins in `$HOME/.nrfconnect-plugins/local`. For now, the application just loads the first plugin it finds in this directory. In the future, the user will be able to choose which plugin to use at startup.
+The application looks for apps in `$HOME/.nrfconnect-apps/local`. For now, the application just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
 
-### Plugin API
+### App API
 
-Plugins are npm packages that export a plain JavaScript object. The object should have one or more methods or properties, as described in the sections below, and is typically exported by `index.js` in the plugin directory:
+Apps are npm packages that export a plain JavaScript object. The object should have one or more methods or properties, as described in the sections below, and is typically exported by `index.js` in the app directory:
 
     module.exports = {
         // methods and properties
     };
 
-nRF Connect respects the `main` field in the plugin's package.json, so the entry file can be changed to something other than `index.js` if necessary.
+nRF Connect respects the `main` field in the app's package.json, so the entry file can be changed to something other than `index.js` if necessary.
 
 #### Methods
 
@@ -258,10 +258,10 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
     </tr>
     <tr>
       <td>
-        <code>reducePlugin</code><br />
+        <code>reduceApp</code><br />
       </td>
       <td>
-        <p>Invoked when an action is dispatched. This is where the plugin can keep its own custom state. Multiple reducers may be nested below this by using `combineReducers` from react-redux.</p>
+        <p>Invoked when an action is dispatched. This is where the app can keep its own custom state. Multiple reducers may be nested below this by using `combineReducers` from react-redux.</p>
         <table>
           <tbody>
             <tr>
@@ -292,7 +292,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
         <code>config</code><br />
       </td>
       <td>
-        <p>Property that is used for general plugin configuration. This can be added to the plugin object, similar to the methods, and supports the settings described below.</p>
+        <p>Property that is used for general app configuration. This can be added to the app object, similar to the methods, and supports the settings described below.</p>
         <table>
           <tbody>
             <tr>
@@ -310,7 +310,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
             <tr>
               <td><code>firmwarePaths</code></td>
               <td>
-                <p>Paths to firmware hex files to program when user selects serial port. Paths are relative to the plugin directory.</p>
+                <p>Paths to firmware hex files to program when user selects serial port. Paths are relative to the app directory.</p>
                 <p>Must be an object that has one (or both) of the following properties:</p>
                 <pre>{
   nrf51: './path/to/nrf51-firmware.hex',
@@ -328,7 +328,7 @@ nRF Connect respects the `main` field in the plugin's package.json, so the entry
 
 #### API operations
 
-When implementing the `map*Dispatch` methods, plugins can create and dispatch their own actions. When dispatching actions, plugins get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
+When implementing the `map*Dispatch` methods, apps can create and dispatch their own actions. When dispatching actions, apps get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
 
     function logSelectedPort(port) {
         return (dispatch, getState, api) => {
@@ -389,18 +389,18 @@ The properties provided by the `api` object are described below.
   </tbody>
 </table>
 
-### Hello World plugin
+### Hello World app
 
-Create the plugin root directory if it does not already exist:
+Create the app root directory if it does not already exist:
 
-    mkdir -p $HOME/.nrfconnect-plugins/local
+    mkdir -p $HOME/.nrfconnect-apps/local
 
-Create a directory for the Hello World plugin:
+Create a directory for the Hello World app:
 
-    cd $HOME/.nrfconnect-plugins/local
+    cd $HOME/.nrfconnect-apps/local
     mkdir pc-nrfconnect-helloworld
 
-In the plugin directory, initialize a new npm project (just accept the defaults):
+In the app directory, initialize a new npm project (just accept the defaults):
 
     cd pc-nrfconnect-helloworld
     npm init
@@ -413,15 +413,15 @@ Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents
         ),
     };
 
-When reloading (Ctrl+R) the application, it should now print "Hello World!" in the main view and "Loaded plugin: pc-nrfconnect-helloworld" should be shown in the log viewer.
+When reloading (Ctrl+R) the application, it should now print "Hello World!" in the main view and "Loaded app: pc-nrfconnect-helloworld" should be shown in the log viewer.
 
-The plugin implements a `decorateMainView` function, which tells nRF Connect that the plugin wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
+The app implements a `decorateMainView` function, which tells nRF Connect that the app wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
  
 In the body of `decorateMainView` we return a [functional React component](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components). A React class could also have been returned here. This receives the props that were originally passed to `MainView` by nRF Connect, and renders the `MainView` component with "Hello World!" as a child.
 
 ### Beyond Hello World
 
-We are working on a proof-of-concept plugin that will demonstrate a real-world use case. Also, in many cases it will make sense to pull in tools like Webpack and Babel in order to use JSX syntax, plus tools for linting and unit testing. We are considering adding a skeleton/boilerplate for this.
+We are working on a proof-of-concept app that will demonstrate a real-world use case. Also, in many cases it will make sense to pull in tools like Webpack and Babel in order to use JSX syntax, plus tools for linting and unit testing. We are considering adding a skeleton/boilerplate for this.
 
 # Related projects
 nRF Connect builds on top of other sub components that live in their own GitHub repositories:

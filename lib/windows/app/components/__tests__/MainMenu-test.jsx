@@ -34,32 +34,65 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+/* eslint-disable import/first */
 
-let app;
+// Do not decorate components
+jest.mock('../../../../util/apps', () => ({
+    decorate: component => component,
+}));
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import Immutable from 'immutable';
+import MainMenu from '../MainMenu';
 
-    afterEach(() => (
-        stopApplication(app)
-    ));
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'First item',
+    }, {
+        id: 2,
+        isDivider: true,
+    }, {
+        id: 3,
+        text: 'Last item',
+    },
+]);
 
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
+describe('MainMenu', () => {
+    it('should render menu with no items', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={[]}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
+    it('should render menu with two items separated by divider', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={menuItems}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when item has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <MainMenu
+                menuItems={[{
+                    id: 1,
+                    text: 'Foo',
+                    onClick,
+                }]}
+                bindHotkey={() => {}}
+            />,
+        );
+        wrapper.find('a[title="Foo"]').first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
 });

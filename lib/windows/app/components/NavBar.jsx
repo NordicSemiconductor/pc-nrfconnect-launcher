@@ -34,32 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import React, { PropTypes } from 'react';
+import Logo from '../../../components/Logo';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
+import { decorate } from '../../../util/apps';
 
-let app;
+const DecoratedLogo = decorate(Logo, 'Logo');
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+const NavBar = ({
+    cssClass,
+    navSectionCssClass,
+}) => (
+    <div className={cssClass}>
+        <MainMenuContainer />
+        <div className={navSectionCssClass}>
+            <SerialPortSelectorContainer />
+        </div>
+        <NavMenuContainer />
+        <DecoratedLogo />
+    </div>
+);
 
-    afterEach(() => (
-        stopApplication(app)
-    ));
+NavBar.propTypes = {
+    cssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
+};
 
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
+NavBar.defaultProps = {
+    cssClass: 'core-nav-bar',
+    navSectionCssClass: 'core-nav-section core-padded-row',
+};
 
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
-});
+export default NavBar;

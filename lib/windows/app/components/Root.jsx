@@ -34,32 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import React from 'react';
+import NavBar from './NavBar';
+import SidePanelContainer from '../containers/SidePanelContainer';
+import LogViewerContainer from '../containers/LogViewerContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import { decorate } from '../../../util/apps';
 
-let app;
+const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+export default () => (
+    <div className="core-main-area">
+        <DecoratedNavBar />
+        <div className="core-main-layout">
+            <div>
+                <div>
+                    <MainViewContainer />
+                </div>
+                <div>
+                    <LogViewerContainer />
+                </div>
+            </div>
+            <div>
+                <SidePanelContainer />
+            </div>
+        </div>
+        <FirmwareDialogContainer />
+    </div>
+);
 
-    afterEach(() => (
-        stopApplication(app)
-    ));
-
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
-
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
-});

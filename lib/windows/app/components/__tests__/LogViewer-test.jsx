@@ -34,32 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+/* eslint-disable import/first */
 
-let app;
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+// Do not decorate components
+jest.mock('../../../../util/apps', () => ({
+    decorate: component => component,
+}));
 
-    afterEach(() => (
-        stopApplication(app)
-    ));
+import React from 'react';
+import renderer from 'react-test-renderer';
+import Immutable from 'immutable';
+import LogViewer from '../LogViewer';
 
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
-
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
+describe('LogViewer', () => {
+    it('should render log entries', () => {
+        const entries = Immutable.List([
+            {
+                id: 1,
+                level: 'info',
+                time: new Date('2017-02-03T12:41:36.020Z'),
+                message: 'Info message',
+            }, {
+                id: 2,
+                level: 'error',
+                time: new Date('2017-02-03T13:41:36.020Z'),
+                message: 'Error message',
+            },
+        ]);
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
+    });
 });

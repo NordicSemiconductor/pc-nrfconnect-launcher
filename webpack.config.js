@@ -18,8 +18,8 @@ function createExternals() {
 module.exports = {
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
+        app: './lib/windows/app/index',
         loader: './lib/windows/loader/index',
-        plugin: './lib/windows/plugin/index',
     },
     output: {
         path: path.resolve('dist'),

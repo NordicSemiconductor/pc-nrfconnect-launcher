@@ -35,13 +35,13 @@
  */
 
 import React, { PropTypes } from 'react';
-import PluginListView from './PluginListView';
-import PluginManagementView from './PluginManagementView';
+import AppListView from './AppListView';
+import AppManagementView from './AppManagementView';
 import SettingsView from './SettingsView';
 
 const views = {
-    1: <PluginListView />,
-    2: <PluginManagementView />,
+    1: <AppListView />,
+    2: <AppManagementView />,
     3: <SettingsView />,
 };
 

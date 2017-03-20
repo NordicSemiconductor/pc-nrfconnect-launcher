@@ -34,32 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import React from 'react';
 
-let app;
+const AppManagementView = () => (
+    <div>
+        App management
+    </div>
+);
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
-
-    afterEach(() => (
-        stopApplication(app)
-    ));
-
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
-
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
-});
+export default AppManagementView;

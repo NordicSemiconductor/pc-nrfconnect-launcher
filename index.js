@@ -54,7 +54,7 @@ global.userDataDir = app.getPath('userData');
 function initBrowserWindow() {
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/plugin/index.html`,
+        url: `file://${__dirname}/lib/windows/app/index.html`,
         splashScreen: true,
     });
 }
@@ -67,7 +67,7 @@ app.on('window-all-closed', () => {
     app.quit();
 });
 
-ipcMain.on('open-plugin-manager', () => {
+ipcMain.on('open-app-manager', () => {
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/loader/index.html`,

@@ -34,32 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import React, { PropTypes } from 'react';
+import LogHeaderButton from './LogHeaderButton';
+import { decorate } from '../../../util/apps';
 
-let app;
+const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 
-describe('main menu', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+const LogHeader = ({
+    text,
+    buttons,
+    onButtonClicked,
+    cssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerTextCssClass}>{text}</div>
+        <div className={headerButtonsCssClass}>
+            {
+                buttons.map(button => (
+                    <DecoratedLogHeaderButton
+                        key={button.id}
+                        title={button.title}
+                        iconCssClass={button.iconCssClass}
+                        isSelected={button.isSelected}
+                        onClick={() => onButtonClicked(button.id)}
+                    />
+                ))
+            }
+        </div>
+    </div>
+);
 
-    afterEach(() => (
-        stopApplication(app)
-    ));
+LogHeader.propTypes = {
+    text: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        iconCssClass: PropTypes.string,
+        isSelected: PropTypes.bool,
+    })),
+    onButtonClicked: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
+};
 
-    it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
+LogHeader.defaultProps = {
+    text: 'Log',
+    buttons: [],
+    cssClass: 'core-log-header',
+    headerTextCssClass: 'core-log-header-text',
+    headerButtonsCssClass: 'core-padded-row core-log-header-buttons',
+};
 
-    it('should show an app manager menu item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="App manager"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
-});
+export default LogHeader;
