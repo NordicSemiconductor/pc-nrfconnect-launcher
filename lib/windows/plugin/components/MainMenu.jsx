@@ -92,9 +92,9 @@ MainMenu.propTypes = {
 
 MainMenu.defaultProps = {
     glyphiconName: 'menu-hamburger',
-    cssClass: 'nav-section bl padded-row',
-    dropdownCssClass: 'main-menu btn-primary btn-nordic',
-    dropdownMenuCssClass: 'dropdown-menu-nordic',
+    cssClass: 'core-nav-section core-padded-row',
+    dropdownCssClass: 'core-main-menu core-btn btn-primary',
+    dropdownMenuCssClass: 'core-dropdown-menu',
 };
 
 export default MainMenu;

@@ -35,36 +35,47 @@
  */
 
 import React, { PropTypes } from 'react';
-import Logo from '../../../components/Logo';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate } from '../../../util/plugins';
+import Immutable from 'immutable';
+import NavMenuItem from './NavMenuItem';
 
-const DecoratedLogo = decorate(Logo, 'Logo');
-
-const NavBar = ({
-    cssClass,
-    navSectionCssClass,
-}) => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
     <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <DecoratedLogo />
+        {
+            menuItems.map((item, index) => {
+                const hotkey = `Alt+${index + 1}`;
+                const onSelected = () => onItemSelected(item.id);
+                bindHotkey(hotkey.toLowerCase(), onSelected);
+
+                return (
+                    <NavMenuItem
+                        key={item.id}
+                        id={item.id}
+                        isSelected={item.id === selectedItemId}
+                        text={item.text}
+                        title={`${item.text} (${hotkey})`}
+                        iconClass={item.iconClass}
+                        onClick={onSelected}
+                    />
+                );
+            })
+        }
     </div>
 );
 
-NavBar.propTypes = {
+NavMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    onItemSelected: PropTypes.func.isRequired,
+    bindHotkey: PropTypes.func.isRequired,
+    selectedItemId: PropTypes.number,
     cssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
 };
 
-NavBar.defaultProps = {
-    cssClass: 'core-nav-bar',
-    navSectionCssClass: 'core-nav-section core-padded-row',
+NavMenu.defaultProps = {
+    selectedItemId: -1,
+    cssClass: 'core-nav-section core-padded-row',
 };
 
-export default NavBar;
+export default NavMenu;

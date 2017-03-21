@@ -34,37 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import Logo from '../../../components/Logo';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate } from '../../../util/plugins';
+import React from 'react';
 
-const DecoratedLogo = decorate(Logo, 'Logo');
-
-const NavBar = ({
-    cssClass,
-    navSectionCssClass,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <DecoratedLogo />
+const SettingsView = () => (
+    <div>
+        Settings
     </div>
 );
 
-NavBar.propTypes = {
-    cssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
-};
-
-NavBar.defaultProps = {
-    cssClass: 'core-nav-bar',
-    navSectionCssClass: 'core-nav-section core-padded-row',
-};
-
-export default NavBar;
+export default SettingsView;

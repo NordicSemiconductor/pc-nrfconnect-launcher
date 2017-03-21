@@ -64,7 +64,7 @@ LogHeaderButton.propTypes = {
 
 LogHeaderButton.defaultProps = {
     isSelected: false,
-    cssClass: 'btn btn-primary btn-xs btn-nordic',
+    cssClass: 'btn btn-primary btn-xs core-btn',
     selectedCssClass: 'active',
 };
 

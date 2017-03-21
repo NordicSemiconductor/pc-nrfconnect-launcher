@@ -34,51 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import Immutable from 'immutable';
-import NavMenuItem from './NavMenuItem';
-import { decorate } from '../../../util/plugins';
+import React from 'react';
 
-const DecoratedNavMenuItem = decorate(NavMenuItem, 'NavMenuItem');
-
-const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
-    <div className={cssClass}>
-        {
-            menuItems.map((item, index) => {
-                const hotkey = `Alt+${index + 1}`;
-                const onSelected = () => onItemSelected(item.id);
-                bindHotkey(hotkey.toLowerCase(), onSelected);
-
-                return (
-                    <DecoratedNavMenuItem
-                        key={item.id}
-                        id={item.id}
-                        isSelected={item.id === selectedItemId}
-                        text={item.text}
-                        title={`${item.text} (${hotkey})`}
-                        iconClass={item.iconClass}
-                        onClick={onSelected}
-                    />
-                );
-            })
-        }
+const PluginListView = () => (
+    <div>
+        Plugin list
     </div>
 );
 
-NavMenu.propTypes = {
-    menuItems: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Immutable.Iterable),
-    ]).isRequired,
-    onItemSelected: PropTypes.func.isRequired,
-    bindHotkey: PropTypes.func.isRequired,
-    selectedItemId: PropTypes.number,
-    cssClass: PropTypes.string,
-};
-
-NavMenu.defaultProps = {
-    selectedItemId: -1,
-    cssClass: 'nav-section bl padded-row',
-};
-
-export default NavMenu;
+export default PluginListView;

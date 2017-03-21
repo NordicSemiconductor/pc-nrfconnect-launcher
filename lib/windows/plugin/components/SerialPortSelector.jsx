@@ -109,7 +109,7 @@ class SerialPortSelector extends React.Component {
         } = this.props;
 
         const selectorText = selectedPort || 'Select serial port';
-        const indicatorCssClass = `indicator ${portIndicatorStatus}`;
+        const indicatorCssClass = `core-serial-port-indicator ${portIndicatorStatus}`;
 
         return (
             <span title={`Select serial port (${hotkeyExpand})`}>
@@ -164,9 +164,9 @@ SerialPortSelector.defaultProps = {
     isLoading: false,
     portIndicatorStatus: 'off',
     hotkeyExpand: 'Alt+P',
-    cssClass: 'padded-row',
-    dropdownCssClass: 'serial-port-selector btn-primary btn-nordic',
-    dropdownMenuCssClass: 'dropdown-menu-nordic',
+    cssClass: 'core-padded-row',
+    dropdownCssClass: 'core-serial-port-selector core-btn btn-primary',
+    dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'btn-primary',
 };
 

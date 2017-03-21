@@ -105,8 +105,8 @@ LogViewer.defaultProps = {
     containerHeight: 155,
     elementHeight: 20,
     infiniteLoadBeginEdgeOffset: 135,
-    cssClass: 'log-wrap',
-    infiniteLogCssClass: 'infinite-log',
+    cssClass: 'core-log-viewer',
+    infiniteLogCssClass: 'core-infinite-log',
 };
 
 export default LogViewer;

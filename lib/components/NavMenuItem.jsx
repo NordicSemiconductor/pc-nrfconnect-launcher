@@ -57,7 +57,7 @@ NavMenuItem.propTypes = {
 };
 
 NavMenuItem.defaultProps = {
-    cssClass: 'btn btn-primary btn-nordic padded-row',
+    cssClass: 'btn btn-primary core-btn core-padded-row',
 };
 
 export default NavMenuItem;

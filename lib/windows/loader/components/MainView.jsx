@@ -35,36 +35,20 @@
  */
 
 import React, { PropTypes } from 'react';
-import Logo from '../../../components/Logo';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate } from '../../../util/plugins';
+import PluginListView from './PluginListView';
+import PluginManagementView from './PluginManagementView';
+import SettingsView from './SettingsView';
 
-const DecoratedLogo = decorate(Logo, 'Logo');
-
-const NavBar = ({
-    cssClass,
-    navSectionCssClass,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
-        </div>
-        <NavMenuContainer />
-        <DecoratedLogo />
-    </div>
-);
-
-NavBar.propTypes = {
-    cssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
+const views = {
+    1: <PluginListView />,
+    2: <PluginManagementView />,
+    3: <SettingsView />,
 };
 
-NavBar.defaultProps = {
-    cssClass: 'core-nav-bar',
-    navSectionCssClass: 'core-nav-section core-padded-row',
+const MainView = ({ navId }) => views[navId];
+
+MainView.propTypes = {
+    navId: PropTypes.number.isRequired,
 };
 
-export default NavBar;
+export default MainView;

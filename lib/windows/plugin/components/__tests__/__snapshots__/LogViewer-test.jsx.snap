@@ -1,32 +1,32 @@
 exports[`LogViewer should render log entries 1`] = `
 <div
-  className="log-wrap">
+  className="core-log-viewer">
   <LogHeaderContainer />
   <Infinite
     autoScroll={true}
-    className="infinite-log"
+    className="core-infinite-log"
     containerHeight={155}
     elementHeight={20}
     infiniteLoadBeginEdgeOffset={135}>
     <div
-      className="log-entry log-info">
+      className="core-log-entry core-log-level-info">
       <div
-        className="time">
+        className="core-log-time">
         13:41:36.0200
       </div>
       <div
-        className="message">
+        className="core-log-message">
         Info message
       </div>
     </div>
     <div
-      className="log-entry log-error">
+      className="core-log-entry core-log-level-error">
       <div
-        className="time">
+        className="core-log-time">
         14:41:36.0200
       </div>
       <div
-        className="message">
+        className="core-log-message">
         Error message
       </div>
     </div>
