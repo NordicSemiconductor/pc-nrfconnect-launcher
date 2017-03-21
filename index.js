@@ -58,6 +58,7 @@ function initBrowserWindow() {
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/plugin/index.html`,
         splashScreen: true,
+        icon: `${__dirname}/resources/nrfconnect.png`,
     });
 }
 
