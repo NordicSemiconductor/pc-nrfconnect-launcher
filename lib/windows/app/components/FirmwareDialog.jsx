@@ -55,7 +55,7 @@ const FirmwareDialog = ({
                 isInProgress={isInProgress}
                 text={textToUse}
                 onOk={() => onConfirmUpdateFirmware(port)}
-                onCancel={onCancel}
+                onCancel={() => onCancel(port)}
             />
         );
     }
