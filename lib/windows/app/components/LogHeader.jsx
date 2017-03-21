@@ -34,51 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React, { PropTypes } from 'react';
+import LogHeaderButton from './LogHeaderButton';
+import { decorate } from '../../../util/apps';
 
-const electron = require('electron');
-const browser = require('./main/browser');
-const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
+const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
+const LogHeader = ({
+    text,
+    buttons,
+    onButtonClicked,
+    cssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerTextCssClass}>{text}</div>
+        <div className={headerButtonsCssClass}>
+            {
+                buttons.map(button => (
+                    <DecoratedLogHeaderButton
+                        key={button.id}
+                        title={button.title}
+                        iconCssClass={button.iconCssClass}
+                        isSelected={button.isSelected}
+                        onClick={() => onButtonClicked(button.id)}
+                    />
+                ))
+            }
+        </div>
+    </div>
+);
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
+LogHeader.propTypes = {
+    text: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        iconCssClass: PropTypes.string,
+        isSelected: PropTypes.bool,
+    })),
+    onButtonClicked: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
+};
 
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
+LogHeader.defaultProps = {
+    text: 'Log',
+    buttons: [],
+    cssClass: 'core-log-header',
+    headerTextCssClass: 'core-log-header-text',
+    headerButtonsCssClass: 'core-padded-row core-log-header-buttons',
+};
 
-let mainWindow;
-
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-    });
-}
-
-electronApp.on('ready', () => {
-    initBrowserWindow();
-});
-
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
-
-ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
-    });
-});
+export default LogHeader;

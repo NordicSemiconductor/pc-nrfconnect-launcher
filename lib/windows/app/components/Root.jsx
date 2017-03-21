@@ -34,51 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React from 'react';
+import NavBar from './NavBar';
+import SidePanelContainer from '../containers/SidePanelContainer';
+import LogViewerContainer from '../containers/LogViewerContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import { decorate } from '../../../util/apps';
 
-const electron = require('electron');
-const browser = require('./main/browser');
-const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
+const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
+export default () => (
+    <div className="core-main-area">
+        <DecoratedNavBar />
+        <div className="core-main-layout">
+            <div>
+                <div>
+                    <MainViewContainer />
+                </div>
+                <div>
+                    <LogViewerContainer />
+                </div>
+            </div>
+            <div>
+                <SidePanelContainer />
+            </div>
+        </div>
+        <FirmwareDialogContainer />
+    </div>
+);
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
-
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
-
-let mainWindow;
-
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-    });
-}
-
-electronApp.on('ready', () => {
-    initBrowserWindow();
-});
-
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
-
-ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
-    });
-});

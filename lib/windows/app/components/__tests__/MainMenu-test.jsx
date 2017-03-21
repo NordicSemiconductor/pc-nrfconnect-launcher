@@ -34,51 +34,65 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+/* eslint-disable import/first */
 
-const electron = require('electron');
-const browser = require('./main/browser');
-const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
+// Do not decorate components
+jest.mock('../../../../util/apps', () => ({
+    decorate: component => component,
+}));
 
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import Immutable from 'immutable';
+import MainMenu from '../MainMenu';
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'First item',
+    }, {
+        id: 2,
+        isDivider: true,
+    }, {
+        id: 3,
+        text: 'Last item',
+    },
+]);
 
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
-
-let mainWindow;
-
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
-        icon: `${__dirname}/resources/nrfconnect.png`,
+describe('MainMenu', () => {
+    it('should render menu with no items', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={[]}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
-}
 
-electronApp.on('ready', () => {
-    initBrowserWindow();
-});
+    it('should render menu with two items separated by divider', () => {
+        expect(renderer.create(
+            <MainMenu
+                menuItems={menuItems}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
+    it('should invoke onClick when item has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <MainMenu
+                menuItems={[{
+                    id: 1,
+                    text: 'Foo',
+                    onClick,
+                }]}
+                bindHotkey={() => {}}
+            />,
+        );
+        wrapper.find('a[title="Foo"]').first().simulate('click');
 
-ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
+        expect(onClick).toHaveBeenCalled();
     });
 });

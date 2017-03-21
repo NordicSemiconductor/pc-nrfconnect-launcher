@@ -34,51 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+/* eslint-disable import/first */
 
-const electron = require('electron');
-const browser = require('./main/browser');
-const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
 
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
+// Do not decorate components
+jest.mock('../../../../util/apps', () => ({
+    decorate: component => component,
+}));
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
+import React from 'react';
+import renderer from 'react-test-renderer';
+import Immutable from 'immutable';
+import LogViewer from '../LogViewer';
 
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
-
-let mainWindow;
-
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-    });
-}
-
-electronApp.on('ready', () => {
-    initBrowserWindow();
-});
-
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
-
-ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
+describe('LogViewer', () => {
+    it('should render log entries', () => {
+        const entries = Immutable.List([
+            {
+                id: 1,
+                level: 'info',
+                time: new Date('2017-02-03T12:41:36.020Z'),
+                message: 'Info message',
+            }, {
+                id: 2,
+                level: 'error',
+                time: new Date('2017-02-03T13:41:36.020Z'),
+                message: 'Error message',
+            },
+        ]);
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
     });
 });

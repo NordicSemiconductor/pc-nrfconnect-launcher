@@ -37,71 +37,77 @@
 /* eslint-disable import/first */
 
 // Do not decorate components
-jest.mock('../../util/apps', () => ({
+jest.mock('../../../../util/apps', () => ({
     decorate: component => component,
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import Immutable from 'immutable';
-import NavMenu from '../NavMenu';
+import renderer from 'react-test-renderer';
+import LogHeader from '../LogHeader';
 
-const menuItems = Immutable.List([
-    {
-        id: 1,
-        text: 'Connection map',
-        iconClass: 'icon-columns',
-    }, {
-        id: 2,
-        text: 'Server setup',
-        iconClass: 'icon-indent-right',
-    },
-]);
-
-describe('NavMenu', () => {
-    it('should render menu with no items', () => {
+describe('LogHeader', () => {
+    it('should render when text and no buttons provided', () => {
         expect(renderer.create(
-            <NavMenu
-                menuItems={[]}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
+            <LogHeader
+                text="Foobar log header"
+                onButtonClicked={() => {}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should render menu with two items, and none selected', () => {
+    it('should render when buttons are provided', () => {
         expect(renderer.create(
-            <NavMenu
-                menuItems={menuItems}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
+            <LogHeader
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                    },
+                    {
+                        id: 'bar',
+                        title: 'Bar button',
+                        iconCssClass: 'bar-btn-class',
+                    },
+                ]}
+                onButtonClicked={() => {}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should render menu with two items, and one selected', () => {
+    it('should render when selected button is provided', () => {
         expect(renderer.create(
-            <NavMenu
-                menuItems={menuItems}
-                selectedItemId={1}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
+            <LogHeader
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                        isSelected: true,
+                    },
+                ]}
+                onButtonClicked={() => {}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should invoke onItemSelected when item has been selected', () => {
-        const onItemSelected = jest.fn();
+    it('should invoke onButtonClicked with button id when button is clicked', () => {
+        const onButtonClicked = jest.fn();
         const wrapper = mount(
-            <NavMenu
-                menuItems={menuItems}
-                onItemSelected={onItemSelected}
-                bindHotkey={() => {}}
+            <LogHeader
+                buttons={[
+                    {
+                        id: 'foo',
+                        title: 'Foo button',
+                        iconCssClass: 'foo-btn-class',
+                    },
+                ]}
+                onButtonClicked={onButtonClicked}
             />,
         );
-        wrapper.find('button').first().simulate('click');
+        wrapper.find('[title="Foo button"]').simulate('click');
 
-        expect(onItemSelected).toHaveBeenCalledWith(menuItems.first().id);
+        expect(onButtonClicked).toHaveBeenCalledWith('foo');
     });
 });

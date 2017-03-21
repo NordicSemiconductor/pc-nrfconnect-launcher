@@ -34,51 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React, { PropTypes } from 'react';
+import Logo from '../../../components/Logo';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
+import { decorate } from '../../../util/apps';
 
-const electron = require('electron');
-const browser = require('./main/browser');
-const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
+const DecoratedLogo = decorate(Logo, 'Logo');
 
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
+const NavBar = ({
+    cssClass,
+    navSectionCssClass,
+}) => (
+    <div className={cssClass}>
+        <MainMenuContainer />
+        <div className={navSectionCssClass}>
+            <SerialPortSelectorContainer />
+        </div>
+        <NavMenuContainer />
+        <DecoratedLogo />
+    </div>
+);
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
+NavBar.propTypes = {
+    cssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
+};
 
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
+NavBar.defaultProps = {
+    cssClass: 'core-nav-bar',
+    navSectionCssClass: 'core-nav-section core-padded-row',
+};
 
-let mainWindow;
-
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-    });
-}
-
-electronApp.on('ready', () => {
-    initBrowserWindow();
-});
-
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
-
-ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
-    });
-});
+export default NavBar;
