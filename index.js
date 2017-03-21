@@ -51,8 +51,10 @@ Menu.setApplicationMenu(applicationMenu);
 global.homeDir = app.getPath('home');
 global.userDataDir = app.getPath('userData');
 
+let mainWindow;
+
 function initBrowserWindow() {
-    browser.createWindow({
+    mainWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/plugin/index.html`,
         splashScreen: true,
@@ -75,5 +77,7 @@ ipcMain.on('open-plugin-manager', () => {
         height: 500,
         splashScreen: false,
         keepWindowSettings: false,
+        modal: true,
+        parent: mainWindow,
     });
 });
