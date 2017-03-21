@@ -39,7 +39,9 @@ import React, { PropTypes } from 'react';
 import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
 import Spinner from './Spinner';
 
-const ConfirmationDialog = ({ isVisible, isInProgress, text, onOk, onCancel }) => (
+const ConfirmationDialog = ({
+    isVisible, isInProgress, text, onOk, onCancel, okButtonText, cancelButtonText,
+}) => (
     <div>
         <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
             <ModalHeader closeButton={!isInProgress}>
@@ -51,8 +53,8 @@ const ConfirmationDialog = ({ isVisible, isInProgress, text, onOk, onCancel }) =
             <ModalFooter>
                 { isInProgress ? <Spinner /> : null }
                 &nbsp;
-                <Button onClick={onOk} disabled={isInProgress}>OK</Button>
-                <Button onClick={onCancel} disabled={isInProgress}>Cancel</Button>
+                <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
+                <Button onClick={onCancel} disabled={isInProgress}>{cancelButtonText}</Button>
             </ModalFooter>
         </Modal>
     </div>
@@ -63,11 +65,15 @@ ConfirmationDialog.propTypes = {
     text: PropTypes.string.isRequired,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    okButtonText: PropTypes.string,
+    cancelButtonText: PropTypes.string,
     isInProgress: PropTypes.bool,
 };
 
 ConfirmationDialog.defaultProps = {
     isInProgress: false,
+    okButtonText: 'OK',
+    cancelButtonText: 'Cancel',
 };
 
 export default ConfirmationDialog;
