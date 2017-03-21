@@ -124,7 +124,7 @@ Run end-to-end tests:
 
 **Note: The API for apps is in development and may change before the final release.**
 
-The nRF Connect framework provides a foundation for creating desktop apps, with a set of core UI components that can be decorated/overridden to suit each app's needs. The API for apps is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write apps.
+The nRF Connect framework provides a foundation for creating desktop apps. It comes with a set of core components that can be decorated/overridden to suit each app's needs, and has built-in functionality for serial port communication, programming, BLE, and logging. The API for apps is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write apps.
 
 Apps can:
 
