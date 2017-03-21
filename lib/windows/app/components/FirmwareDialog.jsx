@@ -47,13 +47,16 @@ const FirmwareDialog = ({
     onCancel,
 }) => {
     if (isVisible) {
-        const textToUse = text || `The development kit on ${port.comName} (${port.serialNumber}) ` +
-            'will be programmed with the required firmware. Would you like to proceed?';
+        const textToUse = text || 'Would you like to program the development kit' +
+            ` on ${port.comName} (${port.serialNumber}) ` +
+            ' with the required firmware?';
         return (
             <ConfirmationDialog
                 isVisible={isVisible}
                 isInProgress={isInProgress}
                 text={textToUse}
+                okButtonText="Yes"
+                cancelButtonText="No"
                 onOk={() => onConfirmUpdateFirmware(port)}
                 onCancel={() => onCancel(port)}
             />
