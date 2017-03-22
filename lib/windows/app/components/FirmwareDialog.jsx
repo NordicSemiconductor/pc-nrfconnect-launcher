@@ -48,7 +48,7 @@ const FirmwareDialog = ({
 }) => {
     if (isVisible) {
         const textToUse = text || 'Would you like to program the development kit' +
-            ` on ${port.comName} (${port.serialNumber}) ` +
+            ` on ${port.comName} (${port.serialNumber})` +
             ' with the required firmware?';
         return (
             <ConfirmationDialog

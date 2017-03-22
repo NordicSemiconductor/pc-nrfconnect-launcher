@@ -2,8 +2,10 @@ exports[`FirmwareDialog should render empty div if not visible 1`] = `<div />`;
 
 exports[`FirmwareDialog should render visible dialog with custom text 1`] = `
 <ConfirmationDialog
+  cancelButtonText="No"
   isInProgress={false}
   isVisible={true}
+  okButtonText="Yes"
   onCancel={[Function]}
   onOk={[Function]}
   text="Do you confirm?" />
@@ -11,9 +13,11 @@ exports[`FirmwareDialog should render visible dialog with custom text 1`] = `
 
 exports[`FirmwareDialog should render visible dialog with default text for given port 1`] = `
 <ConfirmationDialog
+  cancelButtonText="No"
   isInProgress={false}
   isVisible={true}
+  okButtonText="Yes"
   onCancel={[Function]}
   onOk={[Function]}
-  text="The development kit on /dev/tty1 (1337) will be programmed with the required firmware. Would you like to proceed?" />
+  text="Would you like to program the development kit on /dev/tty1 (1337) with the required firmware?" />
 `;
