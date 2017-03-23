@@ -241,6 +241,15 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>middleware</code><br />
+      </td>
+      <td>
+        <p>A custom <a href="http://redux.js.org/docs/advanced/Middleware.html">Redux middleware</a> that can intercept any action. The middleware is invoked after an action has been dispatched, but before it reaches the reducers.</p>
+        <p>This is useful e.g. when the app wants to perform some asynchronous operation when an action is dispatched by core. Refer to the <a href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/tree/master/lib/windows/app/actions">core actions</a> to see which actions may be intercepted.</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>reduceFirmwareDialog</code><br />
         <code>reduceLog</code><br />
         <code>reduceNavMenu</code><br />
