@@ -1,0 +1,139 @@
+exports[`AppListItem should render custom icon if provided 1`] = `
+<div
+  className="core-app-list-item list-group-item">
+  <img
+    alt="App icon"
+    className="core-app-icon"
+    src="./path/to/icon.png" />
+  <div>
+    <h4
+      className="list-group-item-heading">
+      pc-nrfconnect-foobar
+    </h4>
+    <p
+      className="list-group-item-text">
+      official
+      , v
+      1.2.3
+    </p>
+  </div>
+  <div
+    className="core-app-load">
+    <button
+      className="btn btn-primary core-btn"
+      onClick={[Function]}
+      title="Load app">
+      <span
+        className="icon-play" />
+      <span>
+        Load
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`AppListItem should render official if isOfficial is true 1`] = `
+<div
+  className="core-app-list-item list-group-item">
+  <img
+    alt="App icon"
+    className="core-app-icon"
+    src="test-file-stub" />
+  <div>
+    <h4
+      className="list-group-item-heading">
+      pc-nrfconnect-foobar
+    </h4>
+    <p
+      className="list-group-item-text">
+      official
+      , v
+      1.2.3
+    </p>
+  </div>
+  <div
+    className="core-app-load">
+    <button
+      className="btn btn-primary core-btn"
+      onClick={[Function]}
+      title="Load app">
+      <span
+        className="icon-play" />
+      <span>
+        Load
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`AppListItem should render with displayName instead of name if provided 1`] = `
+<div
+  className="core-app-list-item list-group-item">
+  <img
+    alt="App icon"
+    className="core-app-icon"
+    src="test-file-stub" />
+  <div>
+    <h4
+      className="list-group-item-heading">
+      Foobar Tool
+    </h4>
+    <p
+      className="list-group-item-text">
+      official
+      , v
+      1.2.3
+    </p>
+  </div>
+  <div
+    className="core-app-load">
+    <button
+      className="btn btn-primary core-btn"
+      onClick={[Function]}
+      title="Load app">
+      <span
+        className="icon-play" />
+      <span>
+        Load
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`AppListItem should render with required props 1`] = `
+<div
+  className="core-app-list-item list-group-item">
+  <img
+    alt="App icon"
+    className="core-app-icon"
+    src="test-file-stub" />
+  <div>
+    <h4
+      className="list-group-item-heading">
+      pc-nrfconnect-foobar
+    </h4>
+    <p
+      className="list-group-item-text">
+      official
+      , v
+      1.2.3
+    </p>
+  </div>
+  <div
+    className="core-app-load">
+    <button
+      className="btn btn-primary core-btn"
+      onClick={[Function]}
+      title="Load app">
+      <span
+        className="icon-play" />
+      <span>
+        Load
+      </span>
+    </button>
+  </div>
+</div>
+`;
