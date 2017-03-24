@@ -74,6 +74,7 @@ ipcMain.on('open-app-loader', () => {
     browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
         url: `file://${__dirname}/lib/windows/loader/index.html`,
+        icon: `${__dirname}/resources/nrfconnect.png`,
         width: 650,
         height: 500,
         splashScreen: false,
