@@ -35,12 +35,12 @@
  */
 
 import React, { PropTypes } from 'react';
-import AppListView from './AppListView';
+import AppListViewContainer from '../containers/AppListViewContainer';
 import AppManagementView from './AppManagementView';
 import SettingsView from './SettingsView';
 
 const views = {
-    1: <AppListView />,
+    1: <AppListViewContainer />,
     2: <AppManagementView />,
     3: <SettingsView />,
 };
