@@ -38,6 +38,7 @@
 
 const electron = require('electron');
 const browser = require('./main/browser');
+const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
 const packageJson = require('./package.json');
 
@@ -61,7 +62,7 @@ function openLoaderWindow() {
         icon: `${__dirname}/resources/nrfconnect.png`,
         width: 670,
         height: 500,
-        keepWindowSettings: false,
+        center: true,
         splashScreen: true,
     });
 
@@ -74,14 +75,29 @@ function openLoaderWindow() {
 }
 
 function openAppWindow(app) {
+    const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version} - ${app.displayName || app.name}`,
         url: `file://${__dirname}/lib/windows/app/index.html?appPath=${app.path}`,
-        splashScreen: false,
         icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+        x: lastWindowState.x,
+        y: lastWindowState.y,
+        width: lastWindowState.width,
+        height: lastWindowState.height,
     });
 
     appWindows.push(appWindow);
+
+    appWindow.webContents.on('did-finish-load', () => {
+        if (lastWindowState.maximized) {
+            appWindow.maximize();
+        }
+    });
+
+    appWindow.on('close', () => {
+        settings.storeLastWindow(appWindow);
+    });
+
     appWindow.on('closed', () => {
         const index = appWindows.indexOf(appWindow);
         if (index > -1) {

@@ -37,7 +37,6 @@
 'use strict';
 
 const electron = require('electron');
-const settings = require('./settings');
 
 function createSplashScreen() {
     let splashScreen = new electron.BrowserWindow({
@@ -59,12 +58,7 @@ function createSplashScreen() {
 }
 
 function createWindow(options) {
-    const lastWindowState = settings.loadLastWindow();
     const mergedOptions = Object.assign({
-        x: lastWindowState.x,
-        y: lastWindowState.y,
-        width: lastWindowState.width,
-        height: lastWindowState.height,
         minWidth: 308,
         minHeight: 499,
         show: false,
@@ -79,21 +73,10 @@ function createWindow(options) {
 
     browserWindow.loadURL(options.url);
 
-    browserWindow.on('close', () => {
-        if (options.keepWindowSettings !== false) {
-            settings.storeLastWindow(browserWindow);
-        }
-    });
-
     browserWindow.webContents.on('did-finish-load', () => {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
         }
-
-        if (lastWindowState.maximized) {
-            browserWindow.maximize();
-        }
-
         const title = options.title || 'nRF Connect';
         browserWindow.setTitle(title);
         browserWindow.show();
