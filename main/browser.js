@@ -70,7 +70,7 @@ function createWindow(options) {
         show: false,
         autoHideMenuBar: true,
     }, options);
-    let browserWindow = new electron.BrowserWindow(mergedOptions);
+    const browserWindow = new electron.BrowserWindow(mergedOptions);
 
     let splashScreen;
     if (options.splashScreen) {
@@ -83,10 +83,6 @@ function createWindow(options) {
         if (options.keepWindowSettings !== false) {
             settings.storeLastWindow(browserWindow);
         }
-    });
-
-    browserWindow.on('closed', () => {
-        browserWindow = null;
     });
 
     browserWindow.webContents.on('did-finish-load', () => {

@@ -51,19 +51,50 @@ Menu.setApplicationMenu(applicationMenu);
 global.homeDir = electronApp.getPath('home');
 global.userDataDir = electronApp.getPath('userData');
 
-let mainWindow;
+let loaderWindow;
+const appWindows = [];
 
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
+function openLoaderWindow() {
+    loaderWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
+        url: `file://${__dirname}/lib/windows/loader/index.html`,
         icon: `${__dirname}/resources/nrfconnect.png`,
+        width: 670,
+        height: 500,
+        keepWindowSettings: false,
+        splashScreen: true,
+    });
+
+    loaderWindow.on('close', event => {
+        if (appWindows.length > 0) {
+            event.preventDefault();
+            loaderWindow.hide();
+        }
+    });
+}
+
+function openAppWindow(app) {
+    const appWindow = browser.createWindow({
+        title: `nRF Connect v${packageJson.version} - ${app.displayName || app.name}`,
+        url: `file://${__dirname}/lib/windows/app/index.html?appPath=${app.path}`,
+        splashScreen: false,
+        icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+    });
+
+    appWindows.push(appWindow);
+    appWindow.on('closed', () => {
+        const index = appWindows.indexOf(appWindow);
+        if (index > -1) {
+            appWindows.splice(index, 1);
+        }
+        if (appWindows.length === 0) {
+            electronApp.quit();
+        }
     });
 }
 
 electronApp.on('ready', () => {
-    initBrowserWindow();
+    openLoaderWindow();
 });
 
 electronApp.on('window-all-closed', () => {
@@ -71,15 +102,14 @@ electronApp.on('window-all-closed', () => {
 });
 
 ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
-    });
+    if (!loaderWindow.isVisible()) {
+        loaderWindow.show();
+    }
+});
+
+ipcMain.on('open-app', (event, app) => {
+    if (loaderWindow.isVisible()) {
+        loaderWindow.hide();
+    }
+    openAppWindow(app);
 });
