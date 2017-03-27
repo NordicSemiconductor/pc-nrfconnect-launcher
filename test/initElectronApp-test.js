@@ -34,35 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import { startElectronApp, stopElectronApp } from './setup';
 import packageJson from '../package.json';
 
-let app;
+let electronApp;
 
-describe('application', () => {
+describe('electron application', () => {
     beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
+        startElectronApp()
+            .then(startedApp => {
+                electronApp = startedApp;
             })
     ));
 
     afterEach(() => (
-        stopApplication(app)
+        stopElectronApp(electronApp)
     ));
 
     it('should open two windows', () => (
-        app.client.getWindowCount()
+        electronApp.client.getWindowCount()
             .then(windowCount => expect(windowCount).toEqual(2))
     ));
 
     it('should display splash screen image in first window', () => (
-        app.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
+        electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
             .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
     ));
 
     it('should show package.json version in main window title', () => (
-        app.client.windowByIndex(1).browserWindow.getTitle()
+        electronApp.client.windowByIndex(1).browserWindow.getTitle()
             .then(title => expect(title).toContain(packageJson.version))
     ));
 });

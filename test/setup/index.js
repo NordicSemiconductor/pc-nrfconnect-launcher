@@ -38,7 +38,7 @@ import path from 'path';
 import { Application } from 'spectron';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-const appPath = path.resolve(__dirname, '../../');
+const projectPath = path.resolve(__dirname, '../../');
 
 let electronPath;
 if (process.platform === 'win32') {
@@ -47,25 +47,25 @@ if (process.platform === 'win32') {
     electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
 }
 
-function startApplication() {
-    const app = new Application({
+function startElectronApp() {
+    const electronApp = new Application({
         path: electronPath,
-        args: [appPath],
+        args: [projectPath],
     });
-    return app.start()
-        .then(() => expect(app.isRunning()).toEqual(true))
-        .then(() => app);
+    return electronApp.start()
+        .then(() => expect(electronApp.isRunning()).toEqual(true))
+        .then(() => electronApp);
 }
 
-function stopApplication(app) {
-    if (!app || !app.isRunning()) return Promise.resolve();
+function stopElectronApp(electronApp) {
+    if (!electronApp || !electronApp.isRunning()) return Promise.resolve();
 
-    return app.stop()
-        .then(() => expect(app.isRunning()).toEqual(false));
+    return electronApp.stop()
+        .then(() => expect(electronApp.isRunning()).toEqual(false));
 }
 
 
 export default {
-    startApplication,
-    stopApplication,
+    startElectronApp,
+    stopElectronApp,
 };
