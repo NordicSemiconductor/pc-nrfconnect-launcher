@@ -37,6 +37,9 @@
 'use strict';
 
 const electron = require('electron');
+const argv = require('yargs').argv;
+const path = require('path');
+
 const browser = require('./main/browser');
 const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
@@ -51,6 +54,7 @@ Menu.setApplicationMenu(applicationMenu);
 
 global.homeDir = electronApp.getPath('home');
 global.userDataDir = electronApp.getPath('userData');
+global.appsRootDir = argv['apps-root-dir'] || path.join(global.homeDir, '.nrfconnect-apps');
 
 let loaderWindow;
 const appWindows = [];
