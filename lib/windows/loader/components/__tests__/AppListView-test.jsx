@@ -75,6 +75,40 @@ describe('AppListView', () => {
         )).toMatchSnapshot();
     });
 
+    it('should render apps sorted by name and isOfficial', () => {
+        const templateApp = getImmutableInstalledApp({ version: '1.2.3' });
+        expect(renderer.create(
+            <AppListView
+                apps={
+                    List([
+                        templateApp
+                            .set('name', 'appB')
+                            .set('isOfficial', false)
+                            .set('path', '/path/to/local/B'),
+                        templateApp
+                            .set('name', 'appB')
+                            .set('isOfficial', true)
+                            .set('path', '/path/to/B'),
+                        templateApp
+                            .set('name', 'appA')
+                            .set('isOfficial', false)
+                            .set('path', '/path/to/local/A'),
+                        templateApp
+                            .set('name', 'appA')
+                            .set('isOfficial', true)
+                            .set('path', '/path/to/A'),
+                        templateApp
+                            .set('name', 'appA')
+                            .set('isOfficial', true)
+                            .set('path', '/path/to/otherA'),
+                    ])
+                }
+                onAppSelected={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
     it('should invoke onAppSelected with local app item when app is clicked', () => {
         const app = getImmutableInstalledApp({
             name: 'pc-nrfconnect-foobar',
