@@ -39,6 +39,7 @@ import { Application } from 'spectron';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 const projectPath = path.resolve(__dirname, '../../');
+const appsRootDir = path.resolve(__dirname, '../../test/.nrfconnect-apps');
 
 let electronPath;
 if (process.platform === 'win32') {
@@ -47,10 +48,14 @@ if (process.platform === 'win32') {
     electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
 }
 
-function startElectronApp() {
+function startElectronApp(extraArgs) {
+    const args = [
+        projectPath,
+        `--apps-root-dir=${appsRootDir}`,
+    ];
     const electronApp = new Application({
         path: electronPath,
-        args: [projectPath],
+        args: args.concat(extraArgs),
     });
     return electronApp.start()
         .then(() => expect(electronApp.isRunning()).toEqual(true))
@@ -64,8 +69,14 @@ function stopElectronApp(electronApp) {
         .then(() => expect(electronApp.isRunning()).toEqual(false));
 }
 
+function loadFirstApp(electronApp) {
+    return electronApp.client.windowByIndex(1)
+        .click('button[title="Load app"]')
+        .then(() => electronApp.client.waitUntilWindowLoaded());
+}
 
 export default {
     startElectronApp,
     stopElectronApp,
+    loadFirstApp,
 };

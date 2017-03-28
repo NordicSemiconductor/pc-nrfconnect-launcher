@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp, loadFirstApp } from './setup';
 
 let electronApp;
 
@@ -51,7 +51,8 @@ describe('port selector', () => {
     ));
 
     it('should show port list when port selector has been clicked', () => (
-        electronApp.client.windowByIndex(1)
+        loadFirstApp(electronApp)
+            .then(() => electronApp.client.windowByIndex(1))
             .click('#serial-port-selector')
             .isVisible('#serial-port-selector-list')
             .then(isVisible => expect(isVisible).toEqual(true))
