@@ -34,35 +34,39 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import { startElectronApp, stopElectronApp } from './setup';
 import packageJson from '../package.json';
 
-let app;
+let electronApp;
 
-describe('application', () => {
-    beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
-            })
-    ));
+describe('loader window', () => {
+    beforeEach(() => {
+        return startElectronApp()
+            .then(startedApp => {
+                electronApp = startedApp;
+            });
+    });
 
     afterEach(() => (
-        stopApplication(app)
+        stopElectronApp(electronApp)
     ));
 
-    it('should open two windows', () => (
-        app.client.getWindowCount()
-            .then(windowCount => expect(windowCount).toEqual(2))
-    ));
-
-    it('should display splash screen image in first window', () => (
-        app.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
-            .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
-    ));
-
-    it('should show package.json version in main window title', () => (
-        app.client.windowByIndex(1).browserWindow.getTitle()
+    it('should show package.json version in loader window title', () => (
+        electronApp.client.windowByIndex(1).browserWindow.getTitle()
             .then(title => expect(title).toContain(packageJson.version))
+    ));
+
+    it('should show Test App in the app list', () => (
+        electronApp.client.windowByIndex(1)
+            .getText('h4')
+            .then(text => expect(text).toEqual('Test App'))
+    ));
+
+    it('should load app window when clicking Load', () => (
+        electronApp.client.windowByIndex(1)
+            .click('button[title="Load app"]')
+            .then(() => electronApp.client.waitUntilWindowLoaded())
+            .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
+            .then(title => expect(title).toContain('Test App'))
     ));
 });

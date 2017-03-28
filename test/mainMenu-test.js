@@ -34,30 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startApplication, stopApplication } from './setup';
+import { startElectronApp, stopElectronApp, loadFirstApp } from './setup';
 
-let app;
+let electronApp;
 
 describe('main menu', () => {
     beforeEach(() => (
-        startApplication()
-            .then(application => {
-                app = application;
+        startElectronApp()
+            .then(startedApp => {
+                electronApp = startedApp;
             })
     ));
 
     afterEach(() => (
-        stopApplication(app)
+        stopElectronApp(electronApp)
     ));
 
     it('should not show list of main menu items initially', () => (
-        app.client.windowByIndex(1)
+        loadFirstApp(electronApp)
+            .then(() => electronApp.client.windowByIndex(1))
             .isVisible('#main-menu-list')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
 
     it('should show a "Load other app" item when main menu button has been clicked', () => (
-        app.client.windowByIndex(1)
+        loadFirstApp(electronApp)
+            .then(() => electronApp.client.windowByIndex(1))
             .click('#main-menu')
             .isVisible('#main-menu-list a[title*="Load other app"]')
             .then(isVisible => expect(isVisible).toEqual(true))

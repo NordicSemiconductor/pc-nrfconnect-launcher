@@ -34,57 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React, { PropTypes } from 'react';
+import AppLoadButton from './AppLoadButton';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-const electron = require('electron');
+const AppListItem = ({ app, onClick }) => (
+    <div className="core-app-list-item list-group-item">
+        <img className="core-app-icon" src={app.iconPath || nrfconnectLogo} alt="App icon" />
+        <div>
+            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.version}</p>
+        </div>
+        <div className="core-app-load">
+            <AppLoadButton onClick={onClick} />
+        </div>
+    </div>
+);
 
-function createSplashScreen() {
-    let splashScreen = new electron.BrowserWindow({
-        width: 400,
-        height: 223,
-        frame: false,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        resizable: false,
-        show: false,
-        transparent: true,
-    });
-    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
-    splashScreen.on('closed', () => {
-        splashScreen = null;
-    });
-    splashScreen.show();
-    return splashScreen;
-}
-
-function createWindow(options) {
-    const mergedOptions = Object.assign({
-        minWidth: 308,
-        minHeight: 499,
-        show: false,
-        autoHideMenuBar: true,
-    }, options);
-    const browserWindow = new electron.BrowserWindow(mergedOptions);
-
-    let splashScreen;
-    if (options.splashScreen) {
-        splashScreen = createSplashScreen();
-    }
-
-    browserWindow.loadURL(options.url);
-
-    browserWindow.webContents.on('did-finish-load', () => {
-        if (splashScreen && !splashScreen.isDestroyed()) {
-            splashScreen.close();
-        }
-        const title = options.title || 'nRF Connect';
-        browserWindow.setTitle(title);
-        browserWindow.show();
-    });
-
-    return browserWindow;
-}
-
-module.exports = {
-    createWindow,
+AppListItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        version: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        iconPath: PropTypes.string,
+        isOfficial: PropTypes.bool.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
+
+AppListItem.defaultProps = {
+    iconPath: nrfconnectLogo,
+};
+
+export default AppListItem;

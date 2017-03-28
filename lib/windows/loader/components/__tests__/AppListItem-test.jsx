@@ -34,57 +34,66 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import AppListItem from '../AppListItem';
+import { getImmutableInstalledApp } from '../../models';
 
-const electron = require('electron');
+const app = getImmutableInstalledApp({
+    name: 'pc-nrfconnect-foobar',
+    version: '1.2.3',
+    path: '/path/to/pc-nrfconnect-foobar',
+    isOfficial: true,
+});
 
-function createSplashScreen() {
-    let splashScreen = new electron.BrowserWindow({
-        width: 400,
-        height: 223,
-        frame: false,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        resizable: false,
-        show: false,
-        transparent: true,
-    });
-    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
-    splashScreen.on('closed', () => {
-        splashScreen = null;
-    });
-    splashScreen.show();
-    return splashScreen;
-}
-
-function createWindow(options) {
-    const mergedOptions = Object.assign({
-        minWidth: 308,
-        minHeight: 499,
-        show: false,
-        autoHideMenuBar: true,
-    }, options);
-    const browserWindow = new electron.BrowserWindow(mergedOptions);
-
-    let splashScreen;
-    if (options.splashScreen) {
-        splashScreen = createSplashScreen();
-    }
-
-    browserWindow.loadURL(options.url);
-
-    browserWindow.webContents.on('did-finish-load', () => {
-        if (splashScreen && !splashScreen.isDestroyed()) {
-            splashScreen.close();
-        }
-        const title = options.title || 'nRF Connect';
-        browserWindow.setTitle(title);
-        browserWindow.show();
+describe('AppListItem', () => {
+    it('should render with required props', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
 
-    return browserWindow;
-}
+    it('should render with displayName instead of name if provided', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('displayName', 'Foobar Tool')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-module.exports = {
-    createWindow,
-};
+    it('should render custom icon if provided', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('iconPath', './path/to/icon.png')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render official if isOfficial is true', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('isOfficial', true)}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when load button has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <AppListItem
+                app={app}
+                onClick={onClick}
+            />,
+        );
+        wrapper.find('AppLoadButton').first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
+});

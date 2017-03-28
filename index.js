@@ -37,7 +37,11 @@
 'use strict';
 
 const electron = require('electron');
+const argv = require('yargs').argv;
+const path = require('path');
+
 const browser = require('./main/browser');
+const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
 const packageJson = require('./package.json');
 
@@ -50,20 +54,67 @@ Menu.setApplicationMenu(applicationMenu);
 
 global.homeDir = electronApp.getPath('home');
 global.userDataDir = electronApp.getPath('userData');
+global.appsRootDir = argv['apps-root-dir'] || path.join(global.homeDir, '.nrfconnect-apps');
 
-let mainWindow;
+let loaderWindow;
+const appWindows = [];
 
-function initBrowserWindow() {
-    mainWindow = browser.createWindow({
+function openLoaderWindow() {
+    loaderWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/app/index.html`,
-        splashScreen: true,
+        url: `file://${__dirname}/lib/windows/loader/index.html`,
         icon: `${__dirname}/resources/nrfconnect.png`,
+        width: 670,
+        height: 500,
+        center: true,
+        splashScreen: true,
+    });
+
+    loaderWindow.on('close', event => {
+        if (appWindows.length > 0) {
+            event.preventDefault();
+            loaderWindow.hide();
+        }
+    });
+}
+
+function openAppWindow(app) {
+    const lastWindowState = settings.loadLastWindow();
+    const appWindow = browser.createWindow({
+        title: `nRF Connect v${packageJson.version} - ${app.displayName || app.name}`,
+        url: `file://${__dirname}/lib/windows/app/index.html?appPath=${app.path}`,
+        icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+        x: lastWindowState.x,
+        y: lastWindowState.y,
+        width: lastWindowState.width,
+        height: lastWindowState.height,
+    });
+
+    appWindows.push(appWindow);
+
+    appWindow.webContents.on('did-finish-load', () => {
+        if (lastWindowState.maximized) {
+            appWindow.maximize();
+        }
+    });
+
+    appWindow.on('close', () => {
+        settings.storeLastWindow(appWindow);
+    });
+
+    appWindow.on('closed', () => {
+        const index = appWindows.indexOf(appWindow);
+        if (index > -1) {
+            appWindows.splice(index, 1);
+        }
+        if (appWindows.length === 0) {
+            electronApp.quit();
+        }
     });
 }
 
 electronApp.on('ready', () => {
-    initBrowserWindow();
+    openLoaderWindow();
 });
 
 electronApp.on('window-all-closed', () => {
@@ -71,14 +122,14 @@ electronApp.on('window-all-closed', () => {
 });
 
 ipcMain.on('open-app-loader', () => {
-    browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
-        width: 650,
-        height: 500,
-        splashScreen: false,
-        keepWindowSettings: false,
-        modal: true,
-        parent: mainWindow,
-    });
+    if (!loaderWindow.isVisible()) {
+        loaderWindow.show();
+    }
+});
+
+ipcMain.on('open-app', (event, app) => {
+    if (loaderWindow.isVisible()) {
+        loaderWindow.hide();
+    }
+    openAppWindow(app);
 });

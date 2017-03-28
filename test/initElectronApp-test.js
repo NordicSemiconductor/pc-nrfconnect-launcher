@@ -34,57 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import { startElectronApp, stopElectronApp } from './setup';
 
-const electron = require('electron');
+let electronApp;
 
-function createSplashScreen() {
-    let splashScreen = new electron.BrowserWindow({
-        width: 400,
-        height: 223,
-        frame: false,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        resizable: false,
-        show: false,
-        transparent: true,
-    });
-    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
-    splashScreen.on('closed', () => {
-        splashScreen = null;
-    });
-    splashScreen.show();
-    return splashScreen;
-}
+describe('electron application', () => {
+    beforeEach(() => (
+        startElectronApp()
+            .then(startedApp => {
+                electronApp = startedApp;
+            })
+    ));
 
-function createWindow(options) {
-    const mergedOptions = Object.assign({
-        minWidth: 308,
-        minHeight: 499,
-        show: false,
-        autoHideMenuBar: true,
-    }, options);
-    const browserWindow = new electron.BrowserWindow(mergedOptions);
+    afterEach(() => (
+        stopElectronApp(electronApp)
+    ));
 
-    let splashScreen;
-    if (options.splashScreen) {
-        splashScreen = createSplashScreen();
-    }
+    it('should open two windows', () => (
+        electronApp.client.getWindowCount()
+            .then(windowCount => expect(windowCount).toEqual(2))
+    ));
 
-    browserWindow.loadURL(options.url);
-
-    browserWindow.webContents.on('did-finish-load', () => {
-        if (splashScreen && !splashScreen.isDestroyed()) {
-            splashScreen.close();
-        }
-        const title = options.title || 'nRF Connect';
-        browserWindow.setTitle(title);
-        browserWindow.show();
-    });
-
-    return browserWindow;
-}
-
-module.exports = {
-    createWindow,
-};
+    it('should display splash screen image in first window', () => (
+        electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
+            .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
+    ));
+});

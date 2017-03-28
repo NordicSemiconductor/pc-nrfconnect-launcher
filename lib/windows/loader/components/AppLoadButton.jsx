@@ -34,57 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React, { PropTypes } from 'react';
 
-const electron = require('electron');
+const AppLoadButton = ({ onClick }) => (
+    <button title="Load app" className="btn btn-primary core-btn" onClick={onClick}>
+        <span className="icon-play" />
+        <span>Load</span>
+    </button>
+);
 
-function createSplashScreen() {
-    let splashScreen = new electron.BrowserWindow({
-        width: 400,
-        height: 223,
-        frame: false,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        resizable: false,
-        show: false,
-        transparent: true,
-    });
-    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
-    splashScreen.on('closed', () => {
-        splashScreen = null;
-    });
-    splashScreen.show();
-    return splashScreen;
-}
-
-function createWindow(options) {
-    const mergedOptions = Object.assign({
-        minWidth: 308,
-        minHeight: 499,
-        show: false,
-        autoHideMenuBar: true,
-    }, options);
-    const browserWindow = new electron.BrowserWindow(mergedOptions);
-
-    let splashScreen;
-    if (options.splashScreen) {
-        splashScreen = createSplashScreen();
-    }
-
-    browserWindow.loadURL(options.url);
-
-    browserWindow.webContents.on('did-finish-load', () => {
-        if (splashScreen && !splashScreen.isDestroyed()) {
-            splashScreen.close();
-        }
-        const title = options.title || 'nRF Connect';
-        browserWindow.setTitle(title);
-        browserWindow.show();
-    });
-
-    return browserWindow;
-}
-
-module.exports = {
-    createWindow,
+AppLoadButton.propTypes = {
+    onClick: PropTypes.func.isRequired,
 };
+
+export default AppLoadButton;

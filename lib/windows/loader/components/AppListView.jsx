@@ -34,12 +34,51 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { Iterable } from 'immutable';
+import AppListItem from './AppListItem';
 
-const AppListView = () => (
-    <div>
-        App list
-    </div>
-);
+function getSortedApps(apps) {
+    return apps.sort((a, b) => {
+        const aName = a.displayName || a.name;
+        const bName = b.displayName || b.name;
+        if (aName < bName) {
+            return -1;
+        } else if (aName > bName) {
+            return 1;
+        }
+        return a.isOfficial ? -1 : 1;
+    });
+}
+
+class AppListView extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    render() {
+        const { apps, onAppSelected } = this.props;
+        const sortedApps = getSortedApps(apps);
+        return (
+            <div className="list-group">
+                {
+                    sortedApps.map(app => (
+                        <AppListItem
+                            key={app.path}
+                            app={app}
+                            onClick={() => onAppSelected(app)}
+                        />
+                    ))
+                }
+            </div>
+        );
+    }
+}
+
+AppListView.propTypes = {
+    apps: PropTypes.instanceOf(Iterable).isRequired,
+    onMount: PropTypes.func.isRequired,
+    onAppSelected: PropTypes.func.isRequired,
+};
 
 export default AppListView;

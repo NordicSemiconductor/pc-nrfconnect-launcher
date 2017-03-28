@@ -47,7 +47,8 @@
         "redux-logger": "2.8.0",
         "redux-thunk": "2.2.0",
         "serialport": "4.0.7",
-        "winston": "2.3.1"
+        "winston": "2.3.1",
+        "yargs": "7.0.2"
     },
     "jest": {
         "moduleNameMapper": {

@@ -1,0 +1,240 @@
+exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
+<div
+  className="list-group">
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        appA
+      </h4>
+      <p
+        className="list-group-item-text">
+        official
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        appA
+      </h4>
+      <p
+        className="list-group-item-text">
+        official
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        appA
+      </h4>
+      <p
+        className="list-group-item-text">
+        local
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        appB
+      </h4>
+      <p
+        className="list-group-item-text">
+        official
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        appB
+      </h4>
+      <p
+        className="list-group-item-text">
+        local
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppListView should render with two local apps 1`] = `
+<div
+  className="list-group">
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        pc-nrfconnect-bar
+      </h4>
+      <p
+        className="list-group-item-text">
+        local
+        , v
+        4.5.6
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="core-app-list-item list-group-item">
+    <img
+      alt="App icon"
+      className="core-app-icon"
+      src="test-file-stub" />
+    <div>
+      <h4
+        className="list-group-item-heading">
+        pc-nrfconnect-foo
+      </h4>
+      <p
+        className="list-group-item-text">
+        official
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-load">
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Load app">
+        <span
+          className="icon-play" />
+        <span>
+          Load
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppListView should render without any apps 1`] = `
+<div
+  className="list-group" />
+`;
