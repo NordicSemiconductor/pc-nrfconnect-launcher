@@ -436,7 +436,7 @@ In the body of `decorateMainView` we return a [functional React component](https
 
 ### Beyond Hello World
 
-A simple [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) is proof-of-concept app that demonstrates a real-world use case. Also, in many cases it will make sense to pull in tools like Webpack and Babel in order to use JSX syntax, plus tools for linting and unit testing. For an easy start of app development we provide a [boilerplate repository](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate).
+A simple [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) is a proof-of-concept app that demonstrates a real-world use case. Also, in many cases it will make sense to pull in tools like Webpack and Babel in order to use JSX syntax, plus tools for linting and unit testing. For an easy start of app development we provide a [boilerplate repository](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate).
 
 # Related projects
 nRF Connect builds on top of other sub components that live in their own GitHub repositories:
