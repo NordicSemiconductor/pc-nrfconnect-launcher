@@ -38,6 +38,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppListItem from '../AppListItem';
+import AppLoadButton from '../AppLoadButton';
 import { getImmutableInstalledApp } from '../../models';
 
 const app = getImmutableInstalledApp({
@@ -92,7 +93,7 @@ describe('AppListItem', () => {
                 onClick={onClick}
             />,
         );
-        wrapper.find('AppLoadButton').first().simulate('click');
+        wrapper.find(AppLoadButton).first().simulate('click');
 
         expect(onClick).toHaveBeenCalled();
     });
