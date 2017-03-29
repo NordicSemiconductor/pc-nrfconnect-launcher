@@ -1,4 +1,4 @@
 {
   "testPathDirs": ["test"],
-  "testRegex": ".*\\-test\\.js$"
+  "testRegex": ".*-test\\.js$"
 }
