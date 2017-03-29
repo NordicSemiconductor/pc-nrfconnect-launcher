@@ -39,6 +39,7 @@ import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppListView from '../AppListView';
+import AppLoadButton from '../AppLoadButton';
 import { getImmutableInstalledApp } from '../../models';
 
 describe('AppListView', () => {
@@ -124,7 +125,7 @@ describe('AppListView', () => {
                 onMount={() => {}}
             />,
         );
-        wrapper.find('AppLoadButton').first().simulate('click');
+        wrapper.find(AppLoadButton).first().simulate('click');
 
         expect(onAppSelected).toHaveBeenCalledWith(app);
     });
