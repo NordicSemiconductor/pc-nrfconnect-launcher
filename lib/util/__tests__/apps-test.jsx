@@ -51,18 +51,6 @@ describe('decorate', () => {
     FooComponent.propTypes = { id: PropTypes.string };
     FooComponent.defaultProps = { id: 'foo' };
 
-    it('should render default component when app is not loaded', () => {
-        setApp(null);
-        const DecoratedFoo = decorate(FooComponent, 'Foo');
-        const rendered = renderer.create(<DecoratedFoo />).toJSON();
-
-        expect(rendered).toEqual({
-            type: 'div',
-            props: { id: 'foo' },
-            children: null,
-        });
-    });
-
     it('should render default component when app does not implement decorate method', () => {
         setApp({});
         const DecoratedFoo = decorate(FooComponent, 'Foo');
@@ -190,24 +178,6 @@ describe('connect', () => {
         ).toJSON()
     );
 
-    it('should render with default props when app is not loaded', () => {
-        setApp(null);
-
-        const ConnectedFoo = connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        )(FooComponent, 'Foo');
-
-        expect(renderWithProvider(ConnectedFoo)).toEqual({
-            type: 'button',
-            props: {
-                ...defaultStateProps,
-                ...defaultDispatchProps,
-            },
-            children: null,
-        });
-    });
-
     it('should render with default props when app does not implement mapToProps functions', () => {
         setApp({});
 
@@ -284,18 +254,6 @@ describe('decorateReducer', () => {
                 return state;
         }
     };
-
-    it('should handle default action when app is not loaded', () => {
-        setApp(null);
-        const decoratedReducer = decorateReducer(fooReducer, 'Foo');
-
-        const state = decoratedReducer(initialState, {
-            type: FOO_ACTION,
-            value: 'foobar',
-        });
-
-        expect(state.foo).toEqual('foobar');
-    });
 
     it('should handle default action when app does not decorate reducer', () => {
         setApp({});
@@ -421,11 +379,6 @@ describe('decorateReducer', () => {
 });
 
 describe('getAppConfig', () => {
-    it('should throw error if no app is loaded', () => {
-        setApp(null);
-        expect(() => getAppConfig()).toThrow();
-    });
-
     it('should throw error if app has no \'config\' property', () => {
         setApp({});
         expect(() => getAppConfig()).toThrow();
