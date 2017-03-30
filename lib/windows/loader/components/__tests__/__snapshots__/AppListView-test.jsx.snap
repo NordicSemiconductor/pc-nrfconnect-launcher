@@ -236,5 +236,14 @@ exports[`AppListView should render with two local apps 1`] = `
 
 exports[`AppListView should render without any apps 1`] = `
 <div
-  className="list-group" />
+  className="list-group">
+  <div>
+    <h4>
+      No apps found
+    </h4>
+    <p>
+      Online installation of apps will be available soon. Before that time, you can create or install an app manually by following the instructions in README.md.
+    </p>
+  </div>
+</div>
 `;

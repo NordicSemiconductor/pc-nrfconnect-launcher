@@ -62,13 +62,22 @@ class AppListView extends React.Component {
         return (
             <div className="list-group">
                 {
-                    sortedApps.map(app => (
-                        <AppListItem
-                            key={app.path}
-                            app={app}
-                            onClick={() => onAppSelected(app)}
-                        />
-                    ))
+                    sortedApps.size > 0 ?
+                        sortedApps.map(app => (
+                            <AppListItem
+                                key={app.path}
+                                app={app}
+                                onClick={() => onAppSelected(app)}
+                            />
+                        )) :
+                        <div>
+                            <h4>No apps found</h4>
+                            <p>
+                                Online installation of apps will be available soon. Before that
+                                time, you can create or install an app manually by following the
+                                instructions in README.md.
+                            </p>
+                        </div>
                 }
             </div>
         );
