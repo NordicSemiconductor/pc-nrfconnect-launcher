@@ -155,6 +155,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>decorateErrorDialog</code><br />
         <code>decorateFirmwareDialog</code><br />
         <code>decorateLogo</code><br />
         <code>decorateLogEntry</code><br />
@@ -187,6 +188,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>mapErrorDialogDispatch</code><br />
         <code>mapFirmwareDialogDispatch</code><br />
         <code>mapLogHeaderDispatch</code><br />
         <code>mapLogViewerDispatch</code><br />
@@ -214,6 +216,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>mapErrorDialogState</code><br />
         <code>mapFirmwareDialogState</code><br />
         <code>mapLogHeaderState</code><br />
         <code>mapLogViewerState</code><br />
@@ -250,6 +253,7 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>reduceErrorDialog</code><br />
         <code>reduceFirmwareDialog</code><br />
         <code>reduceLog</code><br />
         <code>reduceNavMenu</code><br />
