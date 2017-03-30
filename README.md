@@ -94,7 +94,7 @@ Download and install the latest [nRF5x-Command-Line-Tools](https://www.nordicsem
 
 ### Linux and macOS
 
-> J-Link driver needs to be separately installed on Linux and macOS, download and install appropriate package for your operating system from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*.
+J-Link driver needs to be separately installed on Linux and macOS, download and install appropriate package for your operating system from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*.
 
 nRF5x-Command-Line-Tools for Linux and macOS are included in the nrfjprog directory in this repository. In the nRF Connect release artifacts for Linux and macOS, these are set up automatically. However, during development this manual step is required:
 
