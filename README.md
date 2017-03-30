@@ -94,6 +94,8 @@ Download and install the latest [nRF5x-Command-Line-Tools](https://www.nordicsem
 
 ### Linux and macOS
 
+J-Link driver needs to be separately installed on Linux and macOS, download and install appropriate package for your operating system from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*.
+
 nRF5x-Command-Line-Tools for Linux and macOS are included in the nrfjprog directory in this repository. In the nRF Connect release artifacts for Linux and macOS, these are set up automatically. However, during development this manual step is required:
 
 Linux:
@@ -351,7 +353,7 @@ When implementing the `map*Dispatch` methods, apps can create and dispatch custo
             logger.info(`Serial port ${port.comName} was selected`);
         };
     }
-    
+
     module.exports = {
         mapSerialPortSelectorDispatch: (dispatch, props) => ({
             ...props,
@@ -431,7 +433,7 @@ Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents
 When reloading (Ctrl+R) the application, it should now print "Hello World!" in the main view and "Loaded app: pc-nrfconnect-helloworld" should be shown in the log viewer.
 
 The app implements a `decorateMainView` function, which tells nRF Connect that the app wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
- 
+
 In the body of `decorateMainView` we return a [functional React component](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components). A React class could also have been returned here. This receives the props that were originally passed to `MainView` by nRF Connect, and renders the `MainView` component with "Hello World!" as a child.
 
 ### Beyond Hello World
