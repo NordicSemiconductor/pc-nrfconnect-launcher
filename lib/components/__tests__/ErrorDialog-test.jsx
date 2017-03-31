@@ -34,21 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainViewContainer from '../containers/MainViewContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import Logo from '../../../components/Logo';
+/* eslint-disable import/first */
 
-export default () => (
-    <div className="core-main-area">
-        <div className="core-nav-bar">
-            <NavMenuContainer />
-            <Logo />
-        </div>
-        <div className="core-main-layout">
-            <MainViewContainer />
-        </div>
-        <ErrorDialogContainer />
-    </div>
-);
+// Do not render react-bootstrap components in tests
+jest.mock('react-bootstrap', () => ({
+    Modal: 'Modal',
+    Button: 'Button',
+    ModalHeader: 'ModalHeader',
+    ModalFooter: 'ModalFooter',
+    ModalBody: 'ModalBody',
+    ModalTitle: 'ModalTitle',
+}));
+
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { List } from 'immutable';
+import ErrorDialog from '../ErrorDialog';
+
+describe('ErrorDialog', () => {
+    it('should render hidden dialog', () => {
+        expect(renderer.create(
+            <ErrorDialog
+                messages={List([])}
+                onClose={() => {}}
+                isVisible={false}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render visible dialog with one message', () => {
+        expect(renderer.create(
+            <ErrorDialog
+                messages={List(['Oops. An error occurred.'])}
+                onClose={() => {}}
+                isVisible
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render visible dialog with two messages', () => {
+        expect(renderer.create(
+            <ErrorDialog
+                messages={List([
+                    'Oops. An error occurred.',
+                    'Another error',
+                ])}
+                onClose={() => {}}
+                isVisible
+            />,
+        )).toMatchSnapshot();
+    });
+});

@@ -34,21 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainViewContainer from '../containers/MainViewContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import Logo from '../../../components/Logo';
+import React, { PropTypes } from 'react';
+import { List } from 'immutable';
 
-export default () => (
-    <div className="core-main-area">
-        <div className="core-nav-bar">
-            <NavMenuContainer />
-            <Logo />
-        </div>
-        <div className="core-main-layout">
-            <MainViewContainer />
-        </div>
-        <ErrorDialogContainer />
-    </div>
+import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
+
+const ErrorDialog = ({ isVisible, messages, onClose }) => (
+    <Modal show={isVisible} onHide={onClose}>
+        <ModalHeader closeButton>
+            <ModalTitle>Error</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            {
+                messages.map(message => (
+                    <p key={message}>{message}</p>
+                ))
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
+        </ModalFooter>
+    </Modal>
 );
+
+ErrorDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    messages: PropTypes.instanceOf(List).isRequired,
+    onClose: PropTypes.func.isRequired,
+};
+
+export default ErrorDialog;
