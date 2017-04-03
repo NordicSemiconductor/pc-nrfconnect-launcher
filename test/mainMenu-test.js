@@ -57,11 +57,11 @@ describe('main menu', () => {
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
 
-    it('should show a "Load other app" item when main menu button has been clicked', () => (
+    it('should show a "Launch other app" item when main menu button has been clicked', () => (
         loadFirstApp(electronApp)
             .then(() => electronApp.client.windowByIndex(1))
             .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="Load other app"]')
+            .isVisible('#main-menu-list a[title*="Launch other app"]')
             .then(isVisible => expect(isVisible).toEqual(true))
     ));
 });

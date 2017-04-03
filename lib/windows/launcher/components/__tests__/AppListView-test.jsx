@@ -39,7 +39,7 @@ import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppListView from '../AppListView';
-import AppLoadButton from '../AppLoadButton';
+import AppLaunchButton from '../AppLaunchButton';
 import { getImmutableInstalledApp } from '../../models';
 
 describe('AppListView', () => {
@@ -110,7 +110,7 @@ describe('AppListView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should invoke onAppSelected with local app item when app is clicked', () => {
+    it('should invoke onAppSelected with given app item when app is clicked', () => {
         const app = getImmutableInstalledApp({
             name: 'pc-nrfconnect-foobar',
             version: '1.2.3',
@@ -125,7 +125,7 @@ describe('AppListView', () => {
                 onMount={() => {}}
             />,
         );
-        wrapper.find(AppLoadButton).first().simulate('click');
+        wrapper.find(AppLaunchButton).first().simulate('click');
 
         expect(onAppSelected).toHaveBeenCalledWith(app);
     });

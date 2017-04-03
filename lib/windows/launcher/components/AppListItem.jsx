@@ -34,61 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { ipcRenderer } from 'electron';
-import { getInstalledApps } from '../../../util/apps';
-import * as ErrorDialogActions from '../../../actions/errorDialogActions';
+import React, { PropTypes } from 'react';
+import AppLaunchButton from './AppLaunchButton';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-export const LOAD_APP = 'LOAD_APP';
-export const RETRIEVE_INSTALLED_APPS = 'RETRIEVE_INSTALLED_APPS';
-export const RETRIEVE_INSTALLED_APPS_SUCCESS = 'RETRIEVE_INSTALLED_APPS_SUCCESS';
-export const RETRIEVE_INSTALLED_APPS_ERROR = 'RETRIEVE_INSTALLED_APPS_ERROR';
+const AppListItem = ({ app, onClick }) => (
+    <div className="core-app-list-item list-group-item">
+        <img className="core-app-icon" src={app.iconPath || nrfconnectLogo} alt="App icon" />
+        <div>
+            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.version}</p>
+        </div>
+        <div className="core-app-load">
+            <AppLaunchButton onClick={onClick} />
+        </div>
+    </div>
+);
 
-function loadAppAction(app) {
-    return {
-        type: LOAD_APP,
-        app,
-    };
-}
+AppListItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        version: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        iconPath: PropTypes.string,
+        isOfficial: PropTypes.bool.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
-function retrieveInstalledAppsAction() {
-    return {
-        type: RETRIEVE_INSTALLED_APPS,
-    };
-}
+AppListItem.defaultProps = {
+    iconPath: nrfconnectLogo,
+};
 
-function retrieveInstalledAppsSuccess(apps) {
-    return {
-        type: RETRIEVE_INSTALLED_APPS_SUCCESS,
-        apps,
-    };
-}
-
-function retrieveInstalledAppsError() {
-    return {
-        type: RETRIEVE_INSTALLED_APPS_ERROR,
-    };
-}
-
-export function retrieveInstalledApps() {
-    return dispatch => {
-        dispatch(retrieveInstalledAppsAction());
-        try {
-            const apps = getInstalledApps();
-            dispatch(retrieveInstalledAppsSuccess(apps));
-        } catch (error) {
-            dispatch(retrieveInstalledAppsError());
-            dispatch(ErrorDialogActions.showDialog(error.message));
-        }
-    };
-}
-
-export function loadApp(app) {
-    return dispatch => {
-        dispatch(loadAppAction(app));
-
-        // The apps in state are Immutable Maps which cannot be sent over IPC.
-        // Converting to plain JS object before sending to the main process.
-        const appObj = app.toJS();
-        ipcRenderer.send('open-app', appObj);
-    };
-}
+export default AppListItem;

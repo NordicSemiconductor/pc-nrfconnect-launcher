@@ -34,37 +34,67 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import AppLoadButton from './AppLoadButton';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import AppListItem from '../AppListItem';
+import AppLaunchButton from '../AppLaunchButton';
+import { getImmutableInstalledApp } from '../../models';
 
-const AppListItem = ({ app, onClick }) => (
-    <div className="core-app-list-item list-group-item">
-        <img className="core-app-icon" src={app.iconPath || nrfconnectLogo} alt="App icon" />
-        <div>
-            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.version}</p>
-        </div>
-        <div className="core-app-load">
-            <AppLoadButton onClick={onClick} />
-        </div>
-    </div>
-);
+const app = getImmutableInstalledApp({
+    name: 'pc-nrfconnect-foobar',
+    version: '1.2.3',
+    path: '/path/to/pc-nrfconnect-foobar',
+    isOfficial: true,
+});
 
-AppListItem.propTypes = {
-    app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        displayName: PropTypes.string,
-        version: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
-        iconPath: PropTypes.string,
-        isOfficial: PropTypes.bool.isRequired,
-    }).isRequired,
-    onClick: PropTypes.func.isRequired,
-};
+describe('AppListItem', () => {
+    it('should render with required props', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-AppListItem.defaultProps = {
-    iconPath: nrfconnectLogo,
-};
+    it('should render with displayName instead of name if provided', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('displayName', 'Foobar Tool')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-export default AppListItem;
+    it('should render custom icon if provided', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('iconPath', './path/to/icon.png')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render official if isOfficial is true', () => {
+        expect(renderer.create(
+            <AppListItem
+                app={app.set('isOfficial', true)}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when launch button has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <AppListItem
+                app={app}
+                onClick={onClick}
+            />,
+        );
+        wrapper.find(AppLaunchButton).first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
+});

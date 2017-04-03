@@ -71,7 +71,7 @@ function stopElectronApp(electronApp) {
 
 function loadFirstApp(electronApp) {
     return electronApp.client.windowByIndex(1)
-        .click('button[title="Load app"]')
+        .click('button[title="Launch app"]')
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
 

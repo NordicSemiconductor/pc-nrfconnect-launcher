@@ -56,13 +56,13 @@ global.homeDir = electronApp.getPath('home');
 global.userDataDir = electronApp.getPath('userData');
 global.appsRootDir = argv['apps-root-dir'] || path.join(global.homeDir, '.nrfconnect-apps');
 
-let loaderWindow;
+let launcherWindow;
 const appWindows = [];
 
-function openLoaderWindow() {
-    loaderWindow = browser.createWindow({
+function openLauncherWindow() {
+    launcherWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/loader/index.html`,
+        url: `file://${__dirname}/lib/windows/launcher/index.html`,
         icon: `${__dirname}/resources/nrfconnect.png`,
         width: 670,
         height: 500,
@@ -70,10 +70,10 @@ function openLoaderWindow() {
         splashScreen: true,
     });
 
-    loaderWindow.on('close', event => {
+    launcherWindow.on('close', event => {
         if (appWindows.length > 0) {
             event.preventDefault();
-            loaderWindow.hide();
+            launcherWindow.hide();
         }
     });
 }
@@ -114,22 +114,22 @@ function openAppWindow(app) {
 }
 
 electronApp.on('ready', () => {
-    openLoaderWindow();
+    openLauncherWindow();
 });
 
 electronApp.on('window-all-closed', () => {
     electronApp.quit();
 });
 
-ipcMain.on('open-app-loader', () => {
-    if (!loaderWindow.isVisible()) {
-        loaderWindow.show();
+ipcMain.on('open-app-launcher', () => {
+    if (!launcherWindow.isVisible()) {
+        launcherWindow.show();
     }
 });
 
 ipcMain.on('open-app', (event, app) => {
-    if (loaderWindow.isVisible()) {
-        loaderWindow.hide();
+    if (launcherWindow.isVisible()) {
+        launcherWindow.hide();
     }
     openAppWindow(app);
 });

@@ -39,7 +39,7 @@ import packageJson from '../package.json';
 
 let electronApp;
 
-describe('loader window', () => {
+describe('launcher window', () => {
     beforeEach(() => {
         return startElectronApp()
             .then(startedApp => {
@@ -51,7 +51,7 @@ describe('loader window', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should show package.json version in loader window title', () => (
+    it('should show package.json version in launcher window title', () => (
         electronApp.client.windowByIndex(1).browserWindow.getTitle()
             .then(title => expect(title).toContain(packageJson.version))
     ));
@@ -62,9 +62,9 @@ describe('loader window', () => {
             .then(text => expect(text).toEqual('Test App'))
     ));
 
-    it('should load app window when clicking Load', () => (
+    it('should load app window when clicking Launch', () => (
         electronApp.client.windowByIndex(1)
-            .click('button[title="Load app"]')
+            .click('button[title="Launch app"]')
             .then(() => electronApp.client.waitUntilWindowLoaded())
             .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
             .then(title => expect(title).toContain('Test App'))

@@ -34,15 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'babel-polyfill';
+import React, { PropTypes } from 'react';
 
-import React from 'react';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import rootReducer from './reducers';
-import '../../../resources/css/loader.less';
+const AppLaunchButton = ({ onClick }) => (
+    <button title="Launch app" className="btn btn-primary core-btn" onClick={onClick}>
+        <span className="icon-play" />
+        <span>Launch</span>
+    </button>
+);
 
-const store = configureStore(rootReducer);
-const rootElement = React.createElement(RootContainer, { store });
-render(rootElement, document.getElementById('webapp'));
+AppLaunchButton.propTypes = {
+    onClick: PropTypes.func.isRequired,
+};
+
+export default AppLaunchButton;
