@@ -429,7 +429,7 @@ Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents
         ),
     };
 
-When reloading (Ctrl+R) the application, it should now print "Hello World!" in the main view and "Loaded app: pc-nrfconnect-helloworld" should be shown in the log viewer.
+When starting nRF Connect, it should now show the Hello World app in the launcher window. When launching the app, "Hello World!" should be shown in the main view.
 
 The app implements a `decorateMainView` function, which tells nRF Connect that the app wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
 
