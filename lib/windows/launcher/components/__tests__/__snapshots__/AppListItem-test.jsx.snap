@@ -22,11 +22,11 @@ exports[`AppListItem should render custom icon if provided 1`] = `
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
-      title="Load app">
+      title="Launch app">
       <span
         className="icon-play" />
       <span>
-        Load
+        Launch
       </span>
     </button>
   </div>
@@ -57,11 +57,11 @@ exports[`AppListItem should render official if isOfficial is true 1`] = `
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
-      title="Load app">
+      title="Launch app">
       <span
         className="icon-play" />
       <span>
-        Load
+        Launch
       </span>
     </button>
   </div>
@@ -92,11 +92,11 @@ exports[`AppListItem should render with displayName instead of name if provided 
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
-      title="Load app">
+      title="Launch app">
       <span
         className="icon-play" />
       <span>
-        Load
+        Launch
       </span>
     </button>
   </div>
@@ -127,11 +127,11 @@ exports[`AppListItem should render with required props 1`] = `
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
-      title="Load app">
+      title="Launch app">
       <span
         className="icon-play" />
       <span>
-        Load
+        Launch
       </span>
     </button>
   </div>

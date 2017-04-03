@@ -24,11 +24,11 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -56,11 +56,11 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -88,11 +88,11 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -120,11 +120,11 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -152,11 +152,11 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -190,11 +190,11 @@ exports[`AppListView should render with two local apps 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>
@@ -222,11 +222,11 @@ exports[`AppListView should render with two local apps 1`] = `
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Load app">
+        title="Launch app">
         <span
           className="icon-play" />
         <span>
-          Load
+          Launch
         </span>
       </button>
     </div>

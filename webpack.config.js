@@ -19,7 +19,7 @@ module.exports = {
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
         app: './lib/windows/app/index',
-        loader: './lib/windows/loader/index',
+        launcher: './lib/windows/launcher/index',
     },
     output: {
         path: path.resolve('dist'),
