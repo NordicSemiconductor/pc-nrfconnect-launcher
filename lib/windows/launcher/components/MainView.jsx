@@ -37,12 +37,10 @@
 import React, { PropTypes } from 'react';
 import AppListViewContainer from '../containers/AppListViewContainer';
 import AppManagementView from './AppManagementView';
-import SettingsView from './SettingsView';
 
 const views = {
     1: <AppListViewContainer />,
     2: <AppManagementView />,
-    3: <SettingsView />,
 };
 
 const MainView = ({ navId }) => views[navId];
