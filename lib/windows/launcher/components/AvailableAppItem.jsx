@@ -35,67 +35,39 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Iterable } from 'immutable';
-import InstalledAppItem from '../components/InstalledAppItem';
-import AvailableAppItem from '../components/AvailableAppItem';
-import Spinner from '../../../components/Spinner';
+import AppItemButton from './AppItemButton';
 
-function getSortedApps(apps) {
-    return apps.sort((a, b) => {
-        const aName = a.displayName || a.name;
-        const bName = b.displayName || b.name;
-        return aName.localeCompare(bName);
-    });
-}
+const AvailableAppItem = ({ app, onInstall, onReadMore }) => (
+    <div className="core-app-management-item list-group-item">
+        <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+        <div className="list-group-item-text">
+            <p>{app.description}</p>
+            <div className="core-app-management-item-footer">
+                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
+                    More information
+                </button>
+                <div className="core-app-management-item-buttons">
+                    <AppItemButton
+                        text="Install"
+                        title={`Install ${app.displayName || app.name}`}
+                        iconClass="glyphicon glyphicon-download-alt"
+                        onClick={onInstall}
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+);
 
-class AppManagementView extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
-
-    render() {
-        const {
-            apps,
-            isRetrievingApps,
-            onInstall,
-            onRemove,
-            onUpgrade,
-            onReadMore,
-        } = this.props;
-
-        return isRetrievingApps ?
-            <Spinner /> :
-            <div>
-                {
-                    getSortedApps(apps).map(app => (
-                        app.currentVersion ?
-                            <InstalledAppItem
-                                key={app.name}
-                                app={app}
-                                onRemove={() => onRemove(app.name)}
-                                onUpgrade={() => onUpgrade(app.name, app.latestVersion)}
-                                onReadMore={() => onReadMore(app.homepage)}
-                            /> :
-                            <AvailableAppItem
-                                key={app.name}
-                                app={app}
-                                onInstall={() => onInstall(app.name)}
-                                onReadMore={() => onReadMore(app.homepage)}
-                            />
-                    ))
-                }
-            </div>;
-    }
-}
-
-AppManagementView.propTypes = {
-    apps: PropTypes.instanceOf(Iterable).isRequired,
-    isRetrievingApps: PropTypes.bool.isRequired,
-    onMount: PropTypes.func.isRequired,
+AvailableAppItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        description: PropTypes.string.isRequired,
+        homepage: PropTypes.string,
+    }).isRequired,
     onInstall: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
 };
 
-export default AppManagementView;
+export default AvailableAppItem;

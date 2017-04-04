@@ -34,26 +34,57 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppListView';
-import * as AppsActions from '../actions/appsActions';
+import React, { PropTypes } from 'react';
+import { Iterable } from 'immutable';
+import LaunchableAppItem from './LaunchableAppItem';
 
-function mapStateToProps(state) {
-    const { apps } = state;
-
-    return {
-        apps: apps.installedApps,
-    };
+function getSortedApps(apps) {
+    return apps.sort((a, b) => {
+        const aName = a.displayName || a.name;
+        const bName = b.displayName || b.name;
+        const compared = aName.localeCompare(bName);
+        if (compared === 0) {
+            return a.isOfficial ? -1 : 1;
+        }
+        return compared;
+    });
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => dispatch(AppsActions.retrieveInstalledApps()),
-        onAppSelected: app => dispatch(AppsActions.launchApp(app)),
-    };
+class AppLaunchView extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    render() {
+        const { apps, onAppSelected } = this.props;
+        const sortedApps = getSortedApps(apps);
+        return (
+            <div className="list-group">
+                {
+                    sortedApps.size > 0 ?
+                        sortedApps.map(app => (
+                            <LaunchableAppItem
+                                key={app.path}
+                                app={app}
+                                onClick={() => onAppSelected(app)}
+                            />
+                        )) :
+                        <div>
+                            <h4>Welcome to nRF Connect</h4>
+                            <p>
+                                To get started, go to <i>Add/remove apps</i> to install some apps.
+                            </p>
+                        </div>
+                }
+            </div>
+        );
+    }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+AppLaunchView.propTypes = {
+    apps: PropTypes.instanceOf(Iterable).isRequired,
+    onMount: PropTypes.func.isRequired,
+    onAppSelected: PropTypes.func.isRequired,
+};
+
+export default AppLaunchView;

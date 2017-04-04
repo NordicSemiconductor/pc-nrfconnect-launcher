@@ -34,34 +34,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
-
-const ImmutableApp = Record({
-    name: null,
-    displayName: null,
-    description: null,
-    homepage: null,
-    currentVersion: null,
-    latestVersion: null,
-    path: null,
-    iconPath: null,
-    isOfficial: null,
-});
-
-function getImmutableApp(app) {
-    return new ImmutableApp({
-        name: app.name,
-        displayName: app.displayName,
-        description: app.description,
-        homepage: app.homepage,
-        currentVersion: app.currentVersion,
-        latestVersion: app.latestVersion,
-        path: app.path,
-        iconPath: app.iconPath,
-        isOfficial: app.isOfficial,
-    });
+function parseOutdated(yarnOutput) {
+    return yarnOutput
+        .split(/\r?\n/)
+        .map(line => line.split(/\s+/))
+        .filter(lineArray => lineArray.length > 4 && lineArray[4] === 'dependencies')
+        .reduce((result, lineArray) => {
+            const name = lineArray[0];
+            const latestVersion = lineArray[3];
+            return Object.assign({}, result, {
+                [name]: latestVersion,
+            });
+        }, {});
 }
 
-export default {
-    getImmutableApp,
+module.exports = {
+    parseOutdated,
 };

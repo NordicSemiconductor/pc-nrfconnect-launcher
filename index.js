@@ -38,8 +38,9 @@
 
 const electron = require('electron');
 const argv = require('yargs').argv;
-const path = require('path');
 
+const config = require('./main/config');
+const apps = require('./main/apps');
 const browser = require('./main/browser');
 const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
@@ -48,13 +49,15 @@ const packageJson = require('./package.json');
 const electronApp = electron.app;
 const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
+
+config.init(argv);
+global.homeDir = config.getHomeDir();
+global.userDataDir = config.getUserDataDir();
+global.appsRootDir = config.getAppsRootDir();
 
 const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 Menu.setApplicationMenu(applicationMenu);
-
-global.homeDir = electronApp.getPath('home');
-global.userDataDir = electronApp.getPath('userData');
-global.appsRootDir = argv['apps-root-dir'] || path.join(global.homeDir, '.nrfconnect-apps');
 
 let launcherWindow;
 const appWindows = [];
@@ -114,7 +117,35 @@ function openAppWindow(app) {
 }
 
 electronApp.on('ready', () => {
-    openLauncherWindow();
+    apps.initAppsDirectory()
+        .then(() => openLauncherWindow())
+        .catch(error => {
+            if (error.code === apps.APPS_DIR_INIT_ERROR) {
+                dialog.showMessageBox({
+                    type: 'error',
+                    title: 'Initialization error',
+                    message: 'Unable to initialize apps directory',
+                    detail: error.message,
+                    buttons: ['OK'],
+                }, () => electronApp.quit());
+            } else if (error.code === apps.APPS_UPDATE_ERROR) {
+                dialog.showMessageBox({
+                    type: 'warning',
+                    title: 'Network problem',
+                    message: 'Unable to update the official apps list',
+                    detail: error.message,
+                    buttons: ['OK'],
+                }, () => openLauncherWindow());
+            } else {
+                dialog.showMessageBox({
+                    type: 'error',
+                    title: 'Initialization error',
+                    message: 'Error when starting application',
+                    detail: error.message,
+                    buttons: ['OK'],
+                }, () => electronApp.quit());
+            }
+        });
 });
 
 electronApp.on('window-all-closed', () => {
@@ -132,4 +163,28 @@ ipcMain.on('open-app', (event, app) => {
         launcherWindow.hide();
     }
     openAppWindow(app);
+});
+
+ipcMain.on('get-official-apps', event => {
+    apps.getOfficialApps()
+        .then(officialApps => event.sender.send('get-official-apps-success', officialApps))
+        .catch(error => event.sender.send('get-official-apps-error', error.message));
+});
+
+ipcMain.on('get-local-apps', event => {
+    apps.getLocalApps()
+        .then(localApps => event.sender.send('get-local-apps-success', localApps))
+        .catch(error => event.sender.send('get-local-apps-error', error.message));
+});
+
+ipcMain.on('install-official-app', (event, name) => {
+    apps.installOfficialApp(name)
+        .then(output => event.sender.send('install-official-app-success', output))
+        .catch(error => event.sender.send('install-official-app-error', error.message));
+});
+
+ipcMain.on('remove-official-app', (event, name) => {
+    apps.removeOfficialApp(name)
+        .then(output => event.sender.send('remove-official-app-success', output))
+        .catch(error => event.sender.send('remove-official-app-error', error.message));
 });

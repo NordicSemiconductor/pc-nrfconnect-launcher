@@ -35,12 +35,12 @@
  */
 
 import React, { PropTypes } from 'react';
-import AppListViewContainer from '../containers/AppListViewContainer';
-import AppManagementView from './AppManagementView';
+import AppLaunchContainer from '../containers/AppLaunchContainer';
+import AppManagementContainer from '../containers/AppManagementContainer';
 
 const views = {
-    1: <AppListViewContainer />,
-    2: <AppManagementView />,
+    1: <AppLaunchContainer />,
+    2: <AppManagementContainer />,
 };
 
 const MainView = ({ navId }) => views[navId];

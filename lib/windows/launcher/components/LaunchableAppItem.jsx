@@ -34,34 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import React, { PropTypes } from 'react';
+import AppItemButton from './AppItemButton';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-const ImmutableApp = Record({
-    name: null,
-    displayName: null,
-    description: null,
-    homepage: null,
-    currentVersion: null,
-    latestVersion: null,
-    path: null,
-    iconPath: null,
-    isOfficial: null,
-});
+const LaunchableAppItem = ({ app, onClick }) => (
+    <div className="core-app-launch-item list-group-item">
+        <img
+            className="core-app-launch-item-icon"
+            src={app.iconPath || nrfconnectLogo}
+            alt="App icon"
+        />
+        <div>
+            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}</p>
+        </div>
+        <div className="core-app-launch-item-buttons">
+            <AppItemButton
+                text="Launch"
+                title="Launch app"
+                iconClass="glyphicon glyphicon-play"
+                onClick={onClick}
+            />
+        </div>
+    </div>
+);
 
-function getImmutableApp(app) {
-    return new ImmutableApp({
-        name: app.name,
-        displayName: app.displayName,
-        description: app.description,
-        homepage: app.homepage,
-        currentVersion: app.currentVersion,
-        latestVersion: app.latestVersion,
-        path: app.path,
-        iconPath: app.iconPath,
-        isOfficial: app.isOfficial,
-    });
-}
-
-export default {
-    getImmutableApp,
+LaunchableAppItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        currentVersion: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        iconPath: PropTypes.string,
+        isOfficial: PropTypes.bool.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
+
+LaunchableAppItem.defaultProps = {
+    iconPath: nrfconnectLogo,
+};
+
+export default LaunchableAppItem;

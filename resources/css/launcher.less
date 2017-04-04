@@ -37,19 +37,42 @@ html, body, #webapp {
     overflow: auto;
 }
 
-.core-app-list-item {
+.core-app-launch-item {
     display: flex;
     width: 100%;
     justify-content: flex-start;
 
-    .core-app-icon {
+    .core-app-launch-item-icon {
         height: 40px;
         width: 40px;
         margin-right: 10px;
     }
 
-    .core-app-load {
+    .core-app-launch-item-buttons {
         text-align: right;
         margin-left: auto;
     }
+}
+
+.core-app-management-item {
+    width: 100%;
+
+    .core-app-management-item-footer {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .core-app-management-item-buttons {
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .core-app-management-item-buttons > .btn {
+        margin-left: 5px;
+    }
+}
+
+.core-btn-link {
+    padding: 0;
 }

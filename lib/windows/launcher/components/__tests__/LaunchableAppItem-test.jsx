@@ -34,60 +34,67 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
-import { Iterable } from 'immutable';
-import AppListItem from './AppListItem';
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import LaunchableAppItem from '../LaunchableAppItem';
+import AppItemButton from '../AppItemButton';
+import { getImmutableApp } from '../../models';
 
-function getSortedApps(apps) {
-    return apps.sort((a, b) => {
-        const aName = a.displayName || a.name;
-        const bName = b.displayName || b.name;
-        if (aName < bName) {
-            return -1;
-        } else if (aName > bName) {
-            return 1;
-        }
-        return a.isOfficial ? -1 : 1;
+const app = getImmutableApp({
+    name: 'pc-nrfconnect-foobar',
+    currentVersion: '1.2.3',
+    path: '/path/to/pc-nrfconnect-foobar',
+    isOfficial: true,
+});
+
+describe('LaunchableAppItem', () => {
+    it('should render with required props', () => {
+        expect(renderer.create(
+            <LaunchableAppItem
+                app={app}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
     });
-}
 
-class AppListView extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
+    it('should render with displayName instead of name if provided', () => {
+        expect(renderer.create(
+            <LaunchableAppItem
+                app={app.set('displayName', 'Foobar Tool')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    render() {
-        const { apps, onAppSelected } = this.props;
-        const sortedApps = getSortedApps(apps);
-        return (
-            <div className="list-group">
-                {
-                    sortedApps.size > 0 ?
-                        sortedApps.map(app => (
-                            <AppListItem
-                                key={app.path}
-                                app={app}
-                                onClick={() => onAppSelected(app)}
-                            />
-                        )) :
-                        <div>
-                            <h4>No apps found</h4>
-                            <p>
-                                Online installation of apps will be available soon. Before that
-                                time, you can create or install an app manually by following the
-                                instructions in README.md.
-                            </p>
-                        </div>
-                }
-            </div>
+    it('should render custom icon if provided', () => {
+        expect(renderer.create(
+            <LaunchableAppItem
+                app={app.set('iconPath', './path/to/icon.png')}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render official if isOfficial is true', () => {
+        expect(renderer.create(
+            <LaunchableAppItem
+                app={app.set('isOfficial', true)}
+                onClick={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when launch button has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <LaunchableAppItem
+                app={app}
+                onClick={onClick}
+            />,
         );
-    }
-}
+        wrapper.find(AppItemButton).first().simulate('click');
 
-AppListView.propTypes = {
-    apps: PropTypes.instanceOf(Iterable).isRequired,
-    onMount: PropTypes.func.isRequired,
-    onAppSelected: PropTypes.func.isRequired,
-};
-
-export default AppListView;
+        expect(onClick).toHaveBeenCalled();
+    });
+});

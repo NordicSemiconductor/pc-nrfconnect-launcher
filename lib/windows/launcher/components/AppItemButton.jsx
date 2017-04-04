@@ -34,34 +34,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import React, { PropTypes } from 'react';
 
-const ImmutableApp = Record({
-    name: null,
-    displayName: null,
-    description: null,
-    homepage: null,
-    currentVersion: null,
-    latestVersion: null,
-    path: null,
-    iconPath: null,
-    isOfficial: null,
-});
+const AppItemButton = ({ text, title, iconClass, onClick }) => (
+    <button title={title} className="btn btn-primary core-btn" onClick={onClick}>
+        <span className={iconClass} />
+        <span className="core-btn-text">{text}</span>
+    </button>
+);
 
-function getImmutableApp(app) {
-    return new ImmutableApp({
-        name: app.name,
-        displayName: app.displayName,
-        description: app.description,
-        homepage: app.homepage,
-        currentVersion: app.currentVersion,
-        latestVersion: app.latestVersion,
-        path: app.path,
-        iconPath: app.iconPath,
-        isOfficial: app.isOfficial,
-    });
-}
-
-export default {
-    getImmutableApp,
+AppItemButton.propTypes = {
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
+
+export default AppItemButton;

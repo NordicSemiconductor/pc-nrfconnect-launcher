@@ -38,14 +38,14 @@ import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import AppListView from '../AppListView';
-import AppLaunchButton from '../AppLaunchButton';
-import { getImmutableInstalledApp } from '../../models';
+import AppLaunchView from '../AppLaunchView';
+import AppItemButton from '../AppItemButton';
+import { getImmutableApp } from '../../models';
 
-describe('AppListView', () => {
+describe('AppLaunchView', () => {
     it('should render without any apps', () => {
         expect(renderer.create(
-            <AppListView
+            <AppLaunchView
                 apps={List()}
                 onAppSelected={() => {}}
                 onMount={() => {}}
@@ -55,17 +55,17 @@ describe('AppListView', () => {
 
     it('should render with two local apps', () => {
         expect(renderer.create(
-            <AppListView
+            <AppLaunchView
                 apps={List([
-                    getImmutableInstalledApp({
+                    getImmutableApp({
                         name: 'pc-nrfconnect-foo',
-                        version: '1.2.3',
+                        currentVersion: '1.2.3',
                         path: '/path/to/pc-nrfconnect-foo',
                         isOfficial: true,
                     }),
-                    getImmutableInstalledApp({
+                    getImmutableApp({
                         name: 'pc-nrfconnect-bar',
-                        version: '4.5.6',
+                        currentVersion: '4.5.6',
                         path: '/path/to/pc-nrfconnect-bar',
                         isOfficial: false,
                     })])
@@ -77,9 +77,9 @@ describe('AppListView', () => {
     });
 
     it('should render apps sorted by name and isOfficial', () => {
-        const templateApp = getImmutableInstalledApp({ version: '1.2.3' });
+        const templateApp = getImmutableApp({ currentVersion: '1.2.3' });
         expect(renderer.create(
-            <AppListView
+            <AppLaunchView
                 apps={
                     List([
                         templateApp
@@ -111,21 +111,21 @@ describe('AppListView', () => {
     });
 
     it('should invoke onAppSelected with given app item when app is clicked', () => {
-        const app = getImmutableInstalledApp({
+        const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
-            version: '1.2.3',
+            currentVersion: '1.2.3',
             path: '/path/to/pc-nrfconnect-foobar',
             isOfficial: false,
         });
         const onAppSelected = jest.fn();
         const wrapper = mount(
-            <AppListView
+            <AppLaunchView
                 apps={List([app])}
                 onAppSelected={onAppSelected}
                 onMount={() => {}}
             />,
         );
-        wrapper.find(AppLaunchButton).first().simulate('click');
+        wrapper.find(AppItemButton).first().simulate('click');
 
         expect(onAppSelected).toHaveBeenCalledWith(app);
     });

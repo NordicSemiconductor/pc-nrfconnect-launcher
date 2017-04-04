@@ -34,67 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
-import AppListItem from '../AppListItem';
-import AppLaunchButton from '../AppLaunchButton';
-import { getImmutableInstalledApp } from '../../models';
+import { parseOutdated } from '../parsing';
 
-const app = getImmutableInstalledApp({
-    name: 'pc-nrfconnect-foobar',
-    version: '1.2.3',
-    path: '/path/to/pc-nrfconnect-foobar',
-    isOfficial: true,
-});
-
-describe('AppListItem', () => {
-    it('should render with required props', () => {
-        expect(renderer.create(
-            <AppListItem
-                app={app}
-                onClick={() => {}}
-            />,
-        )).toMatchSnapshot();
+describe('parseOutdated', () => {
+    it('should return empty object if yarn output is empty', () => {
+        expect(parseOutdated('')).toEqual({});
     });
 
-    it('should render with displayName instead of name if provided', () => {
-        expect(renderer.create(
-            <AppListItem
-                app={app.set('displayName', 'Foobar Tool')}
-                onClick={() => {}}
-            />,
-        )).toMatchSnapshot();
+    it('should return empty object if yarn output contains irrelevant output', () => {
+        const yarnOutput = `warning No license field
+Done in 0.23s.`;
+        expect(parseOutdated(yarnOutput)).toEqual({});
     });
 
-    it('should render custom icon if provided', () => {
-        expect(renderer.create(
-            <AppListItem
-                app={app.set('iconPath', './path/to/icon.png')}
-                onClick={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
-    it('should render official if isOfficial is true', () => {
-        expect(renderer.create(
-            <AppListItem
-                app={app.set('isOfficial', true)}
-                onClick={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
-    it('should invoke onClick when launch button has been clicked', () => {
-        const onClick = jest.fn();
-        const wrapper = mount(
-            <AppListItem
-                app={app}
-                onClick={onClick}
-            />,
-        );
-        wrapper.find(AppLaunchButton).first().simulate('click');
-
-        expect(onClick).toHaveBeenCalled();
+    it('should return object with two packages if output contains two outdated dependencies', () => {
+        const yarnOutput = `warning No license field
+Package        Current    Wanted    Latest    Package Type
+mypackage1     1.2.3      1.2.3     1.2.4     dependencies
+mypackage2     4.5.6      4.5.6     5.0.0     dependencies
+Done in 0.23s.`;
+        expect(parseOutdated(yarnOutput)).toEqual({
+            mypackage1: '1.2.4',
+            mypackage2: '5.0.0',
+        });
     });
 });
