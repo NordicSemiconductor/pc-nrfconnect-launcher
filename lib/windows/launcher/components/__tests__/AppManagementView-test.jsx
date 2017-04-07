@@ -1,0 +1,178 @@
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+ *
+ * All rights reserved.
+ *
+ * Use in source and binary forms, redistribution in binary form only, with
+ * or without modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions in binary form, except as embedded into a Nordic
+ *    Semiconductor ASA integrated circuit in a product or a software update for
+ *    such product, must reproduce the above copyright notice, this list of
+ *    conditions and the following disclaimer in the documentation and/or other
+ *    materials provided with the distribution.
+ *
+ * 2. Neither the name of Nordic Semiconductor ASA nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
+ *    software without specific prior written permission.
+ *
+ * 3. This software, with or without modification, must only be used with a Nordic
+ *    Semiconductor ASA integrated circuit.
+ *
+ * 4. Any software provided in binary form under this license must not be reverse
+ *    engineered, decompiled, modified and/or disassembled.
+ *
+ * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import React from 'react';
+import { List } from 'immutable';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import AppManagementView from '../AppManagementView';
+import { getImmutableApp } from '../../models';
+
+describe('AppManagementView', () => {
+    it('should render spinner when retrieving apps', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={List()}
+                isRetrievingApps
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render without any apps', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={List()}
+                isRetrievingApps={false}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render not-installed, installed, and upgradable apps sorted by name', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={
+                    List([
+                        getImmutableApp({
+                            name: 'appB',
+                            displayName: 'App B',
+                            description: 'appB description',
+                        }),
+                        getImmutableApp({
+                            name: 'appC',
+                            displayName: 'App C',
+                            description: 'appC description',
+                            currentVersion: '1.2.3',
+                            latestVersion: '1.2.3',
+                        }),
+                        getImmutableApp({
+                            name: 'appA',
+                            displayName: 'App A',
+                            description: 'appA description',
+                            currentVersion: '1.2.3',
+                            latestVersion: '1.2.4',
+                        }),
+                    ])
+                }
+                isRetrievingApps={false}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onInstall with app name when install button is clicked', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            description: 'Foobar description',
+        });
+        const onInstall = jest.fn();
+        const wrapper = mount(
+            <AppManagementView
+                apps={List([app])}
+                isRetrievingApps={false}
+                onInstall={onInstall}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+        wrapper.find('button[title="Install pc-nrfconnect-foobar"]').first().simulate('click');
+
+        expect(onInstall).toHaveBeenCalledWith(app.name);
+    });
+
+    it('should invoke onRemove with app name when remove button is clicked', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            description: 'Foobar description',
+            currentVersion: '1.2.3',
+            latestVersion: '1.2.3',
+        });
+        const onRemove = jest.fn();
+        const wrapper = mount(
+            <AppManagementView
+                apps={List([app])}
+                isRetrievingApps={false}
+                onInstall={() => {}}
+                onRemove={onRemove}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+        wrapper.find('button[title="Remove pc-nrfconnect-foobar"]').first().simulate('click');
+
+        expect(onRemove).toHaveBeenCalledWith(app.name);
+    });
+
+    it('should invoke onUpgrade with app name and latest version when upgrade button is clicked', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            description: 'Foobar description',
+            currentVersion: '1.2.3',
+            latestVersion: '1.2.4',
+        });
+        const onUpgrade = jest.fn();
+        const wrapper = mount(
+            <AppManagementView
+                apps={List([app])}
+                isRetrievingApps={false}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={onUpgrade}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+        wrapper.find('button[title="Upgrade pc-nrfconnect-foobar from v1.2.3 to v1.2.4"]').first().simulate('click');
+
+        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion);
+    });
+});
