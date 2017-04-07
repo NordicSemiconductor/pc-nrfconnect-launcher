@@ -53,29 +53,6 @@ describe('AppLaunchView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render with two local apps', () => {
-        expect(renderer.create(
-            <AppLaunchView
-                apps={List([
-                    getImmutableApp({
-                        name: 'pc-nrfconnect-foo',
-                        currentVersion: '1.2.3',
-                        path: '/path/to/pc-nrfconnect-foo',
-                        isOfficial: true,
-                    }),
-                    getImmutableApp({
-                        name: 'pc-nrfconnect-bar',
-                        currentVersion: '4.5.6',
-                        path: '/path/to/pc-nrfconnect-bar',
-                        isOfficial: false,
-                    })])
-                }
-                onAppSelected={() => {}}
-                onMount={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
     it('should render apps sorted by name and isOfficial', () => {
         const templateApp = getImmutableApp({ currentVersion: '1.2.3' });
         expect(renderer.create(
