@@ -34,13 +34,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import path from 'path';
 import { startElectronApp, stopElectronApp } from './setup';
+import packageJson from '../package.json';
+
+const appsRootDir = path.resolve(__dirname, './features/one-local-app');
+const electronArgs = [
+    '--skip-update-apps',
+    `--apps-root-dir=${appsRootDir}`,
+];
 
 let electronApp;
 
-describe('electron application', () => {
+function loadFirstApp() {
+    return electronApp.client.windowByIndex(1)
+        .click('button[title="Launch app"]')
+        .then(() => electronApp.client.waitUntilWindowLoaded());
+}
+
+describe('one local app', () => {
     beforeEach(() => (
-        startElectronApp()
+        startElectronApp(electronArgs)
             .then(startedApp => {
                 electronApp = startedApp;
             })
@@ -50,13 +64,53 @@ describe('electron application', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should open two windows', () => (
+    it('should open two windows when electron is started', () => (
         electronApp.client.getWindowCount()
             .then(windowCount => expect(windowCount).toEqual(2))
     ));
 
-    it('should display splash screen image in first window', () => (
+    it('should display splash screen image in first window when electron is started', () => (
         electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
             .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
+    ));
+
+    it('should show package.json version in launcher window title', () => (
+        electronApp.client.windowByIndex(1).browserWindow.getTitle()
+            .then(title => expect(title).toContain(packageJson.version))
+    ));
+
+    it('should show Test App in the launcher app list', () => (
+        electronApp.client.windowByIndex(1)
+            .getText('h4')
+            .then(text => expect(text).toEqual('Test App'))
+    ));
+
+    it('should load app window when clicking Launch', () => (
+        loadFirstApp()
+            .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
+            .then(title => expect(title).toContain('Test App'))
+    ));
+
+    it('should not show list of main menu items in app window initially', () => (
+        loadFirstApp()
+            .then(() => electronApp.client.windowByIndex(1))
+            .isVisible('#main-menu-list')
+            .then(isVisible => expect(isVisible).toEqual(false))
+    ));
+
+    it('should show a "Launch other app" item when main menu button has been clicked in app window', () => (
+        loadFirstApp()
+            .then(() => electronApp.client.windowByIndex(1))
+            .click('#main-menu')
+            .isVisible('#main-menu-list a[title*="Launch other app"]')
+            .then(isVisible => expect(isVisible).toEqual(true))
+    ));
+
+    it('should show port list when port selector has been clicked in app window', () => (
+        loadFirstApp(electronApp)
+            .then(() => electronApp.client.windowByIndex(1))
+            .click('#serial-port-selector')
+            .isVisible('#serial-port-selector-list')
+            .then(isVisible => expect(isVisible).toEqual(true))
     ));
 });

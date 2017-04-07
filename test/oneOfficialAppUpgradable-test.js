@@ -34,13 +34,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { startElectronApp, stopElectronApp, loadFirstApp } from './setup';
+import path from 'path';
+import { startElectronApp, stopElectronApp } from './setup';
+
+const appsRootDir = path.resolve(__dirname, './features/one-official-app-upgradable');
+const electronArgs = [
+    '--skip-update-apps',
+    `--apps-root-dir=${appsRootDir}`,
+];
 
 let electronApp;
 
-describe('main menu', () => {
+describe('one official app upgradable', () => {
     beforeEach(() => (
-        startElectronApp()
+        startElectronApp(electronArgs)
             .then(startedApp => {
                 electronApp = startedApp;
             })
@@ -50,18 +57,41 @@ describe('main menu', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should not show list of main menu items initially', () => (
-        loadFirstApp(electronApp)
-            .then(() => electronApp.client.windowByIndex(1))
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
+    it('should show Test App in the launcher app list', () => (
+        electronApp.client.windowByIndex(1)
+            .getText('h4')
+            .then(text => expect(text).toEqual('Test App'))
     ));
 
-    it('should show a "Launch other app" item when main menu button has been clicked', () => (
-        loadFirstApp(electronApp)
-            .then(() => electronApp.client.windowByIndex(1))
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="Launch other app"]')
+    it('should show Test App in app management list', () => (
+        electronApp.client.windowByIndex(1)
+            .click('button[title*="Add/remove apps"]')
+            .isVisible('core-app-management-item')
+            .getText('h4')
+            .then(text => expect(text).toEqual('Test App'))
+    ));
+
+    it('should show remove button for Test App in app management list', () => (
+        electronApp.client.windowByIndex(1)
+            .click('button[title*="Add/remove apps"]')
+            .isVisible('core-app-management-item')
+            .isVisible('button[title="Remove Test App"]')
             .then(isVisible => expect(isVisible).toEqual(true))
+    ));
+
+    it('should show upgrade button in app management list', () => (
+        electronApp.client.windowByIndex(1)
+            .click('button[title*="Add/remove apps"]')
+            .isVisible('core-app-management-item')
+            .isVisible('button[title="Upgrade Test App from v1.2.3 to v1.2.4"]')
+            .then(isVisible => expect(isVisible).toEqual(true))
+    ));
+
+    it('should not show install button in app management list', () => (
+        electronApp.client.windowByIndex(1)
+            .click('button[title*="Add/remove apps"]')
+            .isVisible('core-app-management-item')
+            .isVisible('button[title="Install Test App"]')
+            .then(isVisible => expect(isVisible).toEqual(false))
     ));
 });
