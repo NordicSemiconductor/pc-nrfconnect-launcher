@@ -135,7 +135,7 @@ Apps can:
 * Use the core API for things like BLE operations, programming, and logging.
 * Read and update Redux state by creating custom actions and reducers.
 
-nRF Connect looks for apps in `$HOME/.nrfconnect-apps/local`. For now, it just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
+nRF Connect looks for apps in `$HOME/.nrfconnect-apps/local` (Linux/macOS) or `%USERPROFILE%\.nrfconnect-apps\local` (Windows). For now, it just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
 
 ### API for apps
 
@@ -412,18 +412,13 @@ The properties provided by the `api` object are described below.
 
 ### Hello World app
 
-Create the app root directory if it does not already exist:
+Create a directory below `.nrfconnect-apps/local` for the Hello World app:
 
-    mkdir -p $HOME/.nrfconnect-apps/local
+* Linux/macOS: `mkdir -p $HOME/.nrfconnect-apps/local/pc-nrfconnect-helloworld`
+* Windows: `md "%USERPROFILE%\.nrfconnect-apps\local\pc-nrfconnect-helloworld"`
 
-Create a directory for the Hello World app:
+In the newly created directory, initialize a new npm project (just accept the defaults):
 
-    cd $HOME/.nrfconnect-apps/local
-    mkdir pc-nrfconnect-helloworld
-
-In the app directory, initialize a new npm project (just accept the defaults):
-
-    cd pc-nrfconnect-helloworld
     npm init
 
 Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents:
@@ -434,7 +429,7 @@ Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents
         ),
     };
 
-When reloading (Ctrl+R) the application, it should now print "Hello World!" in the main view and "Loaded app: pc-nrfconnect-helloworld" should be shown in the log viewer.
+When starting nRF Connect, it should now show the Hello World app in the launcher window. When launching the app, "Hello World!" should be shown in the main view.
 
 The app implements a `decorateMainView` function, which tells nRF Connect that the app wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
 
