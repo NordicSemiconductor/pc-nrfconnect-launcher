@@ -1,3 +1,36 @@
+exports[`AppManagementView should render installing app dialog 1`] = `
+<div>
+  <Modal
+    backdrop={true}
+    show={true}>
+    <ModalHeader
+      closeButton={false}>
+      <ModalTitle>
+        Installing
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Installing pc-nrfconnect-foo. Please wait...
+      </p>
+    </ModalBody>
+    <ModalFooter>
+      <img
+        alt="Loading..."
+        className="core-spinner"
+        height={16}
+        src="test-file-stub"
+        width={16} />
+       
+      <Button
+        disabled={true}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;
+
 exports[`AppManagementView should render not-installed, installed, and upgradable apps sorted by name 1`] = `
 <div>
   <div
@@ -120,6 +153,39 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
 </div>
 `;
 
+exports[`AppManagementView should render removing app dialog 1`] = `
+<div>
+  <Modal
+    backdrop={true}
+    show={true}>
+    <ModalHeader
+      closeButton={false}>
+      <ModalTitle>
+        Removing
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Removing pc-nrfconnect-foo. Please wait...
+      </p>
+    </ModalBody>
+    <ModalFooter>
+      <img
+        alt="Loading..."
+        className="core-spinner"
+        height={16}
+        src="test-file-stub"
+        width={16} />
+       
+      <Button
+        disabled={true}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;
+
 exports[`AppManagementView should render spinner when retrieving apps 1`] = `
 <img
   alt="Loading..."
@@ -127,6 +193,39 @@ exports[`AppManagementView should render spinner when retrieving apps 1`] = `
   height={16}
   src="test-file-stub"
   width={16} />
+`;
+
+exports[`AppManagementView should render upgrading app dialog 1`] = `
+<div>
+  <Modal
+    backdrop={true}
+    show={true}>
+    <ModalHeader
+      closeButton={false}>
+      <ModalTitle>
+        Upgrading
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Upgrading pc-nrfconnect-foo. Please wait...
+      </p>
+    </ModalBody>
+    <ModalFooter>
+      <img
+        alt="Loading..."
+        className="core-spinner"
+        height={16}
+        src="test-file-stub"
+        width={16} />
+       
+      <Button
+        disabled={true}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
 `;
 
 exports[`AppManagementView should render without any apps 1`] = `<div />`;

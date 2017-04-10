@@ -38,6 +38,7 @@ import React, { PropTypes } from 'react';
 import { Iterable } from 'immutable';
 import InstalledAppItem from '../components/InstalledAppItem';
 import AvailableAppItem from '../components/AvailableAppItem';
+import AppProgressDialog from '../components/AppProgressDialog';
 import Spinner from '../../../components/Spinner';
 
 function getSortedApps(apps) {
@@ -53,6 +54,49 @@ class AppManagementView extends React.Component {
         this.props.onMount();
     }
 
+    getProcessingTitle() {
+        const {
+            installingAppName,
+            upgradingAppName,
+            removingAppName,
+        } = this.props;
+
+        if (installingAppName) {
+            return 'Installing';
+        } else if (upgradingAppName) {
+            return 'Upgrading';
+        } else if (removingAppName) {
+            return 'Removing';
+        }
+        return 'Processing';
+    }
+
+    getProcessingText() {
+        const {
+            installingAppName,
+            upgradingAppName,
+            removingAppName,
+        } = this.props;
+
+        if (installingAppName) {
+            return `Installing ${installingAppName}. Please wait...`;
+        } else if (upgradingAppName) {
+            return `Upgrading ${upgradingAppName}. Please wait...`;
+        } else if (removingAppName) {
+            return `Removing ${removingAppName}. Please wait...`;
+        }
+        return 'Processing. Please wait...';
+    }
+
+    isProcessing() {
+        const {
+            installingAppName,
+            upgradingAppName,
+            removingAppName,
+        } = this.props;
+        return !!installingAppName || !!upgradingAppName || !!removingAppName;
+    }
+
     render() {
         const {
             apps,
@@ -62,6 +106,7 @@ class AppManagementView extends React.Component {
             onUpgrade,
             onReadMore,
         } = this.props;
+        const isProcessing = this.isProcessing();
 
         return isRetrievingApps ?
             <Spinner /> :
@@ -84,6 +129,14 @@ class AppManagementView extends React.Component {
                             />
                     ))
                 }
+                {
+                    isProcessing &&
+                        <AppProgressDialog
+                            isVisible={isProcessing}
+                            title={this.getProcessingTitle()}
+                            text={this.getProcessingText()}
+                        />
+                }
             </div>;
     }
 }
@@ -91,11 +144,20 @@ class AppManagementView extends React.Component {
 AppManagementView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
     isRetrievingApps: PropTypes.bool.isRequired,
+    installingAppName: PropTypes.string,
+    upgradingAppName: PropTypes.string,
+    removingAppName: PropTypes.string,
     onMount: PropTypes.func.isRequired,
     onInstall: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
+};
+
+AppManagementView.defaultProps = {
+    installingAppName: '',
+    upgradingAppName: '',
+    removingAppName: '',
 };
 
 export default AppManagementView;

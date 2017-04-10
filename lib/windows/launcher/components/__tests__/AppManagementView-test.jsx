@@ -34,6 +34,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+// Do not render react-bootstrap components in tests
+jest.mock('react-bootstrap', () => ({
+    Modal: 'Modal',
+    Button: 'Button',
+    ModalHeader: 'ModalHeader',
+    ModalFooter: 'ModalFooter',
+    ModalBody: 'ModalBody',
+    ModalTitle: 'ModalTitle',
+}));
+
 import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
@@ -97,6 +109,51 @@ describe('AppManagementView', () => {
                     ])
                 }
                 isRetrievingApps={false}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render installing app dialog', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={List([])}
+                isRetrievingApps={false}
+                installingAppName="pc-nrfconnect-foo"
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render removing app dialog', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={List([])}
+                isRetrievingApps={false}
+                removingAppName="pc-nrfconnect-foo"
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render upgrading app dialog', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={List([])}
+                isRetrievingApps={false}
+                upgradingAppName="pc-nrfconnect-foo"
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
