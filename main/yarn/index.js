@@ -34,19 +34,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { fork } from 'child_process';
-import { getAppsRootDir } from '../../util/fileUtil';
-import { parseOutdated } from './parsing';
+const fork = require('child_process').fork;
+const parseOutdated = require('./parsing').parseOutdated;
+const config = require('../config') ;
 
-const yarnPath = window.require.resolve('yarn/bin/yarn.js');
+const yarnPath = require.resolve('yarn/bin/yarn.js');
 
 function yarn(args, options = {}) {
     return new Promise((resolve, reject) => {
-        const proc = fork(yarnPath, args, {
-            ...options,
-            cwd: getAppsRootDir(),
+        const proc = fork(yarnPath, args, Object.assign({}, options, {
+            cwd: config.getAppsRootDir(),
             stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-        });
+        }));
 
         let buffer = '';
         const addToBuffer = data => {
@@ -56,10 +55,10 @@ function yarn(args, options = {}) {
         proc.stderr.on('data', data => addToBuffer(data));
 
         proc.on('exit', code => (
-            code !== 0 ? reject(buffer) : resolve(buffer)
+            code !== 0 ? reject(new Error(buffer)) : resolve(buffer)
         ));
         proc.on('error', err => (
-            reject(`Error when running yarn: ${err.message}`)
+            reject(new Error(`Error when running yarn: ${err.message}`))
         ));
     });
 }
@@ -72,7 +71,7 @@ function yarn(args, options = {}) {
  * @param {string} name The name of the package to install.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function install(name) {
+function add(name) {
     return yarn(['add', '--exact', name]);
 }
 
@@ -84,22 +83,14 @@ function install(name) {
  * @param {string} name The name of the package to remove.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function uninstall(name) {
+function remove(name) {
     return yarn(['remove', name]);
 }
 
 /**
  * Returns packages that have outdated versions. A promise is returned,
  * which resolves with an object containing package names as keys and
- * currentVersion and latestVersion as values. E.g:
- *
- * {
- *   name: {
- *     currentVersion: '1.2.3',
- *     latestVersion: '1.2.4',
- *   },
- *   ...
- * }
+ * their latest version as values.
  *
  * If no outdated packages are found, the promise will resolve with an
  * empty object.
@@ -111,8 +102,8 @@ function outdated() {
         .then(output => parseOutdated(output));
 }
 
-export default {
-    install,
-    uninstall,
+module.exports = {
+    add,
+    remove,
     outdated,
 };

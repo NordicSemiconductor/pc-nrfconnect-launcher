@@ -34,12 +34,68 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { Iterable } from 'immutable';
+import InstalledAppItem from '../components/InstalledAppItem';
+import AvailableAppItem from '../components/AvailableAppItem';
+import Spinner from '../../../components/Spinner';
 
-const AppManagementView = () => (
-    <div>
-        App management
-    </div>
-);
+function getSortedApps(apps) {
+    return apps.sort((a, b) => {
+        const aName = a.displayName || a.name;
+        const bName = b.displayName || b.name;
+        return aName.localeCompare(bName);
+    });
+}
+
+class AppManagementView extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    render() {
+        const {
+            apps,
+            isRetrievingApps,
+            onInstall,
+            onRemove,
+            onUpgrade,
+            onReadMore,
+        } = this.props;
+
+        return isRetrievingApps ?
+            <Spinner /> :
+            <div>
+                {
+                    getSortedApps(apps).map(app => (
+                        app.currentVersion ?
+                            <InstalledAppItem
+                                key={app.name}
+                                app={app}
+                                onRemove={() => onRemove(app.name)}
+                                onUpgrade={() => onUpgrade(app.name, app.latestVersion)}
+                                onReadMore={() => onReadMore(app.homepage)}
+                            /> :
+                            <AvailableAppItem
+                                key={app.name}
+                                app={app}
+                                onInstall={() => onInstall(app.name)}
+                                onReadMore={() => onReadMore(app.homepage)}
+                            />
+                    ))
+                }
+            </div>;
+    }
+}
+
+AppManagementView.propTypes = {
+    apps: PropTypes.instanceOf(Iterable).isRequired,
+    isRetrievingApps: PropTypes.bool.isRequired,
+    onMount: PropTypes.func.isRequired,
+    onInstall: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onUpgrade: PropTypes.func.isRequired,
+    onReadMore: PropTypes.func.isRequired,
+};
 
 export default AppManagementView;

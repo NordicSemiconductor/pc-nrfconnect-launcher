@@ -34,26 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
-import * as NavMenuActions from '../actions/navMenuActions';
+import React, { PropTypes } from 'react';
+import AppItemButton from './AppItemButton';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-const InitialState = Record({
-    menuItems: [
-        { id: 1, text: 'Launch app', iconClass: 'icon-ellipsis-vert' },
-        { id: 2, text: 'Add/remove apps', iconClass: 'icon-list-add' },
-    ],
-    selectedItemId: 1,
-});
+const LaunchableAppItem = ({ app, onClick }) => (
+    <div className="core-app-launch-item list-group-item">
+        <img
+            className="core-app-launch-item-icon"
+            src={app.iconPath || nrfconnectLogo}
+            alt="App icon"
+        />
+        <div>
+            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}</p>
+        </div>
+        <div className="core-app-launch-item-buttons">
+            <AppItemButton
+                text="Launch"
+                title="Launch app"
+                iconClass="glyphicon glyphicon-play"
+                onClick={onClick}
+            />
+        </div>
+    </div>
+);
 
-const initialState = new InitialState();
-
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case NavMenuActions.ITEM_SELECTED:
-            return state.set('selectedItemId', action.id);
-        default:
-            return state;
-    }
+LaunchableAppItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        currentVersion: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        iconPath: PropTypes.string,
+        isOfficial: PropTypes.bool.isRequired,
+    }).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
-export default reducer;
+LaunchableAppItem.defaultProps = {
+    iconPath: nrfconnectLogo,
+};
+
+export default LaunchableAppItem;

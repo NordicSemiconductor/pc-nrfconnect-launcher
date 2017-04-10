@@ -1,9 +1,9 @@
-exports[`AppListItem should render custom icon if provided 1`] = `
+exports[`LaunchableAppItem should render custom icon if provided 1`] = `
 <div
-  className="core-app-list-item list-group-item">
+  className="core-app-launch-item list-group-item">
   <img
     alt="App icon"
-    className="core-app-icon"
+    className="core-app-launch-item-icon"
     src="./path/to/icon.png" />
   <div>
     <h4
@@ -18,14 +18,15 @@ exports[`AppListItem should render custom icon if provided 1`] = `
     </p>
   </div>
   <div
-    className="core-app-load">
+    className="core-app-launch-item-buttons">
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
       title="Launch app">
       <span
-        className="icon-play" />
-      <span>
+        className="glyphicon glyphicon-play" />
+      <span
+        className="core-btn-text">
         Launch
       </span>
     </button>
@@ -33,12 +34,12 @@ exports[`AppListItem should render custom icon if provided 1`] = `
 </div>
 `;
 
-exports[`AppListItem should render official if isOfficial is true 1`] = `
+exports[`LaunchableAppItem should render official if isOfficial is true 1`] = `
 <div
-  className="core-app-list-item list-group-item">
+  className="core-app-launch-item list-group-item">
   <img
     alt="App icon"
-    className="core-app-icon"
+    className="core-app-launch-item-icon"
     src="test-file-stub" />
   <div>
     <h4
@@ -53,14 +54,15 @@ exports[`AppListItem should render official if isOfficial is true 1`] = `
     </p>
   </div>
   <div
-    className="core-app-load">
+    className="core-app-launch-item-buttons">
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
       title="Launch app">
       <span
-        className="icon-play" />
-      <span>
+        className="glyphicon glyphicon-play" />
+      <span
+        className="core-btn-text">
         Launch
       </span>
     </button>
@@ -68,12 +70,12 @@ exports[`AppListItem should render official if isOfficial is true 1`] = `
 </div>
 `;
 
-exports[`AppListItem should render with displayName instead of name if provided 1`] = `
+exports[`LaunchableAppItem should render with displayName instead of name if provided 1`] = `
 <div
-  className="core-app-list-item list-group-item">
+  className="core-app-launch-item list-group-item">
   <img
     alt="App icon"
-    className="core-app-icon"
+    className="core-app-launch-item-icon"
     src="test-file-stub" />
   <div>
     <h4
@@ -88,14 +90,15 @@ exports[`AppListItem should render with displayName instead of name if provided 
     </p>
   </div>
   <div
-    className="core-app-load">
+    className="core-app-launch-item-buttons">
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
       title="Launch app">
       <span
-        className="icon-play" />
-      <span>
+        className="glyphicon glyphicon-play" />
+      <span
+        className="core-btn-text">
         Launch
       </span>
     </button>
@@ -103,12 +106,12 @@ exports[`AppListItem should render with displayName instead of name if provided 
 </div>
 `;
 
-exports[`AppListItem should render with required props 1`] = `
+exports[`LaunchableAppItem should render with required props 1`] = `
 <div
-  className="core-app-list-item list-group-item">
+  className="core-app-launch-item list-group-item">
   <img
     alt="App icon"
-    className="core-app-icon"
+    className="core-app-launch-item-icon"
     src="test-file-stub" />
   <div>
     <h4
@@ -123,14 +126,15 @@ exports[`AppListItem should render with required props 1`] = `
     </p>
   </div>
   <div
-    className="core-app-load">
+    className="core-app-launch-item-buttons">
     <button
       className="btn btn-primary core-btn"
       onClick={[Function]}
       title="Launch app">
       <span
-        className="icon-play" />
-      <span>
+        className="glyphicon glyphicon-play" />
+      <span
+        className="core-btn-text">
         Launch
       </span>
     </button>

@@ -34,26 +34,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppListView';
-import * as AppsActions from '../actions/appsActions';
+import React, { PropTypes } from 'react';
 
-function mapStateToProps(state) {
-    const { apps } = state;
+const AppItemButton = ({ text, title, iconClass, onClick }) => (
+    <button title={title} className="btn btn-primary core-btn" onClick={onClick}>
+        <span className={iconClass} />
+        <span className="core-btn-text">{text}</span>
+    </button>
+);
 
-    return {
-        apps: apps.installedApps,
-    };
-}
+AppItemButton.propTypes = {
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => dispatch(AppsActions.retrieveInstalledApps()),
-        onAppSelected: app => dispatch(AppsActions.launchApp(app)),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+export default AppItemButton;

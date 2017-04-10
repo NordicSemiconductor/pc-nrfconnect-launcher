@@ -34,34 +34,40 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { parseOutdated } from '../parsing';
+import React, { PropTypes } from 'react';
+import AppItemButton from './AppItemButton';
 
-describe('parseOutdated', () => {
-    it('should return empty object if yarn output is empty', () => {
-        expect(parseOutdated('')).toEqual({});
-    });
+const AvailableAppItem = ({ app, onInstall, onReadMore }) => (
+    <div className="core-app-management-item list-group-item">
+        <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+        <div className="list-group-item-text">
+            <p>{app.description}</p>
+            <div className="core-app-management-item-footer">
+                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
+                    More information
+                </button>
+                <div className="core-app-management-item-buttons">
+                    <AppItemButton
+                        text="Install"
+                        title={`Install ${app.displayName || app.name}`}
+                        iconClass="glyphicon glyphicon-download-alt"
+                        onClick={onInstall}
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+);
 
-    it('should return empty object if yarn output contains irrelevant output', () => {
-        const yarnOutput = `warning No license field
-Done in 0.23s.`;
-        expect(parseOutdated(yarnOutput)).toEqual({});
-    });
+AvailableAppItem.propTypes = {
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        description: PropTypes.string.isRequired,
+        homepage: PropTypes.string,
+    }).isRequired,
+    onInstall: PropTypes.func.isRequired,
+    onReadMore: PropTypes.func.isRequired,
+};
 
-    it('should return object with two packages if output contains two outdated dependencies', () => {
-        const yarnOutput = `warning No license field
-Package        Current    Wanted    Latest    Package Type
-mypackage1     1.2.3      1.2.3     1.2.4     dependencies
-mypackage2     4.5.6      4.5.6     5.0.0     dependencies
-Done in 0.23s.`;
-        expect(parseOutdated(yarnOutput)).toEqual({
-            mypackage1: {
-                currentVersion: '1.2.3',
-                latestVersion: '1.2.4',
-            },
-            mypackage2: {
-                currentVersion: '4.5.6',
-                latestVersion: '5.0.0',
-            },
-        });
-    });
-});
+export default AvailableAppItem;

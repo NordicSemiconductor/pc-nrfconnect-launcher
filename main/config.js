@@ -34,26 +34,48 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
-import * as NavMenuActions from '../actions/navMenuActions';
+'use strict';
 
-const InitialState = Record({
-    menuItems: [
-        { id: 1, text: 'Launch app', iconClass: 'icon-ellipsis-vert' },
-        { id: 2, text: 'Add/remove apps', iconClass: 'icon-list-add' },
-    ],
-    selectedItemId: 1,
-});
+const electronApp = require('electron').app;
+const path = require('path');
 
-const initialState = new InitialState();
+let homeDir;
+let userDataDir;
+let appsRootDir;
+let appsLocalDir;
+let nodeModulesDir;
+let packageJsonPath;
+let yarnLockPath;
+let updatesJsonPath;
+let appsJsonPath;
+let appsJsonUrl;
+let skipUpdateApps;
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case NavMenuActions.ITEM_SELECTED:
-            return state.set('selectedItemId', action.id);
-        default:
-            return state;
-    }
+function init(argv) {
+    homeDir = electronApp.getPath('home');
+    userDataDir = electronApp.getPath('userData');
+    appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
+    appsLocalDir = path.join(appsRootDir, 'local');
+    nodeModulesDir = path.join(appsRootDir, 'node_modules');
+    packageJsonPath = path.join(appsRootDir, 'package.json');
+    yarnLockPath = path.join(appsRootDir, 'yarn.lock');
+    updatesJsonPath = path.join(appsRootDir, 'updates.json');
+    appsJsonPath = path.join(appsRootDir, 'apps.json');
+    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/feature/app-installation/apps.json';
+    skipUpdateApps = argv['skip-update-apps'] || false;
+}
+
+module.exports = {
+    init,
+    getHomeDir: () => homeDir,
+    getUserDataDir: () => userDataDir,
+    getAppsRootDir: () => appsRootDir,
+    getAppsLocalDir: () => appsLocalDir,
+    getNodeModulesDir: () => nodeModulesDir,
+    getPackageJsonPath: () => packageJsonPath,
+    getYarnLockPath: () => yarnLockPath,
+    getUpdatesJsonPath: () => updatesJsonPath,
+    getAppsJsonPath: () => appsJsonPath,
+    getAppsJsonUrl: () => appsJsonUrl,
+    isSkipUpdateApps: () => skipUpdateApps,
 };
-
-export default reducer;

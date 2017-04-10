@@ -34,12 +34,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+function parseOutdated(yarnOutput) {
+    return yarnOutput
+        .split(/\r?\n/)
+        .map(line => line.split(/\s+/))
+        .filter(lineArray => lineArray.length > 4 && lineArray[4] === 'dependencies')
+        .reduce((result, lineArray) => {
+            const name = lineArray[0];
+            const latestVersion = lineArray[3];
+            return Object.assign({}, result, {
+                [name]: latestVersion,
+            });
+        }, {});
+}
 
-const SettingsView = () => (
-    <div>
-        Settings
-    </div>
-);
-
-export default SettingsView;
+module.exports = {
+    parseOutdated,
+};

@@ -35,36 +35,52 @@
  */
 
 import React, { PropTypes } from 'react';
-import AppLaunchButton from './AppLaunchButton';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
+import AppItemButton from './AppItemButton';
 
-const AppListItem = ({ app, onClick }) => (
-    <div className="core-app-list-item list-group-item">
-        <img className="core-app-icon" src={app.iconPath || nrfconnectLogo} alt="App icon" />
-        <div>
-            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.version}</p>
-        </div>
-        <div className="core-app-load">
-            <AppLaunchButton onClick={onClick} />
+const InstalledAppItem = ({ app, onRemove, onUpgrade, onReadMore }) => (
+    <div className="core-app-management-item list-group-item">
+        <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+        <div className="list-group-item-text">
+            <p>{app.description}</p>
+            <div className="core-app-management-item-footer">
+                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
+                    More information
+                </button>
+                <div className="core-app-management-item-buttons">
+                    {
+                        app.latestVersion && app.currentVersion !== app.latestVersion ?
+                            <AppItemButton
+                                title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
+                                text="Upgrade"
+                                iconClass="glyphicon glyphicon-download-alt"
+                                onClick={onUpgrade}
+                            /> :
+                            <div />
+                    }
+                    <AppItemButton
+                        title={`Remove ${app.displayName || app.name}`}
+                        text="Remove"
+                        iconClass="glyphicon glyphicon-trash"
+                        onClick={onRemove}
+                    />
+                </div>
+            </div>
         </div>
     </div>
 );
 
-AppListItem.propTypes = {
+InstalledAppItem.propTypes = {
     app: PropTypes.shape({
         name: PropTypes.string.isRequired,
         displayName: PropTypes.string,
-        version: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
-        iconPath: PropTypes.string,
-        isOfficial: PropTypes.bool.isRequired,
+        description: PropTypes.string.isRequired,
+        homepage: PropTypes.string,
+        currentVersion: PropTypes.string.isRequired,
+        latestVersion: PropTypes.string.isRequired,
     }).isRequired,
-    onClick: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onUpgrade: PropTypes.func.isRequired,
+    onReadMore: PropTypes.func.isRequired,
 };
 
-AppListItem.defaultProps = {
-    iconPath: nrfconnectLogo,
-};
-
-export default AppListItem;
+export default InstalledAppItem;

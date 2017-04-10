@@ -1,0 +1,6 @@
+{
+    "private": true,
+    "dependencies": {
+        "pc-nrfconnect-test": "1.2.3"
+    }
+}

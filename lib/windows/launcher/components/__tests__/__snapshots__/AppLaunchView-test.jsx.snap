@@ -1,11 +1,11 @@
-exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
+exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
 <div
   className="list-group">
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -20,24 +20,25 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -52,24 +53,25 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -84,24 +86,25 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -116,24 +119,25 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -148,14 +152,15 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
@@ -164,14 +169,14 @@ exports[`AppListView should render apps sorted by name and isOfficial 1`] = `
 </div>
 `;
 
-exports[`AppListView should render with two local apps 1`] = `
+exports[`AppLaunchView should render with two local apps 1`] = `
 <div
   className="list-group">
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -186,24 +191,25 @@ exports[`AppListView should render with two local apps 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-list-item list-group-item">
+    className="core-app-launch-item list-group-item">
     <img
       alt="App icon"
-      className="core-app-icon"
+      className="core-app-launch-item-icon"
       src="test-file-stub" />
     <div>
       <h4
@@ -218,14 +224,15 @@ exports[`AppListView should render with two local apps 1`] = `
       </p>
     </div>
     <div
-      className="core-app-load">
+      className="core-app-launch-item-buttons">
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
         title="Launch app">
         <span
-          className="icon-play" />
-        <span>
+          className="glyphicon glyphicon-play" />
+        <span
+          className="core-btn-text">
           Launch
         </span>
       </button>
@@ -234,15 +241,19 @@ exports[`AppListView should render with two local apps 1`] = `
 </div>
 `;
 
-exports[`AppListView should render without any apps 1`] = `
+exports[`AppLaunchView should render without any apps 1`] = `
 <div
   className="list-group">
   <div>
     <h4>
-      No apps found
+      Welcome to nRF Connect
     </h4>
     <p>
-      Online installation of apps will be available soon. Before that time, you can create or install an app manually by following the instructions in README.md.
+      To get started, go to 
+      <i>
+        Add/remove apps
+      </i>
+       to install some apps.
     </p>
   </div>
 </div>

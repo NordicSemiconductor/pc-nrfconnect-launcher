@@ -37,21 +37,21 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import AppListItem from '../AppListItem';
-import AppLaunchButton from '../AppLaunchButton';
-import { getImmutableInstalledApp } from '../../models';
+import LaunchableAppItem from '../LaunchableAppItem';
+import AppItemButton from '../AppItemButton';
+import { getImmutableApp } from '../../models';
 
-const app = getImmutableInstalledApp({
+const app = getImmutableApp({
     name: 'pc-nrfconnect-foobar',
-    version: '1.2.3',
+    currentVersion: '1.2.3',
     path: '/path/to/pc-nrfconnect-foobar',
     isOfficial: true,
 });
 
-describe('AppListItem', () => {
+describe('LaunchableAppItem', () => {
     it('should render with required props', () => {
         expect(renderer.create(
-            <AppListItem
+            <LaunchableAppItem
                 app={app}
                 onClick={() => {}}
             />,
@@ -60,7 +60,7 @@ describe('AppListItem', () => {
 
     it('should render with displayName instead of name if provided', () => {
         expect(renderer.create(
-            <AppListItem
+            <LaunchableAppItem
                 app={app.set('displayName', 'Foobar Tool')}
                 onClick={() => {}}
             />,
@@ -69,7 +69,7 @@ describe('AppListItem', () => {
 
     it('should render custom icon if provided', () => {
         expect(renderer.create(
-            <AppListItem
+            <LaunchableAppItem
                 app={app.set('iconPath', './path/to/icon.png')}
                 onClick={() => {}}
             />,
@@ -78,7 +78,7 @@ describe('AppListItem', () => {
 
     it('should render official if isOfficial is true', () => {
         expect(renderer.create(
-            <AppListItem
+            <LaunchableAppItem
                 app={app.set('isOfficial', true)}
                 onClick={() => {}}
             />,
@@ -88,12 +88,12 @@ describe('AppListItem', () => {
     it('should invoke onClick when launch button has been clicked', () => {
         const onClick = jest.fn();
         const wrapper = mount(
-            <AppListItem
+            <LaunchableAppItem
                 app={app}
                 onClick={onClick}
             />,
         );
-        wrapper.find(AppLaunchButton).first().simulate('click');
+        wrapper.find(AppItemButton).first().simulate('click');
 
         expect(onClick).toHaveBeenCalled();
     });

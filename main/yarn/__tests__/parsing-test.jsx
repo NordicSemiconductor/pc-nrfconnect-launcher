@@ -34,25 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-function parseOutdated(yarnOutput) {
-    return yarnOutput
-        .split(/\r?\n/)
-        .map(line => line.split(/\s+/))
-        .filter(lineArray => lineArray.length > 4 && lineArray[4] === 'dependencies')
-        .reduce((result, lineArray) => {
-            const name = lineArray[0];
-            const currentVersion = lineArray[1];
-            const latestVersion = lineArray[3];
-            return {
-                ...result,
-                [name]: {
-                    currentVersion,
-                    latestVersion,
-                },
-            };
-        }, {});
-}
+import { parseOutdated } from '../parsing';
 
-export default {
-    parseOutdated,
-};
+describe('parseOutdated', () => {
+    it('should return empty object if yarn output is empty', () => {
+        expect(parseOutdated('')).toEqual({});
+    });
+
+    it('should return empty object if yarn output contains irrelevant output', () => {
+        const yarnOutput = `warning No license field
+Done in 0.23s.`;
+        expect(parseOutdated(yarnOutput)).toEqual({});
+    });
+
+    it('should return object with two packages if output contains two outdated dependencies', () => {
+        const yarnOutput = `warning No license field
+Package        Current    Wanted    Latest    Package Type
+mypackage1     1.2.3      1.2.3     1.2.4     dependencies
+mypackage2     4.5.6      4.5.6     5.0.0     dependencies
+Done in 0.23s.`;
+        expect(parseOutdated(yarnOutput)).toEqual({
+            mypackage1: '1.2.4',
+            mypackage2: '5.0.0',
+        });
+    });
+});

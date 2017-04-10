@@ -35,16 +35,56 @@
  */
 
 import React, { PropTypes } from 'react';
+import { Iterable } from 'immutable';
+import LaunchableAppItem from './LaunchableAppItem';
 
-const AppLaunchButton = ({ onClick }) => (
-    <button title="Launch app" className="btn btn-primary core-btn" onClick={onClick}>
-        <span className="icon-play" />
-        <span>Launch</span>
-    </button>
-);
+function getSortedApps(apps) {
+    return apps.sort((a, b) => {
+        const aName = a.displayName || a.name;
+        const bName = b.displayName || b.name;
+        const compared = aName.localeCompare(bName);
+        if (compared === 0) {
+            return a.isOfficial ? -1 : 1;
+        }
+        return compared;
+    });
+}
 
-AppLaunchButton.propTypes = {
-    onClick: PropTypes.func.isRequired,
+class AppLaunchView extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    render() {
+        const { apps, onAppSelected } = this.props;
+        const sortedApps = getSortedApps(apps);
+        return (
+            <div className="list-group">
+                {
+                    sortedApps.size > 0 ?
+                        sortedApps.map(app => (
+                            <LaunchableAppItem
+                                key={app.path}
+                                app={app}
+                                onClick={() => onAppSelected(app)}
+                            />
+                        )) :
+                        <div>
+                            <h4>Welcome to nRF Connect</h4>
+                            <p>
+                                To get started, go to <i>Add/remove apps</i> to install some apps.
+                            </p>
+                        </div>
+                }
+            </div>
+        );
+    }
+}
+
+AppLaunchView.propTypes = {
+    apps: PropTypes.instanceOf(Iterable).isRequired,
+    onMount: PropTypes.func.isRequired,
+    onAppSelected: PropTypes.func.isRequired,
 };
 
-export default AppLaunchButton;
+export default AppLaunchView;
