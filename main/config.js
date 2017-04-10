@@ -61,7 +61,7 @@ function init(argv) {
     yarnLockPath = path.join(appsRootDir, 'yarn.lock');
     updatesJsonPath = path.join(appsRootDir, 'updates.json');
     appsJsonPath = path.join(appsRootDir, 'apps.json');
-    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/feature/app-installation/apps.json';
+    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
     skipUpdateApps = argv['skip-update-apps'] || false;
 }
 
