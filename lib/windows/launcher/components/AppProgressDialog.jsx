@@ -34,34 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppManagementView from '../components/AppManagementView';
-import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../../util/fileUtil';
+import React, { PropTypes } from 'react';
 
-function mapStateToProps(state) {
-    const { apps } = state;
+import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
+import Spinner from '../../../components/Spinner';
 
-    return {
-        apps: apps.officialApps,
-        isRetrievingApps: apps.isLoadingOfficialApps,
-        installingAppName: apps.installingAppName,
-        removingAppName: apps.removingAppName,
-        upgradingAppName: apps.upgradingAppName,
-    };
-}
+const AppProgressDialog = ({
+    isVisible, title, text,
+}) => (
+    <Modal show={isVisible} backdrop>
+        <ModalHeader closeButton={false}>
+            <ModalTitle>{title}</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <p>{text}</p>
+        </ModalBody>
+        <ModalFooter>
+            <Spinner />&nbsp;
+            <Button disabled>Cancel</Button>
+        </ModalFooter>
+    </Modal>
+);
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => dispatch(AppsActions.loadOfficialApps()),
-        onInstall: name => dispatch(AppsActions.installOfficialApp(name)),
-        onRemove: name => dispatch(AppsActions.removeOfficialApp(name)),
-        onUpgrade: (name, version) => dispatch(AppsActions.upgradeOfficialApp(name, version)),
-        onReadMore: homepage => openUrlInDefaultBrowser(homepage),
-    };
-}
+AppProgressDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
+export default AppProgressDialog;
