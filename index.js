@@ -164,27 +164,3 @@ ipcMain.on('open-app', (event, app) => {
     }
     openAppWindow(app);
 });
-
-ipcMain.on('get-official-apps', event => {
-    apps.getOfficialApps()
-        .then(officialApps => event.sender.send('get-official-apps-success', officialApps))
-        .catch(error => event.sender.send('get-official-apps-error', error.message));
-});
-
-ipcMain.on('get-local-apps', event => {
-    apps.getLocalApps()
-        .then(localApps => event.sender.send('get-local-apps-success', localApps))
-        .catch(error => event.sender.send('get-local-apps-error', error.message));
-});
-
-ipcMain.on('install-official-app', (event, name) => {
-    apps.installOfficialApp(name)
-        .then(output => event.sender.send('install-official-app-success', output))
-        .catch(error => event.sender.send('install-official-app-error', error.message));
-});
-
-ipcMain.on('remove-official-app', (event, name) => {
-    apps.removeOfficialApp(name)
-        .then(output => event.sender.send('remove-official-app-success', output))
-        .catch(error => event.sender.send('remove-official-app-error', error.message));
-});
