@@ -11,6 +11,7 @@
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "app": "electron .",
         "dev": "webpack --watch",
+        "webpack": "webpack",
         "build": "cross-env NODE_ENV=production webpack",
         "lint": "eslint main lib",
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
