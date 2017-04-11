@@ -161,9 +161,10 @@ function initAppsDirectory() {
  * @returns {Promise} promise that resolves with app info.
  */
 function readAppInfo(appPath) {
-    return fileUtil.readJsonFile(`${appPath}/package.json`)
+    const packageJsonPath = path.join(appPath, 'package.json');
+    return fileUtil.readJsonFile(packageJsonPath)
         .then(packageJson => {
-            const iconPath = `${appPath}/icon.png`;
+            const iconPath = path.join(appPath, 'icon.png');
             return {
                 name: packageJson.name,
                 displayName: packageJson.displayName,
