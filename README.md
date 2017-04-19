@@ -135,7 +135,7 @@ Apps can:
 * Use the core API for things like BLE operations, programming, and logging.
 * Read and update Redux state by creating custom actions and reducers.
 
-nRF Connect looks for apps in `$HOME/.nrfconnect-apps/local` (Linux/macOS) or `%USERPROFILE%\.nrfconnect-apps\local` (Windows). For now, it just loads the first app it finds in this directory. In the future, the user will be able to choose which app to use at startup.
+Official apps are hosted on the public npm registry, and can be installed through the *Add/remove apps* UI. The apps are installed to `$HOME/.nrfconnect-apps` (Linux/macOS) or `%USERPROFILE%\.nrfconnect-apps` (Windows). Apps that are unofficial or in development can be manually added to the `local` directory in `.nrfconnect-apps`.
 
 ### API for apps
 
