@@ -157,6 +157,56 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
+        <code>onInit</code>
+      </td>
+      <td>
+        <p>Invoked right before the app is rendered for the first time.</p>
+        <p>Parameters:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td><code>dispatch</code></td>
+              <td>The Redux dispatch function, which may be invoked to dispatch actions.</td>
+            </tr>
+            <tr>
+              <td><code>getState</code></td>
+              <td>The Redux getState function, which may be invoked to read the current app state.</td>
+            </tr>
+            <tr>
+              <td><code>api</code></td>
+              <td>The api object, containing libraries and functions from core. See the API operations section for details.</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>onReady</code>
+      </td>
+      <td>
+        <p>Invoked right after the app has been rendered for the first time.</p>
+        <p>Parameters:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td><code>dispatch</code></td>
+              <td>The Redux dispatch function, which may be invoked to dispatch actions.</td>
+            </tr>
+            <tr>
+              <td><code>getState</code></td>
+              <td>The Redux getState function, which may be invoked to read the current app state.</td>
+            </tr>
+            <tr>
+              <td><code>api</code></td>
+              <td>The api object, containing libraries and functions from core. See the API operations section for details.</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <code>decorateErrorDialog</code><br />
         <code>decorateFirmwareDialog</code><br />
         <code>decorateLogo</code><br />
