@@ -300,53 +300,6 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
   </tbody>
 </table>
 
-#### Properties
-
-<table>
-  <tbody>
-    <tr>
-      <th>Property</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>
-        <code>config</code><br />
-      </td>
-      <td>
-        <p>Property that is used for general configuration. This can be added to the app object, similar to the methods, and supports the settings described below.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>firmwareData</code></td>
-              <td>
-                <p>Firmware hex string to program when user selects serial port.</p>
-                <p>Must be an object that has one (or both) of the following properties:</p>
-                <pre>{
-  nrf51: 'nrf51-hex-string',
-  nrf52: 'nrf52-hex-string',
-}</pre>
-                <p>Note that <code>firmwareData</code> and <code>firmwarePaths</code> should not be used simultaneously.</p>
-              </td>
-            </tr>
-            <tr>
-              <td><code>firmwarePaths</code></td>
-              <td>
-                <p>Paths to firmware hex files to program when user selects serial port. Paths are relative to the app's root directory.</p>
-                <p>Must be an object that has one (or both) of the following properties:</p>
-                <pre>{
-  nrf51: './path/to/nrf51-firmware.hex',
-  nrf52: './path/to/nrf52-firmware.hex',
-}</pre>
-                <p>Note that <code>firmwareData</code> and <code>firmwarePaths</code> should not be used simultaneously.</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
 #### API operations
 
 When implementing the `map*Dispatch` methods, apps can create and dispatch custom actions. When dispatching actions, the action creator get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.

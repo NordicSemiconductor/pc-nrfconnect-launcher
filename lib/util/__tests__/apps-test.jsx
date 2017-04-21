@@ -377,17 +377,3 @@ describe('decorateReducer', () => {
         });
     });
 });
-
-describe('getAppConfig', () => {
-    it('should throw error if app has no \'config\' property', () => {
-        setApp({});
-        expect(() => getAppConfig()).toThrow();
-    });
-
-    it('should return \'config\' property if provided by app', () => {
-        setApp({
-            config: { foo: 'bar' },
-        });
-        expect(getAppConfig()).toEqual({ foo: 'bar' });
-    });
-});
