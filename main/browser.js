@@ -49,7 +49,7 @@ function createSplashScreen() {
         show: false,
         transparent: true,
     });
-    splashScreen.loadURL(`file://${__dirname}/../resources/splashScreen.html`);
+    splashScreen.loadURL(`file://${__dirname}/../resources/splashscreen.html`);
     splashScreen.on('closed', () => {
         splashScreen = null;
     });
