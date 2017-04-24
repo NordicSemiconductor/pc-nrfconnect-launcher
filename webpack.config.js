@@ -60,4 +60,3 @@ module.exports = {
     externals: createExternals(),
     target: 'electron-renderer',
 };
-
