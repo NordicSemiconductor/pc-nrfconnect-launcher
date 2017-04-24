@@ -19,12 +19,36 @@
         "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
         "clean-dist": "rimraf dist",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
-        "get-nrfjprog": "node build/get-nrfjprog.js"
+        "get-nrfjprog": "node build/get-nrfjprog.js",
+        "pack": "npm run build && npm run get-nrfjprog && build"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
+    "build": {
+        "appId": "com.nordicsemi.nrfconnect",
+        "files": [
+            "dist/",
+            "main/",
+            "node_modules/",
+            "resources/*.html",
+            "resources/*.png",
+            "index.js"
+        ],
+        "directories": {
+            "output": "release"
+        },
+        "linux": {
+            "target": [
+                "tar.gz"
+            ],
+            "extraFiles": [
+                { "from": "build/nrfjprog/unpacked/nrfjprog", "to": ".", "filter": "*.so*" }
+            ]
+        }
+    },
     "devDependencies": {
         "asar": "0.13.0",
+        "electron-builder": "17.0.3",
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.4.13",
         "spectron": "3.6.0",
