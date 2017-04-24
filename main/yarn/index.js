@@ -36,7 +36,7 @@
 
 const fork = require('child_process').fork;
 const parseOutdated = require('./parsing').parseOutdated;
-const config = require('../config') ;
+const config = require('../config');
 
 const yarnPath = require.resolve('yarn/bin/yarn.js');
 
