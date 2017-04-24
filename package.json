@@ -18,7 +18,8 @@
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
         "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
         "clean-dist": "rimraf dist",
-        "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
+        "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
+        "get-nrfjprog": "node build/get-nrfjprog.js"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
@@ -27,6 +28,7 @@
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.4.13",
         "spectron": "3.6.0",
+        "tar": "2.2.1",
         "util": "0.10.3",
         "xvfb-maybe": "0.1.3"
     },
