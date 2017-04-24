@@ -41,7 +41,7 @@ jest.mock('../fileUtil', () => {});
 import React, { PropTypes } from 'react';
 import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { setApp, decorate, decorateReducer, connect, getAppConfig } from '../apps';
+import { setApp, decorate, decorateReducer, connect, invokeAppFn } from '../apps';
 import renderer from 'react-test-renderer';
 
 describe('decorate', () => {
@@ -375,5 +375,19 @@ describe('decorateReducer', () => {
                 value: 'baz',
             },
         });
+    });
+});
+
+describe('invokeAppFn', () => {
+    it('should throw error if no app is loaded', () => {
+        setApp(null);
+        expect(() => invokeAppFn()).toThrow(/no app is loaded/);
+    });
+
+    it('should invoke app function with parameters if implemented', () => {
+        const foobarFn = jest.fn();
+        setApp({ foobarFn });
+        invokeAppFn('foobarFn', 1, 'bar');
+        expect(foobarFn).toHaveBeenCalledWith(1, 'bar');
     });
 });
