@@ -50,19 +50,12 @@ export default () => (
         <DecoratedNavBar />
         <div className="core-main-layout">
             <div>
-                <div>
-                    <MainViewContainer />
-                </div>
-                <div>
-                    <LogViewerContainer />
-                </div>
+                <MainViewContainer />
+                <LogViewerContainer />
             </div>
-            <div>
-                <SidePanelContainer />
-            </div>
+            <SidePanelContainer />
         </div>
         <FirmwareDialogContainer />
         <ErrorDialogContainer />
     </div>
 );
-
