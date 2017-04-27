@@ -46,6 +46,12 @@
                 { "from": "build/nrfjprog/unpacked/nrfjprog", "to": ".", "filter": "*.so*" }
             ]
         },
+        "mac": {
+            "category": "public.app-category.developer-tools",
+            "extraFiles": [
+                { "from": "build/nrfjprog/unpacked/nrfjprog", "to": "Frameworks", "filter": "*.dylib" }
+            ]
+        },
         "win": {
             "target": [
                 "nsis"
