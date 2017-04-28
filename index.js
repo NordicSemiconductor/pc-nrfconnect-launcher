@@ -65,7 +65,7 @@ const appWindows = [];
 function openLauncherWindow() {
     launcherWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version}`,
-        url: `file://${__dirname}/lib/windows/launcher/index.html`,
+        url: `file://${__dirname}/resources/launcher.html`,
         icon: `${__dirname}/resources/nrfconnect.png`,
         width: 670,
         height: 500,
@@ -85,7 +85,7 @@ function openAppWindow(app) {
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
         title: `nRF Connect v${packageJson.version} - ${app.displayName || app.name}`,
-        url: `file://${__dirname}/lib/windows/app/index.html?appPath=${app.path}`,
+        url: `file://${__dirname}/resources/app.html?appPath=${app.path}`,
         icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
         x: lastWindowState.x,
         y: lastWindowState.y,

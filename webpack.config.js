@@ -23,8 +23,8 @@ module.exports = {
     },
     output: {
         path: path.resolve('dist'),
-        publicPath: '../../../dist/',
-        filename: '[name]-window-bundle.js',
+        publicPath: '../dist/',
+        filename: '[name]-bundle.js',
     },
     module: {
         loaders: [{
