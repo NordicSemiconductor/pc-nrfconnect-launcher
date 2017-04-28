@@ -70,7 +70,7 @@ describe('one local app', () => {
     ));
 
     it('should display splash screen image in first window when electron is started', () => (
-        electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashScreen.png\']')
+        electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashscreen.png\']')
             .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
     ));
 
