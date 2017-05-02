@@ -82,7 +82,7 @@
         "immutable": "3.8.1",
         "moment": "2.17.1",
         "mousetrap": "1.6.0",
-        "pc-ble-driver-js": "https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v1.0.0",
+        "pc-ble-driver-js": "https://github.com/NordicSemiconductor/pc-ble-driver-js.git#master",
         "pc-nrfjprog-js": "https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#a742bade",
         "react": "15.4.2",
         "react-bootstrap": "0.30.7",
