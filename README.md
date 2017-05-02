@@ -60,7 +60,7 @@ Install all the required tools and configurations using Microsoft's windows-buil
 
 Before building nRF Connect you will need to have Boost installed and some of its libraries statically compiled. To install and compile Boost, please follow the instructions here:
 
-[Building Boost](https://github.com/NordicSemiconductor/pc-ble-driver/tree/master#building-boost)
+[Building Boost](https://github.com/NordicSemiconductor/pc-ble-driver/blob/master/Installation.md#building-boost)
 
 Note: Make sure you have built the Boost libraries for the architecture (32 or 64-bit) required by your Node installation.
 
