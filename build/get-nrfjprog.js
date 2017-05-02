@@ -41,34 +41,43 @@ const tar = require('tar');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const exec = require('child_process').exec ;
 
 /*
  * nRF5x-Command-Line-Tools (nrfjprog) is required for programming. This script
- * downloads nrfjprog for the current platform, so that we can bundle it with
- * the release artifacts.
+ * downloads nrfjprog for the current platform.
  *
- * On Windows, we bundle the nrfjprog installer and run that as part of the
- * nRF Connect installer. There is no installer for Linux and macOS, so here
- * we extract the downloaded tar file and add the extracted libraries (*.so
- * files) to the artifact. This is set up in the electron-builder configuration
- * in package.json.
+ * On Linux/macOS, the nrfjprog libraries needs to exist below the electron
+ * directory in node_modules, so that Electron finds them. The script extracts
+ * the nrfjprog tar file, and copies the libraries to the correct directory.
  */
 
 const DOWNLOAD_DIR = path.join(__dirname, 'nrfjprog');
-const UNPACKED_DIR = path.join(DOWNLOAD_DIR, 'unpacked');
 
 const PLATFORM_CONFIG = {
     linux: {
         url: 'https://www.nordicsemi.com/eng/nordic/download_resource/51386/21/45903857/94917',
-        extension: 'tar',
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux.tar'),
+        extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
+        copyFiles: {
+            source: path.join(DOWNLOAD_DIR, 'unpacked', 'nrfjprog'),
+            destination: `${__dirname}/../node_modules/electron/dist`,
+            pattern: '*.so*',
+        },
     },
     darwin: {
         url: 'https://www.nordicsemi.com/eng/nordic/download_resource/53402/12/46853853/99977',
-        extension: 'tar',
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-darwin.tar'),
+        extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
+        copyFiles: {
+            source: path.join(DOWNLOAD_DIR, 'unpacked', 'nrfjprog'),
+            destination: `${__dirname}/../node_modules/electron/dist/Electron.app/Contents/Frameworks`,
+            pattern: '*.dylib',
+        },
     },
     win32: {
         url: 'https://www.nordicsemi.com/eng/nordic/download_resource/33444/40/23436026/53210',
-        extension: 'exe',
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe'),
     },
 };
 
@@ -122,6 +131,18 @@ function extractTarFile(filePath, outputDir) {
     });
 }
 
+function copyFiles(source, destination, pattern) {
+    return new Promise((resolve, reject) => {
+        exec(`cp ${source}/${pattern} ${destination}`, error => {
+            if (error) {
+                reject(new Error(`Unable to copy files: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 const platform = os.platform();
 const platformConfig = PLATFORM_CONFIG[platform];
 
@@ -129,16 +150,23 @@ if (!platformConfig) {
     throw new Error(`Unsupported platform: '${platform}'`);
 }
 
-const destinationFile = path.join(DOWNLOAD_DIR, `nrfjprog-${platform}.${platformConfig.extension}`);
-console.log(`Downloading nrfjprog to ${destinationFile}`);
+console.log(`Downloading nrfjprog to ${platformConfig.destinationFile}`);
 Promise.resolve()
     .then(() => mkdirIfNotExists(DOWNLOAD_DIR))
-    .then(() => downloadFile(platformConfig.url, destinationFile))
+    .then(() => downloadFile(platformConfig.url, platformConfig.destinationFile))
     .then(() => {
-        if (platformConfig.extension === 'tar') {
-            console.log(`Extracting nrfjprog to ${UNPACKED_DIR}`);
-            return extractTarFile(destinationFile, UNPACKED_DIR);
+        if (platformConfig.extractTo) {
+            console.log(`Extracting nrfjprog to ${platformConfig.extractTo}`);
+            return extractTarFile(platformConfig.destinationFile, platformConfig.extractTo);
         }
         return Promise.resolve();
     })
-    .catch(error => console.log(`Error when downloading/extracting nrfjprog: ${error.message}`));
+    .then(() => {
+        if (platformConfig.copyFiles) {
+            const copyConfig = platformConfig.copyFiles;
+            console.log(`Copying nrfjprog libs from ${copyConfig.source} to ${copyConfig.destination}`);
+            return copyFiles(copyConfig.source, copyConfig.destination, copyConfig.pattern);
+        }
+        return Promise.resolve();
+    })
+    .catch(error => console.log(`Error when getting nrfjprog: ${error.message}`));
