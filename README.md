@@ -110,6 +110,18 @@ Run end-to-end tests:
 
     npm run test-e2e
 
+## Creating release artifacts
+
+To pack nRF Connect into a release artifact for the current platform:
+
+    npm run pack
+
+Depending on the platform, this will create:
+
+* Windows: NSIS installer
+* macOS: DMG disk image
+* Linux: tar.gz archive
+
 ## Creating apps
 
 **Note: The API for apps is in development and may change before the final release.**
