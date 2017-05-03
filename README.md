@@ -96,12 +96,6 @@ Download and install the latest [nRF5x-Command-Line-Tools](https://www.nordicsem
 
 J-Link driver needs to be separately installed on Linux and macOS, download and install appropriate package for your operating system from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*.
 
-To set up nrfjprog so that it is available during development on Linux or macOS, run the following:
-
-    npm run get-nrfjprog && cp build/nrfjprog/unpacked/nrfjprog/* node_modules/electron/dist
-
-This will download and put the nrfjprog libraries in the same directory as the electron binary in node_modules, so that the application finds them.
-
 ## Testing
 
 Run unit tests:
@@ -115,6 +109,18 @@ Run unit tests and watch for changes:
 Run end-to-end tests:
 
     npm run test-e2e
+
+## Creating release artifacts
+
+To pack nRF Connect into a release artifact for the current platform:
+
+    npm run pack
+
+Depending on the platform, this will create:
+
+* Windows: NSIS installer
+* macOS: DMG disk image
+* Linux: tar.gz archive
 
 ## Creating apps
 
