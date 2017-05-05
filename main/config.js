@@ -38,7 +38,9 @@
 
 const electronApp = require('electron').app;
 const path = require('path');
+const packageJson = require('../package.json');
 
+let version;
 let homeDir;
 let userDataDir;
 let appsRootDir;
@@ -52,6 +54,7 @@ let appsJsonUrl;
 let skipUpdateApps;
 
 function init(argv) {
+    version = packageJson.version;
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
@@ -67,6 +70,7 @@ function init(argv) {
 
 module.exports = {
     init,
+    getVersion: () => version,
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
     getAppsRootDir: () => appsRootDir,
