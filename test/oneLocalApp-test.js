@@ -40,7 +40,6 @@ import packageJson from '../package.json';
 
 const appsRootDir = path.resolve(__dirname, './features/one-local-app');
 const electronArgs = [
-    '--skip-update-apps',
     `--apps-root-dir=${appsRootDir}`,
 ];
 
