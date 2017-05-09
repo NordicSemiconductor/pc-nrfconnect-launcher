@@ -44,7 +44,6 @@ const apps = require('./main/apps');
 const browser = require('./main/browser');
 const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
-const packageJson = require('./package.json');
 
 const electronApp = electron.app;
 const Menu = electron.Menu;
@@ -64,7 +63,7 @@ const appWindows = [];
 
 function openLauncherWindow() {
     launcherWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version}`,
+        title: `nRF Connect v${config.getVersion()}`,
         url: `file://${__dirname}/resources/launcher.html`,
         icon: `${__dirname}/resources/nrfconnect.png`,
         width: 670,
@@ -84,7 +83,7 @@ function openLauncherWindow() {
 function openAppWindow(app) {
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
-        title: `nRF Connect v${packageJson.version} - ${app.displayName || app.name}`,
+        title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
         url: `file://${__dirname}/resources/app.html?appPath=${app.path}`,
         icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
         x: lastWindowState.x,
