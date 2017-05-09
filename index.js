@@ -91,6 +91,8 @@ function openAppWindow(app) {
         y: lastWindowState.y,
         width: lastWindowState.width,
         height: lastWindowState.height,
+        show: true,
+        backgroundColor: '#fff',
     });
 
     appWindows.push(appWindow);
