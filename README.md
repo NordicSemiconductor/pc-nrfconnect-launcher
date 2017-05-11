@@ -342,40 +342,19 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
   </tbody>
 </table>
 
-#### API operations
+#### Included libraries/APIs
 
-When implementing the `map*Dispatch` methods, apps can create and dispatch custom actions. When dispatching actions, the action creator get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
-
-    import { logger } from 'nrfconnect/core';
-
-    function logSelectedPort(port) {
-        return (dispatch, getState) => {
-            logger.info(`Serial port ${port.comName} was selected`);
-        };
-    }
-
-    module.exports = {
-        mapSerialPortSelectorDispatch: (dispatch, props) => ({
-            ...props,
-            onSelect: port => dispatch(logSelectedPort(port)),
-        }),
-    };
-
-#### Hosted modules / internal api
+The nRF Connect framework includes a set of libraries/APIs that apps can import. See below for a full list.
 
 <table>
   <tbody>
     <tr>
       <th>Path</th>
-      <th>Exported</th>
       <th>Description</th>
     </tr>
     <tr>
       <td>
         <code>pc-ble-driver-js</code>
-      </td>
-      <td>
-        <code>bleDriver</code>
       </td>
       <td>
         <p>BLE operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-ble-driver-js">BLE API source code</a>.</p>
@@ -384,9 +363,6 @@ When implementing the `map*Dispatch` methods, apps can create and dispatch custo
     <tr>
       <td>
         <code>nrfconnect/core</code>
-      </td>
-      <td>
-        <code>core</code>
       </td>
       <td>
         <table>
@@ -410,18 +386,12 @@ When implementing the `map*Dispatch` methods, apps can create and dispatch custo
         <code>nrfconnect/programming</code>
       </td>
       <td>
-        <code>programming</code>
-      </td>
-      <td>
         <p>Programming operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/lib/api/programming/index.js">programming API source code</a>.</p>
       </td>
     </tr>
     <tr>
       <td>
         <code>serialport</code>
-      </td>
-      <td>
-        <code>SerialPort</code>
       </td>
       <td>
         <p>A reference to the serialport library. Refer to the <a href="https://github.com/EmergingTechnologyAdvisors/node-serialport">serialport documentation</a>.</p>
@@ -432,14 +402,24 @@ When implementing the `map*Dispatch` methods, apps can create and dispatch custo
         <code>electron</code>
       </td>
       <td>
-        <code>electron</code>
-      </td>
-      <td>
         <p>A reference to the electron library. Refer to the <a href="https://electron.atom.io/docs/api/">electron documentation</a>.</p>
       </td>
     </tr>
   </tbody>
 </table>
+
+##### Example
+
+Below is an example that imports the logger instance, and adds a log message when the user selects a serial port.
+
+    import { logger } from 'nrfconnect/core';
+
+    module.exports = {
+        mapSerialPortSelectorDispatch: (dispatch, props) => ({
+            ...props,
+            onSelect: port => logger.info(`Serial port ${port.comName} was selected`),
+        }),
+    };
 
 ### Hello World app
 
