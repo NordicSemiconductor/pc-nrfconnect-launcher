@@ -172,10 +172,6 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
               <td><code>getState</code></td>
               <td>The Redux getState function, which may be invoked to read the current app state.</td>
             </tr>
-            <tr>
-              <td><code>api</code></td>
-              <td>The api object, containing libraries and functions from core. See the API operations section for details.</td>
-            </tr>
           </tbody>
         </table>
       </td>
@@ -196,10 +192,6 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
             <tr>
               <td><code>getState</code></td>
               <td>The Redux getState function, which may be invoked to read the current app state.</td>
-            </tr>
-            <tr>
-              <td><code>api</code></td>
-              <td>The api object, containing libraries and functions from core. See the API operations section for details.</td>
             </tr>
           </tbody>
         </table>
@@ -354,9 +346,10 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
 
 When implementing the `map*Dispatch` methods, apps can create and dispatch custom actions. When dispatching actions, the action creator get access to an `api` object that enables using the logger, serial ports, BLE, and programming. Below is an example that adds a log message when the user selects a serial port.
 
+    import { logger } from 'nrfconnect/core';
+
     function logSelectedPort(port) {
-        return (dispatch, getState, api) => {
-            const { logger } = api;
+        return (dispatch, getState) => {
             logger.info(`Serial port ${port.comName} was selected`);
         };
     }
@@ -368,33 +361,54 @@ When implementing the `map*Dispatch` methods, apps can create and dispatch custo
         }),
     };
 
-As can be seen in this example, when passing a function to `dispatch`, it will receive the `api` object as the third parameter. Here we pull out the `logger`, and use that to add a log message.
-
-The properties provided by the `api` object are described below.
+#### Hosted modules / internal api
 
 <table>
   <tbody>
     <tr>
-      <th>Property</th>
+      <th>Path</th>
+      <th>Exported</th>
       <th>Description</th>
     </tr>
     <tr>
       <td>
-        <code>ble</code>
+        <code>pc-ble-driver-js</code>
       </td>
       <td>
-        <p>BLE operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/lib/api/ble/index.js">BLE API source code</a>.</p>
+        <code>bleDriver</code>
+      </td>
+      <td>
+        <p>BLE operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-ble-driver-js">BLE API source code</a>.</p>
       </td>
     </tr>
     <tr>
       <td>
-        <code>logger</code>
+        <code>nrfconnect/core</code>
       </td>
       <td>
-        <p>The application logger, which is a Winston logger instance. Refer to the <a href="https://github.com/winstonjs/winston">Winston documentation</a>.</p>
+        <code>core</code>
+      </td>
+      <td>
+        <table>
+        <tr>
+          <td><code>logger</code></td>
+          <td><p>The application logger, which is a Winston logger instance. Refer to the <a href="https://github.com/winstonjs/winston">Winston documentation</a>.</p></td>
+        </tr>
+        <tr>
+          <td><code>getAppDir</code></td>
+          <td><p>Function returning the absolute path where the app is loaded from.</p></td>
+        </tr>
+        <tr>
+          <td><code>getUserDataDir</code></td>
+          <td><p>Function returning data directory of the current user.</p></td>
+        </tr>
+        </table>
       </td>
     </tr>
     <tr>
+      <td>
+        <code>nrfconnect/programming</code>
+      </td>
       <td>
         <code>programming</code>
       </td>
@@ -404,10 +418,24 @@ The properties provided by the `api` object are described below.
     </tr>
     <tr>
       <td>
+        <code>serialport</code>
+      </td>
+      <td>
         <code>SerialPort</code>
       </td>
       <td>
         <p>A reference to the serialport library. Refer to the <a href="https://github.com/EmergingTechnologyAdvisors/node-serialport">serialport documentation</a>.</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>electron</code>
+      </td>
+      <td>
+        <code>electron</code>
+      </td>
+      <td>
+        <p>A reference to the electron library. Refer to the <a href="https://electron.atom.io/docs/api/">electron documentation</a>.</p>
       </td>
     </tr>
   </tbody>
