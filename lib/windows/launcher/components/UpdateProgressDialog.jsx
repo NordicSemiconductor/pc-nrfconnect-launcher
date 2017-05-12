@@ -34,55 +34,55 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import React, { PropTypes } from 'react';
+import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle, ProgressBar } from 'react-bootstrap';
+import Spinner from '../../../components/Spinner';
 
-const electronApp = require('electron').app;
-const path = require('path');
-const packageJson = require('../package.json');
+const UpdateProgressDialog = ({
+    isVisible,
+    isProgressSupported,
+    isCancelSupported,
+    version,
+    percentDownloaded,
+    onCancel,
+    isCancelling,
+}) => (
+    <Modal show={isVisible} backdrop>
+        <ModalHeader closeButton={false}>
+            <ModalTitle>Downloading update</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <p>Downloading nRF Connect {version}...</p>
+            {
+                isProgressSupported &&
+                    <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
+            }
+            <p>
+                This might take a few minutes. The application will restart and update
+                once the download is complete.
+            </p>
+        </ModalBody>
+        <ModalFooter>
+            {
+                !isProgressSupported &&
+                    <Spinner />
+            }
+            {
+                isCancelSupported &&
+                    <Button onClick={onCancel} disabled={isCancelling}>Cancel</Button>
+            }
+        </ModalFooter>
+    </Modal>
+);
 
-let version;
-let homeDir;
-let userDataDir;
-let appsRootDir;
-let appsLocalDir;
-let nodeModulesDir;
-let packageJsonPath;
-let yarnLockPath;
-let updatesJsonPath;
-let appsJsonPath;
-let appsJsonUrl;
-let skipUpdateApps;
-let skipUpdateCore;
-
-function init(argv) {
-    version = packageJson.version;
-    homeDir = electronApp.getPath('home');
-    userDataDir = electronApp.getPath('userData');
-    appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
-    appsLocalDir = path.join(appsRootDir, 'local');
-    nodeModulesDir = path.join(appsRootDir, 'node_modules');
-    packageJsonPath = path.join(appsRootDir, 'package.json');
-    yarnLockPath = path.join(appsRootDir, 'yarn.lock');
-    updatesJsonPath = path.join(appsRootDir, 'updates.json');
-    appsJsonPath = path.join(appsRootDir, 'apps.json');
-    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    skipUpdateApps = argv['skip-update-apps'] || false;
-    skipUpdateCore = argv['skip-update-core'] || false;
-}
-
-module.exports = {
-    init,
-    getVersion: () => version,
-    getHomeDir: () => homeDir,
-    getUserDataDir: () => userDataDir,
-    getAppsRootDir: () => appsRootDir,
-    getAppsLocalDir: () => appsLocalDir,
-    getNodeModulesDir: () => nodeModulesDir,
-    getPackageJsonPath: () => packageJsonPath,
-    getYarnLockPath: () => yarnLockPath,
-    getUpdatesJsonPath: () => updatesJsonPath,
-    getAppsJsonPath: () => appsJsonPath,
-    getAppsJsonUrl: () => appsJsonUrl,
-    isSkipUpdateApps: () => skipUpdateApps,
-    isSkipUpdateCore: () => skipUpdateCore,
+UpdateProgressDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    isProgressSupported: PropTypes.bool.isRequired,
+    isCancelSupported: PropTypes.bool.isRequired,
+    version: PropTypes.string.isRequired,
+    percentDownloaded: PropTypes.number.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    isCancelling: PropTypes.bool.isRequired,
 };
+
+export default UpdateProgressDialog;

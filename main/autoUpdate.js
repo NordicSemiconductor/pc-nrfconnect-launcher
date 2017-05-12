@@ -36,53 +36,13 @@
 
 'use strict';
 
-const electronApp = require('electron').app;
-const path = require('path');
-const packageJson = require('../package.json');
+const autoUpdater = require('electron-updater').autoUpdater;
+const CancellationToken = require('electron-builder-http/out/CancellationToken').CancellationToken;
+const log = require('electron-log');
 
-let version;
-let homeDir;
-let userDataDir;
-let appsRootDir;
-let appsLocalDir;
-let nodeModulesDir;
-let packageJsonPath;
-let yarnLockPath;
-let updatesJsonPath;
-let appsJsonPath;
-let appsJsonUrl;
-let skipUpdateApps;
-let skipUpdateCore;
+autoUpdater.autoDownload = false;
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
 
-function init(argv) {
-    version = packageJson.version;
-    homeDir = electronApp.getPath('home');
-    userDataDir = electronApp.getPath('userData');
-    appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
-    appsLocalDir = path.join(appsRootDir, 'local');
-    nodeModulesDir = path.join(appsRootDir, 'node_modules');
-    packageJsonPath = path.join(appsRootDir, 'package.json');
-    yarnLockPath = path.join(appsRootDir, 'yarn.lock');
-    updatesJsonPath = path.join(appsRootDir, 'updates.json');
-    appsJsonPath = path.join(appsRootDir, 'apps.json');
-    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    skipUpdateApps = argv['skip-update-apps'] || false;
-    skipUpdateCore = argv['skip-update-core'] || false;
-}
-
-module.exports = {
-    init,
-    getVersion: () => version,
-    getHomeDir: () => homeDir,
-    getUserDataDir: () => userDataDir,
-    getAppsRootDir: () => appsRootDir,
-    getAppsLocalDir: () => appsLocalDir,
-    getNodeModulesDir: () => nodeModulesDir,
-    getPackageJsonPath: () => packageJsonPath,
-    getYarnLockPath: () => yarnLockPath,
-    getUpdatesJsonPath: () => updatesJsonPath,
-    getAppsJsonPath: () => appsJsonPath,
-    getAppsJsonUrl: () => appsJsonUrl,
-    isSkipUpdateApps: () => skipUpdateApps,
-    isSkipUpdateCore: () => skipUpdateCore,
-};
+module.exports.autoUpdater = autoUpdater;
+module.exports.CancellationToken = CancellationToken;

@@ -40,12 +40,12 @@ import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from '
 import Spinner from './Spinner';
 
 const ConfirmationDialog = ({
-    isVisible, isInProgress, text, onOk, onCancel, okButtonText, cancelButtonText,
+    isVisible, isInProgress, title, text, onOk, onCancel, okButtonText, cancelButtonText,
 }) => (
     <div>
         <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
             <ModalHeader closeButton={!isInProgress}>
-                <ModalTitle>Confirm</ModalTitle>
+                <ModalTitle>{title}</ModalTitle>
             </ModalHeader>
             <ModalBody>
                 <p>{text}</p>
@@ -62,6 +62,7 @@ const ConfirmationDialog = ({
 
 ConfirmationDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
+    title: PropTypes.string,
     text: PropTypes.string.isRequired,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -71,6 +72,7 @@ ConfirmationDialog.propTypes = {
 };
 
 ConfirmationDialog.defaultProps = {
+    title: 'Confirm',
     isInProgress: false,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',

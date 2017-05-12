@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.0.0-pre0",
+    "version": "2.0.0-alpha.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -22,13 +22,17 @@
         "clean-dist": "rimraf dist",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-nrfjprog": "node build/get-nrfjprog.js",
-        "pack": "npm run build && build -p never"
+        "pack": "npm run build && build -p never",
+        "release": "build -p always"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect",
+        "publish": [
+            "github"
+        ],
         "files": [
             "dist/",
             "main/",
@@ -60,16 +64,13 @@
             ]
         },
         "nsis": {
-            "oneClick": false,
-            "allowToChangeInstallationDirectory": true,
-            "runAfterFinish": false,
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh"
         }
     },
     "devDependencies": {
         "asar": "0.13.0",
-        "electron-builder": "17.0.3",
+        "electron-builder": "17.3.1",
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.4.13",
         "spectron": "3.6.0",
@@ -80,6 +81,10 @@
     "dependencies": {
         "babel-polyfill": "6.22.0",
         "bootstrap": "3.3.7",
+        "electron-builder-http": "17.4.0",
+        "electron-is-dev": "0.1.2",
+        "electron-log": "2.2.4",
+        "electron-updater": "1.14.3",
         "immutable": "3.8.1",
         "moment": "2.17.1",
         "mousetrap": "1.6.0",

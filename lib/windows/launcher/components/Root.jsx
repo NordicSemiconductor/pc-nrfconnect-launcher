@@ -38,6 +38,8 @@ import React from 'react';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainViewContainer from '../containers/MainViewContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
+import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
+import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import Logo from '../../../components/Logo';
 
 export default () => (
@@ -50,5 +52,7 @@ export default () => (
             <MainViewContainer />
         </div>
         <ErrorDialogContainer />
+        <UpdateAvailableContainer />
+        <UpdateProgressContainer />
     </div>
 );

@@ -39,7 +39,6 @@ import { startElectronApp, stopElectronApp } from './setup';
 
 const appsRootDir = path.resolve(__dirname, './features/one-official-app-upgradable');
 const electronArgs = [
-    '--skip-update-apps',
     `--apps-root-dir=${appsRootDir}`,
 ];
 

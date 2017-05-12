@@ -1,0 +1,127 @@
+exports[`UpdateProgressDialog should render cancelling 1`] = `
+<Modal
+  backdrop={true}
+  show={true}>
+  <ModalHeader
+    closeButton={false}>
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <ProgressBar
+      label="42%"
+      now={42} />
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      disabled={true}
+      onClick={[Function]}>
+      Cancel
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`UpdateProgressDialog should render invisible 1`] = `
+<Modal
+  backdrop={true}
+  show={false}>
+  <ModalHeader
+    closeButton={false}>
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      
+      ...
+    </p>
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <img
+      alt="Loading..."
+      className="core-spinner"
+      height={16}
+      src="test-file-stub"
+      width={16} />
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
+<Modal
+  backdrop={true}
+  show={true}>
+  <ModalHeader
+    closeButton={false}>
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <ProgressBar
+      label="42%"
+      now={42} />
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      disabled={false}
+      onClick={[Function]}>
+      Cancel
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
+<Modal
+  backdrop={true}
+  show={true}>
+  <ModalHeader
+    closeButton={false}>
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <img
+      alt="Loading..."
+      className="core-spinner"
+      height={16}
+      src="test-file-stub"
+      width={16} />
+  </ModalFooter>
+</Modal>
+`;

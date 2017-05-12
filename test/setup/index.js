@@ -50,6 +50,8 @@ if (process.platform === 'win32') {
 function startElectronApp(extraArgs) {
     const args = [
         projectPath,
+        '--skip-update-apps',
+        '--skip-update-core',
     ];
     const electronApp = new Application({
         path: electronPath,
