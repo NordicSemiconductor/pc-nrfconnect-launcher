@@ -297,30 +297,6 @@ nRF Connect respects the `main` field in the app's package.json, so the entry fi
     </tr>
     <tr>
       <td>
-        <code>reduceErrorDialog</code><br />
-        <code>reduceFirmwareDialog</code><br />
-        <code>reduceLog</code><br />
-        <code>reduceNavMenu</code><br />
-        <code>reduceSerialPort</code>
-      </td>
-      <td>
-        <p>Invoked right after the corresponding core reducer function. Receives the state and action, and returns a new state.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>state</code></td>
-              <td>The part of the state that the reducer is concerned with.</td>
-            </tr>
-            <tr>
-              <td><code>action</code></td>
-              <td>The action that was dispatched.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
         <code>reduceApp</code><br />
       </td>
       <td>
