@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`FirmwareDialog should render empty div if not visible 1`] = `<div />`;
 
 exports[`FirmwareDialog should render visible dialog with custom text 1`] = `
@@ -8,7 +10,8 @@ exports[`FirmwareDialog should render visible dialog with custom text 1`] = `
   okButtonText="Yes"
   onCancel={[Function]}
   onOk={[Function]}
-  text="Do you confirm?" />
+  text="Do you confirm?"
+/>
 `;
 
 exports[`FirmwareDialog should render visible dialog with default text for given port 1`] = `
@@ -19,5 +22,6 @@ exports[`FirmwareDialog should render visible dialog with default text for given
   okButtonText="Yes"
   onCancel={[Function]}
   onOk={[Function]}
-  text="Would you like to program the development kit on /dev/tty1 (1337) with the required firmware?" />
+  text="Would you like to program the development kit on /dev/tty1 (1337) with the required firmware?"
+/>
 `;

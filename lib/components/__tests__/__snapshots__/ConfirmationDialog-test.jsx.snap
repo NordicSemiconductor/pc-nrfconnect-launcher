@@ -1,11 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`ConfirmationDialog should render invisible dialog 1`] = `
 <div>
   <Modal
     backdrop={false}
     onHide={[Function]}
-    show={false}>
+    show={false}
+  >
     <ModalHeader
-      closeButton={true}>
+      closeButton={true}
+    >
       <ModalTitle>
         Confirm
       </ModalTitle>
@@ -19,12 +23,14 @@ exports[`ConfirmationDialog should render invisible dialog 1`] = `
        
       <Button
         disabled={false}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         OK
       </Button>
       <Button
         disabled={false}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Cancel
       </Button>
     </ModalFooter>
@@ -37,9 +43,11 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
   <Modal
     backdrop={false}
     onHide={[Function]}
-    show={true}>
+    show={true}
+  >
     <ModalHeader
-      closeButton={true}>
+      closeButton={true}
+    >
       <ModalTitle>
         Confirm
       </ModalTitle>
@@ -53,12 +61,14 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
        
       <Button
         disabled={false}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         OK
       </Button>
       <Button
         disabled={false}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Cancel
       </Button>
     </ModalFooter>
@@ -71,9 +81,11 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
   <Modal
     backdrop="static"
     onHide={[Function]}
-    show={true}>
+    show={true}
+  >
     <ModalHeader
-      closeButton={false}>
+      closeButton={false}
+    >
       <ModalTitle>
         Confirm
       </ModalTitle>
@@ -89,16 +101,19 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
         className="core-spinner"
         height={16}
         src="test-file-stub"
-        width={16} />
+        width={16}
+      />
        
       <Button
         disabled={true}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         OK
       </Button>
       <Button
         disabled={true}
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Cancel
       </Button>
     </ModalFooter>

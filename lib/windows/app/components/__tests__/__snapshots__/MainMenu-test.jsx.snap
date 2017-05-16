@@ -1,8 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`MainMenu should render menu with no items 1`] = `
 <div
-  className="core-nav-section core-padded-row">
+  className="core-nav-section core-padded-row"
+>
   <div
-    className="dropdown btn-group">
+    className="dropdown btn-group"
+  >
     <button
       aria-expanded={false}
       aria-haspopup={true}
@@ -12,24 +16,29 @@ exports[`MainMenu should render menu with no items 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
-      type="button">
+      type="button"
+    >
       <span
-        className="glyphicon glyphicon-menu-hamburger" />
+        className="glyphicon glyphicon-menu-hamburger"
+      />
     </button>
     <ul
       aria-labelledby="main-menu"
       className="core-dropdown-menu dropdown-menu"
       id="main-menu-list"
-      role="menu" />
+      role="menu"
+    />
   </div>
 </div>
 `;
 
 exports[`MainMenu should render menu with two items separated by divider 1`] = `
 <div
-  className="core-nav-section core-padded-row">
+  className="core-nav-section core-padded-row"
+>
   <div
-    className="dropdown btn-group">
+    className="dropdown btn-group"
+  >
     <button
       aria-expanded={false}
       aria-haspopup={true}
@@ -39,26 +48,31 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
-      type="button">
+      type="button"
+    >
       <span
-        className="glyphicon glyphicon-menu-hamburger" />
+        className="glyphicon glyphicon-menu-hamburger"
+      />
     </button>
     <ul
       aria-labelledby="main-menu"
       className="core-dropdown-menu dropdown-menu"
       id="main-menu-list"
-      role="menu">
+      role="menu"
+    >
       <li
         className=""
         role="presentation"
-        style={undefined}>
+        style={undefined}
+      >
         <a
           href="#"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="menuitem"
           tabIndex="-1"
-          title="First item">
+          title="First item"
+        >
           First item
         </a>
       </li>
@@ -67,18 +81,21 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
         onKeyDown={[Function]}
         role="separator"
         style={undefined}
-        title={undefined} />
+        title={undefined}
+      />
       <li
         className=""
         role="presentation"
-        style={undefined}>
+        style={undefined}
+      >
         <a
           href="#"
           onClick={[Function]}
           onKeyDown={[Function]}
           role="menuitem"
           tabIndex="-1"
-          title="Last item">
+          title="Last item"
+        >
           Last item
         </a>
       </li>

@@ -1,27 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`LogHeader should render when buttons are provided 1`] = `
 <div
-  className="core-log-header">
+  className="core-log-header"
+>
   <div
-    className="core-log-header-text">
+    className="core-log-header-text"
+  >
     Log
   </div>
   <div
-    className="core-padded-row core-log-header-buttons">
+    className="core-padded-row core-log-header-buttons"
+  >
     <button
       className="btn btn-primary btn-xs core-btn "
       onClick={[Function]}
-      title="Foo button">
+      title="Foo button"
+    >
       <span
         aria-hidden="true"
-        className="foo-btn-class" />
+        className="foo-btn-class"
+      />
     </button>
     <button
       className="btn btn-primary btn-xs core-btn "
       onClick={[Function]}
-      title="Bar button">
+      title="Bar button"
+    >
       <span
         aria-hidden="true"
-        className="bar-btn-class" />
+        className="bar-btn-class"
+      />
     </button>
   </div>
 </div>
@@ -29,20 +38,25 @@ exports[`LogHeader should render when buttons are provided 1`] = `
 
 exports[`LogHeader should render when selected button is provided 1`] = `
 <div
-  className="core-log-header">
+  className="core-log-header"
+>
   <div
-    className="core-log-header-text">
+    className="core-log-header-text"
+  >
     Log
   </div>
   <div
-    className="core-padded-row core-log-header-buttons">
+    className="core-padded-row core-log-header-buttons"
+  >
     <button
       className="btn btn-primary btn-xs core-btn active"
       onClick={[Function]}
-      title="Foo button">
+      title="Foo button"
+    >
       <span
         aria-hidden="true"
-        className="foo-btn-class" />
+        className="foo-btn-class"
+      />
     </button>
   </div>
 </div>
@@ -50,12 +64,15 @@ exports[`LogHeader should render when selected button is provided 1`] = `
 
 exports[`LogHeader should render when text and no buttons provided 1`] = `
 <div
-  className="core-log-header">
+  className="core-log-header"
+>
   <div
-    className="core-log-header-text">
+    className="core-log-header-text"
+  >
     Foobar log header
   </div>
   <div
-    className="core-padded-row core-log-header-buttons" />
+    className="core-padded-row core-log-header-buttons"
+  />
 </div>
 `;

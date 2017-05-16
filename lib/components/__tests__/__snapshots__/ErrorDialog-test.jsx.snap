@@ -1,9 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`ErrorDialog should render hidden dialog 1`] = `
 <Modal
   onHide={[Function]}
-  show={false}>
+  show={false}
+>
   <ModalHeader
-    closeButton={true}>
+    closeButton={true}
+  >
     <ModalTitle>
       Error
     </ModalTitle>
@@ -11,7 +15,8 @@ exports[`ErrorDialog should render hidden dialog 1`] = `
   <ModalBody />
   <ModalFooter>
     <Button
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       Close
     </Button>
   </ModalFooter>
@@ -21,9 +26,11 @@ exports[`ErrorDialog should render hidden dialog 1`] = `
 exports[`ErrorDialog should render visible dialog with one message 1`] = `
 <Modal
   onHide={[Function]}
-  show={true}>
+  show={true}
+>
   <ModalHeader
-    closeButton={true}>
+    closeButton={true}
+  >
     <ModalTitle>
       Error
     </ModalTitle>
@@ -35,7 +42,8 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
   </ModalBody>
   <ModalFooter>
     <Button
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       Close
     </Button>
   </ModalFooter>
@@ -45,9 +53,11 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
 exports[`ErrorDialog should render visible dialog with two messages 1`] = `
 <Modal
   onHide={[Function]}
-  show={true}>
+  show={true}
+>
   <ModalHeader
-    closeButton={true}>
+    closeButton={true}
+  >
     <ModalTitle>
       Error
     </ModalTitle>
@@ -62,7 +72,8 @@ exports[`ErrorDialog should render visible dialog with two messages 1`] = `
   </ModalBody>
   <ModalFooter>
     <Button
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       Close
     </Button>
   </ModalFooter>

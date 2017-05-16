@@ -38,7 +38,8 @@
 
 jest.mock('../fileUtil', () => {});
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { setApp, decorate, decorateReducer, connect, invokeAppFn } from '../apps';

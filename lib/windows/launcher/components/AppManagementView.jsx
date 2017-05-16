@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
 import InstalledAppItem from '../components/InstalledAppItem';
 import AvailableAppItem from '../components/AvailableAppItem';
