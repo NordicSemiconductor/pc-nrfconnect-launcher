@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';

@@ -44,6 +44,9 @@ function yarn(args, options = {}) {
     return new Promise((resolve, reject) => {
         const proc = fork(yarnPath, args, Object.assign({}, options, {
             cwd: config.getAppsRootDir(),
+            env: {
+                DISABLE_V8_COMPILE_CACHE: 1,
+            },
             stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
         }));
 
@@ -51,8 +54,8 @@ function yarn(args, options = {}) {
         const addToBuffer = data => {
             buffer += data.toString();
         };
-        proc.stdout.on('data', data => addToBuffer(data));
-        proc.stderr.on('data', data => addToBuffer(data));
+        proc.stdout.on('data', addToBuffer);
+        proc.stderr.on('data', addToBuffer);
 
         proc.on('exit', code => (
             code !== 0 ? reject(new Error(buffer)) : resolve(buffer)

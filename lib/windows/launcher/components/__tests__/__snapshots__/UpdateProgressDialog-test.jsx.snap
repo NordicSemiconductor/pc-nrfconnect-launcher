@@ -1,9 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`UpdateProgressDialog should render cancelling 1`] = `
 <Modal
   backdrop={true}
-  show={true}>
+  show={true}
+>
   <ModalHeader
-    closeButton={false}>
+    closeButton={false}
+  >
     <ModalTitle>
       Downloading update
     </ModalTitle>
@@ -16,7 +20,8 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
     </p>
     <ProgressBar
       label="42%"
-      now={42} />
+      now={42}
+    />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
@@ -24,7 +29,8 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
   <ModalFooter>
     <Button
       disabled={true}
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       Cancel
     </Button>
   </ModalFooter>
@@ -34,9 +40,11 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
 exports[`UpdateProgressDialog should render invisible 1`] = `
 <Modal
   backdrop={true}
-  show={false}>
+  show={false}
+>
   <ModalHeader
-    closeButton={false}>
+    closeButton={false}
+  >
     <ModalTitle>
       Downloading update
     </ModalTitle>
@@ -57,7 +65,8 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
       className="core-spinner"
       height={16}
       src="test-file-stub"
-      width={16} />
+      width={16}
+    />
   </ModalFooter>
 </Modal>
 `;
@@ -65,9 +74,11 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
 exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
 <Modal
   backdrop={true}
-  show={true}>
+  show={true}
+>
   <ModalHeader
-    closeButton={false}>
+    closeButton={false}
+  >
     <ModalTitle>
       Downloading update
     </ModalTitle>
@@ -80,7 +91,8 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
     </p>
     <ProgressBar
       label="42%"
-      now={42} />
+      now={42}
+    />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
@@ -88,7 +100,8 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
   <ModalFooter>
     <Button
       disabled={false}
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       Cancel
     </Button>
   </ModalFooter>
@@ -98,9 +111,11 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
 exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
 <Modal
   backdrop={true}
-  show={true}>
+  show={true}
+>
   <ModalHeader
-    closeButton={false}>
+    closeButton={false}
+  >
     <ModalTitle>
       Downloading update
     </ModalTitle>
@@ -121,7 +136,8 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
       className="core-spinner"
       height={16}
       src="test-file-stub"
-      width={16} />
+      width={16}
+    />
   </ModalFooter>
 </Modal>
 `;

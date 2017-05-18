@@ -1,32 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`LogViewer should render log entries 1`] = `
 <div
-  className="core-log-viewer">
+  className="core-log-viewer"
+>
   <LogHeaderContainer />
   <Infinite
     autoScroll={true}
     className="core-infinite-log"
     containerHeight={155}
     elementHeight={20}
-    infiniteLoadBeginEdgeOffset={135}>
+    infiniteLoadBeginEdgeOffset={135}
+  >
     <div
-      className="core-log-entry core-log-level-info">
+      className="core-log-entry core-log-level-info"
+    >
       <div
-        className="core-log-time">
+        className="core-log-time"
+      >
         13:41:36.0200
       </div>
       <div
-        className="core-log-message">
+        className="core-log-message"
+      >
         Info message
       </div>
     </div>
     <div
-      className="core-log-entry core-log-level-error">
+      className="core-log-entry core-log-level-error"
+    >
       <div
-        className="core-log-time">
+        className="core-log-time"
+      >
         14:41:36.0200
       </div>
       <div
-        className="core-log-message">
+        className="core-log-message"
+      >
         Error message
       </div>
     </div>

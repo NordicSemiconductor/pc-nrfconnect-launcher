@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const AppItemButton = ({ text, title, iconClass, onClick }) => (
     <button title={title} className="btn btn-primary core-btn" onClick={onClick}>

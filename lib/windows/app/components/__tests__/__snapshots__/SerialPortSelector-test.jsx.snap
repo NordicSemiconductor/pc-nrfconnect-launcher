@@ -1,88 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`SerialPortSelector should render empty list while loading 1`] = `
 <span
-  title="Select serial port (Alt+P)">
+  title="Select serial port (Alt+P)"
+>
   <div
-    className="core-padded-row">
+    className="core-padded-row"
+  >
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
-      open={true}>
+      open={true}
+    >
       <DropdownToggle
         className="core-serial-port-selector core-btn btn-primary"
-        title="Select serial port" />
+        title="Select serial port"
+      />
       <DropdownMenu
         className="core-dropdown-menu"
-        id="serial-port-selector-list" />
+        id="serial-port-selector-list"
+      />
     </Dropdown>
     <div
-      className="core-serial-port-indicator off" />
+      className="core-serial-port-indicator off"
+    />
   </div>
 </span>
 `;
 
 exports[`SerialPortSelector should render empty port list, expanded 1`] = `
 <span
-  title="Select serial port (Alt+P)">
+  title="Select serial port (Alt+P)"
+>
   <div
-    className="core-padded-row">
+    className="core-padded-row"
+  >
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
-      open={true}>
+      open={true}
+    >
       <DropdownToggle
         className="core-serial-port-selector core-btn btn-primary"
-        title="Select serial port" />
+        title="Select serial port"
+      />
       <DropdownMenu
         className="core-dropdown-menu"
-        id="serial-port-selector-list" />
+        id="serial-port-selector-list"
+      />
     </Dropdown>
     <div
-      className="core-serial-port-indicator off" />
+      className="core-serial-port-indicator off"
+    />
   </div>
 </span>
 `;
 
 exports[`SerialPortSelector should render empty port list, not expanded 1`] = `
 <span
-  title="Select serial port (Alt+P)">
+  title="Select serial port (Alt+P)"
+>
   <div
-    className="core-padded-row">
+    className="core-padded-row"
+  >
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
-      open={false}>
+      open={false}
+    >
       <DropdownToggle
         className="core-serial-port-selector core-btn btn-primary"
-        title="Select serial port" />
+        title="Select serial port"
+      />
       <DropdownMenu
         className="core-dropdown-menu"
-        id="serial-port-selector-list" />
+        id="serial-port-selector-list"
+      />
     </Dropdown>
     <div
-      className="core-serial-port-indicator off" />
+      className="core-serial-port-indicator off"
+    />
   </div>
 </span>
 `;
 
 exports[`SerialPortSelector should render two ports 1`] = `
 <span
-  title="Select serial port (Alt+P)">
+  title="Select serial port (Alt+P)"
+>
   <div
-    className="core-padded-row">
+    className="core-padded-row"
+  >
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
-      open={true}>
+      open={true}
+    >
       <DropdownToggle
         className="core-serial-port-selector core-btn btn-primary"
-        title="Select serial port" />
+        title="Select serial port"
+      />
       <DropdownMenu
         className="core-dropdown-menu"
-        id="serial-port-selector-list">
+        id="serial-port-selector-list"
+      >
         <MenuItem
           className="btn-primary"
           eventKey="/dev/tty0"
-          onSelect={[Function]}>
+          onSelect={[Function]}
+        >
           <div>
             /dev/tty0
           </div>
@@ -91,14 +117,16 @@ exports[`SerialPortSelector should render two ports 1`] = `
               Object {
                 "fontSize": "small",
               }
-            }>
+            }
+          >
             123456
           </div>
         </MenuItem>
         <MenuItem
           className="btn-primary"
           eventKey="/dev/tty1"
-          onSelect={[Function]}>
+          onSelect={[Function]}
+        >
           <div>
             /dev/tty1
           </div>
@@ -107,37 +135,45 @@ exports[`SerialPortSelector should render two ports 1`] = `
               Object {
                 "fontSize": "small",
               }
-            }>
+            }
+          >
             456789
           </div>
         </MenuItem>
       </DropdownMenu>
     </Dropdown>
     <div
-      className="core-serial-port-indicator off" />
+      className="core-serial-port-indicator off"
+    />
   </div>
 </span>
 `;
 
 exports[`SerialPortSelector should render two ports, one selected 1`] = `
 <span
-  title="Select serial port (Alt+P)">
+  title="Select serial port (Alt+P)"
+>
   <div
-    className="core-padded-row">
+    className="core-padded-row"
+  >
     <Dropdown
       id="serial-port-selector"
       onToggle={[Function]}
-      open={true}>
+      open={true}
+    >
       <DropdownToggle
         className="core-serial-port-selector core-btn btn-primary"
-        title="/dev/tty1" />
+        title="/dev/tty1"
+      />
       <DropdownMenu
         className="core-dropdown-menu"
-        id="serial-port-selector-list">
+        id="serial-port-selector-list"
+      >
         <MenuItem
           className="btn-primary"
           eventKey="/dev/tty0"
-          onSelect={[Function]}>
+          onSelect={[Function]}
+        >
           <div>
             /dev/tty0
           </div>
@@ -146,14 +182,16 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
               Object {
                 "fontSize": "small",
               }
-            }>
+            }
+          >
             123456
           </div>
         </MenuItem>
         <MenuItem
           className="btn-primary"
           eventKey="/dev/tty1"
-          onSelect={[Function]}>
+          onSelect={[Function]}
+        >
           <div>
             /dev/tty1
           </div>
@@ -162,14 +200,16 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
               Object {
                 "fontSize": "small",
               }
-            }>
+            }
+          >
             456789
           </div>
         </MenuItem>
         <MenuItem
           className="btn-primary"
           eventKey="Close serial port"
-          onSelect={[Function]}>
+          onSelect={[Function]}
+        >
           <div>
             Close serial port
           </div>
@@ -178,14 +218,16 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
               Object {
                 "fontSize": "small",
               }
-            }>
+            }
+          >
             
           </div>
         </MenuItem>
       </DropdownMenu>
     </Dropdown>
     <div
-      className="core-serial-port-indicator off" />
+      className="core-serial-port-indicator off"
+    />
   </div>
 </span>
 `;

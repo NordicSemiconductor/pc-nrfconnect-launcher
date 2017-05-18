@@ -1,17 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`NavMenu should render menu with no items 1`] = `
 <div
-  className="core-nav-section core-padded-row" />
+  className="core-nav-section core-padded-row"
+/>
 `;
 
 exports[`NavMenu should render menu with two items, and none selected 1`] = `
 <div
-  className="core-nav-section core-padded-row">
+  className="core-nav-section core-padded-row"
+>
   <button
     className="btn btn-primary core-btn core-padded-row "
     onClick={[Function]}
-    title="Connection map (Alt+1)">
+    title="Connection map (Alt+1)"
+  >
     <span
-      className="icon-columns" />
+      className="icon-columns"
+    />
     <span>
       Connection map
     </span>
@@ -19,9 +25,11 @@ exports[`NavMenu should render menu with two items, and none selected 1`] = `
   <button
     className="btn btn-primary core-btn core-padded-row "
     onClick={[Function]}
-    title="Server setup (Alt+2)">
+    title="Server setup (Alt+2)"
+  >
     <span
-      className="icon-indent-right" />
+      className="icon-indent-right"
+    />
     <span>
       Server setup
     </span>
@@ -31,13 +39,16 @@ exports[`NavMenu should render menu with two items, and none selected 1`] = `
 
 exports[`NavMenu should render menu with two items, and one selected 1`] = `
 <div
-  className="core-nav-section core-padded-row">
+  className="core-nav-section core-padded-row"
+>
   <button
     className="btn btn-primary core-btn core-padded-row active"
     onClick={[Function]}
-    title="Connection map (Alt+1)">
+    title="Connection map (Alt+1)"
+  >
     <span
-      className="icon-columns" />
+      className="icon-columns"
+    />
     <span>
       Connection map
     </span>
@@ -45,9 +56,11 @@ exports[`NavMenu should render menu with two items, and one selected 1`] = `
   <button
     className="btn btn-primary core-btn core-padded-row "
     onClick={[Function]}
-    title="Server setup (Alt+2)">
+    title="Server setup (Alt+2)"
+  >
     <span
-      className="icon-indent-right" />
+      className="icon-indent-right"
+    />
     <span>
       Server setup
     </span>

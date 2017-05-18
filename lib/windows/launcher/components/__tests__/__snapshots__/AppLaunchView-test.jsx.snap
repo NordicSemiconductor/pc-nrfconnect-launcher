@@ -1,166 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
 <div
-  className="list-group">
+  className="list-group"
+>
   <div
-    className="core-app-launch-item list-group-item">
+    className="core-app-launch-item list-group-item"
+  >
     <img
       alt="App icon"
       className="core-app-launch-item-icon"
-      src="test-file-stub" />
+      src="test-file-stub"
+    />
     <div>
       <h4
-        className="list-group-item-heading">
+        className="list-group-item-heading"
+      >
         appA
       </h4>
       <p
-        className="list-group-item-text">
+        className="list-group-item-text"
+      >
         official
         , v
         1.2.3
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons">
+      className="core-app-launch-item-buttons"
+    >
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Launch app">
+        title="Launch app"
+      >
         <span
-          className="glyphicon glyphicon-play" />
+          className="glyphicon glyphicon-play"
+        />
         <span
-          className="core-btn-text">
+          className="core-btn-text"
+        >
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-launch-item list-group-item">
+    className="core-app-launch-item list-group-item"
+  >
     <img
       alt="App icon"
       className="core-app-launch-item-icon"
-      src="test-file-stub" />
+      src="test-file-stub"
+    />
     <div>
       <h4
-        className="list-group-item-heading">
+        className="list-group-item-heading"
+      >
         appA
       </h4>
       <p
-        className="list-group-item-text">
+        className="list-group-item-text"
+      >
         official
         , v
         1.2.3
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons">
+      className="core-app-launch-item-buttons"
+    >
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Launch app">
+        title="Launch app"
+      >
         <span
-          className="glyphicon glyphicon-play" />
+          className="glyphicon glyphicon-play"
+        />
         <span
-          className="core-btn-text">
+          className="core-btn-text"
+        >
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-launch-item list-group-item">
+    className="core-app-launch-item list-group-item"
+  >
     <img
       alt="App icon"
       className="core-app-launch-item-icon"
-      src="test-file-stub" />
+      src="test-file-stub"
+    />
     <div>
       <h4
-        className="list-group-item-heading">
+        className="list-group-item-heading"
+      >
         appA
       </h4>
       <p
-        className="list-group-item-text">
+        className="list-group-item-text"
+      >
         local
         , v
         1.2.3
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons">
+      className="core-app-launch-item-buttons"
+    >
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Launch app">
+        title="Launch app"
+      >
         <span
-          className="glyphicon glyphicon-play" />
+          className="glyphicon glyphicon-play"
+        />
         <span
-          className="core-btn-text">
+          className="core-btn-text"
+        >
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-launch-item list-group-item">
+    className="core-app-launch-item list-group-item"
+  >
     <img
       alt="App icon"
       className="core-app-launch-item-icon"
-      src="test-file-stub" />
+      src="test-file-stub"
+    />
     <div>
       <h4
-        className="list-group-item-heading">
+        className="list-group-item-heading"
+      >
         appB
       </h4>
       <p
-        className="list-group-item-text">
+        className="list-group-item-text"
+      >
         official
         , v
         1.2.3
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons">
+      className="core-app-launch-item-buttons"
+    >
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Launch app">
+        title="Launch app"
+      >
         <span
-          className="glyphicon glyphicon-play" />
+          className="glyphicon glyphicon-play"
+        />
         <span
-          className="core-btn-text">
+          className="core-btn-text"
+        >
           Launch
         </span>
       </button>
     </div>
   </div>
   <div
-    className="core-app-launch-item list-group-item">
+    className="core-app-launch-item list-group-item"
+  >
     <img
       alt="App icon"
       className="core-app-launch-item-icon"
-      src="test-file-stub" />
+      src="test-file-stub"
+    />
     <div>
       <h4
-        className="list-group-item-heading">
+        className="list-group-item-heading"
+      >
         appB
       </h4>
       <p
-        className="list-group-item-text">
+        className="list-group-item-text"
+      >
         local
         , v
         1.2.3
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons">
+      className="core-app-launch-item-buttons"
+    >
       <button
         className="btn btn-primary core-btn"
         onClick={[Function]}
-        title="Launch app">
+        title="Launch app"
+      >
         <span
-          className="glyphicon glyphicon-play" />
+          className="glyphicon glyphicon-play"
+        />
         <span
-          className="core-btn-text">
+          className="core-btn-text"
+        >
           Launch
         </span>
       </button>
@@ -171,7 +214,8 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
 
 exports[`AppLaunchView should render without any apps 1`] = `
 <div
-  className="list-group">
+  className="list-group"
+>
   <div>
     <h4>
       Welcome to nRF Connect
