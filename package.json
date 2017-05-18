@@ -101,7 +101,7 @@
         "serialport": "4.0.7",
         "winston": "2.3.1",
         "yargs": "8.0.1",
-        "yarn": "0.24.4"
+        "yarn": "0.25.2"
     },
     "jest": {
         "moduleNameMapper": {
