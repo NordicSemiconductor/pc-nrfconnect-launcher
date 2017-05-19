@@ -74,7 +74,7 @@
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.6.7",
         "spectron": "3.7.0",
-        "tar": "3.1.3",
+        "tar": "2.2.1",
         "util": "0.10.3",
         "xvfb-maybe": "0.2.1"
     },
