@@ -1,4 +1,4 @@
 {
-  "testPathDirs": ["test"],
+  "roots": [".."],
   "testRegex": ".*-test\\.js$"
 }
