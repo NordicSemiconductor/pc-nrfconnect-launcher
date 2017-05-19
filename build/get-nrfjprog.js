@@ -122,7 +122,7 @@ function downloadFile(url, destinationFile) {
 
 function extractTarFile(filePath, outputDir) {
     return new Promise((resolve, reject) => {
-        const extractor = tar.Extract({ path: outputDir })
+        const extractor = tar.extract({ path: outputDir })
             .on('error', err => reject(err))
             .on('end', () => resolve());
         fs.createReadStream(filePath)

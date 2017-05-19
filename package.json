@@ -71,7 +71,7 @@
     "devDependencies": {
         "asar": "0.13.0",
         "electron-builder": "17.8.0",
-        "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#update-deps-1",
+        "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.6.7",
         "spectron": "3.7.0",
         "tar": "3.1.3",
