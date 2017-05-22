@@ -46,7 +46,7 @@ const electronArgs = [
 let electronApp;
 
 function loadFirstApp() {
-    return electronApp.client.windowByIndex(1)
+    return electronApp.client.windowByIndex(0)
         .click('button[title="Launch app"]')
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
@@ -63,23 +63,13 @@ describe('one local app', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should open two windows when electron is started', () => (
-        electronApp.client.getWindowCount()
-            .then(windowCount => expect(windowCount).toEqual(2))
-    ));
-
-    it('should display splash screen image in first window when electron is started', () => (
-        electronApp.client.windowByIndex(0).isVisible('div[style*=\'splashscreen.png\']')
-            .then(isSplashVisible => expect(isSplashVisible).toEqual(true))
-    ));
-
     it('should show package.json version in launcher window title', () => (
-        electronApp.client.windowByIndex(1).browserWindow.getTitle()
+        electronApp.client.windowByIndex(0).browserWindow.getTitle()
             .then(title => expect(title).toContain(packageJson.version))
     ));
 
     it('should show Test App in the launcher app list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));

@@ -57,13 +57,13 @@ describe('one official app upgradable', () => {
     ));
 
     it('should show Test App in the launcher app list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));
 
     it('should show Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .getText('h4')
@@ -71,7 +71,7 @@ describe('one official app upgradable', () => {
     ));
 
     it('should show remove button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Remove Test App"]')
@@ -79,7 +79,7 @@ describe('one official app upgradable', () => {
     ));
 
     it('should show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Upgrade Test App from v1.2.3 to v1.2.4"]')
@@ -87,7 +87,7 @@ describe('one official app upgradable', () => {
     ));
 
     it('should not show install button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Install Test App"]')

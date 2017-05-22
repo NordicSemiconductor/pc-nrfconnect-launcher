@@ -45,7 +45,7 @@ const electronArgs = [
 let electronApp;
 
 function loadFirstApp() {
-    return electronApp.client.windowByIndex(1)
+    return electronApp.client.windowByIndex(0)
         .click('button[title="Launch app"]')
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
@@ -63,7 +63,7 @@ describe('one official app installed', () => {
     ));
 
     it('should show Test App in the launcher app list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));
@@ -82,7 +82,7 @@ describe('one official app installed', () => {
     ));
 
     it('should show Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .getText('h4')
@@ -90,7 +90,7 @@ describe('one official app installed', () => {
     ));
 
     it('should show remove button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Remove Test App"]')
@@ -98,7 +98,7 @@ describe('one official app installed', () => {
     ));
 
     it('should not show install button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Install Test App"]')
@@ -106,7 +106,7 @@ describe('one official app installed', () => {
     ));
 
     it('should not show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title*="Upgrade"]')

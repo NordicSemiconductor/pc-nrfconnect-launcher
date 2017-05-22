@@ -73,7 +73,7 @@
         "electron-builder": "17.8.0",
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
         "electron": "1.6.7",
-        "spectron": "3.7.0",
+        "spectron": "3.6.4",
         "tar": "2.2.1",
         "util": "0.10.3",
         "xvfb-maybe": "0.2.1"
