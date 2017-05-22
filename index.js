@@ -69,7 +69,7 @@ function openLauncherWindow() {
         width: 670,
         height: 500,
         center: true,
-        splashScreen: true,
+        splashScreen: !config.isSkipSplashScreen(),
     });
 
     launcherWindow.on('close', event => {

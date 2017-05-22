@@ -53,6 +53,7 @@ let appsJsonPath;
 let appsJsonUrl;
 let skipUpdateApps;
 let skipUpdateCore;
+let skipSplashScreen;
 
 function init(argv) {
     version = packageJson.version;
@@ -68,6 +69,7 @@ function init(argv) {
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
+    skipSplashScreen = argv['skip-splash-screen'] || false;
 }
 
 module.exports = {
@@ -85,4 +87,5 @@ module.exports = {
     getAppsJsonUrl: () => appsJsonUrl,
     isSkipUpdateApps: () => skipUpdateApps,
     isSkipUpdateCore: () => skipUpdateCore,
+    isSkipSplashScreen: () => skipSplashScreen,
 };
