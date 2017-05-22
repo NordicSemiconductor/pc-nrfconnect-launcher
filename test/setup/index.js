@@ -52,6 +52,7 @@ function startElectronApp(extraArgs) {
         projectPath,
         '--skip-update-apps',
         '--skip-update-core',
+        '--skip-splash-screen',
     ];
     const electronApp = new Application({
         path: electronPath,

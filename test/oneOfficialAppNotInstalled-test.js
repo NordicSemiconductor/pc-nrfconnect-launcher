@@ -57,13 +57,13 @@ describe('one official app not installed', () => {
     ));
 
     it('should show welcome message in the launcher app list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .getText('h4')
             .then(text => expect(text).toEqual('Welcome to nRF Connect'))
     ));
 
     it('should show Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .getText('h4')
@@ -71,7 +71,7 @@ describe('one official app not installed', () => {
     ));
 
     it('should show install button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title="Install Test App"]')
@@ -79,7 +79,7 @@ describe('one official app not installed', () => {
     ));
 
     it('should not show remove button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title*="Remove"]')
@@ -87,7 +87,7 @@ describe('one official app not installed', () => {
     ));
 
     it('should not show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(1)
+        electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
             .isVisible('core-app-management-item')
             .isVisible('button[title*="Upgrade"]')
