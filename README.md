@@ -397,6 +397,16 @@ Below is an example that imports the logger instance, and adds a log message whe
         }),
     };
 
+### Version compatibility
+
+All apps are required to specify which version(s) of nRF Connect they support. This is done by adding an `engines.nrfconnect` definition in package.json:
+
+    "engines": {
+        "nrfconnect": "<semver-range>"
+    }
+
+Go to the [node-semver documentation](https://github.com/npm/node-semver#ranges) to see valid semver ranges. If this is missing or not compatible with the installed nRF Connect version, then a warning is displayed when launching the app.
+
 ### Hello World app
 
 Create a directory below `.nrfconnect-apps/local` for the Hello World app:
