@@ -36,41 +36,47 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppIcon from './AppIcon';
-import AppItemButton from './AppItemButton';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-const LaunchableAppItem = ({ app, onClick }) => (
-    <div className="core-app-launch-item list-group-item">
-        <AppIcon app={app} />
+function renderAlert(altText) {
+    return (
         <div>
-            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-            <p className="list-group-item-text">
-                {app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}
-            </p>
-        </div>
-        <div className="core-app-launch-item-buttons">
-            <AppItemButton
-                text="Launch"
-                title="Launch app"
-                iconClass="glyphicon glyphicon-play"
-                onClick={onClick}
+            <span className="alert-icon-bg" />
+            <span
+                className="glyphicon glyphicon-alert"
+                title={altText}
             />
         </div>
+    );
+}
+
+const AppIcon = ({ app }) => (
+    <div className="core-app-icon">
+        <img
+            src={app.iconPath || nrfconnectLogo}
+            alt="App icon"
+        />
+        {
+            !app.engineVersion ?
+                renderAlert('The app does not specify which nRF Connect version(s) ' +
+                    'it supports')
+                : null
+        }
+        {
+            app.engineVersion && !app.isSupportedEngine ?
+                renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
+                    'which does not match your currently installed version')
+                : null
+        }
     </div>
 );
 
-LaunchableAppItem.propTypes = {
+AppIcon.propTypes = {
     app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        displayName: PropTypes.string,
-        currentVersion: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
         iconPath: PropTypes.string,
-        isOfficial: PropTypes.bool.isRequired,
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
     }).isRequired,
-    onClick: PropTypes.func.isRequired,
 };
 
-export default LaunchableAppItem;
+export default AppIcon;

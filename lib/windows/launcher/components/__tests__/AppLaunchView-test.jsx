@@ -54,7 +54,11 @@ describe('AppLaunchView', () => {
     });
 
     it('should render apps sorted by name and isOfficial', () => {
-        const templateApp = getImmutableApp({ currentVersion: '1.2.3' });
+        const templateApp = getImmutableApp({
+            currentVersion: '1.2.3',
+            engineVersion: '2.x',
+            isSupportedEngine: true,
+        });
         expect(renderer.create(
             <AppLaunchView
                 apps={
@@ -83,6 +87,40 @@ describe('AppLaunchView', () => {
                 }
                 onAppSelected={() => {}}
                 onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render app with no engine version', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            currentVersion: '1.2.3',
+            path: '/path/to/pc-nrfconnect-foobar',
+            isOfficial: false,
+        });
+        expect(renderer.create(
+            <AppLaunchView
+                apps={List([app])}
+                onMount={() => {}}
+                onAppSelected={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render app with unsupported engine version', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            currentVersion: '1.2.3',
+            path: '/path/to/pc-nrfconnect-foobar',
+            isOfficial: false,
+            engineVersion: '1.x',
+            isSupportedEngine: false,
+        });
+        expect(renderer.create(
+            <AppLaunchView
+                apps={List([app])}
+                onMount={() => {}}
+                onAppSelected={() => {}}
             />,
         )).toMatchSnapshot();
     });

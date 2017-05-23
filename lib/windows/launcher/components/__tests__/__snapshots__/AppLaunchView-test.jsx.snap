@@ -1,5 +1,125 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AppLaunchView should render app with no engine version 1`] = `
+<div
+  className="list-group"
+>
+  <div
+    className="core-app-launch-item list-group-item"
+  >
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+      <div>
+        <span
+          className="alert-icon-bg"
+        />
+        <span
+          className="glyphicon glyphicon-alert"
+          title="The app does not specify which nRF Connect version(s) it supports"
+        />
+      </div>
+    </div>
+    <div>
+      <h4
+        className="list-group-item-heading"
+      >
+        pc-nrfconnect-foobar
+      </h4>
+      <p
+        className="list-group-item-text"
+      >
+        local
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-launch-item-buttons"
+    >
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Launch app"
+      >
+        <span
+          className="glyphicon glyphicon-play"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Launch
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppLaunchView should render app with unsupported engine version 1`] = `
+<div
+  className="list-group"
+>
+  <div
+    className="core-app-launch-item list-group-item"
+  >
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+      <div>
+        <span
+          className="alert-icon-bg"
+        />
+        <span
+          className="glyphicon glyphicon-alert"
+          title="The app only supports nRF Connect 1.x, which does not match your currently installed version"
+        />
+      </div>
+    </div>
+    <div>
+      <h4
+        className="list-group-item-heading"
+      >
+        pc-nrfconnect-foobar
+      </h4>
+      <p
+        className="list-group-item-text"
+      >
+        local
+        , v
+        1.2.3
+      </p>
+    </div>
+    <div
+      className="core-app-launch-item-buttons"
+    >
+      <button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+        title="Launch app"
+      >
+        <span
+          className="glyphicon glyphicon-play"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Launch
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
 <div
   className="list-group"
@@ -7,11 +127,14 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   <div
     className="core-app-launch-item list-group-item"
   >
-    <img
-      alt="App icon"
-      className="core-app-launch-item-icon"
-      src="test-file-stub"
-    />
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+    </div>
     <div>
       <h4
         className="list-group-item-heading"
@@ -48,11 +171,14 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   <div
     className="core-app-launch-item list-group-item"
   >
-    <img
-      alt="App icon"
-      className="core-app-launch-item-icon"
-      src="test-file-stub"
-    />
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+    </div>
     <div>
       <h4
         className="list-group-item-heading"
@@ -89,11 +215,14 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   <div
     className="core-app-launch-item list-group-item"
   >
-    <img
-      alt="App icon"
-      className="core-app-launch-item-icon"
-      src="test-file-stub"
-    />
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+    </div>
     <div>
       <h4
         className="list-group-item-heading"
@@ -130,11 +259,14 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   <div
     className="core-app-launch-item list-group-item"
   >
-    <img
-      alt="App icon"
-      className="core-app-launch-item-icon"
-      src="test-file-stub"
-    />
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+    </div>
     <div>
       <h4
         className="list-group-item-heading"
@@ -171,11 +303,14 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   <div
     className="core-app-launch-item list-group-item"
   >
-    <img
-      alt="App icon"
-      className="core-app-launch-item-icon"
-      src="test-file-stub"
-    />
+    <div
+      className="core-app-icon"
+    >
+      <img
+        alt="App icon"
+        src="test-file-stub"
+      />
+    </div>
     <div>
       <h4
         className="list-group-item-heading"

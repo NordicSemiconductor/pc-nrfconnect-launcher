@@ -37,20 +37,44 @@ html, body, #webapp {
     overflow: auto;
 }
 
-.core-app-launch-item {
-    display: flex;
-    width: 100%;
-    justify-content: flex-start;
+.core-app-icon {
+    position: relative;
 
-    .core-app-launch-item-icon {
+    img {
         height: 40px;
         width: 40px;
         margin-right: 10px;
     }
 
+    .glyphicon {
+        position: absolute;
+        top: 28px;
+        left: 30px;
+        color: darkorange;
+    }
+
+    .alert-icon-bg {
+        position: absolute;
+        width: 8px;
+        height: 12px;
+        top: 32px;
+        left: 34px;
+        background-color: white;
+    }
+}
+
+.core-app-launch-item {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+
     .core-app-launch-item-buttons {
         text-align: right;
         margin-left: auto;
+    }
+
+    .core-app-launch-item-buttons > .btn {
+        margin-left: 10px;
     }
 }
 
