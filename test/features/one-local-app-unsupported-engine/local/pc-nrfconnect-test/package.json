@@ -1,8 +1,8 @@
 {
-    "name": "pc-nrfconnect-test",
+    "name": "pc-nrfconnect-test-unsupported-engine",
     "version": "1.2.3",
     "displayName": "Test App",
     "engines": {
-        "nrfconnect": "*"
+        "nrfconnect": "1.x"
     }
 }
