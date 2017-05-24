@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -18,8 +18,9 @@
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
         "test-watch": "jest --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
-        "clean": "npm install rimraf && npm run clean-dist && npm run clean-modules",
+        "clean": "npm install rimraf && npm run clean-dist && npm run clean-release && npm run clean-modules",
         "clean-dist": "rimraf dist",
+        "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-nrfjprog": "node build/get-nrfjprog.js",
         "pack": "npm run build && build -p never",
@@ -98,6 +99,7 @@
         "redux": "3.6.0",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
+        "semver": "5.3.0",
         "serialport": "4.0.7",
         "winston": "2.3.1",
         "yargs": "8.0.1",

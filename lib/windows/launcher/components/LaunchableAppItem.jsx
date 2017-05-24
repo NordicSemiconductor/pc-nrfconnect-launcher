@@ -36,19 +36,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import AppIcon from './AppIcon';
 import AppItemButton from './AppItemButton';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
 const LaunchableAppItem = ({ app, onClick }) => (
     <div className="core-app-launch-item list-group-item">
-        <img
-            className="core-app-launch-item-icon"
-            src={app.iconPath || nrfconnectLogo}
-            alt="App icon"
-        />
+        <AppIcon app={app} />
         <div>
             <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-            <p className="list-group-item-text">{app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}</p>
+            <p className="list-group-item-text">
+                {app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}
+            </p>
         </div>
         <div className="core-app-launch-item-buttons">
             <AppItemButton
@@ -69,12 +67,10 @@ LaunchableAppItem.propTypes = {
         path: PropTypes.string.isRequired,
         iconPath: PropTypes.string,
         isOfficial: PropTypes.bool.isRequired,
+        engineVersion: PropTypes.string,
+        isSupportedEngine: PropTypes.bool,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
-};
-
-LaunchableAppItem.defaultProps = {
-    iconPath: nrfconnectLogo,
 };
 
 export default LaunchableAppItem;

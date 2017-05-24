@@ -34,33 +34,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppLaunchView';
-import * as AppsActions from '../actions/appsActions';
+import React from 'react';
+import PropTypes from 'prop-types';
+import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
-function findInstalledApps(localApps, officialApps) {
-    return localApps.concat(officialApps.filter(app => !!app.currentVersion));
+function renderAlert(altText) {
+    return (
+        <div>
+            <span className="alert-icon-bg" />
+            <span
+                className="glyphicon glyphicon-alert"
+                title={altText}
+            />
+        </div>
+    );
 }
 
-function mapStateToProps(state) {
-    const { apps } = state;
+const AppIcon = ({ app }) => (
+    <div className="core-app-icon">
+        <img
+            src={app.iconPath || nrfconnectLogo}
+            alt="App icon"
+        />
+        {
+            !app.engineVersion ?
+                renderAlert('The app does not specify which nRF Connect version(s) ' +
+                    'it supports')
+                : null
+        }
+        {
+            app.engineVersion && !app.isSupportedEngine ?
+                renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
+                    'which does not match your currently installed version')
+                : null
+        }
+    </div>
+);
 
-    return {
-        apps: findInstalledApps(apps.localApps, apps.officialApps),
-    };
-}
+AppIcon.propTypes = {
+    app: PropTypes.shape({
+        iconPath: PropTypes.string,
+        engineVersion: PropTypes.string,
+        isSupportedEngine: PropTypes.bool,
+    }).isRequired,
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => {
-            dispatch(AppsActions.loadLocalApps());
-            dispatch(AppsActions.loadOfficialApps());
-        },
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+export default AppIcon;

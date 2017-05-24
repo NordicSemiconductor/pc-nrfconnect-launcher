@@ -34,33 +34,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppLaunchView';
-import * as AppsActions from '../actions/appsActions';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function findInstalledApps(localApps, officialApps) {
-    return localApps.concat(officialApps.filter(app => !!app.currentVersion));
-}
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-function mapStateToProps(state) {
-    const { apps } = state;
+const ConfirmLaunchDialog = ({
+    isVisible,
+    text,
+    app,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Version problem"
+        text={text}
+        okButtonText="Launch anyway"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(app)}
+        onCancel={onCancel}
+    />
+);
 
-    return {
-        apps: findInstalledApps(apps.localApps, apps.officialApps),
-    };
-}
+ConfirmLaunchDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }),
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => {
-            dispatch(AppsActions.loadLocalApps());
-            dispatch(AppsActions.loadOfficialApps());
-        },
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-    };
-}
+ConfirmLaunchDialog.defaultProps = {
+    app: null,
+};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+export default ConfirmLaunchDialog;

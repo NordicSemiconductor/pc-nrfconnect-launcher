@@ -34,33 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppLaunchView';
-import * as AppsActions from '../actions/appsActions';
+import path from 'path';
+import { startElectronApp, stopElectronApp } from './setup';
 
-function findInstalledApps(localApps, officialApps) {
-    return localApps.concat(officialApps.filter(app => !!app.currentVersion));
-}
+const appsRootDir = path.resolve(__dirname, './features/one-local-app-without-engine');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+];
 
-function mapStateToProps(state) {
-    const { apps } = state;
+let electronApp;
 
-    return {
-        apps: findInstalledApps(apps.localApps, apps.officialApps),
-    };
-}
+describe('one local app without engine definition', () => {
+    beforeEach(() => (
+        startElectronApp(electronArgs)
+            .then(startedApp => {
+                electronApp = startedApp;
+            })
+    ));
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => {
-            dispatch(AppsActions.loadLocalApps());
-            dispatch(AppsActions.loadOfficialApps());
-        },
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-    };
-}
+    afterEach(() => (
+        stopElectronApp(electronApp)
+    ));
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+    it('should show warning in the launcher app list', () => (
+        electronApp.client.windowByIndex(0)
+            .isVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+            .then(isVisible => expect(isVisible).toEqual(true))
+    ));
+
+    it('should show warning dialog when clicking Launch', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title="Launch app"]')
+            .waitForVisible('.modal-dialog')
+    ));
+});

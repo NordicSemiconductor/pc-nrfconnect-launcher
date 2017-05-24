@@ -34,33 +34,4 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppLaunchView';
-import * as AppsActions from '../actions/appsActions';
-
-function findInstalledApps(localApps, officialApps) {
-    return localApps.concat(officialApps.filter(app => !!app.currentVersion));
-}
-
-function mapStateToProps(state) {
-    const { apps } = state;
-
-    return {
-        apps: findInstalledApps(apps.localApps, apps.officialApps),
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onMount: () => {
-            dispatch(AppsActions.loadLocalApps());
-            dispatch(AppsActions.loadOfficialApps());
-        },
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+module.exports = {};

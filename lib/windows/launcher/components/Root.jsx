@@ -40,6 +40,7 @@ import MainViewContainer from '../containers/MainViewContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
+import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import Logo from '../../../components/Logo';
 
 export default () => (
@@ -54,5 +55,6 @@ export default () => (
         <ErrorDialogContainer />
         <UpdateAvailableContainer />
         <UpdateProgressContainer />
+        <ConfirmLaunchContainer />
     </div>
 );

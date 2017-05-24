@@ -38,6 +38,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const semver = require('semver');
 const config = require('./config');
 const yarn = require('./yarn');
 const fileUtil = require('./fileUtil');
@@ -152,10 +153,41 @@ function initAppsDirectory() {
 }
 
 /**
+ * Get the engines.nrfconnect value from the given package.json object.
+ * This is a semver range that indicates which core version(s) the app
+ * supports. Returns null if no value is specified.
+ *
+ * @param {Object} packageJson the package.json object.
+ * @returns {string|null} semver range indicating supported core version(s)
+ */
+function getEngineVersion(packageJson) {
+    return packageJson.engines ? packageJson.engines.nrfconnect : null;
+}
+
+/**
+ * Checks if the given core engine version is compatible with the
+ * engines.nrfconnect definition in the given package.json object.
+ *
+ * @param {string} coreEngineVersion core engine version.
+ * @param {Object} packageJson package.json object to check.
+ * @returns {boolean} true if version is compatible, false if not
+ */
+function isSupportedEngine(coreEngineVersion, packageJson) {
+    // The semver.satisfies() check will return false if receiving a pre-release
+    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
+    const currentEngine = [
+        semver.major(coreEngineVersion),
+        semver.minor(coreEngineVersion),
+        semver.patch(coreEngineVersion),
+    ].join('.');
+    return semver.satisfies(currentEngine, getEngineVersion(packageJson));
+}
+
+/**
  * Read app info from the given app directory. The returned object can
  * have name, displayName, currentVersion, description, path, isOfficial,
- * and iconPath. The iconPath is only returned if the app has an 'icon.png'
- * in the app directory.
+ * engineVersion, isSupportedEngine, and iconPath. The iconPath is only
+ * returned if the app has an 'icon.png' in the app directory.
  *
  * @param {string} appPath path to the app directory.
  * @returns {Promise} promise that resolves with app info.
@@ -173,6 +205,8 @@ function readAppInfo(appPath) {
                 path: appPath,
                 iconPath: fs.existsSync(iconPath) ? iconPath : null,
                 isOfficial: !appPath.startsWith(config.getAppsLocalDir()),
+                engineVersion: getEngineVersion(packageJson),
+                isSupportedEngine: isSupportedEngine(config.getVersion(), packageJson),
             };
         });
 }
