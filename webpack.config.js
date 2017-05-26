@@ -1,18 +1,20 @@
 const webpack = require('webpack');
 const path = require('path');
-const dependencies = require('./package.json').dependencies;
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 
 function createExternals() {
-    // Add production dependencies as externals, but keep the require behavior.
-    // http://jlongster.com/Backend-Apps-with-Webpack--Part-I
-    const externals = {};
-    Object.keys(dependencies).forEach(dependency => {
-        externals[dependency] = `commonjs ${dependency}`;
-    });
-    return externals;
+    // Some libraries, e.g. those with native addons, cannot be bundled
+    // by webpack. Adding them as externals so that they are not bundled.
+    const libs = [
+        'pc-ble-driver-js',
+        'pc-nrfjprog-js',
+        'serialport',
+    ];
+    return libs.reduce((prev, lib) => (
+        Object.assign(prev, { [lib]: `commonjs ${lib}` })
+    ), {});
 }
 
 module.exports = {
