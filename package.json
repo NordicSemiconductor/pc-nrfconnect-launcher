@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.0.0-alpha.4",
+    "version": "2.0.0-alpha.5",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -79,7 +79,7 @@
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
         "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
-        "react-infinite": "NordicSemiconductor/react-infinite#998e3a5",
+        "react-infinite": "NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
         "spectron": "3.6.4",
