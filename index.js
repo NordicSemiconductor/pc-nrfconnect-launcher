@@ -93,6 +93,7 @@ function openAppWindow(app) {
         show: true,
         backgroundColor: '#fff',
     });
+    appWindow.info = app;
 
     appWindows.push(appWindow);
 
@@ -164,4 +165,19 @@ ipcMain.on('open-app', (event, app) => {
         launcherWindow.hide();
     }
     openAppWindow(app);
+});
+
+ipcMain.on('show-about-dialog', () => {
+    const parentWindow = electron.BrowserWindow.getFocusedWindow();
+    const app = parentWindow.info;
+    if (app) {
+        dialog.showMessageBox(parentWindow, {
+            type: 'info',
+            title: 'About',
+            message: `${app.displayName || app.name} v${app.currentVersion}`,
+            detail: `${app.description}\n\nnRFConnect v${config.getVersion()}`,
+            icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+            buttons: ['OK'],
+        }, () => {});
+    }
 });
