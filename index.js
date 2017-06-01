@@ -174,11 +174,17 @@ ipcMain.on('show-about-dialog', () => {
     const appWindow = appWindows.find(appWin => appWin.browserWindow === parentWindow);
     if (appWindow) {
         const app = appWindow.app;
+        const detail = `${app.description}\n\n` +
+            `Version: ${app.currentVersion}\n` +
+            `Official: ${app.isOfficial}\n` +
+            `Supported engines: nRF Connect ${app.engineVersion}\n` +
+            `Current engine: nRF Connect ${config.getVersion()}\n` +
+            `App directory: ${app.path}`;
         dialog.showMessageBox(parentWindow, {
             type: 'info',
             title: 'About',
-            message: `${app.displayName || app.name} v${app.currentVersion}`,
-            detail: `${app.description}\n\nnRFConnect v${config.getVersion()}`,
+            message: `${app.displayName || app.name}`,
+            detail,
             icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
             buttons: ['OK'],
         }, () => {});
