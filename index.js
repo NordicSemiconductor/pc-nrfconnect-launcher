@@ -94,7 +94,10 @@ function openAppWindow(app) {
         backgroundColor: '#fff',
     });
 
-    appWindows.push(appWindow);
+    appWindows.push({
+        browserWindow: appWindow,
+        app,
+    });
 
     appWindow.webContents.on('did-finish-load', () => {
         if (lastWindowState.maximized) {
@@ -107,7 +110,7 @@ function openAppWindow(app) {
     });
 
     appWindow.on('closed', () => {
-        const index = appWindows.indexOf(appWindow);
+        const index = appWindows.findIndex(appWin => appWin.browserWindow === appWindow);
         if (index > -1) {
             appWindows.splice(index, 1);
         }
@@ -164,4 +167,26 @@ ipcMain.on('open-app', (event, app) => {
         launcherWindow.hide();
     }
     openAppWindow(app);
+});
+
+ipcMain.on('show-about-dialog', () => {
+    const parentWindow = electron.BrowserWindow.getFocusedWindow();
+    const appWindow = appWindows.find(appWin => appWin.browserWindow === parentWindow);
+    if (appWindow) {
+        const app = appWindow.app;
+        const detail = `${app.description}\n\n` +
+            `Version: ${app.currentVersion}\n` +
+            `Official: ${app.isOfficial}\n` +
+            `Supported engines: nRF Connect ${app.engineVersion}\n` +
+            `Current engine: nRF Connect ${config.getVersion()}\n` +
+            `App directory: ${app.path}`;
+        dialog.showMessageBox(parentWindow, {
+            type: 'info',
+            title: 'About',
+            message: `${app.displayName || app.name}`,
+            detail,
+            icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+            buttons: ['OK'],
+        }, () => {});
+    }
 });
