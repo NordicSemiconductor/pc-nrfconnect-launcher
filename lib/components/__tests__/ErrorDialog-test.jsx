@@ -84,4 +84,17 @@ describe('ErrorDialog', () => {
             />,
         )).toMatchSnapshot();
     });
+
+    it('should render visible dialog with two equal messages', () => {
+        expect(renderer.create(
+            <ErrorDialog
+                messages={List([
+                    'Oops. An error occurred.',
+                    'Oops. An error occurred.',
+                ])}
+                onClose={() => {}}
+                isVisible
+            />,
+        )).toMatchSnapshot();
+    });
 });

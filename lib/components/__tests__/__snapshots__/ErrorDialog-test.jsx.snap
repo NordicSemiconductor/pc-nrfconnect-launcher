@@ -50,6 +50,36 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
 </Modal>
 `;
 
+exports[`ErrorDialog should render visible dialog with two equal messages 1`] = `
+<Modal
+  onHide={[Function]}
+  show={true}
+>
+  <ModalHeader
+    closeButton={true}
+  >
+    <ModalTitle>
+      Error
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Oops. An error occurred.
+    </p>
+    <p>
+      Oops. An error occurred.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      onClick={[Function]}
+    >
+      Close
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
 exports[`ErrorDialog should render visible dialog with two messages 1`] = `
 <Modal
   onHide={[Function]}
