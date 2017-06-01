@@ -93,9 +93,11 @@ function openAppWindow(app) {
         show: true,
         backgroundColor: '#fff',
     });
-    appWindow.info = app;
 
-    appWindows.push(appWindow);
+    appWindows.push({
+        browserWindow: appWindow,
+        app,
+    });
 
     appWindow.webContents.on('did-finish-load', () => {
         if (lastWindowState.maximized) {
@@ -108,7 +110,7 @@ function openAppWindow(app) {
     });
 
     appWindow.on('closed', () => {
-        const index = appWindows.indexOf(appWindow);
+        const index = appWindows.findIndex(appWin => appWin.browserWindow === appWindow);
         if (index > -1) {
             appWindows.splice(index, 1);
         }
@@ -169,8 +171,9 @@ ipcMain.on('open-app', (event, app) => {
 
 ipcMain.on('show-about-dialog', () => {
     const parentWindow = electron.BrowserWindow.getFocusedWindow();
-    const app = parentWindow.info;
-    if (app) {
+    const appWindow = appWindows.find(appWin => appWin.browserWindow === parentWindow);
+    if (appWindow) {
+        const app = appWindow.app;
         dialog.showMessageBox(parentWindow, {
             type: 'info',
             title: 'About',
