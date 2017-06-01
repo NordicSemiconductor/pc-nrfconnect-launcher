@@ -47,8 +47,8 @@ const ErrorDialog = ({ isVisible, messages, onClose }) => (
         </ModalHeader>
         <ModalBody>
             {
-                messages.map(message => (
-                    <p key={message}>{message}</p>
+                messages.map((message, i) => (
+                    <p key={`k${i + 1}`}>{message}</p>
                 ))
             }
         </ModalBody>
