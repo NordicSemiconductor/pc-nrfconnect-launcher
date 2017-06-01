@@ -1,7 +1,7 @@
 # nRF Connect
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. While v1 was a pure BLE tool, v2 will be a framework for creating and loading desktop apps.**
+**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. While v1 was a pure Bluetooth low energy tool, v2 will be a framework for creating and launching desktop apps.**
 
 nRF Connect is a cross-platform framework for creating desktop apps for use with development kits from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the development kits over serial port. The framework comes with a skeleton that has standard UI components for listing serial ports, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
 
@@ -24,6 +24,10 @@ nRF Connect currently supports the following operating systems:
 # Usage documentation
 
 A [Getting started guide](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.tools/dita/tools/nRF_Connect/nRF_Connect_intro.html?cp=4_2) is available on the nRF Connect product pages.
+
+# Creating apps
+
+To create your own app, follow the documentation on the [project wiki](https://github.com/NordicSemiconductor/pc-nrfconnect-core/wiki). Have a look at the [RSSI viewer app](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) to see how a real-world app can be implemented. There is also a [boilerplate app](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate) that can be used as a starting point.
 
 # Contributing
 
@@ -122,329 +126,18 @@ Depending on the platform, this will create:
 * macOS: DMG disk image
 * Linux: tar.gz archive
 
-## Creating apps
-
-**Note: The API for apps is in development and may change before the final release.**
-
-The nRF Connect framework provides a foundation for creating desktop apps. It comes with a set of core components that can be decorated/overridden to suit each app's needs, and has built-in functionality for serial port communication, programming, BLE, and logging. The API for apps is inspired by [Hyper](https://hyper.is/), which is an extensible terminal emulator created with Electron, React, and Redux. Basic knowledge of React and Redux is recommended in order to write apps.
-
-Apps can:
-
-* Decorate/override the core React components to display custom content.
-* Modify the behavior of the core React components by passing in custom properties.
-* Use the core API for things like BLE operations, programming, and logging.
-* Read and update Redux state by creating custom actions and reducers.
-
-Official apps are hosted on the public npm registry, and can be installed through the *Add/remove apps* UI. The apps are installed to `$HOME/.nrfconnect-apps` (Linux/macOS) or `%USERPROFILE%\.nrfconnect-apps` (Windows). Apps that are unofficial or in development can be manually added to the `local` directory in `.nrfconnect-apps`.
-
-### API for apps
-
-Apps are npm packages that export a plain JavaScript object. The object should have one or more methods or properties, as described in the sections below, and is typically exported by `index.js` in the app's root directory:
-
-    module.exports = {
-        // methods and properties
-    };
-
-nRF Connect respects the `main` field in the app's package.json, so the entry file can be changed to something other than `index.js` if necessary.
-
-#### Methods
-
-<table>
-  <tbody>
-    <tr>
-      <th>Method</th>
-      <th>Description and parameters</th>
-    </tr>
-    <tr>
-      <td>
-        <code>onInit</code>
-      </td>
-      <td>
-        <p>Invoked right before the app is rendered for the first time.</p>
-        <p>Parameters:</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>dispatch</code></td>
-              <td>The Redux dispatch function, which may be invoked to dispatch actions.</td>
-            </tr>
-            <tr>
-              <td><code>getState</code></td>
-              <td>The Redux getState function, which may be invoked to read the current app state.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>onReady</code>
-      </td>
-      <td>
-        <p>Invoked right after the app has been rendered for the first time.</p>
-        <p>Parameters:</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>dispatch</code></td>
-              <td>The Redux dispatch function, which may be invoked to dispatch actions.</td>
-            </tr>
-            <tr>
-              <td><code>getState</code></td>
-              <td>The Redux getState function, which may be invoked to read the current app state.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>decorateErrorDialog</code><br />
-        <code>decorateFirmwareDialog</code><br />
-        <code>decorateLogo</code><br />
-        <code>decorateLogEntry</code><br />
-        <code>decorateLogHeader</code><br />
-        <code>decorateLogHeaderButton</code><br />
-        <code>decorateLogViewer</code><br />
-        <code>decorateMainMenu</code><br />
-        <code>decorateMainView</code><br />
-        <code>decorateNavBar</code><br />
-        <code>decorateNavMenu</code><br />
-        <code>decorateSerialPortSelector</code><br />
-        <code>decorateSerialPortSelectorItem</code><br />
-        <code>decorateSidePanel</code>
-      </td>
-      <td>
-        <p>Invoked with the component that is to be decorated. Must return a Higher-Order Component (HOC).</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>Component</code></td>
-              <td>The component to decorate.</td>
-            </tr>
-            <tr>
-              <td><code>env</code></td>
-              <td>The environment object. Currently only contains a reference to <code>React</code>.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>mapErrorDialogDispatch</code><br />
-        <code>mapFirmwareDialogDispatch</code><br />
-        <code>mapLogHeaderDispatch</code><br />
-        <code>mapLogViewerDispatch</code><br />
-        <code>mapMainMenuDispatch</code><br />
-        <code>mapMainViewDispatch</code><br />
-        <code>mapNavMenuDispatch</code><br />
-        <code>mapSerialPortSelectorDispatch</code><br />
-        <code>mapSidePanelDispatch</code><br />
-      </td>
-      <td>
-        <p>Allows overriding props that are passed to the components. Receives <code>dispatch</code> and the original <code>props</code>, and must return a new map of props.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>dispatch</code></td>
-              <td>The Redux dispatch function.</td>
-            </tr>
-            <tr>
-              <td><code>props</code></td>
-              <td>The original props that were passed to the component.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>mapErrorDialogState</code><br />
-        <code>mapFirmwareDialogState</code><br />
-        <code>mapLogHeaderState</code><br />
-        <code>mapLogViewerState</code><br />
-        <code>mapMainMenuState</code><br />
-        <code>mapMainViewState</code><br />
-        <code>mapNavMenuState</code><br />
-        <code>mapSerialPortSelectorState</code><br />
-        <code>mapSidePanelState</code><br />
-      </td>
-      <td>
-        <p>Allows overriding props that are passed to the components. Receives the <code>state</code> object and the original <code>props</code>, and must return a new map of props.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>state</code></td>
-              <td>The Redux state object.</td>
-            </tr>
-            <tr>
-              <td><code>props</code></td>
-              <td>The original props that were passed to the component.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>middleware</code><br />
-      </td>
-      <td>
-        <p>A custom <a href="http://redux.js.org/docs/advanced/Middleware.html">Redux middleware</a> that can intercept any action. The middleware is invoked after an action has been dispatched, but before it reaches the reducers.</p>
-        <p>This is useful e.g. when the app wants to perform some asynchronous operation when an action is dispatched by core. Refer to the <a href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/tree/master/lib/windows/app/actions">core actions</a> to see which actions may be intercepted.</p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>reduceApp</code><br />
-      </td>
-      <td>
-        <p>Invoked when an action is dispatched. This is where the app can keep its own custom state. Multiple reducers may be nested below this by using `combineReducers` from react-redux.</p>
-        <table>
-          <tbody>
-            <tr>
-              <td><code>state</code></td>
-              <td>The part of the state that the reducer is concerned with.</td>
-            </tr>
-            <tr>
-              <td><code>action</code></td>
-              <td>The action that was dispatched.</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-#### Included libraries/APIs
-
-The nRF Connect framework includes a set of libraries/APIs that apps can import. See below for a full list.
-
-<table>
-  <tbody>
-    <tr>
-      <th>Path</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>
-        <code>pc-ble-driver-js</code>
-      </td>
-      <td>
-        <p>BLE operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-ble-driver-js">BLE API source code</a>.</p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>nrfconnect/core</code>
-      </td>
-      <td>
-        <table>
-        <tr>
-          <td><code>logger</code></td>
-          <td><p>The application logger, which is a Winston logger instance. Refer to the <a href="https://github.com/winstonjs/winston">Winston documentation</a>.</p></td>
-        </tr>
-        <tr>
-          <td><code>getAppDir</code></td>
-          <td><p>Function returning the absolute path where the app is loaded from.</p></td>
-        </tr>
-        <tr>
-          <td><code>getUserDataDir</code></td>
-          <td><p>Function returning data directory of the current user.</p></td>
-        </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>nrfconnect/programming</code>
-      </td>
-      <td>
-        <p>Programming operations. Refer to the <a href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/lib/api/programming/index.js">programming API source code</a>.</p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>serialport</code>
-      </td>
-      <td>
-        <p>A reference to the serialport library. Refer to the <a href="https://github.com/EmergingTechnologyAdvisors/node-serialport">serialport documentation</a>.</p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>electron</code>
-      </td>
-      <td>
-        <p>A reference to the electron library. Refer to the <a href="https://electron.atom.io/docs/api/">electron documentation</a>.</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-##### Example
-
-Below is an example that imports the logger instance, and adds a log message when the user selects a serial port.
-
-    import { logger } from 'nrfconnect/core';
-
-    module.exports = {
-        mapSerialPortSelectorDispatch: (dispatch, props) => ({
-            ...props,
-            onSelect: port => logger.info(`Serial port ${port.comName} was selected`),
-        }),
-    };
-
-### Version compatibility
-
-All apps are required to specify which version(s) of nRF Connect they support. This is done by adding an `engines.nrfconnect` definition in package.json:
-
-    "engines": {
-        "nrfconnect": "<semver-range>"
-    }
-
-Go to the [node-semver documentation](https://github.com/npm/node-semver#ranges) to see valid semver ranges. If this is missing or not compatible with the installed nRF Connect version, then a warning is displayed when launching the app.
-
-### Hello World app
-
-Create a directory below `.nrfconnect-apps/local` for the Hello World app:
-
-* Linux/macOS: `mkdir -p $HOME/.nrfconnect-apps/local/pc-nrfconnect-helloworld`
-* Windows: `md "%USERPROFILE%\.nrfconnect-apps\local\pc-nrfconnect-helloworld"`
-
-In the newly created directory, initialize a new npm project (just accept the defaults):
-
-    npm init
-
-Add an `index.js` file in `pc-nrfconnect-helloworld` with the following contents:
-
-    module.exports = {
-        decorateMainView: (MainView, { React }) => (
-            props => React.createElement(MainView, props, 'Hello World!')
-        ),
-    };
-
-When starting nRF Connect, it should now show the Hello World app in the launcher window. When launching the app, "Hello World!" should be shown in the main view.
-
-The app implements a `decorateMainView` function, which tells nRF Connect that the app wants to decorate/override the core `MainView` component. We are using the [Higher-Order Component (HOC)](https://facebook.github.io/react/docs/higher-order-components.html) pattern here. The `decorateMainView` function receives the core `MainView` component as a parameter. In addition, the function receives a reference to the `React` library so that it can create new elements.
-
-In the body of `decorateMainView` we return a [functional React component](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components). A React class could also have been returned here. This receives the props that were originally passed to `MainView` by nRF Connect, and renders the `MainView` component with "Hello World!" as a child.
-
-### Beyond Hello World
-
-A simple [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) is a proof-of-concept app that demonstrates a real-world use case. Also, in many cases it will make sense to pull in tools like Webpack and Babel in order to use JSX syntax, plus tools for linting and unit testing. For an easy start of app development we provide a [boilerplate repository](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate).
-
 # Related projects
+
 nRF Connect builds on top of other sub components that live in their own GitHub repositories:
 
 * [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js)
 * [pc-ble-driver](https://github.com/NordicSemiconductor/pc-ble-driver)
 
 # License
+
 See the [license file](LICENSE) for details.
 
 # Feedback
+
 * Ask questions on [DevZone Questions](https://devzone.nordicsemi.com)
 * File code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-yggdrasil/issues)
