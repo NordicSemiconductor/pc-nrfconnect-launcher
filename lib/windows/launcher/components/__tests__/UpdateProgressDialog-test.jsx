@@ -56,7 +56,6 @@ describe('UpdateProgressDialog', () => {
         expect(renderer.create(
             <UpdateProgressDialog
                 isVisible={false}
-                isProgressSupported={false}
                 isCancelSupported={false}
                 version=""
                 percentDownloaded={0}
@@ -70,7 +69,6 @@ describe('UpdateProgressDialog', () => {
         expect(renderer.create(
             <UpdateProgressDialog
                 isVisible
-                isProgressSupported
                 isCancelSupported
                 version="1.2.3"
                 percentDownloaded={42}
@@ -80,11 +78,10 @@ describe('UpdateProgressDialog', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render with version, without progress, and not cancellable', () => {
+    it('should render with version and not cancellable', () => {
         expect(renderer.create(
             <UpdateProgressDialog
                 isVisible
-                isProgressSupported={false}
                 isCancelSupported={false}
                 version="1.2.3"
                 percentDownloaded={0}
@@ -98,7 +95,6 @@ describe('UpdateProgressDialog', () => {
         expect(renderer.create(
             <UpdateProgressDialog
                 isVisible
-                isProgressSupported
                 isCancelSupported
                 version="1.2.3"
                 percentDownloaded={42}
