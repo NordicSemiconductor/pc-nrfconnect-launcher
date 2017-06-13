@@ -56,7 +56,6 @@ global.userDataDir = config.getUserDataDir();
 global.appsRootDir = config.getAppsRootDir();
 
 const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-Menu.setApplicationMenu(applicationMenu);
 
 let launcherWindow;
 const appWindows = [];
@@ -121,6 +120,7 @@ function openAppWindow(app) {
 }
 
 electronApp.on('ready', () => {
+    Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
         .then(() => openLauncherWindow())
         .catch(error => {
