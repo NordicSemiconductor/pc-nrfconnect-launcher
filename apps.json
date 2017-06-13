@@ -8,5 +8,10 @@
         "displayName": "RSSI Viewer",
         "description": "Live visualization of RSSI per frequency for nRF52832",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-rssi"
+    },
+    "nrf-cloud-gateway": {
+        "displayName": "nRF Cloud Gateway",
+        "description": "nRF Cloud Gateway, connecting BLE to the cloud",
+        "homepage": "https://www.nrfcloud.com"        
     }
 }
