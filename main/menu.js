@@ -94,21 +94,6 @@ function createMenu(app) {
         },
     ];
 
-    if (process.platform === 'darwin') {
-        menuTemplate.unshift({
-            label: 'Electron',
-            submenu: [
-                {
-                    label: 'Quit',
-                    accelerator: 'Command+Q',
-                    click: () => {
-                        app.quit();
-                    },
-                },
-            ],
-        });
-    }
-
     return menuTemplate;
 }
 
