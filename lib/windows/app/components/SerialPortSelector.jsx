@@ -96,11 +96,12 @@ class SerialPortSelector extends React.Component {
     renderCloseItem() {
         const {
             selectedPort,
+            isLoading,
             onDeselect,
             menuItemCssClass,
         } = this.props;
 
-        if (selectedPort) {
+        if (selectedPort && !isLoading) {
             return (
                 <MenuItem
                     className={menuItemCssClass}

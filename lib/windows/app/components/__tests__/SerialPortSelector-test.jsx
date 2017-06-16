@@ -140,4 +140,24 @@ describe('SerialPortSelector', () => {
             />,
         )).toMatchSnapshot();
     });
+
+    it('should render empty list while loading and port is selected', () => {
+        expect(renderer.create(
+            <SerialPortSelector
+                ports={[
+                    {
+                        comName: '/dev/tty0',
+                        serialNumber: '123456',
+                    },
+                ]}
+                selectedPort={'/dev/tty0'}
+                isExpanded
+                isLoading
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 });

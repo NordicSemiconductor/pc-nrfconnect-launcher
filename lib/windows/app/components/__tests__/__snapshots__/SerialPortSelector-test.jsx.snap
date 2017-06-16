@@ -28,6 +28,34 @@ exports[`SerialPortSelector should render empty list while loading 1`] = `
 </span>
 `;
 
+exports[`SerialPortSelector should render empty list while loading and port is selected 1`] = `
+<span
+  title="Select serial port (Alt+P)"
+>
+  <div
+    className="core-padded-row"
+  >
+    <Dropdown
+      id="serial-port-selector"
+      onToggle={[Function]}
+      open={true}
+    >
+      <DropdownToggle
+        className="core-serial-port-selector core-btn btn-primary"
+        title="/dev/tty0"
+      />
+      <DropdownMenu
+        className="core-dropdown-menu"
+        id="serial-port-selector-list"
+      />
+    </Dropdown>
+    <div
+      className="core-serial-port-indicator off"
+    />
+  </div>
+</span>
+`;
+
 exports[`SerialPortSelector should render empty port list, expanded 1`] = `
 <span
   title="Select serial port (Alt+P)"
