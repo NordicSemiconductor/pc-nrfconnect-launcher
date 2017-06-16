@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
@@ -53,7 +54,23 @@ class SerialPortSelector extends React.Component {
             hotkeyExpand,
         } = this.props;
 
-        bindHotkey(hotkeyExpand.toLowerCase(), toggleExpanded);
+        bindHotkey(hotkeyExpand.toLowerCase(), () => {
+            // Focusing the dropdown button, so that up/down arrow keys
+            // can be used to select serial port.
+            this.focusDropdownButton();
+            toggleExpanded();
+        });
+    }
+
+    focusDropdownButton() {
+        // eslint-disable-next-line react/no-find-dom-node
+        const node = ReactDOM.findDOMNode(this);
+        if (node) {
+            const button = node.querySelector('button');
+            if (button) {
+                button.focus();
+            }
+        }
     }
 
     renderSerialPortItems() {
