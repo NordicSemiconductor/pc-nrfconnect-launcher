@@ -37,14 +37,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import { Iterable } from 'immutable';
-import SerialPortSelectorItem from './SerialPortSelectorItem';
-import { decorate } from '../../../util/apps';
-
-const DecoratedSerialPortSelectorItem = decorate(SerialPortSelectorItem, 'SerialPortSelectorItem');
 
 class SerialPortSelector extends React.Component {
     componentDidMount() {
@@ -83,12 +79,15 @@ class SerialPortSelector extends React.Component {
 
         if (!isLoading) {
             return ports.map(port => (
-                <DecoratedSerialPortSelectorItem
+                <MenuItem
                     key={port.comName}
-                    port={port}
-                    onSelect={onSelect}
-                    cssClass={menuItemCssClass}
-                />
+                    className={menuItemCssClass}
+                    eventKey={port.comName}
+                    onSelect={() => onSelect(port)}
+                >
+                    <div>{port.comName}</div>
+                    <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
+                </MenuItem>
             ));
         }
         return null;
@@ -103,11 +102,13 @@ class SerialPortSelector extends React.Component {
 
         if (selectedPort) {
             return (
-                <DecoratedSerialPortSelectorItem
-                    port={{ comName: 'Close serial port' }}
+                <MenuItem
+                    className={menuItemCssClass}
+                    eventKey="Close serial port"
                     onSelect={onDeselect}
-                    cssClass={menuItemCssClass}
-                />
+                >
+                    <div>Close serial port</div>
+                </MenuItem>
             );
         }
         return null;

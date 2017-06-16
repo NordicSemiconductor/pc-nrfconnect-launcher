@@ -213,15 +213,6 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
           <div>
             Close serial port
           </div>
-          <div
-            style={
-              Object {
-                "fontSize": "small",
-              }
-            }
-          >
-            
-          </div>
         </MenuItem>
       </DropdownMenu>
     </Dropdown>
