@@ -53,7 +53,7 @@ const SerialPortSelectorItem = ({ port, onSelect, menuItemCssClass }) => (
 SerialPortSelectorItem.propTypes = {
     port: PropTypes.shape({
         comName: PropTypes.string.isRequired,
-        serialNumber: PropTypes.string,
+        serialNumber: PropTypes.number,
     }).isRequired,
     onSelect: PropTypes.func.isRequired,
     menuItemCssClass: PropTypes.string,
