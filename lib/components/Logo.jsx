@@ -61,7 +61,7 @@ Logo.propTypes = {
     alt: PropTypes.string,
     cssClass: PropTypes.string,
     containerCssClass: PropTypes.string,
-    onClick: PropTypes.function,
+    onClick: PropTypes.func,
 };
 
 Logo.defaultProps = {
@@ -69,7 +69,7 @@ Logo.defaultProps = {
     alt: 'nRF Connect',
     cssClass: 'core-logo',
     containerCssClass: 'core-logo-container',
-    onClick: openUrlInDefaultBrowser.bind(null, 'http://www.nordicsemi.com/nRFConnect'),
+    onClick: () => openUrlInDefaultBrowser('http://www.nordicsemi.com/nRFConnect'),
 };
 
 export default Logo;
