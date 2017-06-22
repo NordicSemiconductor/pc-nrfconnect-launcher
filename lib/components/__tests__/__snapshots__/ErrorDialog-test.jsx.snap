@@ -36,7 +36,9 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
     </ModalTitle>
   </ModalHeader>
   <ModalBody>
-    <p>
+    <p
+      className="core-error-dialog-message"
+    >
       Oops. An error occurred.
     </p>
   </ModalBody>
@@ -63,10 +65,14 @@ exports[`ErrorDialog should render visible dialog with two messages 1`] = `
     </ModalTitle>
   </ModalHeader>
   <ModalBody>
-    <p>
+    <p
+      className="core-error-dialog-message"
+    >
       Oops. An error occurred.
     </p>
-    <p>
+    <p
+      className="core-error-dialog-message"
+    >
       Another error
     </p>
   </ModalBody>

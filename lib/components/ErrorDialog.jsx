@@ -48,7 +48,7 @@ const ErrorDialog = ({ isVisible, messages, onClose }) => (
         <ModalBody>
             {
                 messages.map(message => (
-                    <p key={message}>{message}</p>
+                    <p className="core-error-dialog-message" key={message}>{message}</p>
                 ))
             }
         </ModalBody>
