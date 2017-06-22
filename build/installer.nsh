@@ -7,7 +7,7 @@
 
   ; The version of the bundled nRF5x-Command-Line-Tools
   Var /GLOBAL BUNDLED_NRFJPROG_VERSION
-  StrCpy $BUNDLED_NRFJPROG_VERSION "9.4.0"
+  StrCpy $BUNDLED_NRFJPROG_VERSION "9.6.0"
 
   ; Adding Visual C++ Redistributable for Visual Studio 2015
   File "${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"

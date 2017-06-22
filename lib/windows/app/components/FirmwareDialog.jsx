@@ -71,7 +71,7 @@ FirmwareDialog.propTypes = {
     isInProgress: PropTypes.bool,
     port: PropTypes.shape({
         comName: PropTypes.string,
-        serialNumber: PropTypes.string,
+        serialNumber: PropTypes.number,
     }),
     text: PropTypes.string,
     onConfirmUpdateFirmware: PropTypes.func.isRequired,
