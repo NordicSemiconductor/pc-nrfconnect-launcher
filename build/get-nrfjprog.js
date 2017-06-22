@@ -76,6 +76,7 @@ const PLATFORM_CONFIG = {
         },
     },
     win32: {
+        // When changing this, remember to also update the nrfjprog version in installer.nsh
         url: 'https://www.nordicsemi.com/eng/nordic/download_resource/33444/40/23436026/53210',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe'),
     },
