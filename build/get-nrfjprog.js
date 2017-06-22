@@ -56,7 +56,7 @@ const DOWNLOAD_DIR = path.join(__dirname, 'nrfjprog');
 
 const PLATFORM_CONFIG = {
     linux: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/51386/21/45903857/94917',
+        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.0/nrfjprog/nRF5x-Command-Line-Tools_9_6_0_Linux-x86_64.tar',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
@@ -66,7 +66,7 @@ const PLATFORM_CONFIG = {
         },
     },
     darwin: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/53402/12/46853853/99977',
+        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.0/nrfjprog/nRF5x-Command-Line-Tools_9_6_0_OSX.tar',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-darwin.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
@@ -77,7 +77,7 @@ const PLATFORM_CONFIG = {
     },
     win32: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/33444/40/23436026/53210',
+        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.0/nrfjprog/nRF5x-Command-Line-Tools_9_6_0_Installer.exe',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe'),
     },
 };
