@@ -79,7 +79,7 @@
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
-        "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git",
+        "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v1.0.0",
         "react-infinite": "NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
