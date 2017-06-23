@@ -38,6 +38,7 @@
             "dist/",
             "main/",
             "node_modules/",
+            "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
             "index.js"
