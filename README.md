@@ -130,6 +130,7 @@ nRF Connect builds on top of other sub components that live in their own GitHub 
 
 * [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js)
 * [pc-ble-driver](https://github.com/NordicSemiconductor/pc-ble-driver)
+* [pc-nrfjprog-js](https://github.com/NordicSemiconductor/pc-nrfjprog-js)
 
 # License
 
