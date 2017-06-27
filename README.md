@@ -1,8 +1,6 @@
 # nRF Connect
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-**Note: This repository contains a new version (v2) of nRF Connect that is currently in development. While v1 was a pure Bluetooth low energy tool, v2 will be a framework for creating and launching desktop apps.**
-
 nRF Connect is a cross-platform framework for creating desktop apps for use with development kits from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the development kits over serial port. The framework comes with a skeleton that has standard UI components for listing serial ports, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
 
 nRF Connect is designed to be used with:
