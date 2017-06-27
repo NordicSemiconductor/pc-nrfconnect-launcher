@@ -1,7 +1,7 @@
 {
     "pc-nrfconnect-ble": {
-        "displayName": "Bluetooth Low Energy",
-        "description": "General tool for development and testing with Bluetooth Low Energy",
+        "displayName": "Bluetooth low energy",
+        "description": "General tool for development and testing with Bluetooth low energy",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ble"
     },
     "pc-nrfconnect-rssi": {
