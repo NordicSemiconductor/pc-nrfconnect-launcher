@@ -60,7 +60,7 @@ describe('FirmwareDialog', () => {
                 isVisible
                 port={{
                     comName: '/dev/tty1',
-                    serialNumber: '1337',
+                    serialNumber: 1337,
                 }}
                 onCancel={() => {}}
                 onConfirmUpdateFirmware={() => {}}
