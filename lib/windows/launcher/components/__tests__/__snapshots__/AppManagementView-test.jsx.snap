@@ -63,6 +63,11 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
           More information
         </button>
         <div
+          className="core-app-management-item-status upgrade-available"
+        >
+          Upgrade available
+        </div>
+        <div
           className="core-app-management-item-buttons"
         >
           <button
@@ -164,6 +169,11 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
         >
           More information
         </button>
+        <div
+          className="core-app-management-item-status installed"
+        >
+          Installed
+        </div>
         <div
           className="core-app-management-item-buttons"
         >
