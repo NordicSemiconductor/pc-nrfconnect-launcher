@@ -56,6 +56,7 @@ describe('AppLaunchView', () => {
     it('should render apps sorted by name and isOfficial', () => {
         const templateApp = getImmutableApp({
             currentVersion: '1.2.3',
+            latestVersion: '1.2.3',
             engineVersion: '2.x',
             isSupportedEngine: true,
         });
@@ -115,6 +116,25 @@ describe('AppLaunchView', () => {
             isOfficial: false,
             engineVersion: '1.x',
             isSupportedEngine: false,
+        });
+        expect(renderer.create(
+            <AppLaunchView
+                apps={List([app])}
+                onMount={() => {}}
+                onAppSelected={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render app with upgrade available', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            currentVersion: '1.2.3',
+            latestVersion: '1.2.4',
+            path: '/path/to/pc-nrfconnect-foobar',
+            isOfficial: true,
+            engineVersion: '1.x',
+            isSupportedEngine: true,
         });
         expect(renderer.create(
             <AppLaunchView

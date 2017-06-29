@@ -50,24 +50,39 @@ function renderAlert(altText) {
     );
 }
 
+function renderInfo(altText) {
+    return (
+        <div>
+            <span className="info-icon-bg" />
+            <span
+                className="glyphicon glyphicon-info-sign"
+                title={altText}
+            />
+        </div>
+    );
+}
+
+function renderNotice(app) {
+    if (!app.engineVersion) {
+        return renderAlert('The app does not specify which nRF Connect version(s) ' +
+            'it supports');
+    } else if (!app.isSupportedEngine) {
+        return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
+            'which does not match your currently installed version');
+    } else if (app.isOfficial && app.currentVersion !== app.latestVersion) {
+        return renderInfo(`A new version (v${app.latestVersion}) of this app is ` +
+            'available, and can be installed from the "Add/remove apps" screen');
+    }
+    return null;
+}
+
 const AppIcon = ({ app }) => (
     <div className="core-app-icon">
         <img
             src={app.iconPath || nrfconnectLogo}
             alt="App icon"
         />
-        {
-            !app.engineVersion ?
-                renderAlert('The app does not specify which nRF Connect version(s) ' +
-                    'it supports')
-                : null
-        }
-        {
-            app.engineVersion && !app.isSupportedEngine ?
-                renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
-                    'which does not match your currently installed version')
-                : null
-        }
+        { renderNotice(app) }
     </div>
 );
 

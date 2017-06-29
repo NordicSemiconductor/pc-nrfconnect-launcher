@@ -50,7 +50,14 @@ html, body, #webapp {
         position: absolute;
         top: 28px;
         left: 30px;
+    }
+
+    .glyphicon-alert {
         color: darkorange;
+    }
+
+    .glyphicon-info-sign {
+        color: @brand-primary-darker;
     }
 
     .alert-icon-bg {
@@ -58,6 +65,15 @@ html, body, #webapp {
         width: 8px;
         height: 12px;
         top: 32px;
+        left: 34px;
+        background-color: white;
+    }
+
+    .info-icon-bg {
+        position: absolute;
+        width: 8px;
+        height: 14px;
+        top: 30px;
         left: 34px;
         background-color: white;
     }
@@ -94,6 +110,24 @@ html, body, #webapp {
 
     .core-app-management-item-buttons > .btn {
         margin-left: 5px;
+    }
+
+    .core-app-management-item-status {
+        margin-left: 10px;
+        height: 20px;
+        border-radius: 3px;
+        font-size: 10px;
+        margin-top: 7px;
+        color: white;
+        padding: 4px 10px;
+    }
+
+    .installed {
+        background-color: @brand-success;
+    }
+
+    .upgrade-available {
+        background-color: @brand-warning;
     }
 }
 

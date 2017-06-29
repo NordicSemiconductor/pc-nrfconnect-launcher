@@ -38,37 +38,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppItemButton from './AppItemButton';
 
-const InstalledAppItem = ({ app, onRemove, onUpgrade, onReadMore }) => (
-    <div className="core-app-management-item list-group-item">
-        <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-        <div className="list-group-item-text">
-            <p>{app.description}</p>
-            <div className="core-app-management-item-footer">
-                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
-                    More information
-                </button>
-                <div className="core-app-management-item-buttons">
-                    {
-                        app.latestVersion && app.currentVersion !== app.latestVersion ?
-                            <AppItemButton
-                                title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
-                                text="Upgrade"
-                                iconClass="glyphicon glyphicon-download-alt"
-                                onClick={onUpgrade}
-                            /> :
-                            <div />
-                    }
-                    <AppItemButton
-                        title={`Remove ${app.displayName || app.name}`}
-                        text="Remove"
-                        iconClass="glyphicon glyphicon-trash"
-                        onClick={onRemove}
-                    />
+const InstalledAppItem = ({ app, onRemove, onUpgrade, onReadMore }) => {
+    const isUpgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
+    const statusClass = isUpgradeAvailable ? 'upgrade-available' : 'installed';
+    const statusText = isUpgradeAvailable ? 'Upgrade available' : 'Installed';
+    return (
+        <div className="core-app-management-item list-group-item">
+            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
+            <div className="list-group-item-text">
+                <p>{app.description}</p>
+                <div className="core-app-management-item-footer">
+                    <button className="btn btn-link core-btn-link" onClick={onReadMore}>
+                        More information
+                    </button>
+                    <div className={`core-app-management-item-status ${statusClass}`}>{ statusText }</div>
+                    <div className="core-app-management-item-buttons">
+                        {
+                            isUpgradeAvailable ?
+                                <AppItemButton
+                                    title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
+                                    text="Upgrade"
+                                    iconClass="glyphicon glyphicon-download-alt"
+                                    onClick={onUpgrade}
+                                /> :
+                                <div />
+                        }
+                        <AppItemButton
+                            title={`Remove ${app.displayName || app.name}`}
+                            text="Remove"
+                            iconClass="glyphicon glyphicon-trash"
+                            onClick={onRemove}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 InstalledAppItem.propTypes = {
     app: PropTypes.shape({
