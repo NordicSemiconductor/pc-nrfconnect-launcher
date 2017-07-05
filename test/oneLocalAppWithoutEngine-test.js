@@ -58,8 +58,7 @@ describe('one local app without engine definition', () => {
 
     it('should show warning in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .isVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
-            .then(isVisible => expect(isVisible).toEqual(true))
+            .waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
     ));
 
     it('should show warning dialog when clicking Launch', () => (
