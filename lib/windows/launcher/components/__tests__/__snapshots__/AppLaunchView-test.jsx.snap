@@ -407,6 +407,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
 </div>
 `;
 
+exports[`AppLaunchView should render spinner while retrieving apps 1`] = `
+<div
+  className="core-loading-apps-spinner"
+/>
+`;
+
 exports[`AppLaunchView should render without any apps 1`] = `
 <div
   className="list-group"

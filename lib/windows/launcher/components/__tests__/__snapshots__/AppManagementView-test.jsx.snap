@@ -237,12 +237,8 @@ exports[`AppManagementView should render removing app dialog 1`] = `
 `;
 
 exports[`AppManagementView should render spinner when retrieving apps 1`] = `
-<img
-  alt="Loading..."
-  className="core-spinner"
-  height={16}
-  src="test-file-stub"
-  width={16}
+<div
+  className="core-loading-apps-spinner"
 />
 `;
 

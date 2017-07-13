@@ -59,6 +59,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List()}
                 isRetrievingApps
+                isLatestAppInfoDownloaded
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -73,6 +74,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List()}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -109,6 +111,7 @@ describe('AppManagementView', () => {
                     ])
                 }
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -123,6 +126,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 installingAppName="pc-nrfconnect-foo"
                 onInstall={() => {}}
                 onRemove={() => {}}
@@ -138,6 +142,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 removingAppName="pc-nrfconnect-foo"
                 onInstall={() => {}}
                 onRemove={() => {}}
@@ -153,6 +158,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 upgradingAppName="pc-nrfconnect-foo"
                 onInstall={() => {}}
                 onRemove={() => {}}
@@ -173,6 +179,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 onInstall={onInstall}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -197,6 +204,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 onInstall={() => {}}
                 onRemove={onRemove}
                 onUpgrade={() => {}}
@@ -221,6 +229,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
+                isLatestAppInfoDownloaded
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={onUpgrade}
@@ -231,5 +240,43 @@ describe('AppManagementView', () => {
         wrapper.find('button[title="Upgrade pc-nrfconnect-foobar from v1.2.3 to v1.2.4"]').first().simulate('click');
 
         expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion);
+    });
+
+    it('should invoke onDownloadLatestAppInfo when mounted and latest app info is not downloaded', () => {
+        const onDownloadLatestAppInfo = jest.fn();
+        mount(
+            <AppManagementView
+                apps={List([])}
+                isRetrievingApps={false}
+                isLatestAppInfoDownloaded={false}
+                onDownloadLatestAppInfo={onDownloadLatestAppInfo}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+
+        expect(onDownloadLatestAppInfo).toHaveBeenCalled();
+    });
+
+    it('should not invoke onDownloadLatestAppInfo when mounted and latest app info has been downloaded', () => {
+        const onDownloadLatestAppInfo = jest.fn();
+        mount(
+            <AppManagementView
+                apps={List([])}
+                isRetrievingApps={false}
+                isLatestAppInfoDownloaded
+                onDownloadLatestAppInfo={onDownloadLatestAppInfo}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+
+        expect(onDownloadLatestAppInfo).not.toHaveBeenCalled();
     });
 });
