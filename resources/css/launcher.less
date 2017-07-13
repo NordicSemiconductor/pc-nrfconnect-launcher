@@ -134,3 +134,33 @@ html, body, #webapp {
 .core-btn-link {
     padding: 0;
 }
+
+.core-loading-apps-spinner {
+    position: absolute;
+    top: 50%; left: 50%; width: 100px; height: 100px;
+    margin: -50px 0 0 -50px;
+    z-index: 1000;
+    transition: opacity .4s;
+    pointer-events: none;
+    border-radius: 50%;
+    border: 8px solid rgba(0,128,192, 0.2);
+    border-left: 8px solid #0080c0;
+    animation: rotator 2s infinite linear;
+
+    @keyframes rotator {
+        0%   { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+}
+
+.core-settings-section {
+    padding: 10px;
+    border: 1px solid lightgray;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.core-settings-update-check-controls {
+    display: flex;
+    justify-content: space-between;
+}
