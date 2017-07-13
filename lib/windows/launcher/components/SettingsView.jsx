@@ -62,7 +62,7 @@ class SettingsView extends React.Component {
     render() {
         const {
             isLoading,
-            isCheckUpdatesAtStartup,
+            shouldCheckForUpdatesAtStartup,
             isCheckingForUpdates,
             lastUpdateCheckDate,
         } = this.props;
@@ -80,7 +80,7 @@ class SettingsView extends React.Component {
                     }
                     <div className="core-settings-update-check-controls">
                         <Checkbox
-                            checked={isCheckUpdatesAtStartup}
+                            checked={shouldCheckForUpdatesAtStartup}
                             onChange={this.onCheckUpdatesAtStartupChanged}
                         >
                             Check for updates at startup
@@ -106,7 +106,7 @@ class SettingsView extends React.Component {
 SettingsView.propTypes = {
     onMount: PropTypes.func,
     isLoading: PropTypes.bool.isRequired,
-    isCheckUpdatesAtStartup: PropTypes.bool.isRequired,
+    shouldCheckForUpdatesAtStartup: PropTypes.bool.isRequired,
     isCheckingForUpdates: PropTypes.bool.isRequired,
     onCheckUpdatesAtStartupChanged: PropTypes.func.isRequired,
     onTriggerUpdateCheck: PropTypes.func.isRequired,

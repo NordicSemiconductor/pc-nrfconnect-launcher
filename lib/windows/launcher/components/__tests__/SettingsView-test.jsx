@@ -43,7 +43,7 @@ describe('SettingsView', () => {
         expect(renderer.create(
             <SettingsView
                 isLoading
-                isCheckUpdatesAtStartup
+                shouldCheckForUpdatesAtStartup
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
@@ -55,7 +55,7 @@ describe('SettingsView', () => {
         expect(renderer.create(
             <SettingsView
                 isLoading={false}
-                isCheckUpdatesAtStartup
+                shouldCheckForUpdatesAtStartup
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
@@ -67,7 +67,7 @@ describe('SettingsView', () => {
         expect(renderer.create(
             <SettingsView
                 isLoading={false}
-                isCheckUpdatesAtStartup={false}
+                shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
@@ -79,7 +79,7 @@ describe('SettingsView', () => {
         expect(renderer.create(
             <SettingsView
                 isLoading={false}
-                isCheckUpdatesAtStartup={false}
+                shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
@@ -91,7 +91,7 @@ describe('SettingsView', () => {
         expect(renderer.create(
             <SettingsView
                 isLoading={false}
-                isCheckUpdatesAtStartup={false}
+                shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
                 onTriggerUpdateCheck={() => {}}
