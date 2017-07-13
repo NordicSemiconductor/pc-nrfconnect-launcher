@@ -88,14 +88,32 @@ function createUpdatesJsonIfNotExists() {
  * Download the apps.json file containing a list of official apps. The file
  * is downloaded from the configured url and written to the apps root dir.
  *
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
  * @returns {Promise} promise that resolves if successful.
  */
-function downloadAppsJsonFile() {
-    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
+function downloadAppsJsonFile(onLogin) {
+    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
         .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
+            throw new Error(`Unable to download apps list: ${error.message}. If you ` +
+                'are using a proxy server, you may need to configure it as described on ' +
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+        });
+}
+
+/**
+ * Verifies that we are able to connect to the npm registry. Returns a promise
+ * that resolves if successful. The onLogin callback is invoked if a proxy
+ * server requires authentication.
+ *
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function verifyRegistryConnection(onLogin) {
+    return fileUtil.downloadToString(config.getRegistryUrl(), onLogin)
+        .catch(error => {
+            throw new Error(`Unable to connect to registry: ${error.message}. If you ` +
+                'are using a proxy server, you may need to configure it as described on ' +
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         });
 }
 
@@ -104,17 +122,13 @@ function downloadAppsJsonFile() {
  * available updates. Uses the 'yarn outdated' command to get the list of
  * updates.
  *
+ * @param {Object} npmOptions See yarn/index.js for available options.
  * @returns {Promise} promise that resolves if successful.
  */
-function generateUpdatesJsonFile() {
+function generateUpdatesJsonFile(npmOptions) {
     const fileName = config.getUpdatesJsonPath();
-    return yarn.outdated()
-        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps))
-        .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
-        });
+    return yarn.outdated(npmOptions)
+        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps));
 }
 
 /**
@@ -325,6 +339,9 @@ function removeOfficialApp(name) {
 
 module.exports = {
     initAppsDirectory,
+    downloadAppsJsonFile,
+    generateUpdatesJsonFile,
+    verifyRegistryConnection,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,
