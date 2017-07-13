@@ -46,6 +46,7 @@ let electronApp;
 
 function loadFirstApp() {
     return electronApp.client.windowByIndex(0)
+        .waitForVisible('button[title="Launch app"]')
         .click('button[title="Launch app"]')
         .then(() => waitForWindowCount(electronApp, 2))
         .then(() => electronApp.client.waitUntilWindowLoaded());

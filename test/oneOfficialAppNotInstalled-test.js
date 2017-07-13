@@ -58,6 +58,7 @@ describe('one official app not installed', () => {
 
     it('should show welcome message in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
+            .waitForVisible('h4')
             .getText('h4')
             .then(text => expect(text).toEqual('Welcome to nRF Connect'))
     ));

@@ -58,6 +58,7 @@ describe('one official app upgradable', () => {
 
     it('should show Test App in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
+            .waitForVisible('h4')
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));
