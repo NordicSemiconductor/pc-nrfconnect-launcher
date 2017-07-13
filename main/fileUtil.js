@@ -41,25 +41,38 @@ const path = require('path');
 const net = require('electron').net;
 
 /**
+ * Open the given file path and return its string contents.
+ *
+ * @param {string} filePath path to file.
+ * @returns {Promise} promise that resolves with the contents.
+ */
+function readFile(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (error, data) => {
+            if (error) {
+                reject(new Error(`Unable to read ${filePath}: ${error.message}`));
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
+/**
  * Open the given json file path and read all its properties into an object.
  *
  * @param {string} filePath path to json file.
  * @returns {Promise} promise that resolves with the parsed object.
  */
 function readJsonFile(filePath) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(filePath, (error, data) => {
-            if (error) {
-                reject(new Error(`Unable to read ${filePath}: ${error.message}`));
-            } else {
-                try {
-                    resolve(JSON.parse(data));
-                } catch (err) {
-                    reject(new Error(`Unable to parse ${filePath}: ${err.message}`));
-                }
+    return readFile(filePath)
+        .then(data => {
+            try {
+                return JSON.parse(data);
+            } catch (error) {
+                throw new Error(`Unable to parse ${filePath}: ${error.message}`);
             }
         });
-    });
 }
 
 /**
@@ -80,15 +93,19 @@ function listDirectories(dirPath) {
 }
 
 /**
- * Download the given url to a local file path.
+ * Download the given url to a string. Uses the electron net API,
+ * which reads proxy settings from the system. If a proxy requires
+ * authentication, the onLogin function is invoked. Ref:
+ * https://github.com/electron/electron/blob/master/docs/api/client-request.md
  *
  * @param {string} url the URL to download.
- * @param {string} filePath where to store the downloaded file.
- * @returns {Promise} promise that resolves when file has been downloaded.
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
+ * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToFile(url, filePath) {
+function downloadToString(url, onLogin) {
     return new Promise((resolve, reject) => {
         const request = net.request(url);
+        request.setHeader('pragma', 'no-cache');
         request.on('response', response => {
             if (response.statusCode !== 200) {
                 reject(new Error(`Unable to download ${url}. Got status code ${response.statusCode}`));
@@ -99,11 +116,33 @@ function downloadToFile(url, filePath) {
                 buffer += data.toString();
             };
             response.on('data', data => addToBuffer(data));
-            response.on('end', () => fs.writeFile(filePath, buffer, resolve));
+            response.on('end', () => resolve(buffer));
             response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
         });
+        if (onLogin) {
+            request.on('login', onLogin);
+        }
         request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
         request.end();
+    });
+}
+
+/**
+ * Download the given url to a local file path. Uses the electron net API,
+ * which reads proxy settings from the system. If a proxy requires
+ * authentication, the onLogin function is invoked. Ref:
+ * https://github.com/electron/electron/blob/master/docs/api/client-request.md
+ *
+ * @param {string} url the URL to download.
+ * @param {string} filePath where to store the downloaded file.
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
+ * @returns {Promise} promise that resolves when file has been downloaded.
+ */
+function downloadToFile(url, filePath, onLogin) {
+    return new Promise((resolve, reject) => {
+        downloadToString(url, onLogin)
+            .then(data => fs.writeFile(filePath, data, resolve))
+            .catch(reject);
     });
 }
 
@@ -164,9 +203,11 @@ function createJsonFileIfNotExists(filePath, jsonData) {
 }
 
 module.exports = {
+    readFile,
     readJsonFile,
     listDirectories,
     downloadToFile,
+    downloadToString,
     mkdir,
     mkdirIfNotExists,
     createTextFile,
