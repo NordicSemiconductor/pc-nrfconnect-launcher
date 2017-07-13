@@ -141,7 +141,15 @@ function downloadToString(url, onLogin) {
 function downloadToFile(url, filePath, onLogin) {
     return new Promise((resolve, reject) => {
         downloadToString(url, onLogin)
-            .then(data => fs.writeFile(filePath, data, resolve))
+            .then(data => {
+                fs.writeFile(filePath, data, err => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            })
             .catch(reject);
     });
 }
