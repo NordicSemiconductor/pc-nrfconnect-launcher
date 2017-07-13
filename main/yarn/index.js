@@ -36,19 +36,21 @@
 
 const fork = require('child_process').fork;
 const parseOutdated = require('./parsing').parseOutdated;
+const yarnConfig = require('./config');
 const config = require('../config');
+const log = require('electron-log');
 
 const yarnPath = require.resolve('yarn/bin/yarn.js');
 
-function yarn(args, options = {}) {
+function yarn(args, env) {
     return new Promise((resolve, reject) => {
-        const proc = fork(yarnPath, args, Object.assign({}, options, {
+        const proc = fork(yarnPath, args, {
             cwd: config.getAppsRootDir(),
-            env: {
+            env: Object.assign({}, env, {
                 DISABLE_V8_COMPILE_CACHE: 1,
-            },
+            }),
             stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-        }));
+        });
 
         let buffer = '';
         const addToBuffer = data => {
@@ -66,16 +68,30 @@ function yarn(args, options = {}) {
     });
 }
 
+function logAndThrowError(error) {
+    log.error(error.message);
+    throw new Error(`Error when running yarn. See ${log.transports.file.file} ` +
+        'for details. If you are using a proxy server, you may need to ' +
+        'configure it as described on ' +
+        'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+}
+
 /**
  * Installs the given npm package in the apps root directory. The package
  * is added as an exact dependency in package.json in the same directory.
  * The name can optionally have a version, e.g. 'package@1.2.3'.
  *
+ * Supported options:
+ * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
+ *
  * @param {string} name The name of the package to install.
+ * @param {Object} options Optional parameter for specifying options.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function add(name) {
-    return yarn(['add', '--exact', name]);
+function add(name, options) {
+    return yarnConfig.optionsToEnv(options)
+        .then(env => yarn(['add', '--exact', name], env))
+        .catch(logAndThrowError);
 }
 
 /**
@@ -83,11 +99,17 @@ function add(name) {
  * is removed from the list of dependencies in package.json in the same
  * directory.
  *
+ * Supported options:
+ * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
+ *
  * @param {string} name The name of the package to remove.
+ * @param {Object} options Optional parameter for specifying options.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function remove(name) {
-    return yarn(['remove', name]);
+function remove(name, options) {
+    return yarnConfig.optionsToEnv(options)
+        .then(env => yarn(['remove', name], env))
+        .catch(logAndThrowError);
 }
 
 /**
@@ -98,11 +120,17 @@ function remove(name) {
  * If no outdated packages are found, the promise will resolve with an
  * empty object.
  *
+ * Supported options:
+ * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
+ *
+ * @param {Object} options Optional parameter for specifying options.
  * @returns {Promise} Promise that resolves with an object of packages.
  */
-function outdated() {
-    return yarn(['outdated'])
-        .then(output => parseOutdated(output));
+function outdated(options) {
+    return yarnConfig.optionsToEnv(options)
+        .then(env => yarn(['outdated'], env))
+        .then(output => parseOutdated(output))
+        .catch(logAndThrowError);
 }
 
 module.exports = {
