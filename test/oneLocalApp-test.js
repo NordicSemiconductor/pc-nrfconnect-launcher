@@ -35,7 +35,7 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp, waitForWindowCount } from './setup';
 import packageJson from '../package.json';
 
 const appsRootDir = path.resolve(__dirname, './features/one-local-app');
@@ -48,6 +48,7 @@ let electronApp;
 function loadFirstApp() {
     return electronApp.client.windowByIndex(0)
         .click('button[title="Launch app"]')
+        .then(() => waitForWindowCount(electronApp, 2))
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
 

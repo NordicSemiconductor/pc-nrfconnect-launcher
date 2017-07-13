@@ -34,19 +34,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
-import navMenu from './navMenuReducer';
-import apps from './appsReducer';
-import autoUpdate from './autoUpdateReducer';
-import proxy from './proxyReducer';
-import settings from './settingsReducer';
-import errorDialog from '../../../reducers/errorDialogReducer';
+'use strict';
 
-export default combineReducers({
-    navMenu,
-    apps,
-    autoUpdate,
-    proxy,
-    settings,
-    errorDialog,
-});
+const session = require('electron').session;
+
+const defaultSession = session.defaultSession;
+
+function resolveProxy(url) {
+    return new Promise(resolve => {
+        defaultSession.resolveProxy(url, proxy => {
+            resolve(proxy);
+        });
+    });
+}
+
+module.exports.resolveProxy = resolveProxy;

@@ -35,7 +35,7 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp, waitForWindowCount } from './setup';
 
 const appsRootDir = path.resolve(__dirname, './features/one-official-app-installed');
 const electronArgs = [
@@ -47,6 +47,7 @@ let electronApp;
 function loadFirstApp() {
     return electronApp.client.windowByIndex(0)
         .click('button[title="Launch app"]')
+        .then(() => waitForWindowCount(electronApp, 2))
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
 
@@ -64,6 +65,7 @@ describe('one official app installed', () => {
 
     it('should show Test App in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
+            .waitForVisible('h4')
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));
@@ -77,14 +79,13 @@ describe('one official app installed', () => {
     it('should show main menu in app window', () => (
         loadFirstApp()
             .then(() => electronApp.client.windowByIndex(1))
-            .isVisible('#main-menu')
-            .then(isVisible => expect(isVisible).toEqual(true))
+            .waitForVisible('#main-menu')
     ));
 
     it('should show Test App in app management list', () => (
         electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
-            .isVisible('core-app-management-item')
+            .waitForVisible('.core-app-management-item')
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));
@@ -92,15 +93,13 @@ describe('one official app installed', () => {
     it('should show remove button for Test App in app management list', () => (
         electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
-            .isVisible('core-app-management-item')
-            .isVisible('button[title="Remove Test App"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
+            .waitForVisible('button[title="Remove Test App"]')
     ));
 
     it('should not show install button in app management list', () => (
         electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
-            .isVisible('core-app-management-item')
+            .waitForVisible('.core-app-management-item')
             .isVisible('button[title="Install Test App"]')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
@@ -108,7 +107,7 @@ describe('one official app installed', () => {
     it('should not show upgrade button in app management list', () => (
         electronApp.client.windowByIndex(0)
             .click('button[title*="Add/remove apps"]')
-            .isVisible('core-app-management-item')
+            .waitForVisible('.core-app-management-item')
             .isVisible('button[title*="Upgrade"]')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));

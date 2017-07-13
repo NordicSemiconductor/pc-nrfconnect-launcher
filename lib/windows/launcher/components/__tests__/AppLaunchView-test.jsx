@@ -49,6 +49,18 @@ describe('AppLaunchView', () => {
                 apps={List()}
                 onAppSelected={() => {}}
                 onMount={() => {}}
+                isRetrievingApps={false}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render spinner while retrieving apps', () => {
+        expect(renderer.create(
+            <AppLaunchView
+                apps={List()}
+                onAppSelected={() => {}}
+                onMount={() => {}}
+                isRetrievingApps
             />,
         )).toMatchSnapshot();
     });
@@ -88,6 +100,7 @@ describe('AppLaunchView', () => {
                 }
                 onAppSelected={() => {}}
                 onMount={() => {}}
+                isRetrievingApps={false}
             />,
         )).toMatchSnapshot();
     });
@@ -104,6 +117,7 @@ describe('AppLaunchView', () => {
                 apps={List([app])}
                 onMount={() => {}}
                 onAppSelected={() => {}}
+                isRetrievingApps={false}
             />,
         )).toMatchSnapshot();
     });
@@ -122,6 +136,7 @@ describe('AppLaunchView', () => {
                 apps={List([app])}
                 onMount={() => {}}
                 onAppSelected={() => {}}
+                isRetrievingApps={false}
             />,
         )).toMatchSnapshot();
     });
@@ -141,6 +156,7 @@ describe('AppLaunchView', () => {
                 apps={List([app])}
                 onMount={() => {}}
                 onAppSelected={() => {}}
+                isRetrievingApps={false}
             />,
         )).toMatchSnapshot();
     });
@@ -158,6 +174,7 @@ describe('AppLaunchView', () => {
                 apps={List([app])}
                 onAppSelected={onAppSelected}
                 onMount={() => {}}
+                isRetrievingApps={false}
             />,
         );
         wrapper.find(AppItemButton).first().simulate('click');

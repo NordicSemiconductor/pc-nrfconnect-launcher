@@ -40,7 +40,7 @@ import { Iterable } from 'immutable';
 import InstalledAppItem from '../components/InstalledAppItem';
 import AvailableAppItem from '../components/AvailableAppItem';
 import AppProgressDialog from '../components/AppProgressDialog';
-import Spinner from '../../../components/Spinner';
+import LoadingAppsSpinner from './LoadingAppsSpinner';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
@@ -52,7 +52,18 @@ function getSortedApps(apps) {
 
 class AppManagementView extends React.Component {
     componentDidMount() {
-        this.props.onMount();
+        const {
+            onMount,
+            isLatestAppInfoDownloaded,
+            isSkipUpdateApps,
+            onDownloadLatestAppInfo,
+        } = this.props;
+
+        onMount();
+
+        if (!isLatestAppInfoDownloaded && !isSkipUpdateApps) {
+            onDownloadLatestAppInfo();
+        }
     }
 
     getProcessingTitle() {
@@ -110,7 +121,7 @@ class AppManagementView extends React.Component {
         const isProcessing = this.isProcessing();
 
         return isRetrievingApps ?
-            <Spinner /> :
+            <LoadingAppsSpinner /> :
             <div>
                 {
                     getSortedApps(apps).map(app => (
@@ -145,20 +156,26 @@ class AppManagementView extends React.Component {
 AppManagementView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
     isRetrievingApps: PropTypes.bool.isRequired,
+    isSkipUpdateApps: PropTypes.bool,
+    isLatestAppInfoDownloaded: PropTypes.bool.isRequired,
     installingAppName: PropTypes.string,
     upgradingAppName: PropTypes.string,
     removingAppName: PropTypes.string,
-    onMount: PropTypes.func.isRequired,
+    onMount: PropTypes.func,
     onInstall: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
+    onDownloadLatestAppInfo: PropTypes.func,
 };
 
 AppManagementView.defaultProps = {
     installingAppName: '',
     upgradingAppName: '',
     removingAppName: '',
+    isSkipUpdateApps: false,
+    onMount: () => {},
+    onDownloadLatestAppInfo: () => {},
 };
 
 export default AppManagementView;

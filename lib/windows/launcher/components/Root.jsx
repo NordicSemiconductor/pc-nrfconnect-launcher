@@ -41,6 +41,7 @@ import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
+import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import Logo from '../../../components/Logo';
 
 export default () => (
@@ -56,5 +57,6 @@ export default () => (
         <UpdateAvailableContainer />
         <UpdateProgressContainer />
         <ConfirmLaunchContainer />
+        <ProxyLoginContainer />
     </div>
 );

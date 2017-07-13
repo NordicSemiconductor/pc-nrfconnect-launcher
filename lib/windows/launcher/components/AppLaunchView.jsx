@@ -38,6 +38,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
 import LaunchableAppItem from './LaunchableAppItem';
+import LoadingAppsSpinner from './LoadingAppsSpinner';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
@@ -57,13 +58,13 @@ class AppLaunchView extends React.Component {
     }
 
     render() {
-        const { apps, onAppSelected } = this.props;
-        const sortedApps = getSortedApps(apps);
-        return (
+        const { apps, onAppSelected, isRetrievingApps } = this.props;
+        return isRetrievingApps ?
+            <LoadingAppsSpinner /> :
             <div className="list-group">
                 {
-                    sortedApps.size > 0 ?
-                        sortedApps.map(app => (
+                    apps.size > 0 ?
+                        getSortedApps(apps).map(app => (
                             <LaunchableAppItem
                                 key={app.path}
                                 app={app}
@@ -77,15 +78,19 @@ class AppLaunchView extends React.Component {
                             </p>
                         </div>
                 }
-            </div>
-        );
+            </div>;
     }
 }
 
 AppLaunchView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
-    onMount: PropTypes.func.isRequired,
+    onMount: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
+    isRetrievingApps: PropTypes.bool.isRequired,
+};
+
+AppLaunchView.defaultProps = {
+    onMount: () => {},
 };
 
 export default AppLaunchView;

@@ -44,7 +44,6 @@ const yarn = require('./yarn');
 const fileUtil = require('./fileUtil');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
-const APPS_UPDATE_ERROR = 'APPS_UPDATE_ERROR';
 
 /**
  * Create package.json if it does not exist.
@@ -89,14 +88,32 @@ function createUpdatesJsonIfNotExists() {
  * Download the apps.json file containing a list of official apps. The file
  * is downloaded from the configured url and written to the apps root dir.
  *
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
  * @returns {Promise} promise that resolves if successful.
  */
-function downloadAppsJsonFile() {
-    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
+function downloadAppsJsonFile(onLogin) {
+    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
         .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
+            throw new Error(`Unable to download apps list: ${error.message}. If you ` +
+                'are using a proxy server, you may need to configure it as described on ' +
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+        });
+}
+
+/**
+ * Verifies that we are able to connect to the npm registry. Returns a promise
+ * that resolves if successful. The onLogin callback is invoked if a proxy
+ * server requires authentication.
+ *
+ * @param {Function} onLogin proxy login callback, ref. electron net API.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function verifyRegistryConnection(onLogin) {
+    return fileUtil.downloadToString(config.getRegistryUrl(), onLogin)
+        .catch(error => {
+            throw new Error(`Unable to connect to registry: ${error.message}. If you ` +
+                'are using a proxy server, you may need to configure it as described on ' +
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         });
 }
 
@@ -105,17 +122,13 @@ function downloadAppsJsonFile() {
  * available updates. Uses the 'yarn outdated' command to get the list of
  * updates.
  *
+ * @param {Object} npmOptions See yarn/index.js for available options.
  * @returns {Promise} promise that resolves if successful.
  */
-function generateUpdatesJsonFile() {
+function generateUpdatesJsonFile(npmOptions) {
     const fileName = config.getUpdatesJsonPath();
-    return yarn.outdated()
-        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps))
-        .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
-        });
+    return yarn.outdated(npmOptions)
+        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps));
 }
 
 /**
@@ -142,10 +155,7 @@ function initAppsDirectory() {
         .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
-        .then(() => !config.isSkipUpdateApps() && downloadAppsJsonFile())
-        .then(() => !config.isSkipUpdateApps() && generateUpdatesJsonFile())
         .catch(error => {
-            if (error.code === APPS_UPDATE_ERROR) throw error;
             const err = new Error(error.message);
             err.code = APPS_DIR_INIT_ERROR;
             throw err;
@@ -311,28 +321,32 @@ function getLocalApps() {
  * Install official app from the npm registry.
  *
  * @param {string} name the app name.
+ * @param {Object} [npmOptions] See yarn/index.js for available options.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function installOfficialApp(name) {
-    return yarn.add(name);
+function installOfficialApp(name, npmOptions) {
+    return yarn.add(name, npmOptions);
 }
 
 /**
  * Remove official app.
  *
  * @param {string} name the app name.
+ * @param {Object} [npmOptions] See yarn/index.js for available options.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function removeOfficialApp(name) {
-    return yarn.remove(name);
+function removeOfficialApp(name, npmOptions) {
+    return yarn.remove(name, npmOptions);
 }
 
 module.exports = {
     initAppsDirectory,
+    downloadAppsJsonFile,
+    generateUpdatesJsonFile,
+    verifyRegistryConnection,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,
     removeOfficialApp,
     APPS_DIR_INIT_ERROR,
-    APPS_UPDATE_ERROR,
 };

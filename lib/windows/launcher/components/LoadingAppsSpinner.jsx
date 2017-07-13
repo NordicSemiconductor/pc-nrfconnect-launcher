@@ -34,19 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
-import navMenu from './navMenuReducer';
-import apps from './appsReducer';
-import autoUpdate from './autoUpdateReducer';
-import proxy from './proxyReducer';
-import settings from './settingsReducer';
-import errorDialog from '../../../reducers/errorDialogReducer';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default combineReducers({
-    navMenu,
-    apps,
-    autoUpdate,
-    proxy,
-    settings,
-    errorDialog,
-});
+const LoadingAppsSpinner = ({ className }) => (
+    <div className={className} />
+);
+
+LoadingAppsSpinner.propTypes = {
+    className: PropTypes.string,
+};
+
+LoadingAppsSpinner.defaultProps = {
+    className: 'core-loading-apps-spinner',
+};
+
+export default LoadingAppsSpinner;
