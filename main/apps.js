@@ -44,7 +44,6 @@ const yarn = require('./yarn');
 const fileUtil = require('./fileUtil');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
-const APPS_UPDATE_ERROR = 'APPS_UPDATE_ERROR';
 
 /**
  * Create package.json if it does not exist.
@@ -142,10 +141,7 @@ function initAppsDirectory() {
         .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
-        .then(() => !config.isSkipUpdateApps() && downloadAppsJsonFile())
-        .then(() => !config.isSkipUpdateApps() && generateUpdatesJsonFile())
         .catch(error => {
-            if (error.code === APPS_UPDATE_ERROR) throw error;
             const err = new Error(error.message);
             err.code = APPS_DIR_INIT_ERROR;
             throw err;
@@ -334,5 +330,4 @@ module.exports = {
     installOfficialApp,
     removeOfficialApp,
     APPS_DIR_INIT_ERROR,
-    APPS_UPDATE_ERROR,
 };
