@@ -321,20 +321,22 @@ function getLocalApps() {
  * Install official app from the npm registry.
  *
  * @param {string} name the app name.
+ * @param {Object} [npmOptions] See yarn/index.js for available options.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function installOfficialApp(name) {
-    return yarn.add(name);
+function installOfficialApp(name, npmOptions) {
+    return yarn.add(name, npmOptions);
 }
 
 /**
  * Remove official app.
  *
  * @param {string} name the app name.
+ * @param {Object} [npmOptions] See yarn/index.js for available options.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function removeOfficialApp(name) {
-    return yarn.remove(name);
+function removeOfficialApp(name, npmOptions) {
+    return yarn.remove(name, npmOptions);
 }
 
 module.exports = {
