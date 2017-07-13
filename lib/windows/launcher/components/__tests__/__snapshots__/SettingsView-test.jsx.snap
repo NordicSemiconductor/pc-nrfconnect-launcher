@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsView should render empty div while loading 1`] = `<div />`;
+
+exports[`SettingsView should render when checking for updates 1`] = `
+<div>
+  <div
+    className="core-settings-section"
+  >
+    <h4>
+      Updates
+    </h4>
+    <div
+      className="core-settings-update-check-controls"
+    >
+      <div
+        className="checkbox"
+        style={undefined}
+      >
+        <label>
+          <input
+            checked={false}
+            disabled={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Check for updates at startup
+        </label>
+      </div>
+      <button
+        className="btn btn-primary core-btn"
+        disabled={true}
+        onClick={[Function]}
+        title="Checking..."
+      >
+        <span
+          className="glyphicon glyphicon-refresh"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Checking...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SettingsView should render with check for updates disabled 1`] = `
+<div>
+  <div
+    className="core-settings-section"
+  >
+    <h4>
+      Updates
+    </h4>
+    <div
+      className="core-settings-update-check-controls"
+    >
+      <div
+        className="checkbox"
+        style={undefined}
+      >
+        <label>
+          <input
+            checked={false}
+            disabled={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Check for updates at startup
+        </label>
+      </div>
+      <button
+        className="btn btn-primary core-btn"
+        disabled={false}
+        onClick={[Function]}
+        title="Check for updates now"
+      >
+        <span
+          className="glyphicon glyphicon-refresh"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Check for updates now
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SettingsView should render with check for updates enabled 1`] = `
+<div>
+  <div
+    className="core-settings-section"
+  >
+    <h4>
+      Updates
+    </h4>
+    <div
+      className="core-settings-update-check-controls"
+    >
+      <div
+        className="checkbox"
+        style={undefined}
+      >
+        <label>
+          <input
+            checked={true}
+            disabled={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Check for updates at startup
+        </label>
+      </div>
+      <button
+        className="btn btn-primary core-btn"
+        disabled={false}
+        onClick={[Function]}
+        title="Check for updates now"
+      >
+        <span
+          className="glyphicon glyphicon-refresh"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Check for updates now
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SettingsView should render with last update check date 1`] = `
+<div>
+  <div
+    className="core-settings-section"
+  >
+    <h4>
+      Updates
+    </h4>
+    <p>
+      Last update check performed: 
+      2017-02-03 13:41:36
+    </p>
+    <div
+      className="core-settings-update-check-controls"
+    >
+      <div
+        className="checkbox"
+        style={undefined}
+      >
+        <label>
+          <input
+            checked={false}
+            disabled={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Check for updates at startup
+        </label>
+      </div>
+      <button
+        className="btn btn-primary core-btn"
+        disabled={false}
+        onClick={[Function]}
+        title="Check for updates now"
+      >
+        <span
+          className="glyphicon glyphicon-refresh"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Check for updates now
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
