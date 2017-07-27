@@ -38,6 +38,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const targz = require('targz');
 const net = require('electron').net;
 
 /**
@@ -90,6 +91,80 @@ function listDirectories(dirPath) {
             });
     }
     return [];
+}
+
+/**
+ * List files directly below the given path. A regular expression can optionally
+ * be specified to only return matching file names.
+ *
+ * @param {string} dirPath the path to look inside.
+ * @param {RegExp} [regex] optional regular expression.
+ * @returns {string[]} file names.
+ */
+function listFiles(dirPath, regex) {
+    if (fs.existsSync(dirPath)) {
+        return fs.readdirSync(dirPath)
+            .filter(file => {
+                const fileStats = fs.statSync(path.join(dirPath, file));
+                return fileStats.isFile();
+            })
+            .filter(file => {
+                if (regex) {
+                    return regex.test(file);
+                }
+                return true;
+            });
+    }
+    return [];
+}
+
+/**
+ * Delete the file at the given path.
+ *
+ * @param {string} filePath the file path to delete.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function deleteFile(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.unlink(filePath, error => {
+            if (error) {
+                reject(new Error(`Unable to delete ${filePath}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+/**
+ * Extract the given npm package (tgz file) to the given destination directory.
+ *
+ * @param {string} tgzFile the tgz file path to extract.
+ * @param {string} destinationDir the destination directory.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function extractNpmPackage(tgzFile, destinationDir) {
+    return new Promise((resolve, reject) => {
+        targz.decompress({
+            src: tgzFile,
+            dest: destinationDir,
+            tar: {
+                map: header => (
+                    Object.assign({}, header, {
+                        // All tgz files from npm contain a directory named
+                        // "package". Stripping it away.
+                        name: header.name.replace(/^package\//, ''),
+                    })
+                ),
+            },
+        }, error => {
+            if (error) {
+                reject(new Error(`Unable to extract ${tgzFile}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
 }
 
 /**
@@ -214,6 +289,9 @@ module.exports = {
     readFile,
     readJsonFile,
     listDirectories,
+    listFiles,
+    deleteFile,
+    extractNpmPackage,
     downloadToFile,
     downloadToString,
     mkdir,
