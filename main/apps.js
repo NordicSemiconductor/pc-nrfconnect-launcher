@@ -132,6 +132,40 @@ function generateUpdatesJsonFile(npmOptions) {
 }
 
 /**
+ * Extract the given *.tgz archive to the apps local directory.
+ *
+ * @param {string} tgzFilePath Path to the tgz file to install.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchive(tgzFilePath) {
+    const fileName = path.basename(tgzFilePath);
+    const appName = fileName.substring(0, fileName.lastIndexOf('-'));
+    const appPath = path.join(config.getAppsLocalDir(), appName);
+    if (fs.existsSync(appPath)) {
+        return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
+            `but app directory ${appPath} already exists. Either delete the ` +
+            'app directory so that the archive can be extracted, or delete ' +
+            'the archive file.'));
+    }
+    return fileUtil.mkdir(appPath)
+        .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+        .then(() => fileUtil.deleteFile(tgzFilePath));
+}
+
+/**
+ * Extract all *.tgz archives that exist in the apps local directory.
+ *
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchives() {
+    const appsLocalDir = config.getAppsLocalDir();
+    const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
+    return tgzFiles.reduce((prev, tgzFile) => (
+        prev.then(() => installLocalAppArchive(path.join(appsLocalDir, tgzFile)))
+    ), Promise.resolve());
+}
+
+/**
  * Initialize the apps root directory where we keep all apps. If some required
  * file or directory does not exist, it is created. Downloads the list of
  * official apps (apps.json) and generates the list of available updates
@@ -155,6 +189,7 @@ function initAppsDirectory() {
         .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
+        .then(() => installLocalAppArchives())
         .catch(error => {
             const err = new Error(error.message);
             err.code = APPS_DIR_INIT_ERROR;
