@@ -166,6 +166,22 @@ function extractNpmPackage(tgzFile, destinationDir) {
     });
 }
 
+/**
+ * Get the app name from the given *.tgz archive file. Expects the
+ * file name to be on the form "{name}-{version}.tgz".
+ *
+ * @param {string} tgzFile the tgz file path to get name from.
+ * @returns {string|null} app name or null if invalid file.
+ */
+function getNameFromNpmPackage(tgzFile) {
+    const fileName = path.basename(tgzFile);
+    const lastDash = fileName.lastIndexOf('-');
+    if (lastDash > 0) {
+        return fileName.substring(0, lastDash);
+    }
+    return null;
+}
+
 function mkdir(dirPath) {
     return new Promise((resolve, reject) => {
         fs.mkdir(dirPath, 0o775, error => {
@@ -229,6 +245,7 @@ module.exports = {
     listFiles,
     deleteFile,
     extractNpmPackage,
+    getNameFromNpmPackage,
     mkdir,
     mkdirIfNotExists,
     createTextFile,

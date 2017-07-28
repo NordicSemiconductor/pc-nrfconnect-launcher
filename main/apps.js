@@ -139,8 +139,11 @@ function generateUpdatesJsonFile(npmOptions) {
  * @returns {Promise} promise that resolves if successful.
  */
 function installLocalAppArchive(tgzFilePath) {
-    const fileName = path.basename(tgzFilePath);
-    const appName = fileName.substring(0, fileName.lastIndexOf('-'));
+    const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
+    if (!appName) {
+        return Promise.reject(new Error('Unable to get app name from archive: ' +
+            `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
+    }
     const appPath = path.join(config.getAppsLocalDir(), appName);
     if (fs.existsSync(appPath)) {
         return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
