@@ -42,6 +42,7 @@ const semver = require('semver');
 const config = require('./config');
 const yarn = require('./yarn');
 const fileUtil = require('./fileUtil');
+const netUtil = require('./netUtil');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
 
@@ -92,7 +93,7 @@ function createUpdatesJsonIfNotExists() {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFile(onLogin) {
-    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
+    return netUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +
@@ -109,7 +110,7 @@ function downloadAppsJsonFile(onLogin) {
  * @returns {Promise} promise that resolves if successful.
  */
 function verifyRegistryConnection(onLogin) {
-    return fileUtil.downloadToString(config.getRegistryUrl(), onLogin)
+    return netUtil.downloadToString(config.getRegistryUrl(), onLogin)
         .catch(error => {
             throw new Error(`Unable to connect to registry: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +

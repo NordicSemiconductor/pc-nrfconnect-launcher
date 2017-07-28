@@ -39,7 +39,6 @@
 const fs = require('fs');
 const path = require('path');
 const targz = require('targz');
-const net = require('electron').net;
 
 /**
  * Open the given file path and return its string contents.
@@ -167,68 +166,6 @@ function extractNpmPackage(tgzFile, destinationDir) {
     });
 }
 
-/**
- * Download the given url to a string. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
- *
- * @param {string} url the URL to download.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
- * @returns {Promise} promise that resolves when the data has been downloaded.
- */
-function downloadToString(url, onLogin) {
-    return new Promise((resolve, reject) => {
-        const request = net.request(url);
-        request.setHeader('pragma', 'no-cache');
-        request.on('response', response => {
-            if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ${response.statusCode}`));
-                return;
-            }
-            let buffer = '';
-            const addToBuffer = data => {
-                buffer += data.toString();
-            };
-            response.on('data', data => addToBuffer(data));
-            response.on('end', () => resolve(buffer));
-            response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
-        });
-        if (onLogin) {
-            request.on('login', onLogin);
-        }
-        request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
-        request.end();
-    });
-}
-
-/**
- * Download the given url to a local file path. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
- *
- * @param {string} url the URL to download.
- * @param {string} filePath where to store the downloaded file.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
- * @returns {Promise} promise that resolves when file has been downloaded.
- */
-function downloadToFile(url, filePath, onLogin) {
-    return new Promise((resolve, reject) => {
-        downloadToString(url, onLogin)
-            .then(data => {
-                fs.writeFile(filePath, data, err => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            })
-            .catch(reject);
-    });
-}
-
 function mkdir(dirPath) {
     return new Promise((resolve, reject) => {
         fs.mkdir(dirPath, 0o775, error => {
@@ -292,8 +229,6 @@ module.exports = {
     listFiles,
     deleteFile,
     extractNpmPackage,
-    downloadToFile,
-    downloadToString,
     mkdir,
     mkdirIfNotExists,
     createTextFile,
