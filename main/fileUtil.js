@@ -38,7 +38,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const net = require('electron').net;
+const targz = require('targz');
 
 /**
  * Open the given file path and return its string contents.
@@ -93,65 +93,93 @@ function listDirectories(dirPath) {
 }
 
 /**
- * Download the given url to a string. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
+ * List files directly below the given path. A regular expression can optionally
+ * be specified to only return matching file names.
  *
- * @param {string} url the URL to download.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
- * @returns {Promise} promise that resolves when the data has been downloaded.
+ * @param {string} dirPath the path to look inside.
+ * @param {RegExp} [regex] optional regular expression.
+ * @returns {string[]} file names.
  */
-function downloadToString(url, onLogin) {
+function listFiles(dirPath, regex) {
+    if (fs.existsSync(dirPath)) {
+        return fs.readdirSync(dirPath)
+            .filter(file => {
+                const fileStats = fs.statSync(path.join(dirPath, file));
+                return fileStats.isFile();
+            })
+            .filter(file => {
+                if (regex) {
+                    return regex.test(file);
+                }
+                return true;
+            });
+    }
+    return [];
+}
+
+/**
+ * Delete the file at the given path.
+ *
+ * @param {string} filePath the file path to delete.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function deleteFile(filePath) {
     return new Promise((resolve, reject) => {
-        const request = net.request(url);
-        request.setHeader('pragma', 'no-cache');
-        request.on('response', response => {
-            if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ${response.statusCode}`));
-                return;
+        fs.unlink(filePath, error => {
+            if (error) {
+                reject(new Error(`Unable to delete ${filePath}: ${error.message}`));
+            } else {
+                resolve();
             }
-            let buffer = '';
-            const addToBuffer = data => {
-                buffer += data.toString();
-            };
-            response.on('data', data => addToBuffer(data));
-            response.on('end', () => resolve(buffer));
-            response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
         });
-        if (onLogin) {
-            request.on('login', onLogin);
-        }
-        request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
-        request.end();
     });
 }
 
 /**
- * Download the given url to a local file path. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
+ * Extract the given npm package (tgz file) to the given destination directory.
  *
- * @param {string} url the URL to download.
- * @param {string} filePath where to store the downloaded file.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
- * @returns {Promise} promise that resolves when file has been downloaded.
+ * @param {string} tgzFile the tgz file path to extract.
+ * @param {string} destinationDir the destination directory.
+ * @returns {Promise} promise that resolves if successful.
  */
-function downloadToFile(url, filePath, onLogin) {
+function extractNpmPackage(tgzFile, destinationDir) {
     return new Promise((resolve, reject) => {
-        downloadToString(url, onLogin)
-            .then(data => {
-                fs.writeFile(filePath, data, err => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            })
-            .catch(reject);
+        targz.decompress({
+            src: tgzFile,
+            dest: destinationDir,
+            tar: {
+                map: header => (
+                    Object.assign({}, header, {
+                        // All tgz files from npm contain a directory named
+                        // "package". Stripping it away.
+                        name: header.name.replace(/^package\//, ''),
+                    })
+                ),
+            },
+        }, error => {
+            if (error) {
+                reject(new Error(`Unable to extract ${tgzFile}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
     });
+}
+
+/**
+ * Get the app name from the given *.tgz archive file. Expects the
+ * file name to be on the form "{name}-{version}.tgz".
+ *
+ * @param {string} tgzFile the tgz file path to get name from.
+ * @returns {string|null} app name or null if invalid file.
+ */
+function getNameFromNpmPackage(tgzFile) {
+    const fileName = path.basename(tgzFile);
+    const lastDash = fileName.lastIndexOf('-');
+    if (lastDash > 0) {
+        return fileName.substring(0, lastDash);
+    }
+    return null;
 }
 
 function mkdir(dirPath) {
@@ -214,8 +242,10 @@ module.exports = {
     readFile,
     readJsonFile,
     listDirectories,
-    downloadToFile,
-    downloadToString,
+    listFiles,
+    deleteFile,
+    extractNpmPackage,
+    getNameFromNpmPackage,
     mkdir,
     mkdirIfNotExists,
     createTextFile,

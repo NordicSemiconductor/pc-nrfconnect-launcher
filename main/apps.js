@@ -42,6 +42,7 @@ const semver = require('semver');
 const config = require('./config');
 const yarn = require('./yarn');
 const fileUtil = require('./fileUtil');
+const netUtil = require('./netUtil');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
 
@@ -92,7 +93,7 @@ function createUpdatesJsonIfNotExists() {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFile(onLogin) {
-    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
+    return netUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +
@@ -109,7 +110,7 @@ function downloadAppsJsonFile(onLogin) {
  * @returns {Promise} promise that resolves if successful.
  */
 function verifyRegistryConnection(onLogin) {
-    return fileUtil.downloadToString(config.getRegistryUrl(), onLogin)
+    return netUtil.downloadToString(config.getRegistryUrl(), onLogin)
         .catch(error => {
             throw new Error(`Unable to connect to registry: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +
@@ -129,6 +130,43 @@ function generateUpdatesJsonFile(npmOptions) {
     const fileName = config.getUpdatesJsonPath();
     return yarn.outdated(npmOptions)
         .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps));
+}
+
+/**
+ * Extract the given *.tgz archive to the apps local directory.
+ *
+ * @param {string} tgzFilePath Path to the tgz file to install.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchive(tgzFilePath) {
+    const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
+    if (!appName) {
+        return Promise.reject(new Error('Unable to get app name from archive: ' +
+            `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
+    }
+    const appPath = path.join(config.getAppsLocalDir(), appName);
+    if (fs.existsSync(appPath)) {
+        return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
+            `but app directory ${appPath} already exists. Either delete the ` +
+            'app directory so that the archive can be extracted, or delete ' +
+            'the archive file.'));
+    }
+    return fileUtil.mkdir(appPath)
+        .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+        .then(() => fileUtil.deleteFile(tgzFilePath));
+}
+
+/**
+ * Extract all *.tgz archives that exist in the apps local directory.
+ *
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchives() {
+    const appsLocalDir = config.getAppsLocalDir();
+    const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
+    return tgzFiles.reduce((prev, tgzFile) => (
+        prev.then(() => installLocalAppArchive(path.join(appsLocalDir, tgzFile)))
+    ), Promise.resolve());
 }
 
 /**
@@ -155,6 +193,7 @@ function initAppsDirectory() {
         .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
+        .then(() => installLocalAppArchives())
         .catch(error => {
             const err = new Error(error.message);
             err.code = APPS_DIR_INIT_ERROR;
