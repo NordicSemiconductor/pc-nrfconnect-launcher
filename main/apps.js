@@ -41,8 +41,9 @@ const fs = require('fs');
 const semver = require('semver');
 const config = require('./config');
 const yarn = require('./yarn');
+const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
-const netUtil = require('./netUtil');
+const net = require('./net');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
 
@@ -89,11 +90,10 @@ function createUpdatesJsonIfNotExists() {
  * Download the apps.json file containing a list of official apps. The file
  * is downloaded from the configured url and written to the apps root dir.
  *
- * @param {Function} onLogin proxy login callback, ref. electron net API.
  * @returns {Promise} promise that resolves if successful.
  */
-function downloadAppsJsonFile(onLogin) {
-    return netUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath(), onLogin)
+function downloadAppsJsonFile() {
+    return net.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +
@@ -102,34 +102,17 @@ function downloadAppsJsonFile(onLogin) {
 }
 
 /**
- * Verifies that we are able to connect to the npm registry. Returns a promise
- * that resolves if successful. The onLogin callback is invoked if a proxy
- * server requires authentication.
+ * Create the updates.json file containing the latest available versions for
+ * all installed official apps. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  *
- * @param {Function} onLogin proxy login callback, ref. electron net API.
  * @returns {Promise} promise that resolves if successful.
  */
-function verifyRegistryConnection(onLogin) {
-    return netUtil.downloadToString(config.getRegistryUrl(), onLogin)
-        .catch(error => {
-            throw new Error(`Unable to connect to registry: ${error.message}. If you ` +
-                'are using a proxy server, you may need to configure it as described on ' +
-                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
-        });
-}
-
-/**
- * Create the updates.json file containing a list of installed apps that have
- * available updates. Uses the 'yarn outdated' command to get the list of
- * updates.
- *
- * @param {Object} npmOptions See yarn/index.js for available options.
- * @returns {Promise} promise that resolves if successful.
- */
-function generateUpdatesJsonFile(npmOptions) {
+function generateUpdatesJsonFile() {
     const fileName = config.getUpdatesJsonPath();
-    return yarn.outdated(npmOptions)
-        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps));
+    return fileUtil.readJsonFile(path.join(config.getPackageJsonPath()))
+        .then(packageJson => Object.keys(packageJson.dependencies))
+        .then(packageNames => registryApi.getLatestPackageVersions(packageNames))
+        .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
 }
 
 /**
@@ -360,29 +343,27 @@ function getLocalApps() {
  * Install official app from the npm registry.
  *
  * @param {string} name the app name.
- * @param {Object} [npmOptions] See yarn/index.js for available options.
+ * @param {string} version the app version, e.g. '1.2.3' or 'latest'.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function installOfficialApp(name, npmOptions) {
-    return yarn.add(name, npmOptions);
+function installOfficialApp(name, version) {
+    return yarn.add(name, version);
 }
 
 /**
  * Remove official app.
  *
  * @param {string} name the app name.
- * @param {Object} [npmOptions] See yarn/index.js for available options.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function removeOfficialApp(name, npmOptions) {
-    return yarn.remove(name, npmOptions);
+function removeOfficialApp(name) {
+    return yarn.remove(name);
 }
 
 module.exports = {
     initAppsDirectory,
     downloadAppsJsonFile,
     generateUpdatesJsonFile,
-    verifyRegistryConnection,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,

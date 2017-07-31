@@ -68,7 +68,7 @@ function init(argv) {
     updatesJsonPath = path.join(appsRootDir, 'updates.json');
     appsJsonPath = path.join(appsRootDir, 'apps.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    registryUrl = 'https://registry.yarnpkg.com/';
+    registryUrl = 'https://registry.yarnpkg.com';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;

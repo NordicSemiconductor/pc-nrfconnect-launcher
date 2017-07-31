@@ -39,55 +39,83 @@
 const fs = require('fs');
 const net = require('electron').net;
 
+let onProxyLogin;
+
 /**
- * Download the given url to a string. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
+ * Register a function that should be called when a proxy asks for username
+ * and password. The function receives an authInfo object and a callback function.
+ * The callback function must be invoked with username and password. More info:
  * https://github.com/electron/electron/blob/master/docs/api/client-request.md
  *
- * @param {string} url the URL to download.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
- * @returns {Promise} promise that resolves when the data has been downloaded.
+ * @param {Function} onLoginRequested Signature: (authInfo, callback) => {}.
+ * @returns {void}
  */
-function downloadToString(url, onLogin) {
+function registerProxyLoginHandler(onLoginRequested) {
+    onProxyLogin = onLoginRequested;
+}
+
+function downloadToBuffer(url) {
     return new Promise((resolve, reject) => {
         const request = net.request(url);
         request.setHeader('pragma', 'no-cache');
         request.on('response', response => {
             if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ${response.statusCode}`));
+                reject(new Error(`Unable to download ${url}. Got status code ` +
+                    `${response.statusCode}`));
                 return;
             }
-            let buffer = '';
+            const buffer = [];
             const addToBuffer = data => {
-                buffer += data.toString();
+                buffer.push(data);
             };
             response.on('data', data => addToBuffer(data));
-            response.on('end', () => resolve(buffer));
-            response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
+            response.on('end', () => resolve(Buffer.concat(buffer)));
+            response.on('error', error => reject(new Error(`Error when reading ${url}: ` +
+                `${error.message}`)));
         });
-        if (onLogin) {
-            request.on('login', onLogin);
-        }
-        request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
+        request.on('login', onProxyLogin);
+        request.on('error', error => reject(new Error(`Unable to download ${url}: ` +
+            `${error.message}`)));
         request.end();
     });
 }
 
+
+/**
+ * Download the given url to a string. Uses the electron net API,
+ * which reads proxy settings from the system.
+ *
+ * @param {string} url the URL to download.
+ * @returns {Promise} promise that resolves when the data has been downloaded.
+ */
+function downloadToString(url) {
+    return downloadToBuffer(url)
+        .then(buffer => buffer.toString());
+}
+
+/**
+ * Download the given url to a json object. Uses the electron net API,
+ * which reads proxy settings from the system.
+ *
+ * @param {string} url the URL to download.
+ * @returns {Promise} promise that resolves when the data has been downloaded.
+ */
+function downloadToJson(url) {
+    return downloadToString(url)
+        .then(string => JSON.parse(string));
+}
+
 /**
  * Download the given url to a local file path. Uses the electron net API,
- * which reads proxy settings from the system. If a proxy requires
- * authentication, the onLogin function is invoked. Ref:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
+ * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
  * @param {string} filePath where to store the downloaded file.
- * @param {Function} onLogin proxy login callback, ref. electron net API.
  * @returns {Promise} promise that resolves when file has been downloaded.
  */
-function downloadToFile(url, filePath, onLogin) {
+function downloadToFile(url, filePath) {
     return new Promise((resolve, reject) => {
-        downloadToString(url, onLogin)
+        downloadToBuffer(url)
             .then(data => {
                 fs.writeFile(filePath, data, err => {
                     if (err) {
@@ -104,4 +132,6 @@ function downloadToFile(url, filePath, onLogin) {
 module.exports = {
     downloadToFile,
     downloadToString,
+    downloadToJson,
+    registerProxyLoginHandler,
 };
