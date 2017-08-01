@@ -53,6 +53,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import SerialPortSelector from '../SerialPortSelector';
 
+const SEGGER_VENDOR_ID = '0x1366';
+
 describe('SerialPortSelector', () => {
     it('should render empty port list, not expanded', () => {
         expect(renderer.create(
@@ -86,9 +88,11 @@ describe('SerialPortSelector', () => {
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
+                        vendorId: SEGGER_VENDOR_ID,
                     }, {
                         comName: '/dev/tty1',
                         serialNumber: '456789',
+                        vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
                 isExpanded
@@ -100,6 +104,53 @@ describe('SerialPortSelector', () => {
         )).toMatchSnapshot();
     });
 
+    it('should render only segger ports by default filter', () => {
+        expect(renderer.create(
+            <SerialPortSelector
+                ports={[
+                    {
+                        comName: '/dev/tty0',
+                        serialNumber: '123456',
+                        vendorId: '0x1234',
+                    }, {
+                        comName: '/dev/tty1',
+                        serialNumber: '456789',
+                        vendorId: SEGGER_VENDOR_ID,
+                    },
+                ]}
+                isExpanded
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render filtered ports', () => {
+        expect(renderer.create(
+            <SerialPortSelector
+                ports={[
+                    {
+                        comName: '/dev/tty0',
+                        serialNumber: '123456',
+                        vendorId: '0x1234',
+                    }, {
+                        comName: '/dev/tty1',
+                        serialNumber: '456789',
+                        vendorId: SEGGER_VENDOR_ID,
+                    },
+                ]}
+                isExpanded
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+                filterPort={port => port.serialNumber === '123456'}
+            />,
+        )).toMatchSnapshot();
+    });
+
     it('should render two ports, one selected', () => {
         expect(renderer.create(
             <SerialPortSelector
@@ -107,9 +158,11 @@ describe('SerialPortSelector', () => {
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
+                        vendorId: SEGGER_VENDOR_ID,
                     }, {
                         comName: '/dev/tty1',
                         serialNumber: '456789',
+                        vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
                 selectedPort={'/dev/tty1'}
@@ -129,6 +182,7 @@ describe('SerialPortSelector', () => {
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
+                        vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
                 isExpanded
@@ -148,6 +202,7 @@ describe('SerialPortSelector', () => {
                     {
                         comName: '/dev/tty0',
                         serialNumber: '123456',
+                        vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
                 selectedPort={'/dev/tty0'}

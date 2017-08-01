@@ -42,6 +42,12 @@ import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import { Iterable } from 'immutable';
 
+const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
+
+function filterSeggerPorts(port) {
+    return SEGGER_VENDOR_IDS.has(port.vendorId);
+}
+
 class SerialPortSelector extends React.Component {
     componentDidMount() {
         const {
@@ -75,20 +81,24 @@ class SerialPortSelector extends React.Component {
             onSelect,
             isLoading,
             menuItemCssClass,
+            filterPort,
         } = this.props;
 
         if (!isLoading) {
-            return ports.map(port => (
-                <MenuItem
-                    key={port.comName}
-                    className={menuItemCssClass}
-                    eventKey={port.comName}
-                    onSelect={() => onSelect(port)}
-                >
-                    <div>{port.comName}</div>
-                    <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
-                </MenuItem>
-            ));
+            return ports
+                .filter(filterPort)
+                .map(port => (
+                    <MenuItem
+                        key={port.comName}
+                        className={menuItemCssClass}
+                        eventKey={port.comName}
+                        onSelect={() => onSelect(port)}
+                    >
+                        <div>{port.comName}</div>
+                        <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
+                    </MenuItem>
+                ),
+            );
         }
         return null;
     }
@@ -175,6 +185,7 @@ SerialPortSelector.propTypes = {
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
+    filterPort: PropTypes.func.isRequired,
 };
 
 SerialPortSelector.defaultProps = {
@@ -188,6 +199,7 @@ SerialPortSelector.defaultProps = {
     dropdownCssClass: 'core-serial-port-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'btn-primary',
+    filterPort: filterSeggerPorts,
 };
 
 export default SerialPortSelector;
