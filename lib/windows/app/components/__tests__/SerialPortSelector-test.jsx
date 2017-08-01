@@ -146,7 +146,7 @@ describe('SerialPortSelector', () => {
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
-                filterPort={port => port.serialNumber === '123456'}
+                filter={port => port.serialNumber === '123456'}
             />,
         )).toMatchSnapshot();
     });

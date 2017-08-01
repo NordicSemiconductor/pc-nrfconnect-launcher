@@ -81,12 +81,12 @@ class SerialPortSelector extends React.Component {
             onSelect,
             isLoading,
             menuItemCssClass,
-            filterPort,
+            filter,
         } = this.props;
 
         if (!isLoading) {
             return ports
-                .filter(filterPort)
+                .filter(filter)
                 .map(port => (
                     <MenuItem
                         key={port.comName}
@@ -185,7 +185,7 @@ SerialPortSelector.propTypes = {
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
-    filterPort: PropTypes.func.isRequired,
+    filter: PropTypes.func,
 };
 
 SerialPortSelector.defaultProps = {
@@ -199,7 +199,7 @@ SerialPortSelector.defaultProps = {
     dropdownCssClass: 'core-serial-port-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'btn-primary',
-    filterPort: filterSeggerPorts,
+    filter: filterSeggerPorts,
 };
 
 export default SerialPortSelector;
