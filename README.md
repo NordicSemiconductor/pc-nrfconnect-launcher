@@ -112,9 +112,17 @@ Run unit tests and watch for changes:
 
     npm run test-watch
 
-Run end-to-end tests:
+Run all end-to-end tests:
 
     npm run test-e2e
+
+Run only end-to-end tests that do not require network access:
+
+    npm run test-e2e-offline
+
+Run only end-to-end tests that require network access:
+
+    npm run test-e2e-online
 
 ## Creating release artifacts
 
