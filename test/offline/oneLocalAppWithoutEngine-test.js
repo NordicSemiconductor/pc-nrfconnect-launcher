@@ -35,25 +35,17 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp, waitForWindowCount } from './setup';
-import packageJson from '../package.json';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const appsRootDir = path.resolve(__dirname, './features/one-local-app');
+const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-without-engine/.nrfconnect-apps');
 const electronArgs = [
     `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
 ];
 
 let electronApp;
 
-function loadFirstApp() {
-    return electronApp.client.windowByIndex(0)
-        .waitForVisible('button[title="Launch app"]')
-        .click('button[title="Launch app"]')
-        .then(() => waitForWindowCount(electronApp, 2))
-        .then(() => electronApp.client.waitUntilWindowLoaded());
-}
-
-describe('one local app', () => {
+describe('one local app without engine definition', () => {
     beforeEach(() => (
         startElectronApp(electronArgs)
             .then(startedApp => {
@@ -65,44 +57,15 @@ describe('one local app', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should show package.json version in launcher window title', () => (
-        electronApp.client.windowByIndex(0).browserWindow.getTitle()
-            .then(title => expect(title).toContain(packageJson.version))
-    ));
-
-    it('should show Test App in the launcher app list', () => (
+    it('should show warning in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
+            .waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
     ));
 
-    it('should load app window when clicking Launch', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
-            .then(title => expect(title).toContain('Test App'))
-    ));
-
-    it('should not show list of main menu items in app window initially', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1))
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
-
-    it('should show a "Launch other app" item when main menu button has been clicked in app window', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1))
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="Launch other app"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
-
-    it('should show port list when port selector has been clicked in app window', () => (
-        loadFirstApp(electronApp)
-            .then(() => electronApp.client.windowByIndex(1))
-            .click('#serial-port-selector')
-            .isVisible('#serial-port-selector-list')
-            .then(isVisible => expect(isVisible).toEqual(true))
+    it('should show warning dialog when clicking Launch', () => (
+        electronApp.client.windowByIndex(0)
+            .waitForVisible('button[title="Launch app"]')
+            .click('button[title="Launch app"]')
+            .waitForVisible('.modal-dialog')
     ));
 });

@@ -35,58 +35,37 @@
  */
 
 import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const appsRootDir = path.resolve(__dirname, './features/one-local-app-to-be-extracted');
+const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-unsupported-engine/.nrfconnect-apps');
 const electronArgs = [
     `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
 ];
-const appName = 'pc-nrfconnect-foo';
-const appArchiveFile = `${appName}-1.2.3.tgz`;
 
 let electronApp;
 
-function copyArchiveToLocal() {
-    const sourceFile = path.join(appsRootDir, 'archives', appArchiveFile);
-    const destFile = path.join(appsRootDir, 'local', appArchiveFile);
-    fs.writeFileSync(destFile, fs.readFileSync(sourceFile));
-}
-
-function removeAppDirFromLocal() {
-    rimraf.sync(path.join(appsRootDir, 'local', appName));
-}
-
-describe('one local app to be extracted', () => {
-    beforeEach(() => {
-        copyArchiveToLocal();
-        return startElectronApp(electronArgs)
+describe('one local app with unsupported engine', () => {
+    beforeEach(() => (
+        startElectronApp(electronArgs)
             .then(startedApp => {
                 electronApp = startedApp;
-            });
-    });
+            })
+    ));
 
     afterEach(() => (
         stopElectronApp(electronApp)
-            .then(() => {
-                removeAppDirFromLocal();
-            })
     ));
 
-    it('should extract archive and show app name in the launcher app list', () => (
+    it('should show warning in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Foo App'))
+            .waitForVisible('span[title*="The app only supports nRF Connect 1.x')
     ));
 
-    it('should remove archive file from apps local directory after extracting', () => (
+    it('should show warning dialog when clicking Launch', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
-                expect(exists).toEqual(false);
-            })
+            .waitForVisible('button[title="Launch app"]')
+            .click('button[title="Launch app"]')
+            .waitForVisible('.modal-dialog')
     ));
 });

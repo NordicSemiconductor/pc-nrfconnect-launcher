@@ -35,59 +35,60 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
+import fs from 'fs';
+import rimraf from 'rimraf';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const appsRootDir = path.resolve(__dirname, './features/one-official-app-upgradable');
+const fixtureDir = path.resolve(__dirname, './fixtures/one-local-app-to-be-extracted');
+const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
 const electronArgs = [
     `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
 ];
+const appName = 'pc-nrfconnect-foo';
+const appArchiveFile = `${appName}-1.2.3.tgz`;
 
 let electronApp;
 
-describe('one official app upgradable', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
+function copyArchiveToLocal() {
+    const sourceFile = path.join(fixtureDir, appArchiveFile);
+    const destFile = path.join(appsRootDir, 'local', appArchiveFile);
+    fs.writeFileSync(destFile, fs.readFileSync(sourceFile));
+}
+
+function removeAppDirFromLocal() {
+    rimraf.sync(path.join(appsRootDir, 'local', appName));
+}
+
+describe('one local app to be extracted', () => {
+    beforeEach(() => {
+        copyArchiveToLocal();
+        return startElectronApp(electronArgs)
             .then(startedApp => {
                 electronApp = startedApp;
-            })
-    ));
+            });
+    });
 
     afterEach(() => (
         stopElectronApp(electronApp)
+            .then(() => {
+                removeAppDirFromLocal();
+            })
     ));
 
-    it('should show Test App in the launcher app list', () => (
+    it('should extract archive and show app name in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
             .waitForVisible('h4')
             .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
+            .then(text => expect(text).toEqual('Foo App'))
     ));
 
-    it('should show Test App in app management list', () => (
+    it('should remove archive file from apps local directory after extracting', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
-    ));
-
-    it('should show remove button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Remove Test App"]')
-    ));
-
-    it('should show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Upgrade Test App from v1.2.3 to v1.2.4"]')
-    ));
-
-    it('should not show install button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .isVisible('button[title="Install Test App"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
+            .waitForVisible('h4')
+            .then(() => {
+                const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
+                expect(exists).toEqual(false);
+            })
     ));
 });
