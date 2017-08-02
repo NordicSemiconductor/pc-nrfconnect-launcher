@@ -51,11 +51,30 @@ let yarnLockPath;
 let updatesJsonPath;
 let appsJsonPath;
 let appsJsonUrl;
+let settingsJsonPath;
 let registryUrl;
 let skipUpdateApps;
 let skipUpdateCore;
 let skipSplashScreen;
 
+/**
+ * Init the config values based on the given command line arguments.
+ *
+ * Supported command line arguments:
+ * --apps-root-dir       The directory where app data is stored.
+ *                       Default: "<homeDir>/.nrfconnect-apps"
+ * --settings-json-path  Path to the user's settings file.
+ *                       Default: "<userDataDir>/settings.json"
+ * --skip-update-apps    Do not download info/updates about apps.
+ *                       Default: false
+ * --skip-update-core    Skip checking for updates for nRF Connect.
+ *                       Default: false
+ * --skip-splash-screen  Skip the splash screen at startup.
+ *                       Default: false
+ *
+ * @param {Object} argv command line arguments.
+ * @returns {void}
+ */
 function init(argv) {
     version = packageJson.version;
     homeDir = electronApp.getPath('home');
@@ -67,6 +86,7 @@ function init(argv) {
     yarnLockPath = path.join(appsRootDir, 'yarn.lock');
     updatesJsonPath = path.join(appsRootDir, 'updates.json');
     appsJsonPath = path.join(appsRootDir, 'apps.json');
+    settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
     registryUrl = 'https://registry.yarnpkg.com';
     skipUpdateApps = argv['skip-update-apps'] || false;
@@ -86,6 +106,7 @@ module.exports = {
     getYarnLockPath: () => yarnLockPath,
     getUpdatesJsonPath: () => updatesJsonPath,
     getAppsJsonPath: () => appsJsonPath,
+    getSettingsJsonPath: () => settingsJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
     getRegistryUrl: () => registryUrl,
     isSkipUpdateApps: () => skipUpdateApps,
