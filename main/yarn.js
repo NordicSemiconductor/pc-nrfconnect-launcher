@@ -35,20 +35,19 @@
  */
 
 const fork = require('child_process').fork;
-const parseOutdated = require('./parsing').parseOutdated;
-const yarnConfig = require('./config');
-const config = require('../config');
-const log = require('electron-log');
+const registryApi = require('./registryApi');
+const config = require('./config');
+const fileUtil = require('./fileUtil');
 
 const yarnPath = require.resolve('yarn/bin/yarn.js');
 
-function yarn(args, env) {
+function yarn(args) {
     return new Promise((resolve, reject) => {
         const proc = fork(yarnPath, args, {
             cwd: config.getAppsRootDir(),
-            env: Object.assign({}, env, {
+            env: {
                 DISABLE_V8_COMPILE_CACHE: 1,
-            }),
+            },
             stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
         });
 
@@ -68,30 +67,21 @@ function yarn(args, env) {
     });
 }
 
-function logAndThrowError(error) {
-    log.error(error.message);
-    throw new Error(`Error when running yarn. See ${log.transports.file.file} ` +
-        'for details. If you are using a proxy server, you may need to ' +
-        'configure it as described on ' +
-        'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
-}
-
 /**
  * Installs the given npm package in the apps root directory. The package
- * is added as an exact dependency in package.json in the same directory.
- * The name can optionally have a version, e.g. 'package@1.2.3'.
- *
- * Supported options:
- * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
+ * is added as a dependency in package.json in the same directory.
  *
  * @param {string} name The name of the package to install.
- * @param {Object} options Optional parameter for specifying options.
+ * @param {string} version A version number string, e.g. '1.2.3' or 'latest'.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function add(name, options) {
-    return yarnConfig.optionsToEnv(options)
-        .then(env => yarn(['add', '--exact', name], env))
-        .catch(logAndThrowError);
+function add(name, version) {
+    const destinationDir = config.getAppsRootDir();
+    return registryApi.downloadTarball(name, version, destinationDir)
+        .then(destinationFile => (
+            yarn(['add', destinationFile])
+                .then(() => fileUtil.deleteFile(destinationFile))
+        ));
 }
 
 /**
@@ -99,42 +89,14 @@ function add(name, options) {
  * is removed from the list of dependencies in package.json in the same
  * directory.
  *
- * Supported options:
- * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
- *
  * @param {string} name The name of the package to remove.
- * @param {Object} options Optional parameter for specifying options.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function remove(name, options) {
-    return yarnConfig.optionsToEnv(options)
-        .then(env => yarn(['remove', name], env))
-        .catch(logAndThrowError);
-}
-
-/**
- * Returns packages that have outdated versions. A promise is returned,
- * which resolves with an object containing package names as keys and
- * their latest version as values.
- *
- * If no outdated packages are found, the promise will resolve with an
- * empty object.
- *
- * Supported options:
- * - httpsProxy {string} Format: 'http://proxy.company.com:8080'
- *
- * @param {Object} options Optional parameter for specifying options.
- * @returns {Promise} Promise that resolves with an object of packages.
- */
-function outdated(options) {
-    return yarnConfig.optionsToEnv(options)
-        .then(env => yarn(['outdated'], env))
-        .then(output => parseOutdated(output))
-        .catch(logAndThrowError);
+function remove(name) {
+    return yarn(['remove', name]);
 }
 
 module.exports = {
     add,
     remove,
-    outdated,
 };
