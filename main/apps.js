@@ -41,10 +41,11 @@ const fs = require('fs');
 const semver = require('semver');
 const config = require('./config');
 const yarn = require('./yarn');
+const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
+const net = require('./net');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
-const APPS_UPDATE_ERROR = 'APPS_UPDATE_ERROR';
 
 /**
  * Create package.json if it does not exist.
@@ -92,30 +93,63 @@ function createUpdatesJsonIfNotExists() {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFile() {
-    return fileUtil.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
+    return net.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
         .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
+            throw new Error(`Unable to download apps list: ${error.message}. If you ` +
+                'are using a proxy server, you may need to configure it as described on ' +
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         });
 }
 
 /**
- * Create the updates.json file containing a list of installed apps that have
- * available updates. Uses the 'yarn outdated' command to get the list of
- * updates.
+ * Create the updates.json file containing the latest available versions for
+ * all installed official apps. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  *
  * @returns {Promise} promise that resolves if successful.
  */
 function generateUpdatesJsonFile() {
     const fileName = config.getUpdatesJsonPath();
-    return yarn.outdated()
-        .then(outdatedApps => fileUtil.createJsonFile(fileName, outdatedApps))
-        .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_UPDATE_ERROR;
-            throw err;
-        });
+    return fileUtil.readJsonFile(path.join(config.getPackageJsonPath()))
+        .then(packageJson => Object.keys(packageJson.dependencies))
+        .then(packageNames => registryApi.getLatestPackageVersions(packageNames))
+        .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
+}
+
+/**
+ * Extract the given *.tgz archive to the apps local directory.
+ *
+ * @param {string} tgzFilePath Path to the tgz file to install.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchive(tgzFilePath) {
+    const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
+    if (!appName) {
+        return Promise.reject(new Error('Unable to get app name from archive: ' +
+            `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
+    }
+    const appPath = path.join(config.getAppsLocalDir(), appName);
+    if (fs.existsSync(appPath)) {
+        return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
+            `but app directory ${appPath} already exists. Either delete the ` +
+            'app directory so that the archive can be extracted, or delete ' +
+            'the archive file.'));
+    }
+    return fileUtil.mkdir(appPath)
+        .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+        .then(() => fileUtil.deleteFile(tgzFilePath));
+}
+
+/**
+ * Extract all *.tgz archives that exist in the apps local directory.
+ *
+ * @returns {Promise} promise that resolves if successful.
+ */
+function installLocalAppArchives() {
+    const appsLocalDir = config.getAppsLocalDir();
+    const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
+    return tgzFiles.reduce((prev, tgzFile) => (
+        prev.then(() => installLocalAppArchive(path.join(appsLocalDir, tgzFile)))
+    ), Promise.resolve());
 }
 
 /**
@@ -142,10 +176,8 @@ function initAppsDirectory() {
         .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
-        .then(() => !config.isSkipUpdateApps() && downloadAppsJsonFile())
-        .then(() => !config.isSkipUpdateApps() && generateUpdatesJsonFile())
+        .then(() => installLocalAppArchives())
         .catch(error => {
-            if (error.code === APPS_UPDATE_ERROR) throw error;
             const err = new Error(error.message);
             err.code = APPS_DIR_INIT_ERROR;
             throw err;
@@ -311,10 +343,11 @@ function getLocalApps() {
  * Install official app from the npm registry.
  *
  * @param {string} name the app name.
+ * @param {string} version the app version, e.g. '1.2.3' or 'latest'.
  * @returns {Promise} promise that resolves/rejects with yarn output.
  */
-function installOfficialApp(name) {
-    return yarn.add(name);
+function installOfficialApp(name, version) {
+    return yarn.add(name, version);
 }
 
 /**
@@ -329,10 +362,11 @@ function removeOfficialApp(name) {
 
 module.exports = {
     initAppsDirectory,
+    downloadAppsJsonFile,
+    generateUpdatesJsonFile,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,
     removeOfficialApp,
     APPS_DIR_INIT_ERROR,
-    APPS_UPDATE_ERROR,
 };

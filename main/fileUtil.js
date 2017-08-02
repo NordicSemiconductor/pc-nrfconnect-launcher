@@ -38,7 +38,25 @@
 
 const fs = require('fs');
 const path = require('path');
-const net = require('electron').net;
+const targz = require('targz');
+
+/**
+ * Open the given file path and return its string contents.
+ *
+ * @param {string} filePath path to file.
+ * @returns {Promise} promise that resolves with the contents.
+ */
+function readFile(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (error, data) => {
+            if (error) {
+                reject(new Error(`Unable to read ${filePath}: ${error.message}`));
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
 
 /**
  * Open the given json file path and read all its properties into an object.
@@ -47,19 +65,14 @@ const net = require('electron').net;
  * @returns {Promise} promise that resolves with the parsed object.
  */
 function readJsonFile(filePath) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(filePath, (error, data) => {
-            if (error) {
-                reject(new Error(`Unable to read ${filePath}: ${error.message}`));
-            } else {
-                try {
-                    resolve(JSON.parse(data));
-                } catch (err) {
-                    reject(new Error(`Unable to parse ${filePath}: ${err.message}`));
-                }
+    return readFile(filePath)
+        .then(data => {
+            try {
+                return JSON.parse(data);
+            } catch (error) {
+                throw new Error(`Unable to parse ${filePath}: ${error.message}`);
             }
         });
-    });
 }
 
 /**
@@ -80,31 +93,93 @@ function listDirectories(dirPath) {
 }
 
 /**
- * Download the given url to a local file path.
+ * List files directly below the given path. A regular expression can optionally
+ * be specified to only return matching file names.
  *
- * @param {string} url the URL to download.
- * @param {string} filePath where to store the downloaded file.
- * @returns {Promise} promise that resolves when file has been downloaded.
+ * @param {string} dirPath the path to look inside.
+ * @param {RegExp} [regex] optional regular expression.
+ * @returns {string[]} file names.
  */
-function downloadToFile(url, filePath) {
+function listFiles(dirPath, regex) {
+    if (fs.existsSync(dirPath)) {
+        return fs.readdirSync(dirPath)
+            .filter(file => {
+                const fileStats = fs.statSync(path.join(dirPath, file));
+                return fileStats.isFile();
+            })
+            .filter(file => {
+                if (regex) {
+                    return regex.test(file);
+                }
+                return true;
+            });
+    }
+    return [];
+}
+
+/**
+ * Delete the file at the given path.
+ *
+ * @param {string} filePath the file path to delete.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function deleteFile(filePath) {
     return new Promise((resolve, reject) => {
-        const request = net.request(url);
-        request.on('response', response => {
-            if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ${response.statusCode}`));
-                return;
+        fs.unlink(filePath, error => {
+            if (error) {
+                reject(new Error(`Unable to delete ${filePath}: ${error.message}`));
+            } else {
+                resolve();
             }
-            let buffer = '';
-            const addToBuffer = data => {
-                buffer += data.toString();
-            };
-            response.on('data', data => addToBuffer(data));
-            response.on('end', () => fs.writeFile(filePath, buffer, resolve));
-            response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
         });
-        request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
-        request.end();
     });
+}
+
+/**
+ * Extract the given npm package (tgz file) to the given destination directory.
+ *
+ * @param {string} tgzFile the tgz file path to extract.
+ * @param {string} destinationDir the destination directory.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function extractNpmPackage(tgzFile, destinationDir) {
+    return new Promise((resolve, reject) => {
+        targz.decompress({
+            src: tgzFile,
+            dest: destinationDir,
+            tar: {
+                map: header => (
+                    Object.assign({}, header, {
+                        // All tgz files from npm contain a directory named
+                        // "package". Stripping it away.
+                        name: header.name.replace(/^package\//, ''),
+                    })
+                ),
+            },
+        }, error => {
+            if (error) {
+                reject(new Error(`Unable to extract ${tgzFile}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+/**
+ * Get the app name from the given *.tgz archive file. Expects the
+ * file name to be on the form "{name}-{version}.tgz".
+ *
+ * @param {string} tgzFile the tgz file path to get name from.
+ * @returns {string|null} app name or null if invalid file.
+ */
+function getNameFromNpmPackage(tgzFile) {
+    const fileName = path.basename(tgzFile);
+    const lastDash = fileName.lastIndexOf('-');
+    if (lastDash > 0) {
+        return fileName.substring(0, lastDash);
+    }
+    return null;
 }
 
 function mkdir(dirPath) {
@@ -164,9 +239,13 @@ function createJsonFileIfNotExists(filePath, jsonData) {
 }
 
 module.exports = {
+    readFile,
     readJsonFile,
     listDirectories,
-    downloadToFile,
+    listFiles,
+    deleteFile,
+    extractNpmPackage,
+    getNameFromNpmPackage,
     mkdir,
     mkdirIfNotExists,
     createTextFile,

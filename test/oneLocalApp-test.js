@@ -35,7 +35,7 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp, waitForWindowCount } from './setup';
 import packageJson from '../package.json';
 
 const appsRootDir = path.resolve(__dirname, './features/one-local-app');
@@ -47,7 +47,9 @@ let electronApp;
 
 function loadFirstApp() {
     return electronApp.client.windowByIndex(0)
+        .waitForVisible('button[title="Launch app"]')
         .click('button[title="Launch app"]')
+        .then(() => waitForWindowCount(electronApp, 2))
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
 
@@ -70,6 +72,7 @@ describe('one local app', () => {
 
     it('should show Test App in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
+            .waitForVisible('h4')
             .getText('h4')
             .then(text => expect(text).toEqual('Test App'))
     ));

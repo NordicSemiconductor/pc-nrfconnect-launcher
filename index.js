@@ -132,14 +132,6 @@ electronApp.on('ready', () => {
                     detail: error.message,
                     buttons: ['OK'],
                 }, () => electronApp.quit());
-            } else if (error.code === apps.APPS_UPDATE_ERROR) {
-                dialog.showMessageBox({
-                    type: 'warning',
-                    title: 'Network problem',
-                    message: 'Unable to update the official apps list',
-                    detail: error.message,
-                    buttons: ['OK'],
-                }, () => openLauncherWindow());
             } else {
                 dialog.showMessageBox({
                     type: 'error',

@@ -35,20 +35,21 @@
  */
 
 const fork = require('child_process').fork;
-const parseOutdated = require('./parsing').parseOutdated;
-const config = require('../config');
+const registryApi = require('./registryApi');
+const config = require('./config');
+const fileUtil = require('./fileUtil');
 
 const yarnPath = require.resolve('yarn/bin/yarn.js');
 
-function yarn(args, options = {}) {
+function yarn(args) {
     return new Promise((resolve, reject) => {
-        const proc = fork(yarnPath, args, Object.assign({}, options, {
+        const proc = fork(yarnPath, args, {
             cwd: config.getAppsRootDir(),
             env: {
                 DISABLE_V8_COMPILE_CACHE: 1,
             },
             stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-        }));
+        });
 
         let buffer = '';
         const addToBuffer = data => {
@@ -68,14 +69,19 @@ function yarn(args, options = {}) {
 
 /**
  * Installs the given npm package in the apps root directory. The package
- * is added as an exact dependency in package.json in the same directory.
- * The name can optionally have a version, e.g. 'package@1.2.3'.
+ * is added as a dependency in package.json in the same directory.
  *
  * @param {string} name The name of the package to install.
+ * @param {string} version A version number string, e.g. '1.2.3' or 'latest'.
  * @returns {Promise} Promise that resolves or rejects with the yarn output.
  */
-function add(name) {
-    return yarn(['add', '--exact', name]);
+function add(name, version) {
+    const destinationDir = config.getAppsRootDir();
+    return registryApi.downloadTarball(name, version, destinationDir)
+        .then(destinationFile => (
+            yarn(['add', destinationFile])
+                .then(() => fileUtil.deleteFile(destinationFile))
+        ));
 }
 
 /**
@@ -90,23 +96,7 @@ function remove(name) {
     return yarn(['remove', name]);
 }
 
-/**
- * Returns packages that have outdated versions. A promise is returned,
- * which resolves with an object containing package names as keys and
- * their latest version as values.
- *
- * If no outdated packages are found, the promise will resolve with an
- * empty object.
- *
- * @returns {Promise} Promise that resolves with an object of packages.
- */
-function outdated() {
-    return yarn(['outdated'])
-        .then(output => parseOutdated(output));
-}
-
 module.exports = {
     add,
     remove,
-    outdated,
 };

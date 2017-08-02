@@ -58,12 +58,12 @@ describe('one local app with unsupported engine', () => {
 
     it('should show warning in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .isVisible('span[title*="The app only supports nRF Connect 1.x')
-            .then(isVisible => expect(isVisible).toEqual(true))
+            .waitForVisible('span[title*="The app only supports nRF Connect 1.x')
     ));
 
     it('should show warning dialog when clicking Launch', () => (
         electronApp.client.windowByIndex(0)
+            .waitForVisible('button[title="Launch app"]')
             .click('button[title="Launch app"]')
             .waitForVisible('.modal-dialog')
     ));

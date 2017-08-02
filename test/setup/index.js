@@ -57,6 +57,7 @@ function startElectronApp(extraArgs) {
     const electronApp = new Application({
         path: electronPath,
         args: args.concat(extraArgs),
+        startTimeout: 30000,
     });
     return electronApp.start()
         .then(() => expect(electronApp.isRunning()).toEqual(true))
@@ -70,7 +71,29 @@ function stopElectronApp(electronApp) {
         .then(() => expect(electronApp.isRunning()).toEqual(false));
 }
 
+function waitForWindowCount(electronApp, numWindows) {
+    return new Promise((resolve, reject) => {
+        let retryCount = 0;
+        const getWindowCount = () => {
+            electronApp.client.getWindowCount()
+                .then(count => {
+                    if (count === numWindows) {
+                        resolve();
+                    } else if (retryCount > 5) {
+                        reject(new Error(`Timed out while waiting for ${numWindows} windows`));
+                    } else {
+                        retryCount += 1;
+                        setTimeout(getWindowCount, 500);
+                    }
+                })
+                .catch(error => reject(error));
+        };
+        getWindowCount();
+    });
+}
+
 export default {
     startElectronApp,
     stopElectronApp,
+    waitForWindowCount,
 };
