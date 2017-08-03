@@ -34,46 +34,40 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import * as ProxyActions from '../../actions/proxyActions';
-import reducer from '../proxyReducer';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
 
-const initialState = reducer(undefined, {});
+const ProxyErrorDialog = ({
+    isVisible,
+    onOk,
+}) => (
+    <Modal show={isVisible} backdrop>
+        <ModalHeader>
+            <ModalTitle>Proxy error</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <p>
+                It appears that you are having problems authenticating with a proxy server.
+                This will prevent you from using certain features of nRF Connect, such as
+                installing apps from the &quot;Add/remove apps&quot; screen.
+            </p>
+            <p>
+                If you are unable to resolve the issue, then go to Settings and disable
+                &quot;Check for updates at startup&quot;. Then restart nRF Connect and
+                install apps manually by following the instructions at
+                https://github.com/NordicSemiconductor/pc-nrfconnect-core.
+            </p>
+        </ModalBody>
+        <ModalFooter>
+            <Button onClick={onOk}>OK</Button>
+        </ModalFooter>
+    </Modal>
+);
 
-describe('proxyReducer', () => {
-    it('should show login dialog with message when PROXY_LOGIN_REQUESTED_BY_SERVER has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: ProxyActions.PROXY_LOGIN_REQUESTED_BY_SERVER,
-            message: 'Please enter proxy credentials',
-        });
-        expect(state.isLoginDialogVisible).toEqual(true);
-        expect(state.loginDialogMessage).toEqual('Please enter proxy credentials');
-    });
+ProxyErrorDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onOk: PropTypes.func.isRequired,
+};
 
-    it('should hide login dialog when PROXY_LOGIN_CANCELLED_BY_USER has been dispatched', () => {
-        const state = reducer(initialState.set('isLoginDialogVisible', true), {
-            type: ProxyActions.PROXY_LOGIN_CANCELLED_BY_USER,
-        });
-        expect(state.isLoginDialogVisible).toEqual(false);
-    });
-
-    it('should show login error dialog when PROXY_LOGIN_CANCELLED_BY_USER has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: ProxyActions.PROXY_LOGIN_CANCELLED_BY_USER,
-        });
-        expect(state.isErrorDialogVisible).toEqual(true);
-    });
-
-    it('should hide login error dialog when PROXY_LOGIN_ERROR_DIALOG_CLOSED has been dispatched', () => {
-        const state = reducer(initialState.set('isErrorDialogVisible', true), {
-            type: ProxyActions.PROXY_LOGIN_ERROR_DIALOG_CLOSED,
-        });
-        expect(state.isErrorDialogVisible).toEqual(false);
-    });
-
-    it('should hide login dialog when PROXY_LOGIN_REQUEST_SENT has been dispatched', () => {
-        const state = reducer(initialState.set('isLoginDialogVisible', true), {
-            type: ProxyActions.PROXY_LOGIN_REQUEST_SENT,
-        });
-        expect(state.isLoginDialogVisible).toEqual(false);
-    });
-});
+export default ProxyErrorDialog;
