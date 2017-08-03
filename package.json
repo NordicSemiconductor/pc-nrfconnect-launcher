@@ -18,6 +18,8 @@
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
         "test-watch": "jest --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
+        "test-e2e-offline": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-offline.json",
+        "test-e2e-online": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-online.json",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
         "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",

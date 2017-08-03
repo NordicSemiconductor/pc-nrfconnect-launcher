@@ -35,16 +35,24 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
-
-const appsRootDir = path.resolve(__dirname, './features/one-local-app-unsupported-engine');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-];
+import fs from 'fs';
+import rimraf from 'rimraf';
+import { startElectronApp, stopElectronApp } from '../setup';
 
 let electronApp;
 
-describe('one local app with unsupported engine', () => {
+const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-disabled');
+const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
+];
+
+function removeAppsRootDir() {
+    rimraf.sync(appsRootDir);
+}
+
+describe('when checking for updates at startup is disabled', () => {
     beforeEach(() => (
         startElectronApp(electronArgs)
             .then(startedApp => {
@@ -54,17 +62,28 @@ describe('one local app with unsupported engine', () => {
 
     afterEach(() => (
         stopElectronApp(electronApp)
+            .then(() => {
+                // The apps root directory is created when starting
+                // the application. Cleaning up.
+                removeAppsRootDir();
+            })
     ));
 
-    it('should show warning in the launcher app list', () => (
+    it('should not populate apps.json in .nrfconnect-apps', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('span[title*="The app only supports nRF Connect 1.x')
+            .waitForVisible('h4')
+            .then(() => {
+                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
+                const appsJsonObj = JSON.parse(appsJsonString);
+                expect(appsJsonObj).toEqual({});
+            })
     ));
 
-    it('should show warning dialog when clicking Launch', () => (
+    it('should show checking for updates as disabled in the Settings screen', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title="Launch app"]')
-            .click('button[title="Launch app"]')
-            .waitForVisible('.modal-dialog')
+            .click('button[title*="Settings"]')
+            .waitForVisible('.core-settings-update-check-controls')
+            .getAttribute('.core-settings-update-check-controls input[type="checkbox"]', 'checked')
+            .then(checked => expect(checked).not.toEqual('true'))
     ));
 });

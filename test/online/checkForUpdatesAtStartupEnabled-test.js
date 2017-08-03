@@ -35,16 +35,24 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
-
-const appsRootDir = path.resolve(__dirname, './features/one-official-app-upgradable');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-];
+import fs from 'fs';
+import rimraf from 'rimraf';
+import { startElectronApp, stopElectronApp } from '../setup';
 
 let electronApp;
 
-describe('one official app upgradable', () => {
+const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-enabled');
+const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
+];
+
+function removeAppsRootDir() {
+    rimraf.sync(appsRootDir);
+}
+
+describe('when checking for updates at startup is enabled', () => {
     beforeEach(() => (
         startElectronApp(electronArgs)
             .then(startedApp => {
@@ -54,40 +62,29 @@ describe('one official app upgradable', () => {
 
     afterEach(() => (
         stopElectronApp(electronApp)
+            .then(() => {
+                // The apps root directory is created when starting
+                // the application. Cleaning up.
+                removeAppsRootDir();
+            })
     ));
 
-    it('should show Test App in the launcher app list', () => (
+    it('should populate apps.json in .nrfconnect-apps', () => (
         electronApp.client.windowByIndex(0)
             .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
+            .then(() => {
+                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
+                const appsJsonObj = JSON.parse(appsJsonString);
+                const appNames = Object.keys(appsJsonObj);
+                expect(appNames.length).toBeGreaterThan(0);
+            })
     ));
 
-    it('should show Test App in app management list', () => (
+    it('should show checking for updates as enabled in the Settings screen', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
-    ));
-
-    it('should show remove button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Remove Test App"]')
-    ));
-
-    it('should show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Upgrade Test App from v1.2.3 to v1.2.4"]')
-    ));
-
-    it('should not show install button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .isVisible('button[title="Install Test App"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
+            .click('button[title*="Settings"]')
+            .waitForVisible('.core-settings-update-check-controls')
+            .getAttribute('.core-settings-update-check-controls input[type="checkbox"]', 'checked')
+            .then(checked => expect(checked).toEqual('true'))
     ));
 });

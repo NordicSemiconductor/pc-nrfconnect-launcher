@@ -34,89 +34,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import path from 'path';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const fs = require('fs');
-const config = require('./config');
+const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-without-engine/.nrfconnect-apps');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
+];
 
-let data = null;
+let electronApp;
 
-function parseSettingsFile() {
-    const filePath = config.getSettingsJsonPath();
-    if (!fs.existsSync(filePath)) {
-        return {};
-    }
-    try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    } catch (err) {
-        console.log('Could not load settings. Reason: ', err);
-    }
-    return {};
-}
+describe('one local app without engine definition', () => {
+    beforeEach(() => (
+        startElectronApp(electronArgs)
+            .then(startedApp => {
+                electronApp = startedApp;
+            })
+    ));
 
-function load() {
-    if (data !== null) {
-        return;
-    }
-    const settings = parseSettingsFile();
-    if (settings && typeof settings === 'object') {
-        data = settings;
-    } else {
-        data = {};
-    }
-}
+    afterEach(() => (
+        stopElectronApp(electronApp)
+    ));
 
-function save() {
-    fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
-}
+    it('should show warning in the launcher app list', () => (
+        electronApp.client.windowByIndex(0)
+            .waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+    ));
 
-exports.set = (key, value) => {
-    load();
-    data[key] = value;
-    save();
-};
-
-exports.get = key => {
-    load();
-    let value = null;
-
-    if (key in data) {
-        value = data[key];
-    }
-
-    return value;
-};
-
-exports.unset = key => {
-    load();
-    if (key in data) {
-        delete data[key];
-        save();
-    }
-};
-
-exports.loadLastWindow = () => {
-    let lastWindowState = this.get('lastWindowState');
-
-    if (lastWindowState === null) {
-        lastWindowState = {
-            width: 1024,
-            height: 800,
-            maximized: false,
-        };
-    }
-
-    return lastWindowState;
-};
-
-exports.storeLastWindow = lastWindowState => {
-    const bounds = lastWindowState.getBounds();
-
-    this.set('lastWindowState', {
-        x: bounds.x,
-        y: bounds.y,
-        width: bounds.width,
-        height: bounds.height,
-        maximized: lastWindowState.isMaximized(),
-    });
-};
+    it('should show warning dialog when clicking Launch', () => (
+        electronApp.client.windowByIndex(0)
+            .waitForVisible('button[title="Launch app"]')
+            .click('button[title="Launch app"]')
+            .waitForVisible('.modal-dialog')
+    ));
+});

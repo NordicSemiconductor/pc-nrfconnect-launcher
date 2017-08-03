@@ -35,11 +35,12 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp, waitForWindowCount } from './setup';
+import { startElectronApp, stopElectronApp, waitForWindowCount } from '../setup';
 
-const appsRootDir = path.resolve(__dirname, './features/one-official-app-installed');
+const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-installed/.nrfconnect-apps');
 const electronArgs = [
     `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
 ];
 
 let electronApp;

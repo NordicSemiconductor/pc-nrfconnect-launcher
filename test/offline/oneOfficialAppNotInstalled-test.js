@@ -35,16 +35,17 @@
  */
 
 import path from 'path';
-import { startElectronApp, stopElectronApp } from './setup';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const appsRootDir = path.resolve(__dirname, './features/one-local-app-without-engine');
+const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-not-installed/.nrfconnect-apps');
 const electronArgs = [
     `--apps-root-dir=${appsRootDir}`,
+    '--skip-update-apps',
 ];
 
 let electronApp;
 
-describe('one local app without engine definition', () => {
+describe('one official app not installed', () => {
     beforeEach(() => (
         startElectronApp(electronArgs)
             .then(startedApp => {
@@ -56,15 +57,40 @@ describe('one local app without engine definition', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should show warning in the launcher app list', () => (
+    it('should show welcome message in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+            .waitForVisible('h4')
+            .getText('h4')
+            .then(text => expect(text).toEqual('Welcome to nRF Connect'))
     ));
 
-    it('should show warning dialog when clicking Launch', () => (
+    it('should show Test App in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title="Launch app"]')
-            .click('button[title="Launch app"]')
-            .waitForVisible('.modal-dialog')
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('.core-app-management-item')
+            .getText('h4')
+            .then(text => expect(text).toEqual('Test App'))
+    ));
+
+    it('should show install button for Test App in app management list', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('button[title="Install Test App"]')
+    ));
+
+    it('should not show remove button in app management list', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('.core-app-management-item')
+            .isVisible('button[title*="Remove"]')
+            .then(isVisible => expect(isVisible).toEqual(false))
+    ));
+
+    it('should not show upgrade button in app management list', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('.core-app-management-item')
+            .isVisible('button[title*="Upgrade"]')
+            .then(isVisible => expect(isVisible).toEqual(false))
     ));
 });

@@ -34,89 +34,51 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import path from 'path';
+import rimraf from 'rimraf';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const fs = require('fs');
-const config = require('./config');
+const appsRootDir = path.resolve(__dirname, './fixtures/app-installation/.nrfconnect-apps');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+];
 
-let data = null;
+let electronApp;
 
-function parseSettingsFile() {
-    const filePath = config.getSettingsJsonPath();
-    if (!fs.existsSync(filePath)) {
-        return {};
-    }
-    try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    } catch (err) {
-        console.log('Could not load settings. Reason: ', err);
-    }
-    return {};
+function removeAppsRootDir() {
+    rimraf.sync(appsRootDir);
 }
 
-function load() {
-    if (data !== null) {
-        return;
-    }
-    const settings = parseSettingsFile();
-    if (settings && typeof settings === 'object') {
-        data = settings;
-    } else {
-        data = {};
-    }
-}
+describe('online app installation', () => {
+    beforeEach(() => (
+        startElectronApp(electronArgs)
+            .then(startedApp => {
+                electronApp = startedApp;
+            })
+    ));
 
-function save() {
-    fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
-}
+    afterEach(() => (
+        stopElectronApp(electronApp)
+            .then(() => {
+                // The apps root directory is created when starting
+                // the application. Cleaning up.
+                removeAppsRootDir();
+            })
+    ));
 
-exports.set = (key, value) => {
-    load();
-    data[key] = value;
-    save();
-};
+    it('should show at least one app in the Add/remove apps screen', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('button[title*="Install"]')
+    ));
 
-exports.get = key => {
-    load();
-    let value = null;
-
-    if (key in data) {
-        value = data[key];
-    }
-
-    return value;
-};
-
-exports.unset = key => {
-    load();
-    if (key in data) {
-        delete data[key];
-        save();
-    }
-};
-
-exports.loadLastWindow = () => {
-    let lastWindowState = this.get('lastWindowState');
-
-    if (lastWindowState === null) {
-        lastWindowState = {
-            width: 1024,
-            height: 800,
-            maximized: false,
-        };
-    }
-
-    return lastWindowState;
-};
-
-exports.storeLastWindow = lastWindowState => {
-    const bounds = lastWindowState.getBounds();
-
-    this.set('lastWindowState', {
-        x: bounds.x,
-        y: bounds.y,
-        width: bounds.width,
-        height: bounds.height,
-        maximized: lastWindowState.isMaximized(),
-    });
-};
+    it('should install and remove the first app in the Add/remove apps screen', () => (
+        electronApp.client.windowByIndex(0)
+            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('button[title*="Install"]')
+            .click('button[title*="Install"]')
+            .waitForVisible('button[title*="Remove"]')
+            .click('button[title*="Remove"]')
+            .waitForVisible('button[title*="Install"]')
+    ));
+});
