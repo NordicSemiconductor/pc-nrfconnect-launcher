@@ -73,6 +73,12 @@ function createWindow(options) {
 
     browserWindow.loadURL(options.url);
 
+    // Never navigate away from the given url, e.g. when the
+    // user drags and drops a file into the browser window.
+    browserWindow.webContents.on('will-navigate', event => {
+        event.preventDefault();
+    });
+
     browserWindow.webContents.on('did-finish-load', () => {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
