@@ -23,13 +23,33 @@ nRF Connect currently supports the following operating systems:
 
 A [Getting started guide](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.tools/dita/tools/nRF_Connect/nRF_Connect_intro.html?cp=4_2) is available on the nRF Connect product pages.
 
-# Proxy settings
+# Available apps
 
-To configure nRF Connect for use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
+The following apps have been created for nRF Connect;
+
+* [Bluetooth low energy](https://www.npmjs.com/package/pc-nrfconnect-ble)
+* [RSSI Viewer](https://www.npmjs.com/package/pc-nrfconnect-rssi)
+* [nRF Cloud Gateway](https://www.npmjs.com/package/nrf-cloud-gateway)
+
+## Automatic installation of apps
+
+The normal way to install apps is to start nRF Connect and go to the *Add/remove apps* screen. When installing apps from this screen, you will be notified of any new releases, and have the option to upgrade when new releases are available.
+
+## Manual installation of apps
+
+If you are unable to install apps from the *Add/remove apps* screen, it is also possible to install apps manually:
+
+1. Go to the app's page on the npm website by following the links above, and locate the name and the latest version of the app.
+2. Download the app by using the URL `https://registry.npmjs.org/<name>/-/<name>-<version>.tgz`, and save the file to `%USERPROFILE%\.nrfconnect-apps\local` (Windows) or `$HOME/.nrfconnect-apps/local` (Linux/macOS).
+3. Restart nRF Connect. The app should now appear in the *Launch app* screen.
 
 # Creating apps
 
 To create your own app, follow the documentation on the [project wiki](https://github.com/NordicSemiconductor/pc-nrfconnect-core/wiki). Have a look at the [RSSI viewer app](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) to see how a real-world app can be implemented. There is also a [boilerplate app](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate) that can be used as a starting point.
+
+# Proxy settings
+
+To configure nRF Connect for use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
 
 # Contributing
 
