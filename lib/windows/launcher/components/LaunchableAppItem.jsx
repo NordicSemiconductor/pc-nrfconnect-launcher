@@ -39,7 +39,7 @@ import PropTypes from 'prop-types';
 import AppIcon from './AppIcon';
 import AppItemButton from './AppItemButton';
 
-const LaunchableAppItem = ({ app, onClick }) => (
+const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
     <div className="core-app-launch-item list-group-item">
         <AppIcon app={app} />
         <div>
@@ -54,6 +54,14 @@ const LaunchableAppItem = ({ app, onClick }) => (
                 title="Launch app"
                 iconClass="glyphicon glyphicon-play"
                 onClick={onClick}
+            />
+        </div>
+        <div className="core-app-launch-item-buttons">
+            <AppItemButton
+                text="Shortcut"
+                title="Create Shortcut"
+                iconClass="glyphicon glyphicon-play"
+                onClick={onCreateShortcut}
             />
         </div>
     </div>
@@ -71,6 +79,7 @@ LaunchableAppItem.propTypes = {
         isSupportedEngine: PropTypes.bool,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
 };
 
 export default LaunchableAppItem;

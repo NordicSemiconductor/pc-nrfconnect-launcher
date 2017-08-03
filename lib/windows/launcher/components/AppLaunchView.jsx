@@ -58,7 +58,7 @@ class AppLaunchView extends React.Component {
     }
 
     render() {
-        const { apps, onAppSelected, isRetrievingApps } = this.props;
+        const { apps, onAppSelected, onCreateShortcut, isRetrievingApps } = this.props;
         return isRetrievingApps ?
             <LoadingAppsSpinner /> :
             <div className="list-group">
@@ -69,6 +69,7 @@ class AppLaunchView extends React.Component {
                                 key={app.path}
                                 app={app}
                                 onClick={() => onAppSelected(app)}
+                                onCreateShortcut={() => onCreateShortcut(app)}
                             />
                         )) :
                         <div>
@@ -86,6 +87,7 @@ AppLaunchView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
     onMount: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
     isRetrievingApps: PropTypes.bool.isRequired,
 };
 
