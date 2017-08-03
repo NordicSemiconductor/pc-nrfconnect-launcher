@@ -50,6 +50,10 @@ const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 
+const appString = process.argv[2];
+const appObj = JSON.parse(appString);
+
+
 config.init(argv);
 global.homeDir = config.getHomeDir();
 global.userDataDir = config.getUserDataDir();
@@ -120,6 +124,10 @@ function openAppWindow(app) {
 }
 
 electronApp.on('ready', () => {
+    if (appObj.name) {
+        openAppWindow(appObj);
+        return;
+    }
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
         .then(() => openLauncherWindow())
