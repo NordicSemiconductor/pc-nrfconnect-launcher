@@ -41,7 +41,6 @@ const path = require('path');
 const packageJson = require('../package.json');
 
 let version;
-let productName;
 let appDir;
 let homeDir;
 let userDataDir;
@@ -60,7 +59,6 @@ let skipSplashScreen;
 
 function init(argv) {
     version = packageJson.version;
-    productName = packageJson.build;
     appDir = electronApp.getAppPath();
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
@@ -81,7 +79,6 @@ function init(argv) {
 module.exports = {
     init,
     getVersion: () => version,
-    getProductName: () => productName,
     getAppDir: () => appDir,
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,

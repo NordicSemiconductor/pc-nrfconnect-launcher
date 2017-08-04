@@ -101,8 +101,7 @@
         "targz": "1.0.1",
         "yargs": "8.0.1",
         "yarn": "0.25.2",
-        "windows-shortcuts":"0.1.5",
-        "node-win-shortcut":"0.0.3"
+        "png-to-ico":"1.0.1"
     },
     "jest": {
         "moduleNameMapper": {
