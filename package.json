@@ -95,14 +95,14 @@
         "electron-builder-http": "18.5.1",
         "electron-log": "2.2.6",
         "electron-updater": "2.0.0",
+        "fs-extra": "4.0.1",
         "pc-ble-driver-js": "https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.0.0",
         "pc-nrfjprog-js": "https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.0",
         "semver": "5.3.0",
         "serialport": "4.0.7",
         "shasum": "1.0.2",
         "targz": "1.0.1",
-        "yargs": "8.0.1",
-        "yarn": "0.25.2"
+        "yargs": "8.0.1"
     },
     "jest": {
         "moduleNameMapper": {
