@@ -50,6 +50,7 @@ const Menu = electron.Menu;
 const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 
+
 config.init(argv);
 global.appDir = config.getAppDir();
 global.homeDir = config.getHomeDir();
@@ -81,6 +82,7 @@ function openLauncherWindow() {
 }
 
 function openAppWindow(app) {
+    console.log(app);
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
@@ -122,16 +124,32 @@ function openAppWindow(app) {
 
 electronApp.on('ready', () => {
     if (process.argv[2]) {
-        const subAppString = process.argv[2];
-        console.log(process.argv[2]);
-        let subAppObj;
+        const argString = process.argv[2];
+        let argObj;
         try {
-            subAppObj = JSON.parse(subAppString);
+            argObj = JSON.parse(argString);
         } catch (e) {
             console.log(e);
             return;
         }
-        openAppWindow(subAppObj);
+        let subApp;
+        if (argObj.isOfficial === true) {
+            apps.getOfficialApps()
+            .then(appList => {
+                subApp = appList.find(
+                    app => app.displayName === argObj.displayName);
+                openAppWindow(subApp);
+            });
+        } else if (argObj.isOfficial === false) {
+            apps.getLocalApps()
+            .then(appList => {
+                subApp = appList.find(
+                    app => app.displayName === argObj.displayName);
+                openAppWindow(subApp);
+            });
+        } else {
+            return;
+        }
         return;
     }
     Menu.setApplicationMenu(applicationMenu);
