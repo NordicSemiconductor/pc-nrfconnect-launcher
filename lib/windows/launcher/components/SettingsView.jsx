@@ -38,6 +38,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from 'react-bootstrap';
 import moment from 'moment';
+import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
 class SettingsView extends React.Component {
     constructor() {
@@ -65,6 +66,9 @@ class SettingsView extends React.Component {
             shouldCheckForUpdatesAtStartup,
             isCheckingForUpdates,
             lastUpdateCheckDate,
+            isUpdateCheckCompleteDialogVisible,
+            onHideUpdateCheckCompleteDialog,
+            isAppUpdateAvailable,
         } = this.props;
 
         const checkButtonText = isCheckingForUpdates ? 'Checking...' : 'Check for updates now';
@@ -98,6 +102,14 @@ class SettingsView extends React.Component {
                         </button>
                     </div>
                 </div>
+                {
+                    isUpdateCheckCompleteDialogVisible &&
+                        <UpdateCheckCompleteDialog
+                            isVisible
+                            isAppUpdateAvailable={isAppUpdateAvailable}
+                            onOk={onHideUpdateCheckCompleteDialog}
+                        />
+                }
             </div>
         ) : <div />;
     }
@@ -111,11 +123,16 @@ SettingsView.propTypes = {
     onCheckUpdatesAtStartupChanged: PropTypes.func.isRequired,
     onTriggerUpdateCheck: PropTypes.func.isRequired,
     lastUpdateCheckDate: PropTypes.instanceOf(Date),
+    isUpdateCheckCompleteDialogVisible: PropTypes.bool,
+    onHideUpdateCheckCompleteDialog: PropTypes.func.isRequired,
+    isAppUpdateAvailable: PropTypes.bool,
 };
 
 SettingsView.defaultProps = {
     onMount: () => {},
     lastUpdateCheckDate: null,
+    isUpdateCheckCompleteDialogVisible: false,
+    isAppUpdateAvailable: false,
 };
 
 export default SettingsView;
