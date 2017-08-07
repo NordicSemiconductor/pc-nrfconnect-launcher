@@ -44,6 +44,7 @@ const apps = require('./main/apps');
 const browser = require('./main/browser');
 const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
+const desktopShortcut = require('./main/desktopShortcut');
 
 const electronApp = electron.app;
 const Menu = electron.Menu;
@@ -81,7 +82,7 @@ function openLauncherWindow() {
     });
 }
 
-export default function openAppWindow(app) {
+function openAppWindow(app) {
     console.log(app);
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
@@ -125,7 +126,9 @@ export default function openAppWindow(app) {
 
 electronApp.on('ready', () => {
     if (process.argv[2]) {
-        openSubAppWindow(process.argv[2]);
+        desktopShortcut.setOpenAppWindow(openAppWindow);
+        desktopShortcut.openSubAppWindow(process.argv[2]);
+        return;
     }
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
@@ -189,3 +192,7 @@ ipcMain.on('show-about-dialog', () => {
         }, () => {});
     }
 });
+
+module.exports = {
+    openAppWindow,
+};

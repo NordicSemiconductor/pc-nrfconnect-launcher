@@ -36,8 +36,9 @@
 
 'use strict';
 
-const index = require('../index');
 const apps = require('./apps');
+
+let openAppWindow;
 
 function openSubAppWindowForWindows(argString) {
     let argObj;
@@ -48,19 +49,20 @@ function openSubAppWindowForWindows(argString) {
         return;
     }
     let subApp;
+    console.log(openAppWindow);
     if (argObj.isOfficial === true) {
         apps.getOfficialApps()
         .then(appList => {
             subApp = appList.find(
                 app => app.displayName === argObj.displayName);
-            index.openAppWindow(subApp);
+            openAppWindow(subApp);
         });
     } else if (argObj.isOfficial === false) {
         apps.getLocalApps()
         .then(appList => {
             subApp = appList.find(
                 app => app.displayName === argObj.displayName);
-            index.openAppWindow(subApp);
+            openAppWindow(subApp);
         });
     }
 }
@@ -73,7 +75,8 @@ function openSubAppWindowForMacOS(argString) {
     return argString;
 }
 
-export default function openSubAppWindow(argString) {
+function openSubAppWindow(argString) {
+    console.log(openAppWindow);
     if (process.platform === 'win32') {
         return openSubAppWindowForWindows(argString);
     } else if (process.platform === 'linux') {
@@ -83,3 +86,14 @@ export default function openSubAppWindow(argString) {
     }
     return null;
 }
+
+function setOpenAppWindow(func) {
+    console.log(func);
+    openAppWindow = func;
+    console.log(openAppWindow);
+}
+
+module.exports = {
+    openSubAppWindow,
+    setOpenAppWindow,
+};
