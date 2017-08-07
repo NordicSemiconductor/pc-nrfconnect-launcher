@@ -121,10 +121,16 @@ describe('AppManagementView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render installing app dialog', () => {
+    it('should disable buttons and display "Installing..." button text when installing app', () => {
         expect(renderer.create(
             <AppManagementView
-                apps={List([])}
+                apps={List([
+                    getImmutableApp({
+                        name: 'pc-nrfconnect-foo',
+                        displayName: 'Foo app',
+                        description: 'Foo description',
+                    }),
+                ])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 installingAppName="pc-nrfconnect-foo"
@@ -137,10 +143,18 @@ describe('AppManagementView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render removing app dialog', () => {
+    it('should disable buttons and display "Removing..." button text when removing app', () => {
         expect(renderer.create(
             <AppManagementView
-                apps={List([])}
+                apps={List([
+                    getImmutableApp({
+                        name: 'pc-nrfconnect-foo',
+                        displayName: 'Foo app',
+                        description: 'Foo description',
+                        currentVersion: '1.2.3',
+                        latestVersion: '1.2.3',
+                    }),
+                ])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 removingAppName="pc-nrfconnect-foo"
@@ -153,10 +167,18 @@ describe('AppManagementView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render upgrading app dialog', () => {
+    it('should disable buttons and display "Upgrading..." button text when upgrading app', () => {
         expect(renderer.create(
             <AppManagementView
-                apps={List([])}
+                apps={List([
+                    getImmutableApp({
+                        name: 'pc-nrfconnect-foo',
+                        displayName: 'Foo app',
+                        description: 'Foo description',
+                        currentVersion: '1.2.3',
+                        latestVersion: '1.2.4',
+                    }),
+                ])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 upgradingAppName="pc-nrfconnect-foo"

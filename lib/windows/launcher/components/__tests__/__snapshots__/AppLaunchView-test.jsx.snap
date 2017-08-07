@@ -43,6 +43,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -103,6 +104,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -163,6 +165,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -214,6 +217,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -258,6 +262,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -302,6 +307,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -346,6 +352,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
@@ -390,6 +397,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
     >
       <button
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
         title="Launch app"
       >
