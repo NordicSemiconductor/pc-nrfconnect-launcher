@@ -38,7 +38,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppItemButton from './AppItemButton';
 
-const InstalledAppItem = ({ app, onRemove, onUpgrade, onReadMore }) => {
+const InstalledAppItem = ({
+    app,
+    onRemove,
+    onUpgrade,
+    onReadMore,
+    isUpgrading,
+    isRemoving,
+    isDisabled,
+}) => {
     const isUpgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const statusClass = isUpgradeAvailable ? 'upgrade-available' : 'installed';
     const statusText = isUpgradeAvailable ? 'Upgrade available' : 'Installed';
@@ -57,16 +65,18 @@ const InstalledAppItem = ({ app, onRemove, onUpgrade, onReadMore }) => {
                             isUpgradeAvailable ?
                                 <AppItemButton
                                     title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
-                                    text="Upgrade"
+                                    text={isUpgrading ? 'Upgrading...' : 'Upgrade'}
                                     iconClass="glyphicon glyphicon-download-alt"
+                                    isDisabled={isDisabled}
                                     onClick={onUpgrade}
                                 /> :
                                 <div />
                         }
                         <AppItemButton
                             title={`Remove ${app.displayName || app.name}`}
-                            text="Remove"
+                            text={isRemoving ? 'Removing...' : 'Remove'}
                             iconClass="glyphicon glyphicon-trash"
+                            isDisabled={isDisabled}
                             onClick={onRemove}
                         />
                     </div>
@@ -85,9 +95,18 @@ InstalledAppItem.propTypes = {
         currentVersion: PropTypes.string.isRequired,
         latestVersion: PropTypes.string.isRequired,
     }).isRequired,
+    isUpgrading: PropTypes.bool,
+    isRemoving: PropTypes.bool,
+    isDisabled: PropTypes.bool,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
+};
+
+InstalledAppItem.defaultProps = {
+    isDisabled: false,
+    isUpgrading: false,
+    isRemoving: false,
 };
 
 export default InstalledAppItem;

@@ -39,7 +39,6 @@ import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
 import InstalledAppItem from '../components/InstalledAppItem';
 import AvailableAppItem from '../components/AvailableAppItem';
-import AppProgressDialog from '../components/AppProgressDialog';
 import LoadingAppsSpinner from './LoadingAppsSpinner';
 
 function getSortedApps(apps) {
@@ -66,40 +65,6 @@ class AppManagementView extends React.Component {
         }
     }
 
-    getProcessingTitle() {
-        const {
-            installingAppName,
-            upgradingAppName,
-            removingAppName,
-        } = this.props;
-
-        if (installingAppName) {
-            return 'Installing';
-        } else if (upgradingAppName) {
-            return 'Upgrading';
-        } else if (removingAppName) {
-            return 'Removing';
-        }
-        return 'Processing';
-    }
-
-    getProcessingText() {
-        const {
-            installingAppName,
-            upgradingAppName,
-            removingAppName,
-        } = this.props;
-
-        if (installingAppName) {
-            return `Installing ${installingAppName}. Please wait...`;
-        } else if (upgradingAppName) {
-            return `Upgrading ${upgradingAppName}. Please wait...`;
-        } else if (removingAppName) {
-            return `Removing ${removingAppName}. Please wait...`;
-        }
-        return 'Processing. Please wait...';
-    }
-
     isProcessing() {
         const {
             installingAppName,
@@ -113,6 +78,9 @@ class AppManagementView extends React.Component {
         const {
             apps,
             isRetrievingApps,
+            installingAppName,
+            upgradingAppName,
+            removingAppName,
             onInstall,
             onRemove,
             onUpgrade,
@@ -129,6 +97,9 @@ class AppManagementView extends React.Component {
                             <InstalledAppItem
                                 key={app.name}
                                 app={app}
+                                isDisabled={isProcessing}
+                                isUpgrading={upgradingAppName === app.name}
+                                isRemoving={removingAppName === app.name}
                                 onRemove={() => onRemove(app.name)}
                                 onUpgrade={() => onUpgrade(app.name, app.latestVersion)}
                                 onReadMore={() => onReadMore(app.homepage)}
@@ -136,18 +107,12 @@ class AppManagementView extends React.Component {
                             <AvailableAppItem
                                 key={app.name}
                                 app={app}
+                                isDisabled={isProcessing}
+                                isInstalling={installingAppName === app.name}
                                 onInstall={() => onInstall(app.name)}
                                 onReadMore={() => onReadMore(app.homepage)}
                             />
                     ))
-                }
-                {
-                    isProcessing &&
-                        <AppProgressDialog
-                            isVisible={isProcessing}
-                            title={this.getProcessingTitle()}
-                            text={this.getProcessingText()}
-                        />
                 }
             </div>;
     }
