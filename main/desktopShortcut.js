@@ -68,7 +68,7 @@ function openSubAppWindowForWindows(argString) {
 }
 
 function openSubAppWindowForLinux(argString) {
-    return argString;
+    return openSubAppWindowForWindows(argString);
 }
 
 function openSubAppWindowForMacOS(argString) {
@@ -80,6 +80,7 @@ function openSubAppWindow(argString) {
     if (process.platform === 'win32') {
         return openSubAppWindowForWindows(argString);
     } else if (process.platform === 'linux') {
+        console.log('linux');
         return openSubAppWindowForLinux(argString);
     } else if (process.platform === 'darwin') {
         return openSubAppWindowForMacOS(argString);
