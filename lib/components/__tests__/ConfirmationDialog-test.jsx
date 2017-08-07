@@ -84,4 +84,14 @@ describe('ConfirmationDialog', () => {
             />,
         )).toMatchSnapshot();
     });
+
+    it('should not render cancel button if onCancel function is not provided', () => {
+        expect(renderer.create(
+            <ConfirmationDialog
+                isVisible
+                text="Something happened."
+                onOk={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 });
