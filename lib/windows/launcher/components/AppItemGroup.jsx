@@ -36,49 +36,28 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppIcon from './AppIcon';
-import AppItemButton from './AppItemButton';
-import AppItemGroup from './AppItemGroup';
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
+import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
-    <div className="core-app-launch-item list-group-item">
-        <AppIcon app={app} />
-        <div>
-            <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
-            <p className="list-group-item-text">
-                {app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}
-            </p>
-        </div>
-        <div className="core-app-launch-item-buttons btn-toolbar">
-            <AppItemButton
-                text="Launch"
-                title="Launch app"
-                iconClass="glyphicon glyphicon-play"
-                onClick={onClick}
+const AppItemGroup = ({ text, title, iconClass, onClick }) => (
+    <div>
+        <Dropdown id="serial-port-selector" open="true">
+            <DropdownToggle
+                title="aaa"
             />
-            <AppItemGroup
-                text=""
-                title=""
-                iconClass="glyphicon glyphicon-chevron-down"
-                onClick={onCreateShortcut}
+            <DropdownMenu
+                id="serial-port-selector-list"
             />
-        </div>
+        </Dropdown>
     </div>
 );
 
-LaunchableAppItem.propTypes = {
-    app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        displayName: PropTypes.string,
-        currentVersion: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
-        iconPath: PropTypes.string,
-        isOfficial: PropTypes.bool.isRequired,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-    }).isRequired,
+AppItemGroup.propTypes = {
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    iconClass: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    onCreateShortcut: PropTypes.func.isRequired,
 };
 
-export default LaunchableAppItem;
+export default AppItemGroup;
