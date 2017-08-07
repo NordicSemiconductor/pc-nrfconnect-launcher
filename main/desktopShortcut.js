@@ -34,32 +34,52 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppListView from '../components/AppLaunchView';
-import * as AppsActions from '../actions/appsActions';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
+'use strict';
 
-function findInstalledApps(localApps, officialApps) {
-    return localApps.concat(officialApps.filter(app => !!app.currentVersion));
+const index = require('../index');
+const apps = require('./apps');
+
+function openSubAppWindowForWindows(argString) {
+    let argObj;
+    try {
+        argObj = JSON.parse(argString);
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+    let subApp;
+    if (argObj.isOfficial === true) {
+        apps.getOfficialApps()
+        .then(appList => {
+            subApp = appList.find(
+                app => app.displayName === argObj.displayName);
+            index.openAppWindow(subApp);
+        });
+    } else if (argObj.isOfficial === false) {
+        apps.getLocalApps()
+        .then(appList => {
+            subApp = appList.find(
+                app => app.displayName === argObj.displayName);
+            index.openAppWindow(subApp);
+        });
+    }
 }
 
-function mapStateToProps(state) {
-    const { apps } = state;
-
-    return {
-        apps: findInstalledApps(apps.localApps, apps.officialApps),
-        isRetrievingApps: apps.isLoadingOfficialApps || apps.isDownloadingLatestAppInfo,
-    };
+function openSubAppWindowForLinux(argString) {
+    return argString;
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortCut(app)),
-    };
+function openSubAppWindowForMacOS(argString) {
+    return argString;
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppListView);
+export default function openSubAppWindow(argString) {
+    if (process.platform === 'win32') {
+        return openSubAppWindowForWindows(argString);
+    } else if (process.platform === 'linux') {
+        return openSubAppWindowForLinux(argString);
+    } else if (process.platform === 'darwin') {
+        return openSubAppWindowForMacOS(argString);
+    }
+    return null;
+}

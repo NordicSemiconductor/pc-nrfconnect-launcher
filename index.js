@@ -81,7 +81,7 @@ function openLauncherWindow() {
     });
 }
 
-function openAppWindow(app) {
+export default function openAppWindow(app) {
     console.log(app);
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
@@ -122,35 +122,10 @@ function openAppWindow(app) {
     });
 }
 
+
 electronApp.on('ready', () => {
     if (process.argv[2]) {
-        const argString = process.argv[2];
-        let argObj;
-        try {
-            argObj = JSON.parse(argString);
-        } catch (e) {
-            console.log(e);
-            return;
-        }
-        let subApp;
-        if (argObj.isOfficial === true) {
-            apps.getOfficialApps()
-            .then(appList => {
-                subApp = appList.find(
-                    app => app.displayName === argObj.displayName);
-                openAppWindow(subApp);
-            });
-        } else if (argObj.isOfficial === false) {
-            apps.getLocalApps()
-            .then(appList => {
-                subApp = appList.find(
-                    app => app.displayName === argObj.displayName);
-                openAppWindow(subApp);
-            });
-        } else {
-            return;
-        }
-        return;
+        openSubAppWindow(process.argv[2]);
     }
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
