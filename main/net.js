@@ -38,6 +38,11 @@
 
 const fs = require('fs');
 const net = require('electron').net;
+const session = require('electron').session;
+
+// Using the same session name as electron-updater, so that proxy credentials
+// (if required) only have to be sent once.
+const NET_SESSION_NAME = 'electron-updater';
 
 let onProxyLogin;
 
@@ -56,7 +61,10 @@ function registerProxyLoginHandler(onLoginRequested) {
 
 function downloadToBuffer(url) {
     return new Promise((resolve, reject) => {
-        const request = net.request(url);
+        const request = net.request({
+            url,
+            session: session.fromPartition(NET_SESSION_NAME),
+        });
         request.setHeader('pragma', 'no-cache');
         request.on('response', response => {
             if (response.statusCode !== 200) {
