@@ -60,7 +60,7 @@ const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
                 text=""
                 title=""
                 iconClass="glyphicon glyphicon-chevron-down"
-                onClick={onCreateShortcut}
+                onCreateShortcut={onCreateShortcut}
             />
         </div>
     </div>

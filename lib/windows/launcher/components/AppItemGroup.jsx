@@ -36,20 +36,46 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { ButtonGroup, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-const AppItemGroup = ({ text, title, iconClass, onClick }) => (
-    <div>
-        <Dropdown id="serial-port-selector" open="true">
-            <DropdownToggle
-                title="aaa"
+import AppItemButton from './AppItemButton';
+
+const AppItemGroup = ({ text, title, iconClass, onCreateShortcut }) => (
+    <div className="dropdown btn-group core-dropdown">
+        <DropdownButton
+            title=""
+            id="bg-nested-dropdown"
+            className="btn btn-primary core-btn"
+            pullRight
+        >
+            <AppItemButton
+                text="Shortcut"
+                title=""
+                iconClass="glyphicon glyphicon-share-alt"
+                onClick={onCreateShortcut}
             />
-            <DropdownMenu
-                id="serial-port-selector-list"
+            <AppItemButton
+                text="Shortcut"
+                title=""
+                iconClass="glyphicon glyphicon-share-alt"
+                onClick={onCreateShortcut}
             />
-        </Dropdown>
+            <AppItemButton
+                text="Shortcut"
+                title=""
+                iconClass="glyphicon glyphicon-share-alt"
+                onClick={onCreateShortcut}
+            />
+            <AppItemButton
+                text="Shortcut"
+                title=""
+                iconClass="glyphicon glyphicon-share-alt"
+                onClick={onCreateShortcut}
+            />
+        </DropdownButton>
+
     </div>
 );
 
