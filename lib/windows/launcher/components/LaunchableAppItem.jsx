@@ -57,9 +57,9 @@ const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
                 onClick={onClick}
             />
             <AppItemGroup
-                text=""
                 title=""
-                iconClass="glyphicon glyphicon-chevron-down"
+                className="btn btn-primary core-btn"
+                pullRight
                 onCreateShortcut={onCreateShortcut}
             />
         </div>

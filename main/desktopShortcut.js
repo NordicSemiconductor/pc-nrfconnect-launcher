@@ -37,33 +37,40 @@
 'use strict';
 
 const apps = require('./apps');
+const electron = require('electron');
+
+const electronApp = electron.app;
+const dialog = electron.dialog;
 
 let openAppWindow;
 
 function openSubAppWindowForWindows(argString) {
-    let argObj;
     try {
-        argObj = JSON.parse(argString);
-    } catch (e) {
-        console.log(e);
-        return;
-    }
-    let subApp;
-    console.log(openAppWindow);
-    if (argObj.isOfficial === true) {
-        apps.getOfficialApps()
+        const argObj = JSON.parse(argString);
+        let subApp;
+        if (argObj.isOfficial === true) {
+            apps.getOfficialApps()
         .then(appList => {
             subApp = appList.find(
                 app => app.displayName === argObj.displayName);
             openAppWindow(subApp);
         });
-    } else if (argObj.isOfficial === false) {
-        apps.getLocalApps()
+        } else if (argObj.isOfficial === false) {
+            apps.getLocalApps()
         .then(appList => {
             subApp = appList.find(
                 app => app.displayName === argObj.displayName);
             openAppWindow(subApp);
         });
+        }
+    } catch (error) {
+        dialog.showMessageBox({
+            type: 'error',
+            title: 'Shortcut error',
+            message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
+            detail: error.message,
+            buttons: ['OK'],
+        }, () => electronApp.quit());
     }
 }
 
@@ -76,22 +83,24 @@ function openSubAppWindowForMacOS(argString) {
 }
 
 function openSubAppWindow(argString) {
-    console.log(openAppWindow);
     if (process.platform === 'win32') {
         return openSubAppWindowForWindows(argString);
     } else if (process.platform === 'linux') {
-        console.log('linux');
         return openSubAppWindowForLinux(argString);
     } else if (process.platform === 'darwin') {
         return openSubAppWindowForMacOS(argString);
     }
-    return null;
+    return () => dialog.showMessageBox({
+        type: 'error',
+        title: 'Shortcut error',
+        message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
+        detail: 'Your operating system is neither win32, linux nor darwin',
+        buttons: ['OK'],
+    }, () => electronApp.quit());
 }
 
 function setOpenAppWindow(func) {
-    console.log(func);
     openAppWindow = func;
-    console.log(openAppWindow);
 }
 
 module.exports = {

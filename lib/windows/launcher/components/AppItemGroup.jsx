@@ -36,41 +36,21 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonGroup, Button, DropdownButton, MenuItem } from 'react-bootstrap';
-import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
-import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
+import { DropdownButton } from 'react-bootstrap';
 
 import AppItemButton from './AppItemButton';
 
-const AppItemGroup = ({ text, title, iconClass, onCreateShortcut }) => (
+const AppItemGroup = ({ title, className, pullRight, onCreateShortcut }) => (
     <div className="dropdown btn-group core-dropdown">
         <DropdownButton
-            title=""
+            title={title}
             id="bg-nested-dropdown"
-            className="btn btn-primary core-btn"
-            pullRight
+            pullRight={pullRight}
+            className={className}
         >
             <AppItemButton
                 text="Shortcut"
-                title=""
-                iconClass="glyphicon glyphicon-share-alt"
-                onClick={onCreateShortcut}
-            />
-            <AppItemButton
-                text="Shortcut"
-                title=""
-                iconClass="glyphicon glyphicon-share-alt"
-                onClick={onCreateShortcut}
-            />
-            <AppItemButton
-                text="Shortcut"
-                title=""
-                iconClass="glyphicon glyphicon-share-alt"
-                onClick={onCreateShortcut}
-            />
-            <AppItemButton
-                text="Shortcut"
-                title=""
+                title="Shortcut"
                 iconClass="glyphicon glyphicon-share-alt"
                 onClick={onCreateShortcut}
             />
@@ -80,10 +60,10 @@ const AppItemGroup = ({ text, title, iconClass, onCreateShortcut }) => (
 );
 
 AppItemGroup.propTypes = {
-    text: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    iconClass: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    className: PropTypes.string.isRequired,
+    pullRight: PropTypes.bool.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
 };
 
 export default AppItemGroup;
