@@ -37,52 +37,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
-import Spinner from './Spinner';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-const ConfirmationDialog = ({
-    isVisible, isInProgress, title, text, onOk, onCancel, okButtonText, cancelButtonText,
+const UpdateCheckSuccessDialog = ({
+    isVisible,
+    isAppUpdateAvailable,
+    onOk,
 }) => (
-    <div>
-        <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
-            <ModalHeader closeButton={!isInProgress}>
-                <ModalTitle>{title}</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-                <p>{text}</p>
-            </ModalBody>
-            <ModalFooter>
-                { isInProgress ? <Spinner /> : null }
-                &nbsp;
-                <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
-                {
-                    onCancel &&
-                        <Button onClick={onCancel} disabled={isInProgress}>
-                            {cancelButtonText}
-                        </Button>
-                }
-            </ModalFooter>
-        </Modal>
-    </div>
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Update check completed"
+        text={
+            isAppUpdateAvailable ?
+                'One or more updates are available. Go to the Add/remove apps screen to upgrade.' :
+                'All apps are up to date.'
+        }
+        onOk={onOk}
+    />
 );
 
-ConfirmationDialog.propTypes = {
+UpdateCheckSuccessDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    title: PropTypes.string,
-    text: PropTypes.string.isRequired,
+    isAppUpdateAvailable: PropTypes.bool.isRequired,
     onOk: PropTypes.func.isRequired,
-    onCancel: PropTypes.func,
-    okButtonText: PropTypes.string,
-    cancelButtonText: PropTypes.string,
-    isInProgress: PropTypes.bool,
 };
 
-ConfirmationDialog.defaultProps = {
-    title: 'Confirm',
-    isInProgress: false,
-    onCancel: null,
-    okButtonText: 'OK',
-    cancelButtonText: 'Cancel',
-};
-
-export default ConfirmationDialog;
+export default UpdateCheckSuccessDialog;
