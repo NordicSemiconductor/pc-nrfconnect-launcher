@@ -83,7 +83,6 @@ function openLauncherWindow() {
 }
 
 function openAppWindow(app) {
-    console.log(app);
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
