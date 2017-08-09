@@ -38,7 +38,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppItemButton from './AppItemButton';
 
-const AvailableAppItem = ({ app, onInstall, onReadMore }) => (
+const AvailableAppItem = ({
+    app,
+    onInstall,
+    onReadMore,
+    isInstalling,
+    isDisabled,
+}) => (
     <div className="core-app-management-item list-group-item">
         <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
         <div className="list-group-item-text">
@@ -49,9 +55,10 @@ const AvailableAppItem = ({ app, onInstall, onReadMore }) => (
                 </button>
                 <div className="core-app-management-item-buttons">
                     <AppItemButton
-                        text="Install"
+                        text={isInstalling ? 'Installing...' : 'Install'}
                         title={`Install ${app.displayName || app.name}`}
                         iconClass="glyphicon glyphicon-download-alt"
+                        isDisabled={isDisabled}
                         onClick={onInstall}
                     />
                 </div>
@@ -67,8 +74,15 @@ AvailableAppItem.propTypes = {
         description: PropTypes.string.isRequired,
         homepage: PropTypes.string,
     }).isRequired,
+    isInstalling: PropTypes.bool,
+    isDisabled: PropTypes.bool,
     onInstall: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
+};
+
+AvailableAppItem.defaultProps = {
+    isInstalling: false,
+    isDisabled: false,
 };
 
 export default AvailableAppItem;

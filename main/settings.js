@@ -36,15 +36,13 @@
 
 'use strict';
 
-const app = require('electron').app;
 const fs = require('fs');
-const path = require('path');
+const config = require('./config');
 
 let data = null;
 
-const filePath = path.join(app.getPath('userData'), 'settings.json');
-
 function parseSettingsFile() {
+    const filePath = config.getSettingsJsonPath();
     if (!fs.existsSync(filePath)) {
         return {};
     }
@@ -69,7 +67,7 @@ function load() {
 }
 
 function save() {
-    fs.writeFileSync(filePath, JSON.stringify(data));
+    fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
 }
 
 exports.set = (key, value) => {

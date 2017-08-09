@@ -1,0 +1,4 @@
+{
+  "roots": ["../offline"],
+  "testRegex": ".*-test\\.js$"
+}

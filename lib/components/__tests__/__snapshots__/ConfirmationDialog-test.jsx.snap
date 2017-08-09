@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ConfirmationDialog should not render cancel button if onCancel function is not provided 1`] = `
+<div>
+  <Modal
+    backdrop={false}
+    onHide={null}
+    show={true}
+  >
+    <ModalHeader
+      closeButton={true}
+    >
+      <ModalTitle>
+        Confirm
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        Something happened.
+      </p>
+    </ModalBody>
+    <ModalFooter>
+       
+      <Button
+        disabled={false}
+        onClick={[Function]}
+      >
+        OK
+      </Button>
+    </ModalFooter>
+  </Modal>
+</div>
+`;
+
 exports[`ConfirmationDialog should render invisible dialog 1`] = `
 <div>
   <Modal

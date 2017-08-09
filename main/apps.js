@@ -37,36 +37,14 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const semver = require('semver');
 const config = require('./config');
-const yarn = require('./yarn');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 
 const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
-
-/**
- * Create package.json if it does not exist.
- *
- * @returns {Promise} promise that resolves if successful.
- */
-function createPackageJsonIfNotExists() {
-    return fileUtil.createJsonFileIfNotExists(config.getPackageJsonPath(), {
-        private: true,
-        dependencies: {},
-    });
-}
-
-/**
- * Create yarn.lock if it does not exist.
- *
- * @returns {Promise} promise that resolves if successful.
- */
-function createYarnLockIfNotExists() {
-    return fileUtil.createTextFileIfNotExists(config.getYarnLockPath(), '');
-}
 
 /**
  * Create apps.json if it does not exist.
@@ -102,6 +80,26 @@ function downloadAppsJsonFile() {
 }
 
 /**
+ * Get the names of all official apps that are installed.
+ *
+ * @returns {Promise} promise that resolves with app names.
+ */
+function getInstalledOfficialAppNames() {
+    return fileUtil.readJsonFile(config.getAppsJsonPath())
+        .then(apps => {
+            const installedPackages = fileUtil.listDirectories(config.getNodeModulesDir());
+            const availableApps = Object.keys(apps);
+            const installedApps = [];
+            availableApps.forEach(availableApp => {
+                if (installedPackages.includes(availableApp)) {
+                    installedApps.push(availableApp);
+                }
+            });
+            return installedApps;
+        });
+}
+
+/**
  * Create the updates.json file containing the latest available versions for
  * all installed official apps. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  *
@@ -109,9 +107,8 @@ function downloadAppsJsonFile() {
  */
 function generateUpdatesJsonFile() {
     const fileName = config.getUpdatesJsonPath();
-    return fileUtil.readJsonFile(path.join(config.getPackageJsonPath()))
-        .then(packageJson => Object.keys(packageJson.dependencies))
-        .then(packageNames => registryApi.getLatestPackageVersions(packageNames))
+    return getInstalledOfficialAppNames()
+        .then(installedApps => registryApi.getLatestPackageVersions(installedApps))
         .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
 }
 
@@ -128,13 +125,17 @@ function installLocalAppArchive(tgzFilePath) {
             `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
     }
     const appPath = path.join(config.getAppsLocalDir(), appName);
-    if (fs.existsSync(appPath)) {
-        return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
-            `but app directory ${appPath} already exists. Either delete the ` +
-            'app directory so that the archive can be extracted, or delete ' +
-            'the archive file.'));
-    }
-    return fileUtil.mkdir(appPath)
+    return fs.exists(appPath)
+        .then(isInstalled => {
+            if (isInstalled) {
+                return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
+                    `but app directory ${appPath} already exists. Either delete the ` +
+                    'app directory so that the archive can be extracted, or delete ' +
+                    'the archive file.'));
+            }
+            return Promise.resolve();
+        })
+        .then(() => fileUtil.mkdir(appPath))
         .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
         .then(() => fileUtil.deleteFile(tgzFilePath));
 }
@@ -172,8 +173,6 @@ function initAppsDirectory() {
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsRootDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsLocalDir()))
-        .then(() => createPackageJsonIfNotExists())
-        .then(() => createYarnLockIfNotExists())
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
         .then(() => installLocalAppArchives())
@@ -302,18 +301,19 @@ function officialAppsObjToArray(officialAppsObj) {
 function getOfficialApps() {
     return Promise.all([
         fileUtil.readJsonFile(config.getAppsJsonPath()),
-        fileUtil.readJsonFile(config.getPackageJsonPath()),
         fileUtil.readJsonFile(config.getUpdatesJsonPath()),
-    ]).then(([officialApps, packageJson, availableUpdates]) => {
+    ]).then(([officialApps, availableUpdates]) => {
         const officialAppsArray = officialAppsObjToArray(officialApps);
-        const promises = officialAppsArray.map(officialApp => {
-            const isInstalled = !!packageJson.dependencies[officialApp.name];
-            if (isInstalled) {
-                return decorateWithInstalledAppInfo(officialApp)
-                    .then(app => decorateWithLatestVersion(app, availableUpdates));
-            }
-            return Promise.resolve(officialApp);
-        });
+        const promises = officialAppsArray.map(officialApp => (
+            fs.exists(path.join(config.getNodeModulesDir(), officialApp.name))
+                .then(isInstalled => {
+                    if (isInstalled) {
+                        return decorateWithInstalledAppInfo(officialApp)
+                            .then(app => decorateWithLatestVersion(app, availableUpdates));
+                    }
+                    return Promise.resolve(officialApp);
+                })
+        ));
         return Promise.all(promises);
     });
 }
@@ -340,24 +340,43 @@ function getLocalApps() {
 }
 
 /**
+ * Remove official app.
+ *
+ * @param {string} name the app name.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function removeOfficialApp(name) {
+    const appPath = path.join(config.getNodeModulesDir(), name);
+    if (!appPath.includes('node_modules')) {
+        return Promise.reject(new Error('Sanity check failed when trying ' +
+            `to remove app directory ${appPath}. The directory does not ` +
+            'have node_modules in its path.'));
+    }
+    return fs.remove(appPath);
+}
+
+/**
  * Install official app from the npm registry.
  *
  * @param {string} name the app name.
  * @param {string} version the app version, e.g. '1.2.3' or 'latest'.
- * @returns {Promise} promise that resolves/rejects with yarn output.
+ * @returns {Promise} promise that resolves if successful.
  */
 function installOfficialApp(name, version) {
-    return yarn.add(name, version);
-}
-
-/**
- * Remove official app.
- *
- * @param {string} name the app name.
- * @returns {Promise} promise that resolves/rejects with yarn output.
- */
-function removeOfficialApp(name) {
-    return yarn.remove(name);
+    const destinationDir = config.getAppsRootDir();
+    return registryApi.downloadTarball(name, version, destinationDir)
+        .then(tgzFilePath => {
+            const appPath = path.join(config.getNodeModulesDir(), name);
+            return fs.exists(appPath)
+                .then(isInstalled => {
+                    if (isInstalled) {
+                        return removeOfficialApp(name);
+                    }
+                    return Promise.resolve();
+                })
+                .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+                .then(() => fileUtil.deleteFile(tgzFilePath));
+        });
 }
 
 module.exports = {

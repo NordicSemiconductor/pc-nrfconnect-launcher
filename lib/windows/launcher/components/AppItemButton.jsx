@@ -37,8 +37,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AppItemButton = ({ text, title, iconClass, onClick }) => (
-    <button title={title} className="btn btn-primary core-btn" onClick={onClick}>
+const AppItemButton = ({ text, title, iconClass, isDisabled, onClick }) => (
+    <button
+        title={title}
+        className="btn btn-primary core-btn"
+        disabled={isDisabled}
+        onClick={onClick}
+    >
         <span className={iconClass} />
         <span className="core-btn-text">{text}</span>
     </button>
@@ -48,7 +53,12 @@ AppItemButton.propTypes = {
     text: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     iconClass: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
+};
+
+AppItemButton.defaultProps = {
+    isDisabled: false,
 };
 
 export default AppItemButton;

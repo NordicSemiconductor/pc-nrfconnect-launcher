@@ -55,7 +55,12 @@ const ConfirmationDialog = ({
                 { isInProgress ? <Spinner /> : null }
                 &nbsp;
                 <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
-                <Button onClick={onCancel} disabled={isInProgress}>{cancelButtonText}</Button>
+                {
+                    onCancel &&
+                        <Button onClick={onCancel} disabled={isInProgress}>
+                            {cancelButtonText}
+                        </Button>
+                }
             </ModalFooter>
         </Modal>
     </div>
@@ -66,7 +71,7 @@ ConfirmationDialog.propTypes = {
     title: PropTypes.string,
     text: PropTypes.string.isRequired,
     onOk: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
     okButtonText: PropTypes.string,
     cancelButtonText: PropTypes.string,
     isInProgress: PropTypes.bool,
@@ -75,6 +80,7 @@ ConfirmationDialog.propTypes = {
 ConfirmationDialog.defaultProps = {
     title: 'Confirm',
     isInProgress: false,
+    onCancel: null,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',
 };
