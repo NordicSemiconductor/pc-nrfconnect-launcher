@@ -34,6 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+// Do not render react-bootstrap components in tests
+jest.mock('react-bootstrap', () => ({
+    Modal: 'Modal',
+    Button: 'Button',
+    ModalHeader: 'ModalHeader',
+    ModalFooter: 'ModalFooter',
+    ModalBody: 'ModalBody',
+    ModalTitle: 'ModalTitle',
+    Checkbox: 'Checkbox',
+}));
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 import SettingsView from '../SettingsView';
@@ -47,6 +60,7 @@ describe('SettingsView', () => {
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -59,6 +73,7 @@ describe('SettingsView', () => {
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -71,6 +86,7 @@ describe('SettingsView', () => {
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -83,6 +99,7 @@ describe('SettingsView', () => {
                 isCheckingForUpdates
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -96,6 +113,39 @@ describe('SettingsView', () => {
                 lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render check for updates completed, with updates available', () => {
+        expect(renderer.create(
+            <SettingsView
+                isLoading={false}
+                shouldCheckForUpdatesAtStartup={false}
+                isCheckingForUpdates={false}
+                lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
+                onTriggerUpdateCheck={() => {}}
+                onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
+                isUpdateCheckCompleteDialogVisible
+                isAppUpdateAvailable
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render check for updates completed, with everything up to date', () => {
+        expect(renderer.create(
+            <SettingsView
+                isLoading={false}
+                shouldCheckForUpdatesAtStartup={false}
+                isCheckingForUpdates={false}
+                lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
+                onTriggerUpdateCheck={() => {}}
+                onCheckUpdatesAtStartupChanged={() => {}}
+                onHideUpdateCheckCompleteDialog={() => {}}
+                isUpdateCheckCompleteDialogVisible
+                isAppUpdateAvailable={false}
             />,
         )).toMatchSnapshot();
     });

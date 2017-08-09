@@ -1,39 +1,178 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppManagementView should render installing app dialog 1`] = `
+exports[`AppManagementView should disable buttons and display "Installing..." button text when installing app 1`] = `
 <div>
-  <Modal
-    backdrop={true}
-    show={true}
+  <div
+    className="core-app-management-item list-group-item"
   >
-    <ModalHeader
-      closeButton={false}
+    <h4
+      className="list-group-item-heading"
     >
-      <ModalTitle>
-        Installing
-      </ModalTitle>
-    </ModalHeader>
-    <ModalBody>
+      Foo app
+    </h4>
+    <div
+      className="list-group-item-text"
+    >
       <p>
-        Installing pc-nrfconnect-foo. Please wait...
+        Foo description
       </p>
-    </ModalBody>
-    <ModalFooter>
-      <img
-        alt="Loading..."
-        className="core-spinner"
-        height={16}
-        src="test-file-stub"
-        width={16}
-      />
-       
-      <Button
-        disabled={true}
+      <div
+        className="core-app-management-item-footer"
       >
-        Cancel
-      </Button>
-    </ModalFooter>
-  </Modal>
+        <button
+          className="btn btn-link core-btn-link"
+          onClick={[Function]}
+        >
+          More information
+        </button>
+        <div
+          className="core-app-management-item-buttons"
+        >
+          <button
+            className="btn btn-primary core-btn"
+            disabled={true}
+            onClick={[Function]}
+            title="Install Foo app"
+          >
+            <span
+              className="glyphicon glyphicon-download-alt"
+            />
+            <span
+              className="core-btn-text"
+            >
+              Installing...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppManagementView should disable buttons and display "Removing..." button text when removing app 1`] = `
+<div>
+  <div
+    className="core-app-management-item list-group-item"
+  >
+    <h4
+      className="list-group-item-heading"
+    >
+      Foo app
+    </h4>
+    <div
+      className="list-group-item-text"
+    >
+      <p>
+        Foo description
+      </p>
+      <div
+        className="core-app-management-item-footer"
+      >
+        <button
+          className="btn btn-link core-btn-link"
+          onClick={[Function]}
+        >
+          More information
+        </button>
+        <div
+          className="core-app-management-item-status installed"
+        >
+          Installed
+        </div>
+        <div
+          className="core-app-management-item-buttons"
+        >
+          <div />
+          <button
+            className="btn btn-primary core-btn"
+            disabled={true}
+            onClick={[Function]}
+            title="Remove Foo app"
+          >
+            <span
+              className="glyphicon glyphicon-trash"
+            />
+            <span
+              className="core-btn-text"
+            >
+              Removing...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppManagementView should disable buttons and display "Upgrading..." button text when upgrading app 1`] = `
+<div>
+  <div
+    className="core-app-management-item list-group-item"
+  >
+    <h4
+      className="list-group-item-heading"
+    >
+      Foo app
+    </h4>
+    <div
+      className="list-group-item-text"
+    >
+      <p>
+        Foo description
+      </p>
+      <div
+        className="core-app-management-item-footer"
+      >
+        <button
+          className="btn btn-link core-btn-link"
+          onClick={[Function]}
+        >
+          More information
+        </button>
+        <div
+          className="core-app-management-item-status upgrade-available"
+        >
+          Upgrade available
+        </div>
+        <div
+          className="core-app-management-item-buttons"
+        >
+          <button
+            className="btn btn-primary core-btn"
+            disabled={true}
+            onClick={[Function]}
+            title="Upgrade Foo app from v1.2.3 to v1.2.4"
+          >
+            <span
+              className="glyphicon glyphicon-download-alt"
+            />
+            <span
+              className="core-btn-text"
+            >
+              Upgrading...
+            </span>
+          </button>
+          <button
+            className="btn btn-primary core-btn"
+            disabled={true}
+            onClick={[Function]}
+            title="Remove Foo app"
+          >
+            <span
+              className="glyphicon glyphicon-trash"
+            />
+            <span
+              className="core-btn-text"
+            >
+              Remove
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -72,6 +211,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
         >
           <button
             className="btn btn-primary core-btn"
+            disabled={false}
             onClick={[Function]}
             title="Upgrade App A from v1.2.3 to v1.2.4"
           >
@@ -86,6 +226,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
           </button>
           <button
             className="btn btn-primary core-btn"
+            disabled={false}
             onClick={[Function]}
             title="Remove App A"
           >
@@ -130,6 +271,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
         >
           <button
             className="btn btn-primary core-btn"
+            disabled={false}
             onClick={[Function]}
             title="Install App B"
           >
@@ -180,6 +322,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
           <div />
           <button
             className="btn btn-primary core-btn"
+            disabled={false}
             onClick={[Function]}
             title="Remove App C"
           >
@@ -199,84 +342,10 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
 </div>
 `;
 
-exports[`AppManagementView should render removing app dialog 1`] = `
-<div>
-  <Modal
-    backdrop={true}
-    show={true}
-  >
-    <ModalHeader
-      closeButton={false}
-    >
-      <ModalTitle>
-        Removing
-      </ModalTitle>
-    </ModalHeader>
-    <ModalBody>
-      <p>
-        Removing pc-nrfconnect-foo. Please wait...
-      </p>
-    </ModalBody>
-    <ModalFooter>
-      <img
-        alt="Loading..."
-        className="core-spinner"
-        height={16}
-        src="test-file-stub"
-        width={16}
-      />
-       
-      <Button
-        disabled={true}
-      >
-        Cancel
-      </Button>
-    </ModalFooter>
-  </Modal>
-</div>
-`;
-
 exports[`AppManagementView should render spinner when retrieving apps 1`] = `
 <div
   className="core-loading-apps-spinner"
 />
-`;
-
-exports[`AppManagementView should render upgrading app dialog 1`] = `
-<div>
-  <Modal
-    backdrop={true}
-    show={true}
-  >
-    <ModalHeader
-      closeButton={false}
-    >
-      <ModalTitle>
-        Upgrading
-      </ModalTitle>
-    </ModalHeader>
-    <ModalBody>
-      <p>
-        Upgrading pc-nrfconnect-foo. Please wait...
-      </p>
-    </ModalBody>
-    <ModalFooter>
-      <img
-        alt="Loading..."
-        className="core-spinner"
-        height={16}
-        src="test-file-stub"
-        width={16}
-      />
-       
-      <Button
-        disabled={true}
-      >
-        Cancel
-      </Button>
-    </ModalFooter>
-  </Modal>
-</div>
 `;
 
 exports[`AppManagementView should render without any apps 1`] = `<div />`;
