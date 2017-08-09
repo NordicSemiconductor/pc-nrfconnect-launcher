@@ -122,7 +122,6 @@ function openAppWindow(app) {
     });
 }
 
-
 electronApp.on('ready', () => {
     if (process.argv[2]) {
         desktopShortcut.setOpenAppWindow(openAppWindow);
@@ -191,7 +190,3 @@ ipcMain.on('show-about-dialog', () => {
         }, () => {});
     }
 });
-
-module.exports = {
-    openAppWindow,
-};
