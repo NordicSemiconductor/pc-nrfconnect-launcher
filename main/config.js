@@ -41,7 +41,6 @@ const path = require('path');
 const packageJson = require('../package.json');
 
 let version;
-let appDir;
 let homeDir;
 let userDataDir;
 let appsRootDir;
@@ -57,6 +56,8 @@ let registryUrl;
 let skipUpdateApps;
 let skipUpdateCore;
 let skipSplashScreen;
+let officialAppName;
+let localAppName;
 
 /**
  * Init the config values based on the given command line arguments.
@@ -78,7 +79,6 @@ let skipSplashScreen;
  */
 function init(argv) {
     version = packageJson.version;
-    appDir = electronApp.getAppPath();
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
@@ -94,12 +94,13 @@ function init(argv) {
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;
+    officialAppName = argv['open-official-app'] || null;
+    localAppName = argv['open-local-app'] || null;
 }
 
 module.exports = {
     init,
     getVersion: () => version,
-    getAppDir: () => appDir,
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
     getAppsRootDir: () => appsRootDir,
@@ -115,4 +116,7 @@ module.exports = {
     isSkipUpdateApps: () => skipUpdateApps,
     isSkipUpdateCore: () => skipUpdateCore,
     isSkipSplashScreen: () => skipSplashScreen,
+    getOfficialAppName: () => officialAppName,
+    getLocalAppName: () => localAppName,
+
 };
