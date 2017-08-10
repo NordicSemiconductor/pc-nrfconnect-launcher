@@ -58,7 +58,7 @@ class AppLaunchView extends React.Component {
     }
 
     render() {
-        const { apps, onAppSelected, onCreateShortcut, isRetrievingApps } = this.props;
+        const { apps, onAppSelected, onCreateShortcut, onDragEnd, isRetrievingApps } = this.props;
         return isRetrievingApps ?
             <LoadingAppsSpinner /> :
             <div className="list-group">
@@ -70,6 +70,7 @@ class AppLaunchView extends React.Component {
                                 app={app}
                                 onClick={() => onAppSelected(app)}
                                 onCreateShortcut={() => onCreateShortcut(app)}
+                                onDragEnd={event => onDragEnd(app, event)}
                             />
                         )) :
                         <div>
@@ -88,11 +89,13 @@ AppLaunchView.propTypes = {
     onMount: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func,
     isRetrievingApps: PropTypes.bool.isRequired,
 };
 
 AppLaunchView.defaultProps = {
     onMount: () => {},
+    onDragEnd: () => {},
 };
 
 export default AppLaunchView;
