@@ -88,7 +88,7 @@ AppLaunchView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
     onMount: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
-    onCreateShortcut: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func,
     onDragEnd: PropTypes.func,
     isRetrievingApps: PropTypes.bool.isRequired,
 };
@@ -96,6 +96,7 @@ AppLaunchView.propTypes = {
 AppLaunchView.defaultProps = {
     onMount: () => {},
     onDragEnd: () => {},
+    onCreateShortcut: () => {},
 };
 
 export default AppLaunchView;

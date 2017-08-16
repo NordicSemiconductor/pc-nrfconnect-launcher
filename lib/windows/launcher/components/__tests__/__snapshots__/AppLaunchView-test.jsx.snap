@@ -9,9 +9,12 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
       <div>
@@ -39,7 +42,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -56,6 +59,51 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -70,9 +118,12 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
       <div>
@@ -100,7 +151,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -117,6 +168,51 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -131,9 +227,12 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
       <div>
@@ -161,7 +260,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -178,6 +277,51 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -192,9 +336,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
     </div>
@@ -213,7 +360,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -230,6 +377,51 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -237,9 +429,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
     </div>
@@ -258,7 +453,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -275,6 +470,51 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -282,9 +522,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
     </div>
@@ -303,7 +546,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -320,6 +563,51 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -327,9 +615,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
     </div>
@@ -348,7 +639,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -365,6 +656,51 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -372,9 +708,12 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
+      draggable={true}
+      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
+        draggable={false}
         src="test-file-stub"
       />
     </div>
@@ -393,7 +732,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       </p>
     </div>
     <div
-      className="core-app-launch-item-buttons"
+      className="core-app-launch-item-buttons btn-toolbar"
     >
       <button
         className="btn btn-primary core-btn"
@@ -410,6 +749,51 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
           Launch
         </span>
       </button>
+      <div
+        className="dropdown btn-group core-dropdown"
+      >
+        <div
+          className="dropdown btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            disabled={false}
+            id="bg-nested-dropdown"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="bg-nested-dropdown"
+            className="dropdown-menu dropdown-menu-right"
+            role="menu"
+          >
+            <button
+              className="btn btn-primary core-btn"
+              disabled={false}
+              onClick={[Function]}
+              title="Shortcut"
+            >
+              <span
+                className="glyphicon glyphicon-share-alt"
+              />
+              <span
+                className="core-btn-text"
+              >
+                Shortcut
+              </span>
+            </button>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
