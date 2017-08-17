@@ -83,7 +83,7 @@ function createMenu(app) {
                 {
                     label: 'Toggle &Developer Tools',
                     accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-                    visible: true,
+                    visible: false,
                     click: (item, focusedWindow) => {
                         if (focusedWindow) {
                             focusedWindow.toggleDevTools();
