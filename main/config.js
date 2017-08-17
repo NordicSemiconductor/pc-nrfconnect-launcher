@@ -41,10 +41,12 @@ const path = require('path');
 const packageJson = require('../package.json');
 
 let version;
+let electronRootPath;
 let electronExePath;
 let homeDir;
 let userDataDir;
 let desktopDir;
+let tmpDir;
 let appsRootDir;
 let appsLocalDir;
 let nodeModulesDir;
@@ -81,10 +83,12 @@ let localAppName;
  */
 function init(argv) {
     version = packageJson.version;
+    electronRootPath = electronApp.getAppPath();
     electronExePath = electronApp.getPath('exe');
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     desktopDir = electronApp.getPath('desktop');
+    tmpDir = electronApp.getPath('temp');
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
     nodeModulesDir = path.join(appsRootDir, 'node_modules');
@@ -105,10 +109,12 @@ function init(argv) {
 module.exports = {
     init,
     getVersion: () => version,
+    getElectronRootPath: () => electronRootPath,
     getElectronExePath: () => electronExePath,
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
     getDesktopDir: () => desktopDir,
+    getTmpDir: () => tmpDir,
     getAppsRootDir: () => appsRootDir,
     getAppsLocalDir: () => appsLocalDir,
     getNodeModulesDir: () => nodeModulesDir,
