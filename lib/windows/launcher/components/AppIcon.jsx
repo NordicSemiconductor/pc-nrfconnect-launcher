@@ -77,7 +77,7 @@ function renderNotice(app) {
 }
 
 const AppIcon = ({ app, onDragEnd }) => (
-    <div className="core-app-icon" draggable onDragEnd={event => onDragEnd(event)}>
+    <div className="core-app-icon" draggable onDragEnd={onDragEnd}>
         <img
             src={app.iconPath || nrfconnectLogo}
             alt="App icon"
