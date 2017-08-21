@@ -38,22 +38,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppIcon from './AppIcon';
 import AppItemButton from './AppItemButton';
+import AppItemGroup from './AppItemGroup';
 
-const LaunchableAppItem = ({ app, onClick }) => (
+const LaunchableAppItem = ({ app, onClick, onCreateShortcut, onDragEnd }) => (
     <div className="core-app-launch-item list-group-item">
-        <AppIcon app={app} />
+        <AppIcon
+            app={app}
+            onDragEnd={onDragEnd}
+        />
         <div>
             <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
             <p className="list-group-item-text">
                 {app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}
             </p>
         </div>
-        <div className="core-app-launch-item-buttons">
+        <div className="core-app-launch-item-buttons btn-toolbar">
             <AppItemButton
                 text="Launch"
                 title="Launch app"
                 iconClass="glyphicon glyphicon-play"
                 onClick={onClick}
+            />
+            <AppItemGroup
+                title=""
+                className="btn btn-primary core-btn"
+                pullRight
+                onCreateShortcut={onCreateShortcut}
             />
         </div>
     </div>
@@ -71,6 +81,12 @@ LaunchableAppItem.propTypes = {
         isSupportedEngine: PropTypes.bool,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func,
+};
+
+LaunchableAppItem.defaultProps = {
+    onDragEnd: () => {},
 };
 
 export default LaunchableAppItem;

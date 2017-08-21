@@ -44,6 +44,7 @@ const apps = require('./main/apps');
 const browser = require('./main/browser');
 const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
+const desktopShortcut = require('./main/desktopShortcut');
 
 const electronApp = electron.app;
 const Menu = electron.Menu;
@@ -120,7 +121,16 @@ function openAppWindow(app) {
 }
 
 electronApp.on('ready', () => {
-    Menu.setApplicationMenu(applicationMenu);
+    if (config.getOfficialAppName()) {
+        desktopShortcut.setOpenAppWindow(openAppWindow);
+        desktopShortcut.openOfficialAppWindow(config.getOfficialAppName());
+        return;
+    }
+    if (config.getLocalAppName()) {
+        desktopShortcut.setOpenAppWindow(openAppWindow);
+        desktopShortcut.openLocalAppWindow(config.getLocalAppName());
+        return;
+    } Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
         .then(() => openLauncherWindow())
         .catch(error => {
