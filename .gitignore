@@ -1,6 +1,9 @@
 /node_modules
 .idea
+.DS_Store
 dist
 release
 jest.json
 build/nrfjprog
+npm-debug.log
+package-lock.json

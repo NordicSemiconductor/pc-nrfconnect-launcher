@@ -34,67 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
+'use strict';
 
-function renderAlert(altText) {
-    return (
-        <div>
-            <span className="alert-icon-bg" />
-            <span
-                className="glyphicon glyphicon-alert"
-                title={altText}
-            />
-        </div>
-    );
+const apps = require('./apps');
+const electron = require('electron');
+
+const electronApp = electron.app;
+const dialog = electron.dialog;
+
+let openAppWindow;
+
+function openOfficialAppWindow(appName) {
+    apps.getOfficialApps()
+        .then(appList => {
+            const subApp = appList.find(
+                app => app.name === appName);
+            openAppWindow(subApp);
+        })
+        .catch(error => {
+            dialog.showMessageBox({
+                type: 'error',
+                title: 'Shortcut error for official app',
+                message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
+                detail: error.message,
+                buttons: ['OK'],
+            }, () => electronApp.quit());
+        });
 }
 
-function renderInfo(altText) {
-    return (
-        <div>
-            <span className="info-icon-bg" />
-            <span
-                className="glyphicon glyphicon-info-sign"
-                title={altText}
-            />
-        </div>
-    );
+function openLocalAppWindow(appName) {
+    apps.getLocalApps()
+        .then(appList => {
+            const subApp = appList.find(
+                app => app.name === appName);
+            openAppWindow(subApp);
+        })
+        .catch(error => {
+            dialog.showMessageBox({
+                type: 'error',
+                title: 'Shortcut error for local app',
+                message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
+                detail: error.message,
+                buttons: ['OK'],
+            }, () => electronApp.quit());
+        });
 }
 
-function renderNotice(app) {
-    if (!app.engineVersion) {
-        return renderAlert('The app does not specify which nRF Connect version(s) ' +
-            'it supports');
-    } else if (!app.isSupportedEngine) {
-        return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
-            'which does not match your currently installed version');
-    } else if (app.isOfficial && app.currentVersion !== app.latestVersion) {
-        return renderInfo(`A new version (v${app.latestVersion}) of this app is ` +
-            'available, and can be installed from the "Add/remove apps" screen');
-    }
-    return null;
+function setOpenAppWindow(func) {
+    openAppWindow = func;
 }
 
-const AppIcon = ({ app, onDragEnd }) => (
-    <div className="core-app-icon" draggable onDragEnd={onDragEnd}>
-        <img
-            src={app.iconPath || nrfconnectLogo}
-            alt="App icon"
-            draggable={false}
-
-        />
-        { renderNotice(app) }
-    </div>
-);
-
-AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-    }).isRequired,
-    onDragEnd: PropTypes.func,
+module.exports = {
+    openOfficialAppWindow,
+    openLocalAppWindow,
+    setOpenAppWindow,
 };
-
-export default AppIcon;

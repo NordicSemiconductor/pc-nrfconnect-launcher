@@ -43,6 +43,7 @@
             "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
+            "resources/mac/",
             "index.js"
         ],
         "directories": {
@@ -53,13 +54,21 @@
                 "tar.gz"
             ],
             "extraFiles": [
-                { "from": "build/nrfjprog/unpacked/nrfjprog", "to": ".", "filter": "*.so*" }
+                {
+                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "to": ".",
+                    "filter": "*.so*"
+                }
             ]
         },
         "mac": {
             "category": "public.app-category.developer-tools",
             "extraFiles": [
-                { "from": "build/nrfjprog/unpacked/nrfjprog", "to": "Frameworks", "filter": "*.dylib" }
+                {
+                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "to": "Frameworks",
+                    "filter": "*.dylib"
+                }
             ]
         },
         "win": {
@@ -81,8 +90,8 @@
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
-        "pc-nrfconnect-devdep": "https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v1.0.0",
-        "react-infinite": "NordicSemiconductor/react-infinite#react-15.5",
+        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v1.0.0",
+        "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
         "spectron": "3.6.4",
@@ -96,8 +105,10 @@
         "electron-log": "2.2.6",
         "electron-updater": "2.0.0",
         "fs-extra": "4.0.1",
-        "pc-ble-driver-js": "https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.0.0",
-        "pc-nrfjprog-js": "https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.0",
+        "ncp": "2.0.0",
+        "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.0.0",
+        "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.0",
+        "png2icons": "0.9.1",
         "semver": "5.3.0",
         "serialport": "4.0.7",
         "shasum": "1.0.2",
@@ -107,7 +118,8 @@
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
-            "\\.(css|less)$": "<rootDir>/mocks/styleMock.js"
+            "\\.(css|less)$": "<rootDir>/mocks/styleMock.js",
+            "\\.(js|jsx)$": "<rootDir>/mocks/electronMock.js"
         }
     }
 }

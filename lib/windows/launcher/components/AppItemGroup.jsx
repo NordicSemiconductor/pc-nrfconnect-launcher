@@ -36,65 +36,34 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
+import { DropdownButton } from 'react-bootstrap';
 
-function renderAlert(altText) {
-    return (
-        <div>
-            <span className="alert-icon-bg" />
-            <span
-                className="glyphicon glyphicon-alert"
-                title={altText}
+import AppItemButton from './AppItemButton';
+
+const AppItemGroup = ({ title, className, pullRight, onCreateShortcut }) => (
+    <div className="dropdown btn-group core-dropdown">
+        <DropdownButton
+            title={title}
+            id="bg-nested-dropdown"
+            pullRight={pullRight}
+            className={className}
+        >
+            <AppItemButton
+                text="Create Shortcut"
+                title="Create Shortcut"
+                iconClass="glyphicon glyphicon-share-alt"
+                onClick={onCreateShortcut}
             />
-        </div>
-    );
-}
+        </DropdownButton>
 
-function renderInfo(altText) {
-    return (
-        <div>
-            <span className="info-icon-bg" />
-            <span
-                className="glyphicon glyphicon-info-sign"
-                title={altText}
-            />
-        </div>
-    );
-}
-
-function renderNotice(app) {
-    if (!app.engineVersion) {
-        return renderAlert('The app does not specify which nRF Connect version(s) ' +
-            'it supports');
-    } else if (!app.isSupportedEngine) {
-        return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
-            'which does not match your currently installed version');
-    } else if (app.isOfficial && app.currentVersion !== app.latestVersion) {
-        return renderInfo(`A new version (v${app.latestVersion}) of this app is ` +
-            'available, and can be installed from the "Add/remove apps" screen');
-    }
-    return null;
-}
-
-const AppIcon = ({ app, onDragEnd }) => (
-    <div className="core-app-icon" draggable onDragEnd={onDragEnd}>
-        <img
-            src={app.iconPath || nrfconnectLogo}
-            alt="App icon"
-            draggable={false}
-
-        />
-        { renderNotice(app) }
     </div>
 );
 
-AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-    }).isRequired,
-    onDragEnd: PropTypes.func,
+AppItemGroup.propTypes = {
+    title: PropTypes.string.isRequired,
+    className: PropTypes.string.isRequired,
+    pullRight: PropTypes.bool.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
 };
 
-export default AppIcon;
+export default AppItemGroup;
