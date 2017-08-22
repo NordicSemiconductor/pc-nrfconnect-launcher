@@ -37,8 +37,12 @@
 'use strict';
 
 const fs = require('fs');
+const rimraf = require('rimraf');
 const path = require('path');
 const targz = require('targz');
+const ncp = require('ncp');
+
+ncp.limit = 16;
 
 /**
  * Open the given file path and return its string contents.
@@ -131,6 +135,59 @@ function deleteFile(filePath) {
             } else {
                 resolve();
             }
+        });
+    });
+}
+
+
+/**
+ * Delete the folder at the given path.
+ *
+ * @param {string} folderPath the folder path to delete.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function deleteFolder(folderPath) {
+    return new Promise((resolve, reject) => {
+        rimraf(folderPath, error => {
+            if (error) {
+                reject(new Error(`Unable to delete ${folderPath}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+/**
+ * Copy files from source to destination
+ *
+ * @param {string} src the path to source.
+ * @param {string} dest the path to destination.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function copy(src, dest) {
+    return new Promise((resolve, reject) => {
+        ncp(src, dest, error => {
+            if (error) {
+                reject(new Error(`Unable to copy ${src}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+/**
+ * Change file mode
+ *
+ * @param {string} src the path to source.
+ * @param {string} mode the mode to change.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function chmod(src, mode) {
+    return new Promise(resolve => {
+        fs.chmod(src, mode, error => {
+            resolve(error);
         });
     });
 }
@@ -244,6 +301,9 @@ module.exports = {
     listDirectories,
     listFiles,
     deleteFile,
+    deleteFolder,
+    copy,
+    chmod,
     extractNpmPackage,
     getNameFromNpmPackage,
     mkdir,

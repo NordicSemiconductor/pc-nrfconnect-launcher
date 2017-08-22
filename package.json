@@ -109,6 +109,7 @@
         "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.0.0",
         "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.0",
         "png2icons": "0.9.1",
+        "rimraf": "2.6.1",
         "semver": "5.3.0",
         "serialport": "4.0.7",
         "shasum": "1.0.2",
