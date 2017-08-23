@@ -41,6 +41,7 @@ const rimraf = require('rimraf');
 const path = require('path');
 const targz = require('targz');
 const ncp = require('ncp');
+const chmodr = require('chmodr');
 
 
 ncp.limit = 16;
@@ -185,9 +186,9 @@ function copy(src, dest) {
  * @param {string} mode the mode to change.
  * @returns {Promise} promise that resolves if successful.
  */
-function chmod(src, mode) {
+function chmodFolder(src, mode) {
     return new Promise(resolve => {
-        fs.chmod(src, mode, error => {
+        chmodr(src, mode, error => {
             resolve(error);
         });
     });
@@ -304,7 +305,7 @@ module.exports = {
     deleteFile,
     deleteFolder,
     copy,
-    chmod,
+    chmodFolder,
     extractNpmPackage,
     getNameFromNpmPackage,
     mkdir,
