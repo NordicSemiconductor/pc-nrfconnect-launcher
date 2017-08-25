@@ -41,6 +41,7 @@ const rimraf = require('rimraf');
 const path = require('path');
 const targz = require('targz');
 const ncp = require('ncp');
+const chmodr = require('chmodr');
 
 
 ncp.limit = 16;
@@ -147,7 +148,7 @@ function deleteFile(filePath) {
  * @param {string} folderPath the folder path to delete.
  * @returns {Promise} promise that resolves if successful.
  */
-function deleteFolder(folderPath) {
+function deleteDir(folderPath) {
     return new Promise((resolve, reject) => {
         rimraf(folderPath, error => {
             if (error) {
@@ -185,9 +186,9 @@ function copy(src, dest) {
  * @param {string} mode the mode to change.
  * @returns {Promise} promise that resolves if successful.
  */
-function chmod(src, mode) {
+function chmodDir(src, mode) {
     return new Promise(resolve => {
-        fs.chmod(src, mode, error => {
+        chmodr(src, mode, error => {
             resolve(error);
         });
     });
@@ -302,9 +303,9 @@ module.exports = {
     listDirectories,
     listFiles,
     deleteFile,
-    deleteFolder,
+    deleteDir,
     copy,
-    chmod,
+    chmodDir,
     extractNpmPackage,
     getNameFromNpmPackage,
     mkdir,
