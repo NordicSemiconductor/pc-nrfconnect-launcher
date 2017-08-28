@@ -106,6 +106,7 @@
         "electron-log": "2.2.6",
         "electron-updater": "2.0.0",
         "fs-extra": "4.0.1",
+        "mustache": "2.3.0",
         "ncp": "2.0.0",
         "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.0.0",
         "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.0",

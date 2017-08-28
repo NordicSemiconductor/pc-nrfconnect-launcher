@@ -37,14 +37,10 @@
 'use strict';
 
 const fs = require('fs');
-const rimraf = require('rimraf');
+const fse = require('fs-extra');
 const path = require('path');
 const targz = require('targz');
-const ncp = require('ncp');
 const chmodr = require('chmodr');
-
-
-ncp.limit = 16;
 
 /**
  * Open the given file path and return its string contents.
@@ -150,7 +146,7 @@ function deleteFile(filePath) {
  */
 function deleteDir(folderPath) {
     return new Promise((resolve, reject) => {
-        rimraf(folderPath, error => {
+        fse.remove(folderPath, error => {
             if (error) {
                 reject(new Error(`Unable to delete ${folderPath}: ${error.message}`));
             } else {
@@ -169,7 +165,7 @@ function deleteDir(folderPath) {
  */
 function copy(src, dest) {
     return new Promise((resolve, reject) => {
-        ncp(src, dest, error => {
+        fse.copy(src, dest, error => {
             if (error) {
                 reject(new Error(`Unable to copy ${src}: ${error.message}`));
             } else {
@@ -187,9 +183,13 @@ function copy(src, dest) {
  * @returns {Promise} promise that resolves if successful.
  */
 function chmodDir(src, mode) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         chmodr(src, mode, error => {
-            resolve(error);
+            if (error) {
+                reject(new Error(`Unable to change mode to ${src}: ${error.message}`));
+            } else {
+                resolve();
+            }
         });
     });
 }
