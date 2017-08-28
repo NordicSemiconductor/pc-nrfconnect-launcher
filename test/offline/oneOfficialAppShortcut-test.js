@@ -34,58 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-'use strict';
+import path from 'path';
+import { startElectronApp, stopElectronApp } from '../setup';
 
-const apps = require('./apps');
-const electron = require('electron');
+const appName = 'pc-nrfconnect-test';
+const appDisplayName = 'Test App';
+const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-installed/.nrfconnect-apps');
+const electronArgs = [
+    `--apps-root-dir=${appsRootDir}`,
+    `--open-official-app=${appName}`,
+    '--skip-update-apps',
+];
 
-const electronApp = electron.app;
-const dialog = electron.dialog;
+let electronApp;
 
-let openAppWindow;
+describe('one official app given as command line flag', () => {
+    beforeEach(() => (
+        startElectronApp(electronArgs)
+            .then(startedApp => {
+                electronApp = startedApp;
+            })
+    ));
 
-function openOfficialAppWindow(appName) {
-    apps.getOfficialApps()
-        .then(appList => {
-            const subApp = appList.find(
-                app => app.name === appName);
-            openAppWindow(subApp);
-        })
-        .catch(error => {
-            dialog.showMessageBox({
-                type: 'error',
-                title: 'Shortcut error for official app',
-                message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
-                detail: error.message,
-                buttons: ['OK'],
-            }, () => electronApp.quit());
-        });
-}
+    afterEach(() => (
+        stopElectronApp(electronApp)
+    ));
 
-function openLocalAppWindow(appName) {
-    apps.getLocalApps()
-        .then(appList => {
-            const subApp = appList.find(
-                app => app.name === appName);
-            openAppWindow(subApp);
-        })
-        .catch(error => {
-            dialog.showMessageBox({
-                type: 'error',
-                title: 'Shortcut error for local app',
-                message: 'Error when starting application from shortcut. Please use nRF Connect to start the application.',
-                detail: error.message,
-                buttons: ['OK'],
-            }, () => electronApp.quit());
-        });
-}
-
-function setOpenAppWindow(func) {
-    openAppWindow = func;
-}
-
-module.exports = {
-    openOfficialAppWindow,
-    openLocalAppWindow,
-    setOpenAppWindow,
-};
+    it('should load app window at startup', () => (
+        electronApp.client.waitUntilWindowLoaded()
+            .then(() => electronApp.client.windowByIndex(0).browserWindow.getTitle())
+            .then(title => expect(title).toContain(appDisplayName))
+    ));
+});
