@@ -40,11 +40,9 @@ const electron = require('electron');
 const argv = require('yargs').argv;
 
 const config = require('./main/config');
+const windows = require('./main/windows');
 const apps = require('./main/apps');
-const browser = require('./main/browser');
-const settings = require('./main/settings');
 const createMenu = require('./main/menu').createMenu;
-const desktopShortcut = require('./main/desktopShortcut');
 
 const electronApp = electron.app;
 const Menu = electron.Menu;
@@ -58,81 +56,17 @@ global.appsRootDir = config.getAppsRootDir();
 
 const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 
-let launcherWindow;
-const appWindows = [];
-
-function openLauncherWindow() {
-    launcherWindow = browser.createWindow({
-        title: `nRF Connect v${config.getVersion()}`,
-        url: `file://${__dirname}/resources/launcher.html`,
-        icon: `${__dirname}/resources/nrfconnect.png`,
-        width: 670,
-        height: 500,
-        center: true,
-        splashScreen: !config.isSkipSplashScreen(),
-    });
-
-    launcherWindow.on('close', event => {
-        if (appWindows.length > 0) {
-            event.preventDefault();
-            launcherWindow.hide();
-        }
-    });
-}
-
-function openAppWindow(app) {
-    const lastWindowState = settings.loadLastWindow();
-    const appWindow = browser.createWindow({
-        title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
-        url: `file://${__dirname}/resources/app.html?appPath=${app.path}`,
-        icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
-        x: lastWindowState.x,
-        y: lastWindowState.y,
-        width: lastWindowState.width,
-        height: lastWindowState.height,
-        show: true,
-        backgroundColor: '#fff',
-    });
-
-    appWindows.push({
-        browserWindow: appWindow,
-        app,
-    });
-
-    appWindow.webContents.on('did-finish-load', () => {
-        if (lastWindowState.maximized) {
-            appWindow.maximize();
-        }
-    });
-
-    appWindow.on('close', () => {
-        settings.storeLastWindow(appWindow);
-    });
-
-    appWindow.on('closed', () => {
-        const index = appWindows.findIndex(appWin => appWin.browserWindow === appWindow);
-        if (index > -1) {
-            appWindows.splice(index, 1);
-        }
-        if (appWindows.length === 0) {
-            electronApp.quit();
-        }
-    });
-}
-
 electronApp.on('ready', () => {
-    if (config.getOfficialAppName()) {
-        desktopShortcut.setOpenAppWindow(openAppWindow);
-        desktopShortcut.openOfficialAppWindow(config.getOfficialAppName());
-        return;
-    }
-    if (config.getLocalAppName()) {
-        desktopShortcut.setOpenAppWindow(openAppWindow);
-        desktopShortcut.openLocalAppWindow(config.getLocalAppName());
-        return;
-    } Menu.setApplicationMenu(applicationMenu);
+    Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
-        .then(() => openLauncherWindow())
+        .then(() => {
+            if (config.getOfficialAppName()) {
+                return windows.openOfficialAppWindow(config.getOfficialAppName());
+            } else if (config.getLocalAppName()) {
+                return windows.openLocalAppWindow(config.getLocalAppName());
+            }
+            return windows.openLauncherWindow();
+        })
         .catch(error => {
             if (error.code === apps.APPS_DIR_INIT_ERROR) {
                 dialog.showMessageBox({
@@ -159,21 +93,16 @@ electronApp.on('window-all-closed', () => {
 });
 
 ipcMain.on('open-app-launcher', () => {
-    if (!launcherWindow.isVisible()) {
-        launcherWindow.show();
-    }
+    windows.openLauncherWindow();
 });
 
 ipcMain.on('open-app', (event, app) => {
-    if (launcherWindow.isVisible()) {
-        launcherWindow.hide();
-    }
-    openAppWindow(app);
+    windows.hideLauncherWindow();
+    windows.openAppWindow(app);
 });
 
 ipcMain.on('show-about-dialog', () => {
-    const parentWindow = electron.BrowserWindow.getFocusedWindow();
-    const appWindow = appWindows.find(appWin => appWin.browserWindow === parentWindow);
+    const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
         const app = appWindow.app;
         const detail = `${app.description}\n\n` +
@@ -182,7 +111,7 @@ ipcMain.on('show-about-dialog', () => {
             `Supported engines: nRF Connect ${app.engineVersion}\n` +
             `Current engine: nRF Connect ${config.getVersion()}\n` +
             `App directory: ${app.path}`;
-        dialog.showMessageBox(parentWindow, {
+        dialog.showMessageBox(appWindow.browserWindow, {
             type: 'info',
             title: 'About',
             message: `${app.displayName || app.name}`,
