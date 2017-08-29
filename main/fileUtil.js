@@ -179,7 +179,11 @@ function copy(src, dest) {
 }
 
 /**
- * Copy files from source to destination
+ * Copy files from source to destination from asar archive.
+ * Since it throws permission erros in a built version when copying file from asar archive,
+ * it tries to copy files several times and change the mode of file during the copying.
+ * The parameter 'limit' is set to avoid endless loop and other types of errors.
+ * 'limit' should be greater than the total number of files which would be copied.
  *
  * @param {string} src the path to source.
  * @param {string} dest the path to destination.
