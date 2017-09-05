@@ -27,7 +27,7 @@ A [Getting started guide](http://infocenter.nordicsemi.com/topic/com.nordic.info
 
 The following apps have been created for nRF Connect;
 
-* [Bluetooth low energy](https://www.npmjs.com/package/pc-nrfconnect-ble)
+* [Bluetooth Low Energy](https://www.npmjs.com/package/pc-nrfconnect-ble)
 * [RSSI Viewer](https://www.npmjs.com/package/pc-nrfconnect-rssi)
 * [nRF Cloud Gateway](https://www.npmjs.com/package/nrf-cloud-gateway)
 
