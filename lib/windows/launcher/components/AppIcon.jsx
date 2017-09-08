@@ -76,8 +76,8 @@ function renderNotice(app) {
     return null;
 }
 
-const AppIcon = ({ app, onDragEnd }) => (
-    <div className="core-app-icon" draggable onDragEnd={onDragEnd}>
+const AppIcon = ({ app }) => (
+    <div className="core-app-icon">
         <img
             src={app.iconPath || nrfconnectLogo}
             alt="App icon"
@@ -94,7 +94,6 @@ AppIcon.propTypes = {
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
     }).isRequired,
-    onDragEnd: PropTypes.func,
 };
 
 export default AppIcon;
