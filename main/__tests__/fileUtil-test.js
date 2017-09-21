@@ -34,6 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+jest.mock('fs-extra', () => ({}));
+
 import { getNameFromNpmPackage } from '../fileUtil';
 
 describe('getNameFromNpmPackage', () => {
