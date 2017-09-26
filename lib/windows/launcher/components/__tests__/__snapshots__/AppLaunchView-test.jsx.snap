@@ -9,8 +9,6 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -118,8 +116,6 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -227,8 +223,6 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -336,8 +330,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -429,8 +421,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -522,8 +512,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -615,8 +603,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
@@ -708,8 +694,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
   >
     <div
       className="core-app-icon"
-      draggable={true}
-      onDragEnd={[Function]}
     >
       <img
         alt="App icon"
