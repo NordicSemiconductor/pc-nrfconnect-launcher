@@ -40,11 +40,10 @@ import AppIcon from './AppIcon';
 import AppItemButton from './AppItemButton';
 import AppItemGroup from './AppItemGroup';
 
-const LaunchableAppItem = ({ app, onClick, onCreateShortcut, onDragEnd }) => (
+const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
     <div className="core-app-launch-item list-group-item">
         <AppIcon
             app={app}
-            onDragEnd={onDragEnd}
         />
         <div>
             <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
@@ -82,11 +81,9 @@ LaunchableAppItem.propTypes = {
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
-    onDragEnd: PropTypes.func,
 };
 
 LaunchableAppItem.defaultProps = {
-    onDragEnd: () => {},
 };
 
 export default LaunchableAppItem;

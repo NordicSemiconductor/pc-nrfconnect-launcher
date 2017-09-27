@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DropdownButton } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import AppItemButton from './AppItemButton';
 
@@ -48,12 +48,14 @@ const AppItemGroup = ({ title, className, pullRight, onCreateShortcut }) => (
             pullRight={pullRight}
             className={className}
         >
-            <AppItemButton
-                text="Create Shortcut"
-                title="Create Shortcut"
-                iconClass="glyphicon glyphicon-share-alt"
-                onClick={onCreateShortcut}
-            />
+            <MenuItem>
+                <AppItemButton
+                    text="Create Shortcut"
+                    title="Create Shortcut"
+                    iconClass="glyphicon glyphicon-share-alt"
+                    onClick={onCreateShortcut}
+                />
+            </MenuItem>
         </DropdownButton>
 
     </div>
