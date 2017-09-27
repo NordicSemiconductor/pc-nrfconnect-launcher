@@ -84,21 +84,35 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -191,21 +205,35 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -298,21 +326,35 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -396,21 +438,35 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -487,21 +543,35 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -578,21 +648,35 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -669,21 +753,35 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -760,21 +858,35 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             className="dropdown-menu dropdown-menu-right"
             role="menu"
           >
-            <button
-              className="btn btn-primary core-btn"
-              disabled={false}
-              onClick={[Function]}
-              title="Create Shortcut"
+            <li
+              className=""
+              role="presentation"
+              style={undefined}
             >
-              <span
-                className="glyphicon glyphicon-share-alt"
-              />
-              <span
-                className="core-btn-text"
+              <a
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="menuitem"
+                tabIndex="-1"
               >
-                Create Shortcut
-              </span>
-            </button>
+                <button
+                  className="btn btn-primary core-btn"
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Create Shortcut"
+                >
+                  <span
+                    className="glyphicon glyphicon-share-alt"
+                  />
+                  <span
+                    className="core-btn-text"
+                  >
+                    Create Shortcut
+                  </span>
+                </button>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
