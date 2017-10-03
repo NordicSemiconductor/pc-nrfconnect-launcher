@@ -100,7 +100,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -108,7 +108,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -221,7 +221,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -229,7 +229,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -342,7 +342,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -350,7 +350,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -454,7 +454,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -462,7 +462,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -559,7 +559,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -567,7 +567,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -664,7 +664,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -672,7 +672,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -769,7 +769,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -777,7 +777,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
@@ -874,7 +874,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   className="btn btn-primary core-btn"
                   disabled={false}
                   onClick={[Function]}
-                  title="Create Shortcut"
+                  title="Create a desktop shortcut for this app"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -882,7 +882,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   <span
                     className="core-btn-text"
                   >
-                    Create Shortcut
+                    Create shortcut
                   </span>
                 </button>
               </a>
