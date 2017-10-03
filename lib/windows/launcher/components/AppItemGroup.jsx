@@ -50,8 +50,8 @@ const AppItemGroup = ({ title, className, pullRight, onCreateShortcut }) => (
         >
             <MenuItem>
                 <AppItemButton
-                    text="Create Shortcut"
-                    title="Create Shortcut"
+                    text="Create shortcut"
+                    title="Create a desktop shortcut for this app"
                     iconClass="glyphicon glyphicon-share-alt"
                     onClick={onCreateShortcut}
                 />
