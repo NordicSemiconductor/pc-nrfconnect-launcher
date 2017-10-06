@@ -37,6 +37,7 @@
 'use strict';
 
 const electron = require('electron');
+const path = require('path');
 const browser = require('./browser');
 const config = require('./config');
 const settings = require('./settings');
@@ -51,8 +52,8 @@ function openLauncherWindow() {
     } else {
         launcherWindow = browser.createWindow({
             title: `nRF Connect v${config.getVersion()}`,
-            url: `file://${__dirname}/../resources/launcher.html`,
-            icon: `${__dirname}/../resources/nrfconnect.png`,
+            url: `file://${config.getElectronResourcesDir()}/launcher.html`,
+            icon: path.join(config.getElectronResourcesDir(), 'nrfconnect.png'),
             width: 670,
             height: 500,
             center: true,
@@ -76,8 +77,8 @@ function openAppWindow(app) {
     const lastWindowState = settings.loadLastWindow();
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
-        url: `file://${__dirname}/../resources/app.html?appPath=${app.path}`,
-        icon: app.iconPath ? app.iconPath : `${__dirname}/../resources/nrfconnect.png`,
+        url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${app.path}`,
+        icon: app.iconPath ? app.iconPath : path.join(config.getElectronResourcesDir(), 'nrfconnect.png'),
         x: lastWindowState.x,
         y: lastWindowState.y,
         width: lastWindowState.width,
