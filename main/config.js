@@ -42,6 +42,7 @@ const packageJson = require('../package.json');
 
 let version;
 let electronRootPath;
+let electronResourcesDir;
 let electronExePath;
 let homeDir;
 let userDataDir;
@@ -84,6 +85,7 @@ let localAppName;
 function init(argv) {
     version = packageJson.version;
     electronRootPath = electronApp.getAppPath();
+    electronResourcesDir = path.join(electronRootPath, 'resources');
     electronExePath = electronApp.getPath('exe');
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
@@ -110,6 +112,7 @@ module.exports = {
     init,
     getVersion: () => version,
     getElectronRootPath: () => electronRootPath,
+    getElectronResourcesDir: () => electronResourcesDir,
     getElectronExePath: () => electronExePath,
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
