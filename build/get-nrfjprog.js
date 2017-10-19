@@ -79,7 +79,7 @@ const PLATFORM_CONFIG = {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
         url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.1.0/nrfjprog/nRF5x-Command-Line-Tools_9_7_1_Installer.exe',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe'),
-        instructions: "WARNING: You must manually install the latest nRF5x command line tools in this platform. The installer has been left at " + DOWNLOAD_DIR
+        instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
     },
 };
 
@@ -173,7 +173,7 @@ Promise.resolve()
     })
     .then(()=>{
         if (platformConfig.instructions) {
-            console.warn(platformConfig.instructions)
+            console.warn(platformConfig.instructions);
         }
     })
     .catch(error => console.log(`Error when getting nrfjprog: ${error.message}`));
