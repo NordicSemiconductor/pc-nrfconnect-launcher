@@ -107,7 +107,7 @@
         "electron-updater": "2.0.0",
         "fs-extra": "4.0.1",
         "mustache": "2.3.0",
-        "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.1.0",
+        "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git#v2.1.1",
         "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#v1.1.0",
         "png2icons": "0.9.1",
         "semver": "5.3.0",
