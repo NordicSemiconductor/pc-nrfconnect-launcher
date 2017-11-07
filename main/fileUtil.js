@@ -44,6 +44,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const targz = require('targz');
 const chmodr = require('chmodr');
+const { mkdir, mkdirIfNotExists } = require('./mkdir');
 
 /**
  * Open the given file path and return its string contents.
@@ -278,30 +279,6 @@ function getNameFromNpmPackage(tgzFile) {
         return fileName.substring(0, lastDash);
     }
     return null;
-}
-
-function mkdir(dirPath) {
-    return new Promise((resolve, reject) => {
-        fs.mkdir(dirPath, 0o775, error => {
-            if (error) {
-                reject(new Error(`Unable to create ${dirPath}: ${error.message}`));
-            } else {
-                resolve();
-            }
-        });
-    });
-}
-
-function mkdirIfNotExists(dirPath) {
-    return new Promise((resolve, reject) => {
-        fs.stat(dirPath, error => {
-            if (error) {
-                mkdir(dirPath).then(resolve).catch(reject);
-            } else {
-                resolve();
-            }
-        });
-    });
 }
 
 function createTextFile(filePath, text) {
