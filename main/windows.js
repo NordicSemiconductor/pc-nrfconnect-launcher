@@ -107,7 +107,7 @@ function openAppWindow(app) {
         if (index > -1) {
             appWindows.splice(index, 1);
         }
-        if (appWindows.length === 0) {
+        if (appWindows.length === 0 && !(launcherWindow && launcherWindow.isVisible())) {
             electron.app.quit();
         }
     });
