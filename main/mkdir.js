@@ -34,70 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import winston from 'winston';
-import path from 'path';
-import AppTransport from './appTransport';
-import { createLogBuffer } from './logBuffer';
+'use strict';
 
-const filePrefix = new Date().toISOString().replace(/:/gi, '_');
-let logFilePath;
+const fs = require('fs');
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-const isConsoleAvailable = (() => {
-    try {
-        process.stdout.write('');
-    } catch (error) {
-        return false;
-    }
-    return true;
-})();
-
-const logFormatter = options => {
-    const timestamp = options.timestamp();
-    const level = options.level.toUpperCase();
-    const message = options.message || '';
-    return `${timestamp.toISOString()} ${level} ${message}`;
-};
-
-const logBuffer = createLogBuffer();
-
-const appTransport = new AppTransport({
-    name: 'app',
-    level: 'info',
-    onLogEntry: logBuffer.addEntry,
-});
-
-
-const transports = [
-    appTransport,
-];
-
-if (isDevelopment && isConsoleAvailable) {
-    transports.push(new winston.transports.Console({
-        name: 'console',
-        level: 'silly',
-        timestamp: () => new Date(),
-        formatter: logFormatter,
-    }));
+function mkdir(dirPath) {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(dirPath, 0o775, error => {
+            if (error) {
+                reject(new Error(`Unable to create ${dirPath}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
 }
 
-const logger = new winston.Logger({ transports });
-
-logger.addFileTransport = appLogDir => {
-    logFilePath = path.join(appLogDir, `${filePrefix}-log.txt`);
-    const fileTransport = new winston.transports.File({
-        name: 'file',
-        filename: logFilePath,
-        level: 'debug',
-        json: false,
-        timestamp: () => new Date(),
-        formatter: logFormatter,
+function mkdirIfNotExists(dirPath) {
+    return new Promise((resolve, reject) => {
+        fs.stat(dirPath, error => {
+            if (error) {
+                mkdir(dirPath).then(resolve).catch(reject);
+            } else {
+                resolve();
+            }
+        });
     });
-    logger.add(fileTransport, {}, true);
-};
+}
 
-export default {
-    logger,
-    getLogFilePath: () => logFilePath,
-    logBuffer,
+module.exports = {
+    mkdir,
+    mkdirIfNotExists,
 };
