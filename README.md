@@ -53,7 +53,7 @@ To configure nRF Connect for use behind a proxy, see [proxy settings](https://gi
 
 # Contributing
 
-Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-yggdrasil/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
+Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
 
 # Compiling from source
 
@@ -171,4 +171,4 @@ See the [license file](LICENSE) for details.
 # Feedback
 
 * Ask questions on [DevZone Questions](https://devzone.nordicsemi.com)
-* File code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-yggdrasil/issues)
+* File code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues)
