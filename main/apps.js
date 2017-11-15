@@ -39,6 +39,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const semver = require('semver');
+const { dialog } = require('electron');
 const config = require('./config');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
@@ -113,6 +114,34 @@ function generateUpdatesJsonFile() {
 }
 
 /**
+ * Show confirmation dialog about existing app directory to be removed.
+ *
+ * @param {string} tgzFilePath Path to the tgz file to install.
+ * @param {string} appPath Path of the existing app directory.
+ * @returns {Promise} promise that resolves when existing app has been removed.
+ */
+function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
+    return new Promise((resolve, reject) => {
+        dialog.showMessageBox({
+            type: 'question',
+            title: 'Existing app directory',
+            message: `Tried to extract archive ${tgzFilePath}, ` +
+                `but app directory ${appPath} already exists.\n\n` +
+                'Do you want to remove existing app in order to extract the archive?',
+            buttons: ['Remove', 'Cancel'],
+        }, btnIndex => {
+            if (btnIndex === 1) {
+                return reject(new Error(`Tried to extract archive ${tgzFilePath}, ` +
+                    `but app directory ${appPath} already exists. Either delete the ` +
+                    'app directory so that the archive can be extracted, or delete ' +
+                    'the archive file.'));
+            }
+            return fs.remove(appPath).then(resolve);
+        });
+    });
+}
+
+/**
  * Extract the given *.tgz archive to the apps local directory.
  *
  * @param {string} tgzFilePath Path to the tgz file to install.
@@ -128,10 +157,7 @@ function installLocalAppArchive(tgzFilePath) {
     return fs.exists(appPath)
         .then(isInstalled => {
             if (isInstalled) {
-                return Promise.reject(new Error(`Tried to extract archive ${tgzFilePath} ,` +
-                    `but app directory ${appPath} already exists. Either delete the ` +
-                    'app directory so that the archive can be extracted, or delete ' +
-                    'the archive file.'));
+                return confirmAndRemoveOldLocalApp(tgzFilePath, appPath);
             }
             return Promise.resolve();
         })
