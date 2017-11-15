@@ -121,7 +121,7 @@ function generateUpdatesJsonFile() {
  * @returns {Promise} promise that resolves when existing app has been removed.
  */
 function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         dialog.showMessageBox({
             type: 'question',
             title: 'Existing app directory',
@@ -130,13 +130,10 @@ function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
                 'Do you want to remove existing app in order to extract the archive?',
             buttons: ['Remove', 'Cancel'],
         }, btnIndex => {
-            if (btnIndex === 1) {
-                return reject(new Error(`Tried to extract archive ${tgzFilePath}, ` +
-                    `but app directory ${appPath} already exists. Either delete the ` +
-                    'app directory so that the archive can be extracted, or delete ' +
-                    'the archive file.'));
+            if (btnIndex === 0) {
+                return fs.remove(appPath).then(resolve);
             }
-            return fs.remove(appPath).then(resolve);
+            return resolve();
         });
     });
 }
@@ -161,9 +158,15 @@ function installLocalAppArchive(tgzFilePath) {
             }
             return Promise.resolve();
         })
-        .then(() => fileUtil.mkdir(appPath))
-        .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
-        .then(() => fileUtil.deleteFile(tgzFilePath));
+        .then(() => fs.exists(appPath))
+        .then(isInstalled => {
+            if (!isInstalled) {
+                return fileUtil.mkdir(appPath)
+                    .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+                    .then(() => fileUtil.deleteFile(tgzFilePath));
+            }
+            return Promise.resolve();
+        });
 }
 
 /**
