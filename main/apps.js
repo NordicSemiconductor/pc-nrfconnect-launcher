@@ -118,7 +118,7 @@ function generateUpdatesJsonFile() {
  *
  * @param {string} tgzFilePath Path to the tgz file to install.
  * @param {string} appPath Path of the existing app directory.
- * @returns {Promise} promise that resolves when existing app has been removed.
+ * @returns {Promise} promise that resolves when all is done.
  */
 function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
     return new Promise(resolve => {
