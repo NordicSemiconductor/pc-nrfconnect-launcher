@@ -120,7 +120,8 @@
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
             "\\.(css|less)$": "<rootDir>/mocks/styleMock.js",
-            "\\.(js|jsx)$": "<rootDir>/mocks/electronMock.js"
+            "electron": "<rootDir>/mocks/electronMock.js",
+            "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js"
         }
     }
 }
