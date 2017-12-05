@@ -52,6 +52,14 @@ const UpdateCheckSuccessDialog = ({
                 'One or more updates are available. Go to the Add/remove apps screen to upgrade.' :
                 'All apps are up to date.'
         }
+        linkText={
+            isAppUpdateAvailable ? 'Check release notes here.' : ''
+        }
+        linkAddress={
+            isAppUpdateAvailable ?
+                'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases' :
+                ''
+        }
         onOk={onOk}
     />
 );

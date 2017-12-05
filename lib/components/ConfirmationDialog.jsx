@@ -34,6 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable react/jsx-no-target-blank */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -41,35 +43,50 @@ import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from '
 import Spinner from './Spinner';
 
 const ConfirmationDialog = ({
-    isVisible, isInProgress, title, text, onOk, onCancel, okButtonText, cancelButtonText,
-}) => (
-    <div>
-        <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
-            <ModalHeader closeButton={!isInProgress}>
-                <ModalTitle>{title}</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-                <p>{text}</p>
-            </ModalBody>
-            <ModalFooter>
-                { isInProgress ? <Spinner /> : null }
-                &nbsp;
-                <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
-                {
-                    onCancel &&
-                        <Button onClick={onCancel} disabled={isInProgress}>
-                            {cancelButtonText}
-                        </Button>
-                }
-            </ModalFooter>
-        </Modal>
-    </div>
+        isVisible,
+        isInProgress,
+        title,
+        text,
+        onOk,
+        onCancel,
+        okButtonText,
+        cancelButtonText,
+        linkText,
+        linkAddress }) => (
+            <div>
+                <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
+                    <ModalHeader closeButton={!isInProgress}>
+                        <ModalTitle>{title}</ModalTitle>
+                    </ModalHeader>
+                    <ModalBody>
+                        <p>{text}</p>
+                        { linkAddress ?
+                            (<a href={linkAddress} target="_blank">
+                                {linkText || linkAddress} </a>) :
+                            ('')
+                        }
+                    </ModalBody>
+                    <ModalFooter>
+                        { isInProgress ? <Spinner /> : null }
+                        &nbsp;
+                        <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
+                        {
+                            onCancel &&
+                                <Button onClick={onCancel} disabled={isInProgress}>
+                                    {cancelButtonText}
+                                </Button>
+                        }
+                    </ModalFooter>
+                </Modal>
+            </div>
 );
 
 ConfirmationDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     title: PropTypes.string,
     text: PropTypes.string.isRequired,
+    linkText: PropTypes.string,
+    linkAddress: PropTypes.string,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     okButtonText: PropTypes.string,
@@ -79,6 +96,8 @@ ConfirmationDialog.propTypes = {
 
 ConfirmationDialog.defaultProps = {
     title: 'Confirm',
+    linkText: null,
+    linkAddress: null,
     isInProgress: false,
     onCancel: null,
     okButtonText: 'OK',
