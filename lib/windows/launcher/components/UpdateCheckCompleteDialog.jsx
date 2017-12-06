@@ -53,7 +53,7 @@ const UpdateCheckSuccessDialog = ({
                 'All apps are up to date.'
         }
         linkText={
-            isAppUpdateAvailable ? 'Check release notes here.' : ''
+            isAppUpdateAvailable ? 'Check release notes.' : ''
         }
         linkAddress={
             isAppUpdateAvailable ?
