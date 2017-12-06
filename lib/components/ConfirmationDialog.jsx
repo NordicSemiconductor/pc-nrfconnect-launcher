@@ -34,8 +34,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable react/jsx-no-target-blank */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -52,7 +50,8 @@ const ConfirmationDialog = ({
         okButtonText,
         cancelButtonText,
         linkText,
-        linkAddress }) => (
+        linkAddress,
+        }) => (
             <div>
                 <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
                     <ModalHeader closeButton={!isInProgress}>
@@ -60,10 +59,10 @@ const ConfirmationDialog = ({
                     </ModalHeader>
                     <ModalBody>
                         <p>{text}</p>
-                        { linkAddress ?
-                            (<a href={linkAddress} target="_blank">
-                                {linkText || linkAddress} </a>) :
-                            ('')
+                        {
+                            linkAddress &&
+                            <a href={linkAddress} target="_blank" rel="noopener noreferrer">
+                                {linkText || linkAddress} </a>
                         }
                     </ModalBody>
                     <ModalFooter>
