@@ -55,6 +55,7 @@ exports[`SettingsView should render check for updates completed, with everything
         <p>
           All apps are up to date.
         </p>
+        
       </ModalBody>
       <ModalFooter>
          
@@ -125,6 +126,14 @@ exports[`SettingsView should render check for updates completed, with updates av
         <p>
           One or more updates are available. Go to the Add/remove apps screen to upgrade.
         </p>
+        <a
+          href="https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Release notes
+           
+        </a>
       </ModalBody>
       <ModalFooter>
          
