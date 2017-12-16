@@ -75,6 +75,7 @@ LaunchableAppItem.propTypes = {
         currentVersion: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired,
         iconPath: PropTypes.string,
+        shortcutIconPath: PropTypes.string,
         isOfficial: PropTypes.bool.isRequired,
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
