@@ -257,6 +257,16 @@ function readAppInfo(appPath) {
     return fileUtil.readJsonFile(packageJsonPath)
         .then(packageJson => {
             const iconPath = path.join(appPath, 'icon.png');
+
+            let shortcutIconPath;
+            if(process.platform === 'win32') {
+                shortcutIconPath = path.join(appPath, 'icon.ico');
+            } else if(process.platform === 'darwin') {
+                shortcutIconPath = path.join(appPath, 'icon.icns');
+            } else {
+                shortcutIconPath = iconPath;
+            }
+
             return {
                 name: packageJson.name,
                 displayName: packageJson.displayName,
@@ -264,6 +274,7 @@ function readAppInfo(appPath) {
                 description: packageJson.description,
                 path: appPath,
                 iconPath: fs.existsSync(iconPath) ? iconPath : null,
+                shortcutIconPath: fs.existsSync(shortcutIconPath) ? shortcutIconPath : null,
                 isOfficial: !appPath.startsWith(config.getAppsLocalDir()),
                 engineVersion: getEngineVersion(packageJson),
                 isSupportedEngine: isSupportedEngine(config.getVersion(), packageJson),
