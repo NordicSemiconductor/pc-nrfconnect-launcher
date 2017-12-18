@@ -257,12 +257,15 @@ function readAppInfo(appPath) {
     return fileUtil.readJsonFile(packageJsonPath)
         .then(packageJson => {
             const resourcesPath = path.join(appPath, 'resources');
-            const iconPath = path.join(resourcesPath, 'icon.png');
+            let iconPath = path.join(resourcesPath, 'icon.png');
+            if (!fs.existsSync(iconPath)) {
+                iconPath = path.join(appPath, 'icon.png');
+            }
 
             let shortcutIconPath;
-            if(process.platform === 'win32') {
+            if (process.platform === 'win32') {
                 shortcutIconPath = path.join(resourcesPath, 'icon.ico');
-            } else if(process.platform === 'darwin') {
+            } else if (process.platform === 'darwin') {
                 shortcutIconPath = path.join(resourcesPath, 'icon.icns');
             }
             if (!fs.existsSync(shortcutIconPath)) {
