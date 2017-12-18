@@ -109,6 +109,7 @@
         "mustache": "2.3.0",
         "pc-ble-driver-js": "2.2.2",
         "pc-nrfjprog-js": "1.2.0",
+        "png2icons": "0.9.1",
         "semver": "5.3.0",
         "serialport": "4.0.7",
         "shasum": "1.0.2",
