@@ -256,14 +256,16 @@ function readAppInfo(appPath) {
     const packageJsonPath = path.join(appPath, 'package.json');
     return fileUtil.readJsonFile(packageJsonPath)
         .then(packageJson => {
-            const iconPath = path.join(appPath, 'icon.png');
+            const resourcesPath = path.join(appPath, 'resources');
+            const iconPath = path.join(resourcesPath, 'icon.png');
 
             let shortcutIconPath;
             if(process.platform === 'win32') {
-                shortcutIconPath = path.join(appPath, 'icon.ico');
+                shortcutIconPath = path.join(resourcesPath, 'icon.ico');
             } else if(process.platform === 'darwin') {
-                shortcutIconPath = path.join(appPath, 'icon.icns');
-            } else {
+                shortcutIconPath = path.join(resourcesPath, 'icon.icns');
+            }
+            if (!fs.existsSync(shortcutIconPath)) {
                 shortcutIconPath = iconPath;
             }
 
