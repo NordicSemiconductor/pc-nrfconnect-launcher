@@ -55,7 +55,7 @@ To configure nRF Connect for use behind a proxy, see [proxy settings](https://gi
 
 Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
 
-# Compiling from source
+# Building from source
 
 ## Dependencies
 
@@ -63,12 +63,10 @@ To build this project you will need to install the following tools:
 
 * Node.js (>=6.9)
 * npm (>=3.7.0)
-* CMake (>=2.8.12)
-* A C/C++ toolchain (see [Building Boost](#building-boost) for description of toolchain requirements)
 
-Since building nRF Connect also involves building *pc-ble-driver-js*, please refer to the described requirements in
+### Compilation of native modules
 
-* [pc-ble-driver-js README](https://github.com/NordicSemiconductor/pc-ble-driver-js) for procedures and description of required tools.
+The project depends on [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js) and [pc-nrfjprog-js](https://github.com/NordicSemiconductor/pc-nrfjprog-js) which are native modules. Pre-compiled binaries for these modules are provided for recent Node.js versions on Windows, macOS, and Linux. However, if binaries do not exist for your platform/Node.js version, then refer to the [pc-ble-driver-js README](https://github.com/NordicSemiconductor/pc-ble-driver-js) which describes requirements for compilation.
 
 ### Linux
 
@@ -82,17 +80,9 @@ Install all the required tools and configurations using Microsoft's windows-buil
 
     npm install --global --production windows-build-tools
 
-## Building Boost
+## Building
 
-Before building nRF Connect you will need to have Boost installed and some of its libraries statically compiled. To install and compile Boost, please follow the instructions here:
-
-[Building Boost](https://github.com/NordicSemiconductor/pc-ble-driver/blob/master/Installation.md#building-boost)
-
-Note: Make sure you have built the Boost libraries for the architecture (32 or 64-bit) required by your Node installation.
-
-## Compiling
-
-When all required tools and environment variables have been installed and set, you are ready to start the compilation. Run the following command from the command line, standing in the root folder of the repository:
+When all required tools have been installed, you are ready to build the project. Run the following command from the command line, standing in the root folder of the repository:
 
     npm install
 
