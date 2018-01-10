@@ -121,3 +121,11 @@ ipcMain.on('show-about-dialog', () => {
         }, () => {});
     }
 });
+
+ipcMain.on('get-app-details', event => {
+    const appWindow = windows.getFocusedAppWindow();
+    if (appWindow) {
+        const details = Object.assign({ coreVersion: config.getVersion() }, appWindow.app);
+        event.sender.send('app-details', details);
+    }
+});
