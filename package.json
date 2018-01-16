@@ -52,6 +52,7 @@
         },
         "linux": {
             "target": [
+                "AppImage",
                 "tar.gz"
             ],
             "extraFiles": [
@@ -60,10 +61,12 @@
                     "to": ".",
                     "filter": "*.so*"
                 }
-            ]
+            ],
+            "category": "Development"
         },
         "mac": {
             "category": "public.app-category.developer-tools",
+            "artifactName": "${name}-${version}-${os}.${ext}",
             "extraFiles": [
                 {
                     "from": "build/nrfjprog/unpacked/nrfjprog",
@@ -72,6 +75,9 @@
                 }
             ]
         },
+        "dmg": {
+            "artifactName": "${name}-${version}.${ext}"
+        },
         "win": {
             "target": [
                 "nsis"
@@ -79,7 +85,8 @@
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
-            "include": "build/installer.nsh"
+            "include": "build/installer.nsh",
+            "artifactName": "${name}-setup-${version}.${ext}"
         }
     },
     "devDependencies": {
@@ -87,7 +94,7 @@
         "babel-polyfill": "6.23.0",
         "bootstrap": "3.3.7",
         "electron": "1.6.7",
-        "electron-builder": "18.5.1",
+        "electron-builder": "19.53.6",
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
@@ -105,7 +112,7 @@
         "chmodr": "1.0.2",
         "electron-builder-http": "18.5.1",
         "electron-log": "2.2.6",
-        "electron-updater": "2.0.0",
+        "electron-updater": "2.18.2",
         "fs-extra": "4.0.1",
         "mustache": "2.3.0",
         "pc-ble-driver-js": "2.2.2",
