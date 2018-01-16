@@ -37,6 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../../../components/Logo';
+import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
@@ -47,11 +48,16 @@ const DecoratedLogo = decorate(Logo, 'Logo');
 const NavBar = ({
     cssClass,
     navSectionCssClass,
+    selectorType,
 }) => (
     <div className={cssClass}>
         <MainMenuContainer />
         <div className={navSectionCssClass}>
-            <SerialPortSelectorContainer />
+            {
+                selectorType === 'device' ?
+                    <DeviceSelectorContainer /> :
+                    <SerialPortSelectorContainer />
+            }
         </div>
         <NavMenuContainer />
         <DecoratedLogo />
@@ -61,6 +67,7 @@ const NavBar = ({
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
+    selectorType: PropTypes.string.isRequired,
 };
 
 NavBar.defaultProps = {
