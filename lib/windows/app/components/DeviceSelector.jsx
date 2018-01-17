@@ -42,6 +42,9 @@ import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import { Iterable } from 'immutable';
 
+const VENDOR_ID_NORDIC = 0x1915;
+const VENDOR_ID_SEGGER = 0x1366;
+
 /**
  * Default filtering of what to show in the device selector. Can be
  * overridden by passing a custom `filter` function as a prop to
@@ -50,8 +53,9 @@ import { Iterable } from 'immutable';
  * @param {Object} device The device to be filtered.
  * @returns {boolean} True if the device should be shown, false if not.
  */
-function filterDevicesWithSerialNumber(device) {
-    return device && !!device.serialNumber;
+function deviceFilter(device) {
+    return device && !!device.serialNumber &&
+        [VENDOR_ID_NORDIC, VENDOR_ID_SEGGER].includes(device.vendorId);
 }
 
 /**
@@ -315,7 +319,7 @@ DeviceSelector.defaultProps = {
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
     menuItemHeaderCssClass: 'core-device-selector-item-header',
-    filter: filterDevicesWithSerialNumber,
+    filter: deviceFilter,
     deviceNameParser: getDeviceDisplayName,
     deviceDetailsParser: getDeviceDisplayDetails,
     deviceKeyParser: getDeviceKey,

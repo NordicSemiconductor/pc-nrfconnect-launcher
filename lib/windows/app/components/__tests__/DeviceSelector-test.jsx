@@ -81,10 +81,12 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
                         type: 'serialport',
                         comName: '/dev/tty1',
+                        vendorId: 0x1366,
                         serialNumber: '456789',
                     },
                 ]}
@@ -104,12 +106,14 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
                         type: 'usb',
                         busNumber: 1,
                         deviceAddress: 1,
                         serialNumber: '456789',
+                        vendorId: 0x1366,
                         product: 'J-Link',
                     },
                 ]}
@@ -129,10 +133,42 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
                         type: 'serialport',
                         comName: '/dev/tty1',
+                        vendorId: 0x1366,
+                    },
+                ]}
+                isExpanded
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render only Nordic Semiconductor and Segger devices by default', () => {
+        expect(renderer.create(
+            <DeviceSelector
+                devices={[
+                    {
+                        type: 'serialport',
+                        comName: '/dev/tty0',
+                        vendorId: 0x1915,
+                        serialNumber: '123456',
+                    }, {
+                        type: 'serialport',
+                        comName: '/dev/tty1',
+                        serialNumber: '456789',
+                        vendorId: 0x1366,
+                    }, {
+                        type: 'serialport',
+                        comName: '/dev/tty2',
+                        serialNumber: '345678',
+                        vendorId: 0x1337,
                     },
                 ]}
                 isExpanded
@@ -152,12 +188,13 @@ describe('DeviceSelector', () => {
                         type: 'serialport',
                         comName: '/dev/tty0',
                         serialNumber: '123456',
-                        vendorId: '0x1234',
+                        vendorId: 0x1366,
                     }, {
                         type: 'usb',
                         busNumber: 1,
                         deviceAddress: 1,
                         serialNumber: '456789',
+                        vendorId: 0x1366,
                     },
                 ]}
                 isExpanded
@@ -177,6 +214,7 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                         manufacturer: 'SEGGER',
                     }, {
@@ -184,6 +222,7 @@ describe('DeviceSelector', () => {
                         busNumber: 1,
                         deviceAddress: 1,
                         serialNumber: '456789',
+                        vendorId: 0x1915,
                         manufacturer: 'Nordic Semiconductor',
                     },
                 ]}
@@ -204,11 +243,13 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
                         type: 'usb',
                         busNumber: 1,
                         deviceAddress: 1,
+                        vendorId: 0x1366,
                         serialNumber: '456789',
                     },
                 ]}
@@ -216,6 +257,7 @@ describe('DeviceSelector', () => {
                     type: 'usb',
                     busNumber: 1,
                     deviceAddress: 1,
+                    vendorId: 0x1366,
                     serialNumber: '456789',
                 }}
                 isExpanded
@@ -234,6 +276,7 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     },
                 ]}
@@ -254,12 +297,14 @@ describe('DeviceSelector', () => {
                     {
                         type: 'serialport',
                         comName: '/dev/tty0',
+                        vendorId: 0x1366,
                         serialNumber: '123456',
                     },
                 ]}
                 selectedDevice={{
                     type: 'serialport',
                     comName: '/dev/tty0',
+                    vendorId: 0x1366,
                     serialNumber: '123456',
                 }}
                 isExpanded
