@@ -74,47 +74,22 @@ describe('DeviceSelector', () => {
         )).toMatchSnapshot();
     });
 
-    it('should render two serialport devices', () => {
+    it('should render two devices', () => {
         expect(renderer.create(
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 2,
                         comName: '/dev/tty1',
                         vendorId: 0x1366,
                         serialNumber: '456789',
-                    },
-                ]}
-                isExpanded
-                toggleExpanded={() => {}}
-                onSelect={() => {}}
-                onDeselect={() => {}}
-                bindHotkey={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
-    it('should render one serialport and one usb device', () => {
-        expect(renderer.create(
-            <DeviceSelector
-                devices={[
-                    {
-                        type: 'serialport',
-                        comName: '/dev/tty0',
-                        vendorId: 0x1366,
-                        serialNumber: '123456',
-                    }, {
-                        type: 'usb',
-                        busNumber: 1,
-                        deviceAddress: 1,
-                        serialNumber: '456789',
-                        vendorId: 0x1366,
-                        product: 'J-Link',
                     },
                 ]}
                 isExpanded
@@ -131,12 +106,14 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 2,
                         comName: '/dev/tty1',
                         vendorId: 0x1366,
                     },
@@ -155,17 +132,20 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1915,
                         serialNumber: '123456',
                     }, {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 2,
                         comName: '/dev/tty1',
                         serialNumber: '456789',
                         vendorId: 0x1366,
                     }, {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 3,
                         comName: '/dev/tty2',
                         serialNumber: '345678',
                         vendorId: 0x1337,
@@ -185,14 +165,14 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: 0x1366,
                     }, {
-                        type: 'usb',
                         busNumber: 1,
-                        deviceAddress: 1,
+                        deviceAddress: 2,
                         serialNumber: '456789',
                         vendorId: 0x1366,
                     },
@@ -202,7 +182,7 @@ describe('DeviceSelector', () => {
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
-                filter={device => device.type === 'usb'}
+                filter={device => !!device.comName}
             />,
         )).toMatchSnapshot();
     });
@@ -212,15 +192,15 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
                         manufacturer: 'SEGGER',
                     }, {
-                        type: 'usb',
                         busNumber: 1,
-                        deviceAddress: 1,
+                        deviceAddress: 2,
                         serialNumber: '456789',
                         vendorId: 0x1915,
                         manufacturer: 'Nordic Semiconductor',
@@ -241,23 +221,24 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
                     }, {
-                        type: 'usb',
                         busNumber: 1,
-                        deviceAddress: 1,
+                        deviceAddress: 2,
                         vendorId: 0x1366,
+                        comName: '/dev/tty1',
                         serialNumber: '456789',
                     },
                 ]}
                 selectedDevice={{
-                    type: 'usb',
                     busNumber: 1,
-                    deviceAddress: 1,
+                    deviceAddress: 2,
                     vendorId: 0x1366,
+                    comName: '/dev/tty1',
                     serialNumber: '456789',
                 }}
                 isExpanded
@@ -274,7 +255,8 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
@@ -295,14 +277,16 @@ describe('DeviceSelector', () => {
             <DeviceSelector
                 devices={[
                     {
-                        type: 'serialport',
+                        busNumber: 1,
+                        deviceAddress: 1,
                         comName: '/dev/tty0',
                         vendorId: 0x1366,
                         serialNumber: '123456',
                     },
                 ]}
                 selectedDevice={{
-                    type: 'serialport',
+                    busNumber: 1,
+                    deviceAddress: 1,
                     comName: '/dev/tty0',
                     vendorId: 0x1366,
                     serialNumber: '123456',

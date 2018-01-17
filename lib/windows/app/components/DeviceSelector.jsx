@@ -78,12 +78,7 @@ function getDeviceDisplayName(device) {
  * @returns {string} The device details to display.
  */
 function getDeviceDisplayDetails(device) {
-    if (device.type === 'usb') {
-        return device.product;
-    } else if (device.type === 'serialport') {
-        return device.comName;
-    }
-    return 'unknown device';
+    return device.comName;
 }
 
 /**
@@ -95,20 +90,17 @@ function getDeviceDisplayDetails(device) {
  * @returns {string} The device key to use.
  */
 function getDeviceKey(device) {
-    if (device.type === 'usb') {
-        return `${device.type}-${device.busNumber}-${device.deviceAddress}`;
-    }
-    return `${device.type}-${device.serialNumber}`;
+    return `usb-${device.busNumber}-${device.deviceAddress}`;
 }
 
 /**
  * Component that displays a list of available devices, and allows the
  * user to select and deselect a device.
  *
- * The component receives a list of all available devices (serialports
- * and libusb devices), and applies a filter so that only those devices
- * that the app supports are shown. Apps can apply their own filter by
- * passing a custom `filter` function as a prop.
+ * The component receives a list of all available devices, and applies
+ * a filter so that only those devices that the app supports are shown.
+ * Apps can apply their own filter by passing a custom `filter` function
+ * as a prop.
  */
 class DeviceSelector extends React.Component {
     componentDidMount() {
@@ -180,37 +172,20 @@ class DeviceSelector extends React.Component {
     }
 
     /**
-     * Render device menu items with a given header title. Only includes
-     * devices that match the given device type.
+     * Render device menu items.
      *
-     * @param {string} header The title to show above the items.
-     * @param {string} deviceType The device type to show (usb or serialport).
      * @returns {*} Array of menu item elements.
      */
-    renderDeviceItems(header, deviceType) {
+    renderDeviceItems() {
         const {
             devices,
             isLoading,
             filter,
-            menuItemHeaderCssClass,
         } = this.props;
 
         if (!isLoading) {
-            const filteredDevices = devices.filter(filter)
-                .filter(device => device.type === deviceType);
-            if (filteredDevices.size > 0 || filteredDevices.length > 0) {
-                const items = [
-                    <MenuItem
-                        header
-                        key={`menu-item-header-${deviceType}`}
-                        className={menuItemHeaderCssClass}
-                    >
-                        {header}
-                    </MenuItem>,
-                ];
-                items.push(filteredDevices.map(device => this.renderDeviceItem(device)));
-                return items;
-            }
+            return devices.filter(filter)
+                .map(device => this.renderDeviceItem(device));
         }
         return null;
     }
@@ -269,8 +244,7 @@ class DeviceSelector extends React.Component {
                             id="device-selector-list"
                             className={dropdownMenuCssClass}
                         >
-                            { this.renderDeviceItems('Serial ports', 'serialport') }
-                            { this.renderDeviceItems('USB devices', 'usb') }
+                            { this.renderDeviceItems() }
                             { this.renderCloseItem() }
                         </DropdownMenu>
                     </Dropdown>
@@ -300,7 +274,6 @@ DeviceSelector.propTypes = {
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
-    menuItemHeaderCssClass: PropTypes.string,
     filter: PropTypes.func,
     deviceNameParser: PropTypes.func,
     deviceDetailsParser: PropTypes.func,
@@ -318,7 +291,6 @@ DeviceSelector.defaultProps = {
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
-    menuItemHeaderCssClass: 'core-device-selector-item-header',
     filter: deviceFilter,
     deviceNameParser: getDeviceDisplayName,
     deviceDetailsParser: getDeviceDisplayDetails,
