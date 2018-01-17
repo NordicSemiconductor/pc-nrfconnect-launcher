@@ -21,14 +21,8 @@ exports[`DeviceSelector should render devices with custom device details 1`] = `
         id="device-selector-list"
       >
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
+          eventKey="usb-1-1"
           onSelect={[Function]}
         >
           <div>
@@ -41,14 +35,8 @@ exports[`DeviceSelector should render devices with custom device details 1`] = `
           </div>
         </MenuItem>
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          USB devices
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="usb-1-1"
+          eventKey="usb-1-2"
           onSelect={[Function]}
         >
           <div>
@@ -87,18 +75,17 @@ exports[`DeviceSelector should render devices with custom filter 1`] = `
         id="device-selector-list"
       >
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          USB devices
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
           eventKey="usb-1-1"
           onSelect={[Function]}
         >
           <div>
-            456789
+            123456
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty0
           </div>
         </MenuItem>
       </DropdownMenu>
@@ -207,72 +194,6 @@ exports[`DeviceSelector should render empty list while loading and device is sel
 </span>
 `;
 
-exports[`DeviceSelector should render one serialport and one usb device 1`] = `
-<span
-  title="Select device (Alt+P)"
->
-  <div
-    className="core-padded-row"
-  >
-    <Dropdown
-      id="device-selector"
-      onToggle={[Function]}
-      open={true}
-    >
-      <DropdownToggle
-        className="core-device-selector core-btn btn-primary"
-        title="Select device"
-      />
-      <DropdownMenu
-        className="core-dropdown-menu"
-        id="device-selector-list"
-      >
-        <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
-          onSelect={[Function]}
-        >
-          <div>
-            123456
-          </div>
-          <div
-            className="core-device-selector-item-details"
-          >
-            /dev/tty0
-          </div>
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          USB devices
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item btn-primary"
-          eventKey="usb-1-1"
-          onSelect={[Function]}
-        >
-          <div>
-            456789
-          </div>
-          <div
-            className="core-device-selector-item-details"
-          >
-            J-Link
-          </div>
-        </MenuItem>
-      </DropdownMenu>
-    </Dropdown>
-  </div>
-</span>
-`;
-
 exports[`DeviceSelector should render only Nordic Semiconductor and Segger devices by default 1`] = `
 <span
   title="Select device (Alt+P)"
@@ -294,14 +215,8 @@ exports[`DeviceSelector should render only Nordic Semiconductor and Segger devic
         id="device-selector-list"
       >
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
+          eventKey="usb-1-1"
           onSelect={[Function]}
         >
           <div>
@@ -315,7 +230,7 @@ exports[`DeviceSelector should render only Nordic Semiconductor and Segger devic
         </MenuItem>
         <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="serialport-456789"
+          eventKey="usb-1-2"
           onSelect={[Function]}
         >
           <div>
@@ -354,14 +269,8 @@ exports[`DeviceSelector should render only devices that have a serial number by 
         id="device-selector-list"
       >
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
+          eventKey="usb-1-1"
           onSelect={[Function]}
         >
           <div>
@@ -371,6 +280,60 @@ exports[`DeviceSelector should render only devices that have a serial number by 
             className="core-device-selector-item-details"
           >
             /dev/tty0
+          </div>
+        </MenuItem>
+      </DropdownMenu>
+    </Dropdown>
+  </div>
+</span>
+`;
+
+exports[`DeviceSelector should render two devices 1`] = `
+<span
+  title="Select device (Alt+P)"
+>
+  <div
+    className="core-padded-row"
+  >
+    <Dropdown
+      id="device-selector"
+      onToggle={[Function]}
+      open={true}
+    >
+      <DropdownToggle
+        className="core-device-selector core-btn btn-primary"
+        title="Select device"
+      />
+      <DropdownMenu
+        className="core-dropdown-menu"
+        id="device-selector-list"
+      >
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-1"
+          onSelect={[Function]}
+        >
+          <div>
+            123456
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty0
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-2"
+          onSelect={[Function]}
+        >
+          <div>
+            456789
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty1
           </div>
         </MenuItem>
       </DropdownMenu>
@@ -400,87 +363,11 @@ exports[`DeviceSelector should render two devices, one selected 1`] = `
         id="device-selector-list"
       >
         <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
-          onSelect={[Function]}
-        >
-          <div>
-            123456
-          </div>
-          <div
-            className="core-device-selector-item-details"
-          >
-            /dev/tty0
-          </div>
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          USB devices
-        </MenuItem>
-        <MenuItem
           className="core-device-selector-item btn-primary"
           eventKey="usb-1-1"
           onSelect={[Function]}
         >
           <div>
-            456789
-          </div>
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item btn-primary"
-          eventKey="Close device"
-          onSelect={[Function]}
-        >
-          <div>
-            Close device
-          </div>
-        </MenuItem>
-      </DropdownMenu>
-    </Dropdown>
-  </div>
-</span>
-`;
-
-exports[`DeviceSelector should render two serialport devices 1`] = `
-<span
-  title="Select device (Alt+P)"
->
-  <div
-    className="core-padded-row"
-  >
-    <Dropdown
-      id="device-selector"
-      onToggle={[Function]}
-      open={true}
-    >
-      <DropdownToggle
-        className="core-device-selector core-btn btn-primary"
-        title="Select device"
-      />
-      <DropdownMenu
-        className="core-dropdown-menu"
-        id="device-selector-list"
-      >
-        <MenuItem
-          className="core-device-selector-item-header"
-          header={true}
-        >
-          Serial ports
-        </MenuItem>
-        <MenuItem
-          className="core-device-selector-item btn-primary"
-          eventKey="serialport-123456"
-          onSelect={[Function]}
-        >
-          <div>
             123456
           </div>
           <div
@@ -491,7 +378,7 @@ exports[`DeviceSelector should render two serialport devices 1`] = `
         </MenuItem>
         <MenuItem
           className="core-device-selector-item btn-primary"
-          eventKey="serialport-456789"
+          eventKey="usb-1-2"
           onSelect={[Function]}
         >
           <div>
@@ -501,6 +388,15 @@ exports[`DeviceSelector should render two serialport devices 1`] = `
             className="core-device-selector-item-details"
           >
             /dev/tty1
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="Close device"
+          onSelect={[Function]}
+        >
+          <div>
+            Close device
           </div>
         </MenuItem>
       </DropdownMenu>
