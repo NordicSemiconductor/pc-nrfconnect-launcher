@@ -1,5 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DeviceSelector should order devices by custom order 1`] = `
+<span
+  title="Select device (Alt+P)"
+>
+  <div
+    className="core-padded-row"
+  >
+    <Dropdown
+      id="device-selector"
+      onToggle={[Function]}
+      open={true}
+    >
+      <DropdownToggle
+        className="core-device-selector core-btn btn-primary"
+        title="Select device"
+      />
+      <DropdownMenu
+        className="core-dropdown-menu"
+        id="device-selector-list"
+      >
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-2"
+          onSelect={[Function]}
+        >
+          <div>
+            123456
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty1
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-3"
+          onSelect={[Function]}
+        >
+          <div>
+            678901
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty2
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-1"
+          onSelect={[Function]}
+        >
+          <div>
+            456789
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty3
+          </div>
+        </MenuItem>
+      </DropdownMenu>
+    </Dropdown>
+  </div>
+</span>
+`;
+
+exports[`DeviceSelector should order devices by serial number by default 1`] = `
+<span
+  title="Select device (Alt+P)"
+>
+  <div
+    className="core-padded-row"
+  >
+    <Dropdown
+      id="device-selector"
+      onToggle={[Function]}
+      open={true}
+    >
+      <DropdownToggle
+        className="core-device-selector core-btn btn-primary"
+        title="Select device"
+      />
+      <DropdownMenu
+        className="core-dropdown-menu"
+        id="device-selector-list"
+      >
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-2"
+          onSelect={[Function]}
+        >
+          <div>
+            123456
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-1"
+          onSelect={[Function]}
+        >
+          <div>
+            456789
+          </div>
+          <div
+            className="core-device-selector-item-details"
+          >
+            /dev/tty0
+          </div>
+        </MenuItem>
+        <MenuItem
+          className="core-device-selector-item btn-primary"
+          eventKey="usb-1-3"
+          onSelect={[Function]}
+        >
+          <div>
+            678901
+          </div>
+        </MenuItem>
+      </DropdownMenu>
+    </Dropdown>
+  </div>
+</span>
+`;
+
 exports[`DeviceSelector should render devices with custom device details 1`] = `
 <span
   title="Select device (Alt+P)"
@@ -390,6 +516,9 @@ exports[`DeviceSelector should render two devices, one selected 1`] = `
             /dev/tty1
           </div>
         </MenuItem>
+        <MenuItem
+          divider={true}
+        />
         <MenuItem
           className="core-device-selector-item btn-primary"
           eventKey="Close device"

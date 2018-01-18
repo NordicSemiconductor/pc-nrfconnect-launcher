@@ -228,15 +228,17 @@ class DeviceSelector extends React.Component {
         } = this.props;
 
         if (selectedDevice && !isLoading) {
-            return (
+            return ([
+                <MenuItem key="close-device-divider" divider />,
                 <MenuItem
+                    key="close-device"
                     className={menuItemCssClass}
                     eventKey="Close device"
                     onSelect={onDeselect}
                 >
                     <div>Close device</div>
-                </MenuItem>
-            );
+                </MenuItem>,
+            ]);
         }
         return null;
     }
