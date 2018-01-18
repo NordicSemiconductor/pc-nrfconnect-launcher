@@ -187,6 +187,79 @@ describe('DeviceSelector', () => {
         )).toMatchSnapshot();
     });
 
+    it('should order devices by serial number by default', () => {
+        expect(renderer.create(
+            <DeviceSelector
+                devices={[
+                    {
+                        busNumber: 1,
+                        deviceAddress: 1,
+                        comName: '/dev/tty0',
+                        vendorId: 0x1366,
+                        serialNumber: '456789',
+                    }, {
+                        busNumber: 1,
+                        deviceAddress: 2,
+                        vendorId: 0x1366,
+                        serialNumber: '123456',
+                    }, {
+                        busNumber: 1,
+                        deviceAddress: 3,
+                        vendorId: 0x1366,
+                        serialNumber: '678901',
+                    },
+                ]}
+                isExpanded
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should order devices by custom order', () => {
+        expect(renderer.create(
+            <DeviceSelector
+                devices={[
+                    {
+                        busNumber: 1,
+                        deviceAddress: 1,
+                        comName: '/dev/tty3',
+                        vendorId: 0x1366,
+                        serialNumber: '456789',
+                    }, {
+                        busNumber: 1,
+                        deviceAddress: 2,
+                        comName: '/dev/tty1',
+                        vendorId: 0x1366,
+                        serialNumber: '123456',
+                    }, {
+                        busNumber: 1,
+                        deviceAddress: 3,
+                        comName: '/dev/tty2',
+                        vendorId: 0x1366,
+                        serialNumber: '678901',
+                    },
+                ]}
+                isExpanded
+                toggleExpanded={() => {}}
+                onSelect={() => {}}
+                onDeselect={() => {}}
+                bindHotkey={() => {}}
+                compareFunction={(deviceA, deviceB) => {
+                    if (deviceA.comName < deviceB.comName) {
+                        return -1;
+                    }
+                    if (deviceA.comName > deviceB.comName) {
+                        return 1;
+                    }
+                    return 0;
+                }}
+            />,
+        )).toMatchSnapshot();
+    });
+
     it('should render devices with custom device details', () => {
         expect(renderer.create(
             <DeviceSelector
