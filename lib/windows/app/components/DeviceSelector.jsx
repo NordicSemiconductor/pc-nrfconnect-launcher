@@ -59,6 +59,26 @@ function deviceFilter(device) {
 }
 
 /**
+ * Default compare function to use when sorting devices in the selector.
+ * Can be overridden by passing a custom `compareFunction` as a prop to
+ * DeviceSelector.
+ *
+ * @param {Object} deviceA A device.
+ * @param {Object} deviceB Another device to be compared with deviceA.
+ * @returns {number} -1 if A should be sorted before B, +1 if B should be
+ *     sorted before A, or 0 if the devices are equal.
+ */
+function deviceCompareFunction(deviceA, deviceB) {
+    if (deviceA.serialNumber < deviceB.serialNumber) {
+        return -1;
+    }
+    if (deviceA.serialNumber > deviceB.serialNumber) {
+        return 1;
+    }
+    return 0;
+}
+
+/**
  * Default name to show for each device. Can be overridden by passing
  * a custom `deviceNameParser` function as a prop to DeviceSelector.
  *
@@ -181,10 +201,12 @@ class DeviceSelector extends React.Component {
             devices,
             isLoading,
             filter,
+            compareFunction,
         } = this.props;
 
         if (!isLoading) {
             return devices.filter(filter)
+                .sort(compareFunction)
                 .map(device => this.renderDeviceItem(device));
         }
         return null;
@@ -275,6 +297,7 @@ DeviceSelector.propTypes = {
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
     filter: PropTypes.func,
+    compareFunction: PropTypes.func,
     deviceNameParser: PropTypes.func,
     deviceDetailsParser: PropTypes.func,
     deviceKeyParser: PropTypes.func,
@@ -292,6 +315,7 @@ DeviceSelector.defaultProps = {
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
     filter: deviceFilter,
+    compareFunction: deviceCompareFunction,
     deviceNameParser: getDeviceDisplayName,
     deviceDetailsParser: getDeviceDisplayDetails,
     deviceKeyParser: getDeviceKey,
