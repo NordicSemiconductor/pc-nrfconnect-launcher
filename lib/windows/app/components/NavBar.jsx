@@ -67,7 +67,7 @@ const NavBar = ({
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    selectorType: PropTypes.string.isRequired,
+    selectorType: PropTypes.oneOf(['device', 'serialport']).isRequired,
 };
 
 NavBar.defaultProps = {
