@@ -165,6 +165,7 @@ class DeviceSelector extends React.Component {
     renderDeviceItem(device) {
         const {
             onSelect,
+            isSerialPortVerificationEnabled,
             menuItemCssClass,
             menuItemDetailsCssClass,
             deviceNameParser,
@@ -179,7 +180,7 @@ class DeviceSelector extends React.Component {
                 key={deviceKeyParser(device)}
                 className={menuItemCssClass}
                 eventKey={deviceKeyParser(device)}
-                onSelect={() => onSelect(device)}
+                onSelect={() => onSelect(device, isSerialPortVerificationEnabled)}
             >
                 <div>{name}</div>
                 {
@@ -286,6 +287,7 @@ DeviceSelector.propTypes = {
     }),
     isLoading: PropTypes.bool,
     isExpanded: PropTypes.bool,
+    isSerialPortVerificationEnabled: PropTypes.bool,
     toggleExpanded: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
@@ -307,6 +309,7 @@ DeviceSelector.defaultProps = {
     selectedDevice: null,
     isExpanded: false,
     isLoading: false,
+    isSerialPortVerificationEnabled: true,
     indicatorStatus: 'off',
     hotkeyExpand: 'Alt+P',
     cssClass: 'core-padded-row',
