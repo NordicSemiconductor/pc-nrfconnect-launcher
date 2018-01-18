@@ -11,6 +11,7 @@ function createExternals() {
         'pc-ble-driver-js',
         'pc-nrfjprog-js',
         'serialport',
+        'usb',
     ];
     return libs.reduce((prev, lib) => (
         Object.assign(prev, { [lib]: `commonjs ${lib}` })
