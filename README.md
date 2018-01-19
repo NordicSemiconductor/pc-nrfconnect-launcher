@@ -70,7 +70,7 @@ The project depends on [pc-ble-driver-js](https://github.com/NordicSemiconductor
 
 ### Linux
 
-Install packages required building the project on Ubuntu Linux:
+Install packages required for building the project on Ubuntu Linux:
 
     apt-get install build-essential python2.7 libudev-dev
 
