@@ -30,26 +30,30 @@ module.exports = {
         filename: '[name]-bundle.js',
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.(js|jsx)$/,
-            loaders: [
-                'babel-loader?cacheDirectory',
-                'eslint-loader',
-            ],
+            use: [{
+                loader: require.resolve('babel-loader'),
+                options: {
+                    cacheDirectory: true,
+                },
+            }, {
+                loader: require.resolve('eslint-loader'),
+            }],
             exclude: /node_modules/,
         }, {
             test: /\.json$/,
-            loader: 'json-loader',
+            loader: require.resolve('json-loader'),
         }, {
-            test: /\.less$/,
+            test: /\.less|\.css$/,
             loaders: [
-                'style-loader',
-                'css-loader',
-                'less-loader',
+                require.resolve('style-loader'),
+                require.resolve('css-loader'),
+                require.resolve('less-loader'),
             ],
         }, {
             test: /\.(png|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-            loader: 'file-loader',
+            loader: require.resolve('file-loader'),
         }],
     },
     resolve: {
