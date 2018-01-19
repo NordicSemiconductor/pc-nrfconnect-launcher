@@ -94,6 +94,7 @@ describe('one local app', () => {
     it('should show a "Launch other app" item when main menu button has been clicked in app window', () => (
         loadFirstApp()
             .then(() => electronApp.client.windowByIndex(1))
+            .waitForVisible('#main-menu')
             .click('#main-menu')
             .isVisible('#main-menu-list a[title*="Launch other app"]')
             .then(isVisible => expect(isVisible).toEqual(true))
@@ -102,6 +103,7 @@ describe('one local app', () => {
     it('should show port list when port selector has been clicked in app window', () => (
         loadFirstApp(electronApp)
             .then(() => electronApp.client.windowByIndex(1))
+            .waitForVisible('#serial-port-selector')
             .click('#serial-port-selector')
             .isVisible('#serial-port-selector-list')
             .then(isVisible => expect(isVisible).toEqual(true))
