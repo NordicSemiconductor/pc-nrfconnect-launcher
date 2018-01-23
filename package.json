@@ -81,7 +81,8 @@
         "win": {
             "target": [
                 "nsis"
-            ]
+            ],
+            "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
