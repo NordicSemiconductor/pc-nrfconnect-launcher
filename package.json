@@ -94,7 +94,7 @@
         "asar": "0.13.0",
         "babel-polyfill": "6.23.0",
         "bootstrap": "3.3.7",
-        "electron": "1.6.7",
+        "electron": "1.6.16",
         "electron-builder": "19.53.6",
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
