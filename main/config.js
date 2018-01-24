@@ -86,7 +86,7 @@ function init(argv) {
     version = packageJson.version;
     electronRootPath = electronApp.getAppPath();
     electronResourcesDir = path.join(electronRootPath, 'resources');
-    electronExePath = electronApp.getPath('exe');
+    electronExePath = process.env.APPIMAGE || electronApp.getPath('exe');
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     desktopDir = electronApp.getPath('desktop');
