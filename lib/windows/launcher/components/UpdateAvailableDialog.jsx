@@ -39,6 +39,16 @@ import PropTypes from 'prop-types';
 
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
+/**
+ * Dialog that is shown if an nRF Connect core update is available. The user
+ * can either upgrade or cancel.
+ *
+ * @param {boolean} isVisible Show the dialog or not.
+ * @param {string} version The new version number that is available.
+ * @param {function} onConfirm Invoked when the user confirms the upgrade.
+ * @param {function} onCancel Invoked when the user cancels the upgrade.
+ * @returns {*} React element to be rendered.
+ */
 const UpdateAvailableDialog = ({
     isVisible,
     version,
@@ -52,8 +62,10 @@ const UpdateAvailableDialog = ({
             'Would you like to upgrade now?'}
         okButtonText="Yes"
         cancelButtonText="No"
-        onOk={() => onConfirm()}
-        onCancel={() => onCancel()}
+        linkText="Click to see release notes"
+        linkAddress="https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases"
+        onOk={onConfirm}
+        onCancel={onCancel}
     />
 );
 
