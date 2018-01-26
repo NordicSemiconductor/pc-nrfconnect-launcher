@@ -67,27 +67,25 @@ const ConfirmationDialog = ({
     okButtonText,
     cancelButtonText,
 }) => (
-    <div>
-        <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
-            <ModalHeader closeButton={!isInProgress}>
-                <ModalTitle>{title}</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-                { children || <p>{ text }</p> }
-            </ModalBody>
-            <ModalFooter>
-                { isInProgress ? <Spinner /> : null }
-                &nbsp;
-                <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
-                {
-                    onCancel &&
-                    <Button onClick={onCancel} disabled={isInProgress}>
-                        {cancelButtonText}
-                    </Button>
-                }
-            </ModalFooter>
-        </Modal>
-    </div>
+    <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
+        <ModalHeader closeButton={!isInProgress}>
+            <ModalTitle>{title}</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            { children || <p>{ text }</p> }
+        </ModalBody>
+        <ModalFooter>
+            { isInProgress ? <Spinner /> : null }
+            &nbsp;
+            <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
+            {
+                onCancel &&
+                <Button onClick={onCancel} disabled={isInProgress}>
+                    {cancelButtonText}
+                </Button>
+            }
+        </ModalFooter>
+    </Modal>
 );
 
 ConfirmationDialog.propTypes = {
