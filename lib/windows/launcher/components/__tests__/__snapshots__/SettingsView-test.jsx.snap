@@ -38,35 +38,33 @@ exports[`SettingsView should render check for updates completed, with everything
       </button>
     </div>
   </div>
-  <div>
-    <Modal
-      backdrop={false}
-      onHide={null}
-      show={true}
+  <Modal
+    backdrop={false}
+    onHide={null}
+    show={true}
+  >
+    <ModalHeader
+      closeButton={true}
     >
-      <ModalHeader
-        closeButton={true}
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        All apps are up to date.
+      </p>
+    </ModalBody>
+    <ModalFooter>
+       
+      <Button
+        disabled={false}
+        onClick={[Function]}
       >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        <p>
-          All apps are up to date.
-        </p>
-      </ModalBody>
-      <ModalFooter>
-         
-        <Button
-          disabled={false}
-          onClick={[Function]}
-        >
-          OK
-        </Button>
-      </ModalFooter>
-    </Modal>
-  </div>
+        OK
+      </Button>
+    </ModalFooter>
+  </Modal>
 </div>
 `;
 
@@ -108,35 +106,33 @@ exports[`SettingsView should render check for updates completed, with updates av
       </button>
     </div>
   </div>
-  <div>
-    <Modal
-      backdrop={false}
-      onHide={null}
-      show={true}
+  <Modal
+    backdrop={false}
+    onHide={null}
+    show={true}
+  >
+    <ModalHeader
+      closeButton={true}
     >
-      <ModalHeader
-        closeButton={true}
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>
+        One or more updates are available. Go to the Add/remove apps screen to upgrade.
+      </p>
+    </ModalBody>
+    <ModalFooter>
+       
+      <Button
+        disabled={false}
+        onClick={[Function]}
       >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        <p>
-          One or more updates are available. Go to the Add/remove apps screen to upgrade.
-        </p>
-      </ModalBody>
-      <ModalFooter>
-         
-        <Button
-          disabled={false}
-          onClick={[Function]}
-        >
-          OK
-        </Button>
-      </ModalFooter>
-    </Modal>
-  </div>
+        OK
+      </Button>
+    </ModalFooter>
+  </Modal>
 </div>
 `;
 
