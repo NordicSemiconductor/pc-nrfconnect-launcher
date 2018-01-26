@@ -40,52 +40,62 @@ import PropTypes from 'prop-types';
 import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
 import Spinner from './Spinner';
 
+/**
+ * Generic dialog that asks the user to confirm something. The dialog content
+ * and button actions can be customized.
+ *
+ * @param {boolean} isVisible Show the dialog or not.
+ * @param {boolean} [isInProgress] Shows a spinner if true.
+ * @param {string} [title] The dialog title.
+ * @param {Array|*} [children] Array or React element to render in the dialog.
+ * @param {string} [text] Text to render in the dialog. Alternative to `children`.
+ * @param {function} onOk Invoked when the user clicks OK.
+ * @param {function} [onCancel] Invoked when the user cancels. Not showing cancel button if
+ *                              this is not provided.
+ * @param {string} [okButtonText] Label text for the OK button. Default: "OK".
+ * @param {string} [cancelButtonText] Label text for the cancel button. Default: "Cancel".
+ * @returns {*} React element to be rendered.
+ */
 const ConfirmationDialog = ({
-        isVisible,
-        isInProgress,
-        title,
-        text,
-        onOk,
-        onCancel,
-        okButtonText,
-        cancelButtonText,
-        linkText,
-        linkAddress,
-        }) => (
-            <div>
-                <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
-                    <ModalHeader closeButton={!isInProgress}>
-                        <ModalTitle>{title}</ModalTitle>
-                    </ModalHeader>
-                    <ModalBody>
-                        <p>{text}</p>
-                        {
-                            linkAddress &&
-                            <a href={linkAddress} target="_blank" rel="noopener noreferrer">
-                                {linkText || linkAddress} </a>
-                        }
-                    </ModalBody>
-                    <ModalFooter>
-                        { isInProgress ? <Spinner /> : null }
-                        &nbsp;
-                        <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
-                        {
-                            onCancel &&
-                                <Button onClick={onCancel} disabled={isInProgress}>
-                                    {cancelButtonText}
-                                </Button>
-                        }
-                    </ModalFooter>
-                </Modal>
-            </div>
+    isVisible,
+    isInProgress,
+    title,
+    children,
+    text,
+    onOk,
+    onCancel,
+    okButtonText,
+    cancelButtonText,
+}) => (
+    <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
+        <ModalHeader closeButton={!isInProgress}>
+            <ModalTitle>{title}</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            { children || <p>{ text }</p> }
+        </ModalBody>
+        <ModalFooter>
+            { isInProgress ? <Spinner /> : null }
+            &nbsp;
+            <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
+            {
+                onCancel &&
+                <Button onClick={onCancel} disabled={isInProgress}>
+                    {cancelButtonText}
+                </Button>
+            }
+        </ModalFooter>
+    </Modal>
 );
 
 ConfirmationDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     title: PropTypes.string,
-    text: PropTypes.string.isRequired,
-    linkText: PropTypes.string,
-    linkAddress: PropTypes.string,
+    text: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     okButtonText: PropTypes.string,
@@ -95,8 +105,8 @@ ConfirmationDialog.propTypes = {
 
 ConfirmationDialog.defaultProps = {
     title: 'Confirm',
-    linkText: null,
-    linkAddress: null,
+    text: null,
+    children: null,
     isInProgress: false,
     onCancel: null,
     okButtonText: 'OK',

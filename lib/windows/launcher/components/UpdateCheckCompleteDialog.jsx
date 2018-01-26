@@ -39,6 +39,16 @@ import PropTypes from 'prop-types';
 
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
+/**
+ * Dialog that shows the result after checking for updates. This is
+ * shown after the user has clicked "Check for updates", and lets the user
+ * know if one or more *apps* have updates.
+ *
+ * @param {boolean} isVisible Show the dialog or not.
+ * @param {boolean} isAppUpdateAvailable True if one or more apps have updates.
+ * @param {function} onOk Invoked when user clicks OK.
+ * @returns {*} React element to be rendered.
+ */
 const UpdateCheckSuccessDialog = ({
     isVisible,
     isAppUpdateAvailable,
@@ -51,14 +61,6 @@ const UpdateCheckSuccessDialog = ({
             isAppUpdateAvailable ?
                 'One or more updates are available. Go to the Add/remove apps screen to upgrade.' :
                 'All apps are up to date.'
-        }
-        linkText={
-            isAppUpdateAvailable ? 'Release notes' : ''
-        }
-        linkAddress={
-            isAppUpdateAvailable ?
-                'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases' :
-                ''
         }
         onOk={onOk}
     />
