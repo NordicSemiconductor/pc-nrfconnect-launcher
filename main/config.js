@@ -58,6 +58,7 @@ let appsJsonPath;
 let appsJsonUrl;
 let settingsJsonPath;
 let registryUrl;
+let releaseNotesUrl;
 let skipUpdateApps;
 let skipUpdateCore;
 let skipSplashScreen;
@@ -101,6 +102,7 @@ function init(argv) {
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
     registryUrl = 'https://registry.yarnpkg.com';
+    releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;
@@ -128,6 +130,7 @@ module.exports = {
     getSettingsJsonPath: () => settingsJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
     getRegistryUrl: () => registryUrl,
+    getReleaseNotesUrl: () => releaseNotesUrl,
     isSkipUpdateApps: () => skipUpdateApps,
     isSkipUpdateCore: () => skipUpdateCore,
     isSkipSplashScreen: () => skipSplashScreen,
