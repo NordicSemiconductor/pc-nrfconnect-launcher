@@ -46,6 +46,15 @@ const apps = require('./apps');
 let launcherWindow;
 const appWindows = [];
 
+function getDefaultIconPath() {
+    const electronResourcesDir = config.getElectronResourcesDir();
+    if (process.platform === 'win32') {
+        return path.join(electronResourcesDir, 'nrfconnect.ico');
+    } else {
+        return path.join(electronResourcesDir, 'nrfconnect.png');
+    }
+}
+
 function openLauncherWindow() {
     if (launcherWindow) {
         launcherWindow.show();
@@ -53,7 +62,7 @@ function openLauncherWindow() {
         launcherWindow = browser.createWindow({
             title: `nRF Connect v${config.getVersion()}`,
             url: `file://${config.getElectronResourcesDir()}/launcher.html`,
-            icon: path.join(config.getElectronResourcesDir(), 'nrfconnect.png'),
+            icon: getDefaultIconPath(),
             width: 670,
             height: 500,
             center: true,
@@ -78,7 +87,7 @@ function openAppWindow(app) {
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${app.path}`,
-        icon: app.iconPath ? app.iconPath : path.join(config.getElectronResourcesDir(), 'nrfconnect.png'),
+        icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
         x: lastWindowState.x,
         y: lastWindowState.y,
         width: lastWindowState.width,
