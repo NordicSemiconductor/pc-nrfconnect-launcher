@@ -43,7 +43,7 @@
             "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
-            "resources/icon.*",
+            "resources/*.ico",
             "resources/mac/",
             "index.js"
         ],
