@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.3.0-alpha.3",
+    "version": "2.4.0-alpha.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -11,12 +11,12 @@
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "postinstall": "npm run get-nrfjprog",
         "app": "electron .",
-        "dev": "webpack --watch",
-        "webpack": "webpack",
-        "build": "cross-env NODE_ENV=production webpack",
-        "lint": "eslint main lib",
-        "test": "jest --testResultsProcessor jest-bamboo-formatter",
-        "test-watch": "jest --watch",
+        "dev": "nrfconnect-scripts build-watch",
+        "webpack": "nrfconnect-scripts build-dev",
+        "build": "nrfconnect-scripts build-prod",
+        "lint": "nrfconnect-scripts lint main lib index.js",
+        "test": "nrfconnect-scripts test",
+        "test-watch": "nrfconnect-scripts test --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
         "test-e2e-offline": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-offline.json",
         "test-e2e-online": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-online.json",
@@ -43,7 +43,7 @@
             "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
-            "resources/icon.*",
+            "resources/*.ico",
             "resources/mac/",
             "index.js"
         ],
@@ -52,6 +52,7 @@
         },
         "linux": {
             "target": [
+                "AppImage",
                 "tar.gz"
             ],
             "extraFiles": [
@@ -60,10 +61,12 @@
                     "to": ".",
                     "filter": "*.so*"
                 }
-            ]
+            ],
+            "category": "Development"
         },
         "mac": {
             "category": "public.app-category.developer-tools",
+            "artifactName": "${name}-${version}-${os}.${ext}",
             "extraFiles": [
                 {
                     "from": "build/nrfjprog/unpacked/nrfjprog",
@@ -72,14 +75,19 @@
                 }
             ]
         },
+        "dmg": {
+            "artifactName": "${name}-${version}.${ext}"
+        },
         "win": {
             "target": [
                 "nsis"
-            ]
+            ],
+            "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
-            "include": "build/installer.nsh"
+            "include": "build/installer.nsh",
+            "artifactName": "${name}-setup-${version}.${ext}"
         }
     },
     "devDependencies": {
@@ -87,12 +95,12 @@
         "babel-loader": "^7.1.2",
         "babel-polyfill": "6.23.0",
         "bootstrap": "3.3.7",
-        "electron": "1.6.7",
-        "electron-builder": "18.5.1",
+        "electron": "1.6.16",
+        "electron-builder": "19.53.6",
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
-        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v1.0.0",
+        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v1.2.1",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
@@ -106,16 +114,17 @@
         "chmodr": "1.0.2",
         "electron-builder-http": "18.5.1",
         "electron-log": "2.2.6",
-        "electron-updater": "2.0.0",
+        "electron-updater": "2.20.2",
         "fs-extra": "4.0.1",
         "mustache": "2.3.0",
-        "pc-ble-driver-js": "2.2.2",
+        "pc-ble-driver-js": "2.3.0",
         "pc-nrfjprog-js": "1.2.0",
         "png2icons": "0.9.1",
         "semver": "5.3.0",
         "serialport": "^6.0.4",
         "shasum": "1.0.2",
         "targz": "1.0.1",
+        "usb": "1.3.1",
         "yargs": "8.0.1"
     },
     "jest": {
