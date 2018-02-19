@@ -50,9 +50,8 @@ function getDefaultIconPath() {
     const electronResourcesDir = config.getElectronResourcesDir();
     if (process.platform === 'win32') {
         return path.join(electronResourcesDir, 'nrfconnect.ico');
-    } else {
-        return path.join(electronResourcesDir, 'nrfconnect.png');
     }
+    return path.join(electronResourcesDir, 'nrfconnect.png');
 }
 
 function openLauncherWindow() {
