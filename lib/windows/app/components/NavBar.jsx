@@ -38,6 +38,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../../../components/Logo';
 import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+import CapabilitiesDeviceSelector from '../components/CapabilitiesDeviceSelector';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
@@ -45,24 +46,40 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 
-const NavBar = ({
-    cssClass,
-    navSectionCssClass,
-    selectorType,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            {
-                selectorType === 'device' ?
-                    <DeviceSelectorContainer /> :
-                    <SerialPortSelectorContainer />
-            }
+function NavBar (args){
+    const {
+        cssClass,
+        navSectionCssClass,
+        selectorType,
+        selectorCapabilities
+    } = args;
+
+    let selector = "";
+    if (selectorCapabilities) {
+        selector = (
+            <CapabilitiesDeviceSelector capabilities={selectorCapabilities}/>
+        );
+    } else if (selectorType === 'device') {
+        selector = (
+            <DeviceSelectorContainer/>
+        );
+    } else if (selectorType === 'serialport') {
+        selector = (
+            <SerialPortSelectorContainer/>
+        );
+    }
+
+    return (
+        <div className={cssClass}>
+            <MainMenuContainer />
+            <div className={navSectionCssClass}>
+                { selector }
+            </div>
+            <NavMenuContainer />
+            <DecoratedLogo />
         </div>
-        <NavMenuContainer />
-        <DecoratedLogo />
-    </div>
-);
+    );
+};
 
 NavBar.propTypes = {
     cssClass: PropTypes.string,
