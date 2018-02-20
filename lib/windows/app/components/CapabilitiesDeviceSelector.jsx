@@ -58,7 +58,8 @@ class CapabilitiesDeviceSelector extends React.Component {
         this.deviceLister = new DeviceLister(props.capabilities);
 
         this.state = {
-            devices: []
+            devices: [],
+            selectedSerialNumber: undefined
         };
 
         this.deviceLister.on('conflated', (devices)=>{
@@ -76,13 +77,14 @@ class CapabilitiesDeviceSelector extends React.Component {
             if (err.usb) {
                 const usbAddr = err.usb.device.busNumber + '.' + err.usb.device.deviceAddress;
 
-                let errMsg = ('Error ' + err.error + ' while probing usb device at bus.address ' + usbAddr + '. ');
+                let errMsg = ('Error while probing usb device at bus.address ' + usbAddr + '. ');
                 if (process.platform === 'linux') {
                     errMsg += 'Please check your udev rules concerning permissions for USB devices.';
                 } else if (process.platform === 'win32'){
                     errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
                 }
 
+                logger.error(err.error.toString());
                 logger.error(errMsg);
             } else {
                 logger.error('Error while probing devices: ' + err.error);
@@ -109,6 +111,14 @@ class CapabilitiesDeviceSelector extends React.Component {
 
         let details = '';
 
+        const onSelectItem = ()=>{
+            this.setState((prev, props) =>{
+                logger.info('Selecting device with s/n ' + device.serialNumber);
+                return { ...prev ,selectedSerialNumber: device.serialNumber }
+            });
+            onSelect(device);
+        };
+
 //         const name = deviceNameParser(device);
 //         const details = deviceDetailsParser(device);
         return (
@@ -116,7 +126,7 @@ class CapabilitiesDeviceSelector extends React.Component {
                 key={serialNumber}
                 className={menuItemCssClass}
 //                 eventKey={deviceKeyParser(device)}
-                onSelect={() => onSelect(device)}
+                onSelect={()=>onSelectItem()}
             >
                 <div>{ device.serialNumber }</div>
                 <ul>
@@ -136,25 +146,29 @@ class CapabilitiesDeviceSelector extends React.Component {
      */
     getCloseItem() {
         const {
-            selectedDevice,
             onDeselect,
             menuItemCssClass,
         } = this.props;
 
-        if (selectedDevice && !isLoading) {
-            return ([
-                <MenuItem key="close-device-divider" divider />,
-                <MenuItem
-                    key="close-device"
-                    className={menuItemCssClass}
-                    eventKey="Close device"
-                    onSelect={onDeselect}
-                >
-                    <div>Close device</div>
-                </MenuItem>,
-            ]);
-        }
-        return null;
+        const onDeselectItem = ()=>{
+            this.setState((prev, props) =>{
+                logger.info('Deselecting device');
+                return { ...prev ,selectedSerialNumber: undefined}
+            });
+            onDeselect();
+        };
+
+        return ([
+            <MenuItem key="close-device-divider" divider />,
+            <MenuItem
+                key="close-device"
+                className={menuItemCssClass}
+                eventKey="Close device"
+                onSelect={onDeselectItem}
+            >
+                <div>Close device</div>
+            </MenuItem>,
+        ]);
     }
 
     /*
@@ -162,9 +176,9 @@ class CapabilitiesDeviceSelector extends React.Component {
      */
     render() {
         const {
-            selectedDevice,
-            toggleExpanded,
-            isExpanded,
+//             selectedDevice,
+//             toggleExpanded,
+//             isExpanded,
 //             hotkeyExpand,
             cssClass,
             dropdownCssClass,
@@ -174,15 +188,20 @@ class CapabilitiesDeviceSelector extends React.Component {
 
 //         debugger;
 
-        const selectorText = selectedDevice ? deviceNameParser(selectedDevice) : 'Select device';
-        const closeItem = selectedDevice ? this.getCloseItem() : '';
+//         const selectorText = selectedDevice ? deviceNameParser(selectedDevice) : 'Select device';
+
+        const togglerText = this.state.selectedSerialNumber ?
+            this.state.selectedSerialNumber.toString() :
+            'Select device';
+
+        const closeItem = this.state.selectedSerialNumber ? this.getCloseItem() : '';
         const devices = Array.from(this.state.devices);
 
         return (
-            <Dropdown id="device-selector" open={isExpanded} onToggle={toggleExpanded}>
+            <Dropdown id="device-selector" className={cssClass}>
                 <DropdownToggle
                     className={dropdownCssClass}
-                    title={selectorText}
+                    title={togglerText}
                 />
                 <DropdownMenu
                     id="device-selector-list"
