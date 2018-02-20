@@ -37,12 +37,10 @@
 import DeviceLister from 'nrf-device-lister';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
-import { Iterable } from 'immutable';
 
 import { logger } from '../../../api/logging';
 import * as DeviceActions from '../actions/deviceActions';
@@ -53,7 +51,6 @@ class CapabilitiesDeviceSelector extends React.Component {
     constructor(props) {
         super(props);
 
-// debugger;
         this.deviceLister = new DeviceLister(props.capabilities);
 
         this.state = {
@@ -62,13 +59,10 @@ class CapabilitiesDeviceSelector extends React.Component {
         };
 
         this.deviceLister.on('conflated', devices => {
-            this.setState((prev, props) => {
-//                 debugger;
+            this.setState(prev =>
+//    logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
 
-                logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
-
-                return { ...prev, devices };
-            });
+                 ({ ...prev, devices }));
         });
 
         this.deviceLister.on('error', err => {
@@ -107,19 +101,14 @@ class CapabilitiesDeviceSelector extends React.Component {
             menuItemDetailsCssClass,
         } = this.props;
 
-        const details = '';
-
         const onSelectItem = () => {
-            this.setState((prev, props) => {
-                logger.info(`Selecting device with s/n ${device.serialNumber}`);
-                return { ...prev, selectedSerialNumber: device.serialNumber };
-            });
+            this.setState(prev =>
+//                 logger.info(`Selecting device with s/n ${device.serialNumber}`);
+                 ({ ...prev, selectedSerialNumber: device.serialNumber }));
             if (this.state.selectedSerialNumber) { onDeselect(); }
             onSelect(device);
         };
 
-//         const name = deviceNameParser(device);
-//         const details = deviceDetailsParser(device);
         return (
             <MenuItem
                 key={serialNumber}
@@ -127,9 +116,13 @@ class CapabilitiesDeviceSelector extends React.Component {
                 onSelect={() => onSelectItem()}
             >
                 <div>{ device.serialNumber }</div>
-                <ul>
-                    { device.serialport ? (<li>Serial port: {device.serialport.comName}</li>) : null }
-                    { device.usb ? (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>) : null }
+                <ul className={menuItemDetailsCssClass}>
+                    { device.serialport ?
+                        (<li>Serial port: {device.serialport.comName}</li>)
+                        : null }
+                    { device.usb ?
+                        (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
+                        : null }
                     { device.jlink ? (<li>Debug probe</li>) : null }
                 </ul>
             </MenuItem>
@@ -149,10 +142,9 @@ class CapabilitiesDeviceSelector extends React.Component {
         } = this.props;
 
         const onDeselectItem = () => {
-            this.setState((prev, props) => {
-                logger.info('Deselecting device');
-                return { ...prev, selectedSerialNumber: undefined };
-            });
+            this.setState(prev =>
+//                 logger.info('Deselecting device');
+                 ({ ...prev, selectedSerialNumber: undefined }));
             onDeselect();
         };
 
@@ -174,19 +166,10 @@ class CapabilitiesDeviceSelector extends React.Component {
      */
     render() {
         const {
-//             selectedDevice,
-//             toggleExpanded,
-//             isExpanded,
-//             hotkeyExpand,
             cssClass,
             dropdownCssClass,
             dropdownMenuCssClass,
-            deviceNameParser,
         } = this.props;
-
-//         debugger;
-
-//         const selectorText = selectedDevice ? deviceNameParser(selectedDevice) : 'Select device';
 
         const togglerText = this.state.selectedSerialNumber ?
             this.state.selectedSerialNumber.toString() :
@@ -205,7 +188,7 @@ class CapabilitiesDeviceSelector extends React.Component {
                     id="device-selector-list"
                     className={dropdownMenuCssClass}
                 >
-                    { devices.map(this.getItemFromDevice.bind(this)) }
+                    { devices.map(device => this.getItemFromDevice(device)) }
                     { closeItem }
                 </DropdownMenu>
             </Dropdown>
@@ -213,62 +196,31 @@ class CapabilitiesDeviceSelector extends React.Component {
     }
 }
 
-DeviceSelector.propTypes = {
-//     devices: PropTypes.oneOfType([
-//         PropTypes.instanceOf(Array),
-//         PropTypes.instanceOf(Iterable),
-//     ]).isRequired,
-//     selectedDevice: PropTypes.shape({
-//         serialNumber: PropTypes.serialNumber,
-//     }),
-//     isLoading: PropTypes.bool,
-//     isExpanded: PropTypes.bool,
-//     isSerialPortVerificationEnabled: PropTypes.bool,
-//     toggleExpanded: PropTypes.func.isRequired,
+CapabilitiesDeviceSelector.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-//     bindHotkey: PropTypes.func.isRequired,
-//     hotkeyExpand: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
-//     filter: PropTypes.func,
-//     compareFunction: PropTypes.func,
-//     deviceNameParser: PropTypes.func,
-//     deviceDetailsParser: PropTypes.func,
-//     deviceKeyParser: PropTypes.func,
+    capabilities: PropTypes.shape({}),
 };
 
-DeviceSelector.defaultProps = {
-//     selectedDevice: null,
-//     isExpanded: false,
-//     isLoading: false,
-//     isSerialPortVerificationEnabled: true,
-//     indicatorStatus: 'off',
-//     hotkeyExpand: 'Alt+P',
+CapabilitiesDeviceSelector.defaultProps = {
     cssClass: 'core-padded-row',
     dropdownCssClass: 'core-device-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
-//     filter: deviceFilter,
-//     compareFunction: deviceCompareFunction,
-//     deviceNameParser: selectorTypeDisplayName,
-//     deviceDetailsParser: selectorTypeDisplayDetails,
-//     deviceKeyParser: selectorTypeKey,
+    capabilities: undefined,
 };
-
-// export default CapabilitiesDeviceSelector;
-
 
 function mapDispatchToProps(dispatch) {
     return {
         onSelect: (device, verifySerialPortAvailable) =>
             dispatch(DeviceActions.selectDevice(device, verifySerialPortAvailable)),
         onDeselect: () => dispatch(DeviceActions.deselectDevice()),
-//         toggleExpanded: () => dispatch(DeviceActions.toggleSelectorExpanded()),
     };
 }
 

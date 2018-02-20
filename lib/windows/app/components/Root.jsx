@@ -63,6 +63,11 @@ const Root = ({ selectorType, selectorCapabilities }) => (
 
 Root.propTypes = {
     selectorType: PropTypes.string.isRequired,
+    selectorCapabilities: PropTypes.shape({}),
+};
+
+Root.defaultProps = {
+    selectorCapabilities: undefined,
 };
 
 export default Root;
