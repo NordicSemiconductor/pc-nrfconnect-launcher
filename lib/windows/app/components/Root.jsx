@@ -48,7 +48,7 @@ const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
 const Root = ({ selectorType, selectorCapabilities }) => (
     <div className="core-main-area">
-        <DecoratedNavBar selectorType={selectorType} selectorCapabilities={selectorCapabilities}/>
+        <DecoratedNavBar selectorType={selectorType} selectorCapabilities={selectorCapabilities} />
         <div className="core-main-layout">
             <div>
                 <MainViewContainer />

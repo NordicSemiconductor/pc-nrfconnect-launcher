@@ -14,7 +14,7 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint": "nrfconnect-scripts lint main lib index.js",
+        "lint": "eslint -c node_modules/pc-nrfconnect-devdep/config/eslintrc.json --ext js,jsx main lib index.js",
         "test": "nrfconnect-scripts test",
         "test-watch": "nrfconnect-scripts test --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",

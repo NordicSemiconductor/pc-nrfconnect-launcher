@@ -51,7 +51,6 @@ import { connect } from '../../../util/apps';
 
 class CapabilitiesDeviceSelector extends React.Component {
     constructor(props) {
-
         super(props);
 
 // debugger;
@@ -59,35 +58,34 @@ class CapabilitiesDeviceSelector extends React.Component {
 
         this.state = {
             devices: [],
-            selectedSerialNumber: undefined
+            selectedSerialNumber: undefined,
         };
 
-        this.deviceLister.on('conflated', (devices)=>{
-            this.setState((prev, props) =>{
-
+        this.deviceLister.on('conflated', devices => {
+            this.setState((prev, props) => {
 //                 debugger;
 
-                logger.info('Changes in available devices. Now ' + Array.from(devices).length + ' devices.');
+                logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
 
-                return { ...prev , devices }
+                return { ...prev, devices };
             });
         });
 
-        this.deviceLister.on('error', (err)=>{
+        this.deviceLister.on('error', err => {
             if (err.usb) {
-                const usbAddr = err.usb.device.busNumber + '.' + err.usb.device.deviceAddress;
+                const usbAddr = `${err.usb.device.busNumber}.${err.usb.device.deviceAddress}`;
 
-                let errMsg = ('Error while probing usb device at bus.address ' + usbAddr + '. ');
+                let errMsg = (`Error while probing usb device at bus.address ${usbAddr}. `);
                 if (process.platform === 'linux') {
                     errMsg += 'Please check your udev rules concerning permissions for USB devices.';
-                } else if (process.platform === 'win32'){
+                } else if (process.platform === 'win32') {
                     errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
                 }
 
                 logger.error(err.error.toString());
                 logger.error(errMsg);
             } else {
-                logger.error('Error while probing devices: ' + err.error);
+                logger.error(`Error while probing devices: ${err.error}`);
             }
         });
 
@@ -102,20 +100,21 @@ class CapabilitiesDeviceSelector extends React.Component {
      * @returns {*} One menu item element.
      */
     getItemFromDevice([serialNumber, device]) {
-
         const {
             onSelect,
+            onDeselect,
             menuItemCssClass,
             menuItemDetailsCssClass,
         } = this.props;
 
-        let details = '';
+        const details = '';
 
-        const onSelectItem = ()=>{
-            this.setState((prev, props) =>{
-                logger.info('Selecting device with s/n ' + device.serialNumber);
-                return { ...prev ,selectedSerialNumber: device.serialNumber }
+        const onSelectItem = () => {
+            this.setState((prev, props) => {
+                logger.info(`Selecting device with s/n ${device.serialNumber}`);
+                return { ...prev, selectedSerialNumber: device.serialNumber };
             });
+            if (this.state.selectedSerialNumber) { onDeselect(); }
             onSelect(device);
         };
 
@@ -125,8 +124,7 @@ class CapabilitiesDeviceSelector extends React.Component {
             <MenuItem
                 key={serialNumber}
                 className={menuItemCssClass}
-//                 eventKey={deviceKeyParser(device)}
-                onSelect={()=>onSelectItem()}
+                onSelect={() => onSelectItem()}
             >
                 <div>{ device.serialNumber }</div>
                 <ul>
@@ -150,10 +148,10 @@ class CapabilitiesDeviceSelector extends React.Component {
             menuItemCssClass,
         } = this.props;
 
-        const onDeselectItem = ()=>{
-            this.setState((prev, props) =>{
+        const onDeselectItem = () => {
+            this.setState((prev, props) => {
                 logger.info('Deselecting device');
-                return { ...prev ,selectedSerialNumber: undefined}
+                return { ...prev, selectedSerialNumber: undefined };
             });
             onDeselect();
         };
@@ -212,11 +210,10 @@ class CapabilitiesDeviceSelector extends React.Component {
                 </DropdownMenu>
             </Dropdown>
         );
-
     }
 }
 
-// DeviceSelector.propTypes = {
+DeviceSelector.propTypes = {
 //     devices: PropTypes.oneOfType([
 //         PropTypes.instanceOf(Array),
 //         PropTypes.instanceOf(Iterable),
@@ -228,40 +225,40 @@ class CapabilitiesDeviceSelector extends React.Component {
 //     isExpanded: PropTypes.bool,
 //     isSerialPortVerificationEnabled: PropTypes.bool,
 //     toggleExpanded: PropTypes.func.isRequired,
-//     onSelect: PropTypes.func.isRequired,
-//     onDeselect: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onDeselect: PropTypes.func.isRequired,
 //     bindHotkey: PropTypes.func.isRequired,
 //     hotkeyExpand: PropTypes.string,
-//     cssClass: PropTypes.string,
-//     dropdownCssClass: PropTypes.string,
-//     dropdownMenuCssClass: PropTypes.string,
-//     menuItemCssClass: PropTypes.string,
-//     menuItemDetailsCssClass: PropTypes.string,
+    cssClass: PropTypes.string,
+    dropdownCssClass: PropTypes.string,
+    dropdownMenuCssClass: PropTypes.string,
+    menuItemCssClass: PropTypes.string,
+    menuItemDetailsCssClass: PropTypes.string,
 //     filter: PropTypes.func,
 //     compareFunction: PropTypes.func,
 //     deviceNameParser: PropTypes.func,
 //     deviceDetailsParser: PropTypes.func,
 //     deviceKeyParser: PropTypes.func,
-// };
-//
-// DeviceSelector.defaultProps = {
+};
+
+DeviceSelector.defaultProps = {
 //     selectedDevice: null,
 //     isExpanded: false,
 //     isLoading: false,
 //     isSerialPortVerificationEnabled: true,
 //     indicatorStatus: 'off',
 //     hotkeyExpand: 'Alt+P',
-//     cssClass: 'core-padded-row',
-//     dropdownCssClass: 'core-device-selector core-btn btn-primary',
-//     dropdownMenuCssClass: 'core-dropdown-menu',
-//     menuItemCssClass: 'core-device-selector-item btn-primary',
-//     menuItemDetailsCssClass: 'core-device-selector-item-details',
+    cssClass: 'core-padded-row',
+    dropdownCssClass: 'core-device-selector core-btn btn-primary',
+    dropdownMenuCssClass: 'core-dropdown-menu',
+    menuItemCssClass: 'core-device-selector-item btn-primary',
+    menuItemDetailsCssClass: 'core-device-selector-item-details',
 //     filter: deviceFilter,
 //     compareFunction: deviceCompareFunction,
 //     deviceNameParser: selectorTypeDisplayName,
 //     deviceDetailsParser: selectorTypeDisplayDetails,
 //     deviceKeyParser: selectorTypeKey,
-// };
+};
 
 // export default CapabilitiesDeviceSelector;
 
@@ -276,7 +273,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-    (args)=>args,
+    args => args,
     mapDispatchToProps,
 )(CapabilitiesDeviceSelector, 'DeviceSelector');
 

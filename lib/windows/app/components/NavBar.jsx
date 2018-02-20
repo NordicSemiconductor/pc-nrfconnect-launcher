@@ -46,26 +46,26 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 
-function NavBar (args){
+function NavBar(args) {
     const {
         cssClass,
         navSectionCssClass,
         selectorType,
-        selectorCapabilities
+        selectorCapabilities,
     } = args;
 
-    let selector = "";
+    let selector = '';
     if (selectorCapabilities) {
         selector = (
-            <CapabilitiesDeviceSelector capabilities={selectorCapabilities}/>
+            <CapabilitiesDeviceSelector capabilities={selectorCapabilities} />
         );
     } else if (selectorType === 'device') {
         selector = (
-            <DeviceSelectorContainer/>
+            <DeviceSelectorContainer />
         );
     } else if (selectorType === 'serialport') {
         selector = (
-            <SerialPortSelectorContainer/>
+            <SerialPortSelectorContainer />
         );
     }
 
@@ -79,7 +79,7 @@ function NavBar (args){
             <DecoratedLogo />
         </div>
     );
-};
+}
 
 NavBar.propTypes = {
     cssClass: PropTypes.string,
