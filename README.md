@@ -62,7 +62,7 @@ Feel free to file code related issues on [GitHub Issues](https://github.com/Nord
 To build this project you will need to install the following tools:
 
 * Node.js (>=6.9)
-* npm (>=3.7.0)
+* npm (>=5.6.0) / yarn (>=1.4.0)
 
 ### Compilation of native modules
 
