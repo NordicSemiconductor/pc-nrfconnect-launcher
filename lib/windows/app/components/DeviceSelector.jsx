@@ -34,296 +34,261 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import DeviceLister from 'nrf-device-lister';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
-import { Iterable } from 'immutable';
 
-const VENDOR_ID_NORDIC = 0x1915;
-const VENDOR_ID_SEGGER = 0x1366;
+import { logger } from '../../../api/logging';
+import * as DeviceActions from '../actions/deviceActions';
+import { connect } from '../../../util/apps';
 
-/**
- * Default filtering of what to show in the device selector. Can be
- * overridden by passing a custom `filter` function as a prop to
- * DeviceSelector.
- *
- * @param {Object} device The device to be filtered.
- * @returns {boolean} True if the device should be shown, false if not.
- */
-function deviceFilter(device) {
-    return device && !!device.serialNumber &&
-        [VENDOR_ID_NORDIC, VENDOR_ID_SEGGER].includes(device.vendorId);
-}
 
-/**
- * Default compare function to use when sorting devices in the selector.
- * Can be overridden by passing a custom `compareFunction` as a prop to
- * DeviceSelector.
- *
- * @param {Object} deviceA A device.
- * @param {Object} deviceB Another device to be compared with deviceA.
- * @returns {number} -1 if A should be sorted before B, +1 if B should be
- *     sorted before A, or 0 if the devices are equal.
- */
-function deviceCompareFunction(deviceA, deviceB) {
-    if (deviceA.serialNumber < deviceB.serialNumber) {
-        return -1;
-    }
-    if (deviceA.serialNumber > deviceB.serialNumber) {
-        return 1;
-    }
-    return 0;
-}
-
-/**
- * Default name to show for each device. Can be overridden by passing
- * a custom `deviceNameParser` function as a prop to DeviceSelector.
- *
- * @param {Object} device The device to parse a name from.
- * @returns {string} The device name to display.
- */
-function getDeviceDisplayName(device) {
-    return device.serialNumber;
-}
-
-/**
- * Default details to show for each device. Can be overridden by
- * passing a custom `deviceDetailsParser` function as a prop to
- * DeviceSelector.
- *
- * @param {Object} device The device to parse details from.
- * @returns {string} The device details to display.
- */
-function getDeviceDisplayDetails(device) {
-    return device.comName;
-}
-
-/**
- * Default key (identifier) for each device. Must be unique within the
- * device list. Can be overridden by passing a custom `deviceKeyParser`
- * function as a prop to DeviceSelector.
- *
- * @param {Object} device The device to parse a key from.
- * @returns {string} The device key to use.
- */
-function getDeviceKey(device) {
-    return `usb-${device.busNumber}-${device.deviceAddress}`;
-}
-
-/**
- * Component that displays a list of available devices, and allows the
- * user to select and deselect a device.
- *
- * The component receives a list of all available devices, and applies
- * a filter so that only those devices that the app supports are shown.
- * Apps can apply their own filter by passing a custom `filter` function
- * as a prop.
- */
-class DeviceSelector extends React.Component {
-    componentDidMount() {
-        const {
-            bindHotkey,
-            toggleExpanded,
-            hotkeyExpand,
-        } = this.props;
-
-        bindHotkey(hotkeyExpand.toLowerCase(), () => {
-            // Focusing the dropdown button, so that up/down arrow keys
-            // can be used to select device.
-            this.focusDropdownButton();
-            toggleExpanded();
-        });
-    }
-
+// Stateless, templating-only component
+class DeviceSelectorTemplate extends React.Component {
     /**
-     * Focuses the selector dropdown button.
-     *
-     * @returns {void}
-     */
-    focusDropdownButton() {
-        // eslint-disable-next-line react/no-find-dom-node
-        const node = ReactDOM.findDOMNode(this);
-        if (node) {
-            const button = node.querySelector('button');
-            if (button) {
-                button.focus();
-            }
-        }
-    }
-
-    /**
-     * Render one device menu item based on the configured `deviceNameParser`,
-     * `deviceDetailsParser`, and `deviceKeyParser` props. The `onSelect` prop
-     * function is invoked when an item is selected.
-     *
-     * @param {Object} device The device to render as a menu item.
-     * @returns {*} One menu item element.
-     */
-    renderDeviceItem(device) {
-        const {
-            onSelect,
-            isSerialPortVerificationEnabled,
-            menuItemCssClass,
-            menuItemDetailsCssClass,
-            deviceNameParser,
-            deviceDetailsParser,
-            deviceKeyParser,
-        } = this.props;
-
-        const name = deviceNameParser(device);
-        const details = deviceDetailsParser(device);
-        return (
-            <MenuItem
-                key={deviceKeyParser(device)}
-                className={menuItemCssClass}
-                eventKey={deviceKeyParser(device)}
-                onSelect={() => onSelect(device, isSerialPortVerificationEnabled)}
-            >
-                <div>{name}</div>
-                {
-                    details ?
-                        <div className={menuItemDetailsCssClass}>{details}</div> :
-                        null
-                }
-            </MenuItem>
-        );
-    }
-
-    /**
-     * Render device menu items.
-     *
-     * @returns {*} Array of menu item elements.
-     */
-    renderDeviceItems() {
-        const {
-            devices,
-            isLoading,
-            filter,
-            compareFunction,
-        } = this.props;
-
-        if (!isLoading) {
-            return devices.filter(filter)
-                .sort(compareFunction)
-                .map(device => this.renderDeviceItem(device));
-        }
-        return null;
-    }
-
-    /**
-     * Render a menu item that allows the user to close the selected
-     * device. If no device is selected, then no close item is rendered.
+     * Returns the JSX that corresponds to a "Close device" menu item.
+     * If no device is selected, then no close item is rendered.
      *
      * @returns {*} A 'close device' menu item.
      */
-    renderCloseItem() {
+    getCloseItem() {
         const {
-            selectedDevice,
-            isLoading,
             onDeselect,
             menuItemCssClass,
         } = this.props;
 
-        if (selectedDevice && !isLoading) {
-            return ([
-                <MenuItem key="close-device-divider" divider />,
-                <MenuItem
-                    key="close-device"
-                    className={menuItemCssClass}
-                    eventKey="Close device"
-                    onSelect={onDeselect}
-                >
-                    <div>Close device</div>
-                </MenuItem>,
-            ]);
-        }
-        return null;
+        return ([
+            <MenuItem key="close-device-divider" divider />,
+            <MenuItem
+                key="close-device"
+                className={menuItemCssClass}
+                eventKey="Close device"
+                onSelect={onDeselect}
+            >
+                <div>Close device</div>
+            </MenuItem>,
+        ]);
     }
 
+    /**
+     * Given a device definition from nrf-device-lister, returns the JSX
+     * that corresponds to a menu entry for that device.
+     *
+     * @param {Object} device The device to render as a menu item.
+     * @returns {*} One menu item element.
+     */
+    getItemFromDevice([serialNumber, device]) {
+        const {
+            onSelect,
+            menuItemCssClass,
+            menuItemDetailsCssClass,
+        } = this.props;
+
+        return (
+            <MenuItem
+                key={serialNumber}
+                className={menuItemCssClass}
+                onSelect={() => onSelect(device)}
+            >
+                <div>{ device.serialNumber }</div>
+                <ul className={menuItemDetailsCssClass}>
+                    { device.serialport ?
+                        (<li>Serial port: {device.serialport.comName}</li>)
+                        : null }
+                    { device.usb ?
+                        (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
+                        : null }
+                    { device.jlink ? (<li>Debug probe</li>) : null }
+                </ul>
+            </MenuItem>
+        );
+    }
+
+    /*
+     * Returns the JSX corresponding to a drop-down menu.
+     */
     render() {
         const {
-            selectedDevice,
-            toggleExpanded,
-            isExpanded,
-            hotkeyExpand,
             cssClass,
             dropdownCssClass,
             dropdownMenuCssClass,
-            deviceNameParser,
+            togglerText,
+            displayCloseItem,   // bool
+            devices, // plain array, not map
         } = this.props;
 
-        const selectorText = selectedDevice ? deviceNameParser(selectedDevice) : 'Select device';
+        const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
 
         return (
-            <span title={`Select device (${hotkeyExpand})`}>
-                <div className={cssClass}>
-                    <Dropdown id="device-selector" open={isExpanded} onToggle={toggleExpanded}>
-                        <DropdownToggle
-                            className={dropdownCssClass}
-                            title={selectorText}
-                        />
-                        <DropdownMenu
-                            id="device-selector-list"
-                            className={dropdownMenuCssClass}
-                        >
-                            { this.renderDeviceItems() }
-                            { this.renderCloseItem() }
-                        </DropdownMenu>
-                    </Dropdown>
-                </div>
-            </span>
+            <Dropdown id="device-selector" className={cssClass}>
+                <DropdownToggle
+                    className={dropdownCssClass}
+                    title={togglerText}
+                />
+                <DropdownMenu
+                    id="device-selector-list"
+                    className={dropdownMenuCssClass}
+                >
+                    { devices.map(device => this.getItemFromDevice(device)) }
+                    { closeItem }
+                </DropdownMenu>
+            </Dropdown>
         );
     }
 }
 
-DeviceSelector.propTypes = {
-    devices: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    selectedDevice: PropTypes.shape({
-        serialNumber: PropTypes.serialNumber,
-    }),
-    isLoading: PropTypes.bool,
-    isExpanded: PropTypes.bool,
-    isSerialPortVerificationEnabled: PropTypes.bool,
-    toggleExpanded: PropTypes.func.isRequired,
+DeviceSelectorTemplate.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-    bindHotkey: PropTypes.func.isRequired,
-    hotkeyExpand: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
-    filter: PropTypes.func,
-    compareFunction: PropTypes.func,
-    deviceNameParser: PropTypes.func,
-    deviceDetailsParser: PropTypes.func,
-    deviceKeyParser: PropTypes.func,
+    togglerText: PropTypes.string.isRequired,
+    displayCloseItem: PropTypes.boolean.isRequired,
+    devices: PropTypes.arrayOf.isRequired,
+//     capabilities: PropTypes.shape({}),
 };
 
-DeviceSelector.defaultProps = {
-    selectedDevice: null,
-    isExpanded: false,
-    isLoading: false,
-    isSerialPortVerificationEnabled: true,
-    indicatorStatus: 'off',
-    hotkeyExpand: 'Alt+P',
+DeviceSelectorTemplate.defaultProps = {
     cssClass: 'core-padded-row',
     dropdownCssClass: 'core-device-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
-    filter: deviceFilter,
-    compareFunction: deviceCompareFunction,
-    deviceNameParser: getDeviceDisplayName,
-    deviceDetailsParser: getDeviceDisplayDetails,
-    deviceKeyParser: getDeviceKey,
+//     capabilities: undefined,
 };
 
-export default DeviceSelector;
+
+// Stateful, calls the templating component above
+class DeviceSelector extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.deviceLister = new DeviceLister(props.capabilities);
+
+        this.state = {
+            devices: [],
+            selectedSerialNumber: undefined,
+        };
+
+        this.deviceLister.on('conflated', devices => {
+            this.setState(prev =>
+//    logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
+                 ({ ...prev, devices }));
+        });
+
+        this.deviceLister.on('error', err => {
+            if (err.usb) {
+                const usbAddr = `${err.usb.device.busNumber}.${err.usb.device.deviceAddress}`;
+
+                let errMsg = (`Error while probing usb device at bus.address ${usbAddr}. `);
+                if (process.platform === 'linux') {
+                    errMsg += 'Please check your udev rules concerning permissions for USB devices.';
+                } else if (process.platform === 'win32') {
+                    errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
+                }
+
+                logger.error(err.error.toString());
+                logger.error(errMsg);
+            } else {
+                logger.error(`Error while probing devices: ${err.error}`);
+            }
+        });
+
+        this.deviceLister.start();
+    }
+
+    /*
+     * Called from the templated selector.
+     * Shall receive a device definition.
+     * Resets the internal state, and calls the downstream onSelect().
+     * Note that this.onSelect() is different from this.props.onSelect(),
+     * the later one is the one that actually triggers the action.
+     */
+    onSelect(device) {
+        if (this.state.selectDevice) {
+            this.onDeselect();
+        }
+//                 logger.info(`Selecting device with s/n ${device.serialNumber}`);
+        this.setState(prev => ({ ...prev, selectedSerialNumber: device.serialNumber }));
+        this.props.onSelect(device);
+    }
+
+    /*
+     * Called from the templated selector.
+     * Resets the internal state, and calls the downstream onDeselect().
+     * Note that this.onDeselect() is different from this.props.onDeselect(),
+     * the later one is the one that actually triggers the action.
+     */
+    onDeselect() {
+//                 logger.info('Deselecting device');
+        this.setState(prev => ({ ...prev, selectedSerialNumber: undefined }));
+        this.props.onDeselect();
+    }
+
+
+    /*
+     * Returns the JSX corresponding to a drop-down menu.
+     */
+    render() {
+        const togglerText = this.state.selectedSerialNumber ?
+            this.state.selectedSerialNumber.toString() :
+            'Select device';
+
+        const displayCloseItem = Boolean(this.state.selectedSerialNumber);
+        const devices = Array.from(this.state.devices);
+
+        const templateProps = {
+            ...this.props,
+            togglerText,
+            displayCloseItem,
+            devices,
+            onSelect: this.onSelect,
+            onDeselect: this.onDeselect,
+        };
+
+        return (
+            <DeviceSelectorTemplate {...templateProps} />
+        );
+    }
+}
+
+DeviceSelector.propTypes = {
+    onSelect: PropTypes.func.isRequired,
+    onDeselect: PropTypes.func.isRequired,
+//     cssClass: PropTypes.string,
+//     dropdownCssClass: PropTypes.string,
+//     dropdownMenuCssClass: PropTypes.string,
+//     menuItemCssClass: PropTypes.string,
+//     menuItemDetailsCssClass: PropTypes.string,
+    capabilities: PropTypes.shape({}),
+};
+
+DeviceSelector.defaultProps = {
+//     cssClass: 'core-padded-row',
+//     dropdownCssClass: 'core-device-selector core-btn btn-primary',
+//     dropdownMenuCssClass: 'core-dropdown-menu',
+//     menuItemCssClass: 'core-device-selector-item btn-primary',
+//     menuItemDetailsCssClass: 'core-device-selector-item-details',
+    capabilities: undefined,
+};
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onSelect: (device, verifySerialPortAvailable) =>
+            dispatch(DeviceActions.selectDevice(device, verifySerialPortAvailable)),
+        onDeselect: () => dispatch(DeviceActions.deselectDevice()),
+    };
+}
+
+export default connect(
+    args => args,
+    mapDispatchToProps,
+)(DeviceSelector, 'DeviceSelector');
+
