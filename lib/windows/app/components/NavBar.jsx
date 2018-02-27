@@ -37,8 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../../../components/Logo';
-import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-import CapabilitiesDeviceSelector from '../components/CapabilitiesDeviceSelector';
+// import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+import DeviceSelector from '../components/DeviceSelector';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
@@ -50,20 +50,16 @@ function NavBar(args) {
     const {
         cssClass,
         navSectionCssClass,
-        selectorType,
+//         selectorType,
         selectorCapabilities,
     } = args;
 
     let selector = '';
     if (selectorCapabilities) {
         selector = (
-            <CapabilitiesDeviceSelector capabilities={selectorCapabilities} />
+            <DeviceSelector capabilities={selectorCapabilities} />
         );
-    } else if (selectorType === 'device') {
-        selector = (
-            <DeviceSelectorContainer />
-        );
-    } else if (selectorType === 'serialport') {
+    } else {
         selector = (
             <SerialPortSelectorContainer />
         );
@@ -84,7 +80,7 @@ function NavBar(args) {
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    selectorType: PropTypes.oneOf(['device', 'serialport']).isRequired,
+//     selectorType: PropTypes.oneOf(['device', 'serialport']).isRequired,
 };
 
 NavBar.defaultProps = {
