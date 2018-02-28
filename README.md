@@ -51,6 +51,10 @@ To create your own app, follow the documentation on the [project wiki](https://g
 
 To configure nRF Connect for use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
 
+# Linux udev rules
+
+In order to access Nordic USB devices with correct permissions *udev* rules need to be set up once. For this purpose [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) repository has been created, follow instructions there.
+
 # Contributing
 
 Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
