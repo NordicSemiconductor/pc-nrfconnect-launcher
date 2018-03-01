@@ -90,7 +90,7 @@ class DeviceSelectorContainer extends React.Component {
 
                 let errMsg = (`Error while probing usb device at bus.address ${usbAddr}. `);
                 if (process.platform === 'linux') {
-                    errMsg += 'Please check your udev rules concerning permissions for USB devices.';
+                    errMsg += 'Please check your udev rules concerning permissions for USB devices, see https://github.com/NordicSemiconductor/nrf-udev';
                 } else if (process.platform === 'win32') {
                     errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
                 }
