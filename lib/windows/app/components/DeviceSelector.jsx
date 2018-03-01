@@ -75,7 +75,7 @@ export default class DeviceSelector extends React.Component {
      * @param {Object} device The device to render as a menu item.
      * @returns {*} One menu item element.
      */
-    getItemFromDevice([serialNumber, device]) {
+    getItemFromDevice(device) {
         const {
             onSelect,
             menuItemCssClass,
@@ -84,7 +84,7 @@ export default class DeviceSelector extends React.Component {
 
         return (
             <MenuItem
-                key={serialNumber}
+                key={device.serialNumber}
                 className={menuItemCssClass}
                 onSelect={() => onSelect(device)}
             >
@@ -145,7 +145,7 @@ DeviceSelector.propTypes = {
     menuItemDetailsCssClass: PropTypes.string,
     togglerText: PropTypes.string.isRequired,
     displayCloseItem: PropTypes.bool.isRequired,
-    devices: PropTypes.arrayOf.isRequired,
+    devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 //     capabilities: PropTypes.shape({}),
 };
 
