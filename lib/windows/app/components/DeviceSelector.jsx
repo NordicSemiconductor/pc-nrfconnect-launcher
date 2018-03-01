@@ -146,7 +146,6 @@ DeviceSelector.propTypes = {
     togglerText: PropTypes.string.isRequired,
     displayCloseItem: PropTypes.bool.isRequired,
     devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-//     capabilities: PropTypes.shape({}),
 };
 
 DeviceSelector.defaultProps = {
@@ -155,6 +154,5 @@ DeviceSelector.defaultProps = {
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
-//     capabilities: undefined,
 };
 

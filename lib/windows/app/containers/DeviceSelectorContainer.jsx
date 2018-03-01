@@ -185,9 +185,10 @@ function mapDispatchToProps(dispatch) {
                 type: 'DEVICE_SELECTED',
                 device,
             }),
-        onDeselect: () => dispatch({
-            type: 'DEVICE_DESELECTED',
-        }),
+        onDeselect: () =>
+            dispatch({
+                type: 'DEVICE_DESELECTED',
+            }),
     };
 }
 

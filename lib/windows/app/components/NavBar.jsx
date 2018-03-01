@@ -38,7 +38,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../../../components/Logo';
 import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-// import DeviceSelector from '../components/DeviceSelector';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
@@ -46,14 +45,11 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 
-function NavBar(args) {
-    const {
+function NavBar({
         cssClass,
         navSectionCssClass,
-//         selectorType,
         selectorCapabilities,
-    } = args;
-
+    }) {
     let selector = '';
     if (selectorCapabilities) {
         selector = (
@@ -80,12 +76,13 @@ function NavBar(args) {
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-//     selectorType: PropTypes.oneOf(['device', 'serialport']).isRequired,
+    selectorCapabilities: PropTypes.shape({}),
 };
 
 NavBar.defaultProps = {
     cssClass: 'core-nav-bar',
     navSectionCssClass: 'core-nav-section core-padded-row',
+    selectorCapabilities: undefined,
 };
 
 export default NavBar;
