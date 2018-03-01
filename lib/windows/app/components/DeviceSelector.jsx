@@ -34,21 +34,15 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import DeviceLister from 'nrf-device-lister';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-import { logger } from '../../../api/logging';
-import * as DeviceActions from '../actions/deviceActions';
-import { connect } from '../../../util/apps';
 
-
-// Stateless, templating-only component
-class DeviceSelectorTemplate extends React.Component {
+// Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
+export default class DeviceSelector extends React.Component {
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
      * If no device is selected, then no close item is rendered.
@@ -61,7 +55,7 @@ class DeviceSelectorTemplate extends React.Component {
             menuItemCssClass,
         } = this.props;
 
-        return ([
+        return (
             <MenuItem key="close-device-divider" divider />,
             <MenuItem
                 key="close-device"
@@ -70,8 +64,8 @@ class DeviceSelectorTemplate extends React.Component {
                 onSelect={onDeselect}
             >
                 <div>Close device</div>
-            </MenuItem>,
-        ]);
+            </MenuItem>
+        );
     }
 
     /**
@@ -141,7 +135,7 @@ class DeviceSelectorTemplate extends React.Component {
     }
 }
 
-DeviceSelectorTemplate.propTypes = {
+DeviceSelector.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
@@ -150,12 +144,12 @@ DeviceSelectorTemplate.propTypes = {
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
     togglerText: PropTypes.string.isRequired,
-    displayCloseItem: PropTypes.boolean.isRequired,
+    displayCloseItem: PropTypes.bool.isRequired,
     devices: PropTypes.arrayOf.isRequired,
 //     capabilities: PropTypes.shape({}),
 };
 
-DeviceSelectorTemplate.defaultProps = {
+DeviceSelector.defaultProps = {
     cssClass: 'core-padded-row',
     dropdownCssClass: 'core-device-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
@@ -165,130 +159,4 @@ DeviceSelectorTemplate.defaultProps = {
 };
 
 
-// Stateful, calls the templating component above
-class DeviceSelector extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.deviceLister = new DeviceLister(props.capabilities);
-
-        this.state = {
-            devices: [],
-            selectedSerialNumber: undefined,
-        };
-
-        this.deviceLister.on('conflated', devices => {
-            this.setState(prev =>
-//    logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
-                 ({ ...prev, devices }));
-        });
-
-        this.deviceLister.on('error', err => {
-            if (err.usb) {
-                const usbAddr = `${err.usb.device.busNumber}.${err.usb.device.deviceAddress}`;
-
-                let errMsg = (`Error while probing usb device at bus.address ${usbAddr}. `);
-                if (process.platform === 'linux') {
-                    errMsg += 'Please check your udev rules concerning permissions for USB devices.';
-                } else if (process.platform === 'win32') {
-                    errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
-                }
-
-                logger.error(err.error.toString());
-                logger.error(errMsg);
-            } else {
-                logger.error(`Error while probing devices: ${err.error}`);
-            }
-        });
-
-        this.deviceLister.start();
-    }
-
-    /*
-     * Called from the templated selector.
-     * Shall receive a device definition.
-     * Resets the internal state, and calls the downstream onSelect().
-     * Note that this.onSelect() is different from this.props.onSelect(),
-     * the later one is the one that actually triggers the action.
-     */
-    onSelect(device) {
-        if (this.state.selectDevice) {
-            this.onDeselect();
-        }
-//                 logger.info(`Selecting device with s/n ${device.serialNumber}`);
-        this.setState(prev => ({ ...prev, selectedSerialNumber: device.serialNumber }));
-        this.props.onSelect(device);
-    }
-
-    /*
-     * Called from the templated selector.
-     * Resets the internal state, and calls the downstream onDeselect().
-     * Note that this.onDeselect() is different from this.props.onDeselect(),
-     * the later one is the one that actually triggers the action.
-     */
-    onDeselect() {
-//                 logger.info('Deselecting device');
-        this.setState(prev => ({ ...prev, selectedSerialNumber: undefined }));
-        this.props.onDeselect();
-    }
-
-
-    /*
-     * Returns the JSX corresponding to a drop-down menu.
-     */
-    render() {
-        const togglerText = this.state.selectedSerialNumber ?
-            this.state.selectedSerialNumber.toString() :
-            'Select device';
-
-        const displayCloseItem = Boolean(this.state.selectedSerialNumber);
-        const devices = Array.from(this.state.devices);
-
-        const templateProps = {
-            ...this.props,
-            togglerText,
-            displayCloseItem,
-            devices,
-            onSelect: this.onSelect,
-            onDeselect: this.onDeselect,
-        };
-
-        return (
-            <DeviceSelectorTemplate {...templateProps} />
-        );
-    }
-}
-
-DeviceSelector.propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    onDeselect: PropTypes.func.isRequired,
-//     cssClass: PropTypes.string,
-//     dropdownCssClass: PropTypes.string,
-//     dropdownMenuCssClass: PropTypes.string,
-//     menuItemCssClass: PropTypes.string,
-//     menuItemDetailsCssClass: PropTypes.string,
-    capabilities: PropTypes.shape({}),
-};
-
-DeviceSelector.defaultProps = {
-//     cssClass: 'core-padded-row',
-//     dropdownCssClass: 'core-device-selector core-btn btn-primary',
-//     dropdownMenuCssClass: 'core-dropdown-menu',
-//     menuItemCssClass: 'core-device-selector-item btn-primary',
-//     menuItemDetailsCssClass: 'core-device-selector-item-details',
-    capabilities: undefined,
-};
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onSelect: (device, verifySerialPortAvailable) =>
-            dispatch(DeviceActions.selectDevice(device, verifySerialPortAvailable)),
-        onDeselect: () => dispatch(DeviceActions.deselectDevice()),
-    };
-}
-
-export default connect(
-    args => args,
-    mapDispatchToProps,
-)(DeviceSelector, 'DeviceSelector');
 
