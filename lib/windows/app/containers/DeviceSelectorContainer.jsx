@@ -61,7 +61,8 @@ import { logger } from '../../../api/logging';
  *     nrf-device-lister.
  * - Dispatch a DEVICE_DESELECTED action whenever the user selects the
  *     "close device" option from the drop-down list, or whenever the
- *     user selects a different device.
+ *     user selects a different device, or when the device is physically
+ *     disconnected.
  *
  * This file implements the logic. The view/rendering/template/whatchacallit
  * stays in ../components/DeviceSelector
@@ -79,9 +80,13 @@ class DeviceSelectorContainer extends React.Component {
         };
 
         this.deviceLister.on('conflated', devices => {
-            this.setState(prev =>
-//    logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
-                 ({ ...prev, devices }));
+            this.setState(prev => ({ ...prev, devices }));
+
+            // Maybe the user has physically disconnected the currently selected device
+            if (this.state.selectedSerialNumber !== undefined &&
+                !devices.has(this.state.selectedSerialNumber)) {
+                this.onDeselect();
+            }
         });
 
         this.deviceLister.on('error', err => {
@@ -113,10 +118,9 @@ class DeviceSelectorContainer extends React.Component {
      * the later one is the one that actually triggers the action.
      */
     onSelect(device) {
-        if (this.state.selectDevice) {
+        if (this.state.selectedSerialNumber) {
             this.onDeselect();
         }
-//                 logger.info(`Selecting device with s/n ${device.serialNumber}`);
         this.setState(prev => ({ ...prev, selectedSerialNumber: device.serialNumber }));
         this.props.onSelect(device);
     }
@@ -128,20 +132,23 @@ class DeviceSelectorContainer extends React.Component {
      * the later one is the one that actually triggers the action.
      */
     onDeselect() {
-//                 logger.info('Deselecting device');
         this.setState(prev => ({ ...prev, selectedSerialNumber: undefined }));
         this.props.onDeselect();
     }
-
 
     /*
      * Returns the JSX corresponding to a drop-down menu.
      * Prepares some properties for the template, uses it.
      */
     render() {
-        const togglerText = this.state.selectedSerialNumber ?
-            this.state.selectedSerialNumber.toString() :
-            'Select device';
+        let togglerText;
+        if (this.state.selectedSerialNumber) {
+            togglerText = this.state.selectedSerialNumber.toString();
+        } else if (this.state.devices.size === 0) {
+            togglerText = 'No devices available';
+        } else {
+            togglerText = 'Select device';
+        }
 
         const displayCloseItem = Boolean(this.state.selectedSerialNumber);
         const devices = Array.from(this.state.devices);

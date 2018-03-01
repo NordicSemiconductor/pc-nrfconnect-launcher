@@ -118,7 +118,7 @@ export default class DeviceSelector extends React.Component {
         const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
 
         return (
-            <Dropdown id="device-selector" className={cssClass}>
+            <Dropdown id="device-selector" className={cssClass} disabled={devices.length === 0}>
                 <DropdownToggle
                     className={dropdownCssClass}
                     title={togglerText}
