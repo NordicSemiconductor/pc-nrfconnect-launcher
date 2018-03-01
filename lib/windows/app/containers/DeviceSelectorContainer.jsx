@@ -151,8 +151,8 @@ class DeviceSelectorContainer extends React.Component {
             togglerText,
             displayCloseItem,
             devices,
-            onSelect: this.onSelect,
-            onDeselect: this.onDeselect,
+            onSelect: device => { this.onSelect(device); },
+            onDeselect: () => { this.onDeselect(); },
         };
 
         return (
@@ -173,13 +173,13 @@ DeviceSelectorContainer.defaultProps = {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onSelect: (device) =>
+        onSelect: device =>
             dispatch({
                 type: 'DEVICE_SELECTED',
-                device
+                device,
             }),
         onDeselect: () => dispatch({
-            type: 'DEVICE_DESELECTED'
+            type: 'DEVICE_DESELECTED',
         }),
     };
 }

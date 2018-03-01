@@ -55,7 +55,7 @@ export default class DeviceSelector extends React.Component {
             menuItemCssClass,
         } = this.props;
 
-        return (
+        return ([
             <MenuItem key="close-device-divider" divider />,
             <MenuItem
                 key="close-device"
@@ -64,8 +64,8 @@ export default class DeviceSelector extends React.Component {
                 onSelect={onDeselect}
             >
                 <div>Close device</div>
-            </MenuItem>
-        );
+            </MenuItem>,
+        ]);
     }
 
     /**
@@ -157,6 +157,4 @@ DeviceSelector.defaultProps = {
     menuItemDetailsCssClass: 'core-device-selector-item-details',
 //     capabilities: undefined,
 };
-
-
 
