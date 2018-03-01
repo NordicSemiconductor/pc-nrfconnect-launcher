@@ -151,7 +151,7 @@ class DeviceSelectorContainer extends React.Component {
         }
 
         const displayCloseItem = Boolean(this.state.selectedSerialNumber);
-        const devices = Array.from(this.state.devices);
+        const devices = Array.from(this.state.devices.values());
 
         const templateProps = {
             ...this.props,
