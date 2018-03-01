@@ -46,9 +46,9 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-const Root = ({ selectorType, selectorCapabilities }) => (
+const Root = ({ selectorCapabilities }) => (
     <div className="core-main-area">
-        <DecoratedNavBar selectorType={selectorType} selectorCapabilities={selectorCapabilities} />
+        <DecoratedNavBar selectorCapabilities={selectorCapabilities} />
         <div className="core-main-layout">
             <div>
                 <MainViewContainer />
@@ -62,7 +62,6 @@ const Root = ({ selectorType, selectorCapabilities }) => (
 );
 
 Root.propTypes = {
-    selectorType: PropTypes.string.isRequired,
     selectorCapabilities: PropTypes.shape({}),
 };
 
