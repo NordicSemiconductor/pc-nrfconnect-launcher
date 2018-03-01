@@ -37,8 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '../../../components/Logo';
-// import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-import DeviceSelector from '../components/DeviceSelector';
+import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+// import DeviceSelector from '../components/DeviceSelector';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
@@ -57,7 +57,7 @@ function NavBar(args) {
     let selector = '';
     if (selectorCapabilities) {
         selector = (
-            <DeviceSelector capabilities={selectorCapabilities} />
+            <DeviceSelectorContainer capabilities={selectorCapabilities} />
         );
     } else {
         selector = (
