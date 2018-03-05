@@ -48,12 +48,12 @@ const DecoratedLogo = decorate(Logo, 'Logo');
 function NavBar({
         cssClass,
         navSectionCssClass,
-        selectorCapabilities,
+        selectorTraits,
     }) {
     let selector = '';
-    if (selectorCapabilities) {
+    if (selectorTraits) {
         selector = (
-            <DeviceSelectorContainer capabilities={selectorCapabilities} />
+            <DeviceSelectorContainer traits={selectorTraits} />
         );
     } else {
         selector = (
@@ -76,13 +76,13 @@ function NavBar({
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    selectorCapabilities: PropTypes.shape({}),
+    selectorTraits: PropTypes.shape({}),
 };
 
 NavBar.defaultProps = {
     cssClass: 'core-nav-bar',
     navSectionCssClass: 'core-nav-section core-padded-row',
-    selectorCapabilities: undefined,
+    selectorTraits: undefined,
 };
 
 export default NavBar;

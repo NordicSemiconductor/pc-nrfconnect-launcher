@@ -50,7 +50,7 @@ import { logger } from '../../../api/logging';
  * them.
  *
  * This uses nrf-device-lister under the hood. Depending on what kind
- * of devices the application needs, developers can specify a `capabilities`
+ * of devices the application needs, developers can specify a `traits`
  * object (e.g. look only for serial ports, look only for j-link probes, look
  * for several things at once). This will be passed to nrf-device-lister.
  *
@@ -72,7 +72,7 @@ class DeviceSelectorContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.deviceLister = new DeviceLister(props.capabilities);
+        this.deviceLister = new DeviceLister(props.traits);
 
         this.state = {
             devices: [],
@@ -171,11 +171,11 @@ class DeviceSelectorContainer extends React.Component {
 DeviceSelectorContainer.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-    capabilities: PropTypes.shape({}),
+    traits: PropTypes.shape({}),
 };
 
 DeviceSelectorContainer.defaultProps = {
-    capabilities: undefined,
+    traits: undefined,
 };
 
 function mapDispatchToProps(dispatch) {
