@@ -36,10 +36,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
+import Dropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
@@ -118,11 +119,16 @@ export default class DeviceSelector extends React.Component {
         const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
 
         return (
-            <Dropdown id="device-selector" className={cssClass} disabled={devices.length === 0}>
+            <Dropdown
+                id="device-selector"
+                className={cssClass}
+                disabled={devices.length === 0}
+                hotkey="alt+p"
+            >
                 <DropdownToggle
                     className={dropdownCssClass}
-                    title={togglerText}
-                />
+                    title={`${togglerText} (Alt+P)`}
+                >{togglerText} </DropdownToggle>
                 <DropdownMenu
                     id="device-selector-list"
                     className={dropdownMenuCssClass}
