@@ -50,22 +50,14 @@ function NavBar({
         navSectionCssClass,
         selectorTraits,
     }) {
-    let selector = '';
-    if (selectorTraits) {
-        selector = (
-            <DeviceSelectorContainer traits={selectorTraits} />
-        );
-    } else {
-        selector = (
-            <SerialPortSelectorContainer />
-        );
-    }
-
     return (
         <div className={cssClass}>
             <MainMenuContainer />
             <div className={navSectionCssClass}>
-                { selector }
+                { selectorTraits ?
+                    <DeviceSelectorContainer traits={selectorTraits} /> :
+                    <SerialPortSelectorContainer />
+                }
             </div>
             <NavMenuContainer />
             <DecoratedLogo />
