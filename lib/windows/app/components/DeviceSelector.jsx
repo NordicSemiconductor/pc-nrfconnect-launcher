@@ -113,12 +113,20 @@ export default class DeviceSelector extends React.Component {
             togglerText,
             displayCloseItem,   // bool
             devices, // plain array, not map
+            isExpanded,
+            onToggle,
         } = this.props;
 
         const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
 
         return (
-            <Dropdown id="device-selector" className={cssClass} disabled={devices.length === 0}>
+            <Dropdown
+                id="device-selector"
+                className={cssClass}
+                disabled={devices.length === 0}
+                open={isExpanded}
+                onToggle={onToggle}
+            >
                 <DropdownToggle
                     className={dropdownCssClass}
                     title={togglerText}

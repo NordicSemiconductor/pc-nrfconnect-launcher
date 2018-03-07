@@ -42,6 +42,7 @@ import PropTypes from 'prop-types';
 import DeviceSelector from '../components/DeviceSelector';
 import { connect } from '../../../util/apps';
 import { logger } from '../../../api/logging';
+import withHotkey from '../../../util/withHotkey';
 
 /*
  * Stateful device selector.
@@ -110,6 +111,13 @@ class DeviceSelectorContainer extends React.Component {
         this.deviceLister.start();
     }
 
+    componentDidMount() {
+        this.props.bindHotkey('alt+p', () => {
+            this.onToggle();
+        });
+    }
+
+
     /*
      * Called from the templated selector.
      * Shall receive a device definition.
@@ -136,6 +144,10 @@ class DeviceSelectorContainer extends React.Component {
         this.props.onDeselect();
     }
 
+    onToggle() {
+        this.setState(prev => ({ ...prev, isExpanded: !prev.isExpanded }));
+    }
+
     /*
      * Returns the JSX corresponding to a drop-down menu.
      * Prepares some properties for the template, uses it.
@@ -160,6 +172,8 @@ class DeviceSelectorContainer extends React.Component {
             devices,
             onSelect: device => { this.onSelect(device); },
             onDeselect: () => { this.onDeselect(); },
+            onToggle: () => { this.onToggle(); },
+            isExpanded: this.state.isExpanded,
         };
 
         return (
@@ -195,4 +209,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     args => args,
     mapDispatchToProps,
-)(DeviceSelectorContainer, 'DeviceSelector');
+)(withHotkey(DeviceSelectorContainer), 'DeviceSelector');
