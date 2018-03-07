@@ -69,7 +69,7 @@ import withHotkey from '../../../util/withHotkey';
  * stays in ../components/DeviceSelector
  */
 
-class DeviceSelectorContainer extends React.Component {
+class DeviceSelectorContainer extends withHotkey(React.Component) {
     constructor(props) {
         super(props);
 
@@ -112,7 +112,7 @@ class DeviceSelectorContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.bindHotkey('alt+p', () => {
+        this.bindHotkey('alt+p', () => {
             this.onToggle();
         });
     }
@@ -209,4 +209,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     args => args,
     mapDispatchToProps,
-)(withHotkey(DeviceSelectorContainer), 'DeviceSelector');
+)(DeviceSelectorContainer, 'DeviceSelector');
