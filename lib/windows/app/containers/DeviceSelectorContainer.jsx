@@ -78,6 +78,7 @@ class DeviceSelectorContainer extends React.Component {
         this.state = {
             devices: [],
             selectedSerialNumber: undefined,
+            isExpanded: false,
         };
 
         this.deviceLister.on('conflated', devices => {
