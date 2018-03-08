@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
@@ -43,6 +44,20 @@ import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
+    /**
+     * React lifecycle method that is invoked before the component
+     * renders.
+     *
+     * @param {object} nextProps Props that will be used for the next render.
+     * @returns {void}
+     */
+    componentWillReceiveProps(nextProps) {
+        const isExpanding = !this.props.isExpanded && nextProps.isExpanded;
+        if (isExpanding) {
+            this.focusDropdownButton();
+        }
+    }
+
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
      * If no device is selected, then no close item is rendered.
@@ -102,6 +117,23 @@ export default class DeviceSelector extends React.Component {
         );
     }
 
+    /**
+     * Focuses the selector dropdown button. This is needed to make the
+     * up/down arrow keys work when the selector is expanded.
+     *
+     * @returns {void}
+     */
+    focusDropdownButton() {
+        // eslint-disable-next-line react/no-find-dom-node
+        const node = ReactDOM.findDOMNode(this);
+        if (node) {
+            const button = node.querySelector('button');
+            if (button) {
+                button.focus();
+            }
+        }
+    }
+
     /*
      * Returns the JSX corresponding to a drop-down menu.
      */
@@ -113,12 +145,20 @@ export default class DeviceSelector extends React.Component {
             togglerText,
             displayCloseItem,   // bool
             devices, // plain array, not map
+            isExpanded,
+            onToggle,
         } = this.props;
 
         const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
 
         return (
-            <Dropdown id="device-selector" className={cssClass} disabled={devices.length === 0}>
+            <Dropdown
+                id="device-selector"
+                className={cssClass}
+                disabled={devices.length === 0}
+                open={isExpanded}
+                onToggle={onToggle}
+            >
                 <DropdownToggle
                     className={dropdownCssClass}
                     title={togglerText}
@@ -146,6 +186,8 @@ DeviceSelector.propTypes = {
     togglerText: PropTypes.string.isRequired,
     displayCloseItem: PropTypes.bool.isRequired,
     devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isExpanded: PropTypes.bool.isRequired,
+    onToggle: PropTypes.func.isRequired,
 };
 
 DeviceSelector.defaultProps = {
