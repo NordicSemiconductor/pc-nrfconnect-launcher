@@ -112,13 +112,6 @@ class DeviceSelectorContainer extends React.Component {
         this.deviceLister.start();
     }
 
-    componentDidMount() {
-        this.props.bindHotkey('alt+p', () => {
-            this.onToggle();
-        });
-    }
-
-
     /*
      * Called from the templated selector.
      * Shall receive a device definition.
@@ -186,7 +179,7 @@ class DeviceSelectorContainer extends React.Component {
 DeviceSelectorContainer.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-    bindHotkey: PropTypes.func.isRequired,
+//    bindHotkey: PropTypes.func.isRequired,
     traits: PropTypes.shape({}),
 };
 
