@@ -154,6 +154,8 @@ DeviceSelector.propTypes = {
     togglerText: PropTypes.string.isRequired,
     displayCloseItem: PropTypes.bool.isRequired,
     devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    isExpanded: PropTypes.bool.isRequired,
+    onToggle: PropTypes.func.isRequired,
 };
 
 DeviceSelector.defaultProps = {
