@@ -18,13 +18,8 @@ export default ComposedComponent => {
             });
         }
 
-//         /*
-//         * React lifecycle method that is invoked before the component
-//         * renders.
-//         *
-//         * @param {object} nextProps Props that will be used for the next render.
-//         * @returns {void}
-//         */
+        // React lifecycle method, called when either the props or state is
+        // about to change
         componentWillUpdate(nextProps, nextState) {
             const isExpanding = !this.state.isExpanded && nextState.isExpanded;
             if (isExpanding) {
@@ -35,7 +30,6 @@ export default ComposedComponent => {
         }
 
         onToggle() {
-            console.log('WithDropdownFocus - onToggle()');
             this.setState(prev => ({ ...prev, isExpanded: !prev.isExpanded }));
             this.props.onToggle();
         }
@@ -65,12 +59,10 @@ export default ComposedComponent => {
 
     WithDropdownFocus.propTypes = {
         bindHotkey: PropTypes.func.isRequired,
-//         isExpanded: PropTypes.bool,
         onToggle: PropTypes.func,
     };
 
     WithDropdownFocus.defaultProps = {
-//         isExpanded: false,
         onToggle: () => {},
     };
 
