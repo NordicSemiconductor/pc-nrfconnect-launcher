@@ -57,7 +57,7 @@ export default ComposedComponent => {
                     focus={this.focus}
                     isExpanded={this.state.isExpanded}
                     {...this.props}
-                    onToggle={()=>{this.onToggle()}}
+                    onToggle={() => { this.onToggle(); }}
                 />
             );
         }
