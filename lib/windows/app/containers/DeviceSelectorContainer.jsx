@@ -42,7 +42,6 @@ import PropTypes from 'prop-types';
 import DeviceSelector from '../components/DeviceSelector';
 import { connect } from '../../../util/apps';
 import { logger } from '../../../api/logging';
-import withHotkey from '../../../util/withHotkey';
 
 /*
  * Stateful device selector.
@@ -78,7 +77,6 @@ class DeviceSelectorContainer extends React.Component {
         this.state = {
             devices: [],
             selectedSerialNumber: undefined,
-            isExpanded: false,
         };
 
         this.deviceLister.on('conflated', devices => {
@@ -138,10 +136,6 @@ class DeviceSelectorContainer extends React.Component {
         this.props.onDeselect();
     }
 
-    onToggle() {
-        this.setState(prev => ({ ...prev, isExpanded: !prev.isExpanded }));
-    }
-
     /*
      * Returns the JSX corresponding to a drop-down menu.
      * Prepares some properties for the template, uses it.
@@ -166,8 +160,6 @@ class DeviceSelectorContainer extends React.Component {
             devices,
             onSelect: device => { this.onSelect(device); },
             onDeselect: () => { this.onDeselect(); },
-            onToggle: () => { this.onToggle(); },
-            isExpanded: this.state.isExpanded,
         };
 
         return (
@@ -179,7 +171,6 @@ class DeviceSelectorContainer extends React.Component {
 DeviceSelectorContainer.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-//    bindHotkey: PropTypes.func.isRequired,
     traits: PropTypes.shape({}),
 };
 
@@ -204,4 +195,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     args => args,
     mapDispatchToProps,
-)(withHotkey(DeviceSelectorContainer), 'DeviceSelector');
+)(DeviceSelectorContainer, 'DeviceSelector');

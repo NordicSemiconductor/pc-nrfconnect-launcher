@@ -35,17 +35,15 @@
  */
 
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-import AbstractSelector from './AbstractSelector';
-
+import Dropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
-export default class DeviceSelector extends AbstractSelector {
+export default class DeviceSelector extends React.Component {
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
      * If no device is selected, then no close item is rendered.
@@ -116,8 +114,6 @@ export default class DeviceSelector extends AbstractSelector {
             togglerText,
             displayCloseItem,   // bool
             devices, // plain array, not map
-            isExpanded,
-            onToggle,
         } = this.props;
 
         const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
@@ -127,13 +123,12 @@ export default class DeviceSelector extends AbstractSelector {
                 id="device-selector"
                 className={cssClass}
                 disabled={devices.length === 0}
-                open={isExpanded}
-                onToggle={onToggle}
+                hotkey="alt+p"
+                title={'Select device (Alt+P)'}
             >
-                <DropdownToggle
-                    className={dropdownCssClass}
-                    title={togglerText}
-                />
+                <DropdownToggle className={dropdownCssClass} >
+                    {togglerText}
+                </DropdownToggle>
                 <DropdownMenu
                     id="device-selector-list"
                     className={dropdownMenuCssClass}
@@ -157,8 +152,6 @@ DeviceSelector.propTypes = {
     togglerText: PropTypes.string.isRequired,
     displayCloseItem: PropTypes.bool.isRequired,
     devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    isExpanded: PropTypes.bool.isRequired,
-    onToggle: PropTypes.func.isRequired,
 };
 
 DeviceSelector.defaultProps = {
