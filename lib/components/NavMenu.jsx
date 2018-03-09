@@ -39,13 +39,12 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
 
-const NavMenu = ({ menuItems, selectedItemId, onItemSelected, bindHotkey, cssClass }) => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
     <div className={cssClass}>
         {
             menuItems.map((item, index) => {
                 const hotkey = `Alt+${index + 1}`;
                 const onSelected = () => onItemSelected(item.id);
-                bindHotkey(hotkey.toLowerCase(), onSelected);
 
                 return (
                     <NavMenuItem
@@ -69,7 +68,6 @@ NavMenu.propTypes = {
         PropTypes.instanceOf(Immutable.Iterable),
     ]).isRequired,
     onItemSelected: PropTypes.func.isRequired,
-    bindHotkey: PropTypes.func.isRequired,
     selectedItemId: PropTypes.number,
     cssClass: PropTypes.string,
 };
