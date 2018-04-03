@@ -35,7 +35,6 @@
  */
 
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
