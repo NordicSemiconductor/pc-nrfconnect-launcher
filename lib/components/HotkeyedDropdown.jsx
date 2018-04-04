@@ -78,7 +78,7 @@ export default class HotkeyedDropdown extends React.Component {
     }
 
     render() {
-        const { hotkey, ...childProps} = this.props;
+        const { hotkey, ...childProps } = this.props;
         return (<Dropdown
             {...childProps}
             open={this.state.open && !this.props.disabled}
@@ -88,11 +88,13 @@ export default class HotkeyedDropdown extends React.Component {
 }
 
 HotkeyedDropdown.propTypes = {
+    ...Dropdown.propTypes,
     hotkey: PropTypes.string,
     onToggle: PropTypes.func,
 };
 
 HotkeyedDropdown.defaultProps = {
+    ...Dropdown.defaultProps,
     hotkey: '',
     onToggle: () => {},
 };

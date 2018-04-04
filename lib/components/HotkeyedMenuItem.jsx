@@ -52,15 +52,17 @@ export default class HotkeyedMenuItem extends React.Component {
     }
 
     render() {
-        const { hotkey, ...childProps} = this.props;
+        const { hotkey, ...childProps } = this.props;
         return (<MenuItem {...childProps} />);
     }
 }
 
 HotkeyedMenuItem.propTypes = {
+    ...MenuItem.propTypes,
     hotkey: PropTypes.string,
 };
 
 HotkeyedMenuItem.defaultProps = {
+    ...MenuItem.defaultProps,
     hotkey: '',
 };
