@@ -53,7 +53,11 @@ export default class NavMenuItem extends React.Component {
 
     render() {
         return (
-            <button title={this.props.title} className={getClassName(this.props.cssClass, this.props.isSelected)} onClick={this.props.onClick}>
+            <button
+                title={this.props.title}
+                className={getClassName(this.props.cssClass, this.props.isSelected)}
+                onClick={this.props.onClick}
+            >
                 <span className={this.props.iconClass} />
                 <span>{this.props.text}</span>
             </button>
@@ -68,7 +72,7 @@ NavMenuItem.propTypes = {
     iconClass: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
-    hotkey: PropTypes.string
+    hotkey: PropTypes.string.isRequired,
 };
 
 NavMenuItem.defaultProps = {
