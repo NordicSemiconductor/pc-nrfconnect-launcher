@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,33 +34,67 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import { Dropdown } from 'react-bootstrap';
 import Mousetrap from 'mousetrap';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
-export default ComposedComponent => (
-    class WithHotkey extends React.Component {
-        constructor(props) {
-            super(props);
-            this.bindings = [];
-            this.bindHotkey = this.bindHotkey.bind(this);
-        }
+// Like react-bootstrap's `Dropdown`, but can receive an extra `hotkey` prop:
+// a key combination handled by `mousetrap` that will toggle the open state
+// of the dropdown.
+// Also handles focusing the drop-down on the hotkey.
 
-        bindHotkey(key, callback, action) {
-            Mousetrap.bind(key, callback, action);
-            this.bindings.push(key);
-        }
-
-        componentWillUnmount() {
-            this.bindings.forEach(key => Mousetrap.unbind(key));
-        }
-
-        render() {
-            return (
-                <ComposedComponent
-                    bindHotkey={this.bindHotkey}
-                    {...this.props}
-                />
-            );
-        }
+export default class HotkeyedDropdown extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { open: false };
     }
-);
+
+    componentDidMount() {
+        Mousetrap.bind(this.props.hotkey, () => { this.toggle(); });
+    }
+
+    componentWillUnmount() {
+        Mousetrap.unbind(this.props.hotkey);
+    }
+
+    toggle() {
+        this.setState({ open: !this.state.open });
+
+        if (this.state.open) {
+            // Focus the drop-down
+            // eslint-disable-next-line react/no-find-dom-node
+            const node = ReactDOM.findDOMNode(this);
+            if (node) {
+                const button = node.querySelector('button');
+                if (button) {
+                    button.focus();
+                }
+            }
+        }
+
+        this.props.onToggle();
+    }
+
+    render() {
+        const { hotkey, ...childProps } = this.props;
+        return (<Dropdown
+            {...childProps}
+            open={this.state.open && !this.props.disabled}
+            onToggle={() => { this.toggle(); }}
+        />);
+    }
+}
+
+HotkeyedDropdown.propTypes = {
+    ...Dropdown.propTypes,
+    hotkey: PropTypes.string,
+    onToggle: PropTypes.func,
+};
+
+HotkeyedDropdown.defaultProps = {
+    ...Dropdown.defaultProps,
+    hotkey: '',
+    onToggle: () => {},
+};

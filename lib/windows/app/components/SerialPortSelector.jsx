@@ -35,12 +35,13 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import { Iterable } from 'immutable';
+
+import Dropdown from '../../../components/HotkeyedDropdown';
 
 const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
 
@@ -49,32 +50,6 @@ function filterSeggerPorts(port) {
 }
 
 class SerialPortSelector extends React.Component {
-    componentDidMount() {
-        const {
-            bindHotkey,
-            toggleExpanded,
-            hotkeyExpand,
-        } = this.props;
-
-        bindHotkey(hotkeyExpand.toLowerCase(), () => {
-            // Focusing the dropdown button, so that up/down arrow keys
-            // can be used to select serial port.
-            this.focusDropdownButton();
-            toggleExpanded();
-        });
-    }
-
-    focusDropdownButton() {
-        // eslint-disable-next-line react/no-find-dom-node
-        const node = ReactDOM.findDOMNode(this);
-        if (node) {
-            const button = node.querySelector('button');
-            if (button) {
-                button.focus();
-            }
-        }
-    }
-
     renderSerialPortItems() {
         const {
             ports,
@@ -130,9 +105,8 @@ class SerialPortSelector extends React.Component {
             selectedPort,
             showPortIndicator,
             portIndicatorStatus,
-            toggleExpanded,
+            onToggle,
             isExpanded,
-            hotkeyExpand,
             cssClass,
             dropdownCssClass,
             dropdownMenuCssClass,
@@ -142,9 +116,14 @@ class SerialPortSelector extends React.Component {
         const indicatorCssClass = `core-serial-port-indicator ${portIndicatorStatus}`;
 
         return (
-            <span title={`Select serial port (${hotkeyExpand})`}>
+            <span title={'Select serial port (Alt+P)'}>
                 <div className={cssClass}>
-                    <Dropdown id="serial-port-selector" open={isExpanded} onToggle={toggleExpanded}>
+                    <Dropdown
+                        id="serial-port-selector"
+                        open={isExpanded}
+                        onToggle={onToggle}
+                        hotkey="alt+p"
+                    >
                         <DropdownToggle
                             className={dropdownCssClass}
                             title={selectorText}
@@ -176,11 +155,9 @@ SerialPortSelector.propTypes = {
     portIndicatorStatus: PropTypes.string,
     isLoading: PropTypes.bool,
     isExpanded: PropTypes.bool,
-    toggleExpanded: PropTypes.func.isRequired,
+    onToggle: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
-    bindHotkey: PropTypes.func.isRequired,
-    hotkeyExpand: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
@@ -194,7 +171,6 @@ SerialPortSelector.defaultProps = {
     isExpanded: false,
     isLoading: false,
     portIndicatorStatus: 'off',
-    hotkeyExpand: 'Alt+P',
     cssClass: 'core-padded-row',
     dropdownCssClass: 'core-serial-port-selector core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',
