@@ -91,19 +91,18 @@ class DeviceSelectorContainer extends React.Component {
 
         this.deviceLister.on('error', err => {
             if (err.usb) {
-                const usbAddr = `${err.usb.device.busNumber}.${err.usb.device.deviceAddress}`;
+                const usbAddr = `${err.usb.busNumber}.${err.usb.deviceAddress}`;
 
-                let errMsg = (`Error while probing usb device at bus.address ${usbAddr}. `);
+                let errMsg = (`Error while probing usb device at bus.address ${usbAddr}: ${err.message}. `);
                 if (process.platform === 'linux') {
                     errMsg += 'Please check your udev rules concerning permissions for USB devices, see https://github.com/NordicSemiconductor/nrf-udev';
                 } else if (process.platform === 'win32') {
                     errMsg += 'Please check that a libusb-compatible kernel driver is bound to this device.';
                 }
 
-                logger.error(err.error.toString());
                 logger.error(errMsg);
             } else {
-                logger.error(`Error while probing devices: ${err.error}`);
+                logger.error(`Error while probing devices: ${err.message}`);
             }
         });
 
