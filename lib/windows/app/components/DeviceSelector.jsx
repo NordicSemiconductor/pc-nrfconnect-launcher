@@ -97,7 +97,7 @@ export default class DeviceSelector extends React.Component {
                     { device.usb ?
                         (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
                         : null }
-                    { device.jlink ? (<li>Debug probe</li>) : null }
+                    { device.traits.includes('jlink') ? (<li>Debug probe</li>) : null }
                 </ul>
             </MenuItem>
         );
