@@ -82,10 +82,11 @@ class DeviceSelectorContainer extends React.Component {
         this.deviceLister.on('conflated', devices => {
             this.setState(prev => ({ ...prev, devices }));
 
-            // Maybe the user has physically disconnected the currently selected device
+            // Maybe the user has physically disconnected the currently selected device.
+            // Keep the device selected, but trigger an action to notify about it.
             if (this.state.selectedSerialNumber !== undefined &&
                 !devices.has(this.state.selectedSerialNumber)) {
-                this.onDeselect();
+                this.onDetach();
             }
         });
 
@@ -136,6 +137,15 @@ class DeviceSelectorContainer extends React.Component {
     }
 
     /*
+     * Called when the currently selected device has been detached.
+     * Note that this.onDetach() is different from this.props.onDetach(),
+     * the later one is the one that actually triggers the action.
+     */
+    onDetach() {
+        this.props.onDetach();
+    }
+
+    /*
      * Returns the JSX corresponding to a drop-down menu.
      * Prepares some properties for the template, uses it.
      */
@@ -159,6 +169,7 @@ class DeviceSelectorContainer extends React.Component {
             devices,
             onSelect: device => { this.onSelect(device); },
             onDeselect: () => { this.onDeselect(); },
+            onDetach: () => { this.onDetach(); },
         };
 
         return (
@@ -170,6 +181,7 @@ class DeviceSelectorContainer extends React.Component {
 DeviceSelectorContainer.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
+    onDetach: PropTypes.func.isRequired,
     traits: PropTypes.shape({}),
 };
 
@@ -187,6 +199,10 @@ function mapDispatchToProps(dispatch) {
         onDeselect: () =>
             dispatch({
                 type: 'DEVICE_DESELECTED',
+            }),
+        onDetach: () =>
+            dispatch({
+                type: 'DEVICE_DETACHED',
             }),
     };
 }
