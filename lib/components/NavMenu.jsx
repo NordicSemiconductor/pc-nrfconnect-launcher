@@ -43,7 +43,7 @@ const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
     <div className={cssClass}>
         {
             menuItems.map((item, index) => {
-                const hotkey = `alt+${index + 1}`;
+                const hotkey = `Alt+${index + 1}`;
                 const onSelected = () => onItemSelected(item.id);
 
                 return (
