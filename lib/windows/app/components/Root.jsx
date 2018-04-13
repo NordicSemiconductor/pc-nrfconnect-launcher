@@ -35,7 +35,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
@@ -46,9 +45,9 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-const Root = ({ selectorTraits }) => (
+const Root = () => (
     <div className="core-main-area">
-        <DecoratedNavBar selectorTraits={selectorTraits} />
+        <DecoratedNavBar />
         <div className="core-main-layout">
             <div>
                 <MainViewContainer />
@@ -60,13 +59,5 @@ const Root = ({ selectorTraits }) => (
         <ErrorDialogContainer />
     </div>
 );
-
-Root.propTypes = {
-    selectorTraits: PropTypes.shape({}),
-};
-
-Root.defaultProps = {
-    selectorTraits: undefined,
-};
 
 export default Root;
