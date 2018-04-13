@@ -41,21 +41,21 @@ import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate } from '../../../util/apps';
+import { decorate, getAppConfig } from '../../../util/apps';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 
 function NavBar({
         cssClass,
         navSectionCssClass,
-        selectorTraits,
     }) {
+    const appConfig = getAppConfig();
     return (
         <div className={cssClass}>
             <MainMenuContainer />
             <div className={navSectionCssClass}>
-                { selectorTraits ?
-                    <DeviceSelectorContainer traits={selectorTraits} /> :
+                { appConfig.selectorTraits ?
+                    <DeviceSelectorContainer traits={appConfig.selectorTraits} /> :
                     <SerialPortSelectorContainer />
                 }
             </div>
@@ -68,13 +68,11 @@ function NavBar({
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    selectorTraits: PropTypes.shape({}),
 };
 
 NavBar.defaultProps = {
     cssClass: 'core-nav-bar',
     navSectionCssClass: 'core-nav-section core-padded-row',
-    selectorTraits: undefined,
 };
 
 export default NavBar;
