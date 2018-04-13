@@ -35,31 +35,40 @@
  */
 
 import React from 'react';
-import NavBar from './NavBar';
-import SidePanelContainer from '../containers/SidePanelContainer';
-import LogViewerContainer from '../containers/LogViewerContainer';
-import MainViewContainer from '../containers/MainViewContainer';
-import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
-import DeviceSetupContainer from '../containers/DeviceSetupContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import { decorate } from '../../../util/apps';
+import PropTypes from 'prop-types';
 
-const DecoratedNavBar = decorate(NavBar, 'NavBar');
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-const Root = () => (
-    <div className="core-main-area">
-        <DecoratedNavBar />
-        <div className="core-main-layout">
-            <div>
-                <MainViewContainer />
-                <LogViewerContainer />
-            </div>
-            <SidePanelContainer />
-        </div>
-        <FirmwareDialogContainer />
-        <DeviceSetupContainer />
-        <ErrorDialogContainer />
-    </div>
-);
+const DeviceSetupDialog = ({
+    isVisible,
+    text,
+    onConfirm,
+    onCancel,
+}) => {
+    if (isVisible) {
+        return (
+            <ConfirmationDialog
+                isVisible={isVisible}
+                text={text}
+                okButtonText={'Yes'}
+                cancelButtonText={'No'}
+                onOk={() => onConfirm(true)}
+                onCancel={onCancel}
+            />
+        );
+    }
+    return <div />;
+};
 
-export default Root;
+DeviceSetupDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    text: PropTypes.string,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+DeviceSetupDialog.defaultProps = {
+    text: '',
+};
+
+export default DeviceSetupDialog;
