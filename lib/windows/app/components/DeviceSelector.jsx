@@ -39,11 +39,20 @@ import PropTypes from 'prop-types';
 import { MenuItem } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
+import { Iterable } from 'immutable';
 
 import Dropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    componentWillUnmount() {
+        this.props.onUnmount();
+    }
+
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
      * If no device is selected, then no close item is rendered.
@@ -111,12 +120,20 @@ export default class DeviceSelector extends React.Component {
             cssClass,
             dropdownCssClass,
             dropdownMenuCssClass,
-            togglerText,
-            displayCloseItem,   // bool
-            devices, // plain array, not map
+            selectedSerialNumber,
+            devices,
         } = this.props;
 
-        const closeItem = displayCloseItem ? this.getCloseItem() : undefined;
+        let togglerText;
+        let displayCloseItem = false;
+        if (selectedSerialNumber) {
+            togglerText = selectedSerialNumber;
+            displayCloseItem = true;
+        } else if (devices.size === 0) {
+            togglerText = 'No devices available';
+        } else {
+            togglerText = 'Select device';
+        }
 
         return (
             <Dropdown
@@ -134,7 +151,7 @@ export default class DeviceSelector extends React.Component {
                     className={dropdownMenuCssClass}
                 >
                     { devices.map(device => this.getItemFromDevice(device)) }
-                    { closeItem }
+                    { displayCloseItem ? this.getCloseItem() : null }
                 </DropdownMenu>
             </Dropdown>
         );
@@ -149,9 +166,16 @@ DeviceSelector.propTypes = {
     dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
-    togglerText: PropTypes.string.isRequired,
-    displayCloseItem: PropTypes.bool.isRequired,
-    devices: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    devices: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Iterable),
+    ]).isRequired,
+    selectedSerialNumber: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
 };
 
 DeviceSelector.defaultProps = {
@@ -160,5 +184,8 @@ DeviceSelector.defaultProps = {
     dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
+    selectedSerialNumber: undefined,
+    onMount: () => {},
+    onUnmount: () => {},
 };
 
