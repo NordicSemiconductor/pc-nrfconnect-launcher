@@ -36,24 +36,51 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { MenuItem } from 'react-bootstrap';
+import { Iterable } from 'immutable';
 
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 const DeviceSetupDialog = ({
     isVisible,
     text,
+    choices,
+    onChoose,
     onConfirm,
     onCancel,
+    menuItemCssClass,
 }) => {
     if (isVisible) {
+        if (choices.length > 0 || (choices.count && choices.count() > 0)) {
+            const renderChoices = () => choices.map(choice => (
+                <MenuItem
+                    key={choice}
+                    className={menuItemCssClass}
+                    eventKey={choice}
+                    onSelect={() => onChoose(choice)}
+                >
+                    <div>{choice}</div>
+                </MenuItem>
+            ));
+            return (
+                <ConfirmationDialog
+                    isVisible={isVisible}
+                    okButtonText={'Cancel'}
+                    onOk={onCancel}
+                >
+                    <p>{ text }</p>
+                    <ul>{ renderChoices() }</ul>
+                </ConfirmationDialog>
+            );
+        }
         return (
             <ConfirmationDialog
                 isVisible={isVisible}
-                text={text}
                 okButtonText={'Yes'}
                 cancelButtonText={'No'}
-                onOk={() => onConfirm(true)}
+                onOk={onConfirm}
                 onCancel={onCancel}
+                text={text}
             />
         );
     }
@@ -63,12 +90,19 @@ const DeviceSetupDialog = ({
 DeviceSetupDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     text: PropTypes.string,
+    choices: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Iterable),
+    ]).isRequired,
+    onChoose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    menuItemCssClass: PropTypes.string,
 };
 
 DeviceSetupDialog.defaultProps = {
     text: '',
+    menuItemCssClass: 'device-setup-list-item',
 };
 
 export default DeviceSetupDialog;
