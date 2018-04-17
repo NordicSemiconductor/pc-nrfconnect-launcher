@@ -58,6 +58,8 @@ exports[`SettingsView should render check for updates completed, with everything
     <ModalFooter>
        
       <Button
+        bsStyle="primary"
+        className="core-btn"
         disabled={false}
         onClick={[Function]}
       >
@@ -126,6 +128,8 @@ exports[`SettingsView should render check for updates completed, with updates av
     <ModalFooter>
        
       <Button
+        bsStyle="primary"
+        className="core-btn"
         disabled={false}
         onClick={[Function]}
       >
