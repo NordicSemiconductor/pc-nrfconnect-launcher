@@ -36,73 +36,98 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem } from 'react-bootstrap';
+import { FormGroup, Radio } from 'react-bootstrap';
 import { Iterable } from 'immutable';
-
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-const DeviceSetupDialog = ({
-    isVisible,
-    text,
-    choices,
-    onChoose,
-    onConfirm,
-    onCancel,
-    menuItemCssClass,
-}) => {
-    if (isVisible) {
-        if (choices.length > 0 || (choices.count && choices.count() > 0)) {
-            const renderChoices = () => choices.map(choice => (
-                <MenuItem
-                    key={choice}
-                    className={menuItemCssClass}
-                    eventKey={choice}
-                    onSelect={() => onChoose(choice)}
-                >
-                    <div>{choice}</div>
-                </MenuItem>
-            ));
+/**
+ * Dialog that allows the user to provide input that is required during device setup
+ * (programming/DFU). If the 'choices' prop is provided, then the user will see a
+ * list of choices, and select one of them. If not, then user will just respond yes/no.
+ *
+ * The 'onConfirm' callback is called with one of the choices or just true if it is a
+ * simple yes/no confirmation. Shows a spinner and disables input if the 'isInProgress'
+ * prop is set to true.
+ */
+export default class DeviceSetupDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onSelectChoice = this.onSelectChoice.bind(this);
+    }
+
+    componentDidMount() {
+        this.state = {
+            selectedChoice: null,
+        };
+    }
+
+    onSelectChoice(choice) {
+        this.setState({ selectedChoice: choice });
+    }
+
+    render() {
+        const {
+            isVisible,
+            isInProgress,
+            text,
+            choices,
+            onOk,
+            onCancel,
+        } = this.props;
+
+        if (choices && (choices.length > 0 || choices.size > 0)) {
             return (
                 <ConfirmationDialog
                     isVisible={isVisible}
-                    okButtonText={'Cancel'}
-                    onOk={onCancel}
+                    isInProgress={isInProgress}
+                    isOkButtonEnabled={!!this.state.selectedChoice}
+                    onOk={() => onOk(this.state.selectedChoice)}
+                    onCancel={onCancel}
                 >
-                    <p>{ text }</p>
-                    <ul>{ renderChoices() }</ul>
+                    <p>{text}</p>
+                    <FormGroup>
+                        {
+                            choices.map(choice => (
+                                <Radio
+                                    key={choice}
+                                    name="radioGroup"
+                                    disabled={isInProgress}
+                                    onClick={() => this.onSelectChoice(choice)}
+                                >
+                                    {choice}
+                                </Radio>
+                            ))
+                        }
+                    </FormGroup>
                 </ConfirmationDialog>
             );
         }
         return (
             <ConfirmationDialog
                 isVisible={isVisible}
+                isInProgress={isInProgress}
                 okButtonText={'Yes'}
                 cancelButtonText={'No'}
-                onOk={onConfirm}
+                onOk={() => onOk(true)}
                 onCancel={onCancel}
                 text={text}
             />
         );
     }
-    return <div />;
-};
+}
 
 DeviceSetupDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
+    isInProgress: PropTypes.bool.isRequired,
     text: PropTypes.string,
     choices: PropTypes.oneOfType([
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Iterable),
     ]).isRequired,
-    onChoose: PropTypes.func.isRequired,
-    onConfirm: PropTypes.func.isRequired,
+    onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    menuItemCssClass: PropTypes.string,
 };
 
 DeviceSetupDialog.defaultProps = {
     text: '',
-    menuItemCssClass: 'device-setup-list-item',
 };
-
-export default DeviceSetupDialog;
