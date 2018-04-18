@@ -1,36 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DeviceSelector should render empty device list, expanded 1`] = `
-<Dropdown
-  className="core-padded-row"
-  disabled={true}
-  id="device-selector"
-  onToggle={[Function]}
-  open={true}
->
-  <DropdownToggle
-    className="core-device-selector core-btn btn-primary"
-    title="Select device"
-  />
-  <DropdownMenu
-    className="core-dropdown-menu"
-    id="device-selector-list"
-  />
-</Dropdown>
-`;
-
-exports[`DeviceSelector should render empty device list, not expanded 1`] = `
+exports[`DeviceSelector should render empty device list 1`] = `
 <Dropdown
   className="core-padded-row"
   disabled={true}
   id="device-selector"
   onToggle={[Function]}
   open={false}
+  title="Select device (Alt+P)"
 >
   <DropdownToggle
     className="core-device-selector core-btn btn-primary"
-    title="Select device"
-  />
+  >
+    Select device
+  </DropdownToggle>
   <DropdownMenu
     className="core-dropdown-menu"
     id="device-selector-list"
@@ -44,12 +27,14 @@ exports[`DeviceSelector should render one device with serialport, usb, and jlink
   disabled={false}
   id="device-selector"
   onToggle={[Function]}
-  open={true}
+  open={false}
+  title="Select device (Alt+P)"
 >
   <DropdownToggle
     className="core-device-selector core-btn btn-primary"
-    title="Select device"
-  />
+  >
+    Select device
+  </DropdownToggle>
   <DropdownMenu
     className="core-dropdown-menu"
     id="device-selector-list"

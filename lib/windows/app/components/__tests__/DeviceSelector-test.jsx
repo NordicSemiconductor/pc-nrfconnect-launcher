@@ -51,25 +51,10 @@ import DeviceSelector from '../DeviceSelector';
 const selectDeviceText = 'Select device';
 
 describe('DeviceSelector', () => {
-    it('should render empty device list, not expanded', () => {
+    it('should render empty device list', () => {
         expect(renderer.create(
             <DeviceSelector
                 devices={[]}
-                isExpanded={false}
-                togglerText={selectDeviceText}
-                onToggle={() => {}}
-                displayCloseItem={false}
-                onSelect={() => {}}
-                onDeselect={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
-    it('should render empty device list, expanded', () => {
-        expect(renderer.create(
-            <DeviceSelector
-                devices={[]}
-                isExpanded
                 togglerText={selectDeviceText}
                 onToggle={() => {}}
                 displayCloseItem={false}
@@ -92,10 +77,9 @@ describe('DeviceSelector', () => {
                             manufacturer: 'Nordic Semiconductor',
                             product: 'nRF52 USB',
                         },
-                        jlink: {},
+                        traits: ['serialport', 'nordicUsb', 'jlink'],
                     },
                 ]}
-                isExpanded
                 togglerText={selectDeviceText}
                 onToggle={() => {}}
                 displayCloseItem={false}
