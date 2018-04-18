@@ -54,6 +54,8 @@ import Spinner from './Spinner';
  *                              this is not provided.
  * @param {string} [okButtonText] Label text for the OK button. Default: "OK".
  * @param {string} [cancelButtonText] Label text for the cancel button. Default: "Cancel".
+ * @param {boolean} [isOkButtonEnabled] Enable the OK button or not. Default: true.
+ * @param {string} [buttonCssClass] CSS class name for the buttons. Default: "core-btn".
  * @returns {*} React element to be rendered.
  */
 const ConfirmationDialog = ({
@@ -66,6 +68,8 @@ const ConfirmationDialog = ({
     onCancel,
     okButtonText,
     cancelButtonText,
+    isOkButtonEnabled,
+    buttonCssClass,
 }) => (
     <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
         <ModalHeader closeButton={!isInProgress}>
@@ -77,10 +81,21 @@ const ConfirmationDialog = ({
         <ModalFooter>
             { isInProgress ? <Spinner /> : null }
             &nbsp;
-            <Button onClick={onOk} disabled={isInProgress}>{okButtonText}</Button>
+            <Button
+                bsStyle="primary"
+                className={buttonCssClass}
+                onClick={onOk}
+                disabled={!isOkButtonEnabled || isInProgress}
+            >
+                {okButtonText}
+            </Button>
             {
                 onCancel &&
-                <Button onClick={onCancel} disabled={isInProgress}>
+                <Button
+                    className={buttonCssClass}
+                    onClick={onCancel}
+                    disabled={isInProgress}
+                >
                     {cancelButtonText}
                 </Button>
             }
@@ -101,6 +116,8 @@ ConfirmationDialog.propTypes = {
     okButtonText: PropTypes.string,
     cancelButtonText: PropTypes.string,
     isInProgress: PropTypes.bool,
+    isOkButtonEnabled: PropTypes.bool,
+    buttonCssClass: PropTypes.string,
 };
 
 ConfirmationDialog.defaultProps = {
@@ -108,9 +125,11 @@ ConfirmationDialog.defaultProps = {
     text: null,
     children: null,
     isInProgress: false,
+    isOkButtonEnabled: true,
     onCancel: null,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',
+    buttonCssClass: 'core-btn',
 };
 
 export default ConfirmationDialog;
