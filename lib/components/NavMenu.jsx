@@ -53,7 +53,7 @@ const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
                         isSelected={item.id === selectedItemId}
                         text={item.text}
                         title={`${item.text} (${hotkey})`}
-                        hotkey={hotkey}
+                        hotkey={hotkey.toLowerCase()}
                         iconClass={item.iconClass}
                         onClick={onSelected}
                     />
