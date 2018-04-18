@@ -69,7 +69,6 @@ const ConfirmationDialog = ({
     okButtonText,
     cancelButtonText,
     isOkButtonEnabled,
-    buttonCssClass,
 }) => (
     <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
         <ModalHeader closeButton={!isInProgress}>
@@ -83,7 +82,7 @@ const ConfirmationDialog = ({
             &nbsp;
             <Button
                 bsStyle="primary"
-                className={buttonCssClass}
+                className="core-btn"
                 onClick={onOk}
                 disabled={!isOkButtonEnabled || isInProgress}
             >
@@ -92,7 +91,7 @@ const ConfirmationDialog = ({
             {
                 onCancel &&
                 <Button
-                    className={buttonCssClass}
+                    className="core-btn"
                     onClick={onCancel}
                     disabled={isInProgress}
                 >
@@ -117,7 +116,6 @@ ConfirmationDialog.propTypes = {
     cancelButtonText: PropTypes.string,
     isInProgress: PropTypes.bool,
     isOkButtonEnabled: PropTypes.bool,
-    buttonCssClass: PropTypes.string,
 };
 
 ConfirmationDialog.defaultProps = {
@@ -129,7 +127,6 @@ ConfirmationDialog.defaultProps = {
     onCancel: null,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',
-    buttonCssClass: 'core-btn',
 };
 
 export default ConfirmationDialog;
