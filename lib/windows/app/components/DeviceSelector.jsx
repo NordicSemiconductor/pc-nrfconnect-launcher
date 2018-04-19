@@ -124,12 +124,14 @@ export default class DeviceSelector extends React.Component {
             devices,
         } = this.props;
 
+        const hasDevices = devices && (devices.length > 0 || devices.size > 0);
         let togglerText;
+
         let displayCloseItem = false;
         if (selectedSerialNumber) {
             togglerText = selectedSerialNumber;
             displayCloseItem = true;
-        } else if (devices.size === 0) {
+        } else if (!hasDevices) {
             togglerText = 'No devices available';
         } else {
             togglerText = 'Select device';
@@ -139,7 +141,7 @@ export default class DeviceSelector extends React.Component {
             <Dropdown
                 id="device-selector"
                 className={cssClass}
-                disabled={devices.length === 0}
+                disabled={!hasDevices}
                 hotkey="alt+p"
                 title={'Select device (Alt+P)'}
             >
