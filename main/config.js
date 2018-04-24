@@ -51,8 +51,6 @@ let tmpDir;
 let appsRootDir;
 let appsLocalDir;
 let nodeModulesDir;
-let packageJsonPath;
-let yarnLockPath;
 let updatesJsonPath;
 let appsJsonPath;
 let appsJsonUrl;
@@ -95,8 +93,6 @@ function init(argv) {
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
     nodeModulesDir = path.join(appsRootDir, 'node_modules');
-    packageJsonPath = path.join(appsRootDir, 'package.json');
-    yarnLockPath = path.join(appsRootDir, 'yarn.lock');
     updatesJsonPath = path.join(appsRootDir, 'updates.json');
     appsJsonPath = path.join(appsRootDir, 'apps.json');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
@@ -123,8 +119,6 @@ module.exports = {
     getAppsRootDir: () => appsRootDir,
     getAppsLocalDir: () => appsLocalDir,
     getNodeModulesDir: () => nodeModulesDir,
-    getPackageJsonPath: () => packageJsonPath,
-    getYarnLockPath: () => yarnLockPath,
     getUpdatesJsonPath: () => updatesJsonPath,
     getAppsJsonPath: () => appsJsonPath,
     getSettingsJsonPath: () => settingsJsonPath,
