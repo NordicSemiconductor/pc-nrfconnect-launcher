@@ -45,13 +45,13 @@ import Dropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
-
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
+//     componentDidMount() {
+//         this.props.onMount();
+//     }
+//
+//     componentWillUnmount() {
+//         this.props.onUnmount();
+//     }
 
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
@@ -85,7 +85,7 @@ export default class DeviceSelector extends React.Component {
      * @param {Object} device The device to render as a menu item.
      * @returns {*} One menu item element.
      */
-    getItemFromDevice(device) {
+    getItemFromDevice([serialNumber, device]) {
         const {
             onSelect,
             menuItemCssClass,
@@ -94,11 +94,11 @@ export default class DeviceSelector extends React.Component {
 
         return (
             <MenuItem
-                key={device.serialNumber}
+                key={serialNumber}
                 className={menuItemCssClass}
                 onSelect={() => onSelect(device)}
             >
-                <div>{ device.serialNumber }</div>
+                <div>{ serialNumber }</div>
                 <ul className={menuItemDetailsCssClass}>
                     { device.serialport ?
                         (<li>Serial port: {device.serialport.comName}</li>)
@@ -176,8 +176,9 @@ DeviceSelector.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
+//     watch: PropTypes.boolean
+//     onMount: PropTypes.func,
+//     onUnmount: PropTypes.func,
 };
 
 DeviceSelector.defaultProps = {
@@ -187,7 +188,8 @@ DeviceSelector.defaultProps = {
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
     selectedSerialNumber: undefined,
-    onMount: () => {},
-    onUnmount: () => {},
+//     watch: true
+//     onMount: () => {},
+//     onUnmount: () => {},
 };
 

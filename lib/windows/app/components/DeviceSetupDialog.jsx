@@ -71,8 +71,12 @@ export default class DeviceSetupDialog extends React.Component {
             isInProgress,
             text,
             choices,
-            onOk,
+            onConfirm,
             onCancel,
+            onChoice,
+            onChoiceCancel,
+            serialNumber,
+            setupMode
         } = this.props;
 
         if (choices && (choices.length > 0 || choices.size > 0)) {
@@ -81,8 +85,8 @@ export default class DeviceSetupDialog extends React.Component {
                     isVisible={isVisible}
                     isInProgress={isInProgress}
                     isOkButtonEnabled={!!this.state.selectedChoice}
-                    onOk={() => onOk(this.state.selectedChoice)}
-                    onCancel={onCancel}
+                    onOk={() => onChoice(this.state.selectedChoice, serialNumber)}
+                    onCancel={onChoiceCancel}
                 >
                     <p>{text}</p>
                     <FormGroup>
@@ -108,7 +112,7 @@ export default class DeviceSetupDialog extends React.Component {
                 isInProgress={isInProgress}
                 okButtonText={'Yes'}
                 cancelButtonText={'No'}
-                onOk={() => onOk(true)}
+                onOk={() => onConfirm(serialNumber, setupMode)}
                 onCancel={onCancel}
                 text={text}
             />
@@ -124,8 +128,12 @@ DeviceSetupDialog.propTypes = {
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Iterable),
     ]).isRequired,
-    onOk: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onChoice: PropTypes.func.isRequired,
+    onChoiceCancel: PropTypes.func.isRequired,
+    serialNumber: PropTypes.string,
+    setupMode: PropTypes.string,
 };
 
 DeviceSetupDialog.defaultProps = {
