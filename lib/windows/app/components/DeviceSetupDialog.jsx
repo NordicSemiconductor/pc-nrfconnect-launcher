@@ -42,12 +42,16 @@ import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 /**
  * Dialog that allows the user to provide input that is required during device setup
- * (programming/DFU). If the 'choices' prop is provided, then the user will see a
- * list of choices, and select one of them. If not, then user will just respond yes/no.
+ * (programming/DFU).
  *
- * The 'onConfirm' callback is called with one of the choices or just true if it is a
- * simple yes/no confirmation. Shows a spinner and disables input if the 'isInProgress'
- * prop is set to true.
+ * If the 'choices' prop is provided, then the user will see a list of choices,
+ * and select one of them, and either the onChoice or onChoiceCancel callback
+ * will be called.
+ *
+ * If not, then user will just respond yes/no, and either the onConfirm or onCancel
+ * callback will be called.
+ *
+ * Shows a spinner and disables input if the 'isInProgress' prop is set to true.
  */
 export default class DeviceSetupDialog extends React.Component {
     constructor(props) {
@@ -76,7 +80,7 @@ export default class DeviceSetupDialog extends React.Component {
             onChoice,
             onChoiceCancel,
             serialNumber,
-            setupMode
+            setupMode,
         } = this.props;
 
         if (choices && (choices.length > 0 || choices.size > 0)) {
@@ -132,8 +136,8 @@ DeviceSetupDialog.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onChoice: PropTypes.func.isRequired,
     onChoiceCancel: PropTypes.func.isRequired,
-    serialNumber: PropTypes.string,
-    setupMode: PropTypes.string,
+    serialNumber: PropTypes.string.isRequired,
+    setupMode: PropTypes.string.isRequired,
 };
 
 DeviceSetupDialog.defaultProps = {

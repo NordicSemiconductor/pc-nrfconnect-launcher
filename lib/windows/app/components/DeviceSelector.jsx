@@ -43,16 +43,7 @@ import { Iterable } from 'immutable';
 
 import Dropdown from '../../../components/HotkeyedDropdown';
 
-// Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
-//     componentDidMount() {
-//         this.props.onMount();
-//     }
-//
-//     componentWillUnmount() {
-//         this.props.onUnmount();
-//     }
-
     /**
      * Returns the JSX that corresponds to a "Close device" menu item.
      * If no device is selected, then no close item is rendered.
@@ -176,9 +167,6 @@ DeviceSelector.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-//     watch: PropTypes.boolean
-//     onMount: PropTypes.func,
-//     onUnmount: PropTypes.func,
 };
 
 DeviceSelector.defaultProps = {
@@ -188,8 +176,5 @@ DeviceSelector.defaultProps = {
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
     selectedSerialNumber: undefined,
-//     watch: true
-//     onMount: () => {},
-//     onUnmount: () => {},
 };
 

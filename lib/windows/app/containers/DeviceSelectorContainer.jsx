@@ -37,7 +37,6 @@
 import DeviceLister from 'nrf-device-lister';
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 
 import DeviceSelector from '../components/DeviceSelector';
 import { connect, getAppConfig } from '../../../util/apps';
@@ -62,7 +61,6 @@ class DeviceSelectorContainer extends React.Component {
 
         this.deviceLister.on('conflated', devices => {
             this.setState(prev =>
-//    logger.info(`Changes in available devices. Now ${Array.from(devices).length} devices.`);
                  ({ ...prev, devices }));
         });
 
@@ -89,10 +87,6 @@ class DeviceSelectorContainer extends React.Component {
         this.deviceLister.start();
     }
 
-    componentWillUnmount() {
-        this.deviceLister.stop();
-    }
-
     componentDidUpdate(prevProps, prevState) {
         if (prevState.watch && !this.state.watch) {
             console.log('Stopping device-lister');
@@ -103,53 +97,19 @@ class DeviceSelectorContainer extends React.Component {
         }
     }
 
-
-    /*
-     * Called from the templated selector.
-     * Shall receive a device definition.
-     * Resets the internal state, and calls the downstream onSelect().
-     * Note that this.onSelect() is different from this.props.onSelect(),
-     * the later one is the one that actually triggers the action.
-     */
-//     onSelect(device) {
-//         if (this.state.selectDevice) {
-//             this.onDeselect();
-//         }
-// //                 logger.info(`Selecting device with s/n ${device.serialNumber}`);
-//         this.setState(prev => ({ ...prev, selectedSerialNumber: device.serialNumber }));
-//         this.props.onSelect(device);
-//     }
-
-    /*
-     * Called from the templated selector.
-     * Resets the internal state, and calls the downstream onDeselect().
-     * Note that this.onDeselect() is different from this.props.onDeselect(),
-     * the later one is the one that actually triggers the action.
-     */
-//     onDeselect() {
-// //                 logger.info('Deselecting device');
-//         this.setState(prev => ({ ...prev, selectedSerialNumber: undefined }));
-//         this.props.onDeselect();
-//     }
-
-
+    componentWillUnmount() {
+        this.deviceLister.stop();
+    }
     /*
      * Returns the JSX corresponding to a drop-down menu.
      * Prepares some properties for the template, uses it.
      */
     render() {
-//         const displayCloseItem = Boolean(this.state.selectedSerialNumber);
         const devices = Array.from(this.state.devices);
-//         const devices = this.state.devices;
 
         const templateProps = {
             ...this.props,
-//             togglerText,
-//             displayCloseItem,
             devices,
-//             selectedSerialNumber: this.props.selectedSerialNumber,
-//             onSelect: this.props.onSelect,
-//             onDeselect: this.props.onDeselect,
         };
 
         return (
@@ -158,22 +118,9 @@ class DeviceSelectorContainer extends React.Component {
     }
 }
 
-// DeviceSelectorContainer.propTypes = {
-//     onSelect: PropTypes.func.isRequired,
-//     onDeselect: PropTypes.func.isRequired,
-//     traits: PropTypes.shape({}),
-// };
-//
-// DeviceSelectorContainer.defaultProps = {
-//     traits: undefined,
-// };
-
-
 function mapStateToProps(state) {
     const { device } = state.core;
-// console.log(device);
     return {
-//         devices: device.devices,
         selectedSerialNumber: device.selectedSerialNumber,
         watch: device.watch,
     };
@@ -181,8 +128,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-//         onMount: () => dispatch(DeviceActions.startWatchingDevices()),
-//         onUnmount: () => dispatch(DeviceActions.stopWatchingDevices()),
         onSelect: device => dispatch(DeviceActions.selectDevice(device)),
         onDeselect: () => dispatch(DeviceActions.deselectDevice()),
     };
