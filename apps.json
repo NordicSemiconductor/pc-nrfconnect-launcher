@@ -18,5 +18,10 @@
         "displayName": "Power Profiler",
         "description": "Tool to measure current for nRF5x applications",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk"
+    },
+    "pc-nrfconnect-programmer": {
+        "displayName": "nRF Programmer",
+        "description": "Tool for flash programming of nRF5x SoCs",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer"
     }
 }
