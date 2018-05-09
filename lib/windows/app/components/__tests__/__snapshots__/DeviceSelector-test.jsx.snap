@@ -12,7 +12,7 @@ exports[`DeviceSelector should render empty device list 1`] = `
   <DropdownToggle
     className="core-device-selector core-btn btn-primary"
   >
-    Select device
+    No devices available
   </DropdownToggle>
   <DropdownMenu
     className="core-dropdown-menu"
