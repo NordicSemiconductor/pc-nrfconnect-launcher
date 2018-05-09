@@ -37,31 +37,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
-import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Dropdown, Glyphicon } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
 import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 
-const renderItems = (menuItems, bindHotkey) => (
-    menuItems.map(item => {
-        if (item.hotkey) {
-            bindHotkey(item.hotkey.toLowerCase(), item.onClick);
-        }
-        return (
+import MenuItem from '../../../components/HotkeyedMenuItem';
+
+const renderItems = menuItems => (
+    menuItems.map(item =>
+        (
             <MenuItem
                 key={item.id}
                 onClick={item.onClick}
                 divider={item.isDivider}
+                hotkey={item.hotkey ? item.hotkey.toLowerCase() : ''}
                 title={item.hotkey ? `${item.text} (${item.hotkey})` : item.text}
             >
                 {item.text}
             </MenuItem>
-        );
-    })
+        ),
+    )
 );
 
 const MainMenu = ({
     menuItems,
-    bindHotkey,
     glyphiconName,
     cssClass,
     dropdownCssClass,
@@ -73,7 +72,7 @@ const MainMenu = ({
                 <Glyphicon glyph={glyphiconName} />
             </DropdownToggle>
             <DropdownMenu id="main-menu-list" className={dropdownMenuCssClass}>
-                { renderItems(menuItems, bindHotkey) }
+                { renderItems(menuItems) }
             </DropdownMenu>
         </Dropdown>
     </div>
@@ -84,7 +83,6 @@ MainMenu.propTypes = {
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Immutable.Iterable),
     ]).isRequired,
-    bindHotkey: PropTypes.func.isRequired,
     glyphiconName: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
