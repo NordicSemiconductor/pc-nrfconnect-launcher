@@ -87,7 +87,8 @@
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}.${ext}"
+            "artifactName": "${name}-setup-${version}.${ext}",
+            "runAfterFinish": false
         }
     },
     "devDependencies": {
