@@ -5,7 +5,7 @@
 DeviceName     = "nRFConnect USB CDC ACM"
 VendorName     = "Nordic Semiconductor ASA"
 VendorID       = "VID_1915"
-Serial.SvcDesc = "USB Serial emulation driver" 
+Serial.SvcDesc = "USB Serial emulation driver"
 
 [Version]
 Signature   = "$Windows NT$"
@@ -52,10 +52,9 @@ HKR,,NTMPDriver,,usbser.sys
 HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
 
 [DriverInstall.NT.Services]
-include=mdmcpq.inf
 AddService = usbser, 0x00000002, DriverService.NT
 
-[DriverService.NT] 
+[DriverService.NT]
 DisplayName = %Serial.SvcDesc%
 ServiceType = 1 ; SERVICE_KERNEL_DRIVER
 StartType = 3 ; SERVICE_DEMAND_START
