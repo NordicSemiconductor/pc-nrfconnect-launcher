@@ -2,7 +2,8 @@
 ; Windows 2000, XP, Vista, 7 and 8 (x32 and x64) driver for Nordic CDC ACM
 
 [Strings]
-DeviceName     = "nRFConnect USB CDC ACM"
+DeviceName     = "nRF Connect USB CDC ACM"
+DeviceNameBootloader = "nRF52 SDFU USB"
 VendorName     = "Nordic Semiconductor ASA"
 VendorID       = "VID_1915"
 Serial.SvcDesc = "USB Serial emulation driver"
@@ -13,7 +14,7 @@ Class       = Ports
 ClassGuid   = {4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider    = %VendorName%
 DriverVer   = 03/09/2018,1.0.0.0
-CatalogFile = nrfconnect_usb.cat
+CatalogFile = nrfconnect_cdc_acm.cat
 
 ;----------------------------------------------------------
 ; Targets
@@ -22,13 +23,16 @@ CatalogFile = nrfconnect_usb.cat
 %VendorName% = DeviceList, NTAMD64, NTIA64, NTx86
 
 [DeviceList.NTx86]
-%DeviceName% = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
 
 [DeviceList.NTAMD64]
-%DeviceName% = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceName%            = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall.NTamd64, USB\%VendorID%&PID_521F&MI_00
 
 [DeviceList.NTIA64]
-%DeviceName% = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceName%            = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall.NTamd64, USB\%VendorID%&PID_521F&MI_00
 
 
 ;----------------------------------------------------------
