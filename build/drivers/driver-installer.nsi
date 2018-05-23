@@ -10,7 +10,6 @@ OutFile "driver-installer.exe"
 ;The default installation directory.
 InstallDir "$TEMP\installer"
 
-
 !include LogicLib.nsh
 !include "x64.nsh"
 

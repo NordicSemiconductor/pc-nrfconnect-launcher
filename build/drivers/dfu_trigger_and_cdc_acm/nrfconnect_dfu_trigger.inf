@@ -9,7 +9,7 @@
 ; PURPOSE.
 
 [Strings]
-DeviceName = "nRFConnect DFU Trigger"
+DeviceName = "nRF Connect DFU Trigger"
 VendorName = "Nordic Semiconductor ASA"
 VendorID   = "VID_1915"
 CompatID   = "CLASS_FF&SUBCLASS_01&PROT_01"
@@ -20,7 +20,7 @@ Signature   = "$Windows NT$"
 Class       = "Nordic Semiconductor DFU"
 ClassGuid   = {ECFB0CFD-74C4-4f52-BBF7-343461CD72AC}
 Provider    = %VendorName%
-CatalogFile = nrfconnect_usb.cat
+CatalogFile = nrfconnect_dfu_trigger.cat
 DriverVer   = 11/17/2017,1.0.0.0
 
 ; ============== Class section ==================
