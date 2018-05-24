@@ -3,11 +3,15 @@
 
 nRF Connect is a cross-platform framework for creating desktop apps for use with development kits from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the development kits over serial port. The framework comes with a skeleton that has standard UI components for listing serial ports, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
 
-nRF Connect is designed to be used with:
+nRF Connect supports the following devices:
 
-* nRF52 DK
-* nRF51 DK
-* nRF51 Dongle
+* PCA10028 nRF51 Development Kit
+* PCA10031 nRF51 Dongle
+* PCA10040 nRF52 Development Kit
+* PCA10056 nRF52 Development Kit
+* PCA10059 nRF52 Dongle
+
+Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
 
 # Installation
 
