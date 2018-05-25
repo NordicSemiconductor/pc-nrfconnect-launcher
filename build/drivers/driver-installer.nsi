@@ -2,13 +2,13 @@
 ;General
 
 ;Name of the installer.
-Name "Driver installer"
+Name "nRF Connect Driver Installer"
 
 ;Name of the .exe file created.
-OutFile "driver-installer.exe"
+OutFile "nrfconnect-driver-installer.exe"
 
 ;The default installation directory.
-InstallDir "$TEMP\installer"
+InstallDir "$TEMP\nrfconnect-driver-install"
 
 !include LogicLib.nsh
 !include "x64.nsh"

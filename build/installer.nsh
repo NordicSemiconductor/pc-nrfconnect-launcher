@@ -10,10 +10,9 @@
 
   ; Install drivers for DFU trigger and CDC ACM
   ; Put the files to the output directory.
-  File "${BUILD_RESOURCES_DIR}\drivers\driver-installer.exe"
+  File "${BUILD_RESOURCES_DIR}\drivers\nrfconnect-driver-installer.exe"
 
-  ClearErrors
-  ExecShell 'runas' '"$INSTDIR\driver-installer.exe"'
+  ExecShell 'runas' '"$INSTDIR\nrfconnect-driver-installer.exe"'
 
   ; ===============================================================
   ; Installation of VC 2015 redistributable
@@ -22,7 +21,6 @@
   ; Adding Visual C++ Redistributable for Visual Studio 2015
   File "${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"
 
-  ClearErrors
   ; Running installer and waiting before continuing
   ExecWait '"$INSTDIR\vc_redist_2015.x86.exe" /passive /norestart'
 
@@ -39,8 +37,6 @@
 
   ; Checking if we have nRF5x-Command-Line-Tools installed
   EnumRegKey $0 HKLM "SOFTWARE\Nordic Semiconductor\nrfjprog" 0
-
-  ClearErrors
 
   ${If} $0 == ""
     ; nRF5x-Command-Line-Tools is not installed. Run installer.
