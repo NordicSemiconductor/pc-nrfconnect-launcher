@@ -41,9 +41,6 @@ CatalogFile = nrfconnect_cdc_acm.cat
 ; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit
 ;----------------------------------------------------------
 
-;[DestinationDirs]
-;DefaultDestDir=12
-
 [DriverInstall.NT]
 ; Delegate to the mdmcpq.inf driver installer - this will copy usbser.sys around.
 include=mdmcpq.inf
