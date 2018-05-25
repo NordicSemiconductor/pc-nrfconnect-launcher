@@ -1,5 +1,7 @@
 ; Copyright (c) 2017 Nordic Semiconductor
 ; Windows 2000, XP, Vista, 7 and 8 (x32 and x64) driver for Nordic CDC ACM
+;
+; Based off on https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids
 
 [Strings]
 DeviceName     = "nRF Connect USB CDC ACM"
@@ -39,26 +41,25 @@ CatalogFile = nrfconnect_cdc_acm.cat
 ; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit
 ;----------------------------------------------------------
 
-[DestinationDirs]
-DefaultDestDir=12
-DriverInstall.NT.Copy=12
+;[DestinationDirs]
+;DefaultDestDir=12
 
 [DriverInstall.NT]
+; Delegate to the mdmcpq.inf driver installer - this will copy usbser.sys around.
 include=mdmcpq.inf
-CopyFiles=DriverInstall.NT.Copy
-AddReg=DriverInstall.NT.AddReg
-
-[DriverInstall.NT.Copy]
-
-[DriverInstall.NT.AddReg]
-HKR,,DevLoader,,*ntkern
-HKR,,NTMPDriver,,usbser.sys
-HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+CopyFiles=FakeModemCopyFileSection
 
 [DriverInstall.NT.Services]
+include=mdmcpq.inf
 AddService = usbser, 0x00000002, DriverService.NT
 
+[DriverInstall.NT.HW]
+include=mdmcpq.inf
+AddReg=LowerFilterAddReg
+
 [DriverService.NT]
+; Similar to the LowerFilter_Service_Inst section of mdmcpq.inf, but
+; custom name and error control level
 DisplayName = %Serial.SvcDesc%
 ServiceType = 1 ; SERVICE_KERNEL_DRIVER
 StartType = 3 ; SERVICE_DEMAND_START
