@@ -29,16 +29,16 @@ CatalogFile = nrfconnect_cdc_acm.cat
 %DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
 
 [DeviceList.NTAMD64]
-%DeviceName%            = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
-%DeviceNameBootloader%  = DriverInstall.NTamd64, USB\%VendorID%&PID_521F&MI_00
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
 
 [DeviceList.NTIA64]
-%DeviceName%            = DriverInstall.NTamd64, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
-%DeviceNameBootloader%  = DriverInstall.NTamd64, USB\%VendorID%&PID_521F&MI_00
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
 
 
 ;----------------------------------------------------------
-; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit
+; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit and 64bit
 ;----------------------------------------------------------
 
 [DriverInstall.NT]
@@ -63,23 +63,3 @@ StartType = 3 ; SERVICE_DEMAND_START
 ErrorControl = 1 ; SERVICE_ERROR_NORMAL
 ServiceBinary = %12%\usbser.sys
 LoadOrderGroup = Base
-
-;----------------------------------------------------------
-; Windows XP, Vista, Windows 7, Windows 8 - 64bit
-;----------------------------------------------------------
-
-[DriverInstall.NTamd64]
-include=mdmcpq.inf
-CopyFiles=DriverCopyFiles.NTamd64
-AddReg=DriverInstall.NTamd64.AddReg
-
-[DriverCopyFiles.NTamd64]
-
-[DriverInstall.NTamd64.AddReg]
-HKR,,DevLoader,,*ntkern
-HKR,,NTMPDriver,,usbser.sys
-HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
-
-[DriverInstall.NTamd64.Services]
-AddService=usbser, 0x00000002, DriverService.NT
-
