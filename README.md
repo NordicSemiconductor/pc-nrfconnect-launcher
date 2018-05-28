@@ -1,13 +1,17 @@
 # nRF Connect
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-nRF Connect is a cross-platform framework for creating desktop apps for use with development kits from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the development kits over serial port. The framework comes with a skeleton that has standard UI components for listing serial ports, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
+nRF Connect is a cross-platform framework for creating desktop apps for use with development kits or dongles from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the devices over serial port. The framework comes with a skeleton that has standard UI components for selecting devices, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
 
-nRF Connect is designed to be used with:
+nRF Connect supports the following devices:
 
-* nRF52 DK
-* nRF51 DK
-* nRF51 Dongle
+* PCA10028 nRF51 Development Kit
+* PCA10031 nRF51 Dongle
+* PCA10040 nRF52 Development Kit
+* PCA10056 nRF52 Development Kit
+* PCA10059 nRF52 Dongle
+
+Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
 
 # Installation
 
@@ -28,6 +32,8 @@ A [Getting started guide](http://infocenter.nordicsemi.com/topic/com.nordic.info
 The following apps have been created for nRF Connect;
 
 * [Bluetooth Low Energy](https://www.npmjs.com/package/pc-nrfconnect-ble)
+* [Power Profiler](https://www.npmjs.com/package/pc-nrfconnect-ppk)
+* [Programmer](https://www.npmjs.com/package/pc-nrfconnect-programmer)
 * [RSSI Viewer](https://www.npmjs.com/package/pc-nrfconnect-rssi)
 * [nRF Cloud Gateway](https://www.npmjs.com/package/nrf-cloud-gateway)
 
@@ -51,6 +57,10 @@ To create your own app, follow the documentation on the [project wiki](https://g
 
 To configure nRF Connect for use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
 
+# Linux udev rules
+
+In order to access Nordic USB devices with correct permissions *udev* rules need to be set up once. For this purpose [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) repository has been created, follow instructions there.
+
 # Contributing
 
 Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
@@ -62,7 +72,7 @@ Feel free to file code related issues on [GitHub Issues](https://github.com/Nord
 To build this project you will need to install the following tools:
 
 * Node.js (>=6.9)
-* npm (>=3.7.0)
+* npm (>=5.6.0) / yarn (>=1.4.0)
 
 ### Compilation of native modules
 
@@ -72,7 +82,7 @@ The project depends on [pc-ble-driver-js](https://github.com/NordicSemiconductor
 
 Install packages required for building the project on Ubuntu Linux:
 
-    apt-get install build-essential python2.7 libudev-dev
+    apt-get install build-essential python2.7 libudev-dev libgconf-2-4
 
 ### Windows
 

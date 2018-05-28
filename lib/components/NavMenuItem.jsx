@@ -36,17 +36,34 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import Mousetrap from 'mousetrap';
 
 function getClassName(baseClass, isSelected) {
     return `${baseClass} ${isSelected ? 'active' : ''}`;
 }
 
-const NavMenuItem = ({ text, title, iconClass, isSelected, onClick, cssClass }) => (
-    <button title={title} className={getClassName(cssClass, isSelected)} onClick={onClick}>
-        <span className={iconClass} />
-        <span>{text}</span>
-    </button>
-);
+export default class NavMenuItem extends React.Component {
+    componentDidMount() {
+        Mousetrap.bind(this.props.hotkey, () => { this.props.onClick(); });
+    }
+
+    componentWillUnmount() {
+        Mousetrap.unbind(this.props.hotkey);
+    }
+
+    render() {
+        return (
+            <button
+                title={this.props.title}
+                className={getClassName(this.props.cssClass, this.props.isSelected)}
+                onClick={this.props.onClick}
+            >
+                <span className={this.props.iconClass} />
+                <span>{this.props.text}</span>
+            </button>
+        );
+    }
+}
 
 NavMenuItem.propTypes = {
     isSelected: PropTypes.bool.isRequired,
@@ -55,10 +72,10 @@ NavMenuItem.propTypes = {
     iconClass: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
+    hotkey: PropTypes.string.isRequired,
 };
 
 NavMenuItem.defaultProps = {
     cssClass: 'btn btn-primary core-btn core-padded-row',
 };
 
-export default NavMenuItem;

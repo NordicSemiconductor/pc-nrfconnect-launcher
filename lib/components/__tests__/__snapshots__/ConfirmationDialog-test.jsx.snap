@@ -21,6 +21,8 @@ exports[`ConfirmationDialog should not render cancel button if onCancel function
   <ModalFooter>
      
     <Button
+      bsStyle="primary"
+      className="core-btn"
       disabled={false}
       onClick={[Function]}
     >
@@ -51,12 +53,15 @@ exports[`ConfirmationDialog should render invisible dialog 1`] = `
   <ModalFooter>
      
     <Button
+      bsStyle="primary"
+      className="core-btn"
       disabled={false}
       onClick={[Function]}
     >
       OK
     </Button>
     <Button
+      className="core-btn"
       disabled={false}
       onClick={[Function]}
     >
@@ -87,12 +92,15 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
   <ModalFooter>
      
     <Button
+      bsStyle="primary"
+      className="core-btn"
       disabled={false}
       onClick={[Function]}
     >
       OK
     </Button>
     <Button
+      className="core-btn"
       disabled={false}
       onClick={[Function]}
     >
@@ -130,12 +138,15 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
     />
      
     <Button
+      bsStyle="primary"
+      className="core-btn"
       disabled={true}
       onClick={[Function]}
     >
       OK
     </Button>
     <Button
+      className="core-btn"
       disabled={true}
       onClick={[Function]}
     >

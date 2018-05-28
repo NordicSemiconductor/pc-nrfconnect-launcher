@@ -56,24 +56,11 @@ import SerialPortSelector from '../SerialPortSelector';
 const SEGGER_VENDOR_ID = '0x1366';
 
 describe('SerialPortSelector', () => {
-    it('should render empty port list, not expanded', () => {
+    it('should render empty port list', () => {
         expect(renderer.create(
             <SerialPortSelector
                 ports={[]}
-                toggleExpanded={() => {}}
-                onSelect={() => {}}
-                onDeselect={() => {}}
-                bindHotkey={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
-    it('should render empty port list, expanded', () => {
-        expect(renderer.create(
-            <SerialPortSelector
-                ports={[]}
-                isExpanded
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -95,8 +82,7 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                isExpanded
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -118,8 +104,7 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                isExpanded
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -141,8 +126,7 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                isExpanded
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -166,8 +150,7 @@ describe('SerialPortSelector', () => {
                     },
                 ]}
                 selectedPort={'/dev/tty1'}
-                isExpanded
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -185,9 +168,8 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                isExpanded
                 isLoading
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
@@ -206,9 +188,8 @@ describe('SerialPortSelector', () => {
                     },
                 ]}
                 selectedPort={'/dev/tty0'}
-                isExpanded
                 isLoading
-                toggleExpanded={() => {}}
+                onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
                 bindHotkey={() => {}}
