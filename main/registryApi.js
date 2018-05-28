@@ -108,10 +108,19 @@ function verifyShasum(filePath, expectedShasum) {
 function downloadTarball(name, version, destinationDir) {
     return getDistInfo(name, version)
         .then(distInfo => {
-            const parsedUrl = url.parse(distInfo.tarball);
+            if (!distInfo.tarball) {
+                return Promise.reject(`No tarball found for ${name}@${version}`);
+            }
+            // As of late May 2018, the electron net API has started getting 503
+            // errors when trying to access registry.npmjs.org. If the tarball
+            // points to registry.npmjs.org, then we use our configured registry
+            // URL (currently yarn's registry) instead.
+            const tarballUrl = distInfo.tarball.replace('https://registry.npmjs.org',
+                config.getRegistryUrl());
+            const parsedUrl = url.parse(tarballUrl);
             const fileName = path.basename(parsedUrl.pathname);
             const destinationFile = path.join(destinationDir, fileName);
-            return net.downloadToFile(distInfo.tarball, destinationFile)
+            return net.downloadToFile(tarballUrl, destinationFile)
                 .then(() => verifyShasum(destinationFile, distInfo.shasum))
                 .then(() => destinationFile);
         });
