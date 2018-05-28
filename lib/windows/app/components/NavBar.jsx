@@ -41,33 +41,33 @@ import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate } from '../../../util/apps';
+import { decorate, getAppConfig } from '../../../util/apps';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 
-const NavBar = ({
-    cssClass,
-    navSectionCssClass,
-    selectorType,
-}) => (
-    <div className={cssClass}>
-        <MainMenuContainer />
-        <div className={navSectionCssClass}>
-            {
-                selectorType === 'device' ?
-                    <DeviceSelectorContainer /> :
+function NavBar({
+        cssClass,
+        navSectionCssClass,
+    }) {
+    const appConfig = getAppConfig();
+    return (
+        <div className={cssClass}>
+            <MainMenuContainer />
+            <div className={navSectionCssClass}>
+                { appConfig.selectorTraits ?
+                    <DeviceSelectorContainer traits={appConfig.selectorTraits} /> :
                     <SerialPortSelectorContainer />
-            }
+                }
+            </div>
+            <NavMenuContainer />
+            <DecoratedLogo />
         </div>
-        <NavMenuContainer />
-        <DecoratedLogo />
-    </div>
-);
+    );
+}
 
 NavBar.propTypes = {
     cssClass: PropTypes.string,
     navSectionCssClass: PropTypes.string,
-    selectorType: PropTypes.oneOf(['device', 'serialport']).isRequired,
 };
 
 NavBar.defaultProps = {

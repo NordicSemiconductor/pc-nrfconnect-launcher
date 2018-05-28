@@ -7,3 +7,4 @@ jest.json
 build/nrfjprog
 npm-debug.log
 package-lock.json
+*~

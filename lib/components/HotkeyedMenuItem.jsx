@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,30 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import MainMenu from '../components/MainMenu';
-import * as MainMenuActions from '../actions/mainMenuActions';
-import { connect } from '../../../util/apps';
+import { MenuItem } from 'react-bootstrap';
+import Mousetrap from 'mousetrap';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function mapStateToProps() {
-    return {};
+// Like react-bootstrap's `MenuItem`, but can receive an extra `hotkey` prop:
+// a key combination handled by `mousetrap` that will click this item.
+
+export default class HotkeyedMenuItem extends React.Component {
+    componentDidMount() {
+        Mousetrap.bind(this.props.hotkey, () => { this.props.onClick(); });
+    }
+
+    componentWillUnmount() {
+        Mousetrap.unbind(this.props.hotkey);
+    }
+
+    render() {
+        const { hotkey, ...childProps } = this.props;
+        return (<MenuItem {...childProps} />);
+    }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        menuItems: [{
-            id: 1,
-            text: 'Launch other app...',
-            hotkey: 'Alt+L',
-            onClick: () => dispatch(MainMenuActions.openAppLauncher()),
-        }, {
-            id: 2,
-            text: 'About...',
-            onClick: () => dispatch(MainMenuActions.showAboutDialog()),
-        }],
-    };
-}
+HotkeyedMenuItem.propTypes = {
+    ...MenuItem.propTypes,
+    hotkey: PropTypes.string,
+};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(MainMenu, 'MainMenu');
+HotkeyedMenuItem.defaultProps = {
+    ...MenuItem.defaultProps,
+    hotkey: '',
+};

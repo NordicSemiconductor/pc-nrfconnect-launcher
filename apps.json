@@ -9,9 +9,19 @@
         "description": "Live visualization of RSSI per frequency for nRF52832",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-rssi"
     },
-    "nrf-cloud-gateway": {
-        "displayName": "nRF Cloud Gateway",
-        "description": "nRF Cloud Gateway, connecting BLE to the cloud",
-        "homepage": "https://www.nrfcloud.com"        
+    "nrfcloud-gateway": {
+        "displayName": "nRF Cloud Gateway (experimental)",
+        "description": "nRF Cloud Gateway, connecting BLE to the cloud. This is an experimental app that may be deprecated.",
+        "homepage": "https://www.nrfcloud.com"
+    },
+    "pc-nrfconnect-ppk": {
+        "displayName": "Power Profiler",
+        "description": "Tool to measure current for nRF5x applications",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk"
+    },
+    "pc-nrfconnect-programmer": {
+        "displayName": "Programmer (experimental)",
+        "description": "Tool for flash programming of nRF5x SoCs",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer"
     }
 }

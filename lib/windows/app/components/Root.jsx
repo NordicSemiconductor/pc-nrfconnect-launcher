@@ -35,20 +35,20 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
 import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import { decorate } from '../../../util/apps';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-const Root = ({ selectorType }) => (
+const Root = () => (
     <div className="core-main-area">
-        <DecoratedNavBar selectorType={selectorType} />
+        <DecoratedNavBar />
         <div className="core-main-layout">
             <div>
                 <MainViewContainer />
@@ -57,12 +57,9 @@ const Root = ({ selectorType }) => (
             <SidePanelContainer />
         </div>
         <FirmwareDialogContainer />
+        <DeviceSetupContainer />
         <ErrorDialogContainer />
     </div>
 );
-
-Root.propTypes = {
-    selectorType: PropTypes.string.isRequired,
-};
 
 export default Root;
