@@ -57,7 +57,7 @@
             ],
             "extraFiles": [
                 {
-                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "from": "node_modules/pc-nrfjprog-js/nrfjprog/lib",
                     "to": ".",
                     "filter": "*.so*"
                 }
@@ -69,7 +69,7 @@
             "artifactName": "${name}-${version}-${os}.${ext}",
             "extraFiles": [
                 {
-                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "from": "node_modules/pc-nrfjprog-js/nrfjprog/lib",
                     "to": "Frameworks",
                     "filter": "*.dylib"
                 }
