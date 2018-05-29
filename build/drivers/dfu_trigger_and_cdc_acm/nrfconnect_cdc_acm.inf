@@ -1,0 +1,65 @@
+; Copyright (c) 2017 Nordic Semiconductor
+; Windows 2000, XP, Vista, 7 and 8 (x32 and x64) driver for Nordic CDC ACM
+;
+; Based off on https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids
+
+[Strings]
+DeviceName     = "nRF Connect USB CDC ACM"
+DeviceNameBootloader = "nRF52 SDFU USB"
+VendorName     = "Nordic Semiconductor ASA"
+VendorID       = "VID_1915"
+Serial.SvcDesc = "USB Serial emulation driver"
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = Ports
+ClassGuid   = {4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider    = %VendorName%
+DriverVer   = 03/09/2018,1.0.0.0
+CatalogFile = nrfconnect_cdc_acm.cat
+
+;----------------------------------------------------------
+; Targets
+;----------------------------------------------------------
+[Manufacturer]
+%VendorName% = DeviceList, NTAMD64, NTIA64, NTx86
+
+[DeviceList.NTx86]
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
+
+[DeviceList.NTAMD64]
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
+
+[DeviceList.NTIA64]
+%DeviceName%            = DriverInstall, USB\%VendorID%&PID_C00A&MI_01,USB\COMPOSITE
+%DeviceNameBootloader%  = DriverInstall, USB\%VendorID%&PID_521F&MI_00
+
+
+;----------------------------------------------------------
+; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit and 64bit
+;----------------------------------------------------------
+
+[DriverInstall.NT]
+; Delegate to the mdmcpq.inf driver installer - this will copy usbser.sys around.
+include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+
+[DriverInstall.NT.Services]
+include=mdmcpq.inf
+AddService = usbser, 0x00000002, DriverService.NT
+
+[DriverInstall.NT.HW]
+include=mdmcpq.inf
+AddReg=LowerFilterAddReg
+
+[DriverService.NT]
+; Similar to the LowerFilter_Service_Inst section of mdmcpq.inf, but
+; custom name and error control level
+DisplayName = %Serial.SvcDesc%
+ServiceType = 1 ; SERVICE_KERNEL_DRIVER
+StartType = 3 ; SERVICE_DEMAND_START
+ErrorControl = 1 ; SERVICE_ERROR_NORMAL
+ServiceBinary = %12%\usbser.sys
+LoadOrderGroup = Base
