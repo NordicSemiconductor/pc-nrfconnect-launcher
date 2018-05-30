@@ -97,7 +97,7 @@ function init(argv) {
     appsJsonPath = path.join(appsRootDir, 'apps.json');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    registryUrl = 'https://registry.yarnpkg.com';
+    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
     releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
