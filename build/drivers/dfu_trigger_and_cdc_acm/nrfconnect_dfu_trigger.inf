@@ -1,0 +1,176 @@
+﻿; Copyright (c) 2012 libusbK
+;
+; Module Name: nRF52_USB_CDC_Demo_Interface_2.inf
+; Description: Installation inf for nRF52 USB CDC Demo (Interface 2) device.
+;
+; THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+; KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+; IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+; PURPOSE.
+
+[Strings]
+DeviceName = "nRF Connect DFU Trigger"
+VendorName = "Nordic Semiconductor ASA"
+VendorID   = "VID_1915"
+CompatID   = "CLASS_FF&SUBCLASS_01&PROT_01"
+DeviceGUID = "{FB192EDB-E9D7-4C61-8801-C113EAE31377}"
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = "Nordic Semiconductor DFU"
+ClassGuid   = {ECFB0CFD-74C4-4f52-BBF7-343461CD72AC}
+Provider    = %VendorName%
+CatalogFile = nrfconnect_dfu_trigger.cat
+DriverVer   = 11/17/2017,1.0.0.0
+
+; ============== Class section ==================
+[ClassInstall32]
+Addreg = Nordic_Class_AddReg
+
+[Nordic_Class_AddReg]
+HKR,,,0,"Nordic Semiconductor DFU"
+HKR,,Icon,,-20
+
+; ============== Device section =================
+[Manufacturer]
+%VendorName% = Nordic_DeviceGroup,NTX86,NTAMD64
+
+; For Win2K
+[Nordic_DeviceGroup]
+%DeviceName% = Nordic_Device, USB\%VendorID%, USB\%CompatID%
+
+; For XP and later
+[Nordic_DeviceGroup.NTX86]
+%DeviceName% = Nordic_Device, USB\%VendorID%&PID_C00A&MI_00,USB\COMPOSITE
+
+[Nordic_DeviceGroup.NTAMD64]
+%DeviceName% = Nordic_Device, USB\%VendorID%&PID_C00A&MI_00,USB\COMPOSITE
+
+[Nordic_Device.NT.HW]
+AddReg=Nordic_Device_AddReg
+
+[Nordic_Device.NTAMD64.HW]
+AddReg=Nordic_Device_AddReg
+
+[Nordic_Device_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,%DeviceGUID%
+
+; ======= Power policy settings (default) ========
+
+; Indicates whether the device is capable of being powered down when idle
+; (Selective Suspend).
+HKR,,DeviceIdleEnabled,0x00010001,1
+
+; Sets the default value of the AUTO_SUSPEND power policy setting. This
+; registry key is used to enable or disable selective suspend when a
+; handle is not open to the device.
+HKR,,DefaultIdleState,0x00010001,0
+
+; Sets the default state of the SUSPEND_DELAY power policy setting. The
+; value indicates the amount of time in milliseconds to wait before
+; determining that a device is idle.
+HKR,,DefaultIdleTimeout,0x00010001,5000
+
+; When set to a nonzero value, it suspends the device even if it does not
+; support RemoteWake.
+HKR,,DeviceIdleIgnoreWakeEnable,0x00010001,0
+
+; Indicates whether a check box should be enabled in the device Properties
+; page that allows a user to override the idle defaults.
+HKR,,UserSetDeviceIdleEnabled,0x00010001,0
+
+; Indicates whether the device should be allowed to wake the system from a
+; low power state.
+HKR,,SystemWakeEnabled,0x00010001,0
+
+; ========== Driver/Service setup ==============
+[Nordic_Device.NT.Services]
+Addservice=libusbK,2,LUsbK_AddService
+
+[Nordic_Device.NTAMD64.Services]
+Addservice=libusbK,2,LUsbK_AddService
+
+[LUsbK_AddService]
+DisplayName="Nordic Semiconductor DFU USB Driver 17/11/2017 - 1.0.0"
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\libusbK.sys
+AddReg=LUsbK_Driver_AddReg
+
+; This optional entry identifies the load order group of which this driver is a member.
+; LoadOrderGroup=Base
+
+[LUsbK_Driver_AddReg]
+HKR,"Parameters","DebugLevel",0x10001,4
+
+; =========== Sources/Destinations ==============
+[SourceDisksNames]
+1 = %SourceName%
+
+[SourceDisksFiles.x86]
+libusbK.sys	= 1,x86
+libusbK_x86.dll	= 1,x86
+libusb0_x86.dll	= 1,x86
+WdfCoInstaller01009.dll = 1,x86
+
+[SourceDisksFiles.amd64]
+WdfCoInstaller01009.dll	= 1,amd64
+libusbK.sys			= 1,amd64
+libusbK.dll			= 1,amd64
+libusb0.dll			= 1,amd64
+libusb0_x86.dll		= 1,x86
+libusbK_x86.dll		= 1,x86
+
+[DestinationDirs]
+DefaultDestDir				= 12
+CoInstaller_CopyFiles		= 11
+libusb_files_sys		= 10,system32\drivers
+libusb_files_dll		= 10,system32
+libusb_files_dll_wow64	= 10,syswow64
+libusb_files_dll_x86	= 10,system32
+
+[libusb_files_sys]
+libusbK.sys
+
+[libusb_files_dll]
+libusbK.dll
+libusb0.dll
+
+[libusb_files_dll_x86]
+libusbK.dll, libusbK_x86.dll
+libusb0.dll, libusb0_x86.dll
+
+[libusb_files_dll_wow64]
+libusbK.dll, libusbK_x86.dll
+libusb0.dll, libusb0_x86.dll
+
+[Nordic_Device.NT]
+CopyFiles = libusb_files_sys, libusb_files_dll_x86
+
+[Nordic_Device.NTAMD64]
+CopyFiles = libusb_files_sys, libusb_files_dll, libusb_files_dll_wow64
+
+; ========= WDF/CoInstaller section =============
+[Nordic_Device.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[Nordic_Device.NTAMD64.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[Nordic_Device.NT.Wdf]
+KmdfService = libusbK, LUsbK_wdfsect
+
+[Nordic_Device.NTAMD64.Wdf]
+KmdfService = libusbK, LUsbK_wdfsect
+
+[LUsbK_wdfsect]
+KmdfLibraryVersion=1.9
