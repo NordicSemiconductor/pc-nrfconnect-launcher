@@ -6,23 +6,27 @@ While this makes it easier to develop nRF Connect Desktop applications, it might
 
 # Scenarios where these errors happen
 
-## Windows 7 right after installation
+## Connecting a USB device into Windows 7 for the first time
 
-A `LIBUSB_ERROR_NOT_FOUND` error shows up when performing the following actions in this exact order:
+A `LIBUSB_ERROR_NOT_FOUND` error shows up when connecting an nRF USB device into a Windows 7 computer for the first time. In particular, this sequence of actions (in this exact order) reproduces this scenario:
 
 - Run the nRF Connect Desktop installer.
   - This includes the *rules* for the right drivers, but not the actual link between a USB device and its driver.
 - Launch an nRF Connect Desktop application.
-- Plug an nRF52840 devkit into a USB port.
+- Plug an nRF52840 device into a USB port.
 - Let Windows 7 attach the right drivers.
   - This uses the *rules* already installed for actually *binding* a driver to the newly-connected nRF USB device.
   - A yellow bubble appears from the system tray, indicating driver installation, like this: 
   ![screenshot](win32-drivers-installing.png)
 
 - A `LIBUSB_ERROR_NOT_FOUND` is shown on the log of the nRF Connect Desktop application.
-- After a couple of minutes, Windows 7 finishes binding the libusb driver to the nRF USB device.
+- After a time (that varies between a few seconds and a couple of minutes), Windows 7 finishes binding the libusb driver to the nRF USB device.
   - A yellow bubble appears from the system tray, indicating drivers are ready, like this:
   ![screenshot](win32-drivers-ready.png)
+
+Please note that a USB device is "new" for Windows if the combination of its USB vendor ID, product ID, revision, and serial number have never been seen before. In other words: changing the firmware in an nRF device, or setting it into bootloader mode will make it appear as "new" for Windows.
+
+Therefore, this error might happen the first time that an nRF USB device is connected, the first time it enters bootloader mode, and the first time it is loaded with application-specific USB-capable firmware.
 
 #### Workaround
 
@@ -30,3 +34,38 @@ A `LIBUSB_ERROR_NOT_FOUND` error shows up when performing the following actions 
 - Connect the nRF USB device(s).
 - **Wait** until Windows 7 has finished binding the right drivers to the USB device(s).
 - Launch nRF Connect Desktop.
+
+If the nRF USB device enters bootloader mode, or is loaded with new firmware, you may need to repeat this workaround.
+
+## USB devices without an expected interface
+
+A `LIBUSB_ERROR_NOT_FOUND` error shows up when connecting an nRF USB device **without** a DFU trigger interface.
+
+In order to check if this is also your scenario, launch the Windows Device Manager, set the view to "Devices by Connection", and find the part of the USB device tree with the nRF USB Device.
+
+The nRF USB device shall appear as an "USB Composite Device" and, beneath that, each USB interface appears as a device in the tree. nRF Connect Desktop *expects* a "nRF Connect DFU trigger" interface to be present, like so:
+
+![screenshot](win32-usbtree-expected.png)
+
+The "nRF Connect DFU trigger" interface is implemented by the [Nordic USB DFU trigger library](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v15.0.0/group__nrf__dfu__trigger__usb.html). This scenario happens when the firmware loaded in the nRF USB device does not use (or misuses) this USB DFU library.
+
+#### Workaround
+
+Most nRF Connect Desktop applications will automatically load the nRF USB device with firmware known to work.
+
+- If your nRF device does *not* have a Segger IMCU:
+  - Unplug the nRF device from its USB port.
+  - Hold down the reset button.
+  - Pluf the nRF device into a USB port. One of the LEDs should be pulsing, indicating the nRF device is in DFU bootloader mode.
+  - Launch a nRF Connect Desktop application (for example, the RSSI viewer).
+  - Make the nRF Connect Desktop application use the nRF USB device in bootloader mode. nRF Connect desktop will perform a DFU operation, programming the nRF device with firmware known to work.
+
+- If your nRF device *does* have a Segger IMCU:
+  - Use nRF Connect Destkop Programmer to program it with firmware known to work.
+
+Please note that it's safe to ignore this error **only** when **all** of the following are true:
+
+- You are developing firmware for nRF devices using the [USBD library](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v15.0.0/group__app__usbd.html?cp=4_0_0_6_11_58), **and**
+- You are using the Nordic Semiconductor USB Vendor ID (and a USB Product ID reserved for development), **and**
+- You are **not** using the [Nordic USB DFU trigger library](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v15.0.0/group__nrf__dfu__trigger__usb.html) **on purpose**.
+
