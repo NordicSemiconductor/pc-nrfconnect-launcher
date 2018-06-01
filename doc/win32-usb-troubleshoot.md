@@ -41,9 +41,9 @@ If the nRF USB device enters bootloader mode for the first time, or is loaded wi
 
 A `LIBUSB_ERROR_NOT_FOUND` error shows up when connecting an nRF USB device **without** a DFU trigger interface.
 
-In order to check if this is also your scenario, launch the Windows Device Manager, set the view to "Devices by Connection", and find the part of the USB device tree with the nRF USB Device.
+In order to check if this is also your scenario, launch the Windows Device Manager, set the view to "Devices by Connection", and find the part of the USB device tree with the nRF USB Device (usually under ACPI computer → PCI bus → USB root hub).
 
-The nRF USB device shall appear as an "USB Composite Device" and, beneath that, each USB interface appears as a device in the tree. nRF Connect Desktop *expects* a "nRF Connect DFU trigger" interface to be present, like so:
+The nRF USB device shall appear as a "USB Composite Device" and, beneath that, each USB interface appears as a device in the tree. nRF Connect Desktop *expects* a "nRF Connect DFU trigger" interface to be present, like so:
 
 ![screenshot](win32-usbtree-expected.png)
 
