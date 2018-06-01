@@ -53,7 +53,7 @@ The "nRF Connect DFU trigger" interface is implemented by the [Nordic USB DFU tr
 
 Most nRF Connect Desktop applications will automatically load the nRF USB device with firmware known to work.
 
-- For nRF52 dongles:
+- For nRF52840 dongles:
   - Unplug the dongle from its USB port.
   - Hold down the reset button.
   - Plug the dongle into a USB port. The red LED should be pulsing, indicating the nRF device is in DFU bootloader mode.
@@ -61,7 +61,7 @@ Most nRF Connect Desktop applications will automatically load the nRF USB device
   - Launch an nRF Connect Desktop application (for example, the RSSI viewer).
   - Make the nRF Connect Desktop application use the nRF USB device in bootloader mode. nRF Connect desktop will perform a DFU operation, programming the nRF device with firmware known to work.
 
-- For nRF52 development kits:
+- For nRF52840 development kits:
   - Unplug the devkit's USB connector marked "nRF USB", and connect a USB cable to the USB connector for the [Interface MCU](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.nrf52/dita/nrf52/development/nrf52840_pdk/if_mcu.html)
   - Use nRF Connect Destkop Programmer to program it with firmware known to work.
 
