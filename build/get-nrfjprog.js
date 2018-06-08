@@ -37,51 +37,24 @@
 'use strict';
 
 const https = require('https');
-const tar = require('tar');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const exec = require('child_process').exec ;
 
 /*
  * nRF5x-Command-Line-Tools (nrfjprog) is required for programming. This script
- * downloads nrfjprog for the current platform.
+ * downloads the nrfjprog installer on Windows, so that it can be bundled together
+ * with the nRF Connect installer.
  *
- * On Linux/macOS, the nrfjprog libraries needs to exist below the electron
- * directory in node_modules, so that Electron finds them. The script extracts
- * the nrfjprog tar file, and copies the libraries to the correct directory.
+ * On Linux/macOS, the nrfjprog libraries are automatically installed and included
+ * with the pc-nrfjprog-js library (as of pc-nrfjprog-js v1.3.0).
  */
 
+// Currently pointing to nRF5x-Command-Line-Tools v9.7.3 Win32.
+// Remember to update the version in installer.nsh when changing this.
+const NRFJPROG_URL = 'https://www.nordicsemi.com/eng/nordic/download_resource/33444/48/95932377/53210';
 const DOWNLOAD_DIR = path.join(__dirname, 'nrfjprog');
-
-const PLATFORM_CONFIG = {
-    linux: {
-        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.1.0/nrfjprog/nRF5x-Command-Line-Tools_9_7_1_Linux-x86_64.tar',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux.tar'),
-        extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
-        copyFiles: {
-            source: path.join(DOWNLOAD_DIR, 'unpacked', 'nrfjprog'),
-            destination: `${__dirname}/../node_modules/electron/dist`,
-            pattern: '*.so*',
-        },
-    },
-    darwin: {
-        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.1.0/nrfjprog/nRF5x-Command-Line-Tools_9_7_1_OSX.tar',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-darwin.tar'),
-        extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
-        copyFiles: {
-            source: path.join(DOWNLOAD_DIR, 'unpacked', 'nrfjprog'),
-            destination: `${__dirname}/../node_modules/electron/dist/Electron.app/Contents/Frameworks`,
-            pattern: '*.dylib',
-        },
-    },
-    win32: {
-        // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfjprog-js/v1.1.0/nrfjprog/nRF5x-Command-Line-Tools_9_7_1_Installer.exe',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe'),
-        instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
-    },
-};
+const DESTINATION_FILE = path.join(DOWNLOAD_DIR, 'nrfjprog-win32.exe');
 
 function mkdir(dirPath) {
     return new Promise((resolve, reject) => {
@@ -122,58 +95,9 @@ function downloadFile(url, destinationFile) {
     });
 }
 
-function extractTarFile(filePath, outputDir) {
-    return new Promise((resolve, reject) => {
-        const extractor = tar.Extract({ path: outputDir })
-            .on('error', err => reject(err))
-            .on('end', () => resolve());
-        fs.createReadStream(filePath)
-            .on('error', err => reject(err))
-            .pipe(extractor);
-    });
+if (os.platform() === 'win32') {
+    console.log(`Downloading nrfjprog to ${DESTINATION_FILE}`);
+    mkdirIfNotExists(DOWNLOAD_DIR)
+        .then(() => downloadFile(NRFJPROG_URL, DESTINATION_FILE))
+        .catch(error => console.log(`Error when getting nrfjprog: ${error.message}`));
 }
-
-function copyFiles(source, destination, pattern) {
-    return new Promise((resolve, reject) => {
-        exec(`cp ${source}/${pattern} ${destination}`, error => {
-            if (error) {
-                reject(new Error(`Unable to copy files: ${error.message}`));
-            } else {
-                resolve();
-            }
-        });
-    });
-}
-
-const platform = os.platform();
-const platformConfig = PLATFORM_CONFIG[platform];
-
-if (!platformConfig) {
-    throw new Error(`Unsupported platform: '${platform}'`);
-}
-
-console.log(`Downloading nrfjprog to ${platformConfig.destinationFile}`);
-Promise.resolve()
-    .then(() => mkdirIfNotExists(DOWNLOAD_DIR))
-    .then(() => downloadFile(platformConfig.url, platformConfig.destinationFile))
-    .then(() => {
-        if (platformConfig.extractTo) {
-            console.log(`Extracting nrfjprog to ${platformConfig.extractTo}`);
-            return extractTarFile(platformConfig.destinationFile, platformConfig.extractTo);
-        }
-        return Promise.resolve();
-    })
-    .then(() => {
-        if (platformConfig.copyFiles) {
-            const copyConfig = platformConfig.copyFiles;
-            console.log(`Copying nrfjprog libs from ${copyConfig.source} to ${copyConfig.destination}`);
-            return copyFiles(copyConfig.source, copyConfig.destination, copyConfig.pattern);
-        }
-        return Promise.resolve();
-    })
-    .then(()=>{
-        if (platformConfig.instructions) {
-            console.warn(platformConfig.instructions);
-        }
-    })
-    .catch(error => console.log(`Error when getting nrfjprog: ${error.message}`));
