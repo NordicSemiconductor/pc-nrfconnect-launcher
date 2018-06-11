@@ -39,6 +39,7 @@ CatalogFile = nrfconnect_cdc_acm.cat
 
 ;----------------------------------------------------------
 ; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit and 64bit
+; Based on https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids
 ;----------------------------------------------------------
 
 [DriverInstall.NT]
@@ -48,7 +49,7 @@ CopyFiles=FakeModemCopyFileSection
 
 [DriverInstall.NT.Services]
 include=mdmcpq.inf
-AddService = usbser, 0x00000002, DriverService.NT
+AddService = usbser, 0x00000000, DriverService.NT
 
 [DriverInstall.NT.HW]
 include=mdmcpq.inf
