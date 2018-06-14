@@ -48,10 +48,7 @@ serial port, but is not understanding it, and it's not replying to it.
 Ensure that the devkit/dongle is in bootloader mode.
 
 - For nRF52840 dongles:
-    - Unplug it from its USB port.
-    - Hold down the reset button.
-    - Plug the dongle into a USB port. The red LED should be pulsing, indicating the nRF device is in DFU bootloader mode.
-    - Stop holding down the reset button.
+    - Press the reset button. The red LED should be pulsing, indicating the nRF device is in DFU bootloader mode.
     - Perform the DFU operation again.
 
 - For nRF52840 development kits:
