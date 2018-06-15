@@ -30,7 +30,7 @@
 
   ; The version of the bundled nRF5x-Command-Line-Tools
   Var /GLOBAL BUNDLED_NRFJPROG_VERSION
-  StrCpy $BUNDLED_NRFJPROG_VERSION "9.7.3"
+  StrCpy $BUNDLED_NRFJPROG_VERSION "9.7.1"
 
   ; Adding nRF5x-Command-Line-Tools installer (downloaded by 'npm run get-nrfjprog')
   File "${BUILD_RESOURCES_DIR}\nrfjprog\nrfjprog-win32.exe"
