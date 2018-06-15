@@ -2,6 +2,11 @@
 ; Windows 2000, XP, Vista, 7 and 8 (x32 and x64) driver for Nordic CDC ACM
 ;
 ; Based off on https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids
+;
+; Unlike those instructions, this file sets the usbser.sys driver as a function
+; driver instead of a filter driver (note the lack of LowerFilterAddReg, and the
+; 0x02 flags to AddService - see also
+; https://docs.microsoft.com/en-us/windows-hardware/drivers/install/inf-addservice-directive )
 
 [Strings]
 DeviceName     = "nRF Connect USB CDC ACM"
@@ -15,11 +20,15 @@ Signature   = "$Windows NT$"
 Class       = Ports
 ClassGuid   = {4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider    = %VendorName%
-DriverVer   = 03/09/2018,1.0.0.0
+DriverVer   = 05/11/2018,1.0.1.0
 CatalogFile = nrfconnect_cdc_acm.cat
+
 
 ;----------------------------------------------------------
 ; Targets
+;
+; Run the same steps for all platforms - Win2000, XP, vista, Win7, Win8, Win10
+; both 32- and 64-bit.
 ;----------------------------------------------------------
 [Manufacturer]
 %VendorName% = DeviceList, NTAMD64, NTIA64, NTx86
@@ -38,21 +47,20 @@ CatalogFile = nrfconnect_cdc_acm.cat
 
 
 ;----------------------------------------------------------
-; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit and 64bit
+; Installation steps
+;
+; Delegate most to the mdmcpq.inf system-provided file - this will copy usbser.sys
+; around. Those files are platform-specific, so any 32- or 64-bit specific things
+; will be taken care of.
 ;----------------------------------------------------------
 
 [DriverInstall.NT]
-; Delegate to the mdmcpq.inf driver installer - this will copy usbser.sys around.
 include=mdmcpq.inf
 CopyFiles=FakeModemCopyFileSection
 
 [DriverInstall.NT.Services]
 include=mdmcpq.inf
 AddService = usbser, 0x00000002, DriverService.NT
-
-[DriverInstall.NT.HW]
-include=mdmcpq.inf
-AddReg=LowerFilterAddReg
 
 [DriverService.NT]
 ; Similar to the LowerFilter_Service_Inst section of mdmcpq.inf, but
