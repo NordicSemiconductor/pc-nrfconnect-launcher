@@ -9,7 +9,7 @@ nRF Connect supports the following devices:
 * PCA10031 nRF51 Dongle
 * PCA10040 nRF52 Development Kit
 * PCA10056 nRF52 Development Kit
-* PCA10059 nRF52 Dongle
+* PCA10059
 
 Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
 
