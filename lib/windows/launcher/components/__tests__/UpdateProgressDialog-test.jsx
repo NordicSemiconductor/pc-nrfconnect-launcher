@@ -107,4 +107,18 @@ describe('UpdateProgressDialog', () => {
             />,
         )).toMatchSnapshot();
     });
+
+    it('should render with cancel disabled when 100 percent complete', () => {
+        expect(renderer.create(
+            <UpdateProgressDialog
+                isVisible
+                isProgressSupported
+                isCancelSupported
+                version="1.2.3"
+                percentDownloaded={100}
+                onCancel={() => {}}
+                isCancelling={false}
+            />,
+        )).toMatchSnapshot();
+    });
 });

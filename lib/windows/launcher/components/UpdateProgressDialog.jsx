@@ -70,7 +70,12 @@ const UpdateProgressDialog = ({
             }
             {
                 isCancelSupported &&
-                    <Button onClick={onCancel} disabled={isCancelling}>Cancel</Button>
+                    <Button
+                        onClick={onCancel}
+                        disabled={isCancelling || percentDownloaded === 100}
+                    >
+                        Cancel
+                    </Button>
             }
         </ModalFooter>
     </Modal>
