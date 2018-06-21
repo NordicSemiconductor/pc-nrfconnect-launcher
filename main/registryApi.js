@@ -88,8 +88,8 @@ function verifyShasum(filePath, expectedShasum) {
                 if (expectedShasum === computedShasum) {
                     resolve();
                 } else {
-                    reject(`Shasum verification failed for ${filePath}. Expected ` +
-                        `'${expectedShasum}', but got '${computedShasum}'.`);
+                    reject(new Error(`Shasum verification failed for ${filePath}. Expected ` +
+                        `'${expectedShasum}', but got '${computedShasum}'.`));
                 }
             }
         });
