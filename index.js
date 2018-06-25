@@ -68,23 +68,13 @@ electronApp.on('ready', () => {
             return windows.openLauncherWindow();
         })
         .catch(error => {
-            if (error.code === apps.APPS_DIR_INIT_ERROR) {
-                dialog.showMessageBox({
-                    type: 'error',
-                    title: 'Initialization error',
-                    message: 'Unable to initialize apps directory',
-                    detail: error.message,
-                    buttons: ['OK'],
-                }, () => electronApp.quit());
-            } else {
-                dialog.showMessageBox({
-                    type: 'error',
-                    title: 'Initialization error',
-                    message: 'Error when starting application',
-                    detail: error.message,
-                    buttons: ['OK'],
-                }, () => electronApp.quit());
-            }
+            dialog.showMessageBox({
+                type: 'error',
+                title: 'Initialization error',
+                message: 'Error when starting application',
+                detail: error.message,
+                buttons: ['OK'],
+            }, () => electronApp.quit());
         });
 });
 
