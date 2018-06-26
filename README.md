@@ -154,7 +154,22 @@ Depending on the platform, this will create:
 
 * Windows: NSIS installer
 * macOS: DMG disk image
-* Linux: tar.gz archive
+* Linux: AppImage
+
+The artifact is written to the `release` directory.
+
+## Publishing release artifacts
+
+First, make sure your user can authenticate with GitHub:
+
+* Windows: `set GH_TOKEN=<your-github-token>`
+* Linux/macOS: `export GH_TOKEN=<your-github-token>`
+
+Then, to create and publish the release artifact:
+
+    npm run release
+
+This creates a release artifact for the current platform, and uploads it to GitHub as part of a draft release on the [GitHub releases](https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases) page. The draft release is only visible to users who have write access to the repository, and can be made public by editing it and pressing the *Publish release* button.
 
 # Related projects
 
