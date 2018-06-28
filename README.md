@@ -8,8 +8,8 @@ nRF Connect supports the following devices:
 * PCA10028 nRF51 Development Kit
 * PCA10031 nRF51 Dongle
 * PCA10040 nRF52 Development Kit
-* PCA10056 nRF52 Development Kit
-* PCA10059 nRF52 Dongle
+* PCA10056 nRF52840 Development Kit
+* PCA10059 nRF52840 Dongle
 
 Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
 
@@ -154,7 +154,22 @@ Depending on the platform, this will create:
 
 * Windows: NSIS installer
 * macOS: DMG disk image
-* Linux: tar.gz archive
+* Linux: AppImage
+
+The artifact is written to the `release` directory.
+
+## Publishing release artifacts
+
+First, make sure your user can authenticate with GitHub:
+
+* Windows: `set GH_TOKEN=<your-github-token>`
+* Linux/macOS: `export GH_TOKEN=<your-github-token>`
+
+Then, to create and publish the release artifact:
+
+    npm run release
+
+This creates a release artifact for the current platform, and uploads it to GitHub as part of a draft release on the [GitHub releases](https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases) page. The draft release is only visible to users who have write access to the repository, and can be made public by editing it and pressing the *Publish release* button.
 
 # Related projects
 
@@ -163,6 +178,8 @@ nRF Connect builds on top of other sub components that live in their own GitHub 
 * [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js)
 * [pc-ble-driver](https://github.com/NordicSemiconductor/pc-ble-driver)
 * [pc-nrfjprog-js](https://github.com/NordicSemiconductor/pc-nrfjprog-js)
+* [nrf-device-lister-js](https://github.com/NordicSemiconductor/nrf-device-lister-js)
+* [nrf-device-setup-js](https://github.com/NordicSemiconductor/nrf-device-setup-js)
 
 # License
 
