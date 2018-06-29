@@ -45,8 +45,6 @@ const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 
-const APPS_DIR_INIT_ERROR = 'APPS_DIR_INIT_ERROR';
-
 /**
  * Create apps.json if it does not exist.
  *
@@ -184,16 +182,8 @@ function installLocalAppArchives() {
 
 /**
  * Initialize the apps root directory where we keep all apps. If some required
- * file or directory does not exist, it is created. Downloads the list of
- * official apps (apps.json) and generates the list of available updates
- * (updates.json).
- *
- * The returned promise may reject with error code:
- * - APPS_DIR_INIT_ERROR: Unrecoverable error during initialization. Could be
- *   filesystem issues, such as insufficient permissions, etc.
- * - APPS_UPDATE_ERROR: Update of apps.json or updates.json failed, but the
- *   application is still usable if the user does not need to install/upgrade
- *   apps.
+ * file or directory does not exist, it is created. Any *.tgz archives that
+ * exist in the apps local directory are extracted.
  *
  * @returns {Promise} promise that resolves if successful.
  */
@@ -204,12 +194,7 @@ function initAppsDirectory() {
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsLocalDir()))
         .then(() => createAppsJsonIfNotExists())
         .then(() => createUpdatesJsonIfNotExists())
-        .then(() => installLocalAppArchives())
-        .catch(error => {
-            const err = new Error(error.message);
-            err.code = APPS_DIR_INIT_ERROR;
-            throw err;
-        });
+        .then(() => installLocalAppArchives());
 }
 
 /**
@@ -432,5 +417,4 @@ module.exports = {
     getLocalApps,
     installOfficialApp,
     removeOfficialApp,
-    APPS_DIR_INIT_ERROR,
 };
