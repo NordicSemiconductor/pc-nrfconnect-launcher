@@ -111,7 +111,6 @@
     },
     "dependencies": {
         "chmodr": "1.0.2",
-        "electron-builder-http": "18.5.1",
         "electron-log": "2.2.6",
         "electron-updater": "2.20.2",
         "fs-extra": "4.0.1",
