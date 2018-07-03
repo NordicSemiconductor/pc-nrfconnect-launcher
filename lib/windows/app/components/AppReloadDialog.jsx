@@ -34,21 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
-import navMenu from './navMenuReducer';
-import log from './logReducer';
-import serialPort from './serialPortReducer';
-import device from './deviceReducer';
-import firmwareDialog from './firmwareDialogReducer';
-import appReloadDialog from './appReloadDialogReducer';
-import errorDialog from '../../../reducers/errorDialogReducer';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-export default combineReducers({
-    navMenu,
-    log,
-    serialPort,
-    device,
-    firmwareDialog,
-    appReloadDialog,
-    errorDialog,
-});
+const AppReloadDialog = ({
+            isVisible,
+            onConfirmReload,
+            onCancelReload,
+            message,
+        }) =>
+        (<ConfirmationDialog
+            isVisible={isVisible}
+            onOk={onConfirmReload}
+            onCancel={onCancelReload}
+            okButtonText="Yes"
+            cancelButtonText="No"
+            text={message}
+        />);
+
+AppReloadDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onConfirmReload: PropTypes.func.isRequired,
+    onCancelReload: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+};
+
+export default AppReloadDialog;
