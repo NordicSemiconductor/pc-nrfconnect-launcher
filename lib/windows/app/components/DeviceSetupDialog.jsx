@@ -109,7 +109,7 @@ export default class DeviceSetupDialog extends React.Component {
                 okButtonText={'Yes'}
                 cancelButtonText={'No'}
                 onOk={() => onOk(true)}
-                onCancel={onCancel}
+                onCancel={() => onOk(false)}
                 text={text}
             />
         );

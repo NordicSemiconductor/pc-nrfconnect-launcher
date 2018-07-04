@@ -12,6 +12,7 @@ function createExternals() {
         'pc-nrfjprog-js',
         'serialport',
         'usb',
+        'nrf-device-setup',
     ];
     return libs.reduce((prev, lib) => (
         Object.assign(prev, { [lib]: `commonjs ${lib}` })
