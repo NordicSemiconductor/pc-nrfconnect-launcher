@@ -36,8 +36,7 @@
 
 'use strict';
 
-const autoUpdater = require('electron-updater').autoUpdater;
-const CancellationToken = require('electron-builder-http/out/CancellationToken').CancellationToken;
+const { autoUpdater, CancellationToken } = require('electron-updater');
 const log = require('electron-log');
 
 autoUpdater.autoDownload = false;
