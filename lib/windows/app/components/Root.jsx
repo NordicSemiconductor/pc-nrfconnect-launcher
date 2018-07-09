@@ -40,6 +40,7 @@ import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
 import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
 import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import { decorate } from '../../../util/apps';
@@ -57,6 +58,7 @@ const Root = () => (
             <SidePanelContainer />
         </div>
         <FirmwareDialogContainer />
+        <AppReloadDialogContainer />
         <DeviceSetupContainer />
         <ErrorDialogContainer />
     </div>
