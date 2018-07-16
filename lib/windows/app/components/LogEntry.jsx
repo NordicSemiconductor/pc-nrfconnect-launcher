@@ -67,7 +67,7 @@ function hrefReplacer(str) {
 
 const LogEntry = ({ entry }) => {
     const className = `core-log-entry core-log-level-${entry.level}`;
-    const time = moment(entry.time).format('HH:mm:ss.SSSS');
+    const time = moment(entry.time).format('HH:mm:ss.SSS');
 
     return (
         <div className={className}>
