@@ -62,6 +62,11 @@ describe('LogViewer', () => {
                 level: 'error',
                 time: new Date('2017-02-03T13:41:36.020Z'),
                 message: 'Error message',
+            }, {
+                id: 3,
+                level: 'info',
+                time: new Date('2017-02-03T13:41:36.020Z'),
+                message: 'For reference see: https://github.com/example/doc.md or reboot Windows.',
             },
         ]);
         expect(renderer.create(
