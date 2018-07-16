@@ -18,7 +18,7 @@ exports[`LogViewer should render log entries 1`] = `
       <div
         className="core-log-time"
       >
-        13:41:36.0200
+        13:41:36.020
       </div>
       <div
         className="core-log-message"
@@ -32,12 +32,32 @@ exports[`LogViewer should render log entries 1`] = `
       <div
         className="core-log-time"
       >
-        14:41:36.0200
+        14:41:36.020
       </div>
       <div
         className="core-log-message"
       >
         Error message
+      </div>
+    </div>
+    <div
+      className="core-log-entry core-log-level-info"
+    >
+      <div
+        className="core-log-time"
+      >
+        14:41:36.020
+      </div>
+      <div
+        className="core-log-message"
+      >
+        For reference see: 
+        <a
+          href="https://github.com/example/doc.md"
+        >
+          https://github.com/example/doc.md
+        </a>
+         or reboot Windows.
       </div>
     </div>
   </Infinite>
