@@ -38,14 +38,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+const regex = /(.*?)(https?:\/\/[^\s]+)/g;
+
+/**
+ * Convert strings to array of strings and JSX <a> tags for hrefs
+ *
+ * E.g. 'For reference see: https://github.com/example/doc.md or reboot Windows.'
+ * will be converted to:
+ * [
+ *    'For reference see: ',
+ *    <a href='https://github.com/example/doc.md'>https://github.com/example/doc.md</a>,
+ *    ' or reboot Windows.',
+ * ]
+ *
+ * @param {string} str input string
+ * @returns {Array} strings and JSX <a> tags
+ */
+function hrefReplacer(str) {
+    const message = [];
+    const remainder = str.replace(regex, (match, before, href, index) => {
+        message.push(before);
+        message.push(<a key={index} href={href}>{href}</a>);
+        return '';
+    });
+    message.push(remainder);
+    return message;
+}
+
 const LogEntry = ({ entry }) => {
     const className = `core-log-entry core-log-level-${entry.level}`;
-    const time = moment(entry.time).format('HH:mm:ss.SSSS');
+    const time = moment(entry.time).format('HH:mm:ss.SSS');
 
     return (
         <div className={className}>
             <div className="core-log-time">{time}</div>
-            <div className="core-log-message">{entry.message}</div>
+            <div className="core-log-message">{hrefReplacer(entry.message)}</div>
         </div>
     );
 };
