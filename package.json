@@ -15,8 +15,8 @@
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
         "lint": "nrfconnect-scripts lint main lib index.js",
-        "test": "nrfconnect-scripts test",
-        "test-watch": "nrfconnect-scripts test --watch",
+        "test": "jest --testResultsProcessor jest-bamboo-formatter",
+        "test-watch": "jest --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
         "test-e2e-offline": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-offline.json",
         "test-e2e-online": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-online.json",
@@ -132,7 +132,9 @@
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
             "\\.(css|less)$": "<rootDir>/mocks/styleMock.js",
             "electron": "<rootDir>/mocks/electronMock.js",
-            "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js"
+            "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js",
+            "nrf-device-lister": "<rootDir>/mocks/emptyMock.js",
+            "nrf-device-setup": "<rootDir>/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.jsx?$": "babel-jest"

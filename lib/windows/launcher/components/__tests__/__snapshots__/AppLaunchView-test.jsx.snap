@@ -87,7 +87,6 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -208,7 +207,6 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -329,7 +327,6 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -441,7 +438,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -546,7 +542,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -651,7 +646,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -756,7 +750,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"
@@ -861,7 +854,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
             <li
               className=""
               role="presentation"
-              style={undefined}
             >
               <a
                 href="#"

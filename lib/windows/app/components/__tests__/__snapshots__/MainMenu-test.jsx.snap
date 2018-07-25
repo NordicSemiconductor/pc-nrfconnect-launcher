@@ -63,7 +63,6 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
       <li
         className=""
         role="presentation"
-        style={undefined}
       >
         <a
           href="#"
@@ -80,13 +79,10 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
         className="divider"
         onKeyDown={[Function]}
         role="separator"
-        style={undefined}
-        title={undefined}
       />
       <li
         className=""
         role="presentation"
-        style={undefined}
       >
         <a
           href="#"
