@@ -5,9 +5,9 @@
 // Ref: https://facebook.github.io/jest/docs/tutorial-webpack.html
 
 module.exports = {
-    require: jest.genMockFunction(),
-    match: jest.genMockFunction(),
-    app: jest.genMockFunction(),
-    remote: jest.genMockFunction(),
-    dialog: jest.genMockFunction(),
+    require: jest.fn(),
+    match: jest.fn(),
+    app: jest.fn(),
+    remote: jest.fn(),
+    dialog: jest.fn(),
 };
