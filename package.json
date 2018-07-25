@@ -99,7 +99,7 @@
         "electron-is-dev": "0.1.2",
         "moment": "2.18.1",
         "mousetrap": "1.6.1",
-        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:^1.2.2",
+        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:^1.3.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.1",
         "redux-thunk": "2.2.0",
@@ -133,6 +133,9 @@
             "\\.(css|less)$": "<rootDir>/mocks/styleMock.js",
             "electron": "<rootDir>/mocks/electronMock.js",
             "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js"
+        },
+        "transform": {
+            "^.+\\.jsx?$": "babel-jest"
         }
     }
 }
