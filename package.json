@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.5.0-alpha.2",
+    "version": "2.5.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -117,7 +117,7 @@
         "mustache": "2.3.0",
         "nrf-device-lister": "2.0.0",
         "nrf-device-setup": "0.3.0",
-        "pc-ble-driver-js": "2.4.1",
+        "pc-ble-driver-js": "2.4.2",
         "pc-nrfjprog-js": "1.2.0",
         "png2icons": "0.9.1",
         "semver": "5.3.0",
