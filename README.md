@@ -15,7 +15,7 @@ Note that while the nRF Connect framework has support for all these devices, the
 
 # Installation
 
-To install nRF Connect you can download binaries from the [nRF Connect product page](http://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-desktop) on Nordic Semiconductor web pages.
+To install nRF Connect you can download binaries from the [nRF Connect product page](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-Desktop#Downloads) on Nordic Semiconductor web pages.
 
 nRF Connect currently supports the following operating systems:
 
@@ -25,7 +25,7 @@ nRF Connect currently supports the following operating systems:
 
 # Usage documentation
 
-A [Getting started guide](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.tools/dita/tools/nRF_Connect/nRF_Connect_intro.html?cp=4_2) is available on the nRF Connect product pages.
+A [Getting started guide](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-Desktop#Documentation) is available from the nRF Connect product pages.
 
 # Available apps
 
