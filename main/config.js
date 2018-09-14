@@ -57,7 +57,7 @@ let oldAppsJsonPath;
 let appsJsonUrl;
 let settingsJsonPath;
 let sourcesJsonPath;
-// let registryUrl;
+let registryUrl;
 let releaseNotesUrl;
 let skipUpdateApps;
 let skipUpdateCore;
@@ -101,7 +101,7 @@ function init(argv) {
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    // registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
+    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
     releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
@@ -139,7 +139,7 @@ module.exports = {
     getSettingsJsonPath: () => settingsJsonPath,
     getSourcesJsonPath: () => sourcesJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
-    getRegistryUrl: (source = 'official') => 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/',
+    getRegistryUrl: () => registryUrl,
     getReleaseNotesUrl: () => releaseNotesUrl,
     isSkipUpdateApps: () => skipUpdateApps,
     isSkipUpdateCore: () => skipUpdateCore,
