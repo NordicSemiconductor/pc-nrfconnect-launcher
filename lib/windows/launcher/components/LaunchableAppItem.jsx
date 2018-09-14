@@ -48,7 +48,7 @@ const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
         <div>
             <h4 className="list-group-item-heading">{app.displayName || app.name}</h4>
             <p className="list-group-item-text">
-                {app.isOfficial ? 'official' : 'local'}, v{app.currentVersion}
+                {app.isOfficial ? app.source : 'local'}, v{app.currentVersion}
             </p>
         </div>
         <div className="core-app-launch-item-buttons btn-toolbar">
@@ -79,6 +79,7 @@ LaunchableAppItem.propTypes = {
         isOfficial: PropTypes.bool.isRequired,
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
+        source: PropTypes.string,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -36,55 +36,31 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppItemButton from './AppItemButton';
 
-const AvailableAppItem = ({
-    app,
-    onInstall,
-    onReadMore,
-    isInstalling,
-    isDisabled,
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
+
+const ConfirmRemoveSourceDialog = ({
+    isVisible,
+    source,
+    onConfirm,
+    onCancel,
 }) => (
-    <div className="core-app-management-item list-group-item">
-        <h4 className="list-group-item-heading">{app.displayName || app.name}
-            <span className="list-group-item-heading-sourcetag">{app.source}</span>
-        </h4>
-        <div className="list-group-item-text">
-            <p>{app.description}</p>
-            <div className="core-app-management-item-footer">
-                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
-                    More information
-                </button>
-                <div className="core-app-management-item-buttons">
-                    <AppItemButton
-                        text={isInstalling ? 'Installing...' : 'Install'}
-                        title={`Install ${app.displayName || app.name}`}
-                        iconClass="glyphicon glyphicon-download-alt"
-                        isDisabled={isDisabled}
-                        onClick={onInstall}
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Remove app source"
+        text={`Are you sure to remove "${source}" source along with any apps installed from it?`}
+        okButtonText="Yes, remove"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(source)}
+        onCancel={onCancel}
+    />
 );
 
-AvailableAppItem.propTypes = {
-    app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        displayName: PropTypes.string,
-        description: PropTypes.string.isRequired,
-        homepage: PropTypes.string,
-    }).isRequired,
-    isInstalling: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    onInstall: PropTypes.func.isRequired,
-    onReadMore: PropTypes.func.isRequired,
+ConfirmRemoveSourceDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    source: PropTypes.string.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
 };
 
-AvailableAppItem.defaultProps = {
-    isInstalling: false,
-    isDisabled: false,
-};
-
-export default AvailableAppItem;
+export default ConfirmRemoveSourceDialog;

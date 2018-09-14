@@ -50,12 +50,14 @@ let desktopDir;
 let tmpDir;
 let appsRootDir;
 let appsLocalDir;
-let nodeModulesDir;
-let updatesJsonPath;
-let appsJsonPath;
+let appsExternalDir;
+let oldNodeModulesDir;
+let oldUpdatesJsonPath;
+let oldAppsJsonPath;
 let appsJsonUrl;
 let settingsJsonPath;
-let registryUrl;
+let sourcesJsonPath;
+// let registryUrl;
 let releaseNotesUrl;
 let skipUpdateApps;
 let skipUpdateCore;
@@ -92,18 +94,27 @@ function init(argv) {
     tmpDir = electronApp.getPath('temp');
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
-    nodeModulesDir = path.join(appsRootDir, 'node_modules');
-    updatesJsonPath = path.join(appsRootDir, 'updates.json');
-    appsJsonPath = path.join(appsRootDir, 'apps.json');
+    appsExternalDir = path.join(appsRootDir, 'external');
+    oldNodeModulesDir = path.join(appsRootDir, 'node_modules');
+    oldUpdatesJsonPath = path.join(appsRootDir, 'updates.json');
+    oldAppsJsonPath = path.join(appsRootDir, 'apps.json');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
+    sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
-    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
+    // registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
     releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;
     officialAppName = argv['open-official-app'] || null;
     localAppName = argv['open-local-app'] || null;
+}
+
+function getAppsRootDir(source = 'official') {
+    if (source === 'official') {
+        return appsRootDir;
+    }
+    return path.join(appsExternalDir, source);
 }
 
 module.exports = {
@@ -116,19 +127,23 @@ module.exports = {
     getUserDataDir: () => userDataDir,
     getDesktopDir: () => desktopDir,
     getTmpDir: () => tmpDir,
-    getAppsRootDir: () => appsRootDir,
+    getAppsRootDir,
     getAppsLocalDir: () => appsLocalDir,
-    getNodeModulesDir: () => nodeModulesDir,
-    getUpdatesJsonPath: () => updatesJsonPath,
-    getAppsJsonPath: () => appsJsonPath,
+    getAppsExternalDir: () => appsExternalDir,
+    getNodeModulesDir: source => path.join(getAppsRootDir(source), 'node_modules'),
+    getUpdatesJsonPath: source => path.join(getAppsRootDir(source), 'updates.json'),
+    getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
+    getOldNodeModulesDir: () => oldNodeModulesDir,
+    getOldUpdatesJsonPath: () => oldUpdatesJsonPath,
+    getOldAppsJsonPath: () => oldAppsJsonPath,
     getSettingsJsonPath: () => settingsJsonPath,
+    getSourcesJsonPath: () => sourcesJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
-    getRegistryUrl: () => registryUrl,
+    getRegistryUrl: (source = 'official') => 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/',
     getReleaseNotesUrl: () => releaseNotesUrl,
     isSkipUpdateApps: () => skipUpdateApps,
     isSkipUpdateCore: () => skipUpdateCore,
     isSkipSplashScreen: () => skipSplashScreen,
     getOfficialAppName: () => officialAppName,
     getLocalAppName: () => localAppName,
-
 };

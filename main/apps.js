@@ -44,38 +44,89 @@ const config = require('./config');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
+const settings = require('./settings');
+
+/**
+ * Create sources.json if it does not exist.
+ *
+ * @returns {Promise} promise that resolves if successful.
+ */
+function createSourcesJsonIfNotExists() {
+    const sources = settings.getSources();
+    settings.setSources(sources);
+    return Promise.resolve(sources);
+}
 
 /**
  * Create apps.json if it does not exist.
  *
+ * @param {string} source name of external source.
  * @returns {Promise} promise that resolves if successful.
  */
-function createAppsJsonIfNotExists() {
-    return fileUtil.createJsonFileIfNotExists(config.getAppsJsonPath(), {});
+function createAppsJsonIfNotExists(source) {
+    return fileUtil.createJsonFileIfNotExists(config.getAppsJsonPath(source), {});
 }
 
 /**
  * Create updates.json if it does not exist.
  *
+ * @param {string} source name of external source
  * @returns {Promise} promise that resolves if successful.
  */
-function createUpdatesJsonIfNotExists() {
-    return fileUtil.createJsonFileIfNotExists(config.getUpdatesJsonPath(), {});
+function createUpdatesJsonIfNotExists(source) {
+    return fileUtil.createJsonFileIfNotExists(config.getUpdatesJsonPath(source), {});
+}
+
+/**
+ * Initialize directory structure of a source under external apps.
+ *
+ * @param {string} source name of external source.
+ * @returns {Promise} promise that resolves is successful.
+ */
+function initSourceDirectory(source) {
+    return fileUtil.mkdirIfNotExists(config.getAppsRootDir(source))
+        .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir(source)))
+        .then(() => createAppsJsonIfNotExists(source))
+        .then(() => createUpdatesJsonIfNotExists(source));
 }
 
 /**
  * Download the apps.json file containing a list of official apps. The file
  * is downloaded from the configured url and written to the apps root dir.
  *
+ * @param {string} appsJsonUrl URL of apps.json of external source
  * @returns {Promise} promise that resolves if successful.
  */
-function downloadAppsJsonFile() {
-    return net.downloadToFile(config.getAppsJsonUrl(), config.getAppsJsonPath())
+function downloadAppsJsonFile(appsJsonUrl) {
+    return net.downloadToJson(appsJsonUrl)
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you ` +
                 'are using a proxy server, you may need to configure it as described on ' +
                 'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+        })
+        .then(appsJson => {
+            const source = appsJson._source; // eslint-disable-line
+            if (!source && appsJsonUrl !== config.getAppsJsonUrl()) {
+                throw new Error('JSON does not contain expected `_source` tag');
+            }
+            return initSourceDirectory(source)
+                .then(() => fileUtil.createJsonFile(config.getAppsJsonPath(source), appsJson))
+                .then(() => source);
         });
+}
+
+/**
+ * Download the apps.json file containing a list of official apps. The file
+ * is downloaded from the configured url and written to the apps root dir.
+ *
+ * @param {string} source name of external source
+ * @returns {Promise} promise that resolves if successful.
+ */
+function downloadAppsJsonFiles() {
+    const sources = settings.getSources();
+    return Promise.all(Object.keys(sources).map(source => (
+        downloadAppsJsonFile(sources[source])
+    )));
 }
 
 /**
@@ -102,13 +153,27 @@ function getInstalledOfficialAppNames() {
  * Create the updates.json file containing the latest available versions for
  * all installed official apps. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  *
+ * @param {string} source name of external source
  * @returns {Promise} promise that resolves if successful.
  */
-function generateUpdatesJsonFile() {
-    const fileName = config.getUpdatesJsonPath();
+function generateUpdatesJsonFile(source) {
+    const fileName = config.getUpdatesJsonPath(source);
     return getInstalledOfficialAppNames()
         .then(installedApps => registryApi.getLatestPackageVersions(installedApps))
         .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
+}
+
+/**
+ * Create the updates.json file containing the latest available versions for
+ * all installed official apps. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
+ *
+ * @returns {Promise} promise that resolves if successful.
+ */
+function generateUpdatesJsonFiles() {
+    const sources = settings.getSources();
+    return Promise.all(Object.keys(sources).map(source => (
+        generateUpdatesJsonFile(source)
+    )));
 }
 
 /**
@@ -190,10 +255,13 @@ function installLocalAppArchives() {
 function initAppsDirectory() {
     return Promise.resolve()
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsRootDir()))
-        .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsLocalDir()))
-        .then(() => createAppsJsonIfNotExists())
-        .then(() => createUpdatesJsonIfNotExists())
+        .then(() => fileUtil.mkdirIfNotExists(config.getAppsExternalDir()))
+        .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
+        .then(() => createSourcesJsonIfNotExists())
+        .then(sources => Promise.all(
+            Object.keys(sources).map(source => initSourceDirectory(source)),
+        ))
         .then(() => installLocalAppArchives());
 }
 
@@ -257,6 +325,10 @@ function readAppInfo(appPath) {
                 shortcutIconPath = iconPath;
             }
 
+            const isOfficial = !appPath.startsWith(config.getAppsLocalDir());
+            const source = isOfficial
+                ? path.basename(path.dirname(path.dirname(appPath)))
+                : null;
             return {
                 name: packageJson.name,
                 displayName: packageJson.displayName,
@@ -265,9 +337,10 @@ function readAppInfo(appPath) {
                 path: appPath,
                 iconPath: fs.existsSync(iconPath) ? iconPath : null,
                 shortcutIconPath: fs.existsSync(shortcutIconPath) ? shortcutIconPath : null,
-                isOfficial: !appPath.startsWith(config.getAppsLocalDir()),
+                isOfficial,
                 engineVersion: getEngineVersion(packageJson),
                 isSupportedEngine: isSupportedEngine(config.getVersion(), packageJson),
+                source,
             };
         });
 }
@@ -277,10 +350,11 @@ function readAppInfo(appPath) {
  * we have about the installed app, such as current version, path, etc.
  *
  * @param {Object} officialApp an official app object from apps.json.
+ * @param {string} source name of external source.
  * @returns {Promise} promise that resolves with a new, decorated, app object.
  */
-function decorateWithInstalledAppInfo(officialApp) {
-    const appDir = path.join(config.getNodeModulesDir(), officialApp.name);
+function decorateWithInstalledAppInfo(officialApp, source) {
+    const appDir = path.join(config.getNodeModulesDir(source), officialApp.name);
     return readAppInfo(appDir)
         .then(installedAppInfo => Object.assign({}, installedAppInfo, officialApp));
 }
@@ -306,11 +380,12 @@ function decorateWithLatestVersion(officialApp, availableUpdates) {
  * E.g. from { name: { ... } } to [ { name, ... } ].
  *
  * @param {Object} officialAppsObj official apps object.
+ * @param {string} source name of external source.
  * @returns {Array} array of official apps.
  */
-function officialAppsObjToArray(officialAppsObj) {
+function officialAppsObjToArray(officialAppsObj, source) {
     const names = Object.keys(officialAppsObj);
-    return names.map(name => Object.assign({}, { name }, officialAppsObj[name]));
+    return names.map(name => Object.assign({}, { name, source }, officialAppsObj[name]));
 }
 
 /**
@@ -326,19 +401,21 @@ function officialAppsObjToArray(officialAppsObj) {
  * - iconPath: The path to the app's icon on the local file system.
  * - isOfficial: Always true for official apps.
  *
+ * @param {string} source name of external source.
  * @returns {Promise} promise that resolves with array of app objects.
  */
-function getOfficialApps() {
+function getOfficialAppsFromSource(source) {
     return Promise.all([
-        fileUtil.readJsonFile(config.getAppsJsonPath()),
-        fileUtil.readJsonFile(config.getUpdatesJsonPath()),
+        fileUtil.readJsonFile(config.getAppsJsonPath(source)),
+        fileUtil.readJsonFile(config.getUpdatesJsonPath(source)),
     ]).then(([officialApps, availableUpdates]) => {
-        const officialAppsArray = officialAppsObjToArray(officialApps);
+        const { _source, ...cleanedApps } = officialApps;
+        const officialAppsArray = officialAppsObjToArray(cleanedApps, source);
         const promises = officialAppsArray.map(officialApp => (
-            fs.exists(path.join(config.getNodeModulesDir(), officialApp.name))
+            fs.exists(path.join(config.getNodeModulesDir(source), officialApp.name))
                 .then(isInstalled => {
                     if (isInstalled) {
-                        return decorateWithInstalledAppInfo(officialApp)
+                        return decorateWithInstalledAppInfo(officialApp, source)
                             .then(app => decorateWithLatestVersion(app, availableUpdates));
                     }
                     return Promise.resolve(officialApp);
@@ -346,6 +423,18 @@ function getOfficialApps() {
         ));
         return Promise.all(promises);
     });
+}
+
+function getOfficialApps() {
+    const sources = settings.getSources();
+    return Promise.all(Object.keys(sources).map(source =>
+        getOfficialAppsFromSource(source),
+    )).then(arrayOfArrays =>
+        arrayOfArrays.reduce(
+            (accumulator, currentValue) => ([...accumulator, ...currentValue]),
+            [],
+        ),
+    );
 }
 
 /**
@@ -373,10 +462,11 @@ function getLocalApps() {
  * Remove official app.
  *
  * @param {string} name the app name.
+ * @param {string} [source] name of external source.
  * @returns {Promise} promise that resolves if successful.
  */
-function removeOfficialApp(name) {
-    const appPath = path.join(config.getNodeModulesDir(), name);
+function removeOfficialApp(name, source) {
+    const appPath = path.join(config.getNodeModulesDir(source), name);
     if (!appPath.includes('node_modules')) {
         return Promise.reject(new Error('Sanity check failed when trying ' +
             `to remove app directory ${appPath}. The directory does not ` +
@@ -390,17 +480,19 @@ function removeOfficialApp(name) {
  *
  * @param {string} name the app name.
  * @param {string} version the app version, e.g. '1.2.3' or 'latest'.
+ * @param {string} [source] name of external source.
+ * @param {string} [registryUrl] optional .
  * @returns {Promise} promise that resolves if successful.
  */
-function installOfficialApp(name, version) {
-    const destinationDir = config.getAppsRootDir();
-    return registryApi.downloadTarball(name, version, destinationDir)
+function installOfficialApp(name, version, source, registryUrl) {
+    const destinationDir = config.getAppsRootDir(source);
+    return registryApi.downloadTarball(name, version, destinationDir, registryUrl)
         .then(tgzFilePath => {
-            const appPath = path.join(config.getNodeModulesDir(), name);
+            const appPath = path.join(config.getNodeModulesDir(source), name);
             return fs.exists(appPath)
                 .then(isInstalled => {
                     if (isInstalled) {
-                        return removeOfficialApp(name);
+                        return removeOfficialApp(name, source);
                     }
                     return Promise.resolve();
                 })
@@ -409,12 +501,29 @@ function installOfficialApp(name, version) {
         });
 }
 
+/**
+ * Remove source directory structure
+ *
+ * @param {string} source name of source
+ * @returns {Promise} promise that resolves is successful.
+ */
+function removeSourceDirectory(source) {
+    if (!source || source === 'official') {
+        // Sanity check, this cannot happen anyway
+        return Promise.reject(new Error('The official source shall not be removed.'));
+    }
+    return fs.remove(config.getAppsRootDir(source));
+}
+
 module.exports = {
     initAppsDirectory,
+    initSourceDirectory,
     downloadAppsJsonFile,
-    generateUpdatesJsonFile,
+    downloadAppsJsonFiles,
+    generateUpdatesJsonFiles,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,
     removeOfficialApp,
+    removeSourceDirectory,
 };

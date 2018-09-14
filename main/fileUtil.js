@@ -161,6 +161,33 @@ function deleteDir(folderPath) {
 }
 
 /**
+ * Move file or directory to new path.
+ *
+ * @param {string} pathToMove the path of file or directory to move.
+ * @param {string} pathToMoveTo the path of destination directory.
+ * @returns {Promise} promise that resolves if successful.
+ */
+function moveIfExists(pathToMove, pathToMoveTo) {
+    return new Promise((resolve, reject) => {
+        const from = path.resolve(pathToMove);
+        const to = path.join(path.resolve(pathToMoveTo), path.basename(from));
+        fs.stat(from, err => {
+            if (err) {
+                resolve();
+            } else {
+                fs.rename(from, to, error => {
+                    if (error) {
+                        reject(new Error(`Unable to move ${pathToMove}: ${error.message}`));
+                    } else {
+                        resolve();
+                    }
+                });
+            }
+        });
+    });
+}
+
+/**
  * Copy files from source to destination
  *
  * @param {string} src the path to source.
@@ -320,6 +347,7 @@ module.exports = {
     listFiles,
     deleteFile,
     deleteDir,
+    moveIfExists,
     copy,
     copyFromAsar,
     chmodDir,
