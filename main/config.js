@@ -51,9 +51,6 @@ let tmpDir;
 let appsRootDir;
 let appsLocalDir;
 let appsExternalDir;
-let oldNodeModulesDir;
-let oldUpdatesJsonPath;
-let oldAppsJsonPath;
 let appsJsonUrl;
 let settingsJsonPath;
 let sourcesJsonPath;
@@ -95,9 +92,6 @@ function init(argv) {
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
     appsExternalDir = path.join(appsRootDir, 'external');
-    oldNodeModulesDir = path.join(appsRootDir, 'node_modules');
-    oldUpdatesJsonPath = path.join(appsRootDir, 'updates.json');
-    oldAppsJsonPath = path.join(appsRootDir, 'apps.json');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
@@ -133,9 +127,6 @@ module.exports = {
     getNodeModulesDir: source => path.join(getAppsRootDir(source), 'node_modules'),
     getUpdatesJsonPath: source => path.join(getAppsRootDir(source), 'updates.json'),
     getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
-    getOldNodeModulesDir: () => oldNodeModulesDir,
-    getOldUpdatesJsonPath: () => oldUpdatesJsonPath,
-    getOldAppsJsonPath: () => oldAppsJsonPath,
     getSettingsJsonPath: () => settingsJsonPath,
     getSourcesJsonPath: () => sourcesJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
