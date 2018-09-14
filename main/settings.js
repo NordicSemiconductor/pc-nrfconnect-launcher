@@ -66,7 +66,7 @@ function load() {
     }
 }
 
-function saveSettings() {
+function save() {
     fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
 }
 
@@ -91,7 +91,7 @@ function saveSources() {
 exports.set = (key, value) => {
     load();
     data[key] = value;
-    saveSettings();
+    save();
 };
 
 exports.get = key => {
@@ -120,7 +120,7 @@ exports.unset = key => {
     load();
     if (key in data) {
         delete data[key];
-        saveSettings();
+        save();
     }
 };
 
