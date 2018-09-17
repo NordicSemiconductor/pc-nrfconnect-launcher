@@ -61,6 +61,7 @@ let skipUpdateCore;
 let skipSplashScreen;
 let officialAppName;
 let localAppName;
+let sourceName;
 
 /**
  * Init the config values based on the given command line arguments.
@@ -102,6 +103,7 @@ function init(argv) {
     skipSplashScreen = argv['skip-splash-screen'] || false;
     officialAppName = argv['open-official-app'] || null;
     localAppName = argv['open-local-app'] || null;
+    sourceName = argv.source || 'official';
 }
 
 function getAppsRootDir(source = 'official') {
@@ -137,4 +139,5 @@ module.exports = {
     isSkipSplashScreen: () => skipSplashScreen,
     getOfficialAppName: () => officialAppName,
     getLocalAppName: () => localAppName,
+    getSourceName: () => sourceName,
 };
