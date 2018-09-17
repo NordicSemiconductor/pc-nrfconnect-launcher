@@ -121,15 +121,17 @@ function openAppWindow(app) {
     });
 }
 
-function openOfficialAppWindow(appName) {
+function openOfficialAppWindow(appName, sourceName) {
     return apps.getOfficialApps()
         .then(appList => {
-            const officialApp = appList.find(app => app.name === appName);
+            const officialApp = appList.find(app => (
+                app.name === appName && app.source === sourceName
+            ));
             const isInstalled = officialApp && officialApp.path;
             if (isInstalled) {
                 openAppWindow(officialApp);
             } else {
-                throw new Error(`Tried to open official app ${appName}, but it is not installed`);
+                throw new Error(`Tried to open app ${appName} from source ${sourceName}, but it is not installed`);
             }
         });
 }
