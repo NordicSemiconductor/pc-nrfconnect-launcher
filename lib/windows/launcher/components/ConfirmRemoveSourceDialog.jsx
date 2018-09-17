@@ -58,9 +58,13 @@ const ConfirmRemoveSourceDialog = ({
 
 ConfirmRemoveSourceDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+};
+
+ConfirmRemoveSourceDialog.defaultProps = {
+    source: null,
 };
 
 export default ConfirmRemoveSourceDialog;
