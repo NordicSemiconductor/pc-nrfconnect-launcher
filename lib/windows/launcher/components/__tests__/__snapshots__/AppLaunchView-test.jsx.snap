@@ -274,7 +274,6 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
       <p
         className="list-group-item-text"
       >
-        official
         , v
         1.2.3
       </p>
@@ -385,7 +384,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       <p
         className="list-group-item-text"
       >
-        official
         , v
         1.2.3
       </p>
@@ -489,7 +487,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       <p
         className="list-group-item-text"
       >
-        official
         , v
         1.2.3
       </p>
@@ -697,7 +694,6 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
       <p
         className="list-group-item-text"
       >
-        official
         , v
         1.2.3
       </p>
