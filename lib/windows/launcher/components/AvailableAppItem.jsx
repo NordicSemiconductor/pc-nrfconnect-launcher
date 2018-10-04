@@ -47,7 +47,7 @@ const AvailableAppItem = ({
 }) => (
     <div className="core-app-management-item list-group-item">
         <h4 className="list-group-item-heading">{app.displayName || app.name}
-            <span className="list-group-item-heading-sourcetag">{app.source}</span>
+            <span className="list-group-item-heading-source-tag">{app.source}</span>
         </h4>
         <div className="list-group-item-text">
             <p>{app.description}</p>
