@@ -42,7 +42,7 @@ const config = require('./config');
 let data = null;
 let sourcesData = null;
 
-function parseJSONFile(filePath) {
+function parseJsonFile(filePath) {
     if (!fs.existsSync(filePath)) {
         return {};
     }
@@ -58,7 +58,7 @@ function load() {
     if (data !== null) {
         return;
     }
-    const settings = parseJSONFile(config.getSettingsJsonPath());
+    const settings = parseJsonFile(config.getSettingsJsonPath());
     if (settings && typeof settings === 'object') {
         data = settings;
     } else {
@@ -74,7 +74,7 @@ function loadSources() {
     if (sourcesData !== null) {
         return;
     }
-    let sources = parseJSONFile(config.getSourcesJsonPath());
+    let sources = parseJsonFile(config.getSourcesJsonPath());
     if (!sources || typeof sources !== 'object') {
         sources = {};
     }
