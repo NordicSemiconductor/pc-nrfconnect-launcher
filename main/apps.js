@@ -105,7 +105,9 @@ function downloadAppsJsonFile(appsJsonUrl) {
                 'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         })
         .then(appsJson => {
-            const source = appsJson._source; // eslint-disable-line
+            // underscore is intentially used in JSON as a meta information
+            // eslint-disable-next-line no-underscore-dangle
+            const source = appsJson._source;
             if (!source && appsJsonUrl !== config.getAppsJsonUrl()) {
                 throw new Error('JSON does not contain expected `_source` tag');
             }
