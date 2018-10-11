@@ -37,6 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { shell } from 'electron';
 
 const regex = /(.*?)(https?:\/\/[^\s]+)/g;
 
@@ -58,7 +59,11 @@ function hrefReplacer(str) {
     const message = [];
     const remainder = str.replace(regex, (match, before, href, index) => {
         message.push(before);
-        message.push(<a key={index} href={href}>{href}</a>);
+        message.push(
+            <a key={index} role="link" tabIndex={index} onClick={() => shell.openItem(href)}>
+                {href}
+            </a>,
+        );
         return '';
     });
     message.push(remainder);
