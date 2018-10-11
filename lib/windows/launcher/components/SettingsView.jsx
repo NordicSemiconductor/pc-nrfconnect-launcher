@@ -36,9 +36,18 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'react-bootstrap';
+import { Checkbox, Button } from 'react-bootstrap';
 import moment from 'moment';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
+import InputLineDialog from './InputLineDialog';
+import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
+
+function cancel(event) {
+    event.preventDefault();
+    const { dataTransfer } = event;
+    dataTransfer.dropEffect = 'copy';
+    return false;
+}
 
 class SettingsView extends React.Component {
     constructor() {
@@ -60,6 +69,12 @@ class SettingsView extends React.Component {
         this.props.onTriggerUpdateCheck();
     }
 
+    onDropUrl(event) {
+        event.preventDefault();
+        const url = event.dataTransfer.getData('Text');
+        this.props.addSource(url);
+    }
+
     render() {
         const {
             isLoading,
@@ -69,9 +84,16 @@ class SettingsView extends React.Component {
             isUpdateCheckCompleteDialogVisible,
             onHideUpdateCheckCompleteDialog,
             isAppUpdateAvailable,
+            sources,
+            addSource,
+            isAddSourceDialogVisible,
+            onShowAddSourceDialog,
+            onHideAddSourceDialog,
+            onShowRemoveSourceDialog,
         } = this.props;
 
         const checkButtonText = isCheckingForUpdates ? 'Checking...' : 'Check for updates now';
+        const sourcesJS = sources.toJS();
 
         return !isLoading ? (
             <div>
@@ -89,7 +111,7 @@ class SettingsView extends React.Component {
                         >
                             Check for updates at startup
                         </Checkbox>
-                        <button
+                        <Button
                             title={checkButtonText}
                             className="btn btn-primary core-btn"
                             onClick={this.onTriggerUpdateCheckClicked}
@@ -99,17 +121,77 @@ class SettingsView extends React.Component {
                             <span className="core-btn-text">
                                 { checkButtonText }
                             </span>
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 {
                     isUpdateCheckCompleteDialogVisible &&
-                        <UpdateCheckCompleteDialog
-                            isVisible
-                            isAppUpdateAvailable={isAppUpdateAvailable}
-                            onOk={onHideUpdateCheckCompleteDialog}
-                        />
+                    <UpdateCheckCompleteDialog
+                        isVisible
+                        isAppUpdateAvailable={isAppUpdateAvailable}
+                        onOk={onHideUpdateCheckCompleteDialog}
+                    />
                 }
+                <div
+                    className="core-settings-section"
+                    onDrop={event => this.onDropUrl(event)}
+                    onDragOver={cancel}
+                    onDragEnter={cancel}
+                >
+                    <h4>Extra app sources</h4>
+                    <table className="core-settings-sources"><tbody>
+                        {
+                            Object.keys(sourcesJS)
+                            .filter(name => name !== 'official')
+                            .map(name => (
+                                <tr key={name} className="core-settings-source">
+                                    <td className="core-settings-source-name">{name}</td>
+                                    <td
+                                        className="core-settings-source-url"
+                                        title={sourcesJS[name]}
+                                    >
+                                        {sourcesJS[name]}
+                                    </td>
+                                    <td className="core-settings-source-remove">
+                                        <Button
+                                            className="btn core-btn"
+                                            bsSize="small"
+                                            onClick={() => onShowRemoveSourceDialog(name)}
+                                        >
+                                            <span className="glyphicon glyphicon-remove" />
+                                            <span className="core-btn-text">
+                                                Remove
+                                            </span>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody></table>
+                    <div className="core-settings-sources-controls">
+                        <Button
+                            className="btn btn-primary core-btn"
+                            onClick={onShowAddSourceDialog}
+                        >
+                            <span className="glyphicon glyphicon-plus" />
+                            <span className="core-btn-text">
+                                Add source
+                            </span>
+                        </Button>
+                    </div>
+                </div>
+                {
+                    isAddSourceDialogVisible &&
+                    <InputLineDialog
+                        isVisible
+                        title="Add new nRFConnect app source url"
+                        label="URL of apps.json"
+                        placeholder="URL..."
+                        onOk={url => { addSource(url); onHideAddSourceDialog(); }}
+                        onCancel={onHideAddSourceDialog}
+                    />
+                }
+                <ConfirmRemoveSourceDialog />
             </div>
         ) : <div />;
     }
@@ -126,6 +208,12 @@ SettingsView.propTypes = {
     isUpdateCheckCompleteDialogVisible: PropTypes.bool,
     onHideUpdateCheckCompleteDialog: PropTypes.func.isRequired,
     isAppUpdateAvailable: PropTypes.bool,
+    sources: PropTypes.shape({}).isRequired,
+    addSource: PropTypes.func.isRequired,
+    onShowRemoveSourceDialog: PropTypes.func.isRequired,
+    isAddSourceDialogVisible: PropTypes.bool,
+    onShowAddSourceDialog: PropTypes.func.isRequired,
+    onHideAddSourceDialog: PropTypes.func.isRequired,
 };
 
 SettingsView.defaultProps = {
@@ -133,6 +221,7 @@ SettingsView.defaultProps = {
     lastUpdateCheckDate: null,
     isUpdateCheckCompleteDialogVisible: false,
     isAppUpdateAvailable: false,
+    isAddSourceDialogVisible: false,
 };
 
 export default SettingsView;

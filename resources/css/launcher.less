@@ -97,6 +97,14 @@ html, body, #webapp {
 .core-app-management-item {
     width: 100%;
 
+    .list-group-item-heading-source-tag:before { content: "[" }
+    .list-group-item-heading-source-tag:after { content: "]" }
+    .list-group-item-heading-source-tag {
+        font-style: italic;
+        font-size: smaller;
+        padding: 4px 10px;
+    }
+
     .core-app-management-item-footer {
         display: flex;
         width: 100%;
@@ -159,11 +167,38 @@ html, body, #webapp {
     border: 1px solid lightgray;
     background-color: white;
     border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 .core-settings-update-check-controls {
     display: flex;
     justify-content: space-between;
+}
+.core-settings-sources-controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+table.core-settings-sources {
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.core-settings-source {
+    .core-settings-source-name {
+        width: 20%;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+    .core-settings-source-url {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .core-settings-source-remove {
+        width: 90px;
+    }
 }
 
 .core-dropdown .dropdown-menu {

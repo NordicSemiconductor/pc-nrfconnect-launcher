@@ -191,10 +191,12 @@ describe('AppManagementView', () => {
         )).toMatchSnapshot();
     });
 
-    it('should invoke onInstall with app name when install button is clicked', () => {
+    it('should invoke onInstall with app name, source and url when install button is clicked', () => {
         const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
             description: 'Foobar description',
+            source: 'beta',
+            url: 'https://foo.bar/dists/beta',
         });
         const onInstall = jest.fn();
         const wrapper = mount(
@@ -211,15 +213,16 @@ describe('AppManagementView', () => {
         );
         wrapper.find('button[title="Install pc-nrfconnect-foobar"]').first().simulate('click');
 
-        expect(onInstall).toHaveBeenCalledWith(app.name);
+        expect(onInstall).toHaveBeenCalledWith(app.name, app.source, app.url);
     });
 
-    it('should invoke onRemove with app name when remove button is clicked', () => {
+    it('should invoke onRemove with app name and source when remove button is clicked', () => {
         const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
             description: 'Foobar description',
             currentVersion: '1.2.3',
             latestVersion: '1.2.3',
+            source: 'beta',
         });
         const onRemove = jest.fn();
         const wrapper = mount(
@@ -236,7 +239,7 @@ describe('AppManagementView', () => {
         );
         wrapper.find('button[title="Remove pc-nrfconnect-foobar"]').first().simulate('click');
 
-        expect(onRemove).toHaveBeenCalledWith(app.name);
+        expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
     });
 
     it('should invoke onUpgrade with app name and latest version when upgrade button is clicked', () => {
@@ -245,6 +248,8 @@ describe('AppManagementView', () => {
             description: 'Foobar description',
             currentVersion: '1.2.3',
             latestVersion: '1.2.4',
+            source: 'beta',
+            url: 'https://foo.bar/dists/beta',
         });
         const onUpgrade = jest.fn();
         const wrapper = mount(
@@ -261,7 +266,7 @@ describe('AppManagementView', () => {
         );
         wrapper.find('button[title="Upgrade pc-nrfconnect-foobar from v1.2.3 to v1.2.4"]').first().simulate('click');
 
-        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion);
+        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source, app.url);
     });
 
     it('should invoke onDownloadLatestAppInfo when mounted and latest app info is not downloaded', () => {

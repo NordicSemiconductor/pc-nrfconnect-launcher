@@ -40,9 +40,9 @@ const fs = require('fs');
 const config = require('./config');
 
 let data = null;
+let sourcesData = null;
 
-function parseSettingsFile() {
-    const filePath = config.getSettingsJsonPath();
+function parseJsonFile(filePath) {
     if (!fs.existsSync(filePath)) {
         return {};
     }
@@ -58,7 +58,7 @@ function load() {
     if (data !== null) {
         return;
     }
-    const settings = parseSettingsFile();
+    const settings = parseJsonFile(config.getSettingsJsonPath());
     if (settings && typeof settings === 'object') {
         data = settings;
     } else {
@@ -68,6 +68,24 @@ function load() {
 
 function save() {
     fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
+}
+
+function loadSources() {
+    if (sourcesData !== null) {
+        return;
+    }
+    let sources = parseJsonFile(config.getSourcesJsonPath());
+    if (!sources || typeof sources !== 'object') {
+        sources = {};
+    }
+    sourcesData = {
+        ...sources,
+        official: config.getAppsJsonUrl(),
+    };
+}
+
+function saveSources() {
+    fs.writeFileSync(config.getSourcesJsonPath(), JSON.stringify(sourcesData));
 }
 
 exports.set = (key, value) => {
@@ -85,6 +103,17 @@ exports.get = key => {
     }
 
     return value;
+};
+
+exports.setSources = sources => {
+    loadSources();
+    sourcesData = sources;
+    saveSources();
+};
+
+exports.getSources = () => {
+    loadSources();
+    return sourcesData;
 };
 
 exports.unset = key => {
