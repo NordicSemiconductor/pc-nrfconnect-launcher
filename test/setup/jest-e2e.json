@@ -1,4 +1,5 @@
 {
   "roots": [".."],
-  "testRegex": ".*-test\\.js$"
+  "testRegex": ".*-test\\.js$",
+  "testURL": "file:/"
 }
