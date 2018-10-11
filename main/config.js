@@ -50,11 +50,10 @@ let desktopDir;
 let tmpDir;
 let appsRootDir;
 let appsLocalDir;
-let nodeModulesDir;
-let updatesJsonPath;
-let appsJsonPath;
+let appsExternalDir;
 let appsJsonUrl;
 let settingsJsonPath;
+let sourcesJsonPath;
 let registryUrl;
 let releaseNotesUrl;
 let skipUpdateApps;
@@ -62,6 +61,7 @@ let skipUpdateCore;
 let skipSplashScreen;
 let officialAppName;
 let localAppName;
+let sourceName;
 
 /**
  * Init the config values based on the given command line arguments.
@@ -92,10 +92,9 @@ function init(argv) {
     tmpDir = electronApp.getPath('temp');
     appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
-    nodeModulesDir = path.join(appsRootDir, 'node_modules');
-    updatesJsonPath = path.join(appsRootDir, 'updates.json');
-    appsJsonPath = path.join(appsRootDir, 'apps.json');
+    appsExternalDir = path.join(appsRootDir, 'external');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
+    sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
     registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
     releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
@@ -104,6 +103,14 @@ function init(argv) {
     skipSplashScreen = argv['skip-splash-screen'] || false;
     officialAppName = argv['open-official-app'] || null;
     localAppName = argv['open-local-app'] || null;
+    sourceName = argv.source || 'official';
+}
+
+function getAppsRootDir(source = 'official') {
+    if (source === 'official') {
+        return appsRootDir;
+    }
+    return path.join(appsExternalDir, source);
 }
 
 module.exports = {
@@ -116,12 +123,14 @@ module.exports = {
     getUserDataDir: () => userDataDir,
     getDesktopDir: () => desktopDir,
     getTmpDir: () => tmpDir,
-    getAppsRootDir: () => appsRootDir,
+    getAppsRootDir,
     getAppsLocalDir: () => appsLocalDir,
-    getNodeModulesDir: () => nodeModulesDir,
-    getUpdatesJsonPath: () => updatesJsonPath,
-    getAppsJsonPath: () => appsJsonPath,
+    getAppsExternalDir: () => appsExternalDir,
+    getNodeModulesDir: source => path.join(getAppsRootDir(source), 'node_modules'),
+    getUpdatesJsonPath: source => path.join(getAppsRootDir(source), 'updates.json'),
+    getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
     getSettingsJsonPath: () => settingsJsonPath,
+    getSourcesJsonPath: () => sourcesJsonPath,
     getAppsJsonUrl: () => appsJsonUrl,
     getRegistryUrl: () => registryUrl,
     getReleaseNotesUrl: () => releaseNotesUrl,
@@ -130,5 +139,5 @@ module.exports = {
     isSkipSplashScreen: () => skipSplashScreen,
     getOfficialAppName: () => officialAppName,
     getLocalAppName: () => localAppName,
-
+    getSourceName: () => sourceName,
 };

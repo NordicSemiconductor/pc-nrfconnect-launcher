@@ -47,8 +47,11 @@ jest.mock('react-bootstrap', () => ({
     Checkbox: 'Checkbox',
 }));
 
+jest.mock('../../containers/ConfirmRemoveSourceDialog', () => 'ConfirmRemoveSourceDialog');
+
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { Map } from 'immutable';
 import SettingsView from '../SettingsView';
 
 describe('SettingsView', () => {
@@ -61,6 +64,11 @@ describe('SettingsView', () => {
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
                 onHideUpdateCheckCompleteDialog={() => {}}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -74,6 +82,11 @@ describe('SettingsView', () => {
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
                 onHideUpdateCheckCompleteDialog={() => {}}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -87,6 +100,11 @@ describe('SettingsView', () => {
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
                 onHideUpdateCheckCompleteDialog={() => {}}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -100,6 +118,11 @@ describe('SettingsView', () => {
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
                 onHideUpdateCheckCompleteDialog={() => {}}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -114,6 +137,11 @@ describe('SettingsView', () => {
                 onTriggerUpdateCheck={() => {}}
                 onCheckUpdatesAtStartupChanged={() => {}}
                 onHideUpdateCheckCompleteDialog={() => {}}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -130,6 +158,11 @@ describe('SettingsView', () => {
                 onHideUpdateCheckCompleteDialog={() => {}}
                 isUpdateCheckCompleteDialogVisible
                 isAppUpdateAvailable
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -146,6 +179,11 @@ describe('SettingsView', () => {
                 onHideUpdateCheckCompleteDialog={() => {}}
                 isUpdateCheckCompleteDialogVisible
                 isAppUpdateAvailable={false}
+                sources={Map({})}
+                addSource={() => {}}
+                onShowRemoveSourceDialog={() => {}}
+                onShowAddSourceDialog={() => {}}
+                onHideAddSourceDialog={() => {}}
             />,
         )).toMatchSnapshot();
     });

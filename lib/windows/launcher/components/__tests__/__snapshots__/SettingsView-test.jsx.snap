@@ -21,7 +21,7 @@ exports[`SettingsView should render check for updates completed, with everything
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
@@ -35,7 +35,7 @@ exports[`SettingsView should render check for updates completed, with everything
         >
           Check for updates now
         </span>
-      </button>
+      </Button>
     </div>
   </div>
   <Modal
@@ -67,6 +67,39 @@ exports[`SettingsView should render check for updates completed, with everything
       </Button>
     </ModalFooter>
   </Modal>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;
 
@@ -91,7 +124,7 @@ exports[`SettingsView should render check for updates completed, with updates av
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
@@ -105,7 +138,7 @@ exports[`SettingsView should render check for updates completed, with updates av
         >
           Check for updates now
         </span>
-      </button>
+      </Button>
     </div>
   </div>
   <Modal
@@ -137,6 +170,39 @@ exports[`SettingsView should render check for updates completed, with updates av
       </Button>
     </ModalFooter>
   </Modal>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;
 
@@ -159,7 +225,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={true}
         onClick={[Function]}
@@ -173,9 +239,42 @@ exports[`SettingsView should render when checking for updates 1`] = `
         >
           Checking...
         </span>
-      </button>
+      </Button>
     </div>
   </div>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;
 
@@ -196,7 +295,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
@@ -210,9 +309,42 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
         >
           Check for updates now
         </span>
-      </button>
+      </Button>
     </div>
   </div>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;
 
@@ -233,7 +365,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
@@ -247,9 +379,42 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
         >
           Check for updates now
         </span>
-      </button>
+      </Button>
     </div>
   </div>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;
 
@@ -274,7 +439,7 @@ exports[`SettingsView should render with last update check date 1`] = `
       >
         Check for updates at startup
       </Checkbox>
-      <button
+      <Button
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
@@ -288,8 +453,41 @@ exports[`SettingsView should render with last update check date 1`] = `
         >
           Check for updates now
         </span>
-      </button>
+      </Button>
     </div>
   </div>
+  <div
+    className="core-settings-section"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <h4>
+      Extra app sources
+    </h4>
+    <table
+      className="core-settings-sources"
+    >
+      <tbody />
+    </table>
+    <div
+      className="core-settings-sources-controls"
+    >
+      <Button
+        className="btn btn-primary core-btn"
+        onClick={[Function]}
+      >
+        <span
+          className="glyphicon glyphicon-plus"
+        />
+        <span
+          className="core-btn-text"
+        >
+          Add source
+        </span>
+      </Button>
+    </div>
+  </div>
+  <ConfirmRemoveSourceDialog />
 </div>
 `;

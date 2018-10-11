@@ -9,6 +9,9 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
       className="list-group-item-heading"
     >
       Foo app
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"
@@ -59,6 +62,9 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
       className="list-group-item-heading"
     >
       Foo app
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"
@@ -115,6 +121,9 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
       className="list-group-item-heading"
     >
       Foo app
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"
@@ -185,6 +194,9 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
       className="list-group-item-heading"
     >
       App A
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"
@@ -250,6 +262,9 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
       className="list-group-item-heading"
     >
       App B
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"
@@ -295,6 +310,9 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
       className="list-group-item-heading"
     >
       App C
+      <span
+        className="list-group-item-heading-source-tag"
+      />
     </h4>
     <div
       className="list-group-item-text"

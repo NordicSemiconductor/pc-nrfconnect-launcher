@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,44 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const ImmutableApp = Record({
-    name: null,
-    displayName: null,
-    description: null,
-    homepage: null,
-    currentVersion: null,
-    latestVersion: null,
-    engineVersion: null,
-    path: null,
-    iconPath: null,
-    shortcutIconPath: null,
-    isOfficial: null,
-    isSupportedEngine: null,
-    source: null,
-    url: null,
-});
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
-function getImmutableApp(app) {
-    return new ImmutableApp({
-        name: app.name,
-        displayName: app.displayName,
-        description: app.description,
-        homepage: app.homepage,
-        currentVersion: app.currentVersion,
-        latestVersion: app.latestVersion,
-        engineVersion: app.engineVersion,
-        path: app.path,
-        iconPath: app.iconPath,
-        shortcutIconPath: app.shortcutIconPath,
-        isOfficial: app.isOfficial,
-        isSupportedEngine: app.isSupportedEngine,
-        source: app.source,
-        url: app.url,
-    });
-}
+const ConfirmRemoveSourceDialog = ({
+    isVisible,
+    source,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Remove app source"
+        text={`Are you sure to remove "${source}" source along with any apps installed from it?`}
+        okButtonText="Yes, remove"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(source)}
+        onCancel={onCancel}
+    />
+);
 
-export default {
-    getImmutableApp,
+ConfirmRemoveSourceDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    source: PropTypes.string,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
 };
+
+ConfirmRemoveSourceDialog.defaultProps = {
+    source: null,
+};
+
+export default ConfirmRemoveSourceDialog;

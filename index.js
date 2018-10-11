@@ -61,7 +61,9 @@ electronApp.on('ready', () => {
     apps.initAppsDirectory()
         .then(() => {
             if (config.getOfficialAppName()) {
-                return windows.openOfficialAppWindow(config.getOfficialAppName());
+                return windows.openOfficialAppWindow(
+                    config.getOfficialAppName(), config.getSourceName(),
+                );
             } else if (config.getLocalAppName()) {
                 return windows.openLocalAppWindow(config.getLocalAppName());
             }

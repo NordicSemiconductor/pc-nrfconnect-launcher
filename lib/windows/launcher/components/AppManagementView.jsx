@@ -95,21 +95,23 @@ class AppManagementView extends React.Component {
                     getSortedApps(apps).map(app => (
                         app.currentVersion ?
                             <InstalledAppItem
-                                key={app.name}
+                                key={`${app.name}-${app.source}`}
                                 app={app}
                                 isDisabled={isProcessing}
                                 isUpgrading={upgradingAppName === app.name}
                                 isRemoving={removingAppName === app.name}
-                                onRemove={() => onRemove(app.name)}
-                                onUpgrade={() => onUpgrade(app.name, app.latestVersion)}
+                                onRemove={() => onRemove(app.name, app.source)}
+                                onUpgrade={() => onUpgrade(
+                                    app.name, app.latestVersion, app.source, app.url,
+                                )}
                                 onReadMore={() => onReadMore(app.homepage)}
                             /> :
                             <AvailableAppItem
-                                key={app.name}
+                                key={`${app.name}-${app.source}`}
                                 app={app}
                                 isDisabled={isProcessing}
                                 isInstalling={installingAppName === app.name}
-                                onInstall={() => onInstall(app.name)}
+                                onInstall={() => onInstall(app.name, app.source, app.url)}
                                 onReadMore={() => onReadMore(app.homepage)}
                             />
                     ))

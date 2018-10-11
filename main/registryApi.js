@@ -41,8 +41,8 @@ const shasum = require('shasum');
 const config = require('./config');
 const net = require('./net');
 
-function getPackageUrl(name) {
-    const registryUrl = config.getRegistryUrl();
+function getPackageUrl(name, regUrl) {
+    const registryUrl = regUrl || config.getRegistryUrl();
     return url.resolve(registryUrl, name);
 }
 
@@ -50,8 +50,8 @@ function getLatestFromPackageInfo(packageInfo) {
     return packageInfo['dist-tags'].latest;
 }
 
-function getPackageInfo(name) {
-    return net.downloadToJson(getPackageUrl(name));
+function getPackageInfo(name, regUrl) {
+    return net.downloadToJson(getPackageUrl(name, regUrl));
 }
 
 /**
@@ -64,8 +64,8 @@ function getPackageInfo(name) {
  * @param {string} version either a semver version or 'latest'.
  * @returns {Promise} promise that resolves with the dist object.
  */
-function getDistInfo(name, version) {
-    return getPackageInfo(name)
+function getDistInfo(name, version, regUrl) {
+    return getPackageInfo(name, regUrl)
         .then(packageInfo => {
             let versionToInstall;
             if (version === 'latest') {
@@ -105,8 +105,8 @@ function verifyShasum(filePath, expectedShasum) {
  * @param {string} destinationDir full path to the destination directory.
  * @returns {Promise} promise that resolves with path to the downloaded file.
  */
-function downloadTarball(name, version, destinationDir) {
-    return getDistInfo(name, version)
+function downloadTarball(name, version, destinationDir, regUrl) {
+    return getDistInfo(name, version, regUrl)
         .then(distInfo => {
             if (!distInfo.tarball) {
                 return Promise.reject(`No tarball found for ${name}@${version}`);
