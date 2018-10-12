@@ -53,7 +53,9 @@ exports[`LogViewer should render log entries 1`] = `
       >
         For reference see: 
         <a
-          href="https://github.com/example/doc.md"
+          onClick={[Function]}
+          role="link"
+          tabIndex={0}
         >
           https://github.com/example/doc.md
         </a>
