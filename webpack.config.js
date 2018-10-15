@@ -11,7 +11,7 @@ function createExternals() {
         'pc-ble-driver-js',
         'pc-nrfjprog-js',
         'serialport',
-        'usb',
+        'nrf-usb',
         'nrf-device-setup',
     ];
     return libs.reduce((prev, lib) => (
