@@ -89,7 +89,7 @@ describe('one official app installed', () => {
             .click('button[title*="Add/remove apps"]')
             .waitForVisible('.core-app-management-item')
             .getText('h4')
-            .then(text => expect(text).toEqual('Test App'))
+            .then(text => expect(text).toEqual('Test Appofficial'))
     ));
 
     it('should show remove button for Test App in app management list', () => (

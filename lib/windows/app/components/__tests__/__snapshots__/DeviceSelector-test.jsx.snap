@@ -40,11 +40,14 @@ exports[`DeviceSelector should render one device with serialport, usb, and jlink
     id="device-selector-list"
   >
     <MenuItem
-      className="core-device-selector-item btn-primary"
+      className="core-device-selector-item btn-primary serialport nordicUsb jlink"
       onSelect={[Function]}
     >
       <div>
         123456789
+        <span>
+          PCA42424
+        </span>
       </div>
       <ul
         className="core-device-selector-item-details"
@@ -54,13 +57,14 @@ exports[`DeviceSelector should render one device with serialport, usb, and jlink
           /dev/ttyACM0
         </li>
         <li>
+          Serial port: 
+          /dev/ttyACM1
+        </li>
+        <li>
           USB: 
           Nordic Semiconductor
            
           nRF52 USB
-        </li>
-        <li>
-          Debug probe
         </li>
       </ul>
     </MenuItem>
