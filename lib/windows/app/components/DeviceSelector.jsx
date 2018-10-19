@@ -45,6 +45,19 @@ import Dropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
+    /**
+     * Returns an array of JSX that corresponds to the list of serialports
+     * of a device definition from nrf-device-lister
+     *
+     * @param {Object} device The device to render as a menu item.
+     * @returns {*} Array of 'serialport: ...' JSX item
+     */
+    static mapSerialPortsToListItems(device) {
+        return Object.keys(device)
+            .filter(key => key.startsWith('serialport'))
+            .map(key => <li key={device[key].comName}>Serial port: {device[key].comName}</li>);
+    }
+
     componentDidMount() {
         this.props.onMount();
     }
@@ -92,21 +105,22 @@ export default class DeviceSelector extends React.Component {
             menuItemDetailsCssClass,
         } = this.props;
 
+        const menuItemCssClassWithTraits = [menuItemCssClass, ...device.traits].join(' ');
         return (
             <MenuItem
                 key={device.serialNumber}
-                className={menuItemCssClass}
+                className={menuItemCssClassWithTraits}
                 onSelect={() => onSelect(device)}
             >
-                <div>{ device.serialNumber }</div>
+                <div>
+                    { device.serialNumber }
+                    <span>{ device.boardVersion }</span>
+                </div>
                 <ul className={menuItemDetailsCssClass}>
-                    { device.serialport ?
-                        (<li>Serial port: {device.serialport.comName}</li>)
-                        : null }
+                    { DeviceSelector.mapSerialPortsToListItems(device) }
                     { device.usb ?
                         (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
                         : null }
-                    { device.traits.includes('jlink') ? (<li>Debug probe</li>) : null }
                 </ul>
             </MenuItem>
         );
@@ -190,4 +204,3 @@ DeviceSelector.defaultProps = {
     onMount: () => {},
     onUnmount: () => {},
 };
-
