@@ -73,10 +73,14 @@ describe('DeviceSelector', () => {
                         serialport: {
                             comName: '/dev/ttyACM0',
                         },
+                        'serialport.1': {
+                            comName: '/dev/ttyACM1',
+                        },
                         usb: {
                             manufacturer: 'Nordic Semiconductor',
                             product: 'nRF52 USB',
                         },
+                        boardVersion: 'PCA42424',
                         traits: ['serialport', 'nordicUsb', 'jlink'],
                     },
                 ]}
