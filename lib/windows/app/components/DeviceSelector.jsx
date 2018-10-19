@@ -105,10 +105,11 @@ export default class DeviceSelector extends React.Component {
             menuItemDetailsCssClass,
         } = this.props;
 
+        const menuItemCssClassWithTraits = [menuItemCssClass, ...device.traits].join(' ');
         return (
             <MenuItem
                 key={device.serialNumber}
-                className={menuItemCssClass}
+                className={menuItemCssClassWithTraits}
                 onSelect={() => onSelect(device)}
             >
                 <div>
@@ -120,7 +121,6 @@ export default class DeviceSelector extends React.Component {
                     { device.usb ?
                         (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
                         : null }
-                    { device.traits.includes('jlink') ? (<li>Debug probe</li>) : null }
                 </ul>
             </MenuItem>
         );
