@@ -45,6 +45,9 @@ exports[`DeviceSelector should render one device with serialport, usb, and jlink
     >
       <div>
         123456789
+        <span>
+          PCA42424
+        </span>
       </div>
       <ul
         className="core-device-selector-item-details"
@@ -52,6 +55,10 @@ exports[`DeviceSelector should render one device with serialport, usb, and jlink
         <li>
           Serial port: 
           /dev/ttyACM0
+        </li>
+        <li>
+          Serial port: 
+          /dev/ttyACM1
         </li>
         <li>
           USB: 
