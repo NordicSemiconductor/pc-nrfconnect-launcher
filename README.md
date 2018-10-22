@@ -63,7 +63,12 @@ In order to access Nordic USB devices with correct permissions *udev* rules need
 
 # Contributing
 
-Feel free to file code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues) and/or submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
+Feel free to submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
+
+# Reporting bugs
+
+If you find any bugs, or have questions or other feedback, please submit this via a post on the [Nordic DevZone Questions](http://devzone.nordicsemi.no) portal.
+Bug reports should include sufficient details about the necessary steps to reproduce the bug.
 
 # Building from source
 
@@ -184,8 +189,3 @@ nRF Connect builds on top of other sub components that live in their own GitHub 
 # License
 
 See the [license file](LICENSE) for details.
-
-# Feedback
-
-* Ask questions on [DevZone Questions](https://devzone.nordicsemi.com)
-* File code related issues on [GitHub Issues](https://github.com/NordicSemiconductor/pc-nrfconnect-core/issues)
