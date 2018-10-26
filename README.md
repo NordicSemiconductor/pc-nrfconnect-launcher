@@ -67,8 +67,8 @@ Feel free to submit a pull request. In order to accept your pull request, we nee
 
 # Reporting bugs
 
-If you find any bugs, or have questions or other feedback, please submit this via a post on the [Nordic DevZone Questions](http://devzone.nordicsemi.no) portal.
-Bug reports should include sufficient details about the necessary steps to reproduce the bug.
+If you find any bugs, or have questions or other feedback in general, please submit a post on the [Nordic DevZone](http://devzone.nordicsemi.no) portal.
+Note that bug reports should describe in sufficient detail how to reproduce the bug.
 
 # Building from source
 
