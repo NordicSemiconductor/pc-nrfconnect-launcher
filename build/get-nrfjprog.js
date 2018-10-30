@@ -56,18 +56,18 @@ const DOWNLOAD_DIR = path.join(__dirname, 'nrfjprog');
 const PLATFORM_CONFIG = {
     win32_ia32: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58850/51/33271593/53210',
+        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58850/52/77745893/53210',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-ia32.exe'),
         instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
     },
     win32_x64: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/70507/2/82059498/150713',
+        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/70507/3/95086808/150713',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-x64.exe'),
         instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
     },
     linux_x64: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58852/30/91363763/94917',
+        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58852/31/53761525/94917',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux-x64.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
@@ -77,7 +77,7 @@ const PLATFORM_CONFIG = {
         },
     },
     darwin: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58855/22/48944001/99977',
+        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58855/23/14740058/99977',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-darwin.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
