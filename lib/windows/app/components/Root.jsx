@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavBar from './NavBar';
 import SidePanelContainer from '../containers/SidePanelContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
@@ -47,7 +48,7 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
-function onMouseDownHorizontal(event) {
+function onMouseDownHorizontal(event, resizeLogContainer) {
     event.preventDefault();
     const splitter = document.querySelector('.core-splitter.horizontal');
     const targetNode = document.querySelector('.core-infinite-log');
@@ -64,6 +65,7 @@ function onMouseDownHorizontal(event) {
         document.onmousemove = originalMouseMove;
         document.onmouseup = originalMouseUp;
         splitter.draggable = false;
+        resizeLogContainer(targetNode.offsetHeight);
     };
 }
 
@@ -87,7 +89,7 @@ function onMouseDownVertical(event) {
     };
 }
 
-const Root = () => (
+const Root = ({ resizeLogContainer }) => (
     <div className="core-main-area">
         <DecoratedNavBar />
         <div className="core-main-layout">
@@ -97,7 +99,7 @@ const Root = () => (
                     tabIndex={-1}
                     role="button"
                     className="core-splitter horizontal"
-                    onMouseDown={onMouseDownHorizontal}
+                    onMouseDown={event => onMouseDownHorizontal(event, resizeLogContainer)}
                 />
                 <LogViewerContainer />
                 <div
@@ -115,5 +117,9 @@ const Root = () => (
         <ErrorDialogContainer />
     </div>
 );
+
+Root.propTypes = {
+    resizeLogContainer: PropTypes.func.isRequired,
+};
 
 export default Root;
