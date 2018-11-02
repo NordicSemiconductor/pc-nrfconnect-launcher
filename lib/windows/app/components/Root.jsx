@@ -47,13 +47,65 @@ import { decorate } from '../../../util/apps';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
+function onMouseDownHorizontal(event) {
+    event.preventDefault();
+    const splitter = document.querySelector('.core-splitter.horizontal');
+    const targetNode = document.querySelector('.core-infinite-log');
+    const initial = targetNode.offsetHeight + event.clientY;
+    const originalMouseMove = document.onmousemove;
+    const originalMouseUp = document.onmouseup;
+    splitter.draggable = true;
+    document.onmousemove = e => {
+        e.preventDefault();
+        targetNode.style.height = `${initial - e.clientY}px`;
+    };
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+        splitter.draggable = false;
+    };
+}
+
+function onMouseDownVertical(event) {
+    event.preventDefault();
+    const splitter = document.querySelector('.core-splitter.vertical');
+    const targetNode = splitter.parentNode.nextSibling;
+    const initial = targetNode.offsetWidth + event.clientX;
+    const originalMouseMove = document.onmousemove;
+    const originalMouseUp = document.onmouseup;
+    splitter.draggable = true;
+    document.onmousemove = e => {
+        e.preventDefault();
+        targetNode.style.flexBasis = `${initial - e.clientX}px`;
+    };
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+        splitter.draggable = false;
+    };
+}
+
 const Root = () => (
     <div className="core-main-area">
         <DecoratedNavBar />
         <div className="core-main-layout">
             <div>
                 <MainViewContainer />
+                <div
+                    tabIndex={-1}
+                    role="button"
+                    className="core-splitter horizontal"
+                    onMouseDown={onMouseDownHorizontal}
+                />
                 <LogViewerContainer />
+                <div
+                    tabIndex={-1}
+                    role="button"
+                    className="core-splitter vertical"
+                    onMouseDown={onMouseDownVertical}
+                />
             </div>
             <SidePanelContainer />
         </div>
