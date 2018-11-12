@@ -132,14 +132,15 @@ function downloadAppsJsonFiles() {
 }
 
 /**
- * Get the names of all official apps that are installed.
+ * Get the names of all apps that are installed for a specific source.
  *
+ * @param {string} source name of external source
  * @returns {Promise} promise that resolves with app names.
  */
-function getInstalledOfficialAppNames() {
-    return fileUtil.readJsonFile(config.getAppsJsonPath())
+function getInstalledAppNames(source) {
+    return fileUtil.readJsonFile(config.getAppsJsonPath(source))
         .then(apps => {
-            const installedPackages = fileUtil.listDirectories(config.getNodeModulesDir());
+            const installedPackages = fileUtil.listDirectories(config.getNodeModulesDir(source));
             const availableApps = Object.keys(apps);
             const installedApps = [];
             availableApps.forEach(availableApp => {
@@ -160,7 +161,7 @@ function getInstalledOfficialAppNames() {
  */
 function generateUpdatesJsonFile(source) {
     const fileName = config.getUpdatesJsonPath(source);
-    return getInstalledOfficialAppNames()
+    return getInstalledAppNames(source)
         .then(installedApps => registryApi.getLatestPackageVersions(installedApps))
         .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
 }
