@@ -102,7 +102,7 @@ class AppManagementView extends React.Component {
                                 isRemoving={removingAppName === app.name}
                                 onRemove={() => onRemove(app.name, app.source)}
                                 onUpgrade={() => onUpgrade(
-                                    app.name, app.latestVersion, app.source, app.url,
+                                    app.name, app.latestVersion, app.source,
                                 )}
                                 onReadMore={() => onReadMore(app.homepage)}
                             /> :
@@ -111,7 +111,7 @@ class AppManagementView extends React.Component {
                                 app={app}
                                 isDisabled={isProcessing}
                                 isInstalling={installingAppName === app.name}
-                                onInstall={() => onInstall(app.name, app.source, app.url)}
+                                onInstall={() => onInstall(app.name, app.source)}
                                 onReadMore={() => onReadMore(app.homepage)}
                             />
                     ))
