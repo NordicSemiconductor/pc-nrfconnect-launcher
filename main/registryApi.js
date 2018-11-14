@@ -39,11 +39,19 @@ const url = require('url');
 const path = require('path');
 const shasum = require('shasum');
 const config = require('./config');
+const settings = require('./settings');
 const net = require('./net');
 
 function getPackageUrl(name, regUrl) {
-    const registryUrl = regUrl || config.getRegistryUrl();
-    return url.resolve(registryUrl, name);
+    return url.resolve(regUrl, name);
+}
+
+function getRegistryUrl(source) {
+    if (source === 'official') {
+        return config.getRegistryUrl();
+    }
+    const sources = settings.getSources();
+    return url.resolve(sources[source], '.');
 }
 
 function getLatestFromPackageInfo(packageInfo) {
@@ -62,6 +70,7 @@ function getPackageInfo(name, regUrl) {
  *
  * @param {string} name the package name.
  * @param {string} version either a semver version or 'latest'.
+ * @param {string} regUrl the url of the registry to get the package from
  * @returns {Promise} promise that resolves with the dist object.
  */
 function getDistInfo(name, version, regUrl) {
@@ -103,9 +112,11 @@ function verifyShasum(filePath, expectedShasum) {
  * @param {string} name the package name.
  * @param {string} version either a semver version or 'latest'.
  * @param {string} destinationDir full path to the destination directory.
+ * @param {string} source the registry source to get the package from
  * @returns {Promise} promise that resolves with path to the downloaded file.
  */
-function downloadTarball(name, version, destinationDir, regUrl) {
+function downloadTarball(name, version, destinationDir, source) {
+    const regUrl = getRegistryUrl(source);
     return getDistInfo(name, version, regUrl)
         .then(distInfo => {
             if (!distInfo.tarball) {
@@ -121,8 +132,8 @@ function downloadTarball(name, version, destinationDir, regUrl) {
         });
 }
 
-function getLatestPackageVersion(name) {
-    return getPackageInfo(name)
+function getLatestPackageVersion(name, regUrl) {
+    return getPackageInfo(name, regUrl)
         .then(packageInfo => getLatestFromPackageInfo(packageInfo));
 }
 
@@ -132,11 +143,12 @@ function getLatestPackageVersion(name) {
  * as values. E.g: { foo: "1.2.3", bar: "2.3.4" }.
  *
  * @param {string[]} names the package names to get latest versions for.
+ * @param {string} source the registry source to get the package from
  * @returns {Promise} promise that resolves with path to the downloaded file.
  */
-function getLatestPackageVersions(names) {
+function getLatestPackageVersions(names, source) {
     const promises = names.map(name => (
-        getLatestPackageVersion(name)
+        getLatestPackageVersion(name, getRegistryUrl(source))
             .then(latestVersion => ({
                 [name]: latestVersion,
             }))
