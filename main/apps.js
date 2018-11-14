@@ -132,14 +132,15 @@ function downloadAppsJsonFiles() {
 }
 
 /**
- * Get the names of all official apps that are installed.
+ * Get the names of all apps that are installed for a specific source.
  *
+ * @param {string} source name of external source
  * @returns {Promise} promise that resolves with app names.
  */
-function getInstalledOfficialAppNames() {
-    return fileUtil.readJsonFile(config.getAppsJsonPath())
+function getInstalledAppNames(source) {
+    return fileUtil.readJsonFile(config.getAppsJsonPath(source))
         .then(apps => {
-            const installedPackages = fileUtil.listDirectories(config.getNodeModulesDir());
+            const installedPackages = fileUtil.listDirectories(config.getNodeModulesDir(source));
             const availableApps = Object.keys(apps);
             const installedApps = [];
             availableApps.forEach(availableApp => {
@@ -160,8 +161,8 @@ function getInstalledOfficialAppNames() {
  */
 function generateUpdatesJsonFile(source) {
     const fileName = config.getUpdatesJsonPath(source);
-    return getInstalledOfficialAppNames()
-        .then(installedApps => registryApi.getLatestPackageVersions(installedApps))
+    return getInstalledAppNames(source)
+        .then(installedApps => registryApi.getLatestPackageVersions(installedApps, source))
         .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
 }
 
@@ -483,12 +484,11 @@ function removeOfficialApp(name, source) {
  * @param {string} name the app name.
  * @param {string} version the app version, e.g. '1.2.3' or 'latest'.
  * @param {string} [source] name of external source.
- * @param {string} [registryUrl] optional .
  * @returns {Promise} promise that resolves if successful.
  */
-function installOfficialApp(name, version, source, registryUrl) {
+function installOfficialApp(name, version, source) {
     const destinationDir = config.getAppsRootDir(source);
-    return registryApi.downloadTarball(name, version, destinationDir, registryUrl)
+    return registryApi.downloadTarball(name, version, destinationDir, source)
         .then(tgzFilePath => {
             const appPath = path.join(config.getNodeModulesDir(source), name);
             return fs.exists(appPath)
