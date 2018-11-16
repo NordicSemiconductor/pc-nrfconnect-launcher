@@ -63,10 +63,12 @@ class LogViewer extends React.Component {
             logEntries,
             containerHeight,
             elementHeight,
-            infiniteLoadBeginEdgeOffset,
             cssClass,
             infiniteLogCssClass,
         } = this.props;
+
+        const infiniteLoadBeginEdgeOffset =
+            Math.max(containerHeight - elementHeight, elementHeight);
 
         return (
             <div className={cssClass}>
@@ -95,7 +97,6 @@ LogViewer.propTypes = {
     autoScroll: PropTypes.bool.isRequired,
     containerHeight: PropTypes.number,
     elementHeight: PropTypes.number,
-    infiniteLoadBeginEdgeOffset: PropTypes.number,
     cssClass: PropTypes.string,
     infiniteLogCssClass: PropTypes.string,
 };
@@ -105,7 +106,6 @@ LogViewer.defaultProps = {
     onUnmount: null,
     containerHeight: 155,
     elementHeight: 20,
-    infiniteLoadBeginEdgeOffset: 135,
     cssClass: 'core-log-viewer',
     infiniteLogCssClass: 'core-infinite-log',
 };
