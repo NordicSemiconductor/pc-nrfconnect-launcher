@@ -213,7 +213,7 @@ describe('AppManagementView', () => {
         );
         wrapper.find('button[title="Install pc-nrfconnect-foobar"]').first().simulate('click');
 
-        expect(onInstall).toHaveBeenCalledWith(app.name, app.source, app.url);
+        expect(onInstall).toHaveBeenCalledWith(app.name, app.source);
     });
 
     it('should invoke onRemove with app name and source when remove button is clicked', () => {
@@ -266,7 +266,7 @@ describe('AppManagementView', () => {
         );
         wrapper.find('button[title="Upgrade pc-nrfconnect-foobar from v1.2.3 to v1.2.4"]').first().simulate('click');
 
-        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source, app.url);
+        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source);
     });
 
     it('should invoke onDownloadLatestAppInfo when mounted and latest app info is not downloaded', () => {
