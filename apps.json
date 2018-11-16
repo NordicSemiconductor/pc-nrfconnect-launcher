@@ -20,8 +20,8 @@
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk"
     },
     "pc-nrfconnect-programmer": {
-        "displayName": "Programmer (experimental)",
-        "description": "Tool for flash programming of nRF5x SoCs",
+        "displayName": "Programmer",
+        "description": "Tool for flash programming of nRF SoCs",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer"
     }
 }
