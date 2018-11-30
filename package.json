@@ -110,7 +110,7 @@
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "0.18.0",
         "chmodr": "1.0.2",
         "electron-log": "2.2.6",
         "electron-updater": "2.20.2",
