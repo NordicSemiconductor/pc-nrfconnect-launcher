@@ -23,5 +23,20 @@
         "displayName": "Programmer",
         "description": "Tool for flash programming of nRF SoCs",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer"
+    },
+    "pc-nrfconnect-linkmonitor": {
+        "displayName": "LTE Link Monitor",
+        "description": "Link monitor and AT command terminal",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor"
+    },
+    "pc-nrfconnect-tracecollector": {
+        "displayName": "Trace Collector",
+        "description": "Capture nRF91 modem trace",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector"
+    },
+    "nrf-framework-courses": {
+        "displayName": "Getting Started Assistant",
+        "description": "Guide to set up development environment",
+        "homepage": "https://github.com/NordicSemiconductor/nrf-framework-courses"
     }
 }
