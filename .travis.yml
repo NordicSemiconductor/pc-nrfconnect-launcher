@@ -45,7 +45,7 @@ script:
 - npm install
 - npm run build
 - npm test
-# - npm run test-e2e
+- npm run test-e2e
 
 after_success:
 - echo "now's the time to run `npm run electron-builder`"
