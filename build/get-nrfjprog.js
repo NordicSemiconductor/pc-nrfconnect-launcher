@@ -137,7 +137,7 @@ async function downloadFile(fileid, destinationFile) {
 
 function extractTarFile(filePath, outputDir) {
     return new Promise((resolve, reject) => {
-        const extractor = tar.Extract({ path: outputDir })
+        const extractor = tar.x({ path: outputDir })
             .on('error', err => reject(err))
             .on('end', () => resolve());
         fs.createReadStream(filePath)
