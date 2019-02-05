@@ -45,7 +45,10 @@ script:
 - npm install
 - npm run build
 - npm test
-- npm run test-e2e
+- |
+  if [ $TRAVIS_OS_NAME == "osx" ]; then
+    npm run test-e2e
+  fi
 
 after_success:
 - echo "now's the time to run `npm run electron-builder`"
