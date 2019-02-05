@@ -57,6 +57,9 @@ function startElectronApp(extraArgs) {
         path: electronPath,
         args: args.concat(extraArgs),
         startTimeout: 30000,
+        webdriverOptions: {
+            waitforTimeout: 10000,
+        },
     });
     return electronApp.start()
         .then(() => expect(electronApp.isRunning()).toEqual(true))
