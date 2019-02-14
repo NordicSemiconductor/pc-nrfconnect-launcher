@@ -92,6 +92,7 @@
     },
     "devDependencies": {
         "asar": "0.13.0",
+        "axios": "0.18.0",
         "babel-polyfill": "6.23.0",
         "bootstrap": "3.3.7",
         "electron": "2.0.11",

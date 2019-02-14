@@ -36,11 +36,11 @@
 
 'use strict';
 
-const https = require('https');
+const axios = require('axios');
 const tar = require('tar');
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec ;
+const exec = require('child_process').exec;
 
 /*
  * nRF5x-Command-Line-Tools (nrfjprog) is required for programming. This script
@@ -52,22 +52,23 @@ const exec = require('child_process').exec ;
  */
 
 const DOWNLOAD_DIR = path.join(__dirname, 'nrfjprog');
+const DOWNLOAD_URL = 'https://www.nordicsemi.com/api/sitecore/Products/DownloadPlatform';
 
 const PLATFORM_CONFIG = {
     win32_ia32: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58850/52/77745893/53210',
+        fileid: 'B96A931BEF8C400DA9BA4EADBE115071',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-ia32.exe'),
-        instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
+        instructions: `WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the ${DOWNLOAD_DIR} directory and run the "nrfjprog-win32.exe" installer that you will find there.`,
     },
     win32_x64: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/70507/3/95086808/150713',
+        fileid: 'AAFC401DA6794101A4682508DA8A74C4',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-x64.exe'),
-        instructions: "WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the " + DOWNLOAD_DIR + " directory and run the \"nrfjprog-win32.exe\" installer that you will find there.",
+        instructions: `WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the ${DOWNLOAD_DIR} directory and run the "nrfjprog-win32.exe" installer that you will find there.`,
     },
     linux_x64: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58852/31/53761525/94917',
+        fileid: '8F19D314130548209E75EFFADD9348DB',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux-x64.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
@@ -77,7 +78,7 @@ const PLATFORM_CONFIG = {
         },
     },
     darwin: {
-        url: 'https://www.nordicsemi.com/eng/nordic/download_resource/58855/23/14740058/99977',
+        fileid: '6E0670EF22EC4D819908809AF13CD700',
         destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-darwin.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
@@ -112,17 +113,24 @@ function mkdirIfNotExists(dirPath) {
     });
 }
 
-function downloadFile(url, destinationFile) {
+async function downloadFile(fileid, destinationFile) {
+    const response = await axios.post(
+        DOWNLOAD_URL,
+        { fileid },
+        { responseType: 'stream' },
+    );
+    const statusCode = response.status;
+    if (statusCode !== 200) {
+        throw new Error(`Unable to download ${DOWNLOAD_URL} with fileid ${fileid}. ` +
+            `Got status code ${statusCode}`);
+    }
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(destinationFile);
-        https.get(url, response => {
-            const statusCode = response.statusCode;
-            if (statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ${statusCode}`));
-            } else {
-                response.pipe(file);
-                response.on('end', () => resolve());
-            }
+        response.data.pipe(file);
+        response.data.on('error', reject);
+        response.data.on('end', () => {
+            file.end();
+            resolve();
         });
     });
 }
@@ -154,9 +162,9 @@ const platform = process.platform;
 const arch = process.arch;
 let platformConfigStr;
 if (platform === 'win32' || platform === 'linux') {
-    platformConfigStr = `${platform}_${arch}`
+    platformConfigStr = `${platform}_${arch}`;
 } else if (platform === 'darwin') {
-    platformConfigStr = platform
+    platformConfigStr = platform;
 }
 const platformConfig = PLATFORM_CONFIG[platformConfigStr];
 
@@ -167,7 +175,7 @@ if (!platformConfig) {
 console.log(`Downloading nrfjprog to ${platformConfig.destinationFile}`);
 Promise.resolve()
     .then(() => mkdirIfNotExists(DOWNLOAD_DIR))
-    .then(() => downloadFile(platformConfig.url, platformConfig.destinationFile))
+    .then(() => downloadFile(platformConfig.fileid, platformConfig.destinationFile))
     .then(() => {
         if (platformConfig.extractTo) {
             console.log(`Extracting nrfjprog to ${platformConfig.extractTo}`);
@@ -183,7 +191,7 @@ Promise.resolve()
         }
         return Promise.resolve();
     })
-    .then(()=>{
+    .then(() => {
         if (platformConfig.instructions) {
             console.warn(platformConfig.instructions);
         }
