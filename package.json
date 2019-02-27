@@ -91,11 +91,11 @@
         }
     },
     "devDependencies": {
-        "asar": "0.14.6",
+        "asar": "1.0.0",
         "babel-polyfill": "6.26.0",
         "bootstrap": "3.3.7",
-        "electron": "2.0.11",
-        "electron-builder": "19.53.6",
+        "electron": "4.0.6",
+        "electron-builder": "20.38.5",
         "electron-is-dev": "1.0.1",
         "moment": "2.24.0",
         "mousetrap": "1.6.2",
@@ -103,7 +103,7 @@
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.6",
         "redux-thunk": "2.3.0",
-        "spectron": "4.0.0",
+        "spectron": "5.0.0",
         "tar": "4.4.8",
         "util": "0.11.1",
         "winston": "2.4.4",
@@ -113,19 +113,19 @@
         "axios": "0.18.0",
         "chmodr": "1.2.0",
         "electron-log": "2.2.17",
-        "electron-updater": "2.20.2",
+        "electron-updater": "4.0.6",
         "fs-extra": "7.0.1",
         "mustache": "3.0.1",
         "nrf-device-lister": "2.1.1",
         "nrf-device-setup": "0.4.5",
-        "usb": "git+https://github.com/NordicPlayground/node-usb.git#semver:^1.5.0",
-        "pc-ble-driver-js": "git+https://github.com/NordicSemiconductor/pc-ble-driver-js.git",
-        "pc-nrfjprog-js": "1.4.4",
+        "pc-ble-driver-js": "2.5.1",
+        "pc-nrfjprog-js": "^1.4.4",
         "png2icons": "1.0.1",
         "semver": "5.6.0",
         "shasum": "1.0.2",
         "targz": "1.0.1",
-        "yargs": "12.0.5"
+        "usb": "git+https://github.com/NordicPlayground/node-usb.git#semver:^1.5.0",
+        "yargs": "13.2.1"
     },
     "jest": {
         "moduleNameMapper": {
