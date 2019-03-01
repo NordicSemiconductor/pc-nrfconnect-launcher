@@ -1,12 +1,12 @@
 {
-  "presets": [ "react" ],
+  "presets": [ "@babel/preset-react" ],
   "plugins": [
     "add-module-exports",
-    "transform-class-properties",
-    "transform-es2015-destructuring",
-    "transform-es2015-modules-commonjs",
-    "transform-es2015-parameters",
-    "transform-es2015-spread",
-    "transform-object-rest-spread"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-destructuring",
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-transform-parameters",
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-proposal-object-rest-spread"
   ]
 }
