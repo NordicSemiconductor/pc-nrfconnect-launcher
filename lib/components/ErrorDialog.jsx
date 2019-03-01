@@ -38,7 +38,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'immutable';
 
-import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
+import {
+    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
+} from 'react-bootstrap';
 
 const ErrorDialog = ({ isVisible, messages, onClose }) => (
     <Modal show={isVisible} onHide={onClose}>

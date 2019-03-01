@@ -58,9 +58,9 @@ const UpdateCheckSuccessDialog = ({
         isVisible={isVisible}
         title="Update check completed"
         text={
-            isAppUpdateAvailable ?
-                'One or more updates are available. Go to the Add/remove apps screen to upgrade.' :
-                'All apps are up to date.'
+            isAppUpdateAvailable
+                ? 'One or more updates are available. Go to the Add/remove apps screen to upgrade.'
+                : 'All apps are up to date.'
         }
         onOk={onOk}
     />

@@ -37,12 +37,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AppItemButton = ({ text, title, iconClass, isDisabled, onClick }) => (
+const AppItemButton = ({
+    text, title, iconClass, isDisabled, onClick,
+}) => (
     <button
         title={title}
         className="btn btn-primary core-btn"
         disabled={isDisabled}
         onClick={onClick}
+        type="button"
     >
         <span className={iconClass} />
         <span className="core-btn-text">{text}</span>

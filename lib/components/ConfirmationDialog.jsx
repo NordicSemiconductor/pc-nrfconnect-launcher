@@ -37,7 +37,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
+import {
+    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
+} from 'react-bootstrap';
 import Spinner from './Spinner';
 
 /**
@@ -79,6 +81,7 @@ const ConfirmationDialog = ({
         </ModalBody>
         <ModalFooter>
             { isInProgress ? <Spinner /> : null }
+
             &nbsp;
             <Button
                 bsStyle="primary"
@@ -89,14 +92,15 @@ const ConfirmationDialog = ({
                 {okButtonText}
             </Button>
             {
-                onCancel &&
-                <Button
-                    className="core-btn"
-                    onClick={onCancel}
-                    disabled={isInProgress}
-                >
-                    {cancelButtonText}
-                </Button>
+                onCancel && (
+                    <Button
+                        className="core-btn"
+                        onClick={onCancel}
+                        disabled={isInProgress}
+                    >
+                        {cancelButtonText}
+                    </Button>
+                )
             }
         </ModalFooter>
     </Modal>

@@ -64,14 +64,16 @@ function renderInfo(altText) {
 
 function renderNotice(app) {
     if (!app.engineVersion) {
-        return renderAlert('The app does not specify which nRF Connect version(s) ' +
-            'it supports');
-    } else if (!app.isSupportedEngine) {
-        return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, ` +
-            'which does not match your currently installed version');
-    } else if (app.isOfficial && app.currentVersion !== app.latestVersion) {
-        return renderInfo(`A new version (v${app.latestVersion}) of this app is ` +
-            'available, and can be installed from the "Add/remove apps" screen');
+        return renderAlert('The app does not specify which nRF Connect version(s) '
+            + 'it supports');
+    }
+    if (!app.isSupportedEngine) {
+        return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, `
+            + 'which does not match your currently installed version');
+    }
+    if (app.isOfficial && app.currentVersion !== app.latestVersion) {
+        return renderInfo(`A new version (v${app.latestVersion}) of this app is `
+            + 'available, and can be installed from the "Add/remove apps" screen');
     }
     return null;
 }

@@ -49,20 +49,24 @@ export default class HotkeyedDropdown extends React.Component {
     constructor(props) {
         super(props);
         this.state = { open: false };
+        this.toggle = this.toggle.bind(this);
     }
 
     componentDidMount() {
-        Mousetrap.bind(this.props.hotkey, () => { this.toggle(); });
+        const { hotkey } = this.props;
+        Mousetrap.bind(hotkey, this.toggle);
     }
 
     componentWillUnmount() {
-        Mousetrap.unbind(this.props.hotkey);
+        const { hotkey } = this.props;
+        Mousetrap.unbind(hotkey);
     }
 
     toggle() {
-        this.setState({ open: !this.state.open });
+        const { open } = this.state;
+        this.setState({ open: !open });
 
-        if (this.state.open) {
+        if (open) {
             // Focus the drop-down
             // eslint-disable-next-line react/no-find-dom-node
             const node = ReactDOM.findDOMNode(this);
@@ -74,16 +78,21 @@ export default class HotkeyedDropdown extends React.Component {
             }
         }
 
-        this.props.onToggle();
+        const { onToggle } = this.props;
+        onToggle();
     }
 
     render() {
-        const { hotkey, ...childProps } = this.props;
-        return (<Dropdown
-            {...childProps}
-            open={this.state.open && !this.props.disabled}
-            onToggle={() => { this.toggle(); }}
-        />);
+        const { hotkey, disabled, ...childProps } = this.props;
+        const { open } = this.state;
+        return (
+            <Dropdown
+                {...childProps}
+                disabled={disabled}
+                open={open && !disabled}
+                onToggle={this.toggle}
+            />
+        );
     }
 }
 

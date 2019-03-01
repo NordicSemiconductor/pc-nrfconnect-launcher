@@ -72,8 +72,7 @@ class SerialPortSelector extends React.Component {
                         <div>{port.comName}</div>
                         <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
                     </MenuItem>
-                ),
-            );
+                ));
         }
         return null;
     }
@@ -116,7 +115,7 @@ class SerialPortSelector extends React.Component {
         const indicatorCssClass = `core-serial-port-indicator ${portIndicatorStatus}`;
 
         return (
-            <span title={'Select serial port (Alt+P)'}>
+            <span title="Select serial port (Alt+P)">
                 <div className={cssClass}>
                     <Dropdown
                         id="serial-port-selector"

@@ -53,9 +53,6 @@ export default class DeviceSetupDialog extends React.Component {
     constructor(props) {
         super(props);
         this.onSelectChoice = this.onSelectChoice.bind(this);
-    }
-
-    componentDidMount() {
         this.state = {
             selectedChoice: null,
         };
@@ -74,14 +71,15 @@ export default class DeviceSetupDialog extends React.Component {
             onOk,
             onCancel,
         } = this.props;
+        const { selectedChoice } = this.state;
 
         if (choices && (choices.length > 0 || choices.size > 0)) {
             return (
                 <ConfirmationDialog
                     isVisible={isVisible}
                     isInProgress={isInProgress}
-                    isOkButtonEnabled={!!this.state.selectedChoice}
-                    onOk={() => onOk(this.state.selectedChoice)}
+                    isOkButtonEnabled={!!selectedChoice}
+                    onOk={() => onOk(selectedChoice)}
                     onCancel={onCancel}
                 >
                     <p>{text}</p>
@@ -106,8 +104,8 @@ export default class DeviceSetupDialog extends React.Component {
             <ConfirmationDialog
                 isVisible={isVisible}
                 isInProgress={isInProgress}
-                okButtonText={'Yes'}
-                cancelButtonText={'No'}
+                okButtonText="Yes"
+                cancelButtonText="No"
                 onOk={() => onOk(true)}
                 onCancel={() => onOk(false)}
                 text={text}

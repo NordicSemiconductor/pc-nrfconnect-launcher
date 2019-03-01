@@ -46,17 +46,18 @@ import { decorate, getAppConfig } from '../../../util/apps';
 const DecoratedLogo = decorate(Logo, 'Logo');
 
 function NavBar({
-        cssClass,
-        navSectionCssClass,
-    }) {
+    cssClass,
+    navSectionCssClass,
+}) {
     const appConfig = getAppConfig();
     return (
         <div className={cssClass}>
             <MainMenuContainer />
             <div className={navSectionCssClass}>
-                { appConfig.selectorTraits ?
-                    <DeviceSelectorContainer traits={appConfig.selectorTraits} /> :
-                    <SerialPortSelectorContainer />
+                {
+                    appConfig.selectorTraits
+                        ? <DeviceSelectorContainer traits={appConfig.selectorTraits} />
+                        : <SerialPortSelectorContainer />
                 }
             </div>
             <NavMenuContainer />
