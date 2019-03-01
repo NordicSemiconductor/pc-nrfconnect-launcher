@@ -1,5 +1,6 @@
 {
     "root": true,
+    "parser": "babel-eslint",
     "extends": [
         "eslint:recommended",
         "airbnb"
@@ -20,6 +21,7 @@
             "error",
             4
         ],
+        "react/jsx-one-expression-per-line": 0,
         "quotes": [
             "error",
             "single"
@@ -40,12 +42,13 @@
             "prefer": {
                 "return": "returns"
             }
-        }]
+        }],
+        "no-undef": 1,
+        "no-unused-vars": 1
     },
-    "no-undef": 1,
-    "no-unused-vars": 1,
     "plugins": [
-        "react"
+        "react",
+        "import"
     ],
     "env": {
         "es6": true,
