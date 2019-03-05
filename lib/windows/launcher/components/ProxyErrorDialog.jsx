@@ -36,7 +36,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle } from 'react-bootstrap';
+import {
+    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
+} from 'react-bootstrap';
 
 const ProxyErrorDialog = ({
     isVisible,

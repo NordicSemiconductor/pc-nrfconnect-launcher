@@ -59,11 +59,13 @@ export default class DeviceSelector extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onMount();
+        const { onMount } = this.props;
+        onMount();
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
+        const { onUnmount } = this.props;
+        onUnmount();
     }
 
     /**
@@ -118,8 +120,8 @@ export default class DeviceSelector extends React.Component {
                 </div>
                 <ul className={menuItemDetailsCssClass}>
                     { DeviceSelector.mapSerialPortsToListItems(device) }
-                    { device.usb ?
-                        (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
+                    { device.usb
+                        ? (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
                         : null }
                 </ul>
             </MenuItem>
@@ -157,9 +159,9 @@ export default class DeviceSelector extends React.Component {
                 className={cssClass}
                 disabled={!hasDevices}
                 hotkey="alt+p"
-                title={'Select device (Alt+P)'}
+                title="Select device (Alt+P)"
             >
-                <DropdownToggle className={dropdownCssClass} >
+                <DropdownToggle className={dropdownCssClass}>
                     {togglerText}
                 </DropdownToggle>
                 <DropdownMenu

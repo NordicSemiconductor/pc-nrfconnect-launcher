@@ -40,7 +40,9 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import AppItemButton from './AppItemButton';
 
-const AppItemGroup = ({ title, className, pullRight, onCreateShortcut }) => (
+const AppItemGroup = ({
+    title, className, pullRight, onCreateShortcut,
+}) => (
     <div className="dropdown btn-group core-dropdown">
         <DropdownButton
             title={title}

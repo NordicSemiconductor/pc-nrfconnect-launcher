@@ -20,6 +20,7 @@ function createExternals() {
 }
 
 module.exports = {
+    mode: nodeEnv,
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
         app: './lib/windows/app/index',
@@ -42,9 +43,6 @@ module.exports = {
                 loader: require.resolve('eslint-loader'),
             }],
             exclude: /node_modules/,
-        }, {
-            test: /\.json$/,
-            loader: require.resolve('json-loader'),
         }, {
             test: /\.less|\.css$/,
             loaders: [

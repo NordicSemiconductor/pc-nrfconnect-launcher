@@ -39,12 +39,12 @@ import PropTypes from 'prop-types';
 
 const SidePanel = ({ children, cssClass, width }) => (
     <div className={cssClass} style={{ width: `${width}px` }}>
-        { children ||
+        { children || (
             <div>
                 <h4>Side panel</h4>
                 <p>Implement <code>decorateSidePanel</code> to add your own content here.</p>
             </div>
-        }
+        )}
     </div>
 );
 

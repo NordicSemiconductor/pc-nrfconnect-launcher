@@ -37,8 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
-import InstalledAppItem from '../components/InstalledAppItem';
-import AvailableAppItem from '../components/AvailableAppItem';
+import InstalledAppItem from './InstalledAppItem';
+import AvailableAppItem from './AvailableAppItem';
 import LoadingAppsSpinner from './LoadingAppsSpinner';
 
 function getSortedApps(apps) {
@@ -88,35 +88,41 @@ class AppManagementView extends React.Component {
         } = this.props;
         const isProcessing = this.isProcessing();
 
-        return isRetrievingApps ?
-            <LoadingAppsSpinner /> :
-            <div>
-                {
-                    getSortedApps(apps).map(app => (
-                        app.currentVersion ?
-                            <InstalledAppItem
-                                key={`${app.name}-${app.source}`}
-                                app={app}
-                                isDisabled={isProcessing}
-                                isUpgrading={upgradingAppName === app.name}
-                                isRemoving={removingAppName === app.name}
-                                onRemove={() => onRemove(app.name, app.source)}
-                                onUpgrade={() => onUpgrade(
-                                    app.name, app.latestVersion, app.source,
-                                )}
-                                onReadMore={() => onReadMore(app.homepage)}
-                            /> :
-                            <AvailableAppItem
-                                key={`${app.name}-${app.source}`}
-                                app={app}
-                                isDisabled={isProcessing}
-                                isInstalling={installingAppName === app.name}
-                                onInstall={() => onInstall(app.name, app.source)}
-                                onReadMore={() => onReadMore(app.homepage)}
-                            />
-                    ))
-                }
-            </div>;
+        return isRetrievingApps
+            ? <LoadingAppsSpinner />
+            : (
+                <div>
+                    {
+                        getSortedApps(apps).map(app => (
+                            app.currentVersion
+                                ? (
+                                    <InstalledAppItem
+                                        key={`${app.name}-${app.source}`}
+                                        app={app}
+                                        isDisabled={isProcessing}
+                                        isUpgrading={upgradingAppName === app.name}
+                                        isRemoving={removingAppName === app.name}
+                                        onRemove={() => onRemove(app.name, app.source)}
+                                        onUpgrade={() => onUpgrade(
+                                            app.name, app.latestVersion, app.source,
+                                        )}
+                                        onReadMore={() => onReadMore(app.homepage)}
+                                    />
+                                )
+                                : (
+                                    <AvailableAppItem
+                                        key={`${app.name}-${app.source}`}
+                                        app={app}
+                                        isDisabled={isProcessing}
+                                        isInstalling={installingAppName === app.name}
+                                        onInstall={() => onInstall(app.name, app.source)}
+                                        onReadMore={() => onReadMore(app.homepage)}
+                                    />
+                                )
+                        ))
+                    }
+                </div>
+            );
     }
 }
 
