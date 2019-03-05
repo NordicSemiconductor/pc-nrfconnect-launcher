@@ -93,7 +93,7 @@
     "devDependencies": {
         "asar": "1.0.0",
         "@babel/polyfill": "7.2.5",
-        "bootstrap": "3.3.7",
+        "bootstrap": "3.4.1",
         "electron": "2.0.17",
         "electron-builder": "19.53.6",
         "electron-is-dev": "1.0.1",
