@@ -39,19 +39,20 @@ import PropTypes from 'prop-types';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
 const AppReloadDialog = ({
-            isVisible,
-            onConfirmReload,
-            onCancelReload,
-            message,
-        }) =>
-        (<ConfirmationDialog
-            isVisible={isVisible}
-            onOk={onConfirmReload}
-            onCancel={onCancelReload}
-            okButtonText="Yes"
-            cancelButtonText="No"
-            text={message}
-        />);
+    isVisible,
+    onConfirmReload,
+    onCancelReload,
+    message,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        onOk={onConfirmReload}
+        onCancel={onCancelReload}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        text={message}
+    />
+);
 
 AppReloadDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,

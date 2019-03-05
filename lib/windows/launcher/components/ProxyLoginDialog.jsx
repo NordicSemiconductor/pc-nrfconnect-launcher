@@ -62,7 +62,8 @@ class ProxyLoginDialog extends React.Component {
     }
 
     onUserChanged(event) {
-        this.props.onUsernameChanged(event.target.value);
+        const { onUsernameChanged } = this.props;
+        onUsernameChanged(event.target.value);
     }
 
     onPasswordChanged(event) {
@@ -72,7 +73,9 @@ class ProxyLoginDialog extends React.Component {
     }
 
     onSubmitClicked() {
-        this.props.onSubmit(this.props.username, this.state.password);
+        const { onSubmit, username } = this.props;
+        const { password } = this.state;
+        onSubmit(username, password);
         this.setState({
             password: '',
         });
@@ -85,11 +88,16 @@ class ProxyLoginDialog extends React.Component {
     }
 
     isValidInput() {
-        return this.props.username !== '' && this.state.password !== '';
+        const { username } = this.props;
+        const { password } = this.state;
+        return username !== '' && password !== '';
     }
 
     render() {
-        const { isVisible, message, onCancel, username } = this.props;
+        const {
+            isVisible, message, onCancel, username,
+        } = this.props;
+        const { password } = this.state;
         return (
             <Modal show={isVisible} backdrop>
                 <ModalHeader closeButton={false}>
@@ -112,7 +120,7 @@ class ProxyLoginDialog extends React.Component {
                         <ControlLabel>Password:</ControlLabel>
                         <InputGroup>
                             <FormControl
-                                value={this.state.password}
+                                value={password}
                                 type="password"
                                 onChange={this.onPasswordChanged}
                                 onKeyPress={this.onKeyPress}

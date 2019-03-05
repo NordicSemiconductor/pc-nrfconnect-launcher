@@ -49,6 +49,7 @@ const LogHeaderButton = ({
         title={title}
         className={`${cssClass} ${isSelected ? selectedCssClass : ''}`}
         onClick={onClick}
+        type="button"
     >
         <span className={iconCssClass} aria-hidden="true" />
     </button>

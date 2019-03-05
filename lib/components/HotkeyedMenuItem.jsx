@@ -44,11 +44,13 @@ import PropTypes from 'prop-types';
 
 export default class HotkeyedMenuItem extends React.Component {
     componentDidMount() {
-        Mousetrap.bind(this.props.hotkey, () => { this.props.onClick(); });
+        const { hotkey, onClick } = this.props;
+        Mousetrap.bind(hotkey, onClick);
     }
 
     componentWillUnmount() {
-        Mousetrap.unbind(this.props.hotkey);
+        const { hotkey } = this.props;
+        Mousetrap.unbind(hotkey);
     }
 
     render() {

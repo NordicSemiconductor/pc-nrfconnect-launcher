@@ -40,7 +40,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppLaunchView from '../AppLaunchView';
 import AppItemButton from '../AppItemButton';
-import { getImmutableApp } from '../../models';
+import getImmutableApp from '../../models';
 
 describe('AppLaunchView', () => {
     it('should render without any apps', () => {

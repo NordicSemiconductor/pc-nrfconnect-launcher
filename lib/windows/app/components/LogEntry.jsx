@@ -60,7 +60,13 @@ function hrefReplacer(str) {
     const remainder = str.replace(regex, (match, before, href, index) => {
         message.push(before);
         message.push(
-            <a key={index} role="link" tabIndex={index} onClick={() => shell.openItem(href)}>
+            <a
+                href={href}
+                key={index}
+                tabIndex={index}
+                onClick={() => shell.openItem(href)}
+                onKeyPress={() => {}}
+            >
                 {href}
             </a>,
         );

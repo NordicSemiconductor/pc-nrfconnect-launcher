@@ -16,6 +16,7 @@ exports[`LogHeader should render when buttons are provided 1`] = `
       className="btn btn-primary btn-xs core-btn "
       onClick={[Function]}
       title="Foo button"
+      type="button"
     >
       <span
         aria-hidden="true"
@@ -26,6 +27,7 @@ exports[`LogHeader should render when buttons are provided 1`] = `
       className="btn btn-primary btn-xs core-btn "
       onClick={[Function]}
       title="Bar button"
+      type="button"
     >
       <span
         aria-hidden="true"
@@ -52,6 +54,7 @@ exports[`LogHeader should render when selected button is provided 1`] = `
       className="btn btn-primary btn-xs core-btn active"
       onClick={[Function]}
       title="Foo button"
+      type="button"
     >
       <span
         aria-hidden="true"

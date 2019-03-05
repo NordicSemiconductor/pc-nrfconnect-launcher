@@ -94,7 +94,7 @@ function waitForWindowCount(electronApp, numWindows) {
     });
 }
 
-export default {
+export {
     startElectronApp,
     stopElectronApp,
     waitForWindowCount,

@@ -46,14 +46,16 @@ const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
 class LogViewer extends React.Component {
     componentDidMount() {
-        if (this.props.onMount) {
-            this.props.onMount();
+        const { onMount } = this.props;
+        if (onMount) {
+            onMount();
         }
     }
 
     componentWillUnmount() {
-        if (this.props.onUnmount) {
-            this.props.onUnmount();
+        const { onUnmount } = this.props;
+        if (onUnmount) {
+            onUnmount();
         }
     }
 
@@ -67,8 +69,9 @@ class LogViewer extends React.Component {
             infiniteLogCssClass,
         } = this.props;
 
-        const infiniteLoadBeginEdgeOffset =
-            Math.max(containerHeight - elementHeight, elementHeight);
+        const infiniteLoadBeginEdgeOffset = Math.max(
+            containerHeight - elementHeight, elementHeight,
+        );
 
         return (
             <div className={cssClass}>

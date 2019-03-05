@@ -50,6 +50,7 @@ const Logo = ({
         className={containerCssClass}
         role="link"
         onClick={onClick}
+        onKeyPress={() => {}}
         tabIndex="0"
     >
         <img className={cssClass} src={src} alt={alt} />
