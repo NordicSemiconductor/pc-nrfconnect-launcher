@@ -1,0 +1,54 @@
+branches:
+  only:
+    - master
+    - /^v?[0-9]/
+
+language: cpp
+compiler: gcc
+
+filter_secrets: false
+
+env:
+  global:
+  - TZ=Europe/Oslo
+  - WIN_TZ="W. Europe Standard Time"
+  - NODE_ARCH="64"
+  - NODE_VERSION="8.15.0"
+  - npm_config_runtime="electron"
+  - npm_config_target="2.0.6"
+  - npm_config_disturl="https://atom.io/download/electron"
+
+matrix:
+  include:
+  - os: linux
+  - os: osx
+  - os: windows
+  - os: windows
+    env: NODE_ARCH="32"
+
+before_install:
+- |
+  if [ $TRAVIS_OS_NAME == "windows" ]; then
+    choco install -y nvm
+    export NVM_HOME="C:\ProgramData\nvm"
+    export NVM_SYMLINK="C:\Program Files\nodejs"
+    export PATH=$PATH:$NVM_HOME:$NVM_SYMLINK
+    nvm install $NODE_VERSION $NODE_ARCH
+    nvm use $NODE_VERSION $NODE_ARCH
+    tzutil //s "$WIN_TZ"
+  else
+    nvm install $NODE_VERSION
+    nvm use $NODE_VERSION
+  fi
+
+script:
+- npm install
+- npm run build
+- npm test
+- |
+  if [ $TRAVIS_OS_NAME == "osx" ]; then
+    npm run test-e2e
+  fi
+
+after_success:
+- echo "now's the time to run `npm run electron-builder`"

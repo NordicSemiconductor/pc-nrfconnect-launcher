@@ -57,7 +57,8 @@ class SettingsView extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onMount();
+        const { onMount } = this.props;
+        onMount();
     }
 
     onCheckUpdatesAtStartupChanged(event) {
@@ -66,13 +67,15 @@ class SettingsView extends React.Component {
     }
 
     onTriggerUpdateCheckClicked() {
-        this.props.onTriggerUpdateCheck();
+        const { onTriggerUpdateCheck } = this.props;
+        onTriggerUpdateCheck();
     }
 
     onDropUrl(event) {
+        const { addSource } = this.props;
         event.preventDefault();
         const url = event.dataTransfer.getData('Text');
-        this.props.addSource(url);
+        addSource(url);
     }
 
     render() {
@@ -100,9 +103,9 @@ class SettingsView extends React.Component {
                 <div className="core-settings-section">
                     <h4>Updates</h4>
                     {
-                        lastUpdateCheckDate ?
-                            <p>Last update check performed: { moment(lastUpdateCheckDate).format('YYYY-MM-DD HH:mm:ss') }</p> :
-                            null
+                        lastUpdateCheckDate
+                            ? <p>Last update check performed: { moment(lastUpdateCheckDate).format('YYYY-MM-DD HH:mm:ss') }</p>
+                            : null
                     }
                     <div className="core-settings-update-check-controls">
                         <Checkbox
@@ -125,12 +128,13 @@ class SettingsView extends React.Component {
                     </div>
                 </div>
                 {
-                    isUpdateCheckCompleteDialogVisible &&
-                    <UpdateCheckCompleteDialog
-                        isVisible
-                        isAppUpdateAvailable={isAppUpdateAvailable}
-                        onOk={onHideUpdateCheckCompleteDialog}
-                    />
+                    isUpdateCheckCompleteDialogVisible && (
+                        <UpdateCheckCompleteDialog
+                            isVisible
+                            isAppUpdateAvailable={isAppUpdateAvailable}
+                            onOk={onHideUpdateCheckCompleteDialog}
+                        />
+                    )
                 }
                 <div
                     className="core-settings-section"
@@ -139,35 +143,37 @@ class SettingsView extends React.Component {
                     onDragEnter={cancel}
                 >
                     <h4>Extra app sources</h4>
-                    <table className="core-settings-sources"><tbody>
-                        {
-                            Object.keys(sourcesJS)
-                            .filter(name => name !== 'official')
-                            .map(name => (
-                                <tr key={name} className="core-settings-source">
-                                    <td className="core-settings-source-name">{name}</td>
-                                    <td
-                                        className="core-settings-source-url"
-                                        title={sourcesJS[name]}
-                                    >
-                                        {sourcesJS[name]}
-                                    </td>
-                                    <td className="core-settings-source-remove">
-                                        <Button
-                                            className="btn core-btn"
-                                            bsSize="small"
-                                            onClick={() => onShowRemoveSourceDialog(name)}
-                                        >
-                                            <span className="glyphicon glyphicon-remove" />
-                                            <span className="core-btn-text">
-                                                Remove
-                                            </span>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                    </tbody></table>
+                    <table className="core-settings-sources">
+                        <tbody>
+                            {
+                                Object.keys(sourcesJS)
+                                    .filter(name => name !== 'official')
+                                    .map(name => (
+                                        <tr key={name} className="core-settings-source">
+                                            <td className="core-settings-source-name">{name}</td>
+                                            <td
+                                                className="core-settings-source-url"
+                                                title={sourcesJS[name]}
+                                            >
+                                                {sourcesJS[name]}
+                                            </td>
+                                            <td className="core-settings-source-remove">
+                                                <Button
+                                                    className="btn core-btn"
+                                                    bsSize="small"
+                                                    onClick={() => onShowRemoveSourceDialog(name)}
+                                                >
+                                                    <span className="glyphicon glyphicon-remove" />
+                                                    <span className="core-btn-text">
+                                                        Remove
+                                                    </span>
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))
+                            }
+                        </tbody>
+                    </table>
                     <div className="core-settings-sources-controls">
                         <Button
                             className="btn btn-primary core-btn"
@@ -181,15 +187,16 @@ class SettingsView extends React.Component {
                     </div>
                 </div>
                 {
-                    isAddSourceDialogVisible &&
-                    <InputLineDialog
-                        isVisible
-                        title="Add new nRFConnect app source url"
-                        label="URL of apps.json"
-                        placeholder="URL..."
-                        onOk={url => { addSource(url); onHideAddSourceDialog(); }}
-                        onCancel={onHideAddSourceDialog}
-                    />
+                    isAddSourceDialogVisible && (
+                        <InputLineDialog
+                            isVisible
+                            title="Add new nRFConnect app source url"
+                            label="URL of apps.json"
+                            placeholder="URL..."
+                            onOk={url => { addSource(url); onHideAddSourceDialog(); }}
+                            onCancel={onHideAddSourceDialog}
+                        />
+                    )
                 }
                 <ConfirmRemoveSourceDialog />
             </div>

@@ -51,7 +51,7 @@ import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppManagementView from '../AppManagementView';
-import { getImmutableApp } from '../../models';
+import getImmutableApp from '../../models';
 
 describe('AppManagementView', () => {
     it('should render spinner when retrieving apps', () => {

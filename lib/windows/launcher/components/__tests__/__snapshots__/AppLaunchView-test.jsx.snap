@@ -47,6 +47,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -100,6 +101,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -167,6 +169,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -220,6 +223,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -286,6 +290,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -339,6 +344,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -396,6 +402,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -449,6 +456,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -499,6 +507,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -552,6 +561,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -603,6 +613,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -656,6 +667,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -706,6 +718,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -759,6 +772,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -810,6 +824,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         disabled={false}
         onClick={[Function]}
         title="Launch app"
+        type="button"
       >
         <span
           className="glyphicon glyphicon-play"
@@ -863,6 +878,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
                   disabled={false}
                   onClick={[Function]}
                   title="Create a desktop shortcut for this app"
+                  type="button"
                 >
                   <span
                     className="glyphicon glyphicon-share-alt"
@@ -898,11 +914,11 @@ exports[`AppLaunchView should render without any apps 1`] = `
       Welcome to nRF Connect
     </h4>
     <p>
-      To get started, go to 
+      To get started, go to
       <i>
         Add/remove apps
       </i>
-       to install some apps.
+      to install some apps.
     </p>
   </div>
 </div>

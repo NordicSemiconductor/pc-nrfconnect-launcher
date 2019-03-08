@@ -52,7 +52,7 @@ const AvailableAppItem = ({
         <div className="list-group-item-text">
             <p>{app.description}</p>
             <div className="core-app-management-item-footer">
-                <button className="btn btn-link core-btn-link" onClick={onReadMore}>
+                <button className="btn btn-link core-btn-link" onClick={onReadMore} type="button">
                     More information
                 </button>
                 <div className="core-app-management-item-buttons">

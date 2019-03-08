@@ -36,7 +36,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle, ProgressBar } from 'react-bootstrap';
+import {
+    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle, ProgressBar,
+} from 'react-bootstrap';
 import Spinner from '../../../components/Spinner';
 
 const UpdateProgressDialog = ({
@@ -55,8 +57,8 @@ const UpdateProgressDialog = ({
         <ModalBody>
             <p>Downloading nRF Connect {version}...</p>
             {
-                isProgressSupported &&
-                    <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
+                isProgressSupported
+                    && <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
             }
             <p>
                 This might take a few minutes. The application will restart and update
@@ -65,17 +67,18 @@ const UpdateProgressDialog = ({
         </ModalBody>
         <ModalFooter>
             {
-                !isProgressSupported &&
-                    <Spinner />
+                !isProgressSupported
+                    && <Spinner />
             }
             {
-                isCancelSupported &&
+                isCancelSupported && (
                     <Button
                         onClick={onCancel}
                         disabled={isCancelling || percentDownloaded === 100}
                     >
                         Cancel
                     </Button>
+                )
             }
         </ModalFooter>
     </Modal>

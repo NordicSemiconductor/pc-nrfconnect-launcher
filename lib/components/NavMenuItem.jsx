@@ -44,22 +44,28 @@ function getClassName(baseClass, isSelected) {
 
 export default class NavMenuItem extends React.Component {
     componentDidMount() {
-        Mousetrap.bind(this.props.hotkey, () => { this.props.onClick(); });
+        const { hotkey, onClick } = this.props;
+        Mousetrap.bind(hotkey, onClick);
     }
 
     componentWillUnmount() {
-        Mousetrap.unbind(this.props.hotkey);
+        const { hotkey } = this.props;
+        Mousetrap.unbind(hotkey);
     }
 
     render() {
+        const {
+            title, text, cssClass, iconClass, isSelected, onClick,
+        } = this.props;
         return (
             <button
-                title={this.props.title}
-                className={getClassName(this.props.cssClass, this.props.isSelected)}
-                onClick={this.props.onClick}
+                title={title}
+                className={getClassName(cssClass, isSelected)}
+                onClick={onClick}
+                type="button"
             >
-                <span className={this.props.iconClass} />
-                <span>{this.props.text}</span>
+                <span className={iconClass} />
+                <span>{text}</span>
             </button>
         );
     }
@@ -78,4 +84,3 @@ NavMenuItem.propTypes = {
 NavMenuItem.defaultProps = {
     cssClass: 'btn btn-primary core-btn core-padded-row',
 };
-

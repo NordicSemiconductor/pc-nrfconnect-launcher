@@ -106,7 +106,7 @@ describe('LogHeader', () => {
                 onButtonClicked={onButtonClicked}
             />,
         );
-        wrapper.find('[title="Foo button"]').simulate('click');
+        wrapper.find('LogHeaderButton[title="Foo button"]').simulate('click');
 
         expect(onButtonClicked).toHaveBeenCalledWith('foo');
     });

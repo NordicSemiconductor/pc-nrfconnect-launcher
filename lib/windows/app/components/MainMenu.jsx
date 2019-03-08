@@ -44,19 +44,17 @@ import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
 import MenuItem from '../../../components/HotkeyedMenuItem';
 
 const renderItems = menuItems => (
-    menuItems.map(item =>
-        (
-            <MenuItem
-                key={item.id}
-                onClick={item.onClick}
-                divider={item.isDivider}
-                hotkey={item.hotkey ? item.hotkey.toLowerCase() : ''}
-                title={item.hotkey ? `${item.text} (${item.hotkey})` : item.text}
-            >
-                {item.text}
-            </MenuItem>
-        ),
-    )
+    menuItems.map(item => (
+        <MenuItem
+            key={item.id}
+            onClick={item.onClick}
+            divider={item.isDivider}
+            hotkey={item.hotkey ? item.hotkey.toLowerCase() : ''}
+            title={item.hotkey ? `${item.text} (${item.hotkey})` : item.text}
+        >
+            {item.text}
+        </MenuItem>
+    ))
 );
 
 const MainMenu = ({

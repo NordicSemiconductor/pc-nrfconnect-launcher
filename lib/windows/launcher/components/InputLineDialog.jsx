@@ -52,7 +52,7 @@ class InputLineDialog extends React.Component {
             onCancel,
         } = this.props;
         return (
-            <Modal show={isVisible} onHide={onCancel} backdrop={'static'}>
+            <Modal show={isVisible} onHide={onCancel} backdrop="static">
                 <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
                 </ModalHeader>

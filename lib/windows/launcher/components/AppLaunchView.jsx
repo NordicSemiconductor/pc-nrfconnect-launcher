@@ -54,32 +54,41 @@ function getSortedApps(apps) {
 
 class AppLaunchView extends React.Component {
     componentDidMount() {
-        this.props.onMount();
+        const { onMount } = this.props;
+        onMount();
     }
 
     render() {
-        const { apps, onAppSelected, onCreateShortcut, isRetrievingApps } = this.props;
-        return isRetrievingApps ?
-            <LoadingAppsSpinner /> :
-            <div className="list-group">
-                {
-                    apps.size > 0 ?
-                        getSortedApps(apps).map(app => (
-                            <LaunchableAppItem
-                                key={app.path}
-                                app={app}
-                                onClick={() => onAppSelected(app)}
-                                onCreateShortcut={() => onCreateShortcut(app)}
-                            />
-                        )) :
-                        <div>
-                            <h4>Welcome to nRF Connect</h4>
-                            <p>
-                                To get started, go to <i>Add/remove apps</i> to install some apps.
-                            </p>
-                        </div>
-                }
-            </div>;
+        const {
+            apps, onAppSelected, onCreateShortcut, isRetrievingApps,
+        } = this.props;
+        return isRetrievingApps
+            ? <LoadingAppsSpinner />
+            : (
+                <div className="list-group">
+                    {
+                        apps.size > 0
+                            ? getSortedApps(apps).map(app => (
+                                <LaunchableAppItem
+                                    key={app.path}
+                                    app={app}
+                                    onClick={() => onAppSelected(app)}
+                                    onCreateShortcut={() => onCreateShortcut(app)}
+                                />
+                            ))
+                            : (
+                                <div>
+                                    <h4>Welcome to nRF Connect</h4>
+                                    <p>
+                                        To get started, go to
+                                        <i>Add/remove apps</i>
+                                        to install some apps.
+                                    </p>
+                                </div>
+                            )
+                    }
+                </div>
+            );
     }
 }
 
