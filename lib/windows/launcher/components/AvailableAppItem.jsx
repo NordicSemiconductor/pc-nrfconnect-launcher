@@ -59,7 +59,7 @@ const AvailableAppItem = ({
                     <AppItemButton
                         text={isInstalling ? 'Installing...' : 'Install'}
                         title={`Install ${app.displayName || app.name}`}
-                        iconClass="glyphicon glyphicon-download-alt"
+                        iconClass="mdi mdi-download"
                         isDisabled={isDisabled}
                         onClick={onInstall}
                     />

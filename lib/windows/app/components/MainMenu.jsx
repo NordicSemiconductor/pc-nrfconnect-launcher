@@ -37,41 +37,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
-import { Dropdown, Glyphicon } from 'react-bootstrap';
-import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
-import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import MenuItem from '../../../components/HotkeyedMenuItem';
 
 const renderItems = menuItems => (
-    menuItems.map(item => (
+    menuItems.map(({
+        id, onClick, isDivider, hotkey, text,
+    }) => (
         <MenuItem
-            key={item.id}
-            onClick={item.onClick}
-            divider={item.isDivider}
-            hotkey={item.hotkey ? item.hotkey.toLowerCase() : ''}
-            title={item.hotkey ? `${item.text} (${item.hotkey})` : item.text}
+            key={id}
+            onClick={onClick}
+            divider={isDivider}
+            hotkey={hotkey ? hotkey.toLowerCase() : ''}
+            title={hotkey ? `${text} (${hotkey})` : text}
         >
-            {item.text}
+            {text}
         </MenuItem>
     ))
 );
 
 const MainMenu = ({
     menuItems,
-    glyphiconName,
+    iconName,
     cssClass,
     dropdownCssClass,
     dropdownMenuCssClass,
+    ...rest
 }) => (
     <div className={cssClass}>
-        <Dropdown id="main-menu">
-            <DropdownToggle className={dropdownCssClass} noCaret>
-                <Glyphicon glyph={glyphiconName} />
-            </DropdownToggle>
-            <DropdownMenu id="main-menu-list" className={dropdownMenuCssClass}>
+        <Dropdown id="main-menu" {...rest}>
+            <Dropdown.Toggle className={dropdownCssClass}>
+                <span className={iconName} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu id="main-menu-list" className={dropdownMenuCssClass}>
                 { renderItems(menuItems) }
-            </DropdownMenu>
+            </Dropdown.Menu>
         </Dropdown>
     </div>
 );
@@ -81,14 +82,14 @@ MainMenu.propTypes = {
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Immutable.Iterable),
     ]).isRequired,
-    glyphiconName: PropTypes.string,
+    iconName: PropTypes.string,
     cssClass: PropTypes.string,
     dropdownCssClass: PropTypes.string,
     dropdownMenuCssClass: PropTypes.string,
 };
 
 MainMenu.defaultProps = {
-    glyphiconName: 'menu-hamburger',
+    iconName: 'mdi mdi-menu',
     cssClass: 'core-nav-section core-padded-row',
     dropdownCssClass: 'core-main-menu core-btn btn-primary',
     dropdownMenuCssClass: 'core-dropdown-menu',

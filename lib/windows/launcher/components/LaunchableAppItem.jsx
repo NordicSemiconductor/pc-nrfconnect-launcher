@@ -55,13 +55,12 @@ const LaunchableAppItem = ({ app, onClick, onCreateShortcut }) => (
             <AppItemButton
                 text="Launch"
                 title="Launch app"
-                iconClass="glyphicon glyphicon-play"
+                iconClass="mdi mdi-play"
                 onClick={onClick}
             />
             <AppItemGroup
                 title=""
-                className="btn btn-primary core-btn"
-                pullRight
+                className="core-app-item-group"
                 onCreateShortcut={onCreateShortcut}
             />
         </div>

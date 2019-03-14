@@ -36,12 +36,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem } from 'react-bootstrap';
-import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
-import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
 
-import Dropdown from '../../../components/HotkeyedDropdown';
+import HotkeyedDropdown from '../../../components/HotkeyedDropdown';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
@@ -81,15 +79,15 @@ export default class DeviceSelector extends React.Component {
         } = this.props;
 
         return ([
-            <MenuItem key="close-device-divider" divider />,
-            <MenuItem
+            <Dropdown.Divider />,
+            <Dropdown.Item
                 key="close-device"
                 className={menuItemCssClass}
                 eventKey="Close device"
                 onSelect={onDeselect}
             >
                 <div>Close device</div>
-            </MenuItem>,
+            </Dropdown.Item>,
         ]);
     }
 
@@ -109,7 +107,7 @@ export default class DeviceSelector extends React.Component {
 
         const menuItemCssClassWithTraits = [menuItemCssClass, ...device.traits].join(' ');
         return (
-            <MenuItem
+            <Dropdown.Item
                 key={device.serialNumber}
                 className={menuItemCssClassWithTraits}
                 onSelect={() => onSelect(device)}
@@ -124,7 +122,7 @@ export default class DeviceSelector extends React.Component {
                         ? (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
                         : null }
                 </ul>
-            </MenuItem>
+            </Dropdown.Item>
         );
     }
 
@@ -134,10 +132,10 @@ export default class DeviceSelector extends React.Component {
     render() {
         const {
             cssClass,
-            dropdownCssClass,
-            dropdownMenuCssClass,
             selectedSerialNumber,
             devices,
+            showPortIndicator,
+            portIndicatorStatus,
         } = this.props;
 
         const hasDevices = devices && (devices.length > 0 || devices.size > 0);
@@ -152,26 +150,24 @@ export default class DeviceSelector extends React.Component {
         } else {
             togglerText = 'Select device';
         }
+        const indicatorCssClass = `core-device-port-indicator ${portIndicatorStatus}`;
 
         return (
-            <Dropdown
-                id="device-selector"
-                className={cssClass}
-                disabled={!hasDevices}
-                hotkey="alt+p"
-                title="Select device (Alt+P)"
-            >
-                <DropdownToggle className={dropdownCssClass}>
-                    {togglerText}
-                </DropdownToggle>
-                <DropdownMenu
-                    id="device-selector-list"
-                    className={dropdownMenuCssClass}
+            <>
+                <HotkeyedDropdown
+                    id="device-selector"
+                    className={cssClass}
+                    disabled={!hasDevices}
+                    hotkey="alt+p"
+                    title={`${togglerText} (Alt+P)`}
                 >
                     { devices.map(device => this.getItemFromDevice(device)) }
                     { displayCloseItem ? this.getCloseItem() : null }
-                </DropdownMenu>
-            </Dropdown>
+                </HotkeyedDropdown>
+                {
+                    showPortIndicator ? <div className={indicatorCssClass} /> : <div />
+                }
+            </>
         );
     }
 }
@@ -180,10 +176,10 @@ DeviceSelector.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
-    dropdownCssClass: PropTypes.string,
-    dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     menuItemDetailsCssClass: PropTypes.string,
+    showPortIndicator: PropTypes.bool,
+    portIndicatorStatus: PropTypes.string,
     devices: PropTypes.oneOfType([
         PropTypes.instanceOf(Array),
         PropTypes.instanceOf(Iterable),
@@ -198,10 +194,10 @@ DeviceSelector.propTypes = {
 
 DeviceSelector.defaultProps = {
     cssClass: 'core-padded-row',
-    dropdownCssClass: 'core-device-selector core-btn btn-primary',
-    dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
+    showPortIndicator: true,
+    portIndicatorStatus: 'off',
     selectedSerialNumber: undefined,
     onMount: () => {},
     onUnmount: () => {},

@@ -37,9 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
-} from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import Spinner from './Spinner';
 
 /**
@@ -73,18 +72,18 @@ const ConfirmationDialog = ({
     isOkButtonEnabled,
 }) => (
     <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
-        <ModalHeader closeButton={!isInProgress}>
-            <ModalTitle>{title}</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
+        <Modal.Header closeButton={!isInProgress}>
+            <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             { children || <p>{ text }</p> }
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
             { isInProgress ? <Spinner /> : null }
 
             &nbsp;
             <Button
-                bsStyle="primary"
+                variant="primary"
                 className="core-btn"
                 onClick={onOk}
                 disabled={!isOkButtonEnabled || isInProgress}
@@ -102,7 +101,7 @@ const ConfirmationDialog = ({
                     </Button>
                 )
             }
-        </ModalFooter>
+        </Modal.Footer>
     </Modal>
 );
 

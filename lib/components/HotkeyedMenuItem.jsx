@@ -34,10 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { MenuItem } from 'react-bootstrap';
-import Mousetrap from 'mousetrap';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Mousetrap from 'mousetrap';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 // Like react-bootstrap's `MenuItem`, but can receive an extra `hotkey` prop:
 // a key combination handled by `mousetrap` that will click this item.
@@ -54,17 +54,22 @@ export default class HotkeyedMenuItem extends React.Component {
     }
 
     render() {
-        const { hotkey, ...childProps } = this.props;
-        return (<MenuItem {...childProps} />);
+        const { hotkey, divider, ...childProps } = this.props;
+        if (divider) {
+            return (<Dropdown.Divider />);
+        }
+        return (<Dropdown.Item {...childProps} />);
     }
 }
 
 HotkeyedMenuItem.propTypes = {
-    ...MenuItem.propTypes,
     hotkey: PropTypes.string,
+    divider: PropTypes.bool,
+    onClick: PropTypes.func,
 };
 
 HotkeyedMenuItem.defaultProps = {
-    ...MenuItem.defaultProps,
     hotkey: '',
+    divider: false,
+    onClick: () => {},
 };

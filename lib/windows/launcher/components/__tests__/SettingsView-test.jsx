@@ -44,19 +44,18 @@ jest.mock('react-bootstrap', () => ({
     ModalFooter: 'ModalFooter',
     ModalBody: 'ModalBody',
     ModalTitle: 'ModalTitle',
-    Checkbox: 'Checkbox',
 }));
 
-jest.mock('../../containers/ConfirmRemoveSourceDialog', () => 'ConfirmRemoveSourceDialog');
+jest.mock('../../containers/ConfirmRemoveSourceDialog', () => 'div');
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import { Map } from 'immutable';
 import SettingsView from '../SettingsView';
 
 describe('SettingsView', () => {
     it('should render empty div while loading', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading
                 shouldCheckForUpdatesAtStartup
@@ -74,7 +73,7 @@ describe('SettingsView', () => {
     });
 
     it('should render with check for updates enabled', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup
@@ -92,7 +91,7 @@ describe('SettingsView', () => {
     });
 
     it('should render with check for updates disabled', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup={false}
@@ -110,7 +109,7 @@ describe('SettingsView', () => {
     });
 
     it('should render when checking for updates', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup={false}
@@ -128,7 +127,7 @@ describe('SettingsView', () => {
     });
 
     it('should render with last update check date', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup={false}
@@ -147,7 +146,7 @@ describe('SettingsView', () => {
     });
 
     it('should render check for updates completed, with updates available', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup={false}
@@ -168,7 +167,7 @@ describe('SettingsView', () => {
     });
 
     it('should render check for updates completed, with everything up to date', () => {
-        expect(renderer.create(
+        expect(shallow(
             <SettingsView
                 isLoading={false}
                 shouldCheckForUpdatesAtStartup={false}

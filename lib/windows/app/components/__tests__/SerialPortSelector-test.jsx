@@ -40,9 +40,9 @@
 jest.mock('react-bootstrap', () => ({
     Dropdown: 'Dropdown',
     MenuItem: 'MenuItem',
+    DropdownToggle: 'DropdownToggle',
+    DropdownMenu: 'DropdownMenu',
 }));
-jest.mock('react-bootstrap/lib/DropdownToggle', () => 'DropdownToggle');
-jest.mock('react-bootstrap/lib/DropdownMenu', () => 'DropdownMenu');
 
 // Do not decorate components
 jest.mock('../../../../util/apps', () => ({
@@ -149,7 +149,7 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                selectedPort={'/dev/tty1'}
+                selectedPort="/dev/tty1"
                 onToggle={() => {}}
                 onSelect={() => {}}
                 onDeselect={() => {}}
@@ -187,7 +187,7 @@ describe('SerialPortSelector', () => {
                         vendorId: SEGGER_VENDOR_ID,
                     },
                 ]}
-                selectedPort={'/dev/tty0'}
+                selectedPort="/dev/tty0"
                 isLoading
                 onToggle={() => {}}
                 onSelect={() => {}}

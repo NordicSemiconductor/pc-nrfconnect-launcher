@@ -36,12 +36,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem } from 'react-bootstrap';
-import DropdownToggle from 'react-bootstrap/lib/DropdownToggle';
-import DropdownMenu from 'react-bootstrap/lib/DropdownMenu';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
 
-import Dropdown from '../../../components/HotkeyedDropdown';
+import HotkeyedDropdown from '../../../components/HotkeyedDropdown';
 
 const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
 
@@ -63,7 +61,7 @@ class SerialPortSelector extends React.Component {
             return ports
                 .filter(filter)
                 .map(port => (
-                    <MenuItem
+                    <Dropdown.Item
                         key={port.comName}
                         className={menuItemCssClass}
                         eventKey={port.comName}
@@ -71,7 +69,7 @@ class SerialPortSelector extends React.Component {
                     >
                         <div>{port.comName}</div>
                         <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
-                    </MenuItem>
+                    </Dropdown.Item>
                 ));
         }
         return null;
@@ -87,13 +85,13 @@ class SerialPortSelector extends React.Component {
 
         if (selectedPort && !isLoading) {
             return (
-                <MenuItem
+                <Dropdown.Item
                     className={menuItemCssClass}
                     eventKey="Close serial port"
                     onSelect={onDeselect}
                 >
                     <div>Close serial port</div>
-                </MenuItem>
+                </Dropdown.Item>
             );
         }
         return null;
@@ -107,39 +105,27 @@ class SerialPortSelector extends React.Component {
             onToggle,
             isExpanded,
             cssClass,
-            dropdownCssClass,
-            dropdownMenuCssClass,
         } = this.props;
 
         const selectorText = selectedPort || 'Select serial port';
         const indicatorCssClass = `core-serial-port-indicator ${portIndicatorStatus}`;
 
         return (
-            <span title="Select serial port (Alt+P)">
-                <div className={cssClass}>
-                    <Dropdown
-                        id="serial-port-selector"
-                        open={isExpanded}
-                        onToggle={onToggle}
-                        hotkey="alt+p"
-                    >
-                        <DropdownToggle
-                            className={dropdownCssClass}
-                            title={selectorText}
-                        />
-                        <DropdownMenu
-                            id="serial-port-selector-list"
-                            className={dropdownMenuCssClass}
-                        >
-                            { this.renderSerialPortItems() }
-                            { this.renderCloseItem() }
-                        </DropdownMenu>
-                    </Dropdown>
-                    {
-                        showPortIndicator ? <div className={indicatorCssClass} /> : <div />
-                    }
-                </div>
-            </span>
+            <div className={cssClass}>
+                <HotkeyedDropdown
+                    id="serial-port-selector"
+                    open={isExpanded}
+                    onToggle={onToggle}
+                    hotkey="alt+p"
+                    title={`${selectorText} (Alt+P)`}
+                >
+                    { this.renderSerialPortItems() }
+                    { this.renderCloseItem() }
+                </HotkeyedDropdown>
+                {
+                    showPortIndicator ? <div className={indicatorCssClass} /> : <div />
+                }
+            </div>
         );
     }
 }
@@ -158,8 +144,6 @@ SerialPortSelector.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
-    dropdownCssClass: PropTypes.string,
-    dropdownMenuCssClass: PropTypes.string,
     menuItemCssClass: PropTypes.string,
     filter: PropTypes.func,
 };
@@ -171,8 +155,6 @@ SerialPortSelector.defaultProps = {
     isLoading: false,
     portIndicatorStatus: 'off',
     cssClass: 'core-padded-row',
-    dropdownCssClass: 'core-serial-port-selector core-btn btn-primary',
-    dropdownMenuCssClass: 'core-dropdown-menu',
     menuItemCssClass: 'btn-primary',
     filter: filterSeggerPorts,
 };

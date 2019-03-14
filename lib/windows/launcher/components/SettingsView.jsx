@@ -36,7 +36,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 import InputLineDialog from './InputLineDialog';
@@ -108,19 +109,19 @@ class SettingsView extends React.Component {
                             : null
                     }
                     <div className="core-settings-update-check-controls">
-                        <Checkbox
+                        <Form.Check
+                            type="checkbox"
                             checked={shouldCheckForUpdatesAtStartup}
                             onChange={this.onCheckUpdatesAtStartupChanged}
-                        >
-                            Check for updates at startup
-                        </Checkbox>
+                            label="Check for updates at startup"
+                        />
                         <Button
                             title={checkButtonText}
                             className="btn btn-primary core-btn"
                             onClick={this.onTriggerUpdateCheckClicked}
                             disabled={isCheckingForUpdates}
                         >
-                            <span className="glyphicon glyphicon-refresh" />
+                            <span className="mdi mdi-sync" />
                             <span className="core-btn-text">
                                 { checkButtonText }
                             </span>
@@ -159,11 +160,12 @@ class SettingsView extends React.Component {
                                             </td>
                                             <td className="core-settings-source-remove">
                                                 <Button
-                                                    className="btn core-btn"
-                                                    bsSize="small"
+                                                    className="core-btn"
+                                                    variant="light"
+                                                    size="sm"
                                                     onClick={() => onShowRemoveSourceDialog(name)}
                                                 >
-                                                    <span className="glyphicon glyphicon-remove" />
+                                                    <span className="mdi mdi-playlist-remove" />
                                                     <span className="core-btn-text">
                                                         Remove
                                                     </span>
@@ -179,7 +181,7 @@ class SettingsView extends React.Component {
                             className="btn btn-primary core-btn"
                             onClick={onShowAddSourceDialog}
                         >
-                            <span className="glyphicon glyphicon-plus" />
+                            <span className="mdi mdi-playlist-plus" />
                             <span className="core-btn-text">
                                 Add source
                             </span>

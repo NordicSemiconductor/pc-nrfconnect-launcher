@@ -48,12 +48,12 @@ jest.mock('react-bootstrap', () => ({
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import UpdateProgressDialog from '../UpdateProgressDialog';
 
 describe('UpdateProgressDialog', () => {
     it('should render invisible', () => {
-        expect(renderer.create(
+        expect(shallow(
             <UpdateProgressDialog
                 isVisible={false}
                 isProgressSupported={false}
@@ -67,7 +67,7 @@ describe('UpdateProgressDialog', () => {
     });
 
     it('should render with version, percent downloaded, and cancellable', () => {
-        expect(renderer.create(
+        expect(shallow(
             <UpdateProgressDialog
                 isVisible
                 isProgressSupported
@@ -81,7 +81,7 @@ describe('UpdateProgressDialog', () => {
     });
 
     it('should render with version, without progress, and not cancellable', () => {
-        expect(renderer.create(
+        expect(shallow(
             <UpdateProgressDialog
                 isVisible
                 isProgressSupported={false}
@@ -95,7 +95,7 @@ describe('UpdateProgressDialog', () => {
     });
 
     it('should render cancelling', () => {
-        expect(renderer.create(
+        expect(shallow(
             <UpdateProgressDialog
                 isVisible
                 isProgressSupported
@@ -109,7 +109,7 @@ describe('UpdateProgressDialog', () => {
     });
 
     it('should render with cancel disabled when 100 percent complete', () => {
-        expect(renderer.create(
+        expect(shallow(
             <UpdateProgressDialog
                 isVisible
                 isProgressSupported
