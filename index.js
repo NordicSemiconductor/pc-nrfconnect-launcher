@@ -36,18 +36,15 @@
 
 'use strict';
 
-const electron = require('electron');
-const argv = require('yargs').argv;
+const {
+    Menu, ipcMain, dialog, app: electronApp,
+} = require('electron');
+const { argv } = require('yargs');
 
 const config = require('./main/config');
 const windows = require('./main/windows');
 const apps = require('./main/apps');
-const createMenu = require('./main/menu').createMenu;
-
-const electronApp = electron.app;
-const Menu = electron.Menu;
-const ipcMain = electron.ipcMain;
-const dialog = electron.dialog;
+const { createMenu } = require('./main/menu');
 
 config.init(argv);
 global.homeDir = config.getHomeDir();
@@ -64,7 +61,8 @@ electronApp.on('ready', () => {
                 return windows.openOfficialAppWindow(
                     config.getOfficialAppName(), config.getSourceName(),
                 );
-            } else if (config.getLocalAppName()) {
+            }
+            if (config.getLocalAppName()) {
                 return windows.openLocalAppWindow(config.getLocalAppName());
             }
             return windows.openLauncherWindow();
@@ -96,13 +94,13 @@ ipcMain.on('open-app', (event, app) => {
 ipcMain.on('show-about-dialog', () => {
     const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
-        const app = appWindow.app;
-        const detail = `${app.description}\n\n` +
-            `Version: ${app.currentVersion}\n` +
-            `Official: ${app.isOfficial}\n` +
-            `Supported engines: nRF Connect ${app.engineVersion}\n` +
-            `Current engine: nRF Connect ${config.getVersion()}\n` +
-            `App directory: ${app.path}`;
+        const { app } = appWindow.app;
+        const detail = `${app.description}\n\n`
+            + `Version: ${app.currentVersion}\n`
+            + `Official: ${app.isOfficial}\n`
+            + `Supported engines: nRF Connect ${app.engineVersion}\n`
+            + `Current engine: nRF Connect ${config.getVersion()}\n`
+            + `App directory: ${app.path}`;
         dialog.showMessageBox(appWindow.browserWindow, {
             type: 'info',
             title: 'About',
