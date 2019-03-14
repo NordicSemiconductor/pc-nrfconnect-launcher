@@ -1,163 +1,159 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UpdateProgressDialog should render cancelling 1`] = `
-<Modal
+<ForwardRef(Bootstrap(Modal))
   backdrop={true}
   show={true}
 >
-  <ModalHeader
+  <ForwardRef(Bootstrap(ModalHeader))
     closeButton={false}
   >
-    <ModalTitle>
+    <ForwardRef(Bootstrap(ModalTitle))>
       Downloading update
-    </ModalTitle>
-  </ModalHeader>
-  <ModalBody>
+    </ForwardRef(Bootstrap(ModalTitle))>
+  </ForwardRef(Bootstrap(ModalHeader))>
+  <ForwardRef(Bootstrap(ModalBody))>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <ForwardRef(Bootstrap(ProgressBar))
       label="42%"
       now={42}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ModalBody>
-  <ModalFooter>
-    <Button
+  </ForwardRef(Bootstrap(ModalBody))>
+  <ForwardRef(Bootstrap(ModalFooter))>
+    <ForwardRef(Bootstrap(Button))
       disabled={true}
       onClick={[Function]}
     >
       Cancel
-    </Button>
-  </ModalFooter>
-</Modal>
+    </ForwardRef(Bootstrap(Button))>
+  </ForwardRef(Bootstrap(ModalFooter))>
+</ForwardRef(Bootstrap(Modal))>
 `;
 
 exports[`UpdateProgressDialog should render invisible 1`] = `
-<Modal
+<ForwardRef(Bootstrap(Modal))
   backdrop={true}
   show={false}
 >
-  <ModalHeader
+  <ForwardRef(Bootstrap(ModalHeader))
     closeButton={false}
   >
-    <ModalTitle>
+    <ForwardRef(Bootstrap(ModalTitle))>
       Downloading update
-    </ModalTitle>
-  </ModalHeader>
-  <ModalBody>
+    </ForwardRef(Bootstrap(ModalTitle))>
+  </ForwardRef(Bootstrap(ModalHeader))>
+  <ForwardRef(Bootstrap(ModalBody))>
     <p>
       Downloading nRF Connect 
-      
       ...
     </p>
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ModalBody>
-  <ModalFooter>
-    <img
-      alt="Loading..."
+  </ForwardRef(Bootstrap(ModalBody))>
+  <ForwardRef(Bootstrap(ModalFooter))>
+    <Spinner
       className="core-spinner"
-      height={16}
-      src="test-file-stub"
-      width={16}
+      size={16}
     />
-  </ModalFooter>
-</Modal>
+  </ForwardRef(Bootstrap(ModalFooter))>
+</ForwardRef(Bootstrap(Modal))>
 `;
 
 exports[`UpdateProgressDialog should render with cancel disabled when 100 percent complete 1`] = `
-<Modal
+<ForwardRef(Bootstrap(Modal))
   backdrop={true}
   show={true}
 >
-  <ModalHeader
+  <ForwardRef(Bootstrap(ModalHeader))
     closeButton={false}
   >
-    <ModalTitle>
+    <ForwardRef(Bootstrap(ModalTitle))>
       Downloading update
-    </ModalTitle>
-  </ModalHeader>
-  <ModalBody>
+    </ForwardRef(Bootstrap(ModalTitle))>
+  </ForwardRef(Bootstrap(ModalHeader))>
+  <ForwardRef(Bootstrap(ModalBody))>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <ForwardRef(Bootstrap(ProgressBar))
       label="100%"
       now={100}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ModalBody>
-  <ModalFooter>
-    <Button
+  </ForwardRef(Bootstrap(ModalBody))>
+  <ForwardRef(Bootstrap(ModalFooter))>
+    <ForwardRef(Bootstrap(Button))
       disabled={true}
       onClick={[Function]}
     >
       Cancel
-    </Button>
-  </ModalFooter>
-</Modal>
+    </ForwardRef(Bootstrap(Button))>
+  </ForwardRef(Bootstrap(ModalFooter))>
+</ForwardRef(Bootstrap(Modal))>
 `;
 
 exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
-<Modal
+<ForwardRef(Bootstrap(Modal))
   backdrop={true}
   show={true}
 >
-  <ModalHeader
+  <ForwardRef(Bootstrap(ModalHeader))
     closeButton={false}
   >
-    <ModalTitle>
+    <ForwardRef(Bootstrap(ModalTitle))>
       Downloading update
-    </ModalTitle>
-  </ModalHeader>
-  <ModalBody>
+    </ForwardRef(Bootstrap(ModalTitle))>
+  </ForwardRef(Bootstrap(ModalHeader))>
+  <ForwardRef(Bootstrap(ModalBody))>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <ForwardRef(Bootstrap(ProgressBar))
       label="42%"
       now={42}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ModalBody>
-  <ModalFooter>
-    <Button
+  </ForwardRef(Bootstrap(ModalBody))>
+  <ForwardRef(Bootstrap(ModalFooter))>
+    <ForwardRef(Bootstrap(Button))
       disabled={false}
       onClick={[Function]}
     >
       Cancel
-    </Button>
-  </ModalFooter>
-</Modal>
+    </ForwardRef(Bootstrap(Button))>
+  </ForwardRef(Bootstrap(ModalFooter))>
+</ForwardRef(Bootstrap(Modal))>
 `;
 
 exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
-<Modal
+<ForwardRef(Bootstrap(Modal))
   backdrop={true}
   show={true}
 >
-  <ModalHeader
+  <ForwardRef(Bootstrap(ModalHeader))
     closeButton={false}
   >
-    <ModalTitle>
+    <ForwardRef(Bootstrap(ModalTitle))>
       Downloading update
-    </ModalTitle>
-  </ModalHeader>
-  <ModalBody>
+    </ForwardRef(Bootstrap(ModalTitle))>
+  </ForwardRef(Bootstrap(ModalHeader))>
+  <ForwardRef(Bootstrap(ModalBody))>
     <p>
       Downloading nRF Connect 
       1.2.3
@@ -166,15 +162,12 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ModalBody>
-  <ModalFooter>
-    <img
-      alt="Loading..."
+  </ForwardRef(Bootstrap(ModalBody))>
+  <ForwardRef(Bootstrap(ModalFooter))>
+    <Spinner
       className="core-spinner"
-      height={16}
-      src="test-file-stub"
-      width={16}
+      size={16}
     />
-  </ModalFooter>
-</Modal>
+  </ForwardRef(Bootstrap(ModalFooter))>
+</ForwardRef(Bootstrap(Modal))>
 `;

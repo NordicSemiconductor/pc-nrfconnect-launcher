@@ -69,7 +69,7 @@ const InstalledAppItem = ({
                                     <AppItemButton
                                         title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
                                         text={isUpgrading ? 'Upgrading...' : 'Upgrade'}
-                                        iconClass="glyphicon glyphicon-download-alt"
+                                        iconClass="mdi mdi-download"
                                         isDisabled={isDisabled}
                                         onClick={onUpgrade}
                                     />
@@ -79,7 +79,7 @@ const InstalledAppItem = ({
                         <AppItemButton
                             title={`Remove ${app.displayName || app.name}`}
                             text={isRemoving ? 'Removing...' : 'Remove'}
-                            iconClass="glyphicon glyphicon-trash"
+                            iconClass="mdi mdi-trash-can"
                             isDisabled={isDisabled}
                             onClick={onRemove}
                         />

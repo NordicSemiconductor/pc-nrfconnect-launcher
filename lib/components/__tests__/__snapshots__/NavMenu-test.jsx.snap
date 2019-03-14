@@ -10,32 +10,28 @@ exports[`NavMenu should render menu with two items, and none selected 1`] = `
 <div
   className="core-nav-section core-padded-row"
 >
-  <button
-    className="btn btn-primary core-btn core-padded-row "
+  <NavMenuItem
+    cssClass="btn btn-primary core-btn core-padded-row"
+    hotkey="alt+1"
+    iconClass="icon-columns"
+    id={1}
+    isSelected={false}
+    key="1"
     onClick={[Function]}
+    text="Connection map"
     title="Connection map (Alt+1)"
-    type="button"
-  >
-    <span
-      className="icon-columns"
-    />
-    <span>
-      Connection map
-    </span>
-  </button>
-  <button
-    className="btn btn-primary core-btn core-padded-row "
+  />
+  <NavMenuItem
+    cssClass="btn btn-primary core-btn core-padded-row"
+    hotkey="alt+2"
+    iconClass="icon-indent-right"
+    id={2}
+    isSelected={false}
+    key="2"
     onClick={[Function]}
+    text="Server setup"
     title="Server setup (Alt+2)"
-    type="button"
-  >
-    <span
-      className="icon-indent-right"
-    />
-    <span>
-      Server setup
-    </span>
-  </button>
+  />
 </div>
 `;
 
@@ -43,31 +39,27 @@ exports[`NavMenu should render menu with two items, and one selected 1`] = `
 <div
   className="core-nav-section core-padded-row"
 >
-  <button
-    className="btn btn-primary core-btn core-padded-row active"
+  <NavMenuItem
+    cssClass="btn btn-primary core-btn core-padded-row"
+    hotkey="alt+1"
+    iconClass="icon-columns"
+    id={1}
+    isSelected={true}
+    key="1"
     onClick={[Function]}
+    text="Connection map"
     title="Connection map (Alt+1)"
-    type="button"
-  >
-    <span
-      className="icon-columns"
-    />
-    <span>
-      Connection map
-    </span>
-  </button>
-  <button
-    className="btn btn-primary core-btn core-padded-row "
+  />
+  <NavMenuItem
+    cssClass="btn btn-primary core-btn core-padded-row"
+    hotkey="alt+2"
+    iconClass="icon-indent-right"
+    id={2}
+    isSelected={false}
+    key="2"
     onClick={[Function]}
+    text="Server setup"
     title="Server setup (Alt+2)"
-    type="button"
-  >
-    <span
-      className="icon-indent-right"
-    />
-    <span>
-      Server setup
-    </span>
-  </button>
+  />
 </div>
 `;

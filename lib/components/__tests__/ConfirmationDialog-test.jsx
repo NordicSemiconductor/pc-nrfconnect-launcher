@@ -47,12 +47,12 @@ jest.mock('react-bootstrap', () => ({
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 describe('ConfirmationDialog', () => {
     it('should render invisible dialog', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ConfirmationDialog
                 isVisible={false}
                 text="Do you confirm?"
@@ -63,7 +63,7 @@ describe('ConfirmationDialog', () => {
     });
 
     it('should render visible dialog with text', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ConfirmationDialog
                 isVisible
                 text="Do you confirm?"
@@ -74,7 +74,7 @@ describe('ConfirmationDialog', () => {
     });
 
     it('should render visible dialog with text and operation in progress', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ConfirmationDialog
                 isVisible
                 isInProgress
@@ -86,7 +86,7 @@ describe('ConfirmationDialog', () => {
     });
 
     it('should not render cancel button if onCancel function is not provided', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ConfirmationDialog
                 isVisible
                 text="Something happened."
