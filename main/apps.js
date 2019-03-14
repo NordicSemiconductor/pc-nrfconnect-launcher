@@ -100,9 +100,9 @@ function initSourceDirectory(source) {
 function downloadAppsJsonFile(appsJsonUrl) {
     return net.downloadToJson(appsJsonUrl)
         .catch(error => {
-            throw new Error(`Unable to download apps list: ${error.message}. If you ` +
-                'are using a proxy server, you may need to configure it as described on ' +
-                'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+            throw new Error(`Unable to download apps list: ${error.message}. If you `
+                + 'are using a proxy server, you may need to configure it as described on '
+                + 'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         })
         .then(appsJson => {
             // underscore is intentially used in JSON as a meta information
@@ -191,9 +191,9 @@ function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
         dialog.showMessageBox({
             type: 'question',
             title: 'Existing app directory',
-            message: `Tried to extract archive ${tgzFilePath}, ` +
-                `but app directory ${appPath} already exists.\n\n` +
-                'Do you want to remove existing app in order to extract the archive?',
+            message: `Tried to extract archive ${tgzFilePath}, `
+                + `but app directory ${appPath} already exists.\n\n`
+                + 'Do you want to remove existing app in order to extract the archive?',
             buttons: ['Remove', 'Cancel'],
         }, btnIndex => {
             if (btnIndex === 0) {
@@ -213,8 +213,8 @@ function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
 function installLocalAppArchive(tgzFilePath) {
     const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
-        return Promise.reject(new Error('Unable to get app name from archive: ' +
-            `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
+        return Promise.reject(new Error('Unable to get app name from archive: '
+            + `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`));
     }
     const appPath = path.join(config.getAppsLocalDir(), appName);
     return fs.exists(appPath)
@@ -430,14 +430,13 @@ function getOfficialAppsFromSource(source) {
 
 function getOfficialApps() {
     const sources = settings.getSources();
-    return Promise.all(Object.keys(sources).map(source =>
-        getOfficialAppsFromSource(source),
-    )).then(arrayOfArrays =>
-        arrayOfArrays.reduce(
+    return Promise.all(
+        Object.keys(sources).map(source => getOfficialAppsFromSource(source)),
+    )
+        .then(arrayOfArrays => arrayOfArrays.reduce(
             (accumulator, currentValue) => ([...accumulator, ...currentValue]),
             [],
-        ),
-    );
+        ));
 }
 
 /**
@@ -471,9 +470,9 @@ function getLocalApps() {
 function removeOfficialApp(name, source) {
     const appPath = path.join(config.getNodeModulesDir(source), name);
     if (!appPath.includes('node_modules')) {
-        return Promise.reject(new Error('Sanity check failed when trying ' +
-            `to remove app directory ${appPath}. The directory does not ` +
-            'have node_modules in its path.'));
+        return Promise.reject(new Error('Sanity check failed when trying '
+            + `to remove app directory ${appPath}. The directory does not `
+            + 'have node_modules in its path.'));
     }
     return fs.remove(appPath);
 }

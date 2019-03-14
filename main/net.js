@@ -37,8 +37,7 @@
 'use strict';
 
 const fs = require('fs');
-const net = require('electron').net;
-const session = require('electron').session;
+const { net, session } = require('electron');
 
 // Using the same session name as electron-updater, so that proxy credentials
 // (if required) only have to be sent once.
@@ -68,8 +67,8 @@ function downloadToBuffer(url) {
         request.setHeader('pragma', 'no-cache');
         request.on('response', response => {
             if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code ` +
-                    `${response.statusCode}`));
+                reject(new Error(`Unable to download ${url}. Got status code `
+                    + `${response.statusCode}`));
                 return;
             }
             const buffer = [];
@@ -78,12 +77,12 @@ function downloadToBuffer(url) {
             };
             response.on('data', data => addToBuffer(data));
             response.on('end', () => resolve(Buffer.concat(buffer)));
-            response.on('error', error => reject(new Error(`Error when reading ${url}: ` +
-                `${error.message}`)));
+            response.on('error', error => reject(new Error(`Error when reading ${url}: `
+                + `${error.message}`)));
         });
         request.on('login', onProxyLogin);
-        request.on('error', error => reject(new Error(`Unable to download ${url}: ` +
-            `${error.message}`)));
+        request.on('error', error => reject(new Error(`Unable to download ${url}: `
+            + `${error.message}`)));
         request.end();
     });
 }
