@@ -1,32 +1,8 @@
-@import "~bootstrap/less/bootstrap.less";
-@import (inline) "./common/fontello.css";
-@import "./common/variables.less";
-@import "./common/styles.less";
+@import "./core";
 
-html, body, #webapp {
-    height: 100%;
-}
 
 .core-main-area {
-    background-color: @background-color;
-    width: 100%;
-    height: 100%;
     min-width: 650px;
-    display: flex;
-    flex-flow: column;
-}
-
-.core-nav-bar {
-    width: 100%;
-    background-color: @brand-primary;
-    display: flex;
-    height: 60px;
-
-    .core-nav-section {
-        display: inline-block;
-        padding: 10px 10px 0 10px;
-        height: 55px;
-    }
 }
 
 .core-main-layout {
@@ -46,18 +22,19 @@ html, body, #webapp {
         margin-right: 10px;
     }
 
-    .glyphicon {
+    .mdi {
         position: absolute;
-        top: 28px;
-        left: 30px;
+        top: 22px;
+        left: 27px;
+        font-size: 20px;
     }
 
-    .glyphicon-alert {
+    .mdi-alert {
         color: darkorange;
     }
 
-    .glyphicon-info-sign {
-        color: @brand-primary-darker;
+    .mdi-information {
+        color: $brand-primary-darker;
     }
 
     .alert-icon-bg {
@@ -84,13 +61,31 @@ html, body, #webapp {
     width: 100%;
     justify-content: flex-start;
 
+    .list-group-item-heading {
+        margin-bottom: 5px;
+    }
+    .list-group-item-text {
+        margin-bottom: 0;
+    }
+
     .core-app-launch-item-buttons {
         text-align: right;
         margin-left: auto;
+        display: block;
     }
 
     .core-app-launch-item-buttons > .btn {
         margin-left: 10px;
+    }
+
+    .core-app-item-group {
+        margin-left: 5px;
+        button {
+            height: 34px;
+        }
+        .dropdown-item {
+            padding: 0;
+        }
     }
 }
 
@@ -131,11 +126,11 @@ html, body, #webapp {
     }
 
     .installed {
-        background-color: @brand-success;
+        background-color: $brand-success;
     }
 
     .upgrade-available {
-        background-color: @brand-warning;
+        background-color: $brand-warning;
     }
 }
 
@@ -144,12 +139,12 @@ html, body, #webapp {
     padding: 0;
 }
 
-.core-loading-apps-spinner {
+.core-loading-apps-adjust-huener {
     position: absolute;
     top: 50%; left: 50%; width: 100px; height: 100px;
     margin: -50px 0 0 -50px;
     z-index: 1000;
-    transition: opacity .4s;
+    transition: opacity 4s;
     pointer-events: none;
     border-radius: 50%;
     border: 8px solid rgba(0,128,192, 0.2);
