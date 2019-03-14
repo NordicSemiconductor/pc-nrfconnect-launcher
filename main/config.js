@@ -82,7 +82,8 @@ let sourceName;
  * @returns {void}
  */
 function init(argv) {
-    version = packageJson.version;
+    const { version: pkgVer } = packageJson;
+    version = pkgVer;
     electronRootPath = electronApp.getAppPath();
     electronResourcesDir = path.join(electronRootPath, 'resources');
     electronExePath = process.env.APPIMAGE || electronApp.getPath('exe');
