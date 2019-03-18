@@ -1,3 +1,6 @@
+$roboto-font-path: "~roboto-fontface/fonts" !default;
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
+
 @import "~@mdi/font/css/materialdesignicons.min.css";
 @import "./common/variables";
 @import "./common/styles";

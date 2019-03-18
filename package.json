@@ -124,6 +124,7 @@
         "pc-nrfjprog-js": "1.4.4",
         "png2icons": "1.0.1",
         "react-bootstrap": "1.0.0-beta.5",
+        "roboto-fontface": "0.10.0",
         "semver": "5.6.0",
         "shasum": "1.0.2",
         "targz": "1.0.1",
