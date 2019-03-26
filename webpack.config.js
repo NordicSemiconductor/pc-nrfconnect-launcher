@@ -13,6 +13,7 @@ function createExternals() {
         'serialport',
         'usb',
         'nrf-device-setup',
+        'osx-temperature-sensor',
     ];
     return libs.reduce((prev, lib) => (
         Object.assign(prev, { [lib]: `commonjs ${lib}` })
