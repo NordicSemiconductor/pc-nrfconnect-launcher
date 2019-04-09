@@ -8,3 +8,5 @@ build/nrfjprog
 npm-debug.log
 package-lock.json
 *~
+mergehex
+nrfjprog
