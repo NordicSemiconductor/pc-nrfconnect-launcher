@@ -28,12 +28,12 @@ jobs:
         npm_config_runtime: 'electron'
         npm_config_target: 2.0.17
         npm_config_disturl: 'https://atom.io/download/electron'
-      linux_electron_4_x:
-        image_name: 'ubuntu-16.04'
-        node_version: 10.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 4.1.4
-        npm_config_disturl: 'https://atom.io/download/electron'
+      # linux_electron_4_x:
+      #   image_name: 'ubuntu-16.04'
+      #   node_version: 10.15.0
+      #   npm_config_runtime: 'electron'
+      #   npm_config_target: 4.1.4
+      #   npm_config_disturl: 'https://atom.io/download/electron'
       macOS_node_8_x:
         image_name: 'macos-10.13'
         node_version: 8.15.0
@@ -49,12 +49,12 @@ jobs:
         npm_config_runtime: 'electron'
         npm_config_target: 2.0.17
         npm_config_disturl: 'https://atom.io/download/electron'
-      macOS_electron_4_x:
-        image_name: 'macos-10.13'
-        node_version: 10.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 4.1.4
-        npm_config_disturl: 'https://atom.io/download/electron'
+      # macOS_electron_4_x:
+      #   image_name: 'macos-10.13'
+      #   node_version: 10.15.0
+      #   npm_config_runtime: 'electron'
+      #   npm_config_target: 4.1.4
+      #   npm_config_disturl: 'https://atom.io/download/electron'
       win64_node_8_x:
         image_name: 'vs2017-win2016'
         node_version: 8.15.0
@@ -71,11 +71,11 @@ jobs:
         npm_config_target: 2.0.17
         npm_config_disturl: 'https://atom.io/download/electron'
       win64_electron_4_x:
-        image_name: 'vs2017-win2016'
-        node_version: 10.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 4.1.4
-        npm_config_disturl: 'https://atom.io/download/electron'
+        # image_name: 'vs2017-win2016'
+        # node_version: 10.15.0
+        # npm_config_runtime: 'electron'
+        # npm_config_target: 4.1.4
+        # npm_config_disturl: 'https://atom.io/download/electron'
       win32_node_8_x:
         image_name: 'vs2017-win2016'
         node_version: 8.15.0
@@ -95,13 +95,13 @@ jobs:
         npm_config_target: 2.0.17
         npm_config_disturl: 'https://atom.io/download/electron'
         node_arch: '32'
-      win32_electron_4_x:
-        image_name: 'vs2017-win2016'
-        node_version: 10.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 4.1.4
-        npm_config_disturl: 'https://atom.io/download/electron'
-        node_arch: '32'
+      # win32_electron_4_x:
+      #   image_name: 'vs2017-win2016'
+      #   node_version: 10.15.0
+      #   npm_config_runtime: 'electron'
+      #   npm_config_target: 4.1.4
+      #   npm_config_disturl: 'https://atom.io/download/electron'
+      #   node_arch: '32'
 
   pool:
     vmImage: $(image_name)
@@ -137,4 +137,5 @@ jobs:
       NODE_VERSION: $(node_version),
       NODE_ARCH: $(node_arch),
     }
+    displayName: 'Build'
 
