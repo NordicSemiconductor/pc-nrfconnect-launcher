@@ -42,17 +42,17 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
-  - script: |
+  - bash: |
       npm i
       npm run build
       npm run test
     displayName: 'Build'
-  - script: |
+  - bash: |
       sudo apt-get update
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Install release dependencies on Linux'
-  - script: |
+  - bash: |
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
