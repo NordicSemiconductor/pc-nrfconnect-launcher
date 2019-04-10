@@ -54,7 +54,12 @@ jobs:
     displayName: 'Install release dependencies on Linux'
   - script: |
       npm run pack
-      cp release/* "$(Build.ArtifactStagingDirectory)"
+      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || /bin/true
+      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || /bin/true
+      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || /bin/true
+      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || /bin/true
+      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || /bin/true
+      cp release/latest* "$(Build.ArtifactStagingDirectory)" || /bin/true
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Release'
   - task: GitHubRelease@0

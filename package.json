@@ -25,7 +25,7 @@
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-nrfjprog": "node build/get-nrfjprog.js",
-        "pack": "npm run build && build -p never",
+        "pack": "npm run build && build -p never -w",
         "release": "build -p always"
     },
     "author": "Nordic Semiconductor ASA",
@@ -79,19 +79,19 @@
             "artifactName": "${name}-${version}.${ext}"
         },
         "win": {
-            "target": [
-                "nsis"
-            ],
-            "arch": [
-                "x64",
-                "ia32"
-            ],
+            "target": {
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            },
             "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}.${ext}"
+            "artifactName": "${name}-setup-${version}-${arch}.${ext}"
         }
     },
     "devDependencies": {
