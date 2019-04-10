@@ -53,13 +53,13 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Install release dependencies on Linux'
   - script: |
-      npm run pack
-      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || /bin/true
-      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || /bin/true
-      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || /bin/true
-      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || /bin/true
-      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || /bin/true
-      cp release/latest* "$(Build.ArtifactStagingDirectory)" || /bin/true
+      build -p never
+      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
+      cp release/latest* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Release'
   - task: GitHubRelease@0

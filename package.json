@@ -25,7 +25,7 @@
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-nrfjprog": "node build/get-nrfjprog.js",
-        "pack": "npm run build && build -p never -w",
+        "pack": "npm run build && build -p never",
         "release": "build -p always"
     },
     "author": "Nordic Semiconductor ASA",
