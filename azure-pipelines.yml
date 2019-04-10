@@ -53,7 +53,7 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Install release dependencies on Linux'
   - script: |
-      ./node_module/.bin/build -p never
+      ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
