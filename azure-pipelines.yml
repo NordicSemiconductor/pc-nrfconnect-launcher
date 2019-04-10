@@ -8,109 +8,27 @@ jobs:
   variables:
     TZ: 'Europe/Oslo'
     WIN_TZ: 'W. Europe Standard Time'
-    npm_config_runtime: ''
-    npm_config_target: ''
-    npm_config_disturl: ''
+    NODE_VERSION: 10.15.0
   strategy:
     matrix:
-      linux_node_8_x:
-        image_name: 'ubuntu-16.04'
-        node_version: 8.15.0
       linux_node_10_x:
         image_name: 'ubuntu-16.04'
-        node_version: 10.15.0
-      linux_node_11_x:
-        image_name: 'ubuntu-16.04'
-        node_version: 11.7.0
-      linux_electron_2_x:
-        image_name: 'ubuntu-16.04'
-        node_version: 8.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 2.0.17
-        npm_config_disturl: 'https://atom.io/download/electron'
-      # linux_electron_4_x:
-      #   image_name: 'ubuntu-16.04'
-      #   node_version: 10.15.0
-      #   npm_config_runtime: 'electron'
-      #   npm_config_target: 4.1.4
-      #   npm_config_disturl: 'https://atom.io/download/electron'
-      macOS_node_8_x:
-        image_name: 'macos-10.13'
-        node_version: 8.15.0
       macOS_node_10_x:
         image_name: 'macos-10.13'
-        node_version: 10.15.0
-      macOS_node_11_x:
-        image_name: 'macos-10.13'
-        node_version: 11.7.0
-      macOS_electron_2_x:
-        image_name: 'macos-10.13'
-        node_version: 8.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 2.0.17
-        npm_config_disturl: 'https://atom.io/download/electron'
-      # macOS_electron_4_x:
-      #   image_name: 'macos-10.13'
-      #   node_version: 10.15.0
-      #   npm_config_runtime: 'electron'
-      #   npm_config_target: 4.1.4
-      #   npm_config_disturl: 'https://atom.io/download/electron'
-      win64_node_8_x:
-        image_name: 'vs2017-win2016'
-        node_version: 8.15.0
       win64_node_10_x:
         image_name: 'vs2017-win2016'
-        node_version: 10.15.0
-      win64_node_11_x:
-        image_name: 'vs2017-win2016'
-        node_version: 11.7.0
-      win64_electron_2_x:
-        image_name: 'vs2017-win2016'
-        node_version: 8.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 2.0.17
-        npm_config_disturl: 'https://atom.io/download/electron'
-      win64_electron_4_x:
-        # image_name: 'vs2017-win2016'
-        # node_version: 10.15.0
-        # npm_config_runtime: 'electron'
-        # npm_config_target: 4.1.4
-        # npm_config_disturl: 'https://atom.io/download/electron'
-      win32_node_8_x:
-        image_name: 'vs2017-win2016'
-        node_version: 8.15.0
-        node_arch: '32'
       win32_node_10_x:
         image_name: 'vs2017-win2016'
-        node_version: 10.15.0
-        node_arch: '32'
-      win32_node_11_x:
-        image_name: 'vs2017-win2016'
-        node_version: 11.7.0
-        node_arch: '32'
-      win32_electron_2_x:
-        image_name: 'vs2017-win2016'
-        node_version: 8.15.0
-        npm_config_runtime: 'electron'
-        npm_config_target: 2.0.17
-        npm_config_disturl: 'https://atom.io/download/electron'
-        node_arch: '32'
-      # win32_electron_4_x:
-      #   image_name: 'vs2017-win2016'
-      #   node_version: 10.15.0
-      #   npm_config_runtime: 'electron'
-      #   npm_config_target: 4.1.4
-      #   npm_config_disturl: 'https://atom.io/download/electron'
-      #   node_arch: '32'
+        NODE_ARCH: '32'
 
   pool:
     vmImage: $(image_name)
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: $(node_version)
-    condition: ne(variables['node_arch'], '32')
-    displayName: 'Install Node.js $(node_version)'
+      versionSpec: $(NODE_VERSION)
+    condition: ne(variables['NODE_ARCH'], '32')
+    displayName: 'Install Node.js $(NODE_VERSION)'
   - bash: |
       choco install -y nvm
       export PATH=$NVM_HOME:$PATH
@@ -119,23 +37,13 @@ jobs:
       ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
     env: {
       NVM_HOME: "/C/ProgramData/nvm",
-      NVM_SYMLINK: "/C/ProgramData/nvm/v$(node_version)",
+      NVM_SYMLINK: "/C/ProgramData/nvm/v$(NODE_VERSION)",
       NODE_SYMLINK: "/C/Program Files/nodejs",
-      NODE_VERSION: $(node_version),
-      NODE_ARCH: $(node_arch),
     }
-    condition: and(contains(variables['image_name'], 'win'), eq(variables['node_arch'], '32'))
-    displayName: 'Install Node.js $(node_version) 32-bit'
+    condition: and(contains(variables['image_name'], 'win'), eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
   - script: |
       npm i
       npm run build
       npm test
-    env: {
-      npm_config_runtime: $(npm_config_runtime),
-      npm_config_target: $(npm_config_target),
-      npm_config_disturl: $(npm_config_disturl),
-      NODE_VERSION: $(node_version),
-      NODE_ARCH: $(node_arch),
-    }
     displayName: 'Build'
-
