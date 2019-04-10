@@ -46,9 +46,16 @@ jobs:
       npm i
       npm run build
       npm run test
-      npm run release
     displayName: 'Build'
   - script: |
+      sudo apt-get update
+      sudo apt-get install icnsutils
+    condition: contains(variables['IMAGE_NAME'], 'ubuntu')
+  - script: |
       npm run release
+    env: {
+      GH_TOKEN: $(wayland_github_token)
+    }
+    condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Release'
 
