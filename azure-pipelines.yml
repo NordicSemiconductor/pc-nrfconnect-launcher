@@ -50,7 +50,8 @@ jobs:
   - script: |
       sudo apt-get update
       sudo apt-get install icnsutils
-    condition: contains(variables['IMAGE_NAME'], 'ubuntu')
+    condition: and(contains(variables['IMAGE_NAME'], 'ubuntu'), ne(variables['Build.Reason'], 'PullRequest'))
+    displayName: 'Install release dependencies on Linux'
   - script: |
       npm run release
     env: {
