@@ -45,5 +45,10 @@ jobs:
   - script: |
       npm i
       npm run build
-      npm test
+      npm run test
+      npm run release
     displayName: 'Build'
+  - script: |
+      npm run release
+    displayName: 'Release'
+
