@@ -54,7 +54,7 @@ jobs:
     displayName: 'Install release dependencies on Linux'
   - script: |
       npm run pack
-      cp -R release/* "$(Build.ArtifactStagingDirectory)"
+      cp release/* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Release'
   - task: GitHubRelease@0
