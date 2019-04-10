@@ -79,13 +79,9 @@
             "artifactName": "${name}-${version}.${ext}"
         },
         "win": {
-            "target": {
-                "target": "nsis",
-                "arch": [
-                    "x64",
-                    "ia32"
-                ]
-            },
+            "target": [
+                "nsis"
+            ],
             "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {

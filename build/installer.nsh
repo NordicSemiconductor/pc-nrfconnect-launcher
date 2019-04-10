@@ -45,7 +45,7 @@
   ${If} $0 == ""
     ; nRF5x-Command-Line-Tools is not installed. Run installer.
     ${If} ${RunningX64}
-      ExecWait '"$INSTDIR\nrfjprog-win32-x86.exe" /passive /norestart'
+      ExecWait '"$INSTDIR\nrfjprog-win32-x64.exe" /passive /norestart'
     ${Else}
       ExecWait '"$INSTDIR\nrfjprog-win32-ia32.exe" /passive /norestart'
     ${EndIf}
