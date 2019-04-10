@@ -12,17 +12,17 @@ jobs:
   strategy:
     matrix:
       linux_node_10_x:
-        image_name: 'ubuntu-16.04'
+        IMAGE_NAME: 'ubuntu-16.04'
       macOS_node_10_x:
-        image_name: 'macos-10.13'
+        IMAGE_NAME: 'macos-10.13'
       win64_node_10_x:
-        image_name: 'vs2017-win2016'
+        IMAGE_NAME: 'vs2017-win2016'
       win32_node_10_x:
-        image_name: 'vs2017-win2016'
+        IMAGE_NAME: 'vs2017-win2016'
         NODE_ARCH: '32'
 
   pool:
-    vmImage: $(image_name)
+    vmImage: $(IMAGE_NAME)
   steps:
   - task: NodeTool@0
     inputs:
@@ -40,7 +40,7 @@ jobs:
       NVM_SYMLINK: "/C/ProgramData/nvm/v$(NODE_VERSION)",
       NODE_SYMLINK: "/C/Program Files/nodejs",
     }
-    condition: and(contains(variables['image_name'], 'win'), eq(variables['NODE_ARCH'], '32'))
+    condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
   - script: |
       npm i
