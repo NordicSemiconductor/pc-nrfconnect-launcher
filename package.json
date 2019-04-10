@@ -82,6 +82,10 @@
             "target": [
                 "nsis"
             ],
+            "arch": [
+                "x64",
+                "ia32"
+            ],
             "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {
