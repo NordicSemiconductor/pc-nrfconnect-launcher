@@ -50,13 +50,26 @@ jobs:
   - script: |
       sudo apt-get update
       sudo apt-get install icnsutils
-    condition: and(contains(variables['IMAGE_NAME'], 'ubuntu'), ne(variables['Build.Reason'], 'PullRequest'))
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Install release dependencies on Linux'
   - script: |
-      npm run release
-    env: {
-      GH_TOKEN: $(wayland_github_token)
-    }
+      npm run pack
+      cp -R release/*.exe "$(Build.ArtifactStagingDirectory)"
+      cp -R release/*.zip "$(Build.ArtifactStagingDirectory)"
+      cp -R release/*.dmg "$(Build.ArtifactStagingDirectory)"
+      cp -R release/*.tar.gz "$(Build.ArtifactStagingDirectory)"
+      cp -R release/*.AppImage "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Release'
+  - task: GitHubRelease@0
+    inputs:
+      gitHubConnection: 'waylandCI'
+      repositoryName: 'NordicSemiconductor/pc-nrfconnect-core'
+      action: 'edit'
+      tagSource: 'Git tag'
+      tag: '$(Build.SourceBranchName)'
+      assetUploadMode: 'replace'
+      isDraft: 'true'
+      addChangeLog: 'false'
+    condition: ne(variables['Build.Reason'], 'PullRequest')
 
