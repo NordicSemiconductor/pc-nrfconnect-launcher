@@ -17,8 +17,10 @@ jobs:
         IMAGE_NAME: 'macos-10.13'
       win64_node_10_x:
         IMAGE_NAME: 'vs2017-win2016'
+        ARCH: 'x64'
       win32_node_10_x:
         IMAGE_NAME: 'vs2017-win2016'
+        ARCH: 'ia32'
         NODE_ARCH: '32'
 
   pool:
@@ -53,6 +55,7 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Install release dependencies on Linux'
   - bash: |
+      env
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
