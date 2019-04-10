@@ -42,7 +42,7 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
-  - bash: |
+  - script: |
       npm i
       npm run build
       npm run test
