@@ -58,18 +58,18 @@ const PLATFORM_CONFIG = {
     win32_ia32: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
         fileid: 'B96A931BEF8C400DA9BA4EADBE115071',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-ia32.exe'),
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-installer.exe'),
         instructions: `WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the ${DOWNLOAD_DIR} directory and run the "nrfjprog-win32.exe" installer that you will find there.`,
     },
     win32_x64: {
         // When changing this, remember to also update the nrfjprog version in installer.nsh
         fileid: 'AAFC401DA6794101A4682508DA8A74C4',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-win32-x64.exe'),
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-installer.exe'),
         instructions: `WARNING: You must manually install the latest nRF5x command line tools on this platform. Please check the ${DOWNLOAD_DIR} directory and run the "nrfjprog-win32.exe" installer that you will find there.`,
     },
     linux_x64: {
         fileid: '8F19D314130548209E75EFFADD9348DB',
-        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux-x64.tar'),
+        destinationFile: path.join(DOWNLOAD_DIR, 'nrfjprog-linux.tar'),
         extractTo: path.join(DOWNLOAD_DIR, 'unpacked'),
         copyFiles: {
             source: path.join(DOWNLOAD_DIR, 'unpacked', 'nrfjprog'),

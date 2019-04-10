@@ -33,31 +33,19 @@
   StrCpy $BUNDLED_NRFJPROG_VERSION "9.8.1"
 
   ; Adding nRF5x-Command-Line-Tools installer (downloaded by 'npm run get-nrfjprog')
-  ${If} ${RunningX64}
-    File "${BUILD_RESOURCES_DIR}\nrfjprog\nrfjprog-win32-x64.exe"
-  ${Else}
-    File "${BUILD_RESOURCES_DIR}\nrfjprog\nrfjprog-win32-ia32.exe"
-  ${EndIf}
+  File "${BUILD_RESOURCES_DIR}\nrfjprog\nrfjprog-installer.exe"
 
   ; Checking if we have nRF5x-Command-Line-Tools installed
   EnumRegKey $0 HKLM "SOFTWARE\Nordic Semiconductor\nrfjprog" 0
 
   ${If} $0 == ""
     ; nRF5x-Command-Line-Tools is not installed. Run installer.
-    ${If} ${RunningX64}
-      ExecWait '"$INSTDIR\nrfjprog-win32-x64.exe" /passive /norestart'
-    ${Else}
-      ExecWait '"$INSTDIR\nrfjprog-win32-ia32.exe" /passive /norestart'
-    ${EndIf}
+    ExecWait '"$INSTDIR\nrfjprog-installer.exe" /passive /norestart'
   ${Else}
     ${VersionCompare} $BUNDLED_NRFJPROG_VERSION $0 $R0
     ${If} $R0 == 1
       ; nRF5x-Command-Line-Tools is older than the bundled version. Run installer.
-      ${If} ${RunningX64}
-        ExecWait '"$INSTDIR\nrfjprog-win32-x64.exe" /passive /norestart'
-      ${Else}
-        ExecWait '"$INSTDIR\nrfjprog-win32-ia32.exe" /passive /norestart'
-      ${EndIf}
+      ExecWait '"$INSTDIR\nrfjprog-installer.exe" /passive /norestart'
     ${EndIf}
   ${EndIf}
 
