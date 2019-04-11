@@ -1,4 +1,6 @@
 # nRF Connect
+
+[![Build Status](https://dev.azure.com/NordicSemiconductor/Wayland/_apis/build/status/pc-nrfconnect-core?branchName=master)](https://dev.azure.com/NordicSemiconductor/Wayland/_build/latest?definitionId=8&branchName=master)
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
 nRF Connect is a cross-platform framework for creating desktop apps for use with development kits or dongles from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the devices over serial port. The framework comes with a skeleton that has standard UI components for selecting devices, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
