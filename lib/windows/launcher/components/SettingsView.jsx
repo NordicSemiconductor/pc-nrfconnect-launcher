@@ -37,10 +37,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Button } from 'react-bootstrap';
+import { clipboard } from 'electron';
 import moment from 'moment';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 import InputLineDialog from './InputLineDialog';
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
+
+const CopyToClipboard = ({ text }) => (
+    <Button
+        bsSize="small"
+        className="glyphicon glyphicon-copy"
+        title="Copy to clipboard"
+        onClick={() => clipboard.writeText(text)}
+    />
+);
+
+CopyToClipboard.propTypes = {
+    text: PropTypes.string.isRequired,
+};
 
 function cancel(event) {
     event.preventDefault();
@@ -151,8 +165,11 @@ class SettingsView extends React.Component {
                                     .map(name => (
                                         <tr key={name} className="core-settings-source">
                                             <td className="core-settings-source-name">{name}</td>
+                                            <td className="core-settings-copy-to-clipboard">
+                                                <CopyToClipboard text={sourcesJS[name]} />
+                                            </td>
                                             <td
-                                                className="core-settings-source-url"
+                                                className="core-settings-source-url selectable"
                                                 title={sourcesJS[name]}
                                             >
                                                 {sourcesJS[name]}
