@@ -30,8 +30,10 @@ jobs:
     inputs:
       secureFile: 'secure-test.txt'
   - bash: |
-      echo $env:DOWNLOADSECUREFILE2_SECUREFILEPATH
-      less $env:DOWNLOADSECUREFILE2_SECUREFILEPATH
+      echo $env:DOWNLOADSECUREFILE_SECUREFILEPATH
+      less $env:DOWNLOADSECUREFILE_SECUREFILEPATH
+      echo $DOWNLOADSECUREFILE_SECUREFILEPATH
+      less $DOWNLOADSECUREFILE_SECUREFILEPATH
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
