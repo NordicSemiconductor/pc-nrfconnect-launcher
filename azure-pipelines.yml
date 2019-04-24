@@ -63,10 +63,7 @@ jobs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
   - bash: |
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
-      export WIN_CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
-      echo $CSC_LINK
-      echo $CSC_KEY_PASSWORD
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
@@ -94,4 +91,3 @@ jobs:
       isDraft: 'true'
       addChangeLog: 'false'
     condition: ne(variables['Build.Reason'], 'PullRequest')
-
