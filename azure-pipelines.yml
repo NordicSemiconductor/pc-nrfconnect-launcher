@@ -63,10 +63,13 @@ jobs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE'
   - bash: |
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export WIN_CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Setup release environment for Windows'
   - bash: |
+      echo $CSC_LINK
+      echo $CSC_KEY_PASSWORD
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
