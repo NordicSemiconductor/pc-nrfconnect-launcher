@@ -6,19 +6,23 @@ trigger:
 jobs:
 - job: Build
   variables:
-    TZ: 'Europe/Oslo'
-    WIN_TZ: 'W. Europe Standard Time'
-    NODE_VERSION: 10.15.0
+  - group: wayland
+  - name: TZ
+    value: 'Europe/Oslo'
+  - name: WIN_TZ
+    value: 'W. Europe Standard Time'
+  - name: NODE_VERSION
+    value: 10.15.0
   strategy:
     matrix:
-      linux_node_10_x:
+      linux:
         IMAGE_NAME: 'ubuntu-16.04'
-      macOS_node_10_x:
+      macOS:
         IMAGE_NAME: 'macos-10.13'
-      win64_node_10_x:
+      win64:
         IMAGE_NAME: 'vs2017-win2016'
         ARCH: 'x64'
-      win32_node_10_x:
+      win32:
         IMAGE_NAME: 'vs2017-win2016'
         ARCH: 'ia32'
         NODE_ARCH: '32'
