@@ -26,11 +26,6 @@ jobs:
   pool:
     vmImage: $(IMAGE_NAME)
   steps:
-  - task: DownloadSecureFile@1
-    inputs:
-      secureFile: 'secure-test.txt'
-  - bash: |
-      echo $DOWNLOADSECUREFILE_SECUREFILEPATH
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
@@ -58,7 +53,15 @@ jobs:
       sudo apt-get update
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Install release dependencies on Linux'
+    displayName: 'Setup release environment for Linux'
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE'
+  - bash: |
+      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Setup release environment for Windows'
   - bash: |
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
