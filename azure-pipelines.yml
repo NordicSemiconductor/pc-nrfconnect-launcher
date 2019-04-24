@@ -26,6 +26,12 @@ jobs:
   pool:
     vmImage: $(IMAGE_NAME)
   steps:
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'secure-test.txt'
+  - bash: |
+      echo $env:DOWNLOADSECUREFILE2_SECUREFILEPATH
+      less $env:DOWNLOADSECUREFILE2_SECUREFILEPATH
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
