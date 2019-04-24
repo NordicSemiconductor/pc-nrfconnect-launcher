@@ -37,7 +37,6 @@ The following apps have been created for nRF Connect;
 * [Power Profiler](https://www.npmjs.com/package/pc-nrfconnect-ppk)
 * [Programmer](https://www.npmjs.com/package/pc-nrfconnect-programmer)
 * [RSSI Viewer](https://www.npmjs.com/package/pc-nrfconnect-rssi)
-* [nRF Cloud Gateway](https://www.npmjs.com/package/nrf-cloud-gateway)
 
 ## Automatic installation of apps
 
