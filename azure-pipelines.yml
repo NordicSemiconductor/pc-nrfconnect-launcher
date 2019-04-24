@@ -73,7 +73,6 @@ jobs:
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Release on Windows'
-    displayName: 'Release on Windows'
   - bash: |
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
