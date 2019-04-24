@@ -60,7 +60,7 @@ jobs:
     displayName: 'Setup release environment for Linux'
   - task: DownloadSecureFile@1
     inputs:
-      secureFile: 'NORDIC_SIGNING_CERTIFICATE'
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
   - bash: |
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export WIN_CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
@@ -69,10 +69,11 @@ jobs:
       echo $CSC_KEY_PASSWORD
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Release on Windows'
   - bash: |
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), not(contains(variables['IMAGE_NAME'], 'win')))
-    displayName: 'Release on Windows'
+    displayName: 'Release on Linux or macOS'
   - bash: |
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
