@@ -65,13 +65,6 @@ jobs:
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
       ./node_modules/.bin/build -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Release on Windows'
-  - bash: |
-      ./node_modules/.bin/build -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), not(contains(variables['IMAGE_NAME'], 'win')))
-    displayName: 'Release on Linux or macOS'
-  - bash: |
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
@@ -79,7 +72,7 @@ jobs:
       cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
       cp release/latest* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
-    displayName: 'Copy artifacts'
+    displayName: 'Release'
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'waylandCI'
