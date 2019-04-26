@@ -6,19 +6,23 @@ trigger:
 jobs:
 - job: Build
   variables:
-    TZ: 'Europe/Oslo'
-    WIN_TZ: 'W. Europe Standard Time'
-    NODE_VERSION: 10.15.0
+  - group: wayland
+  - name: TZ
+    value: 'Europe/Oslo'
+  - name: WIN_TZ
+    value: 'W. Europe Standard Time'
+  - name: NODE_VERSION
+    value: 10.15.0
   strategy:
     matrix:
-      linux_node_10_x:
+      linux:
         IMAGE_NAME: 'ubuntu-16.04'
-      macOS_node_10_x:
+      macOS:
         IMAGE_NAME: 'macos-10.13'
-      win64_node_10_x:
+      win64:
         IMAGE_NAME: 'vs2017-win2016'
         ARCH: 'x64'
-      win32_node_10_x:
+      win32:
         IMAGE_NAME: 'vs2017-win2016'
         ARCH: 'ia32'
         NODE_ARCH: '32'
@@ -53,8 +57,13 @@ jobs:
       sudo apt-get update
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Install release dependencies on Linux'
+    displayName: 'Setup release environment for Linux'
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
   - bash: |
+      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
@@ -75,4 +84,3 @@ jobs:
       isDraft: 'true'
       addChangeLog: 'false'
     condition: ne(variables['Build.Reason'], 'PullRequest')
-
