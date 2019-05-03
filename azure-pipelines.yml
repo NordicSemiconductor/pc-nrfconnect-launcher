@@ -48,11 +48,12 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
-  - script: |
-      npm i
-      npm run build
-      npm run test
+  - script: npm i
+    displayName: 'Install modules'
+  - script: npm run build
     displayName: 'Build'
+  - script: npm run test
+    displayName: 'Jest'
   - bash: |
       sudo apt-get update
       sudo apt-get install icnsutils
