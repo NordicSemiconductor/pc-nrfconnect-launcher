@@ -30,6 +30,9 @@ jobs:
   pool:
     vmImage: $(IMAGE_NAME)
   steps:
+  - script: tzutil /s "$(WIN_TZ)"
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Fix Windows timezone'
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
@@ -48,10 +51,10 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
-  - script: |
+  - bash: |
       npm i
       npm run build
-      npm run test
+      npm test
     displayName: 'Build'
   - bash: |
       sudo apt-get update
