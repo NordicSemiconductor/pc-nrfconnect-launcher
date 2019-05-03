@@ -30,7 +30,7 @@ jobs:
   pool:
     vmImage: $(IMAGE_NAME)
   steps:
-  - script: tzutil /s "W. Europe Standard Time"
+  - script: tzutil /s "$(WIN_TZ)"
     condition: contains(variables['IMAGE_NAME'], 'win')
     displayName: 'Fix Windows timezone'
   - task: NodeTool@0
