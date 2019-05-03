@@ -1,0 +1,89 @@
+trigger:
+- master
+- release/*
+- test-azure
+
+jobs:
+- job: Build
+  variables:
+  - group: wayland
+  - name: TZ
+    value: 'Europe/Oslo'
+  - name: WIN_TZ
+    value: 'W. Europe Standard Time'
+  - name: NODE_VERSION
+    value: 10.15.0
+  strategy:
+    matrix:
+      linux:
+        IMAGE_NAME: 'ubuntu-16.04'
+      macOS:
+        IMAGE_NAME: 'macos-10.13'
+      win64:
+        IMAGE_NAME: 'vs2017-win2016'
+        ARCH: 'x64'
+      win32:
+        IMAGE_NAME: 'vs2017-win2016'
+        ARCH: 'ia32'
+        NODE_ARCH: '32'
+
+  pool:
+    vmImage: $(IMAGE_NAME)
+  steps:
+  - script: tzutil /s "$(WIN_TZ)"
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Fix Windows timezone'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(NODE_VERSION)
+    condition: ne(variables['NODE_ARCH'], '32')
+    displayName: 'Install Node.js $(NODE_VERSION)'
+  - bash: |
+      choco install -y nvm
+      export PATH=$NVM_HOME:$PATH
+      nvm install $(NODE_VERSION) $(NODE_ARCH)
+      nvm use $(NODE_VERSION) $(NODE_ARCH)
+      ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
+    env: {
+      NVM_HOME: "/C/ProgramData/nvm",
+      NVM_SYMLINK: "/C/ProgramData/nvm/v$(NODE_VERSION)",
+      NODE_SYMLINK: "/C/Program Files/nodejs",
+    }
+    condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
+  - bash: |
+      npm i
+      npm run build
+      npm test
+    displayName: 'Build'
+  - bash: |
+      sudo apt-get update
+      sudo apt-get install icnsutils
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Setup release environment for Linux'
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
+  - bash: |
+      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
+      ./node_modules/.bin/build -p never
+      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
+      cp release/latest* "$(Build.ArtifactStagingDirectory)"
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    displayName: 'Release'
+  - task: GitHubRelease@0
+    inputs:
+      gitHubConnection: 'waylandCI'
+      repositoryName: 'NordicSemiconductor/pc-nrfconnect-core'
+      action: 'edit'
+      tagSource: 'Git tag'
+      tag: '$(Build.SourceBranchName)'
+      assetUploadMode: 'replace'
+      isDraft: 'true'
+      addChangeLog: 'false'
+    condition: ne(variables['Build.Reason'], 'PullRequest')
