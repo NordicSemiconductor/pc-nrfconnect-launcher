@@ -30,6 +30,9 @@ jobs:
   pool:
     vmImage: $(IMAGE_NAME)
   steps:
+  - script: tzutil.exe /s 'W. Europe Standard Time'
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Fix Windows timezone'
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
@@ -48,12 +51,11 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
-  - script: npm i
-    displayName: 'Install modules'
-  - script: npm run build
+  - bash: |
+      npm i
+      npm run build
+      npm test
     displayName: 'Build'
-  - script: npm run test
-    displayName: 'Jest'
   - bash: |
       sudo apt-get update
       sudo apt-get install icnsutils
