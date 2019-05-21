@@ -128,7 +128,7 @@
         "nrf-device-lister": "2.1.1",
         "nrf-device-setup": "0.4.5",
         "pc-ble-driver-js": "2.5.1",
-        "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git#feature/dfu-probe",
+        "pc-nrfjprog-js": "git+https://github.com/NordicSemiconductor/pc-nrfjprog-js.git",
         "png2icons": "1.0.1",
         "semver": "5.6.0",
         "shasum": "1.0.2",
