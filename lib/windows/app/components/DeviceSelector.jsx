@@ -150,8 +150,7 @@ export default class DeviceSelector extends React.Component {
         } else {
             togglerText = 'Select device';
         }
-        // Add 'core-device-port-indicator' if need in the future
-        const indicatorCssClass = `hidden ${portIndicatorStatus}`;
+        const indicatorCssClass = `hidden core-device-port-indicator ${portIndicatorStatus}`;
 
         return (
             <>
