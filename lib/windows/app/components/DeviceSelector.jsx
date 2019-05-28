@@ -79,7 +79,7 @@ export default class DeviceSelector extends React.Component {
         } = this.props;
 
         return ([
-            <Dropdown.Divider />,
+            <Dropdown.Divider key="close-divider" />,
             <Dropdown.Item
                 key="close-device"
                 className={menuItemCssClass}
