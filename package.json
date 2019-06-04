@@ -119,7 +119,7 @@
         "fs-extra": "7.0.1",
         "mustache": "3.0.1",
         "nrf-device-lister": "2.1.1",
-        "nrf-device-setup": "0.4.5",
+        "nrf-device-setup": "0.4.6",
         "pc-ble-driver-js": "2.5.1",
         "pc-nrfjprog-js": "1.4.4",
         "png2icons": "1.0.1",
