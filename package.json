@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.6.2",
+    "version": "2.7.0-rc",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -9,7 +9,7 @@
     "main": "index.js",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
-        "postinstall": "npm run get-nrfjprog",
+        "postinstall": "npm run get-jlink",
         "app": "electron .",
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
@@ -24,7 +24,7 @@
         "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
-        "get-nrfjprog": "node build/get-nrfjprog.js",
+        "get-jlink": "get-jlink -o build",
         "pack": "npm run build && build -p never",
         "release": "build -p always"
     },
@@ -57,7 +57,7 @@
             ],
             "extraFiles": [
                 {
-                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "from": "node_modules/pc-nrfjprog-js/nrfjprog/lib",
                     "to": ".",
                     "filter": "*.so*"
                 }
@@ -69,7 +69,7 @@
             "artifactName": "${name}-${version}-${os}.${ext}",
             "extraFiles": [
                 {
-                    "from": "build/nrfjprog/unpacked/nrfjprog",
+                    "from": "node_modules/pc-nrfjprog-js/nrfjprog/lib",
                     "to": "Frameworks",
                     "filter": "*.dylib"
                 }
@@ -81,6 +81,13 @@
         "win": {
             "target": [
                 "nsis"
+            ],
+            "extraFiles": [
+                {
+                    "from": "node_modules/pc-nrfjprog-js/nrfjprog/lib",
+                    "to": ".",
+                    "filter": "*.dll"
+                }
             ],
             "publisherName": "Nordic Semiconductor ASA"
         },
@@ -112,16 +119,16 @@
     },
     "dependencies": {
         "axios": "0.18.0",
-        "create-react-class": "15.6.3",
         "chmodr": "1.2.0",
+        "create-react-class": "15.6.3",
         "electron-log": "2.2.17",
         "electron-updater": "2.20.2",
         "fs-extra": "7.0.1",
         "mustache": "3.0.1",
-        "nrf-device-lister": "2.1.1",
-        "nrf-device-setup": "0.4.6",
+        "nrf-device-lister": "2.2.0",
+        "nrf-device-setup": "0.5.0",
         "pc-ble-driver-js": "2.5.1",
-        "pc-nrfjprog-js": "1.4.4",
+        "pc-nrfjprog-js": "1.5.0",
         "png2icons": "1.0.1",
         "semver": "5.6.0",
         "shasum": "1.0.2",
