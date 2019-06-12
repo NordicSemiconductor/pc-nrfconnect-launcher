@@ -30,6 +30,6 @@
     },
     "nrf-framework-courses": {
         "displayName": "Getting Started Assistant",
-        "description": "Guide to set up development environment"
+        "description": "Guide to set up the nRF Connect SDK"
     }
 }
