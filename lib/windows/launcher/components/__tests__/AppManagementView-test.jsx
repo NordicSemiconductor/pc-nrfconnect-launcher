@@ -306,4 +306,39 @@ describe('AppManagementView', () => {
 
         expect(onDownloadLatestAppInfo).not.toHaveBeenCalled();
     });
+
+    it('should render more info links for correctly defined homepage', () => {
+        expect(renderer.create(
+            <AppManagementView
+                apps={
+                    List([
+                        getImmutableApp({
+                            name: 'appA',
+                            displayName: 'App A',
+                            description: 'appA description',
+                            homepage: 'https://foo.bar/readme.md',
+                        }),
+                        getImmutableApp({
+                            name: 'appB',
+                            displayName: 'App B',
+                            description: 'appB description',
+                            homepage: '',
+                        }),
+                        getImmutableApp({
+                            name: 'appC',
+                            displayName: 'App C',
+                            description: 'appC description',
+                        }),
+                    ])
+                }
+                isRetrievingApps={false}
+                isLatestAppInfoDownloaded
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 });
