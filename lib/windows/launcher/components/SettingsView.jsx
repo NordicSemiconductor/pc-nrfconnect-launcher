@@ -47,10 +47,12 @@ import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 const CopyToClipboard = ({ text }) => (
     <Button
         bsSize="small"
-        className="glyphicon glyphicon-copy"
+        variant="light"
         title="Copy to clipboard"
         onClick={() => clipboard.writeText(text)}
-    />
+    >
+        <span className="mdi mdi-content-copy" />
+    </Button>
 );
 
 CopyToClipboard.propTypes = {
