@@ -22,7 +22,7 @@
     "pc-nrfconnect-linkmonitor": {
         "displayName": "LTE Link Monitor",
         "description": "Link monitor and AT command terminal",
-        "homepage": "https://www.nordicsemi.com/DocLib/Content/User_Guides/link_monitor/latest/UG/link_monitor/lm_intro"
+        "homepage": "https://infocenter.nordicsemi.com/topic/ug_link_monitor/UG/link_monitor/lm_intro.html"
     },
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
