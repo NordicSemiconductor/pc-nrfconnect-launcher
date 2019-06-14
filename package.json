@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.7.0-rc.1",
+    "version": "2.7.0-rc.2",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -98,12 +98,12 @@
         }
     },
     "devDependencies": {
-        "asar": "1.0.0",
         "@babel/polyfill": "7.2.5",
+        "asar": "1.0.0",
         "bootstrap": "3.4.1",
         "electron": "2.0.17",
         "electron-builder": "19.53.6",
-        "electron-is-dev": "1.0.1",
+        "electron-is-dev": "0.3.0",
         "moment": "2.24.0",
         "mousetrap": "1.6.2",
         "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:2.0.0",
