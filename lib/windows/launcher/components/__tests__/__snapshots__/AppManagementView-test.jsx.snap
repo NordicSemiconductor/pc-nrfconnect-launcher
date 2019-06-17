@@ -211,7 +211,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -254,7 +254,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -297,7 +297,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"

@@ -1,55 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UpdateProgressDialog should render cancelling 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Downloading update
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ForwardRef(Bootstrap(ProgressBar))
+    <Bootstrap(ProgressBar)
       label="42%"
       now={42}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render invisible 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={true}
   show={false}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Downloading update
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Downloading nRF Connect 
       ...
@@ -57,103 +62,112 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
     <Spinner
       className="core-spinner"
       size={16}
     />
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with cancel disabled when 100 percent complete 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Downloading update
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ForwardRef(Bootstrap(ProgressBar))
+    <Bootstrap(ProgressBar)
       label="100%"
       now={100}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Downloading update
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Downloading nRF Connect 
       1.2.3
       ...
     </p>
-    <ForwardRef(Bootstrap(ProgressBar))
+    <Bootstrap(ProgressBar)
       label="42%"
       now={42}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Downloading update
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Downloading nRF Connect 
       1.2.3
@@ -162,12 +176,12 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
     <Spinner
       className="core-spinner"
       size={16}
     />
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
