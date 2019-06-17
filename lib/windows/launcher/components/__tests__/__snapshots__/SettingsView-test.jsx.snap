@@ -15,17 +15,25 @@ exports[`SettingsView should render check for updates completed, with everything
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -35,7 +43,7 @@ exports[`SettingsView should render check for updates completed, with everything
         >
           Check for updates now
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <UpdateCheckSuccessDialog
@@ -60,9 +68,13 @@ exports[`SettingsView should render check for updates completed, with everything
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -72,7 +84,7 @@ exports[`SettingsView should render check for updates completed, with everything
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />
@@ -94,17 +106,25 @@ exports[`SettingsView should render check for updates completed, with updates av
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -114,7 +134,7 @@ exports[`SettingsView should render check for updates completed, with updates av
         >
           Check for updates now
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <UpdateCheckSuccessDialog
@@ -139,9 +159,13 @@ exports[`SettingsView should render check for updates completed, with updates av
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -151,7 +175,7 @@ exports[`SettingsView should render check for updates completed, with updates av
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />
@@ -171,17 +195,25 @@ exports[`SettingsView should render when checking for updates 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={true}
         onClick={[Function]}
         title="Checking..."
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -191,7 +223,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
         >
           Checking...
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div
@@ -211,9 +243,13 @@ exports[`SettingsView should render when checking for updates 1`] = `
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -223,7 +259,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />
@@ -241,17 +277,25 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -261,7 +305,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
         >
           Check for updates now
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div
@@ -281,9 +325,13 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -293,7 +341,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />
@@ -311,17 +359,25 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={true}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -331,7 +387,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
         >
           Check for updates now
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div
@@ -351,9 +407,13 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -363,7 +423,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />
@@ -385,17 +445,25 @@ exports[`SettingsView should render with last update check date 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <ForwardRef(Bootstrap(FormCheck))
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
         label="Check for updates at startup"
         onChange={[Function]}
+        title=""
         type="checkbox"
       />
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-sync"
@@ -405,7 +473,7 @@ exports[`SettingsView should render with last update check date 1`] = `
         >
           Check for updates now
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div
@@ -425,9 +493,13 @@ exports[`SettingsView should render with last update check date 1`] = `
     <div
       className="core-settings-sources-controls"
     >
-      <ForwardRef(Bootstrap(Button))
+      <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
           className="mdi mdi-playlist-plus"
@@ -437,7 +509,7 @@ exports[`SettingsView should render with last update check date 1`] = `
         >
           Add source
         </span>
-      </ForwardRef(Bootstrap(Button))>
+      </Button>
     </div>
   </div>
   <div />

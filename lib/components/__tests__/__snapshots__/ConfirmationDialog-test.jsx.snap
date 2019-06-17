@@ -1,154 +1,175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConfirmationDialog should not render cancel button if onCancel function is not provided 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={false}
   onHide={null}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Confirm
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Something happened.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
      
-    <ForwardRef(Bootstrap(Button))
+    <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
       variant="primary"
     >
       OK
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render invisible dialog 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={false}
   onHide={[Function]}
   show={false}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Confirm
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Do you confirm?
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
      
-    <ForwardRef(Bootstrap(Button))
+    <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
       variant="primary"
     >
       OK
-    </ForwardRef(Bootstrap(Button))>
-    <ForwardRef(Bootstrap(Button))
+    </Button>
+    <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop={false}
   onHide={[Function]}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Confirm
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Do you confirm?
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
      
-    <ForwardRef(Bootstrap(Button))
+    <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
       variant="primary"
     >
       OK
-    </ForwardRef(Bootstrap(Button))>
-    <ForwardRef(Bootstrap(Button))
+    </Button>
+    <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text and operation in progress 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   backdrop="static"
   onHide={[Function]}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Confirm
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p>
       Do you confirm?
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
+  </ModalBody>
+  <ModalFooter>
     <Spinner
       className="core-spinner"
       size={16}
     />
      
-    <ForwardRef(Bootstrap(Button))
+    <Button
+      active={false}
       className="core-btn"
       disabled={true}
       onClick={[Function]}
+      type="button"
       variant="primary"
     >
       OK
-    </ForwardRef(Bootstrap(Button))>
-    <ForwardRef(Bootstrap(Button))
+    </Button>
+    <Button
+      active={false}
       className="core-btn"
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;

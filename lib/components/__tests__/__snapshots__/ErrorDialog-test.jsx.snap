@@ -1,71 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ErrorDialog should render hidden dialog 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   onHide={[Function]}
   show={false}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Error
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody)) />
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody />
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`ErrorDialog should render visible dialog with one message 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   onHide={[Function]}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Error
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p
       className="core-error-dialog-message"
       key="Oops. An error occurred."
     >
       Oops. An error occurred.
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
 
 exports[`ErrorDialog should render visible dialog with two messages 1`] = `
-<ForwardRef(Bootstrap(Modal))
+<Bootstrap(Modal)
   onHide={[Function]}
   show={true}
 >
-  <ForwardRef(Bootstrap(ModalHeader))
+  <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
-    <ForwardRef(Bootstrap(ModalTitle))>
+    <ModalTitle>
       Error
-    </ForwardRef(Bootstrap(ModalTitle))>
-  </ForwardRef(Bootstrap(ModalHeader))>
-  <ForwardRef(Bootstrap(ModalBody))>
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
     <p
       className="core-error-dialog-message"
       key="Oops. An error occurred."
@@ -78,13 +89,17 @@ exports[`ErrorDialog should render visible dialog with two messages 1`] = `
     >
       Another error
     </p>
-  </ForwardRef(Bootstrap(ModalBody))>
-  <ForwardRef(Bootstrap(ModalFooter))>
-    <ForwardRef(Bootstrap(Button))
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
-    </ForwardRef(Bootstrap(Button))>
-  </ForwardRef(Bootstrap(ModalFooter))>
-</ForwardRef(Bootstrap(Modal))>
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
 `;
