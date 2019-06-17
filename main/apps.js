@@ -126,9 +126,12 @@ function downloadAppsJsonFile(appsJsonUrl) {
  */
 function downloadAppsJsonFiles() {
     const sources = settings.getSources();
-    return Promise.all(Object.keys(sources).map(source => (
-        downloadAppsJsonFile(sources[source])
-    )));
+    const sequence = (source, ...rest) => (
+        source
+            ? downloadAppsJsonFile(sources[source]).then(() => sequence(...rest))
+            : Promise.resolve()
+    );
+    return sequence(...Object.keys(sources));
 }
 
 /**

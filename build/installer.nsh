@@ -1,8 +1,11 @@
-; Required for ${VersionCompare}
-!include "WordFunc.nsh"
+; For string comparison 'S>':
+!include 'LogicLib.nsh'
+
+; For ExecShellWaitEx:
+!include 'StdUtils.nsh'
 
 ; Adding custom installation steps for electron-builder, ref:
-; https://github.com/electron-userland/electron-builder/wiki/NSIS
+; https://www.electron.build/configuration/nsis#custom-nsis-script
 !macro customInstall
   ; ===============================================================
   ; Installation of drivers for dfu trigger and cdc acm
@@ -25,28 +28,32 @@
   ExecWait '"$INSTDIR\vc_redist_2015.x86.exe" /passive /norestart'
 
   ; ===============================================================
-  ; Installation of nrfjprog
+  ; Installation of J-Link
   ; ===============================================================
 
-  ; The version of the bundled nRF5x-Command-Line-Tools
-  Var /GLOBAL BUNDLED_NRFJPROG_VERSION
-  StrCpy $BUNDLED_NRFJPROG_VERSION "9.8.1"
+  ; J-Link installer (downloaded by 'npm run get-jlink')
+  !define BundledJLinkVersion "V644e"
+  !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
+  !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
 
-  ; Adding nRF5x-Command-Line-Tools installer (downloaded by 'npm run get-nrfjprog')
-  File "${BUILD_RESOURCES_DIR}\nrfjprog\nrfjprog-installer.exe"
+  File ${JlinkInstallerResPath}
 
-  ; Checking if we have nRF5x-Command-Line-Tools installed
-  EnumRegKey $0 HKLM "SOFTWARE\Nordic Semiconductor\nrfjprog" 0
+  ; Checking J-Link versions
+  Var /GLOBAL LAST_JLINK_VERSION
+  StrCpy $LAST_JLINK_VERSION ""
+  StrCpy $0 0
+  loop:
+    EnumRegKey $1 HKCU "Software\SEGGER\J-Link" $0
+    StrCmp $1 "" done
+    StrCpy $LAST_JLINK_VERSION $1
+    IntOp $0 $0 + 1
+    Goto loop
+  done:
 
-  ${If} $0 == ""
-    ; nRF5x-Command-Line-Tools is not installed. Run installer.
-    ExecWait '"$INSTDIR\nrfjprog-installer.exe" /passive /norestart'
-  ${Else}
-    ${VersionCompare} $BUNDLED_NRFJPROG_VERSION $0 $R0
-    ${If} $R0 == 1
-      ; nRF5x-Command-Line-Tools is older than the bundled version. Run installer.
-      ExecWait '"$INSTDIR\nrfjprog-installer.exe" /passive /norestart'
-    ${EndIf}
+  ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
+    ; J-Link is older than the bundled version. Run installer.
+    StrCpy $0 "$INSTDIR\${JLinkInstaller}"
+    ${StdUtils.ExecShellWaitEx} $R0 $R1 $0 'runas' '/passive /norestart'
   ${EndIf}
 
 !macroend
