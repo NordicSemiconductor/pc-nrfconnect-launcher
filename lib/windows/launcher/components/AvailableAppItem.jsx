@@ -38,6 +38,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppItemButton from './AppItemButton';
 
+const urlCheck = /https?:\//;
+
 const AvailableAppItem = ({
     app,
     onInstall,
@@ -52,9 +54,11 @@ const AvailableAppItem = ({
         <div className="list-group-item-text">
             <p>{app.description}</p>
             <div className="core-app-management-item-footer">
-                <button className="btn btn-link core-btn-link" onClick={onReadMore} type="button">
-                    More information
-                </button>
+                { urlCheck.test(app.homepage) && (
+                    <button className="btn btn-link core-btn-link" onClick={onReadMore} type="button">
+                        More information
+                    </button>
+                )}
                 <div className="core-app-management-item-buttons">
                     <AppItemButton
                         text={isInstalling ? 'Installing...' : 'Install'}
