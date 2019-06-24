@@ -20,7 +20,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
           className="alert-icon-bg"
         />
         <span
-          className="glyphicon glyphicon-alert"
+          className="mdi mdi-alert"
           title="The app does not specify which nRF Connect version(s) it supports"
         />
       </div>
@@ -50,7 +50,7 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -62,59 +62,20 @@ exports[`AppLaunchView should render app with no engine version 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -142,7 +103,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
           className="alert-icon-bg"
         />
         <span
-          className="glyphicon glyphicon-alert"
+          className="mdi mdi-alert"
           title="The app only supports nRF Connect 1.x, which does not match your currently installed version"
         />
       </div>
@@ -172,7 +133,7 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -184,59 +145,20 @@ exports[`AppLaunchView should render app with unsupported engine version 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -264,7 +186,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
           className="info-icon-bg"
         />
         <span
-          className="glyphicon glyphicon-info-sign"
+          className="mdi mdi-information"
           title="A new version (v1.2.4) of this app is available, and can be installed from the \\"Add/remove apps\\" screen"
         />
       </div>
@@ -293,7 +215,7 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -305,59 +227,20 @@ exports[`AppLaunchView should render app with upgrade available 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -405,7 +288,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -417,59 +300,20 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -510,7 +354,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -522,59 +366,20 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -616,7 +421,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -628,59 +433,20 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -721,7 +487,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -733,59 +499,20 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -827,7 +554,7 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         type="button"
       >
         <span
-          className="glyphicon glyphicon-play"
+          className="mdi mdi-play"
         />
         <span
           className="core-btn-text"
@@ -839,59 +566,20 @@ exports[`AppLaunchView should render apps sorted by name and isOfficial 1`] = `
         className="dropdown btn-group core-dropdown"
       >
         <div
-          className="dropdown btn-group"
+          className="core-app-item-group dropdown"
+          onKeyDown={[Function]}
         >
           <button
             aria-expanded={false}
             aria-haspopup={true}
-            className="btn btn-primary core-btn dropdown-toggle btn btn-default"
+            className="dropdown-toggle btn btn-primary"
             disabled={false}
             id="bg-nested-dropdown"
             onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
             type="button"
           >
-             
-            <span
-              className="caret"
-            />
+            
           </button>
-          <ul
-            aria-labelledby="bg-nested-dropdown"
-            className="dropdown-menu dropdown-menu-right"
-            role="menu"
-          >
-            <li
-              className=""
-              role="presentation"
-            >
-              <a
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="menuitem"
-                tabIndex="-1"
-              >
-                <button
-                  className="btn btn-primary core-btn"
-                  disabled={false}
-                  onClick={[Function]}
-                  title="Create a desktop shortcut for this app"
-                  type="button"
-                >
-                  <span
-                    className="glyphicon glyphicon-share-alt"
-                  />
-                  <span
-                    className="core-btn-text"
-                  >
-                    Create shortcut
-                  </span>
-                </button>
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </div>

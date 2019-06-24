@@ -47,13 +47,13 @@ jest.mock('react-bootstrap', () => ({
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import { List } from 'immutable';
 import ErrorDialog from '../ErrorDialog';
 
 describe('ErrorDialog', () => {
     it('should render hidden dialog', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ErrorDialog
                 messages={List([])}
                 onClose={() => {}}
@@ -63,7 +63,7 @@ describe('ErrorDialog', () => {
     });
 
     it('should render visible dialog with one message', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ErrorDialog
                 messages={List(['Oops. An error occurred.'])}
                 onClose={() => {}}
@@ -73,7 +73,7 @@ describe('ErrorDialog', () => {
     });
 
     it('should render visible dialog with two messages', () => {
-        expect(renderer.create(
+        expect(shallow(
             <ErrorDialog
                 messages={List([
                     'Oops. An error occurred.',

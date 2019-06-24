@@ -36,10 +36,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Button, ControlLabel, FormControl, FormGroup,
-    Modal, ModalHeader, ModalBody, ModalFooter, ModalTitle,
-} from 'react-bootstrap';
+
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class InputLineDialog extends React.Component {
     render() {
@@ -53,24 +53,25 @@ class InputLineDialog extends React.Component {
         } = this.props;
         return (
             <Modal show={isVisible} onHide={onCancel} backdrop="static">
-                <ModalHeader>
-                    <ModalTitle>{title}</ModalTitle>
-                </ModalHeader>
+                <Modal.Header>
+                    <Modal.Title>{title}</Modal.Title>
+                </Modal.Header>
                 <form onSubmit={() => onOk(this.inputNode.value)}>
-                    <ModalBody>
-                        <FormGroup>
-                            <ControlLabel>{label}</ControlLabel>
-                            <FormControl
+                    <Modal.Body>
+                        <Form.Group>
+                            <Form.Label>{label}</Form.Label>
+                            <Form.Control
+                                as="input"
                                 type="text"
                                 inputRef={ref => { this.inputNode = ref; }}
                                 placeholder={placeholder}
                             />
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
                             type="submit"
-                            bsStyle="primary"
+                            variant="primary"
                             className="core-btn"
                             onClick={() => onOk(this.inputNode.value)}
                         >
@@ -82,7 +83,7 @@ class InputLineDialog extends React.Component {
                         >
                             Cancel
                         </Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </form>
             </Modal>
         );

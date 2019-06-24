@@ -1,13 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConfirmationDialog should not render cancel button if onCancel function is not provided 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={false}
   onHide={null}
   show={true}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Confirm
@@ -21,25 +22,28 @@ exports[`ConfirmationDialog should not render cancel button if onCancel function
   <ModalFooter>
      
     <Button
-      bsStyle="primary"
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       OK
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render invisible dialog 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={false}
   onHide={[Function]}
   show={false}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Confirm
@@ -53,32 +57,38 @@ exports[`ConfirmationDialog should render invisible dialog 1`] = `
   <ModalFooter>
      
     <Button
-      bsStyle="primary"
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       OK
     </Button>
     <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={false}
   onHide={[Function]}
   show={true}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Confirm
@@ -92,32 +102,38 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
   <ModalFooter>
      
     <Button
-      bsStyle="primary"
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       OK
     </Button>
     <Button
+      active={false}
       className="core-btn"
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text and operation in progress 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop="static"
   onHide={[Function]}
   show={true}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Confirm
@@ -129,29 +145,31 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
     </p>
   </ModalBody>
   <ModalFooter>
-    <img
-      alt="Loading..."
+    <Spinner
       className="core-spinner"
-      height={16}
-      src="test-file-stub"
-      width={16}
+      size={16}
     />
      
     <Button
-      bsStyle="primary"
+      active={false}
       className="core-btn"
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       OK
     </Button>
     <Button
+      active={false}
       className="core-btn"
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;

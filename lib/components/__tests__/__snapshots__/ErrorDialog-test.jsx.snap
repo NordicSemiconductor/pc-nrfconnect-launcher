@@ -1,12 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ErrorDialog should render hidden dialog 1`] = `
-<Modal
+<Bootstrap(Modal)
   onHide={[Function]}
   show={false}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Error
@@ -15,21 +16,26 @@ exports[`ErrorDialog should render hidden dialog 1`] = `
   <ModalBody />
   <ModalFooter>
     <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`ErrorDialog should render visible dialog with one message 1`] = `
-<Modal
+<Bootstrap(Modal)
   onHide={[Function]}
   show={true}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Error
@@ -38,27 +44,33 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
   <ModalBody>
     <p
       className="core-error-dialog-message"
+      key="Oops. An error occurred."
     >
       Oops. An error occurred.
     </p>
   </ModalBody>
   <ModalFooter>
     <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`ErrorDialog should render visible dialog with two messages 1`] = `
-<Modal
+<Bootstrap(Modal)
   onHide={[Function]}
   show={true}
 >
   <ModalHeader
     closeButton={true}
+    closeLabel="Close"
   >
     <ModalTitle>
       Error
@@ -67,21 +79,27 @@ exports[`ErrorDialog should render visible dialog with two messages 1`] = `
   <ModalBody>
     <p
       className="core-error-dialog-message"
+      key="Oops. An error occurred."
     >
       Oops. An error occurred.
     </p>
     <p
       className="core-error-dialog-message"
+      key="Another error"
     >
       Another error
     </p>
   </ModalBody>
   <ModalFooter>
     <Button
+      active={false}
+      disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;

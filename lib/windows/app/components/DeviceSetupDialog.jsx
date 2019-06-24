@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, Radio } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import { Iterable } from 'immutable';
 import ConfirmationDialog from '../../../components/ConfirmationDialog';
 
@@ -83,20 +83,20 @@ export default class DeviceSetupDialog extends React.Component {
                     onCancel={onCancel}
                 >
                     <p>{text}</p>
-                    <FormGroup>
+                    <Form.Group>
                         {
                             choices.map(choice => (
-                                <Radio
+                                <Form.Check
                                     key={choice}
                                     name="radioGroup"
+                                    type="radio"
                                     disabled={isInProgress}
                                     onClick={() => this.onSelectChoice(choice)}
-                                >
-                                    {choice}
-                                </Radio>
+                                    label={choice}
+                                />
                             ))
                         }
-                    </FormGroup>
+                    </Form.Group>
                 </ConfirmationDialog>
             );
         }

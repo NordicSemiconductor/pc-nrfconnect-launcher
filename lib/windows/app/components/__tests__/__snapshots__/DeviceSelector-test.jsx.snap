@@ -1,73 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DeviceSelector should render empty device list 1`] = `
-<Dropdown
-  className="core-padded-row"
-  disabled={true}
-  id="device-selector"
-  onToggle={[Function]}
-  open={false}
-  title="Select device (Alt+P)"
->
-  <DropdownToggle
-    className="core-device-selector core-btn btn-primary"
+Array [
+  <div
+    className="core-padded-row dropdown"
+    disabled={true}
+    id="device-selector"
+    onKeyDown={[Function]}
   >
-    No devices available
-  </DropdownToggle>
-  <DropdownMenu
-    className="core-dropdown-menu"
-    id="device-selector-list"
-  />
-</Dropdown>
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="dropdown-toggle btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      No devices available (Alt+P)
+    </button>
+  </div>,
+  <div
+    className="core-device-port-indicator off"
+  />,
+]
 `;
 
 exports[`DeviceSelector should render one device with serialport, usb, and jlink traits 1`] = `
-<Dropdown
-  className="core-padded-row"
-  disabled={false}
-  id="device-selector"
-  onToggle={[Function]}
-  open={false}
-  title="Select device (Alt+P)"
->
-  <DropdownToggle
-    className="core-device-selector core-btn btn-primary"
+Array [
+  <div
+    className="core-padded-row dropdown"
+    disabled={false}
+    id="device-selector"
+    onKeyDown={[Function]}
   >
-    Select device
-  </DropdownToggle>
-  <DropdownMenu
-    className="core-dropdown-menu"
-    id="device-selector-list"
-  >
-    <MenuItem
-      className="core-device-selector-item btn-primary serialport nordicUsb jlink"
-      onSelect={[Function]}
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="dropdown-toggle btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
     >
-      <div>
-        123456789
-        <span>
-          PCA42424
-        </span>
-      </div>
-      <ul
-        className="core-device-selector-item-details"
-      >
-        <li>
-          Serial port: 
-          /dev/ttyACM0
-        </li>
-        <li>
-          Serial port: 
-          /dev/ttyACM1
-        </li>
-        <li>
-          USB: 
-          Nordic Semiconductor
-           
-          nRF52 USB
-        </li>
-      </ul>
-    </MenuItem>
-  </DropdownMenu>
-</Dropdown>
+      Select device (Alt+P)
+    </button>
+  </div>,
+  <div
+    className="core-device-port-indicator off"
+  />,
+]
 `;

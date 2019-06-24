@@ -15,20 +15,28 @@ exports[`SettingsView should render check for updates completed, with everything
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -38,35 +46,11 @@ exports[`SettingsView should render check for updates completed, with everything
       </Button>
     </div>
   </div>
-  <Modal
-    backdrop={false}
-    onHide={null}
-    show={true}
-  >
-    <ModalHeader
-      closeButton={true}
-    >
-      <ModalTitle>
-        Update check completed
-      </ModalTitle>
-    </ModalHeader>
-    <ModalBody>
-      <p>
-        All apps are up to date.
-      </p>
-    </ModalBody>
-    <ModalFooter>
-       
-      <Button
-        bsStyle="primary"
-        className="core-btn"
-        disabled={false}
-        onClick={[Function]}
-      >
-        OK
-      </Button>
-    </ModalFooter>
-  </Modal>
+  <UpdateCheckSuccessDialog
+    isAppUpdateAvailable={false}
+    isVisible={true}
+    onOk={[Function]}
+  />
   <div
     className="core-settings-section"
     onDragEnter={[Function]}
@@ -85,11 +69,15 @@ exports[`SettingsView should render check for updates completed, with everything
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -99,7 +87,7 @@ exports[`SettingsView should render check for updates completed, with everything
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;
 
@@ -118,20 +106,28 @@ exports[`SettingsView should render check for updates completed, with updates av
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -141,35 +137,11 @@ exports[`SettingsView should render check for updates completed, with updates av
       </Button>
     </div>
   </div>
-  <Modal
-    backdrop={false}
-    onHide={null}
-    show={true}
-  >
-    <ModalHeader
-      closeButton={true}
-    >
-      <ModalTitle>
-        Update check completed
-      </ModalTitle>
-    </ModalHeader>
-    <ModalBody>
-      <p>
-        One or more updates are available. Go to the Add/remove apps screen to upgrade.
-      </p>
-    </ModalBody>
-    <ModalFooter>
-       
-      <Button
-        bsStyle="primary"
-        className="core-btn"
-        disabled={false}
-        onClick={[Function]}
-      >
-        OK
-      </Button>
-    </ModalFooter>
-  </Modal>
+  <UpdateCheckSuccessDialog
+    isAppUpdateAvailable={true}
+    isVisible={true}
+    onOk={[Function]}
+  />
   <div
     className="core-settings-section"
     onDragEnter={[Function]}
@@ -188,11 +160,15 @@ exports[`SettingsView should render check for updates completed, with updates av
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -202,7 +178,7 @@ exports[`SettingsView should render check for updates completed, with updates av
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;
 
@@ -219,20 +195,28 @@ exports[`SettingsView should render when checking for updates 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={true}
         onClick={[Function]}
         title="Checking..."
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -260,11 +244,15 @@ exports[`SettingsView should render when checking for updates 1`] = `
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -274,7 +262,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;
 
@@ -289,20 +277,28 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -330,11 +326,15 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -344,7 +344,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;
 
@@ -359,20 +359,28 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={true}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -400,11 +408,15 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -414,7 +426,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;
 
@@ -433,20 +445,28 @@ exports[`SettingsView should render with last update check date 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <Checkbox
+      <FormCheck
         checked={false}
+        disabled={false}
+        inline={false}
+        isInvalid={false}
+        isValid={false}
+        label="Check for updates at startup"
         onChange={[Function]}
-      >
-        Check for updates at startup
-      </Checkbox>
+        title=""
+        type="checkbox"
+      />
       <Button
+        active={false}
         className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         title="Check for updates now"
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-refresh"
+          className="mdi mdi-sync"
         />
         <span
           className="core-btn-text"
@@ -474,11 +494,15 @@ exports[`SettingsView should render with last update check date 1`] = `
       className="core-settings-sources-controls"
     >
       <Button
+        active={false}
         className="btn btn-primary core-btn"
+        disabled={false}
         onClick={[Function]}
+        type="button"
+        variant="primary"
       >
         <span
-          className="glyphicon glyphicon-plus"
+          className="mdi mdi-playlist-plus"
         />
         <span
           className="core-btn-text"
@@ -488,6 +512,6 @@ exports[`SettingsView should render with last update check date 1`] = `
       </Button>
     </div>
   </div>
-  <ConfirmRemoveSourceDialog />
+  <div />
 </div>
 `;

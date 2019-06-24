@@ -42,7 +42,6 @@ jest.mock('../../../../util/apps', () => ({
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import Immutable from 'immutable';
 import MainMenu from '../MainMenu';
@@ -62,20 +61,14 @@ const menuItems = Immutable.List([
 
 describe('MainMenu', () => {
     it('should render menu with no items', () => {
-        expect(renderer.create(
-            <MainMenu
-                menuItems={[]}
-                bindHotkey={() => {}}
-            />,
+        expect(mount(
+            <MainMenu menuItems={[]} defaultShow />,
         )).toMatchSnapshot();
     });
 
     it('should render menu with two items separated by divider', () => {
-        expect(renderer.create(
-            <MainMenu
-                menuItems={menuItems}
-                bindHotkey={() => {}}
-            />,
+        expect(mount(
+            <MainMenu menuItems={menuItems} defaultShow />,
         )).toMatchSnapshot();
     });
 
@@ -88,7 +81,7 @@ describe('MainMenu', () => {
                     text: 'Foo',
                     onClick,
                 }]}
-                bindHotkey={() => {}}
+                defaultShow
             />,
         );
         wrapper.find('a[title="Foo"]').first().simulate('click');

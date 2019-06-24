@@ -36,18 +36,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Modal,
-    Button,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalTitle,
-    ControlLabel,
-    FormControl,
-    FormGroup,
-    InputGroup,
-} from 'react-bootstrap';
+
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 class ProxyLoginDialog extends React.Component {
     constructor() {
@@ -100,40 +93,40 @@ class ProxyLoginDialog extends React.Component {
         const { password } = this.state;
         return (
             <Modal show={isVisible} backdrop>
-                <ModalHeader closeButton={false}>
-                    <ModalTitle>Proxy authentication required</ModalTitle>
-                </ModalHeader>
-                <ModalBody>
+                <Modal.Header closeButton={false}>
+                    <Modal.Title>Proxy authentication required</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <p>{ message }</p>
-                    <FormGroup controlId="username">
-                        <ControlLabel>Username:</ControlLabel>
+                    <Form.Group controlId="username">
+                        <Form.Label>Username:</Form.Label>
                         <InputGroup>
-                            <FormControl
+                            <Form.Control
                                 autoFocus
                                 value={username}
                                 onChange={this.onUserChanged}
                                 onKeyPress={this.onKeyPress}
                             />
                         </InputGroup>
-                    </FormGroup>
-                    <FormGroup controlId="password">
-                        <ControlLabel>Password:</ControlLabel>
+                    </Form.Group>
+                    <Form.Group controlId="password">
+                        <Form.Label>Password:</Form.Label>
                         <InputGroup>
-                            <FormControl
+                            <Form.Control
                                 value={password}
                                 type="password"
                                 onChange={this.onPasswordChanged}
                                 onKeyPress={this.onKeyPress}
                             />
                         </InputGroup>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
                     <Button onClick={onCancel}>Cancel</Button>
                     <Button onClick={this.onSubmitClicked} disabled={!this.isValidInput()}>
                         Login
                     </Button>
-                </ModalFooter>
+                </Modal.Footer>
             </Modal>
         );
     }

@@ -36,19 +36,18 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
-} from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const ProxyErrorDialog = ({
     isVisible,
     onOk,
 }) => (
     <Modal show={isVisible} backdrop>
-        <ModalHeader>
-            <ModalTitle>Proxy error</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
+        <Modal.Header>
+            <Modal.Title>Proxy error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             <p>
                 It appears that you are having problems authenticating with a proxy server.
                 This will prevent you from using certain features of nRF Connect, such as
@@ -60,10 +59,10 @@ const ProxyErrorDialog = ({
                 install apps manually by following the instructions at
                 https://github.com/NordicSemiconductor/pc-nrfconnect-core.
             </p>
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
             <Button onClick={onOk}>OK</Button>
-        </ModalFooter>
+        </Modal.Footer>
     </Modal>
 );
 

@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "2.7.0",
+    "version": "2.8.0-alpha.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -100,13 +100,13 @@
     "devDependencies": {
         "@babel/polyfill": "7.2.5",
         "asar": "1.0.0",
-        "bootstrap": "3.4.1",
+        "bootstrap": "4.3.1",
         "electron": "2.0.17",
         "electron-builder": "19.53.6",
         "electron-is-dev": "0.3.0",
         "moment": "2.24.0",
         "mousetrap": "1.6.2",
-        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:2.0.0",
+        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#feature/react-bootstrap-4",
         "prettysize": "2.0.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-logger": "3.0.6",
@@ -118,6 +118,7 @@
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
+        "@mdi/font": "3.5.95",
         "axios": "0.18.1",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
@@ -130,6 +131,8 @@
         "pc-ble-driver-js": "2.5.1",
         "pc-nrfjprog-js": "1.5.1",
         "png2icons": "1.0.1",
+        "react-bootstrap": "1.0.0-beta.9",
+        "roboto-fontface": "0.10.0",
         "semver": "5.6.0",
         "shasum": "1.0.2",
         "systeminformation": "4.1.3",
@@ -140,7 +143,7 @@
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
-            "\\.(css|less)$": "<rootDir>/mocks/styleMock.js",
+            "\\.(css|scss)$": "<rootDir>/mocks/styleMock.js",
             "electron": "<rootDir>/mocks/electronMock.js",
             "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js",
             "nrf-device-lister": "<rootDir>/mocks/emptyMock.js",
@@ -152,6 +155,9 @@
         "testURL": "file:/",
         "setupFilesAfterEnv": [
             "<rootDir>/test/setupTests.js"
+        ],
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
         ]
     }
 }

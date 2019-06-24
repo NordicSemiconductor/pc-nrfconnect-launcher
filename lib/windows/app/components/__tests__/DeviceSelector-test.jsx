@@ -40,9 +40,9 @@
 jest.mock('react-bootstrap', () => ({
     Dropdown: 'Dropdown',
     MenuItem: 'MenuItem',
+    DropdownToggle: 'DropdownToggle',
+    DropdownMenu: 'DropdownMenu',
 }));
-jest.mock('react-bootstrap/lib/DropdownToggle', () => 'DropdownToggle');
-jest.mock('react-bootstrap/lib/DropdownMenu', () => 'DropdownMenu');
 
 import React from 'react';
 import renderer from 'react-test-renderer';

@@ -45,11 +45,11 @@ module.exports = {
             }],
             exclude: /node_modules/,
         }, {
-            test: /\.less|\.css$/,
+            test: /\.scss|\.css$/,
             loaders: [
                 require.resolve('style-loader'),
                 require.resolve('css-loader'),
-                require.resolve('less-loader'),
+                require.resolve('sass-loader'),
             ],
         }, {
             test: /\.(png|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,

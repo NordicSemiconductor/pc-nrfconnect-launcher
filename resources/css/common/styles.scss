@@ -1,4 +1,4 @@
-@import './variables.less';
+@import './variables.scss';
 
 body {
     -webkit-user-select: none;
@@ -15,9 +15,9 @@ body {
     height: 55px;
 }
 
-.core-padded-row-list(@margin: 5px) {
+@mixin core-padded-row-list($margin: 5px){
     >:not(:last-child) {
-        margin-right: @margin;
+        margin-right: $margin;
     }
 
     >:last-child {
@@ -26,12 +26,12 @@ body {
 }
 
 .core-padded-row {
-    .core-padded-row-list;
+    @include core-padded-row-list;
 }
 
-.core-padded-column-list(@margin: 5px) {
+@mixin core-padded-column-list($margin: 5px){
     >:not(:last-child) {
-        margin-bottom: @margin;
+        margin-bottom: $margin;
     }
 
     >:last-child {
@@ -40,10 +40,10 @@ body {
 }
 
 .core-padded-column {
-    .core-padded-column-list;
+    @include core-padded-column-list;
 }
 
-.core-btn {
+.core-btn, .core-btn.btn-sm, .core-btn.btn-lg {
     border-radius: 0;
 
     .core-btn-text {
@@ -52,19 +52,19 @@ body {
 }
 
 .core-dropdown-menu {
-    background-color: @brand-primary;
+    background-color: $brand-primary;
 
     li {
         a {
             color: white;
-            background-color: @brand-primary;
+            background-color: $brand-primary;
         }
         a:hover {
             color: white;
-            background-color: @brand-primary-darker;
+            background-color: $brand-primary-darker;
         }
         a:focus {
-            background-color: @brand-primary-darker;
+            background-color: $brand-primary-darker;
         }
     }
 }
@@ -75,7 +75,7 @@ body {
 
 // used when tabbing and space
 :focus {
-    outline-color: @gray-medium-lighter !important;
+    outline-color: $gray-medium-lighter !important;
 }
 
 .selectable {
