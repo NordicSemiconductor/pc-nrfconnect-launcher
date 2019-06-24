@@ -36,28 +36,30 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import AppItemButton from './AppItemButton';
 
 const AppItemGroup = ({
-    title, className, pullRight, onCreateShortcut,
+    title, className, onCreateShortcut,
 }) => (
     <div className="dropdown btn-group core-dropdown">
         <DropdownButton
             title={title}
             id="bg-nested-dropdown"
-            pullRight={pullRight}
+            drop="down"
             className={className}
+            alignRight
         >
-            <MenuItem>
+            <Dropdown.Item>
                 <AppItemButton
                     text="Create shortcut"
                     title="Create a desktop shortcut for this app"
-                    iconClass="glyphicon glyphicon-share-alt"
+                    iconClass="mdi mdi-share"
                     onClick={onCreateShortcut}
                 />
-            </MenuItem>
+            </Dropdown.Item>
         </DropdownButton>
 
     </div>
@@ -66,7 +68,6 @@ const AppItemGroup = ({
 AppItemGroup.propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
-    pullRight: PropTypes.bool.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
 };
 

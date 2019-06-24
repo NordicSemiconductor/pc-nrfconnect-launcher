@@ -33,7 +33,7 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -87,7 +87,7 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
             type="button"
           >
             <span
-              className="glyphicon glyphicon-trash"
+              className="mdi mdi-trash-can"
             />
             <span
               className="core-btn-text"
@@ -140,7 +140,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -156,7 +156,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
             type="button"
           >
             <span
-              className="glyphicon glyphicon-trash"
+              className="mdi mdi-trash-can"
             />
             <span
               className="core-btn-text"
@@ -211,7 +211,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -254,7 +254,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -297,7 +297,7 @@ exports[`AppManagementView should render more info links for correctly defined h
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -350,7 +350,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -366,7 +366,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
             type="button"
           >
             <span
-              className="glyphicon glyphicon-trash"
+              className="mdi mdi-trash-can"
             />
             <span
               className="core-btn-text"
@@ -409,7 +409,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
             type="button"
           >
             <span
-              className="glyphicon glyphicon-download-alt"
+              className="mdi mdi-download"
             />
             <span
               className="core-btn-text"
@@ -458,7 +458,7 @@ exports[`AppManagementView should render not-installed, installed, and upgradabl
             type="button"
           >
             <span
-              className="glyphicon glyphicon-trash"
+              className="mdi mdi-trash-can"
             />
             <span
               className="core-btn-text"

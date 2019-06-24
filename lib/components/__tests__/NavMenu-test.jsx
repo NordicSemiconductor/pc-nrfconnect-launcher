@@ -42,8 +42,7 @@ jest.mock('../../util/apps', () => ({
 }));
 
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Immutable from 'immutable';
 import NavMenu from '../NavMenu';
 
@@ -61,7 +60,7 @@ const menuItems = Immutable.List([
 
 describe('NavMenu', () => {
     it('should render menu with no items', () => {
-        expect(renderer.create(
+        expect(shallow(
             <NavMenu
                 menuItems={[]}
                 onItemSelected={() => {}}
@@ -71,7 +70,7 @@ describe('NavMenu', () => {
     });
 
     it('should render menu with two items, and none selected', () => {
-        expect(renderer.create(
+        expect(shallow(
             <NavMenu
                 menuItems={menuItems}
                 onItemSelected={() => {}}
@@ -81,7 +80,7 @@ describe('NavMenu', () => {
     });
 
     it('should render menu with two items, and one selected', () => {
-        expect(renderer.create(
+        expect(shallow(
             <NavMenu
                 menuItems={menuItems}
                 selectedItemId={1}

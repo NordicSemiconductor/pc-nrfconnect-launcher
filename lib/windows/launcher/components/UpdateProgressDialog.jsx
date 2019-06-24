@@ -36,9 +36,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle, ProgressBar,
-} from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import Spinner from '../../../components/Spinner';
 
 const UpdateProgressDialog = ({
@@ -51,24 +51,24 @@ const UpdateProgressDialog = ({
     isCancelling,
 }) => (
     <Modal show={isVisible} backdrop>
-        <ModalHeader closeButton={false}>
-            <ModalTitle>Downloading update</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
+        <Modal.Header closeButton={false}>
+            <Modal.Title>Downloading update</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             <p>Downloading nRF Connect {version}...</p>
             {
                 isProgressSupported
-                    && <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
+                && <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
             }
             <p>
                 This might take a few minutes. The application will restart and update
                 once the download is complete.
             </p>
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
             {
                 !isProgressSupported
-                    && <Spinner />
+                && <Spinner />
             }
             {
                 isCancelSupported && (
@@ -80,7 +80,7 @@ const UpdateProgressDialog = ({
                     </Button>
                 )
             }
-        </ModalFooter>
+        </Modal.Footer>
     </Modal>
 );
 

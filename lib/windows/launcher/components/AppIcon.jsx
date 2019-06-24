@@ -43,7 +43,7 @@ function renderAlert(altText) {
         <div>
             <span className="alert-icon-bg" />
             <span
-                className="glyphicon glyphicon-alert"
+                className="mdi mdi-alert"
                 title={altText}
             />
         </div>
@@ -55,7 +55,7 @@ function renderInfo(altText) {
         <div>
             <span className="info-icon-bg" />
             <span
-                className="glyphicon glyphicon-info-sign"
+                className="mdi mdi-information"
                 title={altText}
             />
         </div>

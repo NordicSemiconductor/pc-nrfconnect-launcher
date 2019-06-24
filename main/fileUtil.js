@@ -206,8 +206,8 @@ function copyFromAsar(src, dest, limit, counter) {
                     reject(new Error(`Error occured while copying from asar with error: ${error}`));
                 }
                 chmodDir(dest, mode)
-                .then(() => { copyFromAsar(src, dest, limit, newCounter); })
-                .then(() => resolve());
+                    .then(() => { copyFromAsar(src, dest, limit, newCounter); })
+                    .then(() => resolve());
             } else {
                 resolve();
             }

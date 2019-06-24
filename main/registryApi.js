@@ -90,15 +90,15 @@ function verifyShasum(filePath, expectedShasum) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, (err, buffer) => {
             if (err) {
-                reject(new Error('Unable to read file when verifying shasum: ' +
-                    `${filePath}`));
+                reject(new Error('Unable to read file when verifying shasum: '
+                    + `${filePath}`));
             } else {
                 const computedShasum = shasum(buffer);
                 if (expectedShasum === computedShasum) {
                     resolve();
                 } else {
-                    reject(new Error(`Shasum verification failed for ${filePath}. Expected ` +
-                        `'${expectedShasum}', but got '${computedShasum}'.`));
+                    reject(new Error(`Shasum verification failed for ${filePath}. Expected `
+                        + `'${expectedShasum}', but got '${computedShasum}'.`));
                 }
             }
         });
@@ -120,7 +120,7 @@ function downloadTarball(name, version, destinationDir, source) {
     return getDistInfo(name, version, regUrl)
         .then(distInfo => {
             if (!distInfo.tarball) {
-                return Promise.reject(`No tarball found for ${name}@${version}`);
+                return Promise.reject(new Error(`No tarball found for ${name}@${version}`));
             }
             const tarballUrl = distInfo.tarball;
             const parsedUrl = url.parse(tarballUrl);

@@ -1,12 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UpdateProgressDialog should render cancelling 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Downloading update
@@ -18,7 +19,7 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <Bootstrap(ProgressBar)
       label="42%"
       now={42}
     />
@@ -28,22 +29,26 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
   </ModalBody>
   <ModalFooter>
     <Button
+      active={false}
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render invisible 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={true}
   show={false}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Downloading update
@@ -52,7 +57,6 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
   <ModalBody>
     <p>
       Downloading nRF Connect 
-      
       ...
     </p>
     <p>
@@ -60,24 +64,22 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
     </p>
   </ModalBody>
   <ModalFooter>
-    <img
-      alt="Loading..."
+    <Spinner
       className="core-spinner"
-      height={16}
-      src="test-file-stub"
-      width={16}
+      size={16}
     />
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with cancel disabled when 100 percent complete 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Downloading update
@@ -89,7 +91,7 @@ exports[`UpdateProgressDialog should render with cancel disabled when 100 percen
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <Bootstrap(ProgressBar)
       label="100%"
       now={100}
     />
@@ -99,22 +101,26 @@ exports[`UpdateProgressDialog should render with cancel disabled when 100 percen
   </ModalBody>
   <ModalFooter>
     <Button
+      active={false}
       disabled={true}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Downloading update
@@ -126,7 +132,7 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
       1.2.3
       ...
     </p>
-    <ProgressBar
+    <Bootstrap(ProgressBar)
       label="42%"
       now={42}
     />
@@ -136,22 +142,26 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
   </ModalBody>
   <ModalFooter>
     <Button
+      active={false}
       disabled={false}
       onClick={[Function]}
+      type="button"
+      variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;
 
 exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
-<Modal
+<Bootstrap(Modal)
   backdrop={true}
   show={true}
 >
   <ModalHeader
     closeButton={false}
+    closeLabel="Close"
   >
     <ModalTitle>
       Downloading update
@@ -168,13 +178,10 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
     </p>
   </ModalBody>
   <ModalFooter>
-    <img
-      alt="Loading..."
+    <Spinner
       className="core-spinner"
-      height={16}
-      src="test-file-stub"
-      width={16}
+      size={16}
     />
   </ModalFooter>
-</Modal>
+</Bootstrap(Modal)>
 `;

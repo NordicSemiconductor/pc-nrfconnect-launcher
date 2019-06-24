@@ -34,11 +34,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Dropdown } from 'react-bootstrap';
-import Mousetrap from 'mousetrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import Mousetrap from 'mousetrap';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 // Like react-bootstrap's `Dropdown`, but can receive an extra `hotkey` prop:
 // a key combination handled by `mousetrap` that will toggle the open state
@@ -83,27 +83,42 @@ export default class HotkeyedDropdown extends React.Component {
     }
 
     render() {
-        const { hotkey, disabled, ...childProps } = this.props;
+        const {
+            hotkey, disabled, title, children, ...childProps
+        } = this.props;
         const { open } = this.state;
         return (
             <Dropdown
                 {...childProps}
                 disabled={disabled}
-                open={open && !disabled}
+                show={open && !disabled}
                 onToggle={this.toggle}
-            />
+            >
+                <Dropdown.Toggle>
+                    { title }
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    { children }
+                </Dropdown.Menu>
+            </Dropdown>
         );
     }
 }
 
 HotkeyedDropdown.propTypes = {
-    ...Dropdown.propTypes,
+    title: PropTypes.string.isRequired,
     hotkey: PropTypes.string,
     onToggle: PropTypes.func,
+    disabled: PropTypes.bool,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
 };
 
 HotkeyedDropdown.defaultProps = {
-    ...Dropdown.defaultProps,
     hotkey: '',
     onToggle: () => {},
+    disabled: false,
+    children: null,
 };

@@ -38,25 +38,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'immutable';
 
-import {
-    Modal, Button, ModalHeader, ModalFooter, ModalBody, ModalTitle,
-} from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const ErrorDialog = ({ isVisible, messages, onClose }) => (
     <Modal show={isVisible} onHide={onClose}>
-        <ModalHeader closeButton>
-            <ModalTitle>Error</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
+        <Modal.Header closeButton>
+            <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             {
                 messages.map(message => (
                     <p className="core-error-dialog-message" key={message}>{message}</p>
                 ))
             }
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
             <Button onClick={onClose}>Close</Button>
-        </ModalFooter>
+        </Modal.Footer>
     </Modal>
 );
 
