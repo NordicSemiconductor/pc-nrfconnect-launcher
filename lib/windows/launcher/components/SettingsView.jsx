@@ -46,7 +46,7 @@ import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 
 const CopyToClipboard = ({ text }) => (
     <Button
-        bsSize="small"
+        size="sm"
         variant="light"
         title="Copy to clipboard"
         onClick={() => clipboard.writeText(text)}
