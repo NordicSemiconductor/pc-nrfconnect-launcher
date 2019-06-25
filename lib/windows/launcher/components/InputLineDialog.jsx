@@ -42,6 +42,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 class InputLineDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.inputNode = React.createRef();
+    }
+
     render() {
         const {
             isVisible,
@@ -63,7 +68,7 @@ class InputLineDialog extends React.Component {
                             <Form.Control
                                 as="input"
                                 type="text"
-                                inputRef={ref => { this.inputNode = ref; }}
+                                ref={this.inputNode}
                                 placeholder={placeholder}
                             />
                         </Form.Group>
@@ -73,7 +78,7 @@ class InputLineDialog extends React.Component {
                             type="submit"
                             variant="primary"
                             className="core-btn"
-                            onClick={() => onOk(this.inputNode.value)}
+                            onClick={() => onOk(this.inputNode.current.value)}
                         >
                             OK
                         </Button>
