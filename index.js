@@ -36,6 +36,27 @@
 
 'use strict';
 
+const { existsSync } = require('fs');
+const { resolve, basename } = require('path');
+
+const { execPath } = process;
+
+// When nRFConnect is running production environment where modules are in asar
+// package, nRFjprog libraries are bundled outside of asar.
+// In order to correctly set the library search path of pc-nrfjprog-js module
+// here we need to set the environment variable before the module is loaded.
+if (basename(execPath, '.exe') !== 'electron') {
+    const nRFjprogSearchPath = [
+        resolve(execPath, '../nrfjprog'),
+        resolve(execPath, '../../Frameworks/nrfjprog'),
+        resolve(process.cwd(), 'nrfjprog'),
+    ].filter(path => existsSync(path)).shift();
+
+    if (nRFjprogSearchPath) {
+        process.env.NRFJPROG_LIBRARY_PATH = nRFjprogSearchPath;
+    }
+}
+
 const {
     Menu, ipcMain, dialog, app: electronApp,
 } = require('electron');
