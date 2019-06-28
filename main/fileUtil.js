@@ -188,31 +188,17 @@ function copy(src, dest) {
  *
  * @param {string} src the path to source.
  * @param {string} dest the path to destination.
- * @param {int} limit how many times it tries to copy even if it throws error.
- * @param {int} counter count how many times it has already tried to copy.
  * @returns {Promise} promise that resolves if successful.
  */
-function copyFromAsar(src, dest, limit, counter) {
-    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRWXG | fs.constants.S_IRWXO);
-    let newCounter = counter;
-    if (newCounter === undefined) {
-        newCounter = 0;
+function copyFromAsar(src, dest) {
+    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRXG | fs.constants.S_IRXO);
+    if (fs.existsSync(dest)) {
+        fs.chmodSync(dest, mode);
     }
-    return new Promise((resolve, reject) => {
-        fse.copy(src, dest, error => {
-            if (error) {
-                newCounter += 1;
-                if (limit === undefined || newCounter > limit) {
-                    reject(new Error(`Error occured while copying from asar with error: ${error}`));
-                }
-                chmodDir(dest, mode)
-                    .then(() => { copyFromAsar(src, dest, limit, newCounter); })
-                    .then(() => resolve());
-            } else {
-                resolve();
-            }
-        });
-    });
+    fse.removeSync(dest);
+    fse.mkdirsSync(dest);
+    return fse.copy(src, dest)
+        .catch(() => chmodDir(dest, mode));
 }
 
 /**
