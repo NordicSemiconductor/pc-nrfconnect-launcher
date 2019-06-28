@@ -67,6 +67,9 @@ const windows = require('./main/windows');
 const apps = require('./main/apps');
 const { createMenu } = require('./main/menu');
 
+// Ensure that nRFConnect runs in a directory where it has permission to write
+process.chdir(electronApp.getPath('temp'));
+
 config.init(argv);
 global.homeDir = config.getHomeDir();
 global.userDataDir = config.getUserDataDir();
