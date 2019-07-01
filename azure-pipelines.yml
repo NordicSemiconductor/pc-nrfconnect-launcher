@@ -65,11 +65,11 @@ jobs:
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
-    condition: contains(variables['IMAGE_NAME'], 'win')
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
   - bash: |
       echo $DOWNLOADSECUREFILE_SECUREFILEPATH
-      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.pfx
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
@@ -77,11 +77,11 @@ jobs:
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
-    condition: contains(variables['IMAGE_NAME'], 'mac')
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Donwload certificate on macOS'
   - bash: |
       echo $DOWNLOADSECUREFILE_SECUREFILEPATH
-      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
+      export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
