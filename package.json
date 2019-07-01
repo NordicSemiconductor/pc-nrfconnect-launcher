@@ -129,7 +129,7 @@
         "nrf-device-lister": "2.2.0",
         "nrf-device-setup": "0.5.0",
         "pc-ble-driver-js": "2.5.1",
-        "pc-nrfjprog-js": "1.5.2",
+        "pc-nrfjprog-js": "1.5.3",
         "png2icons": "1.0.1",
         "react-bootstrap": "1.0.0-beta.9",
         "roboto-fontface": "0.10.0",
