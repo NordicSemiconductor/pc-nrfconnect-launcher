@@ -59,7 +59,7 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Setup release environment for Linux'
   - bash: |
-      ./node_modules/.bin/build -p never
+      npx build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Release on Linux'
   - task: DownloadSecureFile@1
@@ -67,16 +67,10 @@ jobs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
-  - bash: |
-      echo dispaly path
-      echo $(Agent.TempDirectory)
-      TEMP_DIRECOTRY=$(Agent.TempDirectory)
-      TEMP_DIRECOTRY_UNIX=/${TEMP_DIRECOTRY//\\//}
-      echo ${TEMP_DIRECOTRY_UNIX}
-      export CSC_LINK=${TEMP_DIRECOTRY_UNIX/d:/d}/NORDIC_SIGNING_CERTIFICATE.pfx
-      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      echo $CSC_LINK
-      ./node_modules/.bin/build -p never
+  - script: |
+      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
+      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
+      npx build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
   - task: DownloadSecureFile@1
@@ -88,7 +82,7 @@ jobs:
       export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
       echo $CSC_LINK
-      ./node_modules/.bin/build -p never
+      npx build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Release on macOS'
   - bash: |
