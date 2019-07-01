@@ -70,15 +70,17 @@ jobs:
     displayName: 'Donwload certificate on macOS'
   - bash: |
       ./node_modules/.bin/build -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'linux'))
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Release on Linux'
   - bash: |
+      echo $DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       ./node_modules/.bin/build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
   - bash: |
+      echo $DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
       ./node_modules/.bin/build -p never
