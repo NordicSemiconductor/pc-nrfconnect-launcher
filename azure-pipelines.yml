@@ -61,9 +61,19 @@ jobs:
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
+    condition: contains(variables['IMAGE_NAME'], 'win')
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
+    condition: contains(variables['IMAGE_NAME'], 'mac')
+  - bash: |
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
+    condition: contains(variables['IMAGE_NAME'], 'win')
+  - task: DownloadSecureFile@1
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
+    condition: contains(variables['IMAGE_NAME'], 'mac')
   - bash: |
       export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
-      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
       ./node_modules/.bin/build -p never
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
