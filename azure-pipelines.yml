@@ -68,11 +68,12 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
   - bash: |
+      echo dispaly path
+      echo $(Agent.TempDirectory)
       TEMP_DIRECOTRY=$(Agent.TempDirectory)
-      echo ${TEMP_DIRECTORY}
       TEMP_DIRECOTRY_UNIX=/${TEMP_DIRECOTRY//\\//}
       echo ${TEMP_DIRECOTRY_UNIX}
-      export CSC_LINK=${TEMP_DIRECOTRY_UNIX}/NORDIC_SIGNING_CERTIFICATE.pfx
+      export CSC_LINK=${TEMP_DIRECOTRY_UNIX/d:/d}/NORDIC_SIGNING_CERTIFICATE.pfx
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       echo $CSC_LINK
       ./node_modules/.bin/build -p never
