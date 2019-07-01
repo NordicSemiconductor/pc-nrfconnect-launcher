@@ -69,7 +69,7 @@ jobs:
   - bash: |
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
     condition: contains(variables['IMAGE_NAME'], 'win')
-  - task: DownloadSecureFile@1
+  - bash: |
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
     condition: contains(variables['IMAGE_NAME'], 'mac')
   - bash: |
