@@ -125,12 +125,14 @@ class SettingsView extends React.Component {
                             : null
                     }
                     <div className="core-settings-update-check-controls">
-                        <Form.Check
-                            type="checkbox"
-                            checked={shouldCheckForUpdatesAtStartup}
-                            onChange={this.onCheckUpdatesAtStartupChanged}
-                            label="Check for updates at startup"
-                        />
+                        <Form.Group controlId="checkForUpdates">
+                            <Form.Check
+                                type="checkbox"
+                                checked={shouldCheckForUpdatesAtStartup}
+                                onChange={this.onCheckUpdatesAtStartupChanged}
+                                label="Check for updates at startup"
+                            />
+                        </Form.Group>
                         <Button
                             title={checkButtonText}
                             className="btn btn-primary core-btn"
