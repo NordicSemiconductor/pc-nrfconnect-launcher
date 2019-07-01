@@ -69,7 +69,10 @@ jobs:
     displayName: 'Donwload certificate on Windows'
   - bash: |
       TEMP_DIRECOTRY = $(Agent.TempDirectory)
-      export CSC_LINK=/${TEMP_DIRECOTRY//\\//}/NORDIC_SIGNING_CERTIFICATE.pfx
+      echo ${TEMP_DIRECTORY}
+      TEMP_DIRECOTRY_UNIX = /${TEMP_DIRECOTRY//\\//}
+      echo ${TEMP_DIRECOTRY_UNIX}
+      export CSC_LINK=${TEMP_DIRECOTRY_UNIX}/NORDIC_SIGNING_CERTIFICATE.pfx
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       echo $CSC_LINK
       ./node_modules/.bin/build -p never
