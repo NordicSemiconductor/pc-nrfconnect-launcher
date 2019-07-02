@@ -158,8 +158,8 @@ export default class DeviceSelector extends React.Component {
                     id="device-selector"
                     className={cssClass}
                     disabled={!hasDevices}
-                    hotkey="alt+p"
-                    title={`${togglerText} (Alt+P)`}
+                    hotkey="Alt+P"
+                    title={`${togglerText}`}
                 >
                     { devices.map(device => this.getItemFromDevice(device)) }
                     { displayCloseItem ? this.getCloseItem() : null }
@@ -193,7 +193,7 @@ DeviceSelector.propTypes = {
 };
 
 DeviceSelector.defaultProps = {
-    cssClass: 'core-padded-row',
+    cssClass: 'core-padded-row core-device-selector',
     menuItemCssClass: 'core-device-selector-item btn-primary',
     menuItemDetailsCssClass: 'core-device-selector-item-details',
     showPortIndicator: true,
