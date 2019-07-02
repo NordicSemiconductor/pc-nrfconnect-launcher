@@ -58,13 +58,33 @@ jobs:
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Setup release environment for Linux'
+  - bash: |
+      npx build -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Release on Linux'
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Donwload certificate on Windows'
+  - script: |
+      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
+      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
+      npx build -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Release on Windows'
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Donwload certificate on macOS'
   - bash: |
-      export CSC_LINK=$DOWNLOADSECUREFILE_SECUREFILEPATH
-      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD)
-      ./node_modules/.bin/build -p never
+      export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
+      npx build -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Release on macOS'
+  - bash: |
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
@@ -72,7 +92,7 @@ jobs:
       cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
       cp release/latest* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
-    displayName: 'Release'
+    displayName: 'Copy artifacts'
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'waylandCI'

@@ -118,7 +118,7 @@ ipcMain.on('open-app', (event, app) => {
 ipcMain.on('show-about-dialog', () => {
     const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
-        const { app } = appWindow.app;
+        const { app } = appWindow;
         const detail = `${app.description}\n\n`
             + `Version: ${app.currentVersion}\n`
             + `Official: ${app.isOfficial}\n`
