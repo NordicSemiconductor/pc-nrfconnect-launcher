@@ -2,7 +2,7 @@
 
 exports[`SerialPortSelector should render empty list while loading 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -17,9 +17,10 @@ exports[`SerialPortSelector should render empty list while loading 1`] = `
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="Select serial port (Alt+P)"
       type="button"
     >
-      Select serial port (Alt+P)
+      Select serial port
     </button>
   </div>
   <div
@@ -30,7 +31,7 @@ exports[`SerialPortSelector should render empty list while loading 1`] = `
 
 exports[`SerialPortSelector should render empty list while loading and port is selected 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -45,9 +46,10 @@ exports[`SerialPortSelector should render empty list while loading and port is s
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="/dev/tty0 (Alt+P)"
       type="button"
     >
-      /dev/tty0 (Alt+P)
+      /dev/tty0
     </button>
   </div>
   <div
@@ -58,7 +60,7 @@ exports[`SerialPortSelector should render empty list while loading and port is s
 
 exports[`SerialPortSelector should render empty port list 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -73,9 +75,10 @@ exports[`SerialPortSelector should render empty port list 1`] = `
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="Select serial port (Alt+P)"
       type="button"
     >
-      Select serial port (Alt+P)
+      Select serial port
     </button>
   </div>
   <div
@@ -86,7 +89,7 @@ exports[`SerialPortSelector should render empty port list 1`] = `
 
 exports[`SerialPortSelector should render filtered ports 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -101,9 +104,10 @@ exports[`SerialPortSelector should render filtered ports 1`] = `
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="Select serial port (Alt+P)"
       type="button"
     >
-      Select serial port (Alt+P)
+      Select serial port
     </button>
   </div>
   <div
@@ -114,7 +118,7 @@ exports[`SerialPortSelector should render filtered ports 1`] = `
 
 exports[`SerialPortSelector should render only segger ports by default filter 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -129,9 +133,10 @@ exports[`SerialPortSelector should render only segger ports by default filter 1`
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="Select serial port (Alt+P)"
       type="button"
     >
-      Select serial port (Alt+P)
+      Select serial port
     </button>
   </div>
   <div
@@ -142,7 +147,7 @@ exports[`SerialPortSelector should render only segger ports by default filter 1`
 
 exports[`SerialPortSelector should render two ports 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -157,9 +162,10 @@ exports[`SerialPortSelector should render two ports 1`] = `
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="Select serial port (Alt+P)"
       type="button"
     >
-      Select serial port (Alt+P)
+      Select serial port
     </button>
   </div>
   <div
@@ -170,7 +176,7 @@ exports[`SerialPortSelector should render two ports 1`] = `
 
 exports[`SerialPortSelector should render two ports, one selected 1`] = `
 <div
-  className="core-padded-row"
+  className="core-padded-row core-serial-port-selector"
 >
   <div
     className="dropdown"
@@ -185,9 +191,10 @@ exports[`SerialPortSelector should render two ports, one selected 1`] = `
       className="dropdown-toggle btn btn-primary"
       disabled={false}
       onClick={[Function]}
+      title="/dev/tty1 (Alt+P)"
       type="button"
     >
-      /dev/tty1 (Alt+P)
+      /dev/tty1
     </button>
   </div>
   <div
