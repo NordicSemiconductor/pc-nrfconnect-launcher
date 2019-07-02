@@ -81,7 +81,6 @@ jobs:
   - bash: |
       export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
-      echo $CSC_LINK
       npx build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Release on macOS'
