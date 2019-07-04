@@ -12,6 +12,7 @@ nRF Connect supports the following devices:
 * PCA10040 nRF52 Development Kit
 * PCA10056 nRF52840 Development Kit
 * PCA10059 nRF52840 Dongle
+* PCA10090 nRF9160 Development Kit
 
 Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
 
@@ -33,10 +34,13 @@ A [Getting started guide](https://www.nordicsemi.com/eng/Products/Bluetooth-low-
 
 The following apps have been created for nRF Connect;
 
-* [Bluetooth Low Energy](https://www.npmjs.com/package/pc-nrfconnect-ble)
-* [Power Profiler](https://www.npmjs.com/package/pc-nrfconnect-ppk)
-* [Programmer](https://www.npmjs.com/package/pc-nrfconnect-programmer)
-* [RSSI Viewer](https://www.npmjs.com/package/pc-nrfconnect-rssi)
+* [Bluetooth Low Energy](https://github.com/NordicSemiconductor/pc-nrfconnect-ble)
+* [Power Profiler](https://github.com/NordicSemiconductor/pc-nrfconnect-ppk)
+* [Programmer](https://github.com/NordicSemiconductor/pc-nrfconnect-programmer)
+* [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi)
+* [Link Monitor](https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor)
+* Trace Collector
+* Getting Started Assistant
 
 ## Automatic installation of apps
 
@@ -44,11 +48,10 @@ The normal way to install apps is to start nRF Connect and go to the *Add/remove
 
 ## Manual installation of apps
 
-If you are unable to install apps from the *Add/remove apps* screen, it is also possible to install apps manually:
+Should you have an app package offline, it is also possible to install it manually:
 
-1. Go to the app's page on the npm website by following the links above, and locate the name and the latest version of the app.
-2. Download the app by using the URL `https://registry.npmjs.org/<name>/-/<name>-<version>.tgz`, and save the file to `%USERPROFILE%\.nrfconnect-apps\local` (Windows) or `$HOME/.nrfconnect-apps/local` (Linux/macOS).
-3. Restart nRF Connect. The app should now appear in the *Launch app* screen.
+1. Copy the file to `%USERPROFILE%\.nrfconnect-apps\local` (Windows) or `$HOME/.nrfconnect-apps/local` (Linux/macOS).
+2. Restart nRF Connect. The app should now appear in the *Launch app* screen.
 
 # Creating apps
 
@@ -119,10 +122,6 @@ This will open Electron, which loads its content from `dist`.
 ## Firmware detection and programming
 
 Firmware detection and programming requires that nRF Connect can load nrfjprog libraries. If you see the message *CouldNotFindJprogDLL* in the log, then follow the steps below.
-
-### Windows
-
-Download and install the latest [nRF5x-Command-Line-Tools](https://www.nordicsemi.com/eng/nordic/Products/nRF51822/nRF5x-Command-Line-Tools-Win32/33444), and restart nRF Connect. The nrfjprog libraries will then be loaded from registry.
 
 ### Linux and macOS
 
