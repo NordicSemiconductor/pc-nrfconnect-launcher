@@ -15,17 +15,21 @@ exports[`SettingsView should render check for updates completed, with everything
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={false}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={false}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"
@@ -106,17 +110,21 @@ exports[`SettingsView should render check for updates completed, with updates av
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={false}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={false}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"
@@ -195,17 +203,21 @@ exports[`SettingsView should render when checking for updates 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={false}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={false}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"
@@ -277,17 +289,21 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={false}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={false}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"
@@ -359,17 +375,21 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={true}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={true}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"
@@ -445,17 +465,21 @@ exports[`SettingsView should render with last update check date 1`] = `
     <div
       className="core-settings-update-check-controls"
     >
-      <FormCheck
-        checked={false}
-        disabled={false}
-        inline={false}
-        isInvalid={false}
-        isValid={false}
-        label="Check for updates at startup"
-        onChange={[Function]}
-        title=""
-        type="checkbox"
-      />
+      <FormGroup
+        controlId="checkForUpdates"
+      >
+        <FormCheck
+          checked={false}
+          disabled={false}
+          inline={false}
+          isInvalid={false}
+          isValid={false}
+          label="Check for updates at startup"
+          onChange={[Function]}
+          title=""
+          type="checkbox"
+        />
+      </FormGroup>
       <Button
         active={false}
         className="btn btn-primary core-btn"

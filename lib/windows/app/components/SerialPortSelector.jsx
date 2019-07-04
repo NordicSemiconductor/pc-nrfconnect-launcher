@@ -116,8 +116,8 @@ class SerialPortSelector extends React.Component {
                     id="serial-port-selector"
                     open={isExpanded}
                     onToggle={onToggle}
-                    hotkey="alt+p"
-                    title={`${selectorText} (Alt+P)`}
+                    hotkey="Alt+P"
+                    title={`${selectorText}`}
                 >
                     { this.renderSerialPortItems() }
                     { this.renderCloseItem() }
@@ -154,7 +154,7 @@ SerialPortSelector.defaultProps = {
     isExpanded: false,
     isLoading: false,
     portIndicatorStatus: 'off',
-    cssClass: 'core-padded-row',
+    cssClass: 'core-padded-row core-serial-port-selector',
     menuItemCssClass: 'btn-primary',
     filter: filterSeggerPorts,
 };

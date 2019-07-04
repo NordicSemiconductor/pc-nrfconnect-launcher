@@ -54,12 +54,12 @@ export default class HotkeyedDropdown extends React.Component {
 
     componentDidMount() {
         const { hotkey } = this.props;
-        Mousetrap.bind(hotkey, this.toggle);
+        Mousetrap.bind(hotkey.toLowerCase(), this.toggle);
     }
 
     componentWillUnmount() {
         const { hotkey } = this.props;
-        Mousetrap.unbind(hotkey);
+        Mousetrap.unbind(hotkey.toLowerCase());
     }
 
     toggle() {
@@ -94,7 +94,7 @@ export default class HotkeyedDropdown extends React.Component {
                 show={open && !disabled}
                 onToggle={this.toggle}
             >
-                <Dropdown.Toggle>
+                <Dropdown.Toggle title={`${title} (${hotkey})`}>
                     { title }
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
