@@ -90,7 +90,13 @@
 }
 
 .core-serial-port-selector, .core-device-selector {
-    min-width: 143px;
+    .dropdown-toggle.btn {
+        min-width: 143px;
+        height: 34px;
+    }
+    .dropdown-toggle::after {
+        margin-left: 12px;
+    }
 }
 
 .core-serial-port-indicator, .core-device-port-indicator {
