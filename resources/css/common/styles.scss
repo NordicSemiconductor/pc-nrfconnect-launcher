@@ -7,12 +7,14 @@ body {
 }
 
 .core-logo-container {
+    display: grid;
     margin-left: auto;
     cursor: pointer;
 }
 
 .core-logo {
-    height: 55px;
+    height: 100%;
+    padding: 20%;
 }
 
 @mixin core-padded-row-list($margin: 5px){
