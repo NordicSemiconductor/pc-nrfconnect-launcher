@@ -79,6 +79,7 @@ AvailableAppItem.propTypes = {
         displayName: PropTypes.string,
         description: PropTypes.string.isRequired,
         homepage: PropTypes.string,
+        source: PropTypes.string,
     }).isRequired,
     isInstalling: PropTypes.bool,
     isDisabled: PropTypes.bool,
