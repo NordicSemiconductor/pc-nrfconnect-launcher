@@ -26,7 +26,8 @@
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "get-jlink -o build",
         "pack": "npm run build && build -p never",
-        "release": "build -p always"
+        "release": "build -p always",
+        "postinstall": "cp ./serialport-prebuild-installrc ./node_modules/@serialport/bindings/.prebuild-installrc && electron-builder install-app-deps"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
