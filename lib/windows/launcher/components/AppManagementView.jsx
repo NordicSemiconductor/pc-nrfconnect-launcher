@@ -85,6 +85,8 @@ class AppManagementView extends React.Component {
             onRemove,
             onUpgrade,
             onReadMore,
+            onAppSelected,
+            onCreateShortcut,
         } = this.props;
         const isProcessing = this.isProcessing();
 
@@ -107,6 +109,8 @@ class AppManagementView extends React.Component {
                                             app.name, app.latestVersion, app.source,
                                         )}
                                         onReadMore={() => onReadMore(app.homepage)}
+                                        onAppSelected={() => onAppSelected(app)}
+                                        onCreateShortcut={() => onCreateShortcut(app)}
                                     />
                                 )
                                 : (
@@ -140,6 +144,8 @@ AppManagementView.propTypes = {
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
     onDownloadLatestAppInfo: PropTypes.func,
+    onAppSelected: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
 };
 
 AppManagementView.defaultProps = {

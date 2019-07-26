@@ -37,6 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AppItemButton from './AppItemButton';
+import AppIcon from './AppIcon';
+import AppItemGroup from './AppItemGroup';
 
 const urlCheck = /https?:\//;
 
@@ -48,14 +50,19 @@ const InstalledAppItem = ({
     isUpgrading,
     isRemoving,
     isDisabled,
+    onAppSelected,
+    onCreateShortcut,
 }) => {
     const isUpgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const statusClass = isUpgradeAvailable ? 'upgrade-available' : 'installed';
-    const statusText = isUpgradeAvailable ? 'Upgrade available' : 'Installed';
+    const statusText = isUpgradeAvailable ? `v${app.currentVersion} Installed, Upgrade to v${app.latestVersion}` : `v${app.currentVersion} Installed`;
     return (
         <div className="core-app-management-item list-group-item">
+            <AppIcon
+                app={app}
+            />
             <h4 className="list-group-item-heading">{app.displayName || app.name}
-                <span className="list-group-item-heading-source-tag">{app.source}</span>
+                <span className="list-group-item-heading-source-tag">{app.source || 'local'}</span>
             </h4>
             <div className="list-group-item-text">
                 <p>{app.description}</p>
@@ -81,11 +88,25 @@ const InstalledAppItem = ({
                                 : <div />
                         }
                         <AppItemButton
-                            title={`Remove ${app.displayName || app.name}`}
-                            text={isRemoving ? 'Removing...' : 'Remove'}
-                            iconClass="mdi mdi-trash-can"
+                            title={`Open ${app.displayName || app.name}`}
+                            text="Open"
+                            iconClass="mdi mdi-play"
                             isDisabled={isDisabled}
-                            onClick={onRemove}
+                            onClick={onAppSelected}
+                        />
+                        {app.source && (
+                            <AppItemButton
+                                title={`Remove ${app.displayName || app.name}`}
+                                text={isRemoving ? 'Removing...' : 'Remove'}
+                                iconClass="mdi mdi-trash-can"
+                                isDisabled={isDisabled}
+                                onClick={onRemove}
+                            />
+                        )}
+                        <AppItemGroup
+                            title=""
+                            className="core-app-item-group"
+                            onCreateShortcut={onCreateShortcut}
                         />
                     </div>
                 </div>
@@ -101,7 +122,7 @@ InstalledAppItem.propTypes = {
         description: PropTypes.string.isRequired,
         homepage: PropTypes.string,
         currentVersion: PropTypes.string.isRequired,
-        latestVersion: PropTypes.string.isRequired,
+        latestVersion: PropTypes.string,
     }).isRequired,
     isUpgrading: PropTypes.bool,
     isRemoving: PropTypes.bool,
@@ -109,6 +130,8 @@ InstalledAppItem.propTypes = {
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
+    onAppSelected: PropTypes.func.isRequired,
+    onCreateShortcut: PropTypes.func.isRequired,
 };
 
 InstalledAppItem.defaultProps = {
