@@ -9,7 +9,8 @@
     "main": "index.js",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
-        "postinstall": "npm run get-jlink",
+        "postinstall": "npm run get-jlink && npm run fix-serialport",
+        "fix-serialport": "cp ./serialport-prebuild-installrc ./node_modules/@serialport/bindings/.prebuild-installrc && electron-builder install-app-deps",
         "app": "electron .",
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
@@ -26,8 +27,7 @@
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "get-jlink -o build",
         "pack": "npm run build && build -p never",
-        "release": "build -p always",
-        "postinstall": "cp ./serialport-prebuild-installrc ./node_modules/@serialport/bindings/.prebuild-installrc && electron-builder install-app-deps"
+        "release": "build -p always"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
