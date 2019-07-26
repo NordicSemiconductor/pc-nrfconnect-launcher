@@ -42,7 +42,7 @@ import AppItemGroup from './AppItemGroup';
 
 const urlCheck = /https?:\//;
 
-const InstalledAppItem = ({
+const AppItem = ({
     app,
     onRemove,
     onUpgrade,
@@ -50,8 +50,10 @@ const InstalledAppItem = ({
     isUpgrading,
     isRemoving,
     isDisabled,
+    isInstalling,
     onAppSelected,
     onCreateShortcut,
+    onInstall,
 }) => {
     const isUpgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const statusClass = isUpgradeAvailable ? 'upgrade-available' : 'installed';
@@ -87,14 +89,25 @@ const InstalledAppItem = ({
                                 )
                                 : <div />
                         }
-                        <AppItemButton
-                            title={`Open ${app.displayName || app.name}`}
-                            text="Open"
-                            iconClass="mdi mdi-play"
-                            isDisabled={isDisabled}
-                            onClick={onAppSelected}
-                        />
-                        {app.source && (
+                        {app.currentVersion && (
+                            <AppItemButton
+                                title={`Open ${app.displayName || app.name}`}
+                                text="Open"
+                                iconClass="mdi mdi-play"
+                                isDisabled={isDisabled}
+                                onClick={onAppSelected}
+                            />
+                        )}
+                        {!app.currentVersion && (
+                            <AppItemButton
+                                text={isInstalling ? 'Installing...' : 'Install'}
+                                title={`Install ${app.displayName || app.name}`}
+                                iconClass="mdi mdi-download"
+                                isDisabled={isDisabled}
+                                onClick={onInstall}
+                            />
+                        )}
+                        {app.currentVersion && app.source && (
                             <AppItemButton
                                 title={`Remove ${app.displayName || app.name}`}
                                 text={isRemoving ? 'Removing...' : 'Remove'}
@@ -103,11 +116,13 @@ const InstalledAppItem = ({
                                 onClick={onRemove}
                             />
                         )}
-                        <AppItemGroup
-                            title=""
-                            className="core-app-item-group"
-                            onCreateShortcut={onCreateShortcut}
-                        />
+                        {app.currentVersion && (
+                            <AppItemGroup
+                                title=""
+                                className="core-app-item-group"
+                                onCreateShortcut={onCreateShortcut}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -115,7 +130,7 @@ const InstalledAppItem = ({
     );
 };
 
-InstalledAppItem.propTypes = {
+AppItem.propTypes = {
     app: PropTypes.shape({
         name: PropTypes.string.isRequired,
         displayName: PropTypes.string,
@@ -127,17 +142,20 @@ InstalledAppItem.propTypes = {
     isUpgrading: PropTypes.bool,
     isRemoving: PropTypes.bool,
     isDisabled: PropTypes.bool,
+    isInstalling: PropTypes.bool,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
+    onInstall: PropTypes.func.isRequired,
 };
 
-InstalledAppItem.defaultProps = {
+AppItem.defaultProps = {
     isDisabled: false,
     isUpgrading: false,
     isRemoving: false,
+    isInstalling: false,
 };
 
-export default InstalledAppItem;
+export default AppItem;
