@@ -13,6 +13,7 @@
                 "SwitchCase": 1
             }
         ],
+        "jsx-a11y/no-access-key": "off",
         "react/jsx-indent": [
             "error",
             4

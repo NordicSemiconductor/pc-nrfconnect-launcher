@@ -228,3 +228,23 @@ table.core-settings-sources {
 .core-dropdown .dropdown-menu li a {
     padding: 0;
 }
+
+.nav-link {
+    height: 48px;
+
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 300;
+
+    display: flex;
+    align-items: center;
+
+    &.active {
+        font-weight: bold;
+        cursor: default;
+    }
+
+    &:hover {
+        color: #fff;
+    }
+}

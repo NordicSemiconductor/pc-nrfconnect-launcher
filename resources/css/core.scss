@@ -27,9 +27,9 @@ html, body, #webapp {
 
 .core-nav-bar {
     width: 100%;
+    flex: none;
     background-color: $brand-primary;
     display: flex;
-    height: 60px;
 
     .core-nav-section {
         display: inline-block;
