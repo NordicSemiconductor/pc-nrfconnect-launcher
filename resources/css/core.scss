@@ -6,12 +6,6 @@ $roboto-font-path: "~roboto-fontface/fonts" !default;
 @import "./common/styles";
 @import "~bootstrap/scss/bootstrap";
 
-@each $color, $value in $theme-colors {
-    .btn-#{$color} {
-        border-color: darken($value, 5%);
-    }
-}
-
 html, body, #webapp {
     height: 100%;
 }
