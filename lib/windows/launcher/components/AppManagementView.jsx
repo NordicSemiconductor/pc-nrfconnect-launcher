@@ -41,9 +41,10 @@ import AppItem from './AppItem';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
+        const cmpInstalled = (!!b.currentVersion - !!a.currentVersion);
         const aName = a.displayName || a.name;
         const bName = b.displayName || b.name;
-        return aName.localeCompare(bName);
+        return cmpInstalled || aName.localeCompare(bName);
     });
 }
 
