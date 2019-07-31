@@ -80,7 +80,12 @@ function renderNotice(app) {
 const AppIcon = ({ app }) => (
     <div
         className="core-app-icon"
-        style={{ borderRadius: 7, background: '#e6f8ff' }}
+        style={{
+            borderRadius: 7,
+            background: '#e6f8ff',
+            width: '48px',
+            height: '48px',
+        }}
     >
         <img
             src={app.iconPath}
