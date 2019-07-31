@@ -36,7 +36,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
 
 function renderAlert(altText) {
     return (
@@ -79,15 +78,19 @@ function renderNotice(app) {
 }
 
 const AppIcon = ({ app }) => (
-    <div className="core-app-icon">
+    <div
+        className="core-app-icon"
+        style={{ borderRadius: 7, background: '#e6f8ff' }}
+    >
         <img
-            src={app.iconPath || nrfconnectLogo}
-            alt="App icon"
+            src={app.iconPath}
+            alt=""
             draggable={false}
-
+            style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
         />
-        { renderNotice(app) }
+        { app.latestVersion && renderNotice(app) }
     </div>
+
 );
 
 AppIcon.propTypes = {
