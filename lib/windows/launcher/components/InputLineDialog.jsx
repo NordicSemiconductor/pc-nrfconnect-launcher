@@ -37,6 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -51,8 +52,8 @@ class InputLineDialog extends React.Component {
         const {
             isVisible,
             title,
-            label,
             placeholder,
+            subtext,
             onOk,
             onCancel,
         } = this.props;
@@ -63,31 +64,30 @@ class InputLineDialog extends React.Component {
                 </Modal.Header>
                 <form onSubmit={() => onOk(this.inputNode.value)}>
                     <Modal.Body>
-                        <Form.Group>
-                            <Form.Label>{label}</Form.Label>
-                            <Form.Control
-                                as="input"
-                                type="text"
-                                ref={this.inputNode}
-                                placeholder={placeholder}
-                            />
-                        </Form.Group>
+                        <Form.Control
+                            as="input"
+                            type="text"
+                            ref={this.inputNode}
+                            placeholder={placeholder}
+                        />
+                        <small className="text-muted">{subtext}</small>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            className="core-btn"
-                            onClick={() => onOk(this.inputNode.current.value)}
-                        >
-                            OK
-                        </Button>
-                        <Button
-                            className="core-btn"
-                            onClick={() => onCancel()}
-                        >
-                            Cancel
-                        </Button>
+                        <ButtonToolbar className="wide-btns">
+                            <Button
+                                type="submit"
+                                variant="outline-primary"
+                                onClick={() => onOk(this.inputNode.current.value)}
+                            >
+                                Add
+                            </Button>
+                            <Button
+                                variant="outline-secondary"
+                                onClick={() => onCancel()}
+                            >
+                                Close
+                            </Button>
+                        </ButtonToolbar>
                     </Modal.Footer>
                 </form>
             </Modal>
@@ -98,8 +98,8 @@ class InputLineDialog extends React.Component {
 InputLineDialog.propTypes = {
     isVisible: PropTypes.bool,
     title: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    subtext: PropTypes.string,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
@@ -107,6 +107,7 @@ InputLineDialog.propTypes = {
 InputLineDialog.defaultProps = {
     isVisible: false,
     placeholder: null,
+    subtext: null,
 };
 
 export default InputLineDialog;

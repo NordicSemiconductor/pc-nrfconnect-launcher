@@ -35,7 +35,9 @@
  */
 
 import React from 'react';
-import { Tab, Nav } from 'react-bootstrap';
+
+import Nav from 'react-bootstrap/Nav';
+import Tab from 'react-bootstrap/Tab';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
@@ -48,14 +50,14 @@ import ProxyErrorContainer from '../containers/ProxyErrorContainer';
 import Logo from '../../../components/Logo';
 
 export default () => (
-    <div className="core-main-area">
-        <Tab.Container id="launcher" defaultActiveKey="apps" transition={false}>
-            <Nav className="core-nav-bar">
+    <>
+        <Tab.Container id="launcher" defaultActiveKey="apps">
+            <Nav>
                 <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
                 <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
                 <Logo />
             </Nav>
-            <Tab.Content className="core-main-layout">
+            <Tab.Content>
                 <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
                 <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
             </Tab.Content>
@@ -66,5 +68,5 @@ export default () => (
         <ConfirmLaunchContainer />
         <ProxyLoginContainer />
         <ProxyErrorContainer />
-    </div>
+    </>
 );

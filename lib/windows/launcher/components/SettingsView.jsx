@@ -35,14 +35,21 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
+
 import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import PropTypes from 'prop-types';
+import Row from 'react-bootstrap/Row';
+
 import { clipboard } from 'electron';
 import moment from 'moment';
-import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
-import InputLineDialog from './InputLineDialog';
+
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
+import InputLineDialog from './InputLineDialog';
 
 const CopyToClipboard = ({ text }) => (
     <Button
@@ -97,7 +104,6 @@ class SettingsView extends React.Component {
 
     render() {
         const {
-            isLoading,
             shouldCheckForUpdatesAtStartup,
             isCheckingForUpdates,
             lastUpdateCheckDate,
@@ -112,124 +118,137 @@ class SettingsView extends React.Component {
             onShowRemoveSourceDialog,
         } = this.props;
 
-        const checkButtonText = isCheckingForUpdates ? 'Checking...' : 'Check for updates now';
         const sourcesJS = sources.toJS();
 
-        return !isLoading ? (
-            <div>
-                <div className="core-settings-section">
-                    <h4>Updates</h4>
+        return (
+            <>
+                <Card body>
+                    <Row>
+                        <Col><Card.Title>Updates</Card.Title></Col>
+                        <Col xs="auto">
+                            <Button
+                                variant="outline-primary"
+                                onClick={this.onTriggerUpdateCheckClicked}
+                                disabled={isCheckingForUpdates}
+                            >
+                                { isCheckingForUpdates ? 'Checking...' : 'Check for updates' }
+                            </Button>
+                        </Col>
+                    </Row>
+
+                    <p className="small text-muted">
+                        {
+                            lastUpdateCheckDate
+                                && <>Last update check performed: { moment(lastUpdateCheckDate).format('YYYY-MM-DD HH:mm:ss') }</>
+                        }
+                    </p>
+                    <Form.Check
+                        custom
+                        id="checkForUpdates"
+                        label="Check for updates at startup"
+                        checked={shouldCheckForUpdatesAtStartup}
+                        onChange={this.onCheckUpdatesAtStartupChanged}
+                    />
                     {
-                        lastUpdateCheckDate
-                            ? <p>Last update check performed: { moment(lastUpdateCheckDate).format('YYYY-MM-DD HH:mm:ss') }</p>
-                            : null
+                        isUpdateCheckCompleteDialogVisible && (
+                            <Modal show onHide={onHideUpdateCheckCompleteDialog}>
+                                <Modal.Header>
+                                    <Modal.Title>Update check completed</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    {
+                                        isAppUpdateAvailable
+                                            ? (
+                                                <>
+                                                    One or more updates are
+                                                    available. Go to the
+                                                    Add/remove apps screen to
+                                                    upgrade.
+                                                </>
+                                            )
+                                            : <>All apps are up to date.</>
+                                    }
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button
+                                        variant="outline-primary"
+                                        onClick={onHideUpdateCheckCompleteDialog}
+                                    >
+                                    Got it
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
+                        )
                     }
-                    <div className="core-settings-update-check-controls">
-                        <Form.Group controlId="checkForUpdates">
-                            <Form.Check
-                                type="checkbox"
-                                checked={shouldCheckForUpdatesAtStartup}
-                                onChange={this.onCheckUpdatesAtStartupChanged}
-                                label="Check for updates at startup"
-                            />
-                        </Form.Group>
-                        <Button
-                            title={checkButtonText}
-                            className="btn btn-primary core-btn"
-                            onClick={this.onTriggerUpdateCheckClicked}
-                            disabled={isCheckingForUpdates}
-                        >
-                            <span className="mdi mdi-sync" />
-                            <span className="core-btn-text">
-                                { checkButtonText }
-                            </span>
-                        </Button>
-                    </div>
-                </div>
-                {
-                    isUpdateCheckCompleteDialogVisible && (
-                        <UpdateCheckCompleteDialog
-                            isVisible
-                            isAppUpdateAvailable={isAppUpdateAvailable}
-                            onOk={onHideUpdateCheckCompleteDialog}
-                        />
-                    )
-                }
-                <div
-                    className="core-settings-section"
+                </Card>
+                <Card
+                    body
                     onDrop={event => this.onDropUrl(event)}
                     onDragOver={cancel}
                     onDragEnter={cancel}
+                    id="app-sources"
                 >
-                    <h4>Extra app sources</h4>
-                    <table className="core-settings-sources">
-                        <tbody>
-                            {
-                                Object.keys(sourcesJS)
-                                    .filter(name => name !== 'official')
-                                    .map(name => (
-                                        <tr key={name} className="core-settings-source">
-                                            <td className="core-settings-source-name">{name}</td>
-                                            <td className="core-settings-copy-to-clipboard">
-                                                <CopyToClipboard text={sourcesJS[name]} />
-                                            </td>
-                                            <td
-                                                className="core-settings-source-url selectable"
-                                                title={sourcesJS[name]}
-                                            >
-                                                {sourcesJS[name]}
-                                            </td>
-                                            <td className="core-settings-source-remove">
-                                                <Button
-                                                    className="core-btn"
-                                                    variant="light"
-                                                    size="sm"
-                                                    onClick={() => onShowRemoveSourceDialog(name)}
-                                                >
-                                                    <span className="mdi mdi-playlist-remove" />
-                                                    <span className="core-btn-text">
-                                                        Remove
-                                                    </span>
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))
-                            }
-                        </tbody>
-                    </table>
-                    <div className="core-settings-sources-controls">
-                        <Button
-                            className="btn btn-primary core-btn"
-                            onClick={onShowAddSourceDialog}
-                        >
-                            <span className="mdi mdi-playlist-plus" />
-                            <span className="core-btn-text">
+                    <Row>
+                        <Col><Card.Title>App sources</Card.Title></Col>
+                        <Col xs="auto">
+                            <Button
+                                variant="outline-primary"
+                                onClick={onShowAddSourceDialog}
+                            >
                                 Add source
-                            </span>
-                        </Button>
-                    </div>
-                </div>
-                {
-                    isAddSourceDialogVisible && (
-                        <InputLineDialog
-                            isVisible
-                            title="Add new nRFConnect app source url"
-                            label="URL of apps.json"
-                            placeholder="URL..."
-                            onOk={url => { addSource(url); onHideAddSourceDialog(); }}
-                            onCancel={onHideAddSourceDialog}
-                        />
-                    )
-                }
-                <ConfirmRemoveSourceDialog />
-            </div>
-        ) : <div />;
+                            </Button>
+                        </Col>
+                    </Row>
+                    {
+                        Object.keys(sourcesJS)
+                            .filter(name => name !== 'official')
+                            .map(name => (
+                                <Row key={name}>
+                                    <Col className="item-name">{name}</Col>
+                                    <Col xs="auto">
+                                        <ButtonToolbar>
+                                            <Button
+                                                variant="outline-secondary"
+                                                size="sm"
+                                                onClick={() => clipboard.writeText(sourcesJS[name])}
+                                                title="Copy to clipboard"
+                                            >
+                                                Copy
+                                            </Button>
+                                            <Button
+                                                variant="outline-secondary"
+                                                size="sm"
+                                                onClick={() => onShowRemoveSourceDialog(name)}
+                                                title="Remove source and associated apps"
+                                            >
+                                                Remove
+                                            </Button>
+                                        </ButtonToolbar>
+                                    </Col>
+                                </Row>
+                            ))
+                    }
+                    {
+                        isAddSourceDialogVisible && (
+                            <InputLineDialog
+                                isVisible
+                                title="Add source"
+                                placeholder="https://..."
+                                subtext="The source file must be in .json format"
+                                onOk={url => { addSource(url); onHideAddSourceDialog(); }}
+                                onCancel={onHideAddSourceDialog}
+                            />
+                        )
+                    }
+                    <ConfirmRemoveSourceDialog />
+                </Card>
+            </>
+        );
     }
 }
 
 SettingsView.propTypes = {
     onMount: PropTypes.func,
-    isLoading: PropTypes.bool.isRequired,
     shouldCheckForUpdatesAtStartup: PropTypes.bool.isRequired,
     isCheckingForUpdates: PropTypes.bool.isRequired,
     onCheckUpdatesAtStartupChanged: PropTypes.func.isRequired,

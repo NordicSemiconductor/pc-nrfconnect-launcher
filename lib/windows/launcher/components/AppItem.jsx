@@ -35,18 +35,22 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppItemButton from './AppItemButton';
-import AppIcon from './AppIcon';
-import AppItemGroup from './AppItemGroup';
 
-const urlCheck = /https?:\//;
+import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import Col from 'react-bootstrap/Col';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import ListGroup from 'react-bootstrap/ListGroup';
+import PropTypes from 'prop-types';
+import Row from 'react-bootstrap/Row';
+
+import AppIcon from './AppIcon';
 
 const AppItem = ({
     app,
     onRemove,
     onUpgrade,
-    onReadMore,
     isUpgrading,
     isRemoving,
     isDisabled,
@@ -55,78 +59,80 @@ const AppItem = ({
     onCreateShortcut,
     onInstall,
 }) => {
-    const isUpgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
-    const statusClass = isUpgradeAvailable ? 'upgrade-available' : 'installed';
-    const statusText = isUpgradeAvailable ? `v${app.currentVersion} Installed, Upgrade to v${app.latestVersion}` : `v${app.currentVersion} Installed`;
+    const upgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
+    const installed = !!app.currentVersion;
+    const local = !app.source;
     return (
-        <div className="core-app-management-item list-group-item">
-            <AppIcon
-                app={app}
-            />
-            <h4 className="list-group-item-heading">{app.displayName || app.name}
-                <span className="list-group-item-heading-source-tag">{app.source || 'local'}</span>
-            </h4>
-            <div className="list-group-item-text">
-                <p>{app.description}</p>
-                <div className="core-app-management-item-footer">
-                    { urlCheck.test(app.homepage) && (
-                        <button className="btn btn-link core-btn-link" onClick={onReadMore} type="button">
-                            More information
-                        </button>
-                    )}
-                    <div className={`core-app-management-item-status ${statusClass}`}>{ statusText }</div>
-                    <div className="core-app-management-item-buttons">
-                        {
-                            isUpgradeAvailable
-                                ? (
-                                    <AppItemButton
-                                        title={`Upgrade ${app.displayName || app.name} from v${app.currentVersion} to v${app.latestVersion}`}
-                                        text={isUpgrading ? 'Upgrading...' : 'Upgrade'}
-                                        iconClass="mdi mdi-download"
-                                        isDisabled={isDisabled}
-                                        onClick={onUpgrade}
-                                    />
-                                )
-                                : <div />
-                        }
-                        {app.currentVersion && (
-                            <AppItemButton
-                                title={`Open ${app.displayName || app.name}`}
-                                text="Open"
-                                iconClass="mdi mdi-play"
-                                isDisabled={isDisabled}
-                                onClick={onAppSelected}
-                            />
-                        )}
-                        {!app.currentVersion && (
-                            <AppItemButton
-                                text={isInstalling ? 'Installing...' : 'Install'}
-                                title={`Install ${app.displayName || app.name}`}
-                                iconClass="mdi mdi-download"
-                                isDisabled={isDisabled}
-                                onClick={onInstall}
-                            />
-                        )}
-                        {app.currentVersion && app.source && (
-                            <AppItemButton
-                                title={`Remove ${app.displayName || app.name}`}
-                                text={isRemoving ? 'Removing...' : 'Remove'}
-                                iconClass="mdi mdi-trash-can"
-                                isDisabled={isDisabled}
-                                onClick={onRemove}
-                            />
-                        )}
-                        {app.currentVersion && (
-                            <AppItemGroup
-                                title=""
-                                className="core-app-item-group"
-                                onCreateShortcut={onCreateShortcut}
-                            />
-                        )}
+        <ListGroup.Item>
+            <Row noGutters>
+                <Col xs="auto mr-3" className="center-span-3-lines">
+                    <AppIcon app={app} />
+                </Col>
+                <Col className="text-width">
+                    <div className="list-group-item-heading">
+                        {app.displayName || app.name}
                     </div>
-                </div>
-            </div>
-        </div>
+                    <div className="list-group-item-text">
+                        {app.description}
+                    </div>
+                    <div className="core-app-management-item-footer">
+                        <span className="list-group-item-heading-source-tag">{app.source || 'local'}{installed && <>, v{app.currentVersion}</>}</span>
+                    </div>
+                </Col>
+                <Col xs="auto ml-auto" className="center-span-3-lines">
+                    <ButtonToolbar className="wide-btns">
+                        {upgradeAvailable && (
+                            <Button
+                                variant="outline-primary"
+                                disabled={isDisabled}
+                                onClick={onUpgrade}
+                            >
+                                {isUpgrading ? 'Updating...' : 'Update'}
+                            </Button>
+                        )}
+                        {installed && (
+                            <Button
+                                disabled={isDisabled}
+                                onClick={onAppSelected}
+                            >
+                                Open
+                            </Button>
+                        )}
+                        {!installed && (
+                            <Button
+                                variant="outline-secondary"
+                                disabled={isDisabled}
+                                onClick={onInstall}
+                            >
+                                {isInstalling ? 'Installing...' : 'Install'}
+                            </Button>
+                        )}
+                        {installed && (
+                            <DropdownButton
+                                variant="outline-primary"
+                                title=""
+                                alignRight
+                            >
+                                <Dropdown.Item
+                                    title="Create a desktop shortcut for this app"
+                                    onClick={onCreateShortcut}
+                                >
+                                    Create shortcut
+                                </Dropdown.Item>
+                                {installed && !local && (
+                                    <Dropdown.Item
+                                        disabled={isDisabled}
+                                        onClick={onRemove}
+                                    >
+                                        {isRemoving ? 'Removing...' : 'Remove'}
+                                    </Dropdown.Item>
+                                )}
+                            </DropdownButton>
+                        )}
+                    </ButtonToolbar>
+                </Col>
+            </Row>
+        </ListGroup.Item>
     );
 };
 
@@ -136,7 +142,7 @@ AppItem.propTypes = {
         displayName: PropTypes.string,
         description: PropTypes.string.isRequired,
         homepage: PropTypes.string,
-        currentVersion: PropTypes.string.isRequired,
+        currentVersion: PropTypes.string,
         latestVersion: PropTypes.string,
     }).isRequired,
     isUpgrading: PropTypes.bool,
@@ -145,7 +151,6 @@ AppItem.propTypes = {
     isInstalling: PropTypes.bool,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
-    onReadMore: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
     onInstall: PropTypes.func.isRequired,
