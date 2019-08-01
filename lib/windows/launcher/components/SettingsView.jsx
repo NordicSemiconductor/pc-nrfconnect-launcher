@@ -51,21 +51,6 @@ import moment from 'moment';
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';
 
-const CopyToClipboard = ({ text }) => (
-    <Button
-        size="sm"
-        variant="light"
-        title="Copy to clipboard"
-        onClick={() => clipboard.writeText(text)}
-    >
-        <span className="mdi mdi-content-copy" />
-    </Button>
-);
-
-CopyToClipboard.propTypes = {
-    text: PropTypes.string.isRequired,
-};
-
 function cancel(event) {
     event.preventDefault();
     const { dataTransfer } = event;
