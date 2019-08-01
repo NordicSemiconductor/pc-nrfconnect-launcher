@@ -134,37 +134,6 @@ class SettingsView extends React.Component {
                         checked={shouldCheckForUpdatesAtStartup}
                         onChange={this.onCheckUpdatesAtStartupChanged}
                     />
-                    {
-                        isUpdateCheckCompleteDialogVisible && (
-                            <Modal show onHide={onHideUpdateCheckCompleteDialog}>
-                                <Modal.Header>
-                                    <Modal.Title>Update check completed</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    {
-                                        isAppUpdateAvailable
-                                            ? (
-                                                <>
-                                                    One or more updates are
-                                                    available. Go to the
-                                                    Add/remove apps screen to
-                                                    upgrade.
-                                                </>
-                                            )
-                                            : <>All apps are up to date.</>
-                                    }
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={onHideUpdateCheckCompleteDialog}
-                                    >
-                                    Got it
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal>
-                        )
-                    }
                 </Card>
                 <Card
                     body
@@ -213,20 +182,46 @@ class SettingsView extends React.Component {
                                 </Row>
                             ))
                     }
-                    {
-                        isAddSourceDialogVisible && (
-                            <InputLineDialog
-                                isVisible
-                                title="Add source"
-                                placeholder="https://..."
-                                subtext="The source file must be in .json format"
-                                onOk={url => { addSource(url); onHideAddSourceDialog(); }}
-                                onCancel={onHideAddSourceDialog}
-                            />
-                        )
-                    }
-                    <ConfirmRemoveSourceDialog />
                 </Card>
+                <Modal
+                    show={isUpdateCheckCompleteDialogVisible}
+                    onHide={onHideUpdateCheckCompleteDialog}
+                >
+                    <Modal.Header>
+                        <Modal.Title>Update check completed</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {
+                            isAppUpdateAvailable
+                                ? (
+                                    <>
+                                        One or more updates are
+                                        available. Go to the
+                                        Add/remove apps screen to
+                                        upgrade.
+                                    </>
+                                )
+                                : <>All apps are up to date.</>
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            variant="outline-primary"
+                            onClick={onHideUpdateCheckCompleteDialog}
+                        >
+                        Got it
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <InputLineDialog
+                    isVisible={isAddSourceDialogVisible}
+                    title="Add source"
+                    placeholder="https://..."
+                    subtext="The source file must be in .json format"
+                    onOk={url => { addSource(url); onHideAddSourceDialog(); }}
+                    onCancel={onHideAddSourceDialog}
+                />
+                <ConfirmRemoveSourceDialog />
             </>
         );
     }
