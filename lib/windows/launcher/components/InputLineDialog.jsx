@@ -62,7 +62,7 @@ class InputLineDialog extends React.Component {
                 <Modal.Header>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <form onSubmit={() => onOk(this.inputNode.value)}>
+                <Form onSubmit={e => { onOk(this.inputNode.value); e.preventDefault(); }}>
                     <Modal.Body>
                         <Form.Control
                             as="input"
@@ -77,7 +77,6 @@ class InputLineDialog extends React.Component {
                             <Button
                                 type="submit"
                                 variant="outline-primary"
-                                onClick={() => onOk(this.inputNode.current.value)}
                             >
                                 Add
                             </Button>
@@ -89,7 +88,7 @@ class InputLineDialog extends React.Component {
                             </Button>
                         </ButtonToolbar>
                     </Modal.Footer>
-                </form>
+                </Form>
             </Modal>
         );
     }
