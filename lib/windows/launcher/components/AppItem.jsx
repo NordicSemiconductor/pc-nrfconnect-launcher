@@ -84,6 +84,7 @@ const AppItem = ({
                         {upgradeAvailable && (
                             <Button
                                 variant="outline-primary"
+                                title={`Update ${app.displayName}`}
                                 disabled={isDisabled}
                                 onClick={onUpgrade}
                             >
@@ -92,6 +93,7 @@ const AppItem = ({
                         )}
                         {installed && (
                             <Button
+                                title={`Open ${app.displayName}`}
                                 disabled={isDisabled}
                                 onClick={onAppSelected}
                             >
@@ -101,6 +103,7 @@ const AppItem = ({
                         {!installed && (
                             <Button
                                 variant="outline-secondary"
+                                title={`Install ${app.displayName}`}
                                 disabled={isDisabled}
                                 onClick={onInstall}
                             >
@@ -121,6 +124,7 @@ const AppItem = ({
                                 </Dropdown.Item>
                                 {installed && !local && (
                                     <Dropdown.Item
+                                        title={`Remove ${app.displayName}`}
                                         disabled={isDisabled}
                                         onClick={onRemove}
                                     >
