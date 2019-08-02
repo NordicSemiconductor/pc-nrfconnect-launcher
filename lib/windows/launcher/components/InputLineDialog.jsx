@@ -45,7 +45,6 @@ import Form from 'react-bootstrap/Form';
 class InputLineDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.inputNode = React.createRef();
     }
 
     render() {
@@ -62,12 +61,16 @@ class InputLineDialog extends React.Component {
                 <Modal.Header>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={e => { onOk(this.inputNode.value); e.preventDefault(); }}>
+                <Form
+                    onSubmit={e => {
+                        onOk(e.currentTarget.inputField.value); e.preventDefault();
+                    }}
+                >
                     <Modal.Body>
                         <Form.Control
                             as="input"
                             type="text"
-                            ref={this.inputNode}
+                            name="inputField"
                             placeholder={placeholder}
                         />
                         <small className="text-muted">{subtext}</small>
