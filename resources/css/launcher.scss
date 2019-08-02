@@ -126,23 +126,6 @@ $body-bg: #d9e1e2;
     }
 }
 
-
-.list-group-item-heading {
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.list-group-item-text {
-    font-size: 90%;
-    color: #768692;
-}
-
-.list-group-item-heading-source-tag {
-    font-size: 90%;
-    color: #d9e1e2;
-}
-
-
 .wide-btns > .btn {
     min-width: 10ch;
 }
@@ -199,4 +182,9 @@ $body-bg: #d9e1e2;
 
 .text-width {
     flex-basis: 40ch;
+}
+
+.text-muted-more {
+    @extend .text-muted;
+    color: lighten($color: $text-muted, $amount: 40%)!important;
 }

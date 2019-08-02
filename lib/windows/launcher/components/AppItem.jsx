@@ -69,14 +69,14 @@ const AppItem = ({
                     <AppIcon app={app} />
                 </Col>
                 <Col className="text-width">
-                    <div className="list-group-item-heading">
+                    <div className="h8">
                         {app.displayName || app.name}
                     </div>
-                    <div className="list-group-item-text">
+                    <div className="small text-muted">
                         {app.description}
                     </div>
-                    <div className="core-app-management-item-footer">
-                        <span className="list-group-item-heading-source-tag">{app.source || 'local'}{installed && <>, v{app.currentVersion}</>}</span>
+                    <div className="small text-muted-more">
+                        {app.source || 'local'}{installed && <>, v{app.currentVersion}</>}
                     </div>
                 </Col>
                 <Col xs="auto ml-auto" className="center-span-3-lines">
