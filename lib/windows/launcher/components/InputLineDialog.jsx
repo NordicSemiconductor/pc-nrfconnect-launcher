@@ -42,60 +42,51 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-class InputLineDialog extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const {
-            isVisible,
-            title,
-            placeholder,
-            subtext,
-            onOk,
-            onCancel,
-        } = this.props;
-        return (
-            <Modal show={isVisible} onHide={onCancel} backdrop="static">
-                <Modal.Header>
-                    <Modal.Title>{title}</Modal.Title>
-                </Modal.Header>
-                <Form
-                    onSubmit={e => {
-                        onOk(e.currentTarget.inputField.value); e.preventDefault();
-                    }}
-                >
-                    <Modal.Body>
-                        <Form.Control
-                            as="input"
-                            type="text"
-                            name="inputField"
-                            placeholder={placeholder}
-                        />
-                        <small className="text-muted">{subtext}</small>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <ButtonToolbar className="wide-btns">
-                            <Button
-                                type="submit"
-                                variant="outline-primary"
-                            >
-                                Add
-                            </Button>
-                            <Button
-                                variant="outline-secondary"
-                                onClick={() => onCancel()}
-                            >
-                                Close
-                            </Button>
-                        </ButtonToolbar>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
-        );
-    }
-}
+const InputLineDialog = ({
+    isVisible,
+    title,
+    placeholder,
+    subtext,
+    onOk,
+    onCancel,
+}) => (
+    <Modal show={isVisible} onHide={onCancel} backdrop="static">
+        <Modal.Header>
+            <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Form
+            onSubmit={e => {
+                onOk(e.currentTarget.inputField.value); e.preventDefault();
+            }}
+        >
+            <Modal.Body>
+                <Form.Control
+                    as="input"
+                    type="text"
+                    name="inputField"
+                    placeholder={placeholder}
+                />
+                <small className="text-muted">{subtext}</small>
+            </Modal.Body>
+            <Modal.Footer>
+                <ButtonToolbar className="wide-btns">
+                    <Button
+                        type="submit"
+                        variant="outline-primary"
+                    >
+                        Add
+                    </Button>
+                    <Button
+                        variant="outline-secondary"
+                        onClick={() => onCancel()}
+                    >
+                        Close
+                    </Button>
+                </ButtonToolbar>
+            </Modal.Footer>
+        </Form>
+    </Modal>
+);
 
 InputLineDialog.propTypes = {
     isVisible: PropTypes.bool,
