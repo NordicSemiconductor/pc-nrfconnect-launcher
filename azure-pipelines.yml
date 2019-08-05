@@ -55,7 +55,7 @@ jobs:
     displayName: 'Build'
   - bash: |
       sudo apt-get update
-      sudo apt-get install icnsutils
+      sudo apt-get install icnsutils libudev-dev
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Setup release environment for Linux'
   - bash: |
