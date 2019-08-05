@@ -49,13 +49,17 @@ jobs:
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
   - bash: |
+      sudo apt-get update
+      sudo apt-get install libudev-dev
+    condition: contains(variables['IMAGE_NAME'], 'ubuntu')
+    displayName: 'Setup build environment for Linux'
+  - bash: |
       npm i
       npm run build
       npm test
     displayName: 'Build'
   - bash: |
-      sudo apt-get update
-      sudo apt-get install icnsutils libudev-dev
+      sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Setup release environment for Linux'
   - bash: |
