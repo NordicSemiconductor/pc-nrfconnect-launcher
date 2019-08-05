@@ -111,7 +111,6 @@ ipcMain.on('open-app-launcher', () => {
 });
 
 ipcMain.on('open-app', (event, app) => {
-    windows.hideLauncherWindow();
     windows.openAppWindow(app);
 });
 
