@@ -237,7 +237,9 @@ SettingsView.propTypes = {
     isUpdateCheckCompleteDialogVisible: PropTypes.bool,
     onHideUpdateCheckCompleteDialog: PropTypes.func.isRequired,
     isAppUpdateAvailable: PropTypes.bool,
-    sources: PropTypes.shape({}).isRequired,
+    sources: PropTypes.shape({
+        toJS: PropTypes.func.isRequired,
+    }).isRequired,
     addSource: PropTypes.func.isRequired,
     onShowRemoveSourceDialog: PropTypes.func.isRequired,
     isAddSourceDialogVisible: PropTypes.bool,

@@ -78,7 +78,7 @@ function hrefReplacer(str) {
 
 const LogEntry = ({ entry }) => {
     const className = `core-log-entry core-log-level-${entry.level}`;
-    const time = moment(entry.time).format('HH:mm:ss.SSS');
+    const time = moment(entry.timestamp).format('HH:mm:ss.SSS');
 
     return (
         <div className={className}>
@@ -91,10 +91,9 @@ const LogEntry = ({ entry }) => {
 LogEntry.propTypes = {
     entry: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        time: PropTypes.instanceOf(Date).isRequired,
+        timestamp: PropTypes.string.isRequired,
         level: PropTypes.string.isRequired,
         message: PropTypes.string.isRequired,
-        meta: PropTypes.object,
     }).isRequired,
 };
 

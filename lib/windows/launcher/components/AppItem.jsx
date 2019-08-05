@@ -148,6 +148,7 @@ AppItem.propTypes = {
         homepage: PropTypes.string,
         currentVersion: PropTypes.string,
         latestVersion: PropTypes.string,
+        source: PropTypes.string,
     }).isRequired,
     isUpgrading: PropTypes.bool,
     isRemoving: PropTypes.bool,
