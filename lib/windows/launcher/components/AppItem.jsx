@@ -76,7 +76,9 @@ const AppItem = ({
                         {app.description}
                     </div>
                     <div className="small text-muted-more">
-                        {app.source || 'local'}{installed && <>, v{app.currentVersion}</>}
+                        {app.source || 'local'}
+                        {installed && <>, v{app.currentVersion}</>}
+                        {upgradeAvailable && <> (v{app.latestVersion} available)</>}
                     </div>
                 </Col>
                 <Col xs="auto ml-auto" className="center-span-3-lines">
@@ -128,7 +130,7 @@ const AppItem = ({
                                         disabled={isDisabled}
                                         onClick={onRemove}
                                     >
-                                        {isRemoving ? 'Removing...' : 'Remove'}
+                                        {isRemoving ? 'Uninstalling...' : 'Uninstall'}
                                     </Dropdown.Item>
                                 )}
                             </DropdownButton>
