@@ -79,13 +79,6 @@ $body-bg: #d9e1e2;
     }
 }
 
-.center-span-3-lines {
-    display: flex;
-    align-self: start;
-    min-height: $line-height-base * 1em * 3;
-    align-items: center;
-}
-
 .core-app-icon {
     position: relative;
 

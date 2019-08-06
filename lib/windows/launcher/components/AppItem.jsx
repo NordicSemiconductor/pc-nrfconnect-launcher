@@ -64,8 +64,8 @@ const AppItem = ({
     const local = !app.source;
     return (
         <ListGroup.Item>
-            <Row noGutters>
-                <Col xs="auto mr-3" className="center-span-3-lines">
+            <Row noGutters className="py-1">
+                <Col xs="auto my-2 mr-3" className="d-flex align-items-start">
                     <AppIcon app={app} />
                 </Col>
                 <Col className="text-width">
@@ -81,7 +81,7 @@ const AppItem = ({
                         {upgradeAvailable && <> (v{app.latestVersion} available)</>}
                     </div>
                 </Col>
-                <Col xs="auto ml-auto" className="center-span-3-lines">
+                <Col xs="auto ml-auto" className="d-flex align-items-end my-3 pl-3">
                     <ButtonToolbar className="wide-btns">
                         {upgradeAvailable && (
                             <Button
