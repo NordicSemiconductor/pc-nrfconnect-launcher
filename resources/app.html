@@ -24,6 +24,7 @@
         100% { transform: rotate(360deg); }
     }
     </style>
+    <link id='themer' rel='stylesheet' type='text/css' href='../dist/app.css'>
 </head>
 <body>
 <div id='app-loader'></div>
@@ -34,6 +35,9 @@
 
     if (NRFJPROG_LIBRARY_PATH) {
         process.env.NRFJPROG_LIBRARY_PATH = NRFJPROG_LIBRARY_PATH;
+    }
+    function coreSelectTheme(theme) {
+        e = document.getElementById('themer').href = `../dist/${theme}.css`;
     }
 </script>
 <script src="../dist/app-bundle.js"></script>
