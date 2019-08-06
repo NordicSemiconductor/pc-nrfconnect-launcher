@@ -66,6 +66,10 @@ $body-bg: #d9e1e2;
         width: 16px;
     }
 
+    &::-webkit-scrollbar-corner {
+        background-color: rgba(0,0,0,0);
+    }
+
     &::-webkit-scrollbar-thumb {
         background-color: rgba(0,0,0,0.3);
         border-radius: 10px;
