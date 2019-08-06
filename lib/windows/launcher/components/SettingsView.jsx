@@ -197,8 +197,7 @@ class SettingsView extends React.Component {
                                     <>
                                         One or more updates are
                                         available. Go to the
-                                        Add/remove apps screen to
-                                        upgrade.
+                                        apps screen to update.
                                     </>
                                 )
                                 : <>All apps are up to date.</>
