@@ -198,7 +198,7 @@ exports[`SettingsView should render check for updates completed, with updates av
       </ModalTitle>
     </ModalHeader>
     <ModalBody>
-      One or more updates are available. Go to the Add/remove apps screen to upgrade.
+      One or more updates are available. Go to the apps screen to update.
     </ModalBody>
     <ModalFooter>
       <Button

@@ -7,13 +7,13 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
   onClick={[Function]}
 >
   <div
-    className="row no-gutters"
+    className="py-1 row no-gutters"
   >
     <div
-      className="center-span-3-lines col-auto mr-3"
+      className="d-flex align-items-start col-auto my-2 mr-3"
     >
       <div
-        className="core-app-icon"
+        className="core-app-icon "
         style={
           Object {
             "background": "#e6f8ff",
@@ -26,6 +26,7 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
         <img
           alt=""
           draggable={false}
+          src={null}
           style={
             Object {
               "visibility": "hidden",
@@ -38,27 +39,23 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
       className="text-width col"
     >
       <div
-        className="list-group-item-heading"
+        className="h8"
       >
         Foo app
       </div>
       <div
-        className="list-group-item-text"
+        className="small text-muted"
       >
         Foo description
       </div>
       <div
-        className="core-app-management-item-footer"
+        className="small text-muted-more"
       >
-        <span
-          className="list-group-item-heading-source-tag"
-        >
-          local
-        </span>
+        local
       </div>
     </div>
     <div
-      className="center-span-3-lines col-auto ml-auto"
+      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -86,13 +83,13 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
   onClick={[Function]}
 >
   <div
-    className="row no-gutters"
+    className="py-1 row no-gutters"
   >
     <div
-      className="center-span-3-lines col-auto mr-3"
+      className="d-flex align-items-start col-auto my-2 mr-3"
     >
       <div
-        className="core-app-icon"
+        className="core-app-icon "
         style={
           Object {
             "background": "#e6f8ff",
@@ -105,6 +102,7 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
         <img
           alt=""
           draggable={false}
+          src={null}
           style={
             Object {
               "visibility": "hidden",
@@ -126,29 +124,25 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
       className="text-width col"
     >
       <div
-        className="list-group-item-heading"
+        className="h8"
       >
         Foo app
       </div>
       <div
-        className="list-group-item-text"
+        className="small text-muted"
       >
         Foo description
       </div>
       <div
-        className="core-app-management-item-footer"
+        className="small text-muted-more"
       >
-        <span
-          className="list-group-item-heading-source-tag"
-        >
-          local
-          , v
-          1.2.3
-        </span>
+        local
+        , v
+        1.2.3
       </div>
     </div>
     <div
-      className="center-span-3-lines col-auto ml-auto"
+      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -191,13 +185,13 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
   onClick={[Function]}
 >
   <div
-    className="row no-gutters"
+    className="py-1 row no-gutters"
   >
     <div
-      className="center-span-3-lines col-auto mr-3"
+      className="d-flex align-items-start col-auto my-2 mr-3"
     >
       <div
-        className="core-app-icon"
+        className="core-app-icon "
         style={
           Object {
             "background": "#e6f8ff",
@@ -210,6 +204,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
         <img
           alt=""
           draggable={false}
+          src={null}
           style={
             Object {
               "visibility": "hidden",
@@ -231,29 +226,28 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
       className="text-width col"
     >
       <div
-        className="list-group-item-heading"
+        className="h8"
       >
         Foo app
       </div>
       <div
-        className="list-group-item-text"
+        className="small text-muted"
       >
         Foo description
       </div>
       <div
-        className="core-app-management-item-footer"
+        className="small text-muted-more"
       >
-        <span
-          className="list-group-item-heading-source-tag"
-        >
-          local
-          , v
-          1.2.3
-        </span>
+        local
+        , v
+        1.2.3
+         (v
+        1.2.4
+         available)
       </div>
     </div>
     <div
-      className="center-span-3-lines col-auto ml-auto"
+      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -306,13 +300,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -325,6 +319,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -337,27 +332,23 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App A
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appA description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-          </span>
+          local
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -382,13 +373,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -401,6 +392,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -413,27 +405,23 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App B
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appB description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-          </span>
+          local
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -458,13 +446,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -477,6 +465,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -489,27 +478,23 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App C
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appC description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-          </span>
+          local
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -539,13 +524,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -558,6 +543,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -579,29 +565,28 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App A
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appA description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-            , v
-            1.2.3
-          </span>
+          local
+          , v
+          1.2.3
+           (v
+          1.2.4
+           available)
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -650,13 +635,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -669,6 +654,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -690,29 +676,25 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App C
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appC description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-            , v
-            1.2.3
-          </span>
+          local
+          , v
+          1.2.3
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -752,13 +734,13 @@ Array [
     onClick={[Function]}
   >
     <div
-      className="row no-gutters"
+      className="py-1 row no-gutters"
     >
       <div
-        className="center-span-3-lines col-auto mr-3"
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon"
+          className="core-app-icon "
           style={
             Object {
               "background": "#e6f8ff",
@@ -771,6 +753,7 @@ Array [
           <img
             alt=""
             draggable={false}
+            src={null}
             style={
               Object {
                 "visibility": "hidden",
@@ -783,27 +766,23 @@ Array [
         className="text-width col"
       >
         <div
-          className="list-group-item-heading"
+          className="h8"
         >
           App B
         </div>
         <div
-          className="list-group-item-text"
+          className="small text-muted"
         >
           appB description
         </div>
         <div
-          className="core-app-management-item-footer"
+          className="small text-muted-more"
         >
-          <span
-            className="list-group-item-heading-source-tag"
-          >
-            local
-          </span>
+          local
         </div>
       </div>
       <div
-        className="center-span-3-lines col-auto ml-auto"
+        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
