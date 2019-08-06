@@ -36,6 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import semver from 'semver';
 
 function renderAlert(altText) {
     return (
@@ -61,26 +62,29 @@ function renderNotice(app) {
     return null;
 }
 
-const AppIcon = ({ app }) => (
-    <div
-        className="core-app-icon"
-        style={{
-            borderRadius: 7,
-            background: '#e6f8ff',
-            width: '48px',
-            height: '48px',
-        }}
-    >
-        <img
-            src={app.iconPath}
-            alt=""
-            draggable={false}
-            style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
-        />
-        { app.latestVersion && renderNotice(app) }
-    </div>
-
-);
+const AppIcon = ({ app }) => {
+    console.log(app.engineVersion);
+    const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.1.0');
+    return (
+        <div
+            className={`core-app-icon ${primaryColorNeedsUpdate ? 'old-app-icon' : ''}`}
+            style={{
+                borderRadius: 7,
+                background: '#e6f8ff',
+                width: '48px',
+                height: '48px',
+            }}
+        >
+            <img
+                src={app.iconPath}
+                alt=""
+                draggable={false}
+                style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
+            />
+            {app.latestVersion && renderNotice(app)}
+        </div>
+    );
+};
 
 AppIcon.propTypes = {
     app: PropTypes.shape({

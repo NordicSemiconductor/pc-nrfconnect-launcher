@@ -91,6 +91,11 @@ $body-bg: #d9e1e2;
         width: 48px;
     }
 
+    // Transform old primary color to new primary.
+    &.old-app-icon {
+        filter: hue-rotate(-10deg) brightness(106%);
+    }
+
     .mdi {
         position: absolute;
         top: 22px;
