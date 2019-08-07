@@ -55,17 +55,17 @@ describe('LogViewer', () => {
             {
                 id: 1,
                 level: 'info',
-                time: new Date('2017-02-03T12:41:36.020Z'),
+                timestamp: '2017-02-03T12:41:36.020Z',
                 message: 'Info message',
             }, {
                 id: 2,
                 level: 'error',
-                time: new Date('2017-02-03T13:41:36.020Z'),
+                timestamp: '2017-02-03T13:41:36.020Z',
                 message: 'Error message',
             }, {
                 id: 3,
                 level: 'info',
-                time: new Date('2017-02-03T13:41:36.020Z'),
+                timestamp: '2017-02-03T13:41:36.020Z',
                 message: 'For reference see: https://github.com/example/doc.md or reboot Windows.',
             },
         ]);
