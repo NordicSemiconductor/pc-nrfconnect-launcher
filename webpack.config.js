@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
@@ -26,6 +27,7 @@ module.exports = {
     entry: {
         app: './lib/windows/app/index',
         launcher: './lib/windows/launcher/index',
+        brand19: './resources/css/brand19.scss',
     },
     output: {
         path: path.resolve('dist'),
@@ -47,7 +49,7 @@ module.exports = {
         }, {
             test: /\.scss|\.css$/,
             loaders: [
-                require.resolve('style-loader'),
+                MiniCssExtractPlugin.loader,
                 require.resolve('css-loader'),
                 require.resolve('sass-loader'),
             ],
@@ -62,6 +64,10 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css',
         }),
     ],
     externals: createExternals(),
