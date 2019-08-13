@@ -186,31 +186,17 @@ function copy(src, dest) {
  * @param {string} dest the path to destination.
  * @returns {Promise} promise that resolves if successful.
  */
-async function copyFromAsar(src, dest) {
-    const mode = (
-        fs.constants.S_IRWXU
-        | fs.constants.S_IRGRP
-        | fs.constants.S_IXGRP
-        | fs.constants.S_IROTH
-        | fs.constants.S_IXOTH
-    );
-    if (fs.existsSync(dest)) {
-        await chmodDir(dest, mode);
-    }
-    fse.removeSync(dest);
-    console.log('targz');
-    return new Promise(resolve => {
+function copyFromAsar(src, dest) {
+    return new Promise((resolve, reject) => {
         targz.decompress({
             src,
             dest: path.join(dest, '..'),
         }, err => {
             if (err) {
-                console.log(err);
-                return Promise.reject();
+                return reject(err);
             }
-            console.log('Done!');
             fse.moveSync(path.join(dest, '..', 'template.app'), dest, { overwrite: true });
-            resolve();
+            return resolve();
         });
     });
 }
