@@ -186,10 +186,10 @@ function copy(src, dest) {
  * @param {string} dest the path to destination.
  * @returns {Promise} promise that resolves if successful.
  */
-function copyFromAsar(src, dest) {
-    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRWXG | fs.constants.S_IRXO);
+async function copyFromAsar(src, dest) {
+    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRXG | fs.constants.S_IRXO);
     if (fs.existsSync(dest)) {
-        fs.chmodSync(dest, mode);
+        await chmodDir(dest, mode);
     }
     fse.removeSync(dest);
     fse.mkdirsSync(dest);
