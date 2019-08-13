@@ -184,9 +184,10 @@ function copy(src, dest) {
  *
  * @param {string} src the path to source.
  * @param {string} dest the path to destination.
+ * @param {string} fileName the target file name.
  * @returns {Promise} promise that resolves if successful.
  */
-function copyFromAsar(src, dest) {
+function copyFromAsar(src, dest, fileName) {
     return new Promise((resolve, reject) => {
         targz.decompress({
             src,
@@ -195,7 +196,7 @@ function copyFromAsar(src, dest) {
             if (err) {
                 return reject(err);
             }
-            fse.moveSync(path.join(dest, '..', 'template.app'), dest, { overwrite: true });
+            fse.moveSync(path.join(dest, '..', fileName), dest, { overwrite: true });
             return resolve();
         });
     });
