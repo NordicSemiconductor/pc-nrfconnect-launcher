@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import nrfconnectLogo from '../../../../resources/nrfconnect.png';
+import semver from 'semver';
 
 function renderAlert(altText) {
     return (
@@ -44,18 +44,6 @@ function renderAlert(altText) {
             <span className="alert-icon-bg" />
             <span
                 className="mdi mdi-alert"
-                title={altText}
-            />
-        </div>
-    );
-}
-
-function renderInfo(altText) {
-    return (
-        <div>
-            <span className="info-icon-bg" />
-            <span
-                className="mdi mdi-information"
                 title={altText}
             />
         </div>
@@ -71,30 +59,38 @@ function renderNotice(app) {
         return renderAlert(`The app only supports nRF Connect ${app.engineVersion}, `
             + 'which does not match your currently installed version');
     }
-    if (app.isOfficial && app.currentVersion !== app.latestVersion) {
-        return renderInfo(`A new version (v${app.latestVersion}) of this app is `
-            + 'available, and can be installed from the "Add/remove apps" screen');
-    }
     return null;
 }
 
-const AppIcon = ({ app }) => (
-    <div className="core-app-icon">
-        <img
-            src={app.iconPath || nrfconnectLogo}
-            alt="App icon"
-            draggable={false}
-
-        />
-        { renderNotice(app) }
-    </div>
-);
+const AppIcon = ({ app }) => {
+    const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.1.0');
+    return (
+        <div
+            className={`core-app-icon ${primaryColorNeedsUpdate ? 'old-app-icon' : ''}`}
+            style={{
+                borderRadius: 7,
+                background: '#e6f8ff',
+                width: '48px',
+                height: '48px',
+            }}
+        >
+            <img
+                src={app.iconPath}
+                alt=""
+                draggable={false}
+                style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
+            />
+            {app.latestVersion && renderNotice(app)}
+        </div>
+    );
+};
 
 AppIcon.propTypes = {
     app: PropTypes.shape({
         iconPath: PropTypes.string,
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
+        latestVersion: PropTypes.string,
     }).isRequired,
 };
 

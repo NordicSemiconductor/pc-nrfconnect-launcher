@@ -104,6 +104,7 @@
         "electron": "5.0.6",
         "electron-builder": "20.44.4",
         "electron-is-dev": "1.1.0",
+        "mini-css-extract-plugin": "0.8.0",
         "moment": "2.24.0",
         "mousetrap": "1.6.3",
         "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#update/deps-05072019",

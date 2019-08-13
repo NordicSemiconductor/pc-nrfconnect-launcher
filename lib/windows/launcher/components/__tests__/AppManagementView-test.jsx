@@ -54,27 +54,14 @@ import AppManagementView from '../AppManagementView';
 import getImmutableApp from '../../models';
 
 describe('AppManagementView', () => {
-    it('should render spinner when retrieving apps', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={List()}
-                isRetrievingApps
-                isLatestAppInfoDownloaded
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onUpgrade={() => {}}
-                onReadMore={() => {}}
-                onMount={() => {}}
-            />,
-        )).toMatchSnapshot();
-    });
-
     it('should render without any apps', () => {
         expect(renderer.create(
             <AppManagementView
                 apps={List()}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -112,6 +99,8 @@ describe('AppManagementView', () => {
                 }
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -134,6 +123,8 @@ describe('AppManagementView', () => {
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 installingAppName="pc-nrfconnect-foo"
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -158,6 +149,8 @@ describe('AppManagementView', () => {
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 removingAppName="pc-nrfconnect-foo"
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -182,6 +175,8 @@ describe('AppManagementView', () => {
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 upgradingAppName="pc-nrfconnect-foo"
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -194,6 +189,7 @@ describe('AppManagementView', () => {
     it('should invoke onInstall with app name, source and url when install button is clicked', () => {
         const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
+            displayName: 'Foobar displayName',
             description: 'Foobar description',
             source: 'beta',
             url: 'https://foo.bar/dists/beta',
@@ -204,6 +200,8 @@ describe('AppManagementView', () => {
                 apps={List([app])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={onInstall}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -211,7 +209,7 @@ describe('AppManagementView', () => {
                 onMount={() => {}}
             />,
         );
-        wrapper.find('button[title="Install pc-nrfconnect-foobar"]').first().simulate('click');
+        wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
 
         expect(onInstall).toHaveBeenCalledWith(app.name, app.source);
     });
@@ -219,6 +217,7 @@ describe('AppManagementView', () => {
     it('should invoke onRemove with app name and source when remove button is clicked', () => {
         const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
+            displayName: 'Foobar displayName',
             description: 'Foobar description',
             currentVersion: '1.2.3',
             latestVersion: '1.2.3',
@@ -230,6 +229,8 @@ describe('AppManagementView', () => {
                 apps={List([app])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={onRemove}
                 onUpgrade={() => {}}
@@ -237,7 +238,9 @@ describe('AppManagementView', () => {
                 onMount={() => {}}
             />,
         );
-        wrapper.find('button[title="Remove pc-nrfconnect-foobar"]').first().simulate('click');
+
+        wrapper.find('.dropdown-toggle').first().simulate('click');
+        wrapper.find('a[title="Remove Foobar displayName"]').first().simulate('click');
 
         expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
     });
@@ -245,6 +248,7 @@ describe('AppManagementView', () => {
     it('should invoke onUpgrade with app name and latest version when upgrade button is clicked', () => {
         const app = getImmutableApp({
             name: 'pc-nrfconnect-foobar',
+            displayName: 'Foobar displayName',
             description: 'Foobar description',
             currentVersion: '1.2.3',
             latestVersion: '1.2.4',
@@ -257,6 +261,8 @@ describe('AppManagementView', () => {
                 apps={List([app])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={onUpgrade}
@@ -264,7 +270,7 @@ describe('AppManagementView', () => {
                 onMount={() => {}}
             />,
         );
-        wrapper.find('button[title="Upgrade pc-nrfconnect-foobar from v1.2.3 to v1.2.4"]').first().simulate('click');
+        wrapper.find('button[title="Update Foobar displayName"]').first().simulate('click');
 
         expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source);
     });
@@ -276,6 +282,8 @@ describe('AppManagementView', () => {
                 apps={List([])}
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded={false}
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onDownloadLatestAppInfo={onDownloadLatestAppInfo}
                 onInstall={() => {}}
                 onRemove={() => {}}
@@ -296,6 +304,8 @@ describe('AppManagementView', () => {
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
                 onDownloadLatestAppInfo={onDownloadLatestAppInfo}
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -333,6 +343,8 @@ describe('AppManagementView', () => {
                 }
                 isRetrievingApps={false}
                 isLatestAppInfoDownloaded
+                onAppSelected={() => { }}
+                onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
@@ -340,5 +352,34 @@ describe('AppManagementView', () => {
                 onMount={() => {}}
             />,
         )).toMatchSnapshot();
+    });
+
+    it('should invoke onAppSelected with given app item when Open is clicked', () => {
+        const app = getImmutableApp({
+            name: 'pc-nrfconnect-foobar',
+            displayName: 'Foobar displayName',
+            description: 'Foobar description',
+            currentVersion: '1.2.3',
+            path: '/path/to/pc-nrfconnect-foobar',
+            isOfficial: false,
+        });
+        const onAppSelected = jest.fn();
+        const wrapper = mount(
+            <AppManagementView
+                apps={List([app])}
+                isRetrievingApps={false}
+                isLatestAppInfoDownloaded
+                onAppSelected={onAppSelected}
+                onCreateShortcut={() => {}}
+                onInstall={() => {}}
+                onRemove={() => {}}
+                onUpgrade={() => {}}
+                onReadMore={() => {}}
+                onMount={() => {}}
+            />,
+        );
+        wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
+
+        expect(onAppSelected).toHaveBeenCalledWith(app);
     });
 });

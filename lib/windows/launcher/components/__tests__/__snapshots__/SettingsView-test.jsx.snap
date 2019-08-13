@@ -1,541 +1,773 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SettingsView should render check for updates completed, with everything up to date 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <p>
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    >
       Last update check performed: 
       2017-02-03 13:41:36
     </p>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
-      >
-        <FormCheck
-          checked={false}
-          disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={false}
-        onClick={[Function]}
-        title="Check for updates now"
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Check for updates now
-        </span>
-      </Button>
-    </div>
-  </div>
-  <UpdateCheckSuccessDialog
-    isAppUpdateAvailable={false}
-    isVisible={true}
-    onOk={[Function]}
-  />
-  <div
-    className="core-settings-section"
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={true}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Add source
-        </span>
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
 
 exports[`SettingsView should render check for updates completed, with updates available 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <p>
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    >
       Last update check performed: 
       2017-02-03 13:41:36
     </p>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
-      >
-        <FormCheck
-          checked={false}
-          disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={false}
-        onClick={[Function]}
-        title="Check for updates now"
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Check for updates now
-        </span>
-      </Button>
-    </div>
-  </div>
-  <UpdateCheckSuccessDialog
-    isAppUpdateAvailable={true}
-    isVisible={true}
-    onOk={[Function]}
-  />
-  <div
-    className="core-settings-section"
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={true}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      One or more updates are available. Go to the apps screen to update.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Add source
-        </span>
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
 
-exports[`SettingsView should render empty div while loading 1`] = `<div />`;
-
-exports[`SettingsView should render when checking for updates 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+exports[`SettingsView should render empty div while loading 1`] = `
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
       >
-        <FormCheck
-          checked={false}
+        <Button
+          active={false}
           disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={true}
-        onClick={[Function]}
-        title="Checking..."
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
         >
-          Checking...
-        </span>
-      </Button>
-    </div>
-  </div>
-  <div
-    className="core-settings-section"
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    />
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
+        Got it
+      </Button>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
+  <div />
+</Fragment>
+`;
+
+exports[`SettingsView should render when checking for updates 1`] = `
+<Fragment>
+  <Card
+    body={true}
+  >
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={true}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Checking...
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    />
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
         >
           Add source
-        </span>
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
+    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        active={false}
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+        variant="outline-primary"
+      >
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
 
 exports[`SettingsView should render with check for updates disabled 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
       >
-        <FormCheck
-          checked={false}
+        <Button
+          active={false}
           disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={false}
-        onClick={[Function]}
-        title="Check for updates now"
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
         >
-          Check for updates now
-        </span>
-      </Button>
-    </div>
-  </div>
-  <div
-    className="core-settings-section"
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    />
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Add source
-        </span>
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
 
 exports[`SettingsView should render with check for updates enabled 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
       >
-        <FormCheck
-          checked={true}
+        <Button
+          active={false}
           disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={false}
-        onClick={[Function]}
-        title="Check for updates now"
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
         >
-          Check for updates now
-        </span>
-      </Button>
-    </div>
-  </div>
-  <div
-    className="core-settings-section"
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    />
+    <FormCheck
+      checked={true}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Add source
-        </span>
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
 
 exports[`SettingsView should render with last update check date 1`] = `
-<div>
-  <div
-    className="core-settings-section"
+<Fragment>
+  <Card
+    body={true}
   >
-    <h4>
-      Updates
-    </h4>
-    <p>
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          Updates
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Check for updates
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+    <p
+      className="small text-muted"
+    >
       Last update check performed: 
       2017-02-03 13:41:36
     </p>
-    <div
-      className="core-settings-update-check-controls"
-    >
-      <FormGroup
-        controlId="checkForUpdates"
-      >
-        <FormCheck
-          checked={false}
-          disabled={false}
-          inline={false}
-          isInvalid={false}
-          isValid={false}
-          label="Check for updates at startup"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
-        />
-      </FormGroup>
-      <Button
-        active={false}
-        className="btn btn-primary core-btn"
-        disabled={false}
-        onClick={[Function]}
-        title="Check for updates now"
-        type="button"
-        variant="primary"
-      >
-        <span
-          className="mdi mdi-sync"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Check for updates now
-        </span>
-      </Button>
-    </div>
-  </div>
-  <div
-    className="core-settings-section"
+    <FormCheck
+      checked={false}
+      custom={true}
+      disabled={false}
+      id="checkForUpdates"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for updates at startup"
+      onChange={[Function]}
+      title=""
+      type="checkbox"
+    />
+  </Card>
+  <Card
+    body={true}
+    id="app-sources"
     onDragEnter={[Function]}
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <h4>
-      Extra app sources
-    </h4>
-    <table
-      className="core-settings-sources"
+    <Bootstrap(Row)>
+      <Col>
+        <CardTitle>
+          App sources
+        </CardTitle>
+      </Col>
+      <Col
+        xs="auto"
+      >
+        <Button
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="outline-primary"
+        >
+          Add source
+        </Button>
+      </Col>
+    </Bootstrap(Row)>
+  </Card>
+  <Bootstrap(Modal)
+    onHide={[Function]}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={false}
+      closeLabel="Close"
     >
-      <tbody />
-    </table>
-    <div
-      className="core-settings-sources-controls"
-    >
+      <ModalTitle>
+        Update check completed
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      All apps are up to date.
+    </ModalBody>
+    <ModalFooter>
       <Button
         active={false}
-        className="btn btn-primary core-btn"
         disabled={false}
         onClick={[Function]}
         type="button"
-        variant="primary"
+        variant="outline-primary"
       >
-        <span
-          className="mdi mdi-playlist-plus"
-        />
-        <span
-          className="core-btn-text"
-        >
-          Add source
-        </span>
+        Got it
       </Button>
-    </div>
-  </div>
+    </ModalFooter>
+  </Bootstrap(Modal)>
+  <InputLineDialog
+    isVisible={false}
+    onCancel={[Function]}
+    onOk={[Function]}
+    placeholder="https://..."
+    subtext="The source file must be in .json format"
+    title="Add source"
+  />
   <div />
-</div>
+</Fragment>
 `;
