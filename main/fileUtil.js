@@ -187,7 +187,13 @@ function copy(src, dest) {
  * @returns {Promise} promise that resolves if successful.
  */
 async function copyFromAsar(src, dest) {
-    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRXG | fs.constants.S_IRXO);
+    const mode = (
+        fs.constants.S_IRWXU
+        | fs.constants.S_IRGRP
+        | fs.constants.S_IXGRP
+        | fs.constants.S_IROTH
+        | fs.constants.S_IXOTH
+    );
     if (fs.existsSync(dest)) {
         await chmodDir(dest, mode);
     }
