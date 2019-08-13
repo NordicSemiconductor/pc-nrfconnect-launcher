@@ -198,9 +198,21 @@ async function copyFromAsar(src, dest) {
         await chmodDir(dest, mode);
     }
     fse.removeSync(dest);
-    fse.mkdirsSync(dest);
-    return fse.copy(src, dest)
-        .catch(() => chmodDir(dest, mode));
+    console.log('targz');
+    return new Promise(resolve => {
+        targz.decompress({
+            src,
+            dest: path.join(dest, '..'),
+        }, err => {
+            if (err) {
+                console.log(err);
+                return Promise.reject();
+            }
+            console.log('Done!');
+            fse.moveSync(path.join(dest, '..', 'template.app'), dest, { overwrite: true });
+            resolve();
+        });
+    });
 }
 
 /**
