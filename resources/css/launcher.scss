@@ -19,11 +19,10 @@ $body-bg: #d9e1e2;
 
     .nav {
         background-color: theme-color("primary");
-        padding: 0.5rem 2rem;
+        @extend .px-4;
+        @extend .py-2;
 
         .nav-link {
-            height: 3rem;
-
             color: #fff;
             text-transform: uppercase;
             font-weight: 300;
@@ -47,8 +46,10 @@ $body-bg: #d9e1e2;
             cursor: pointer;
 
             .core-logo {
+                // Copy horizontal padding from .nav-link
+                @extend .nav-link;
+                @extend .py-1;
                 height: 100%;
-                padding: 13%;
             }
         }
     }
