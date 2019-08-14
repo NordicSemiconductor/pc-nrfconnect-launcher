@@ -184,20 +184,27 @@ function copy(src, dest) {
  *
  * @param {string} src the path to source.
  * @param {string} dest the path to destination.
- * @param {string} fileName the target file name.
+ * @param {number} stripComponents the number of components to strip.
  * @returns {Promise} promise that resolves if successful.
  */
-function copyFromAsar(src, dest, fileName) {
+function untar(src, dest, stripComponents = 0) {
+    const pattern = new RegExp(`(.*?/){${stripComponents}}`);
     return new Promise((resolve, reject) => {
         targz.decompress({
             src,
-            dest: path.join(dest, '..'),
-        }, err => {
-            if (err) {
-                return reject(err);
+            dest,
+            tar: {
+                map: header => ({
+                    ...header,
+                    name: header.name.replace(pattern, ''),
+                }),
+            },
+        }, error => {
+            if (error) {
+                reject(new Error(`Unable to extract ${src}: ${error.message}`));
+            } else {
+                resolve();
             }
-            fse.moveSync(path.join(dest, '..', fileName), dest, { overwrite: true });
-            return resolve();
         });
     });
 }
@@ -229,27 +236,7 @@ function chmodDir(src, mode) {
  * @returns {Promise} promise that resolves if successful.
  */
 function extractNpmPackage(tgzFile, destinationDir) {
-    return new Promise((resolve, reject) => {
-        targz.decompress({
-            src: tgzFile,
-            dest: destinationDir,
-            tar: {
-                map: header => (
-                    Object.assign({}, header, {
-                        // All tgz files from npm contain a directory named
-                        // "package". Stripping it away.
-                        name: header.name.replace(/^package\//, ''),
-                    })
-                ),
-            },
-        }, error => {
-            if (error) {
-                reject(new Error(`Unable to extract ${tgzFile}: ${error.message}`));
-            } else {
-                resolve();
-            }
-        });
-    });
+    return untar(tgzFile, destinationDir, 1);
 }
 
 /**
@@ -308,7 +295,7 @@ module.exports = {
     deleteFile,
     deleteDir,
     copy,
-    copyFromAsar,
+    untar,
     chmodDir,
     extractNpmPackage,
     getNameFromNpmPackage,
