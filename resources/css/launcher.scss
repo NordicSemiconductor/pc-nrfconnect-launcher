@@ -19,10 +19,11 @@ $body-bg: #d9e1e2;
 
     .nav {
         background-color: theme-color("primary");
-        @extend .px-4;
-        @extend .py-2;
+        padding: 0.5rem 2rem;
 
         .nav-link {
+            height: 3rem;
+
             color: #fff;
             text-transform: uppercase;
             font-weight: 300;
@@ -34,22 +35,19 @@ $body-bg: #d9e1e2;
                 font-weight: bold;
                 cursor: default;
             }
-
-            &:hover {
-                color: #fff;
-            }
         }
 
         .core-logo-container {
-            display: grid;
+            margin-right: 1rem;
             margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
             cursor: pointer;
 
             .core-logo {
-                // Copy horizontal padding from .nav-link
-                @extend .nav-link;
-                @extend .py-1;
-                height: 100%;
+                height: 2.5rem;
             }
         }
     }
