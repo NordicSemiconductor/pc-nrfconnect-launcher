@@ -165,9 +165,9 @@ class SettingsView extends React.Component {
                                                 variant="outline-secondary"
                                                 size="sm"
                                                 onClick={() => clipboard.writeText(sourcesJS[name])}
-                                                title="Copy to clipboard"
+                                                title="Copy URL to clipboard"
                                             >
-                                                Copy
+                                                Copy URL
                                             </Button>
                                             <Button
                                                 variant="outline-secondary"
