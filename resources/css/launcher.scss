@@ -50,6 +50,11 @@ $body-bg: #d9e1e2;
                 height: 100%;
                 padding: 13%;
             }
+
+            // Prevent broken image placeholder for app without icon.
+            .core-logo:after {
+                content: "";
+            }
         }
     }
 

@@ -62,6 +62,10 @@ function renderNotice(app) {
     return null;
 }
 
+function findIcon(app) {
+    return app.iconPath || `${app.get('url')}.svg`;
+}
+
 const AppIcon = ({ app }) => {
     const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.1.0');
     return (
@@ -75,10 +79,9 @@ const AppIcon = ({ app }) => {
             }}
         >
             <img
-                src={app.iconPath}
+                src={findIcon(app)}
                 alt=""
                 draggable={false}
-                style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
             />
             {app.latestVersion && renderNotice(app)}
         </div>
