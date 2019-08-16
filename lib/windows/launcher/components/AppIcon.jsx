@@ -64,7 +64,7 @@ function renderNotice(app) {
 
 
 const AppIcon = ({ app }) => {
-    const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.1.0');
+    const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.2.0');
     return (
         <div
             className={`core-app-icon ${primaryColorNeedsUpdate ? 'old-app-icon' : ''}`}

@@ -35,20 +35,19 @@ $body-bg: #d9e1e2;
                 font-weight: bold;
                 cursor: default;
             }
-
-            &:hover {
-                color: #fff;
-            }
         }
 
         .core-logo-container {
-            display: grid;
+            margin-right: 1rem;
             margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
             cursor: pointer;
 
             .core-logo {
-                height: 100%;
-                padding: 13%;
+                height: 2.5rem;
             }
 
             // Prevent broken image placeholder for app without icon.
