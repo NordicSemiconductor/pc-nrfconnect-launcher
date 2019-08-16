@@ -181,24 +181,32 @@ function copy(src, dest) {
 
 /**
  * Copy files from source to destination from asar archive.
- * Since it throws permission erros in a built version when copying file from asar archive,
- * it tries to copy files several times and change the mode of file during the copying.
- * The parameter 'limit' is set to avoid endless loop and other types of errors.
- * 'limit' should be greater than the total number of files which would be copied.
  *
  * @param {string} src the path to source.
  * @param {string} dest the path to destination.
+ * @param {number} stripComponents the number of components to strip.
  * @returns {Promise} promise that resolves if successful.
  */
-function copyFromAsar(src, dest) {
-    const mode = (fs.constants.S_IRWXU | fs.constants.S_IRXG | fs.constants.S_IRXO);
-    if (fs.existsSync(dest)) {
-        fs.chmodSync(dest, mode);
-    }
-    fse.removeSync(dest);
-    fse.mkdirsSync(dest);
-    return fse.copy(src, dest)
-        .catch(() => chmodDir(dest, mode));
+function untar(src, dest, stripComponents = 0) {
+    const pattern = new RegExp(`(.*?/){${stripComponents}}`);
+    return new Promise((resolve, reject) => {
+        targz.decompress({
+            src,
+            dest,
+            tar: {
+                map: header => ({
+                    ...header,
+                    name: header.name.replace(pattern, ''),
+                }),
+            },
+        }, error => {
+            if (error) {
+                reject(new Error(`Unable to extract ${src}: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
 }
 
 /**
@@ -228,27 +236,7 @@ function chmodDir(src, mode) {
  * @returns {Promise} promise that resolves if successful.
  */
 function extractNpmPackage(tgzFile, destinationDir) {
-    return new Promise((resolve, reject) => {
-        targz.decompress({
-            src: tgzFile,
-            dest: destinationDir,
-            tar: {
-                map: header => (
-                    Object.assign({}, header, {
-                        // All tgz files from npm contain a directory named
-                        // "package". Stripping it away.
-                        name: header.name.replace(/^package\//, ''),
-                    })
-                ),
-            },
-        }, error => {
-            if (error) {
-                reject(new Error(`Unable to extract ${tgzFile}: ${error.message}`));
-            } else {
-                resolve();
-            }
-        });
-    });
+    return untar(tgzFile, destinationDir, 1);
 }
 
 /**
@@ -307,7 +295,7 @@ module.exports = {
     deleteFile,
     deleteDir,
     copy,
-    copyFromAsar,
+    untar,
     chmodDir,
     extractNpmPackage,
     getNameFromNpmPackage,
