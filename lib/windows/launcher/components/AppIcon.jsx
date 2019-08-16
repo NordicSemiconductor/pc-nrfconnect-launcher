@@ -62,9 +62,6 @@ function renderNotice(app) {
     return null;
 }
 
-function findIcon(app) {
-    return app.iconPath || `${app.get('url')}.svg`;
-}
 
 const AppIcon = ({ app }) => {
     const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.1.0');
@@ -79,7 +76,7 @@ const AppIcon = ({ app }) => {
             }}
         >
             <img
-                src={findIcon(app)}
+                src={app.iconPath || `${app.url}.svg`}
                 alt=""
                 draggable={false}
             />
@@ -94,6 +91,7 @@ AppIcon.propTypes = {
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
         latestVersion: PropTypes.string,
+        url: PropTypes.string,
     }).isRequired,
 };
 
