@@ -62,7 +62,6 @@ function renderNotice(app) {
     return null;
 }
 
-
 const AppIcon = ({ app }) => {
     const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.2.0');
     return (
@@ -76,7 +75,7 @@ const AppIcon = ({ app }) => {
             }}
         >
             <img
-                src={app.iconPath || `${app.url}.svg`}
+                src={app.iconPath || ''}
                 alt=""
                 draggable={false}
             />

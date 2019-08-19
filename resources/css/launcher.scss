@@ -49,11 +49,6 @@ $body-bg: #d9e1e2;
             .core-logo {
                 height: 2.5rem;
             }
-
-            // Prevent broken image placeholder for app without icon.
-            .core-logo:after {
-                content: "";
-            }
         }
     }
 
