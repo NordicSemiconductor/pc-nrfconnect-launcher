@@ -65,6 +65,21 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
         >
           Installing...
         </button>
+        <div
+          className="dropdown"
+          onKeyDown={[Function]}
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-outline-secondary"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -343,6 +358,21 @@ Array [
           >
             Install
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-secondary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -411,6 +441,21 @@ Array [
           >
             Install
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-secondary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -479,6 +524,21 @@ Array [
           >
             Install
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-secondary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -752,6 +812,21 @@ Array [
           >
             Install
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-secondary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
