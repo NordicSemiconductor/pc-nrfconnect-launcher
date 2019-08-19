@@ -2,34 +2,41 @@
     "pc-nrfconnect-ble": {
         "displayName": "Bluetooth Low Energy",
         "description": "General tool for development and testing with Bluetooth Low Energy",
-        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ble"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ble",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble"
     },
     "pc-nrfconnect-rssi": {
         "displayName": "RSSI Viewer",
         "description": "Live visualization of RSSI per frequency for nRF52832",
-        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-rssi"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-rssi",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-rssi"
     },
     "pc-nrfconnect-ppk": {
         "displayName": "Power Profiler",
         "description": "Tool to measure current for nRF5x applications",
-        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ppk"
     },
     "pc-nrfconnect-programmer": {
         "displayName": "Programmer",
         "description": "Tool for flash programming of nRF SoCs",
-        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-programmer"
     },
     "pc-nrfconnect-linkmonitor": {
         "displayName": "LTE Link Monitor",
         "description": "Link monitor and AT command terminal",
-        "homepage": "https://infocenter.nordicsemi.com/topic/ug_link_monitor/UG/link_monitor/lm_intro.html"
+        "homepage": "https://infocenter.nordicsemi.com/topic/ug_link_monitor/UG/link_monitor/lm_intro.html",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-linkmonitor"
     },
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
-        "description": "Capture nRF91 modem trace"
+        "description": "Capture nRF91 modem trace",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
     "nrf-framework-courses": {
         "displayName": "Getting Started Assistant",
-        "description": "Guide to set up the nRF Connect SDK"
+        "description": "Guide to set up the nRF Connect SDK",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-courses"
     }
 }

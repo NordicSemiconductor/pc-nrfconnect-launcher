@@ -63,7 +63,8 @@ function renderNotice(app) {
 }
 
 const AppIcon = ({ app }) => {
-    const primaryColorNeedsUpdate = app.engineVersion && semver.lt(semver.minVersion(app.engineVersion), '3.2.0');
+    const { engineVersion, iconPath, latestVersion } = app;
+    const primaryColorNeedsUpdate = engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
             className={`core-app-icon ${primaryColorNeedsUpdate ? 'old-app-icon' : ''}`}
@@ -75,12 +76,11 @@ const AppIcon = ({ app }) => {
             }}
         >
             <img
-                src={app.iconPath}
+                src={iconPath || ''}
                 alt=""
                 draggable={false}
-                style={{ visibility: app.iconPath ? 'visible' : 'hidden' }}
             />
-            {app.latestVersion && renderNotice(app)}
+            {latestVersion && renderNotice(app)}
         </div>
     );
 };
@@ -91,6 +91,7 @@ AppIcon.propTypes = {
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
         latestVersion: PropTypes.string,
+        url: PropTypes.string,
     }).isRequired,
 };
 
