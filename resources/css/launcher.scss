@@ -182,3 +182,14 @@ $body-bg: #d9e1e2;
     @extend .text-muted;
     color: lighten($color: $text-muted, $amount: 30%)!important;
 }
+
+
+.dropdown-menu:empty {
+    @extend .text-muted-more;
+    @extend .small;
+    text-align: center;
+
+    &::after {
+        content: 'No actions available';
+    }
+}

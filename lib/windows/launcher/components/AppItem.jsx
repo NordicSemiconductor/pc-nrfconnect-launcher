@@ -58,6 +58,7 @@ const AppItem = ({
     onAppSelected,
     onCreateShortcut,
     onInstall,
+    onReadMore,
 }) => {
     const upgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const installed = !!app.currentVersion;
@@ -112,29 +113,37 @@ const AppItem = ({
                                 {isInstalling ? 'Installing...' : 'Install'}
                             </Button>
                         )}
-                        {installed && (
-                            <DropdownButton
-                                variant="outline-primary"
-                                title=""
-                                alignRight
-                            >
+                        <DropdownButton
+                            variant={installed ? 'outline-primary' : 'outline-secondary'}
+                            title=""
+                            alignRight
+                        >
+                            {!app.homepage && (
+                                <Dropdown.Item
+                                    title="Go to app website"
+                                    onClick={onReadMore}
+                                >
+                                    More info
+                                </Dropdown.Item>
+                            )}
+                            {installed && (
                                 <Dropdown.Item
                                     title="Create a desktop shortcut for this app"
                                     onClick={onCreateShortcut}
                                 >
                                     Create shortcut
                                 </Dropdown.Item>
-                                {installed && !local && (
-                                    <Dropdown.Item
-                                        title={`Remove ${app.displayName}`}
-                                        disabled={isDisabled}
-                                        onClick={onRemove}
-                                    >
-                                        {isRemoving ? 'Uninstalling...' : 'Uninstall'}
-                                    </Dropdown.Item>
-                                )}
-                            </DropdownButton>
-                        )}
+                            )}
+                            {installed && !local && (
+                                <Dropdown.Item
+                                    title={`Remove ${app.displayName}`}
+                                    disabled={isDisabled}
+                                    onClick={onRemove}
+                                >
+                                    {isRemoving ? 'Uninstalling...' : 'Uninstall'}
+                                </Dropdown.Item>
+                            )}
+                        </DropdownButton>
                     </ButtonToolbar>
                 </Col>
             </Row>
@@ -156,6 +165,7 @@ AppItem.propTypes = {
     isRemoving: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isInstalling: PropTypes.bool,
+    onReadMore: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
