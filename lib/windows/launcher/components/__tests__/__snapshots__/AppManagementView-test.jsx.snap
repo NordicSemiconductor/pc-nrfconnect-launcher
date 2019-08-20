@@ -31,7 +31,7 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
       </div>
     </div>
     <div
-      className="text-width col"
+      className="col"
     >
       <div
         className="h8"
@@ -50,7 +50,7 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
       </div>
     </div>
     <div
-      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -126,7 +126,7 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
       </div>
     </div>
     <div
-      className="text-width col"
+      className="col"
     >
       <div
         className="h8"
@@ -147,7 +147,7 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
       </div>
     </div>
     <div
-      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -223,7 +223,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
       </div>
     </div>
     <div
-      className="text-width col"
+      className="col"
     >
       <div
         className="h8"
@@ -247,7 +247,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
       </div>
     </div>
     <div
-      className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
     >
       <div
         className="wide-btns btn-toolbar"
@@ -324,7 +324,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -343,7 +343,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -407,7 +407,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -426,7 +426,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -490,7 +490,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -509,7 +509,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -587,7 +587,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -611,7 +611,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -693,7 +693,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -714,7 +714,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
@@ -778,7 +778,7 @@ Array [
         </div>
       </div>
       <div
-        className="text-width col"
+        className="col"
       >
         <div
           className="h8"
@@ -797,7 +797,7 @@ Array [
         </div>
       </div>
       <div
-        className="d-flex align-items-end my-3 pl-3 col-auto ml-auto"
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
       >
         <div
           className="wide-btns btn-toolbar"
