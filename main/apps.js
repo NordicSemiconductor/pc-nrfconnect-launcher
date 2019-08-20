@@ -40,11 +40,16 @@ const path = require('path');
 const fs = require('fs-extra');
 const semver = require('semver');
 const { dialog } = require('electron');
+const Store = require('electron-store');
+const log = require('electron-log');
+
 const config = require('./config');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
+
+const store = new Store('pc-nrfconnect-core');
 
 /**
  * Create sources.json if it does not exist.
@@ -519,6 +524,61 @@ function removeSourceDirectory(source) {
     return fs.remove(config.getAppsRootDir(source));
 }
 
+/**
+ * Download release notes from GitHub's release page
+ *
+ * @param {object} app object with properties for name, homepage, source and currentVersion
+ * @returns {string} the assembled and mardown formatted changelog
+ */
+async function downloadReleaseNotes({
+    name, homepage, source, currentVersion,
+}) {
+    const rx = /https:\/\/github.com\/(.*?\/.*)/;
+    const [, repo] = (rx.exec(homepage || '') || []);
+    if (!repo) {
+        return null;
+    }
+    const appDataPath = `apps.${source}.${name}`;
+
+    let appData = store.get(appDataPath) || {};
+    if (!(currentVersion && Object.keys(appData).includes(currentVersion))) {
+        // the latest changelogs are not stored yet
+
+        const lastUpdate = appData.lastUpdate || 0;
+        if ((new Date() - lastUpdate) > 3600000) {
+            // last request was more than an hour ago
+            try {
+                const data = await net.downloadToJson(`https://api.github.com/repos/${repo}/releases`);
+
+                // eslint-disable-next-line camelcase
+                data.forEach(({ tag_name, body }) => {
+                    appData = {
+                        ...appData,
+                        [tag_name.replace(/^v/, '')]: {
+                            // replacing GH issue references to links:
+                            changelog: body.trim().replace(/#(\d+)/g, (match, pr) => (
+                                `[${match}](https://github.com/${repo}/pull/${pr})`)),
+                        },
+                    };
+                });
+
+                store.set(appDataPath, {
+                    lastUpdate: new Date().toISOString(),
+                    ...appData,
+                });
+            } catch (error) {
+                log.warn(error.message);
+            }
+        }
+    }
+
+    return Object.keys(appData)
+        .filter(x => x !== 'lastUpdate')
+        .sort().reverse()
+        .map(version => `#${version}\n\n${appData[version].changelog}`)
+        .join('\n\n');
+}
+
 module.exports = {
     initAppsDirectory,
     initSourceDirectory,
@@ -530,4 +590,5 @@ module.exports = {
     installOfficialApp,
     removeOfficialApp,
     removeSourceDirectory,
+    downloadReleaseNotes,
 };
