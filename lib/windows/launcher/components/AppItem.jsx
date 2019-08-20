@@ -118,13 +118,14 @@ const AppItem = ({
                             title=""
                             alignRight
                         >
-                            <Dropdown.Item
-                                title="Go to app homepage"
-                                onClick={onReadMore}
-                                disabled={!app.homepage}
-                            >
-                                Homepage
-                            </Dropdown.Item>
+                            {!app.homepage && (
+                                <Dropdown.Item
+                                    title="Go to app website"
+                                    onClick={onReadMore}
+                                >
+                                    More info
+                                </Dropdown.Item>
+                            )}
                             {installed && (
                                 <Dropdown.Item
                                     title="Create a desktop shortcut for this app"
