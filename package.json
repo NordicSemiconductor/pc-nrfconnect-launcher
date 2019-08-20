@@ -124,6 +124,7 @@
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
         "electron-log": "3.0.6",
+        "electron-store": "4.0.0",
         "electron-updater": "4.0.14",
         "fs-extra": "8.1.0",
         "mustache": "3.0.1",
