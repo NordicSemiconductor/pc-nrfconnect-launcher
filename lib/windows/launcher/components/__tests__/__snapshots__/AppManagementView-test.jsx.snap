@@ -46,7 +46,7 @@ exports[`AppManagementView should disable buttons and display "Installing..." bu
       <div
         className="small text-muted-more"
       >
-        local
+        bar
       </div>
     </div>
     <div
@@ -141,7 +141,7 @@ exports[`AppManagementView should disable buttons and display "Removing..." butt
       <div
         className="small text-muted-more"
       >
-        local
+        bar
         , v
         1.2.3
       </div>
@@ -238,7 +238,7 @@ exports[`AppManagementView should disable buttons and display "Upgrading..." but
       <div
         className="small text-muted-more"
       >
-        local
+        bar
         , v
         1.2.3
          (v
