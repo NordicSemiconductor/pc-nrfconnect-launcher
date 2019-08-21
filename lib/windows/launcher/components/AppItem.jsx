@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
@@ -42,12 +43,16 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 
 import AppIcon from './AppIcon';
 
+const appId = ({ source, name }) => `${source && source.length},${source}${name}`;
+
 const AppItem = ({
+    activeModal,
     app,
     onRemove,
     onUpgrade,
@@ -59,99 +64,136 @@ const AppItem = ({
     onCreateShortcut,
     onInstall,
     onReadMore,
+    onHideModal,
+    onShowModal,
 }) => {
     const upgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const installed = !!app.currentVersion;
     const local = !app.source;
     return (
-        <ListGroup.Item>
-            <Row noGutters className="py-1">
-                <Col xs="auto my-2 mr-3" className="d-flex align-items-start">
-                    <AppIcon app={app} />
-                </Col>
-                <Col className="text-width">
-                    <div className="h8">
-                        {app.displayName || app.name}
-                    </div>
-                    <div className="small text-muted">
-                        {app.description}
-                    </div>
-                    <div className="small text-muted-more">
-                        {app.source || 'local'}
-                        {installed && <>, v{app.currentVersion}</>}
-                        {upgradeAvailable && <> (v{app.latestVersion} available)</>}
-                    </div>
-                </Col>
-                <Col xs="auto ml-auto" className="d-flex align-items-end my-3 pl-3">
-                    <ButtonToolbar className="wide-btns">
-                        {upgradeAvailable && (
-                            <Button
-                                variant="outline-primary"
-                                title={`Update ${app.displayName}`}
-                                disabled={isDisabled}
-                                onClick={onUpgrade}
-                            >
-                                {isUpgrading ? 'Updating...' : 'Update'}
-                            </Button>
-                        )}
-                        {installed && (
-                            <Button
-                                title={`Open ${app.displayName}`}
-                                disabled={isDisabled}
-                                onClick={onAppSelected}
-                            >
-                                Open
-                            </Button>
-                        )}
-                        {!installed && (
-                            <Button
-                                variant="outline-secondary"
-                                title={`Install ${app.displayName}`}
-                                disabled={isDisabled}
-                                onClick={onInstall}
-                            >
-                                {isInstalling ? 'Installing...' : 'Install'}
-                            </Button>
-                        )}
-                        <DropdownButton
-                            variant={installed ? 'outline-primary' : 'outline-secondary'}
-                            title=""
-                            alignRight
-                        >
-                            {!app.homepage && (
-                                <Dropdown.Item
-                                    title="Go to app website"
-                                    onClick={onReadMore}
+        <>
+            <ListGroup.Item>
+                <Row noGutters className="py-1">
+                    <Col xs="auto my-2 mr-3" className="d-flex align-items-start">
+                        <AppIcon app={app} />
+                    </Col>
+                    <Col className="text-width">
+                        <div className="h8">
+                            {app.displayName || app.name}
+                        </div>
+                        <div className="small text-muted">
+                            {app.description}
+                        </div>
+                        <div className="small text-muted-more">
+                            {app.source || 'local'}
+                            {installed && <>, v{app.currentVersion}</>}
+                            {upgradeAvailable && <> (v{app.latestVersion} available)</>}
+                        </div>
+                    </Col>
+                    <Col xs="auto ml-auto" className="d-flex align-items-end my-3 pl-3">
+                        <ButtonToolbar className="wide-btns">
+                            {upgradeAvailable && (
+                                <Button
+                                    variant="outline-primary"
+                                    title={`Update ${app.displayName}`}
+                                    disabled={isDisabled}
+                                    onClick={onUpgrade}
                                 >
-                                    More info
-                                </Dropdown.Item>
+                                    {isUpgrading ? 'Updating...' : 'Update'}
+                                </Button>
                             )}
                             {installed && (
-                                <Dropdown.Item
-                                    title="Create a desktop shortcut for this app"
-                                    onClick={onCreateShortcut}
-                                >
-                                    Create shortcut
-                                </Dropdown.Item>
-                            )}
-                            {installed && !local && (
-                                <Dropdown.Item
-                                    title={`Remove ${app.displayName}`}
+                                <Button
+                                    title={`Open ${app.displayName}`}
                                     disabled={isDisabled}
-                                    onClick={onRemove}
+                                    onClick={onAppSelected}
                                 >
-                                    {isRemoving ? 'Uninstalling...' : 'Uninstall'}
-                                </Dropdown.Item>
+                                    Open
+                                </Button>
                             )}
-                        </DropdownButton>
-                    </ButtonToolbar>
-                </Col>
-            </Row>
-        </ListGroup.Item>
+                            {!installed && (
+                                <Button
+                                    variant="outline-secondary"
+                                    title={`Install ${app.displayName}`}
+                                    disabled={isDisabled}
+                                    onClick={onInstall}
+                                >
+                                    {isInstalling ? 'Installing...' : 'Install'}
+                                </Button>
+                            )}
+                            <DropdownButton
+                                variant={installed ? 'outline-primary' : 'outline-secondary'}
+                                title=""
+                                alignRight
+                            >
+                                {app.homepage && (
+                                    <Dropdown.Item
+                                        title="Go to app website"
+                                        onClick={onReadMore}
+                                    >
+                                        More info
+                                    </Dropdown.Item>
+                                )}
+                                {app.releaseNote && (
+                                    <Dropdown.Item
+                                        title="Show release notes"
+                                        onClick={() => onShowModal(`releaseNotes/${appId(app)}`)}
+                                    >
+                                        Release Notes
+                                    </Dropdown.Item>
+                                )}
+                                {installed && (
+                                    <Dropdown.Item
+                                        title="Create a desktop shortcut for this app"
+                                        onClick={onCreateShortcut}
+                                    >
+                                        Create shortcut
+                                    </Dropdown.Item>
+                                )}
+                                {installed && !local && (
+                                    <Dropdown.Item
+                                        title={`Remove ${app.displayName}`}
+                                        disabled={isDisabled}
+                                        onClick={onRemove}
+                                    >
+                                        {isRemoving ? 'Uninstalling...' : 'Uninstall'}
+                                    </Dropdown.Item>
+                                )}
+                            </DropdownButton>
+                        </ButtonToolbar>
+                    </Col>
+                </Row>
+            </ListGroup.Item>
+            <Modal
+                show={activeModal === `releaseNotes/${appId(app)}`}
+                onHide={onHideModal}
+                size="xl"
+                scrollable
+            >
+                <Modal.Header>
+                    <Modal.Title>Release Notes for {app.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="release-notes">
+                    <ReactMarkdown
+                        source={app.releaseNote}
+                        linkTarget="_blank"
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="outline-primary"
+                        onClick={onHideModal}
+                    >
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 };
 
 AppItem.propTypes = {
+    activeModal: PropTypes.string.isRequired,
     app: PropTypes.shape({
         name: PropTypes.string.isRequired,
         displayName: PropTypes.string,
@@ -159,6 +201,7 @@ AppItem.propTypes = {
         homepage: PropTypes.string,
         currentVersion: PropTypes.string,
         latestVersion: PropTypes.string,
+        releaseNote: PropTypes.string,
         source: PropTypes.string,
     }).isRequired,
     isUpgrading: PropTypes.bool,
@@ -171,6 +214,8 @@ AppItem.propTypes = {
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
     onInstall: PropTypes.func.isRequired,
+    onHideModal: PropTypes.func.isRequired,
+    onShowModal: PropTypes.func.isRequired,
 };
 
 AppItem.defaultProps = {

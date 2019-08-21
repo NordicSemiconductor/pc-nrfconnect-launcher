@@ -75,6 +75,7 @@ class AppManagementView extends React.Component {
 
     render() {
         const {
+            activeModal,
             apps,
             installingAppName,
             upgradingAppName,
@@ -85,11 +86,14 @@ class AppManagementView extends React.Component {
             onReadMore,
             onAppSelected,
             onCreateShortcut,
+            onHideModal,
+            onShowModal,
         } = this.props;
         const isProcessing = this.isProcessing();
 
         return getSortedApps(apps).map(app => (
             <AppItem
+                activeModal={activeModal}
                 key={`${app.name}-${app.source}`}
                 app={app}
                 isDisabled={isProcessing}
@@ -104,12 +108,15 @@ class AppManagementView extends React.Component {
                 onReadMore={() => onReadMore(app.homepage)}
                 onAppSelected={() => onAppSelected(app)}
                 onCreateShortcut={() => onCreateShortcut(app)}
+                onHideModal={onHideModal}
+                onShowModal={onShowModal}
             />
         ));
     }
 }
 
 AppManagementView.propTypes = {
+    activeModal: PropTypes.string.isRequired,
     apps: PropTypes.instanceOf(Iterable).isRequired,
     isSkipUpdateApps: PropTypes.bool,
     isLatestAppInfoDownloaded: PropTypes.bool.isRequired,
@@ -124,6 +131,8 @@ AppManagementView.propTypes = {
     onDownloadLatestAppInfo: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
+    onHideModal: PropTypes.func.isRequired,
+    onShowModal: PropTypes.func.isRequired,
 };
 
 AppManagementView.defaultProps = {
