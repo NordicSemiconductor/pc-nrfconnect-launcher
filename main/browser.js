@@ -82,6 +82,13 @@ function createWindow(options) {
         event.preventDefault();
     });
 
+    // Open target=_blank link in default browser instead of a
+    // new electron window.
+    browserWindow.webContents.on('new-window', (event, url) => {
+        electron.shell.openExternal(url);
+        event.preventDefault();
+    });
+
     browserWindow.webContents.on('did-finish-load', () => {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
