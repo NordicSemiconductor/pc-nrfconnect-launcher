@@ -48,80 +48,47 @@ function getSortedApps(apps) {
     });
 }
 
-class AppManagementView extends React.Component {
-    componentDidMount() {
-        const {
-            onMount,
-            isLatestAppInfoDownloaded,
-            isSkipUpdateApps,
-            onDownloadLatestAppInfo,
-        } = this.props;
-
-        onMount();
-
-        if (!isLatestAppInfoDownloaded && !isSkipUpdateApps) {
-            onDownloadLatestAppInfo();
-        }
-    }
-
-    isProcessing() {
-        const {
-            installingAppName,
-            upgradingAppName,
-            removingAppName,
-        } = this.props;
-        return !!installingAppName || !!upgradingAppName || !!removingAppName;
-    }
-
-    render() {
-        const {
-            apps,
-            installingAppName,
-            upgradingAppName,
-            removingAppName,
-            onInstall,
-            onRemove,
-            onUpgrade,
-            onReadMore,
-            onAppSelected,
-            onCreateShortcut,
-        } = this.props;
-        const isProcessing = this.isProcessing();
-
-        return getSortedApps(apps).map(app => (
-            <AppItem
-                key={`${app.name}-${app.source}`}
-                app={app}
-                isDisabled={isProcessing}
-                isInstalling={installingAppName === app.name}
-                isUpgrading={upgradingAppName === app.name}
-                isRemoving={removingAppName === app.name}
-                onRemove={() => onRemove(app.name, app.source)}
-                onInstall={() => onInstall(app.name, app.source)}
-                onUpgrade={() => onUpgrade(
-                    app.name, app.latestVersion, app.source,
-                )}
-                onReadMore={() => onReadMore(app.homepage)}
-                onAppSelected={() => onAppSelected(app)}
-                onCreateShortcut={() => onCreateShortcut(app)}
-            />
-        ));
-    }
-}
+const AppManagementView = ({
+    apps,
+    installingAppName,
+    upgradingAppName,
+    removingAppName,
+    isProcessing,
+    onInstall,
+    onRemove,
+    onUpgrade,
+    onReadMore,
+    onAppSelected,
+    onCreateShortcut,
+}) => getSortedApps(apps).map(app => (
+    <AppItem
+        key={`${app.name}-${app.source}`}
+        app={app}
+        isDisabled={isProcessing}
+        isInstalling={installingAppName === `${app.source}/${app.name}`}
+        isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
+        isRemoving={removingAppName === `${app.source}/${app.name}`}
+        onRemove={() => onRemove(app.name, app.source)}
+        onInstall={() => onInstall(app.name, app.source)}
+        onUpgrade={() => onUpgrade(
+            app.name, app.latestVersion, app.source,
+        )}
+        onReadMore={() => onReadMore(app.homepage)}
+        onAppSelected={() => onAppSelected(app)}
+        onCreateShortcut={() => onCreateShortcut(app)}
+    />
+));
 
 AppManagementView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
-    isSkipUpdateApps: PropTypes.bool,
-    isLatestAppInfoDownloaded: PropTypes.bool.isRequired,
     installingAppName: PropTypes.string,
     upgradingAppName: PropTypes.string,
     removingAppName: PropTypes.string,
-    onMount: PropTypes.func,
+    isProcessing: PropTypes.bool,
     onInstall: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
-    onDownloadLatestAppInfo: PropTypes.func,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
 };
@@ -130,9 +97,7 @@ AppManagementView.defaultProps = {
     installingAppName: '',
     upgradingAppName: '',
     removingAppName: '',
-    isSkipUpdateApps: false,
-    onMount: () => {},
-    onDownloadLatestAppInfo: () => {},
+    isProcessing: false,
 };
 
 export default AppManagementView;
