@@ -62,7 +62,7 @@ function openLauncherWindow() {
             title: `nRF Connect v${config.getVersion()}`,
             url: `file://${config.getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
-            width: 670,
+            width: 760,
             height: 500,
             center: true,
             splashScreen: !config.isSkipSplashScreen(),

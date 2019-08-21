@@ -37,6 +37,6 @@
     "nrf-framework-courses": {
         "displayName": "Getting Started Assistant",
         "description": "Guide to set up the nRF Connect SDK",
-        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-courses"
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/nrf-framework-courses"
     }
 }

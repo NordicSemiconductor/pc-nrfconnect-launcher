@@ -77,7 +77,7 @@ const AppItem = ({
                     <Col xs="auto my-2 mr-3" className="d-flex align-items-start">
                         <AppIcon app={app} />
                     </Col>
-                    <Col className="text-width">
+                    <Col>
                         <div className="h8">
                             {app.displayName || app.name}
                         </div>
@@ -90,7 +90,7 @@ const AppItem = ({
                             {upgradeAvailable && <> (v{app.latestVersion} available)</>}
                         </div>
                     </Col>
-                    <Col xs="auto ml-auto" className="d-flex align-items-end my-3 pl-3">
+                    <Col xs="auto ml-auto" className="d-flex align-items-center my-3 pl-3">
                         <ButtonToolbar className="wide-btns">
                             {upgradeAvailable && (
                                 <Button

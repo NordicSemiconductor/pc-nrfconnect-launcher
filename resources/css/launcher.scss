@@ -174,10 +174,6 @@ $body-bg: #d9e1e2;
     padding: 1rem;
 }
 
-.text-width {
-    flex-basis: 40ch;
-}
-
 .text-muted-more {
     @extend .text-muted;
     color: lighten($color: $text-muted, $amount: 30%)!important;

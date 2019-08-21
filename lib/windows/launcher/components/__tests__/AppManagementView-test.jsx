@@ -59,8 +59,7 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List()}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
@@ -101,14 +100,13 @@ describe('AppManagementView', () => {
                     ])
                 }
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
+
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -124,18 +122,18 @@ describe('AppManagementView', () => {
                         name: 'pc-nrfconnect-foo',
                         displayName: 'Foo app',
                         description: 'Foo description',
+                        source: 'bar',
                     }),
                 ])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                installingAppName="pc-nrfconnect-foo"
-                onAppSelected={() => { }}
+                installingAppName="bar/pc-nrfconnect-foo"
+                isProcessing
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -153,18 +151,18 @@ describe('AppManagementView', () => {
                         description: 'Foo description',
                         currentVersion: '1.2.3',
                         latestVersion: '1.2.3',
+                        source: 'bar',
                     }),
                 ])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                removingAppName="pc-nrfconnect-foo"
-                onAppSelected={() => { }}
+                removingAppName="bar/pc-nrfconnect-foo"
+                isProcessing
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -182,18 +180,18 @@ describe('AppManagementView', () => {
                         description: 'Foo description',
                         currentVersion: '1.2.3',
                         latestVersion: '1.2.4',
+                        source: 'bar',
                     }),
                 ])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                upgradingAppName="pc-nrfconnect-foo"
-                onAppSelected={() => { }}
+                upgradingAppName="bar/pc-nrfconnect-foo"
+                isProcessing
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -214,14 +212,12 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={onInstall}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -246,14 +242,12 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={onRemove}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -281,14 +275,12 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={onUpgrade}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -297,54 +289,6 @@ describe('AppManagementView', () => {
         wrapper.find('button[title="Update Foobar displayName"]').first().simulate('click');
 
         expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source);
-    });
-
-    it('should invoke onDownloadLatestAppInfo when mounted and latest app info is not downloaded', () => {
-        const onDownloadLatestAppInfo = jest.fn();
-        mount(
-            <AppManagementView
-                apps={List([])}
-                isRetrievingApps={false}
-                isLatestAppInfoDownloaded={false}
-                onAppSelected={() => { }}
-                onCreateShortcut={() => {}}
-                onDownloadLatestAppInfo={onDownloadLatestAppInfo}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onUpgrade={() => {}}
-                onReadMore={() => {}}
-                onMount={() => { }}
-                activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
-            />,
-        );
-
-        expect(onDownloadLatestAppInfo).toHaveBeenCalled();
-    });
-
-    it('should not invoke onDownloadLatestAppInfo when mounted and latest app info has been downloaded', () => {
-        const onDownloadLatestAppInfo = jest.fn();
-        mount(
-            <AppManagementView
-                apps={List([])}
-                isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onDownloadLatestAppInfo={onDownloadLatestAppInfo}
-                onAppSelected={() => { }}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onUpgrade={() => {}}
-                onReadMore={() => {}}
-                onMount={() => { }}
-                activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
-            />,
-        );
-
-        expect(onDownloadLatestAppInfo).not.toHaveBeenCalled();
     });
 
     it('should render more info links for correctly defined homepage', () => {
@@ -372,14 +316,12 @@ describe('AppManagementView', () => {
                     ])
                 }
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
-                onAppSelected={() => { }}
+                onAppSelected={() => {}}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
@@ -401,14 +343,12 @@ describe('AppManagementView', () => {
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
-                isLatestAppInfoDownloaded
                 onAppSelected={onAppSelected}
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
                 activeModal=""
                 onHideModal={() => { }}
                 onShowModal={() => { }}
