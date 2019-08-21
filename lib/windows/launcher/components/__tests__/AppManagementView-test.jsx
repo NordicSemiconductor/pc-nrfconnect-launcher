@@ -65,10 +65,10 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                onMount={() => { }}
+                onMount={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -106,10 +106,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -135,8 +134,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -164,8 +163,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -193,8 +192,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -219,8 +218,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -249,8 +248,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         );
 
@@ -282,8 +281,8 @@ describe('AppManagementView', () => {
                 onUpgrade={onUpgrade}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         );
         wrapper.find('button[title="Update Foobar displayName"]').first().simulate('click');
@@ -323,8 +322,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -350,8 +349,8 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 activeModal=""
-                onHideModal={() => { }}
-                onShowModal={() => { }}
+                onHideModal={() => {}}
+                onShowModal={() => {}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
