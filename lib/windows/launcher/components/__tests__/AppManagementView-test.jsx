@@ -52,6 +52,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppManagementView from '../AppManagementView';
 import getImmutableApp from '../../models';
+import Appid from '../../models/appid';
 
 describe('AppManagementView', () => {
     it('should render without any apps', () => {
@@ -66,9 +67,9 @@ describe('AppManagementView', () => {
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
                 onMount={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -106,9 +107,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -133,9 +134,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -162,9 +163,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -191,9 +192,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -217,9 +218,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -247,9 +248,9 @@ describe('AppManagementView', () => {
                 onRemove={onRemove}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
 
@@ -257,37 +258,6 @@ describe('AppManagementView', () => {
         wrapper.find('a[title="Remove Foobar displayName"]').first().simulate('click');
 
         expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
-    });
-
-    it('should invoke onUpgrade with app name and latest version when upgrade button is clicked', () => {
-        const app = getImmutableApp({
-            name: 'pc-nrfconnect-foobar',
-            displayName: 'Foobar displayName',
-            description: 'Foobar description',
-            currentVersion: '1.2.3',
-            latestVersion: '1.2.4',
-            source: 'beta',
-            url: 'https://foo.bar/dists/beta',
-        });
-        const onUpgrade = jest.fn();
-        const wrapper = mount(
-            <AppManagementView
-                apps={List([app])}
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onUpgrade={onUpgrade}
-                onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
-            />,
-        );
-        wrapper.find('button[title="Update Foobar displayName"]').first().simulate('click');
-
-        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source);
     });
 
     it('should render more info links for correctly defined homepage', () => {
@@ -321,9 +291,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -348,9 +318,9 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onUpgrade={() => {}}
                 onReadMore={() => {}}
-                activeModal=""
-                onHideModal={() => {}}
-                onShowModal={() => {}}
+                releaseNotesDialogAppSelection={Appid()}
+                onHideReleaseNotes={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
