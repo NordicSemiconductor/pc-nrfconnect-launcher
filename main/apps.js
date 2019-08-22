@@ -575,7 +575,7 @@ async function downloadReleaseNotes({
     return Object.keys(appData)
         .filter(x => x !== 'lastUpdate')
         .sort().reverse()
-        .map(version => `#${version}\n\n${appData[version].changelog}`)
+        .map(version => `## ${version}\n\n${appData[version].changelog}`)
         .join('\n\n');
 }
 
