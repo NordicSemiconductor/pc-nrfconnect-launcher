@@ -131,7 +131,7 @@ const AppItem = ({
                                     title="Show release notes"
                                     onClick={() => onShowReleaseNotes(app)}
                                 >
-                                    Release Notes
+                                    Release notes
                                 </Dropdown.Item>
                             )}
                             {installed && (

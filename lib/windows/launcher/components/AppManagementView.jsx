@@ -111,7 +111,7 @@ const AppManagementView = ({
                         key="releaseNotes"
                     >
                         <Modal.Header>
-                            <Modal.Title>Release Notes for {displayName}</Modal.Title>
+                            <Modal.Title>Release notes for {displayName}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body className="release-notes">
                             <ReactMarkdown
