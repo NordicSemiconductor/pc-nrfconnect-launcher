@@ -37,7 +37,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
+import ReactMarkdown from 'react-markdown';
+
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 import AppItem from './AppItem';
+import Appid from '../models/appid';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
@@ -49,7 +55,7 @@ function getSortedApps(apps) {
 }
 
 const AppManagementView = ({
-    activeModal,
+    releaseNotesDialogAppSelection,
     apps,
     installingAppName,
     upgradingAppName,
@@ -61,32 +67,85 @@ const AppManagementView = ({
     onReadMore,
     onAppSelected,
     onCreateShortcut,
-    onHideModal,
-    onShowModal,
-}) => getSortedApps(apps).map(app => (
-    <AppItem
-        key={`${app.name}-${app.source}`}
-        app={app}
-        isDisabled={isProcessing}
-        isInstalling={installingAppName === `${app.source}/${app.name}`}
-        isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
-        isRemoving={removingAppName === `${app.source}/${app.name}`}
-        onRemove={() => onRemove(app.name, app.source)}
-        onInstall={() => onInstall(app.name, app.source)}
-        onUpgrade={() => onUpgrade(
-            app.name, app.latestVersion, app.source,
-        )}
-        onReadMore={() => onReadMore(app.homepage)}
-        onAppSelected={() => onAppSelected(app)}
-        onCreateShortcut={() => onCreateShortcut(app)}
-        activeModal={activeModal}
-        onHideModal={onHideModal}
-        onShowModal={onShowModal}
-    />
-));
+    onHideReleaseNotes,
+    onShowReleaseNotes,
+}) => (
+    <>
+        {
+            getSortedApps(apps).map(app => (
+                <AppItem
+                    key={`${app.name}-${app.source}`}
+                    app={app}
+                    isDisabled={isProcessing}
+                    isInstalling={installingAppName === `${app.source}/${app.name}`}
+                    isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
+                    isRemoving={removingAppName === `${app.source}/${app.name}`}
+                    onRemove={() => onRemove(app.name, app.source)}
+                    onInstall={() => onInstall(app.name, app.source)}
+                    onReadMore={() => onReadMore(app.homepage)}
+                    onAppSelected={() => onAppSelected(app)}
+                    onCreateShortcut={() => onCreateShortcut(app)}
+                    onShowReleaseNotes={ () => onShowReleaseNotes(
+                        { source: app.source, name: app.name },
+                    )}
+                />
+            ))
+        }
+        {
+            [releaseNotesDialogAppSelection]
+                .filter(x => x.name)
+                .map(({ source, name }) => apps.find(x => x.source === source && x.name === name))
+                .map(({
+                    source,
+                    name,
+                    displayName,
+                    releaseNote,
+                    currentVersion,
+                    latestVersion,
+                }) => (
+                    <Modal
+                        show
+                        onHide={onHideReleaseNotes}
+                        size="xl"
+                        scrollable
+                        key="releaseNotes"
+                    >
+                        <Modal.Header>
+                            <Modal.Title>Release Notes for {displayName}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body className="release-notes">
+                            <ReactMarkdown
+                                source={releaseNote}
+                                linkTarget="_blank"
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            { currentVersion !== latestVersion && (
+                                <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                        onUpgrade(name, latestVersion, source);
+                                        onHideReleaseNotes();
+                                    }}
+                                >
+                                    Update to latest version
+                                </Button>
+                            )}
+                            <Button
+                                variant="outline-primary"
+                                onClick={onHideReleaseNotes}
+                            >
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                ))
+        }
+    </>
+);
 
 AppManagementView.propTypes = {
-    activeModal: PropTypes.string.isRequired,
+    releaseNotesDialogAppSelection: PropTypes.instanceOf(Appid).isRequired,
     apps: PropTypes.instanceOf(Iterable).isRequired,
     installingAppName: PropTypes.string,
     upgradingAppName: PropTypes.string,
@@ -98,8 +157,8 @@ AppManagementView.propTypes = {
     onReadMore: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
-    onHideModal: PropTypes.func.isRequired,
-    onShowModal: PropTypes.func.isRequired,
+    onHideReleaseNotes: PropTypes.func.isRequired,
+    onShowReleaseNotes: PropTypes.func.isRequired,
 };
 
 AppManagementView.defaultProps = {
