@@ -37,13 +37,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
-import ReactMarkdown from 'react-markdown';
-
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 
 import AppItem from './AppItem';
-import Appid from '../models/appid';
+import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
@@ -55,7 +51,6 @@ function getSortedApps(apps) {
 }
 
 const AppManagementView = ({
-    releaseNotesDialogAppSelection,
     apps,
     installingAppName,
     upgradingAppName,
@@ -63,11 +58,9 @@ const AppManagementView = ({
     isProcessing,
     onInstall,
     onRemove,
-    onUpgrade,
     onReadMore,
     onAppSelected,
     onCreateShortcut,
-    onHideReleaseNotes,
     onShowReleaseNotes,
 }) => (
     <>
@@ -91,61 +84,11 @@ const AppManagementView = ({
                 />
             ))
         }
-        {
-            [releaseNotesDialogAppSelection]
-                .filter(x => x.name)
-                .map(({ source, name }) => apps.find(x => x.source === source && x.name === name))
-                .map(({
-                    source,
-                    name,
-                    displayName,
-                    releaseNote,
-                    currentVersion,
-                    latestVersion,
-                }) => (
-                    <Modal
-                        show
-                        onHide={onHideReleaseNotes}
-                        size="xl"
-                        scrollable
-                        key="releaseNotes"
-                    >
-                        <Modal.Header>
-                            <Modal.Title>Release notes for {displayName}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body className="release-notes">
-                            <ReactMarkdown
-                                source={releaseNote}
-                                linkTarget="_blank"
-                            />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            { currentVersion !== latestVersion && (
-                                <Button
-                                    variant="primary"
-                                    onClick={() => {
-                                        onUpgrade(name, latestVersion, source);
-                                        onHideReleaseNotes();
-                                    }}
-                                >
-                                    Update to latest version
-                                </Button>
-                            )}
-                            <Button
-                                variant="outline-primary"
-                                onClick={onHideReleaseNotes}
-                            >
-                                Close
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                ))
-        }
+        <ReleaseNotesDialog />
     </>
 );
 
 AppManagementView.propTypes = {
-    releaseNotesDialogAppSelection: PropTypes.instanceOf(Appid).isRequired,
     apps: PropTypes.instanceOf(Iterable).isRequired,
     installingAppName: PropTypes.string,
     upgradingAppName: PropTypes.string,
@@ -153,11 +96,9 @@ AppManagementView.propTypes = {
     isProcessing: PropTypes.bool,
     onInstall: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
-    onHideReleaseNotes: PropTypes.func.isRequired,
     onShowReleaseNotes: PropTypes.func.isRequired,
 };
 

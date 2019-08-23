@@ -34,45 +34,79 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppManagementView from '../components/AppManagementView';
-import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../../util/fileUtil';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
-import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 
-function mapStateToProps(state) {
-    const {
-        apps: {
-            localApps, officialApps,
-            installingAppName, removingAppName, upgradingAppName,
-        },
-    } = state;
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
-    return {
-        apps: localApps.concat(officialApps),
-        installingAppName,
-        removingAppName,
-        upgradingAppName,
-        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
-    };
+const view = ({
+    canUpgrade,
+    displayName,
+    latestVersion,
+    name,
+    releaseNote,
+    source,
+    onUpgrade,
+    onHideReleaseNotes,
+}) => (
+    <Modal
+        show={!!name}
+        onHide={onHideReleaseNotes}
+        size="xl"
+        scrollable
+        key="releaseNotes"
+    >
+        <Modal.Header>
+            <Modal.Title>Release notes for {displayName}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="release-notes">
+            <ReactMarkdown
+                source={releaseNote}
+                linkTarget="_blank"
+            />
+        </Modal.Body>
+        <Modal.Footer>
+            { canUpgrade && (
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        onUpgrade(name, latestVersion, source);
+                        onHideReleaseNotes();
+                    }}
+                >
+                    Update to latest version
+                </Button>
+            )}
+            <Button
+                variant="outline-primary"
+                onClick={onHideReleaseNotes}
+            >
+                Close
+            </Button>
+        </Modal.Footer>
+    </Modal>
+);
+
+view.propTypes = {
+    canUpgrade: PropTypes.bool,
+    displayName: PropTypes.string,
+    latestVersion: PropTypes.string,
+    releaseNote: PropTypes.string,
+    source: PropTypes.string,
+    name: PropTypes.string,
+    onUpgrade: PropTypes.func.isRequired,
+    onHideReleaseNotes: PropTypes.func.isRequired,
+};
+
+view.defaultProps = {
+    canUpgrade: false,
+    displayName: '',
+    latestVersion: '',
+    releaseNote: '',
+    source: '',
+    name: '',
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onInstall: (name, source) => dispatch(
-            AppsActions.installOfficialApp(name, source),
-        ),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
-        onReadMore: homepage => openUrlInDefaultBrowser(homepage),
-        // Launcher actions
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
-        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
+export default view;

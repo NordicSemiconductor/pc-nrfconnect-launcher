@@ -52,7 +52,6 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import AppManagementView from '../AppManagementView';
 import getImmutableApp from '../../models';
-import Appid from '../../models/appid';
 
 describe('AppManagementView', () => {
     it('should render without any apps', () => {
@@ -64,12 +63,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
                 onMount={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -105,11 +100,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -132,11 +123,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -161,11 +148,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -190,11 +173,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -216,11 +195,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={onInstall}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -246,11 +221,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={onRemove}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         );
 
@@ -289,11 +260,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -316,11 +283,7 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
-                releaseNotesDialogAppSelection={Appid()}
-                onHideReleaseNotes={() => {}}
-                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
