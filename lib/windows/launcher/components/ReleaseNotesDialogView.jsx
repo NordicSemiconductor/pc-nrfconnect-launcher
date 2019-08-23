@@ -107,6 +107,6 @@ view.defaultProps = {
     releaseNote: '',
     source: '',
     name: '',
-}
+};
 
 export default view;

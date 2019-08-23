@@ -78,7 +78,7 @@ const AppManagementView = ({
                     onReadMore={() => onReadMore(app.homepage)}
                     onAppSelected={() => onAppSelected(app)}
                     onCreateShortcut={() => onCreateShortcut(app)}
-                    onShowReleaseNotes={ () => onShowReleaseNotes(
+                    onShowReleaseNotes={() => onShowReleaseNotes(
                         { source: app.source, name: app.name },
                     )}
                 />
