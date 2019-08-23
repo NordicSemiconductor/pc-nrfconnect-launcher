@@ -34,6 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Immutable from 'immutable';
+%pretty-scrollbar {
+    overflow: overlay;
 
-export default Immutable.Record({ source: undefined, name: undefined });
+    &::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: rgba(0,0,0,0);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 10px;
+        border: 5px solid transparent;
+        background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0,0,0,0.6);
+        border-width: 4px;
+    }
+}
+
+.pretty-scrollbar {
+    @extend %pretty-scrollbar;
+}
