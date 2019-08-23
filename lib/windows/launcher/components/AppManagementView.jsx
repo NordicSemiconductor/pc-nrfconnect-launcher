@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -37,7 +37,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
+
 import AppItem from './AppItem';
+import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
 
 function getSortedApps(apps) {
     return apps.sort((a, b) => {
@@ -56,28 +58,33 @@ const AppManagementView = ({
     isProcessing,
     onInstall,
     onRemove,
-    onUpgrade,
     onReadMore,
     onAppSelected,
     onCreateShortcut,
-}) => getSortedApps(apps).map(app => (
-    <AppItem
-        key={`${app.name}-${app.source}`}
-        app={app}
-        isDisabled={isProcessing}
-        isInstalling={installingAppName === `${app.source}/${app.name}`}
-        isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
-        isRemoving={removingAppName === `${app.source}/${app.name}`}
-        onRemove={() => onRemove(app.name, app.source)}
-        onInstall={() => onInstall(app.name, app.source)}
-        onUpgrade={() => onUpgrade(
-            app.name, app.latestVersion, app.source,
-        )}
-        onReadMore={() => onReadMore(app.homepage)}
-        onAppSelected={() => onAppSelected(app)}
-        onCreateShortcut={() => onCreateShortcut(app)}
-    />
-));
+    onShowReleaseNotes,
+}) => (
+    <>
+        {
+            getSortedApps(apps).map(app => (
+                <AppItem
+                    key={`${app.name}-${app.source}`}
+                    app={app}
+                    isDisabled={isProcessing}
+                    isInstalling={installingAppName === `${app.source}/${app.name}`}
+                    isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
+                    isRemoving={removingAppName === `${app.source}/${app.name}`}
+                    onRemove={() => onRemove(app.name, app.source)}
+                    onInstall={() => onInstall(app.name, app.source)}
+                    onReadMore={() => onReadMore(app.homepage)}
+                    onAppSelected={() => onAppSelected(app)}
+                    onCreateShortcut={() => onCreateShortcut(app)}
+                    onShowReleaseNotes={() => onShowReleaseNotes(app)}
+                />
+            ))
+        }
+        <ReleaseNotesDialog />
+    </>
+);
 
 AppManagementView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
@@ -87,10 +94,10 @@ AppManagementView.propTypes = {
     isProcessing: PropTypes.bool,
     onInstall: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    onUpgrade: PropTypes.func.isRequired,
     onReadMore: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
+    onShowReleaseNotes: PropTypes.func.isRequired,
 };
 
 AppManagementView.defaultProps = {

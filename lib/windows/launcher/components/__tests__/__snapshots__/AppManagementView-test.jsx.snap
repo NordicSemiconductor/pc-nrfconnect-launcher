@@ -1,295 +1,304 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AppManagementView should disable buttons and display "Installing..." button text when installing app 1`] = `
-<div
-  className="list-group-item"
-  disabled={false}
-  onClick={[Function]}
->
+Array [
   <div
-    className="py-1 row no-gutters"
+    className="list-group-item"
+    disabled={false}
+    onClick={[Function]}
   >
     <div
-      className="d-flex align-items-start col-auto my-2 mr-3"
+      className="py-1 row no-gutters"
     >
       <div
-        className="core-app-icon "
-        style={
-          Object {
-            "background": "#e6f8ff",
-            "borderRadius": 7,
-            "height": "48px",
-            "width": "48px",
-          }
-        }
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
-        <img
-          alt=""
-          draggable={false}
-          src=""
-        />
-      </div>
-    </div>
-    <div
-      className="col"
-    >
-      <div
-        className="h8"
-      >
-        Foo app
-      </div>
-      <div
-        className="small text-muted"
-      >
-        Foo description
-      </div>
-      <div
-        className="small text-muted-more"
-      >
-        bar
-      </div>
-    </div>
-    <div
-      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-    >
-      <div
-        className="wide-btns btn-toolbar"
-        role="toolbar"
-      >
-        <button
-          className="btn btn-outline-secondary"
-          disabled={true}
-          onClick={[Function]}
-          title="Install Foo app"
-          type="button"
-        >
-          Installing...
-        </button>
         <div
-          className="dropdown"
-          onKeyDown={[Function]}
+          className="core-app-icon "
+          style={
+            Object {
+              "background": "#e6f8ff",
+              "borderRadius": 7,
+              "height": "48px",
+              "width": "48px",
+            }
+          }
+        >
+          <img
+            alt=""
+            draggable={false}
+            src=""
+          />
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="h8"
+        >
+          Foo app
+        </div>
+        <div
+          className="small text-muted"
+        >
+          Foo description
+        </div>
+        <div
+          className="small text-muted-more"
+        >
+          bar
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+      >
+        <div
+          className="wide-btns btn-toolbar"
+          role="toolbar"
         >
           <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-outline-secondary"
-            disabled={false}
+            className="btn btn-outline-secondary"
+            disabled={true}
             onClick={[Function]}
+            title="Install Foo app"
             type="button"
           >
-            
+            Installing...
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-secondary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+  <div />,
+]
 `;
 
 exports[`AppManagementView should disable buttons and display "Removing..." button text when removing app 1`] = `
-<div
-  className="list-group-item"
-  disabled={false}
-  onClick={[Function]}
->
+Array [
   <div
-    className="py-1 row no-gutters"
+    className="list-group-item"
+    disabled={false}
+    onClick={[Function]}
   >
     <div
-      className="d-flex align-items-start col-auto my-2 mr-3"
+      className="py-1 row no-gutters"
     >
       <div
-        className="core-app-icon "
-        style={
-          Object {
-            "background": "#e6f8ff",
-            "borderRadius": 7,
-            "height": "48px",
-            "width": "48px",
-          }
-        }
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
-        <img
-          alt=""
-          draggable={false}
-          src=""
-        />
-        <div>
-          <span
-            className="alert-icon-bg"
+        <div
+          className="core-app-icon "
+          style={
+            Object {
+              "background": "#e6f8ff",
+              "borderRadius": 7,
+              "height": "48px",
+              "width": "48px",
+            }
+          }
+        >
+          <img
+            alt=""
+            draggable={false}
+            src=""
           />
-          <span
-            className="mdi mdi-alert"
-            title="The app does not specify which nRF Connect version(s) it supports"
-          />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      className="col"
-    >
       <div
-        className="h8"
+        className="col"
       >
-        Foo app
-      </div>
-      <div
-        className="small text-muted"
-      >
-        Foo description
-      </div>
-      <div
-        className="small text-muted-more"
-      >
-        bar
-        , v
-        1.2.3
-      </div>
-    </div>
-    <div
-      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-    >
-      <div
-        className="wide-btns btn-toolbar"
-        role="toolbar"
-      >
-        <button
-          className="btn btn-primary"
-          disabled={true}
-          onClick={[Function]}
-          title="Open Foo app"
-          type="button"
-        >
-          Open
-        </button>
         <div
-          className="dropdown"
-          onKeyDown={[Function]}
+          className="h8"
+        >
+          Foo app
+        </div>
+        <div
+          className="small text-muted"
+        >
+          Foo description
+        </div>
+        <div
+          className="small text-muted-more"
+        >
+          bar
+          , v
+          1.2.3
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+      >
+        <div
+          className="wide-btns btn-toolbar"
+          role="toolbar"
         >
           <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-outline-primary"
-            disabled={false}
+            className="btn btn-primary"
+            disabled={true}
             onClick={[Function]}
+            title="Open Foo app"
             type="button"
           >
-            
+            Open
           </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+  <div />,
+]
 `;
 
 exports[`AppManagementView should disable buttons and display "Upgrading..." button text when upgrading app 1`] = `
-<div
-  className="list-group-item"
-  disabled={false}
-  onClick={[Function]}
->
+Array [
   <div
-    className="py-1 row no-gutters"
+    className="list-group-item"
+    disabled={false}
+    onClick={[Function]}
   >
     <div
-      className="d-flex align-items-start col-auto my-2 mr-3"
+      className="py-1 row no-gutters"
     >
       <div
-        className="core-app-icon "
-        style={
-          Object {
-            "background": "#e6f8ff",
-            "borderRadius": 7,
-            "height": "48px",
-            "width": "48px",
-          }
-        }
+        className="d-flex align-items-start col-auto my-2 mr-3"
       >
-        <img
-          alt=""
-          draggable={false}
-          src=""
-        />
-        <div>
-          <span
-            className="alert-icon-bg"
+        <div
+          className="core-app-icon "
+          style={
+            Object {
+              "background": "#e6f8ff",
+              "borderRadius": 7,
+              "height": "48px",
+              "width": "48px",
+            }
+          }
+        >
+          <img
+            alt=""
+            draggable={false}
+            src=""
           />
-          <span
-            className="mdi mdi-alert"
-            title="The app does not specify which nRF Connect version(s) it supports"
-          />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      className="col"
-    >
       <div
-        className="h8"
+        className="col"
       >
-        Foo app
-      </div>
-      <div
-        className="small text-muted"
-      >
-        Foo description
-      </div>
-      <div
-        className="small text-muted-more"
-      >
-        bar
-        , v
-        1.2.3
-         (v
-        1.2.4
-         available)
-      </div>
-    </div>
-    <div
-      className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-    >
-      <div
-        className="wide-btns btn-toolbar"
-        role="toolbar"
-      >
-        <button
-          className="btn btn-outline-primary"
-          disabled={true}
-          onClick={[Function]}
-          title="Update Foo app"
-          type="button"
-        >
-          Updating...
-        </button>
-        <button
-          className="btn btn-primary"
-          disabled={true}
-          onClick={[Function]}
-          title="Open Foo app"
-          type="button"
-        >
-          Open
-        </button>
         <div
-          className="dropdown"
-          onKeyDown={[Function]}
+          className="h8"
+        >
+          Foo app
+        </div>
+        <div
+          className="small text-muted"
+        >
+          Foo description
+        </div>
+        <div
+          className="small text-muted-more"
+        >
+          bar
+          , v
+          1.2.3
+           (v
+          1.2.4
+           available)
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+      >
+        <div
+          className="wide-btns btn-toolbar"
+          role="toolbar"
         >
           <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-outline-primary"
-            disabled={false}
+            className="btn btn-outline-primary"
+            disabled={true}
             onClick={[Function]}
+            title="Update Foo app"
             type="button"
           >
-            
+            Updating...
           </button>
+          <button
+            className="btn btn-primary"
+            disabled={true}
+            onClick={[Function]}
+            title="Open Foo app"
+            type="button"
+          >
+            Open
+          </button>
+          <div
+            className="dropdown"
+            onKeyDown={[Function]}
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-outline-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+  <div />,
+]
 `;
 
 exports[`AppManagementView should render more info links for correctly defined homepage 1`] = `
@@ -543,6 +552,7 @@ Array [
       </div>
     </div>
   </div>,
+  <div />,
 ]
 `;
 
@@ -831,7 +841,8 @@ Array [
       </div>
     </div>
   </div>,
+  <div />,
 ]
 `;
 
-exports[`AppManagementView should render without any apps 1`] = `null`;
+exports[`AppManagementView should render without any apps 1`] = `<div />`;

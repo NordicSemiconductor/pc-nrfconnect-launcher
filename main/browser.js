@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -79,6 +79,13 @@ function createWindow(options) {
     // Never navigate away from the given url, e.g. when the
     // user drags and drops a file into the browser window.
     browserWindow.webContents.on('will-navigate', event => {
+        event.preventDefault();
+    });
+
+    // Open target=_blank link in default browser instead of a
+    // new electron window.
+    browserWindow.webContents.on('new-window', (event, url) => {
+        electron.shell.openExternal(url);
         event.preventDefault();
     });
 

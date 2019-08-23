@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -50,7 +50,6 @@ import AppIcon from './AppIcon';
 const AppItem = ({
     app,
     onRemove,
-    onUpgrade,
     isUpgrading,
     isRemoving,
     isDisabled,
@@ -59,6 +58,7 @@ const AppItem = ({
     onCreateShortcut,
     onInstall,
     onReadMore,
+    onShowReleaseNotes,
 }) => {
     const upgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const installed = !!app.currentVersion;
@@ -89,7 +89,7 @@ const AppItem = ({
                                 variant="outline-primary"
                                 title={`Update ${app.displayName}`}
                                 disabled={isDisabled}
-                                onClick={onUpgrade}
+                                onClick={onShowReleaseNotes}
                             >
                                 {isUpgrading ? 'Updating...' : 'Update'}
                             </Button>
@@ -118,12 +118,20 @@ const AppItem = ({
                             title=""
                             alignRight
                         >
-                            {!app.homepage && (
+                            {app.homepage && (
                                 <Dropdown.Item
                                     title="Go to app website"
                                     onClick={onReadMore}
                                 >
                                     More info
+                                </Dropdown.Item>
+                            )}
+                            {app.releaseNote && (
+                                <Dropdown.Item
+                                    title="Show release notes"
+                                    onClick={() => onShowReleaseNotes(app)}
+                                >
+                                    Release notes
                                 </Dropdown.Item>
                             )}
                             {installed && (
@@ -159,6 +167,7 @@ AppItem.propTypes = {
         homepage: PropTypes.string,
         currentVersion: PropTypes.string,
         latestVersion: PropTypes.string,
+        releaseNote: PropTypes.string,
         source: PropTypes.string,
     }).isRequired,
     isUpgrading: PropTypes.bool,
@@ -167,10 +176,10 @@ AppItem.propTypes = {
     isInstalling: PropTypes.bool,
     onReadMore: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-    onUpgrade: PropTypes.func.isRequired,
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
     onInstall: PropTypes.func.isRequired,
+    onShowReleaseNotes: PropTypes.func.isRequired,
 };
 
 AppItem.defaultProps = {

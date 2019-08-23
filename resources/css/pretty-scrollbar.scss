@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,45 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppManagementView from '../components/AppManagementView';
-import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../../util/fileUtil';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
-import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
+%pretty-scrollbar {
+    overflow: overlay;
 
-function mapStateToProps(state) {
-    const {
-        apps: {
-            localApps, officialApps,
-            installingAppName, removingAppName, upgradingAppName,
-        },
-    } = state;
+    &::-webkit-scrollbar {
+        width: 16px;
+    }
 
-    return {
-        apps: localApps.concat(officialApps),
-        installingAppName,
-        removingAppName,
-        upgradingAppName,
-        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
-    };
+    &::-webkit-scrollbar-corner {
+        background-color: rgba(0,0,0,0);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 10px;
+        border: 5px solid transparent;
+        background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0,0,0,0.6);
+        border-width: 4px;
+    }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onInstall: (name, source) => dispatch(
-            AppsActions.installOfficialApp(name, source),
-        ),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
-        onReadMore: homepage => openUrlInDefaultBrowser(homepage),
-        // Launcher actions
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
-        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
-    };
+.pretty-scrollbar {
+    @extend %pretty-scrollbar;
 }
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
