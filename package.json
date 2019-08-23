@@ -45,6 +45,7 @@
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
+            "resources/*.svg",
             "resources/mac/",
             "index.js"
         ],
