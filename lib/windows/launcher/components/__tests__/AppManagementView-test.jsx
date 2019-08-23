@@ -46,6 +46,8 @@ jest.mock('react-bootstrap', () => ({
     ModalTitle: 'ModalTitle',
 }));
 
+jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
+
 import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
@@ -65,6 +67,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onMount={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -101,6 +104,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -124,6 +128,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -149,6 +154,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -174,6 +180,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -196,6 +203,7 @@ describe('AppManagementView', () => {
                 onInstall={onInstall}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -222,6 +230,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={onRemove}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
 
@@ -261,6 +270,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -284,6 +294,7 @@ describe('AppManagementView', () => {
                 onInstall={() => {}}
                 onRemove={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
