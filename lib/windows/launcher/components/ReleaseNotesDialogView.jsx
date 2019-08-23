@@ -42,7 +42,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 const view = ({
-    canUpgrade,
+    canUpdate,
     displayName,
     latestVersion,
     name,
@@ -68,7 +68,7 @@ const view = ({
             />
         </Modal.Body>
         <Modal.Footer>
-            { canUpgrade && (
+            { canUpdate && (
                 <Button
                     variant="primary"
                     onClick={() => {
@@ -90,7 +90,7 @@ const view = ({
 );
 
 view.propTypes = {
-    canUpgrade: PropTypes.bool,
+    canUpdate: PropTypes.bool,
     displayName: PropTypes.string,
     latestVersion: PropTypes.string,
     releaseNote: PropTypes.string,
@@ -101,7 +101,7 @@ view.propTypes = {
 };
 
 view.defaultProps = {
-    canUpgrade: false,
+    canUpdate: false,
     displayName: '',
     latestVersion: '',
     releaseNote: '',
