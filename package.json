@@ -57,6 +57,7 @@
                 "AppImage",
                 "tar.gz"
             ],
+            "artifactName": "${name}-${version}-${arch}.${ext}",
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
