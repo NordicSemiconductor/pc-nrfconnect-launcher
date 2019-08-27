@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.2.0-alpha.0",
+    "version": "3.2.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -45,6 +45,7 @@
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
+            "resources/*.svg",
             "resources/mac/",
             "index.js"
         ],
@@ -56,6 +57,7 @@
                 "AppImage",
                 "tar.gz"
             ],
+            "artifactName": "${name}-${version}-${arch}.${ext}",
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
