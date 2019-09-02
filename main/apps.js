@@ -553,11 +553,11 @@ async function downloadReleaseNotes({ homepage, currentVersion }) {
         if ((new Date() - lastUpdate) > 3600000) {
             // last request was more than an hour ago
             try {
-                let data;
+                let data = [];
                 try {
                     data = await net.downloadToJson(url, headers);
                 } catch (error) {
-                    if (error.statusCode === 403) {
+                    if (error.statusCode === 401 || error.statusCode === 403) {
                         // try again with token
                         headers.Authorization = `token ${token}`;
                         data = await net.downloadToJson(url, headers);
