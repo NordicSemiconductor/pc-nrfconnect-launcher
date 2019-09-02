@@ -58,17 +58,21 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url) {
+function downloadToBuffer(url, headers) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
+        Object.keys(headers || {}).forEach(key => request.setHeader(key, headers[key]));
+
         request.on('response', response => {
             if (response.statusCode !== 200) {
-                reject(new Error(`Unable to download ${url}. Got status code `
-                    + `${response.statusCode}`));
+                const error = new Error(`Unable to download ${url}. Got status code `
+                    + `${response.statusCode}`);
+                error.statusCode = response.statusCode;
+                reject(error);
                 return;
             }
             const buffer = [];
@@ -93,10 +97,11 @@ function downloadToBuffer(url) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
+ * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToString(url) {
-    return downloadToBuffer(url)
+function downloadToString(url, headers) {
+    return downloadToBuffer(url, headers)
         .then(buffer => buffer.toString());
 }
 
@@ -105,10 +110,11 @@ function downloadToString(url) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
+ * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToJson(url) {
-    return downloadToString(url)
+function downloadToJson(url, headers) {
+    return downloadToString(url, headers)
         .then(string => JSON.parse(string));
 }
 
