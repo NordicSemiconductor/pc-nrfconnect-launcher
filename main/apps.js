@@ -49,7 +49,13 @@ const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
 
-const store = new Store('pc-nrfconnect-core');
+const store = new Store({ name: 'pc-nrfconnect-core' });
+
+// request headers
+const headers = {};
+
+// public repo access token
+const token = '48a3555dba0eac18a44fa596e3b5932692559213';
 
 /**
  * Create sources.json if it does not exist.
@@ -527,28 +533,36 @@ function removeSourceDirectory(source) {
 /**
  * Download release notes from GitHub's release page
  *
- * @param {object} app object with properties for name, homepage, source and currentVersion
+ * @param {object} app object with properties for homepage and currentVersion
  * @returns {string} the assembled and mardown formatted changelog
  */
-async function downloadReleaseNotes({
-    name, homepage, source, currentVersion,
-}) {
+async function downloadReleaseNotes({ homepage, currentVersion }) {
     const rx = /https:\/\/github.com\/(.*?\/.*)/;
     const [, repo] = (rx.exec(homepage || '') || []);
     if (!repo) {
         return null;
     }
-    const appDataPath = `apps.${source}.${name}`;
+    const url = `https://api.github.com/repos/${repo}/releases`;
+    const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
 
     let appData = store.get(appDataPath) || {};
     if (!(currentVersion && Object.keys(appData).includes(currentVersion))) {
         // the latest changelogs are not stored yet
 
-        const lastUpdate = appData.lastUpdate || 0;
+        const lastUpdate = new Date(appData.lastUpdate || 0);
         if ((new Date() - lastUpdate) > 3600000) {
             // last request was more than an hour ago
             try {
-                const data = await net.downloadToJson(`https://api.github.com/repos/${repo}/releases`);
+                let data;
+                try {
+                    data = await net.downloadToJson(url, headers);
+                } catch (error) {
+                    if (error.statusCode === 403) {
+                        // try again with token
+                        headers.Authorization = `token ${token}`;
+                        data = await net.downloadToJson(url, headers);
+                    }
+                }
 
                 // eslint-disable-next-line camelcase
                 data.forEach(({ tag_name, body }) => {
