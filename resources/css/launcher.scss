@@ -50,6 +50,12 @@ $body-bg: #d9e1e2;
 
 @import "./pretty-scrollbar";
 
+body {
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    cursor: default;
+}
+
 #webapp {
     display: grid;
     grid-template-rows: 0fr 1fr;
@@ -93,6 +99,10 @@ $body-bg: #d9e1e2;
     .tab-content {
         @extend %pretty-scrollbar;
         padding: 2rem;
+
+        #launcher-tabpane-apps {
+            margin-top: -1rem;
+        }
     }
 }
 
@@ -211,5 +221,26 @@ $body-bg: #d9e1e2;
     }
     h3 {
         font-size: 1rem;
+    }
+}
+
+
+.filterbox {
+    .btn .mdi {
+        margin-right: 0.25rem;
+    }
+    .btn:not(:hover) {
+        background: white;
+        color: $text-muted;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+    .form-control {
+        line-height: 1em;
+        height: initial !important;
+        width: initial !important;
+        border-color: $secondary;
+        padding: 0.29rem 0.75rem;
     }
 }

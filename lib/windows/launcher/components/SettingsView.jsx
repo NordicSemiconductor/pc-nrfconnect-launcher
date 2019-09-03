@@ -158,7 +158,7 @@ class SettingsView extends React.Component {
                             .filter(name => name !== 'official')
                             .map(name => (
                                 <Row key={name}>
-                                    <Col className="item-name">{name}</Col>
+                                    <Col className="item-name text-capitalize">{name}</Col>
                                     <Col xs="auto">
                                         <ButtonToolbar>
                                             <Button

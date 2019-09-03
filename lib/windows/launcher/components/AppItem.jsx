@@ -60,7 +60,6 @@ const AppItem = ({
     onReadMore,
     onShowReleaseNotes,
 }) => {
-    const upgradeAvailable = app.latestVersion && app.currentVersion !== app.latestVersion;
     const installed = !!app.currentVersion;
     const local = !app.source;
     return (
@@ -79,12 +78,12 @@ const AppItem = ({
                     <div className="small text-muted-more">
                         {app.source || 'local'}
                         {installed && <>, v{app.currentVersion}</>}
-                        {upgradeAvailable && <> (v{app.latestVersion} available)</>}
+                        {app.upgradeAvailable && <> (v{app.latestVersion} available)</>}
                     </div>
                 </Col>
                 <Col xs="auto ml-auto" className="d-flex align-items-center my-3 pl-3">
                     <ButtonToolbar className="wide-btns">
-                        {upgradeAvailable && (
+                        {app.upgradeAvailable && (
                             <Button
                                 variant="outline-primary"
                                 title={`Update ${app.displayName}`}
@@ -169,6 +168,7 @@ AppItem.propTypes = {
         latestVersion: PropTypes.string,
         releaseNote: PropTypes.string,
         source: PropTypes.string,
+        upgradeAvailable: PropTypes.bool,
     }).isRequired,
     isUpgrading: PropTypes.bool,
     isRemoving: PropTypes.bool,
