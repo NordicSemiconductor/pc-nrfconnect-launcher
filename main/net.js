@@ -68,6 +68,7 @@ function downloadToBuffer(url, headers) {
         Object.keys(headers || {}).forEach(key => request.setHeader(key, headers[key]));
 
         request.on('response', response => {
+            const responseHeaders = { ...response.headers };
             if (response.statusCode !== 200) {
                 const error = new Error(`Unable to download ${url}. Got status code `
                     + `${response.statusCode}`);
@@ -80,7 +81,7 @@ function downloadToBuffer(url, headers) {
                 buffer.push(data);
             };
             response.on('data', data => addToBuffer(data));
-            response.on('end', () => resolve(Buffer.concat(buffer)));
+            response.on('end', () => resolve([Buffer.concat(buffer), responseHeaders]));
             response.on('error', error => reject(new Error(`Error when reading ${url}: `
                 + `${error.message}`)));
         });
@@ -102,7 +103,7 @@ function downloadToBuffer(url, headers) {
  */
 function downloadToString(url, headers) {
     return downloadToBuffer(url, headers)
-        .then(buffer => buffer.toString());
+        .then(([buffer, responseHeaders]) => [buffer.toString(), responseHeaders]);
 }
 
 /**
@@ -115,7 +116,7 @@ function downloadToString(url, headers) {
  */
 function downloadToJson(url, headers) {
     return downloadToString(url, headers)
-        .then(string => JSON.parse(string));
+        .then(([string, responseHeaders]) => [JSON.parse(string), responseHeaders]);
 }
 
 /**
@@ -129,7 +130,7 @@ function downloadToJson(url, headers) {
 function downloadToFile(url, filePath) {
     return new Promise((resolve, reject) => {
         downloadToBuffer(url)
-            .then(data => {
+            .then(([data]) => {
                 fs.writeFile(filePath, data, err => {
                     if (err) {
                         reject(err);

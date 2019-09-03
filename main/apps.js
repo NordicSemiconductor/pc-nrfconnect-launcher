@@ -51,12 +51,6 @@ const settings = require('./settings');
 
 const store = new Store({ name: 'pc-nrfconnect-core' });
 
-// request headers
-const headers = {};
-
-// public repo access token
-const token = '48a3555dba0eac18a44fa596e3b5932692559213';
-
 /**
  * Create sources.json if it does not exist.
  *
@@ -115,7 +109,7 @@ function downloadAppsJsonFile(appsJsonUrl) {
                 + 'are using a proxy server, you may need to configure it as described on '
                 + 'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
         })
-        .then(appsJson => {
+        .then(([appsJson]) => {
             // underscore is intentially used in JSON as a meta information
             // eslint-disable-next-line no-underscore-dangle
             const source = appsJson._source;
@@ -546,48 +540,41 @@ async function downloadReleaseNotes({ homepage, currentVersion }) {
     const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
 
     let appData = store.get(appDataPath) || {};
-    if (!(currentVersion && Object.keys(appData).includes(currentVersion))) {
+    if (currentVersion && !Object.keys(appData).includes(currentVersion)) {
         // the latest changelogs are not stored yet
 
-        const lastUpdate = new Date(appData.lastUpdate || 0);
-        if ((new Date() - lastUpdate) > 3600000) {
-            // last request was more than an hour ago
-            try {
-                let data = [];
-                try {
-                    data = await net.downloadToJson(url, headers);
-                } catch (error) {
-                    if (error.statusCode === 401 || error.statusCode === 403) {
-                        // try again with token
-                        headers.Authorization = `token ${token}`;
-                        data = await net.downloadToJson(url, headers);
-                    }
-                }
+        const headers = {};
+        if (appData.ETag) {
+            headers['If-None-Match'] = appData.ETag;
+        }
 
-                // eslint-disable-next-line camelcase
-                data.forEach(({ tag_name, body }) => {
-                    appData = {
-                        ...appData,
-                        [tag_name.replace(/^v/, '')]: {
-                            // replacing GH issue references to links:
-                            changelog: body.trim().replace(/#(\d+)/g, (match, pr) => (
-                                `[${match}](https://github.com/${repo}/pull/${pr})`)),
-                        },
-                    };
-                });
+        try {
+            const [data, responseHeaders] = await net.downloadToJson(url, headers);
 
-                store.set(appDataPath, {
-                    lastUpdate: new Date().toISOString(),
+            // eslint-disable-next-line camelcase
+            data.forEach(({ tag_name, body }) => {
+                appData = {
                     ...appData,
-                });
-            } catch (error) {
-                log.warn(error.message);
-            }
+                    [tag_name.replace(/^v/, '')]: {
+                        // replacing GH issue references to links:
+                        changelog: body.trim().replace(/#(\d+)/g, (match, pr) => (
+                            `[${match}](https://github.com/${repo}/pull/${pr})`)),
+                    },
+                };
+            });
+
+            const ETag = (/"(.*)"/.exec(responseHeaders.etag[0]) || [])[1];
+            store.set(appDataPath, {
+                ETag,
+                ...appData,
+            });
+        } catch (error) {
+            log.warn(error.message);
         }
     }
 
     return Object.keys(appData)
-        .filter(x => x !== 'lastUpdate')
+        .filter(x => x !== 'lastUpdate' && x !== 'ETag')
         .sort().reverse()
         .map(version => `## ${version}\n\n${appData[version].changelog}`)
         .join('\n\n');
