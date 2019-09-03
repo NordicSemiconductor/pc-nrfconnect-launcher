@@ -94,9 +94,9 @@ exports.set = (key, value) => {
     save();
 };
 
-exports.get = key => {
+exports.get = (key, defaultValue = null) => {
     load();
-    let value = null;
+    let value = defaultValue;
 
     if (key in data) {
         value = data[key];

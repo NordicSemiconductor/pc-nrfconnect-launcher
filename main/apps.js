@@ -387,8 +387,10 @@ function decorateWithInstalledAppInfo(officialApp, source) {
  * @returns {Object} a new app object that has a latestVersion property.
  */
 function decorateWithLatestVersion(officialApp, availableUpdates) {
+    const latestVersion = availableUpdates[officialApp.name] || officialApp.currentVersion;
     return Object.assign({}, officialApp, {
-        latestVersion: availableUpdates[officialApp.name] || officialApp.currentVersion,
+        latestVersion,
+        upgradeAvailable: latestVersion && officialApp.currentVersion !== latestVersion,
     });
 }
 
