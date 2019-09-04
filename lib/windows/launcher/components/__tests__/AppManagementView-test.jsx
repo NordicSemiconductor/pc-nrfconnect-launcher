@@ -46,6 +46,7 @@ jest.mock('react-bootstrap', () => ({
     ModalTitle: 'ModalTitle',
 }));
 
+jest.mock('../../containers/AppManagementFilterContainer', () => 'div');
 jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
 
 import React from 'react';
@@ -68,11 +69,12 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onMount={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
 
-    it('should render not-installed, installed, and upgradable apps sorted by name', () => {
+    it('should render not-installed, installed, and upgradable apps', () => {
         expect(renderer.create(
             <AppManagementView
                 apps={
@@ -105,6 +107,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
@@ -129,6 +132,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
@@ -155,6 +159,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
@@ -181,6 +186,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
@@ -204,6 +210,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -231,6 +238,7 @@ describe('AppManagementView', () => {
                 onRemove={onRemove}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         );
 
@@ -271,6 +279,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         )).toMatchSnapshot();
     });
@@ -295,6 +304,7 @@ describe('AppManagementView', () => {
                 onRemove={() => {}}
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
+                sources={{}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
