@@ -59,7 +59,8 @@ function getLatestFromPackageInfo(packageInfo) {
 }
 
 function getPackageInfo(name, regUrl) {
-    return net.downloadToJson(getPackageUrl(name, regUrl));
+    return net.downloadToJson(getPackageUrl(name, regUrl))
+        .then(([packageInfo]) => packageInfo);
 }
 
 /**
