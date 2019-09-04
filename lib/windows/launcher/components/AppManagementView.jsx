@@ -93,11 +93,6 @@ AppManagementView.propTypes = {
     onAppSelected: PropTypes.func.isRequired,
     onCreateShortcut: PropTypes.func.isRequired,
     onShowReleaseNotes: PropTypes.func.isRequired,
-    show: PropTypes.shape({
-        local: PropTypes.bool,
-        installed: PropTypes.bool,
-        available: PropTypes.bool,
-    }).isRequired,
 };
 
 AppManagementView.defaultProps = {
