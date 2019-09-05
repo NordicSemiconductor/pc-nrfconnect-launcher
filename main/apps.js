@@ -103,7 +103,7 @@ function initSourceDirectory(source) {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFile(appsJsonUrl) {
-    return net.downloadToJson(appsJsonUrl)
+    return net.downloadToJson(appsJsonUrl, {}, true)
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you `
                 + 'are using a proxy server, you may need to configure it as described on '
@@ -549,7 +549,7 @@ async function downloadReleaseNotes({ homepage, currentVersion }) {
         }
 
         try {
-            const [data, responseHeaders] = await net.downloadToJson(url, headers);
+            const [data, responseHeaders] = await net.downloadToJson(url, headers, false);
 
             // eslint-disable-next-line camelcase
             data.forEach(({ tag_name, body }) => {

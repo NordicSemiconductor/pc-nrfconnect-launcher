@@ -59,7 +59,7 @@ function getLatestFromPackageInfo(packageInfo) {
 }
 
 function getPackageInfo(name, regUrl) {
-    return net.downloadToJson(getPackageUrl(name, regUrl))
+    return net.downloadToJson(getPackageUrl(name, regUrl), {}, true)
         .then(([packageInfo]) => packageInfo);
 }
 
@@ -127,7 +127,7 @@ function downloadTarball(name, version, destinationDir, source) {
             const parsedUrl = url.parse(tarballUrl);
             const fileName = path.basename(parsedUrl.pathname);
             const destinationFile = path.join(destinationDir, fileName);
-            return net.downloadToFile(tarballUrl, destinationFile)
+            return net.downloadToFile(tarballUrl, destinationFile, true)
                 .then(() => verifyShasum(destinationFile, distInfo.shasum))
                 .then(() => destinationFile);
         });
