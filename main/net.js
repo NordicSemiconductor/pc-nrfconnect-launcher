@@ -58,7 +58,7 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url, headers) {
+function downloadToBuffer(url, headers, enableProxyLogin) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
@@ -85,25 +85,13 @@ function downloadToBuffer(url, headers) {
             response.on('error', error => reject(new Error(`Error when reading ${url}: `
                 + `${error.message}`)));
         });
-        request.on('login', onProxyLogin);
+        if (enableProxyLogin) {
+            request.on('login', onProxyLogin);
+        }
         request.on('error', error => reject(new Error(`Unable to download ${url}: `
             + `${error.message}`)));
         request.end();
     });
-}
-
-
-/**
- * Download the given url to a string. Uses the electron net API,
- * which reads proxy settings from the system.
- *
- * @param {string} url the URL to download.
- * @param {object} headers optional object passed to request headers.
- * @returns {Promise} promise that resolves when the data has been downloaded.
- */
-function downloadToString(url, headers) {
-    return downloadToBuffer(url, headers)
-        .then(([buffer, responseHeaders]) => [buffer.toString(), responseHeaders]);
 }
 
 /**
@@ -112,11 +100,12 @@ function downloadToString(url, headers) {
  *
  * @param {string} url the URL to download.
  * @param {object} headers optional object passed to request headers.
+ * @param {boolean} enableProxyLogin should the request handle login event.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToJson(url, headers) {
-    return downloadToString(url, headers)
-        .then(([string, responseHeaders]) => [JSON.parse(string), responseHeaders]);
+function downloadToJson(url, headers, enableProxyLogin) {
+    return downloadToBuffer(url, headers, enableProxyLogin)
+        .then(([content, responseHeaders]) => [JSON.parse(content), responseHeaders]);
 }
 
 /**
@@ -125,11 +114,12 @@ function downloadToJson(url, headers) {
  *
  * @param {string} url the URL to download.
  * @param {string} filePath where to store the downloaded file.
+ * @param {boolean} enableProxyLogin should the request handle login event.
  * @returns {Promise} promise that resolves when file has been downloaded.
  */
-function downloadToFile(url, filePath) {
+function downloadToFile(url, filePath, enableProxyLogin) {
     return new Promise((resolve, reject) => {
-        downloadToBuffer(url)
+        downloadToBuffer(url, {}, enableProxyLogin)
             .then(([data]) => {
                 fs.writeFile(filePath, data, err => {
                     if (err) {
@@ -145,7 +135,6 @@ function downloadToFile(url, filePath) {
 
 module.exports = {
     downloadToFile,
-    downloadToString,
     downloadToJson,
     registerProxyLoginHandler,
 };
