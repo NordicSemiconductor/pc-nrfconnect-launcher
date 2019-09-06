@@ -77,20 +77,17 @@ If you either want to program new apps for nRF Connect for Desktop or work on th
 
 ## Prerequisites
 
-To build this project you will need to install the following tools on all plattforms:
-
-* Node.js (>=6.9)
-* npm (>=5.6.0) or yarn (>=1.4.0)
+To build this project you need [Node.js](https://nodejs.org/).
 
 ### Linux
 
-Install packages required for building the project on Ubuntu Linux:
+Install additionally required packages for building the project on Ubuntu Linux:
 
     apt-get install build-essential python2.7 libudev-dev libgconf-2-4
 
 ### Windows
 
-Install all the required tools and configurations using Microsoft's windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator):
+Install additionally required tools and configurations using Microsoft's windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator):
 
     npm install --global --production windows-build-tools
 
