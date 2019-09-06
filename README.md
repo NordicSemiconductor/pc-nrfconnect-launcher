@@ -7,16 +7,11 @@ nRF Connect for Desktop is a cross-platform framework for desktop apps for devel
 
 # Supported Platforms
 
-nRF Connect for Desktop supports the following devices:
+While it may vary in individual apps, nRF Connect for Desktop aims to support all official Nordic Semiconductor development kits and dongles from these series’:
 
-* PCA10028 nRF51 Development Kit
-* PCA10031 nRF51 Dongle
-* PCA10040 nRF52 Development Kit
-* PCA10056 nRF52840 Development Kit
-* PCA10059 nRF52840 Dongle
-* PCA10090 nRF9160 Development Kit
-
-Note that while the the framework has support for all these devices, the device support in individual apps may vary.
+* nRF51
+* nRF52
+* nRF91
 
 You can run nRF Connect for Desktop on:
 
