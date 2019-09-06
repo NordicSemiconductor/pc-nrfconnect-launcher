@@ -35,7 +35,7 @@ In order to access Nordic USB devices with correct permissions *udev* rules need
 
 ## Installation
 
-Download binaries from the [nRF Connect for Desktop product page](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-Desktop#Downloads) on Nordic Semiconductor web pages.
+Download binaries from the [nRF Connect for Desktop product page](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-desktop) on Nordic Semiconductor web pages.
 
 ## Running
 
