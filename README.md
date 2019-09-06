@@ -7,7 +7,7 @@ nRF Connect for Desktop is a cross-platform framework for desktop apps for devel
 
 # Supported Platforms
 
-While it may vary in individual apps, nRF Connect for Desktop aims to support all official Nordic Semiconductor development kits and dongles from these series’:
+While it may vary in individual apps, nRF Connect for Desktop aims to support all official Nordic Semiconductor development kits and dongles from these series:
 
 * nRF51
 * nRF52
