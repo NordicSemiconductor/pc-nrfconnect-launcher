@@ -23,13 +23,11 @@ You can run nRF Connect for Desktop on:
 
 ## Prerequisites
 
-### macOS
+### macOS and Linux
 
-J-Link driver needs to be separately installed on macOS. Download and install it from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*. Without it when running the apps you would otherwise get error messages when running the apps like `CouldNotOpenDLL` or `JLINKARM_DLL_NOT_FOUND`.
+J-Link driver needs to be separately installed on macOS and Linux. Download and install it from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*. Without it when running the apps you would otherwise get error messages when running the apps like `CouldNotFindJprogDLL`, `CouldNotOpenDLL` or `JLINKARM_DLL_NOT_FOUND`.
 
-### Linux
-
-J-Link driver needs to be separately installed on Linux. Download and install it from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*. Without it when running the apps you would otherwise get error messages when running the apps like `CouldNotFindJprogDLL`.
+#### Linux only
 
 In order to access Nordic USB devices with correct permissions *udev* rules need to be set up once. For this purpose [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) repository has been created, follow instructions there.
 
