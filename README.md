@@ -1,113 +1,103 @@
-# nRF Connect
+# nRF Connect for Desktop
 
 [![Build Status](https://dev.azure.com/NordicSemiconductor/Wayland/_apis/build/status/pc-nrfconnect-core?branchName=master)](https://dev.azure.com/NordicSemiconductor/Wayland/_build/latest?definitionId=8&branchName=master)
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
-nRF Connect is a cross-platform framework for creating desktop apps for use with development kits or dongles from Nordic Semiconductor. It provides a common foundation for creating apps that communicate with the devices over serial port. The framework comes with a skeleton that has standard UI components for selecting devices, navigation menus, logging, etc. Apps can decorate the standard components, create new components, and use built-in libraries in order to create end-user tools.
+nRF Connect for Desktop is a cross-platform framework for desktop apps for development kits or dongles from Nordic Semiconductor. The framework provides a launcher and the general layout for selecting devices, navigation menus, logging, etc. Apps can decorate the standard components and use built-in libraries in order to create end-user tools.
 
-nRF Connect supports the following devices:
+# Supported Platforms
 
-* PCA10028 nRF51 Development Kit
-* PCA10031 nRF51 Dongle
-* PCA10040 nRF52 Development Kit
-* PCA10056 nRF52840 Development Kit
-* PCA10059 nRF52840 Dongle
-* PCA10090 nRF9160 Development Kit
+While it may vary in individual apps, nRF Connect for Desktop aims to support all official Nordic Semiconductor development kits and dongles from these series:
 
-Note that while the nRF Connect framework has support for all these devices, the device support in nRF Connect apps may vary.
+* nRF51
+* nRF52
+* nRF91
 
-# Installation
-
-To install nRF Connect you can download binaries from the [nRF Connect product page](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-Desktop#Downloads) on Nordic Semiconductor web pages.
-
-nRF Connect currently supports the following operating systems:
+You can run nRF Connect for Desktop on:
 
 * Windows
 * Ubuntu Linux 64-bit
 * macOS
 
-# Usage documentation
+# Using nRF Connect for Desktop
 
-A [Getting started guide](https://www.nordicsemi.com/eng/Products/Bluetooth-low-energy/nRF-Connect-for-Desktop#Documentation) is available from the nRF Connect product pages.
+## Prerequisites
 
-# Available apps
+### macOS and Linux
 
-The following apps have been created for nRF Connect;
+J-Link driver needs to be separately installed on macOS and Linux. Download and install it from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*. Without it when running the apps you would otherwise get error messages when running the apps like `CouldNotFindJprogDLL`, `CouldNotOpenDLL` or `JLINKARM_DLL_NOT_FOUND`.
+
+#### Linux only
+
+In order to access Nordic USB devices with correct permissions *udev* rules need to be set up once. For this purpose [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) repository has been created, follow instructions there.
+
+## Installation
+
+Download binaries from the [nRF Connect for Desktop product page](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-desktop) on Nordic Semiconductor web pages.
+
+## Running
+
+When starting nRF Connect for Desktop a central launcher is shown. It enables you to install, update and launch the individual apps. Currently provided by Nordic Semiconductor are:
 
 * [Bluetooth Low Energy](https://github.com/NordicSemiconductor/pc-nrfconnect-ble)
 * [Power Profiler](https://github.com/NordicSemiconductor/pc-nrfconnect-ppk)
 * [Programmer](https://github.com/NordicSemiconductor/pc-nrfconnect-programmer)
 * [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi)
-* [Link Monitor](https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor)
+* [LTE Link Monitor](https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor)
+* [Getting Started Assistant](https://github.com/NordicSemiconductor/pc-nrfconnect-gettingstarted)
 * Trace Collector
-* Getting Started Assistant
 
-## Automatic installation of apps
+[Further documentation on some apps is provided in the Nordic Semiconductor Infocenter](https://infocenter.nordicsemi.com/topic/struct_nrftools/struct/nrftools_nrfconnect.html).
 
-The normal way to install apps is to start nRF Connect and go to the *Add/remove apps* screen. When installing apps from this screen, you will be notified of any new releases, and have the option to upgrade when new releases are available.
+## Proxy settings
+
+To use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
 
 ## Manual installation of apps
 
 Should you have an app package offline, it is also possible to install it manually:
 
 1. Copy the file to `%USERPROFILE%\.nrfconnect-apps\local` (Windows) or `$HOME/.nrfconnect-apps/local` (Linux/macOS).
-2. Restart nRF Connect. The app should now appear in the *Launch app* screen.
-
-# Creating apps
-
-To create your own app, follow the documentation on the [project wiki](https://github.com/NordicSemiconductor/pc-nrfconnect-core/wiki). Have a look at the [RSSI viewer app](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) to see how a real-world app can be implemented. There is also a [boilerplate app](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate) that can be used as a starting point.
-
-# Proxy settings
-
-To configure nRF Connect for use behind a proxy, see [proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/proxy-settings.md).
-
-# Linux udev rules
-
-In order to access Nordic USB devices with correct permissions *udev* rules need to be set up once. For this purpose [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) repository has been created, follow instructions there.
+2. Restart nRF Connect for Desktop. The app should now appear in the apps list.
 
 # Contributing
 
+## Pull requests
+
 Feel free to submit a pull request. In order to accept your pull request, we need you to sign our Contributor License Agreement (CLA). You will see instructions for doing this after having submitted your first pull request. You only need to sign the CLA once, so if you have already done it for another project in the NordicSemiconductor organization, you are good to go.
 
-# Reporting bugs
+## Reporting bugs
 
 If you find any bugs, or have questions or other feedback in general, please submit a post on the [Nordic DevZone](http://devzone.nordicsemi.no) portal.
 Note that bug reports should describe in sufficient detail how to reproduce the bug.
 
-# Building from source
+# Developing
 
-## Dependencies
+If you either want to program new apps for nRF Connect for Desktop or work on the existing core and apps, you probably want to use the sources to compile and run them locally. You find more in-depth info on this in the [project wiki](https://github.com/NordicSemiconductor/pc-nrfconnect-core/wiki).
 
-To build this project you will need to install the following tools:
+## Prerequisites
 
-* Node.js (>=6.9)
-* npm (>=5.6.0) / yarn (>=1.4.0)
-
-### Compilation of native modules
-
-The project depends on [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js) and [pc-nrfjprog-js](https://github.com/NordicSemiconductor/pc-nrfjprog-js) which are native modules. Pre-compiled binaries for these modules are provided for recent Node.js versions on Windows, macOS, and Linux. However, if binaries do not exist for your platform/Node.js version, then refer to the [pc-ble-driver-js README](https://github.com/NordicSemiconductor/pc-ble-driver-js) which describes requirements for compilation.
+To build this project you need [Node.js](https://nodejs.org/).
 
 ### Linux
 
-Install packages required for building the project on Ubuntu Linux:
+Install additionally required packages for building the project on Ubuntu Linux:
 
     apt-get install build-essential python2.7 libudev-dev libgconf-2-4
 
 ### Windows
 
-Install all the required tools and configurations using Microsoft's windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator):
+Install additionally required tools and configurations using Microsoft's windows-build-tools from an elevated PowerShell or CMD.exe (run as Administrator):
 
     npm install --global --production windows-build-tools
 
-## Building
+## Running from source
 
-When all required tools have been installed, you are ready to build the project. Run the following command from the command line, standing in the root folder of the repository:
+When the prerequisites are met install the needed dependencies by running:
 
     npm install
 
-## Development
-
-Start by running:
+Start the continuous compilation by running:
 
     npm run dev
 
@@ -119,15 +109,7 @@ Now, open a separate terminal window and run:
 
 This will open Electron, which loads its content from `dist`.
 
-## Firmware detection and programming
-
-Firmware detection and programming requires that nRF Connect can load nrfjprog libraries. If you see the message *CouldNotFindJprogDLL* in the log, then follow the steps below.
-
-### Linux and macOS
-
-J-Link driver needs to be separately installed on Linux and macOS, download and install appropriate package for your operating system from [SEGGER](https://www.segger.com/downloads/jlink) under the section *J-Link Software and Documentation Pack*.
-
-## Testing
+### Testing
 
 Run unit tests:
 
@@ -149,36 +131,17 @@ Run only end-to-end tests that require network access:
 
     npm run test-e2e-online
 
-## Creating release artifacts
+### Creating new apps
 
-To pack nRF Connect into a release artifact for the current platform:
+Have a look at the [RSSI viewer app](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi) to see how a real-world app can be implemented. There is also a [boilerplate app](https://github.com/NordicSemiconductor/pc-nrfconnect-boilerplate) that can be used as a starting point.
 
-    npm run pack
+### Compilation of native modules
 
-Depending on the platform, this will create:
-
-* Windows: NSIS installer
-* macOS: DMG disk image
-* Linux: AppImage
-
-The artifact is written to the `release` directory.
-
-## Publishing release artifacts
-
-First, make sure your user can authenticate with GitHub:
-
-* Windows: `set GH_TOKEN=<your-github-token>`
-* Linux/macOS: `export GH_TOKEN=<your-github-token>`
-
-Then, to create and publish the release artifact:
-
-    npm run release
-
-This creates a release artifact for the current platform, and uploads it to GitHub as part of a draft release on the [GitHub releases](https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases) page. The draft release is only visible to users who have write access to the repository, and can be made public by editing it and pressing the *Publish release* button.
+The project depends on [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js) and [pc-nrfjprog-js](https://github.com/NordicSemiconductor/pc-nrfjprog-js) which are native modules. Pre-compiled binaries for these modules are provided for recent Node.js versions on Windows, macOS, and Linux. However, if binaries do not exist for your platform/Node.js version, then refer to the [pc-ble-driver-js README](https://github.com/NordicSemiconductor/pc-ble-driver-js) which describes requirements for compilation.
 
 # Related projects
 
-nRF Connect builds on top of other sub components that live in their own GitHub repositories:
+nRF Connect for Desktop builds on top of other sub components that live in their own GitHub repositories:
 
 * [pc-ble-driver-js](https://github.com/NordicSemiconductor/pc-ble-driver-js)
 * [pc-ble-driver](https://github.com/NordicSemiconductor/pc-ble-driver)
