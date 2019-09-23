@@ -45,7 +45,7 @@ When starting nRF Connect for Desktop a central launcher is shown. It enables yo
 * [RSSI Viewer](https://github.com/NordicSemiconductor/pc-nrfconnect-rssi)
 * [LTE Link Monitor](https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor)
 * [Getting Started Assistant](https://github.com/NordicSemiconductor/pc-nrfconnect-gettingstarted)
-* Trace Collector
+* [Trace Collector](https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector)
 
 [Further documentation on some apps is provided in the Nordic Semiconductor Infocenter](https://infocenter.nordicsemi.com/topic/struct_nrftools/struct/nrftools_nrfconnect.html).
 
