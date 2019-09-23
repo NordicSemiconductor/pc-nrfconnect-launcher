@@ -32,6 +32,7 @@
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
         "description": "Capture nRF91 modem trace",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
     "pc-nrfconnect-gettingstarted": {
