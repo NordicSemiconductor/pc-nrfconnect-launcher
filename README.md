@@ -73,7 +73,7 @@ Note that bug reports should describe in sufficient detail how to reproduce the 
 
 # Developing
 
-If you either want to program new apps for nRF Connect for Desktop or work on the existing core and apps, you probably want to use the sources to compile and run them locally. You find more in-depth info on this in the [project wiki](https://github.com/NordicSemiconductor/pc-nrfconnect-core/wiki).
+If you either want to program new apps for nRF Connect for Desktop or work on the existing core and apps, you probably want to use the sources to compile and run them locally. You find more in-depth info on this in the [developer documentation](https://nordicsemiconductor.github.io/pc-nrfconnect-docs/).
 
 ## Prerequisites
 
