@@ -26,17 +26,19 @@
     "pc-nrfconnect-linkmonitor": {
         "displayName": "LTE Link Monitor",
         "description": "Link monitor and AT command terminal",
-        "homepage": "https://infocenter.nordicsemi.com/topic/ug_link_monitor/UG/link_monitor/lm_intro.html",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-linkmonitor"
     },
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
         "description": "Capture nRF91 modem trace",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
-    "nrf-framework-courses": {
+    "pc-nrfconnect-gettingstarted": {
         "displayName": "Getting Started Assistant",
         "description": "Guide to set up the nRF Connect SDK",
-        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/nrf-framework-courses"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-gettingstarted",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-gettingstarted"
     }
 }

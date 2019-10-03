@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -46,6 +46,8 @@ jest.mock('react-bootstrap', () => ({
     ModalTitle: 'ModalTitle',
 }));
 
+jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
+
 import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
@@ -63,9 +65,9 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
                 onMount={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -101,8 +103,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -125,8 +127,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -151,8 +153,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -177,8 +179,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -200,8 +202,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={onInstall}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
@@ -227,8 +229,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={onRemove}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
 
@@ -236,34 +238,6 @@ describe('AppManagementView', () => {
         wrapper.find('a[title="Remove Foobar displayName"]').first().simulate('click');
 
         expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
-    });
-
-    it('should invoke onUpgrade with app name and latest version when upgrade button is clicked', () => {
-        const app = getImmutableApp({
-            name: 'pc-nrfconnect-foobar',
-            displayName: 'Foobar displayName',
-            description: 'Foobar description',
-            currentVersion: '1.2.3',
-            latestVersion: '1.2.4',
-            source: 'beta',
-            url: 'https://foo.bar/dists/beta',
-        });
-        const onUpgrade = jest.fn();
-        const wrapper = mount(
-            <AppManagementView
-                apps={List([app])}
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onUpgrade={onUpgrade}
-                onReadMore={() => {}}
-            />,
-        );
-        wrapper.find('button[title="Update Foobar displayName"]').first().simulate('click');
-
-        expect(onUpgrade).toHaveBeenCalledWith(app.name, app.latestVersion, app.source);
     });
 
     it('should render more info links for correctly defined homepage', () => {
@@ -295,8 +269,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         )).toMatchSnapshot();
     });
@@ -319,8 +293,8 @@ describe('AppManagementView', () => {
                 onCreateShortcut={() => {}}
                 onInstall={() => {}}
                 onRemove={() => {}}
-                onUpgrade={() => {}}
                 onReadMore={() => {}}
+                onShowReleaseNotes={() => {}}
             />,
         );
         wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
