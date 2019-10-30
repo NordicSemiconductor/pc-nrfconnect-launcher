@@ -114,7 +114,6 @@
         "prettysize": "2.0.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "redux-devtools-extension": "^2.13.8",
-        "redux-logger": "3.0.6",
         "redux-thunk": "2.3.0",
         "spectron": "7.0.0",
         "tar": "4.4.10",
