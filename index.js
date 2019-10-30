@@ -58,9 +58,12 @@ if (basename(execPath, '.exe') !== 'electron') {
 }
 
 const {
-    Menu, ipcMain, dialog, app: electronApp,
+    Menu, ipcMain, dialog, app: electronApp, BrowserWindow,
 } = require('electron');
 const { argv } = require('yargs');
+const {
+    default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS,
+} = require('electron-devtools-installer');
 
 const config = require('./main/config');
 const windows = require('./main/windows');
@@ -78,6 +81,16 @@ global.appsRootDir = config.getAppsRootDir();
 const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 
 electronApp.on('ready', () => {
+    if (process.argv.includes('--install-dev-tools')) {
+        installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+            .then(names => console.log(`Added Extensions:  ${names}`))
+            .catch(err => console.log(`An error occurred: ${err}`));
+    }
+    if (process.argv.includes('--remove-dev-tools')) {
+        const devToolsExtensions = Object.keys(BrowserWindow.getDevToolsExtensions());
+        devToolsExtensions.forEach(BrowserWindow.removeDevToolsExtension);
+    }
+
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
         .then(() => {
