@@ -1,5 +1,5 @@
 trigger:
-- release/internal/*
+- internal/release/*
 
 jobs:
 - job: Build

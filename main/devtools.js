@@ -34,21 +34,43 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+const { app, BrowserWindow } = require('electron');
+const {
+    default: downloadAndInstall,
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS,
+} = require('electron-devtools-installer');
 
-function createMiddleware(appMiddleware) {
-    const middlewares = [thunk];
+const installDevtools = async () => {
+    try {
+        const forceReinstall = true;
+        const devToolsExtensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+        const names = await downloadAndInstall(devToolsExtensions, forceReinstall);
+        console.log('Added devtool extensions:', names);
+        app.quit();
+    } catch (err) {
+        console.log('An error occurred while adding the devtools: ', err);
+    }
+};
 
-    if (appMiddleware) {
-        middlewares.push(appMiddleware);
+const removeDevtools = () => {
+    const devToolsExtensions = Object.keys(
+        BrowserWindow.getDevToolsExtensions(),
+    );
+    console.log('Removing devtool extensions:', devToolsExtensions);
+
+    devToolsExtensions.forEach(BrowserWindow.removeDevToolsExtension);
+
+    // Sometimes if we quit too fast we get a crash message here, so let us just wait a moment.
+    setTimeout(app.quit, 1000);
+};
+
+module.exports = () => {
+    if (process.argv.includes('--install-devtools')) {
+        installDevtools();
     }
 
-    return composeWithDevTools(applyMiddleware(...middlewares));
-}
-
-export default (rootReducer, app = {}) => createStore(
-    rootReducer,
-    createMiddleware(app.middleware),
-);
+    if (process.argv.includes('--remove-devtools')) {
+        removeDevtools();
+    }
+};
