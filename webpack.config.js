@@ -27,7 +27,6 @@ module.exports = {
     entry: {
         app: './lib/windows/app/index',
         launcher: './lib/windows/launcher/index',
-        brand19: './resources/css/brand19.scss',
     },
     output: {
         path: path.resolve('dist'),
