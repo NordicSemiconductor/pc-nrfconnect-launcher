@@ -49,7 +49,6 @@ import {
 } from '../../util/apps';
 import rootReducer from './reducers';
 import { core } from '../../api';
-import '../../../resources/css/app.scss';
 
 const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
