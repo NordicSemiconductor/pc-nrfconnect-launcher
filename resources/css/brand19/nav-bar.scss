@@ -1,0 +1,43 @@
+@import '../common/variables';
+
+.core19-nav-bar {
+    width: 100%;
+    flex: none;
+    background-color: $brand-primary;
+    display: flex;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+    font-size: large;
+
+    .core19-nav-bar-item {
+        border-left: 1px solid $brand-primary-dark;
+        padding: 0px 10px 0 10px;
+
+        // FIXME: Check whether these can be discarded
+        // display: inline-block;
+        // height: 55px;
+    }
+}
+
+.core19-nav-bar {
+    // .core-nav-section {
+    //     .dropdown {
+    //         display: inline-block;
+    //     }
+
+    //     .dropdown-menu {
+    //         background-color: $brand-primary;
+
+    //         .dropdown-item {
+    //             color: white;
+    //             padding-left: 24px;
+    //         }
+    //         .dropdown-item:hover, .dropdown-item:focus {
+    //             background-color: $brand-primary-dark;
+    //         }
+    //     }
+    // }
+}
