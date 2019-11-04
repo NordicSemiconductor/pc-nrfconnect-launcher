@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,38 +34,39 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { node } from 'prop-types';
 
-const hostedModules = {};
+import '../../resources/css/brand19/app.scss';
+import { HorizontalSplitter, VerticalSplitter } from './Splitter';
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
-    }
+const LogViewer = () => <div>FIXME: core LogViewer</div>;
 
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+const App = ({ children, navBar, sidePanel }) => (
+    <>
+        <div className="core19-app">
+            {navBar}
+            <div className="core19-app-main-and-log">
+                <div>
+                    {children}
+                    <HorizontalSplitter />
+                    <LogViewer />
+                    <VerticalSplitter />  {/* FIXME: Move this one out */}
+                </div>
+                {sidePanel}
+            </div>
+            {/* FIXME <FirmwareDialogContainer />
+            <AppReloadDialogContainer />
+            <DeviceSetupContainer />
+            <ErrorDialogContainer /> */}
+        </div>
+    </>
+);
+
+App.propTypes = {
+    children: node.isRequired,
+    navBar: node.isRequired,
+    sidePanel: node.isRequired,
 };
 
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules.usb = require('usb');
-
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
-
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+export default App;
