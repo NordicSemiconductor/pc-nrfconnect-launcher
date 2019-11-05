@@ -1,35 +1,4 @@
-$roboto-font-path: "~roboto-fontface/fonts" !default;
-@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
-
-@import "~@mdi/font/css/materialdesignicons.min.css";
 @import "../common/variables";
-@import "~bootstrap/scss/bootstrap";
-
-@each $color, $value in $theme-colors {
-    .btn-#{$color} {
-        border-color: darken($value, 5%);
-    }
-}
-
-html, body, #webapp {
-    height: 100%;
-}
-
-body {
-    -webkit-user-select: none;
-    -webkit-app-region: drag;
-    cursor: default;
-}
-
-.core19-btn {
-    border-radius: 0;
-}
-
-// used when tabbing and space
-:focus {
-    outline-color: $gray-medium-lighter !important;
-}
-
 
 .core19-app {
     background-color: $background-color;
