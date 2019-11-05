@@ -35,48 +35,53 @@
  */
 
 import React from 'react';
-import { string, node } from 'prop-types';
+import { ipcRenderer } from 'electron';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-// FIXME: Correct the following
-// import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-// import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-// import NavMenuContainer from '../containers/NavMenuContainer';
-// import MainMenuContainer from '../containers/MainMenuContainer';
+import MenuItem from './HotkeyedMenuItem';
+import systemReport from '../util/systemReport';
 
-import MainMenu from './MainMenu';
-import Logo from './Logo';
+import '../../resources/css/brand19/main-menu.scss';
 
-import '../../resources/css/brand19/nav-bar.scss';
+const menuItems = [{
+    id: 1,
+    text: 'Launch other app...',
+    hotkey: 'Alt+L',
+    onClick: () => ipcRenderer.send('open-app-launcher'),
+}, {
+    id: 2,
+    text: 'System report',
+    onClick: systemReport(false),
+}, {
+    id: 3,
+    text: 'About',
+    onClick: () => ipcRenderer.send('show-about-dialog'),
+}];
 
-const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
-NavBarItem.propTypes = {
-    children: node.isRequired,
-};
-
-const NavBar = ({ deviceSelect, title }) => (
-    <div className="core19-nav-bar">
-        <NavBarItem><MainMenu /></NavBarItem>
-        {/* <div className="core-nav-section core-padded-row">
-            {
-                appConfig.selectorTraits
-                    ? <DeviceSelectorContainer traits={appConfig.selectorTraits} />
-                    : <SerialPortSelectorContainer />
-            }
-        </div>
-        <NavMenuContainer /> */}
-        <NavBarItem>{title}</NavBarItem>
-        <Logo />
-    </div>
+const renderMenuItems = () => (
+    menuItems.map(({
+        id, onClick, hotkey = '', text,
+    }) => (
+        <MenuItem
+            key={id}
+            onClick={onClick}
+            hotkey={hotkey.toLowerCase()}
+            title={hotkey ? `${text} (${hotkey})` : text}
+        >
+            {text}
+        </MenuItem>
+    ))
 );
 
-NavBar.propTypes = {
-    deviceSelect: node,
-    title: string,
-};
+const MainMenu = () => (
+    <Dropdown id="main-menu">
+        <Dropdown.Toggle className="core-btn btn-primary">
+            <span className="mdi mdi-menu" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu id="main-menu-list" className="core19-menu">
+            { renderMenuItems() }
+        </Dropdown.Menu>
+    </Dropdown>
+);
 
-NavBar.defaultProps = ({
-    deviceSelect: '',
-    title: '',
-});
-
-export default NavBar;
+export default MainMenu;

@@ -35,48 +35,35 @@
  */
 
 import React from 'react';
-import { string, node } from 'prop-types';
+import PropTypes from 'prop-types';
+import Mousetrap from 'mousetrap';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-// FIXME: Correct the following
-// import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-// import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-// import NavMenuContainer from '../containers/NavMenuContainer';
-// import MainMenuContainer from '../containers/MainMenuContainer';
+// Like react-bootstrap's `MenuItem`, but can receive an extra `hotkey` prop:
+// a key combination handled by `mousetrap` that will click this item.
 
-import MainMenu from './MainMenu';
-import Logo from './Logo';
+export default class HotkeyedMenuItem extends React.Component {
+    componentDidMount() {
+        const { hotkey, onClick } = this.props;
+        Mousetrap.bind(hotkey, onClick);
+    }
 
-import '../../resources/css/brand19/nav-bar.scss';
+    componentWillUnmount() {
+        const { hotkey } = this.props;
+        Mousetrap.unbind(hotkey);
+    }
 
-const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
-NavBarItem.propTypes = {
-    children: node.isRequired,
+    render() {
+        return (<Dropdown.Item {...this.props} />);
+    }
+}
+
+HotkeyedMenuItem.propTypes = {
+    hotkey: PropTypes.string,
+    onClick: PropTypes.func,
 };
 
-const NavBar = ({ deviceSelect, title }) => (
-    <div className="core19-nav-bar">
-        <NavBarItem><MainMenu /></NavBarItem>
-        {/* <div className="core-nav-section core-padded-row">
-            {
-                appConfig.selectorTraits
-                    ? <DeviceSelectorContainer traits={appConfig.selectorTraits} />
-                    : <SerialPortSelectorContainer />
-            }
-        </div>
-        <NavMenuContainer /> */}
-        <NavBarItem>{title}</NavBarItem>
-        <Logo />
-    </div>
-);
-
-NavBar.propTypes = {
-    deviceSelect: node,
-    title: string,
+HotkeyedMenuItem.defaultProps = {
+    hotkey: '',
+    onClick: () => {},
 };
-
-NavBar.defaultProps = ({
-    deviceSelect: '',
-    title: '',
-});
-
-export default NavBar;
