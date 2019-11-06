@@ -41,8 +41,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import MenuItem from './HotkeyedMenuItem';
 import systemReport from '../util/systemReport';
 
-import '../../resources/css/brand19/main-menu.scss';
-
 const menuItems = [{
     id: 1,
     text: 'Launch other app...',
@@ -75,10 +73,10 @@ const renderMenuItems = () => (
 
 const MainMenu = () => (
     <Dropdown id="main-menu">
-        <Dropdown.Toggle className="core-btn btn-primary">
+        <Dropdown.Toggle className="core19-btn btn-primary">
             <span className="mdi mdi-menu" />
         </Dropdown.Toggle>
-        <Dropdown.Menu id="main-menu-list" className="core19-menu">
+        <Dropdown.Menu id="main-menu-list">
             { renderMenuItems() }
         </Dropdown.Menu>
     </Dropdown>
