@@ -93,7 +93,7 @@ function openAppWindow(app) {
         const right = Math.min(x + width, bounds.x + bounds.width);
         const bottom = Math.min(y + height, bounds.y + bounds.height);
         if (left > right || top > bottom) {
-            // the window would be off screen, let's clear open it where the launcher is
+            // the window would be off screen, let's open it where the launcher is
             x = undefined;
             y = undefined;
         }
