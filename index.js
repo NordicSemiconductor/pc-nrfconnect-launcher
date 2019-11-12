@@ -54,6 +54,8 @@ if (basename(execPath, '.exe') !== 'electron') {
 
     if (nRFjprogSearchPath) {
         process.env.NRFJPROG_LIBRARY_PATH = nRFjprogSearchPath;
+        const original = process.env.LD_LIBRARY_PATH ? `:${process.env.LD_LIBRARY_PATH}` : '';
+        process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
     }
 }
 
