@@ -54,6 +54,7 @@ jobs:
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
   - bash: |
+      npm config set loglevel "verbose"
       npm i
       npm run build
       npm test
