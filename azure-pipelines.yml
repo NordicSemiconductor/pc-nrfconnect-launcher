@@ -12,7 +12,7 @@ jobs:
   - name: WIN_TZ
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
-    value: 10.15.0
+    value: 10.17.0
   strategy:
     matrix:
       linux:
@@ -57,7 +57,16 @@ jobs:
       npm i
       npm run build
       npm test
-    displayName: 'Build'
+    condition: not(contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Build on not windows'
+  - bash: |
+      npm i -g node-gyp@6.0.1
+      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
+      npm i
+      npm run build
+      npm test
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Build on windows'
   - bash: |
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
