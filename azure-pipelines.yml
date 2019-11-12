@@ -54,11 +54,19 @@ jobs:
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
   - bash: |
-      npm i -g node-gyp@6.0.1
       npm i
       npm run build
       npm test
-    displayName: 'Build'
+    condition: not(contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Build on not windows'
+  - bash: |
+      npm i -g node-gyp@6.0.1
+      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
+      npm i
+      npm run build
+      npm test
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Build on windows'
   - bash: |
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
