@@ -41,7 +41,6 @@ const fs = require('fs-extra');
 const semver = require('semver');
 const { dialog } = require('electron');
 const Store = require('electron-store');
-const log = require('electron-log');
 
 const config = require('./config');
 const registryApi = require('./registryApi');
@@ -50,12 +49,6 @@ const net = require('./net');
 const settings = require('./settings');
 
 const store = new Store({ name: 'pc-nrfconnect-core' });
-
-// request headers
-const headers = {};
-
-// public repo access token
-const token = '48a3555dba0eac18a44fa596e3b5932692559213';
 
 /**
  * Create sources.json if it does not exist.
@@ -530,67 +523,36 @@ function removeSourceDirectory(source) {
     return fs.remove(config.getAppsRootDir(source));
 }
 
+const replacePrLinks = (homepage, changelog) => changelog.replace(
+    /#(\d+)/g,
+    (match, pr) => (`[${match}](${homepage}/pull/${pr})`),
+);
+
 /**
- * Download release notes from GitHub's release page
+ * Download release notes.
  *
- * @param {object} app object with properties for homepage and currentVersion
- * @returns {string} the assembled and mardown formatted changelog
+ * The release notes are also cached in the electron store. If the server did not report changed
+ * release notes or was unable to respond, the cached release notes are used.
+ *
+ * @param {object} app object with properties for url, homepage and latestVersion
+ * @returns {string | undefined} markdown formatted changelog or null if undefined could be fetched
  */
-async function downloadReleaseNotes({ homepage, currentVersion }) {
-    const rx = /https:\/\/github.com\/(.*?\/.*)/;
-    const [, repo] = (rx.exec(homepage || '') || []);
-    if (!repo) {
-        return null;
-    }
-    const url = `https://api.github.com/repos/${repo}/releases`;
+async function downloadReleaseNotes({ url, homepage }) {
     const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
+    try {
+        const previousAppData = store.get(appDataPath, {});
 
-    let appData = store.get(appDataPath) || {};
-    if (!(currentVersion && Object.keys(appData).includes(currentVersion))) {
-        // the latest changelogs are not stored yet
-
-        const lastUpdate = new Date(appData.lastUpdate || 0);
-        if ((new Date() - lastUpdate) > 3600000) {
-            // last request was more than an hour ago
-            try {
-                let data = [];
-                try {
-                    data = await net.downloadToJson(url, headers);
-                } catch (error) {
-                    if (error.statusCode === 401 || error.statusCode === 403) {
-                        // try again with token
-                        headers.Authorization = `token ${token}`;
-                        data = await net.downloadToJson(url, headers);
-                    }
-                }
-
-                // eslint-disable-next-line camelcase
-                data.forEach(({ tag_name, body }) => {
-                    appData = {
-                        ...appData,
-                        [tag_name.replace(/^v/, '')]: {
-                            // replacing GH issue references to links:
-                            changelog: body.trim().replace(/#(\d+)/g, (match, pr) => (
-                                `[${match}](https://github.com/${repo}/pull/${pr})`)),
-                        },
-                    };
-                });
-
-                store.set(appDataPath, {
-                    lastUpdate: new Date().toISOString(),
-                    ...appData,
-                });
-            } catch (error) {
-                log.warn(error.message);
-            }
+        const previousEtag = previousAppData.changelog ? previousAppData.etag : undefined;
+        const { response, etag } = await net.downloadToStringIfChanged(`${url}-Changelog.md`, previousEtag);
+        if (response != null) {
+            const changelog = replacePrLinks(homepage, response);
+            store.set(appDataPath, { etag, changelog });
         }
+    } catch (e) {
+        // Ignore errors and just return what we have stored before
     }
 
-    return Object.keys(appData)
-        .filter(x => x !== 'lastUpdate')
-        .sort().reverse()
-        .map(version => `## ${version}\n\n${appData[version].changelog}`)
-        .join('\n\n');
+    return store.get(appDataPath, {}).changelog;
 }
 
 module.exports = {
