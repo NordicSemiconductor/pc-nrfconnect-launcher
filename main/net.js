@@ -113,6 +113,27 @@ function downloadToString(url, headers) {
 }
 
 /**
+ * Download the given url to a string. If an etag is provided, then use that in the request.
+ * If the server returns a 304 (not modified), then just return null.
+ *
+ * @param {string} url the URL to download.
+ * @param {string} previousEtag optional string with the eTag of the known resource.
+ * @returns {Promise<{etag: ?string, response: ?string}>} promise that resolves when the data has
+ *          been downloaded. If the resource did not change, then property response is null. If
+ *          the server did not provide an Etag, then property etag will be undefined.
+ */
+function downloadToStringIfChanged(url, previousEtag) {
+    const requestHeaders = previousEtag == null ? {} : { 'If-None-Match': previousEtag };
+
+    const NOT_MODIFIED = 304;
+    return downloadToBuffer(url, requestHeaders, true)
+        .then(({ buffer, etag, statusCode }) => ({
+            etag,
+            response: (statusCode === NOT_MODIFIED) ? null : buffer.toString(),
+        }));
+}
+
+/**
  * Download the given url to a json object. Uses the electron net API,
  * which reads proxy settings from the system.
  *
@@ -152,6 +173,7 @@ function downloadToFile(url, filePath) {
 module.exports = {
     downloadToFile,
     downloadToString,
+    downloadToStringIfChanged,
     downloadToJson,
     registerProxyLoginHandler,
 };
