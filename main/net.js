@@ -68,7 +68,7 @@ function downloadToBuffer(url, headers) {
         Object.keys(headers || {}).forEach(key => request.setHeader(key, headers[key]));
 
         request.on('response', response => {
-            if (response.statusCode !== 200) {
+            if (response.statusCode >= 400) {
                 const error = new Error(`Unable to download ${url}. Got status code `
                     + `${response.statusCode}`);
                 error.statusCode = response.statusCode;
