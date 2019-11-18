@@ -104,11 +104,10 @@ function downloadToBuffer(url, headers = {}) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
- * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToString(url, headers) {
-    return downloadToBuffer(url, headers)
+function downloadToString(url) {
+    return downloadToBuffer(url)
         .then(({ buffer }) => buffer.toString());
 }
 
@@ -138,11 +137,10 @@ function downloadToStringIfChanged(url, previousEtag) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
- * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToJson(url, headers) {
-    return downloadToString(url, headers)
+function downloadToJson(url) {
+    return downloadToString(url)
         .then(string => JSON.parse(string));
 }
 
