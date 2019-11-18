@@ -58,14 +58,14 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url, headers) {
+function downloadToBuffer(url, headers = {}) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
-        Object.keys(headers || {}).forEach(key => request.setHeader(key, headers[key]));
+        Object.keys(headers).forEach(key => request.setHeader(key, headers[key]));
 
         request.on('response', response => {
             if (response.statusCode >= 400) {
