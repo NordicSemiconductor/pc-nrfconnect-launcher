@@ -58,29 +58,36 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url, headers) {
+function downloadToBuffer(url, headers = {}) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
-        Object.keys(headers || {}).forEach(key => request.setHeader(key, headers[key]));
+        Object.keys(headers).forEach(key => request.setHeader(key, headers[key]));
 
         request.on('response', response => {
-            if (response.statusCode !== 200) {
-                const error = new Error(`Unable to download ${url}. Got status code `
-                    + `${response.statusCode}`);
-                error.statusCode = response.statusCode;
+            const { statusCode } = response;
+            if (statusCode >= 400) {
+                const error = new Error(`Unable to download ${url}. Got status code ${statusCode}`);
+                error.statusCode = statusCode;
                 reject(error);
                 return;
             }
+            const etag = Array.isArray(response.headers.etag)
+                ? response.headers.etag[0] : undefined;
+
             const buffer = [];
             const addToBuffer = data => {
                 buffer.push(data);
             };
             response.on('data', data => addToBuffer(data));
-            response.on('end', () => resolve(Buffer.concat(buffer)));
+            response.on('end', () => resolve({
+                buffer: Buffer.concat(buffer),
+                etag,
+                statusCode,
+            }));
             response.on('error', error => reject(new Error(`Error when reading ${url}: `
                 + `${error.message}`)));
         });
@@ -97,12 +104,32 @@ function downloadToBuffer(url, headers) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
- * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToString(url, headers) {
-    return downloadToBuffer(url, headers)
-        .then(buffer => buffer.toString());
+function downloadToString(url) {
+    return downloadToBuffer(url)
+        .then(({ buffer }) => buffer.toString());
+}
+
+/**
+ * Download the given url to a string. If an etag is provided, then use that in the request.
+ * If the server returns a 304 (not modified), then just return null.
+ *
+ * @param {string} url the URL to download.
+ * @param {string} previousEtag optional string with the eTag of the known resource.
+ * @returns {Promise<{etag: ?string, response: ?string}>} promise that resolves when the data has
+ *          been downloaded. If the resource did not change, then property response is null. If
+ *          the server did not provide an Etag, then property etag will be undefined.
+ */
+function downloadToStringIfChanged(url, previousEtag) {
+    const requestHeaders = previousEtag == null ? {} : { 'If-None-Match': previousEtag };
+
+    const NOT_MODIFIED = 304;
+    return downloadToBuffer(url, requestHeaders, true)
+        .then(({ buffer, etag, statusCode }) => ({
+            etag,
+            response: (statusCode === NOT_MODIFIED) ? null : buffer.toString(),
+        }));
 }
 
 /**
@@ -110,11 +137,10 @@ function downloadToString(url, headers) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
- * @param {object} headers optional object passed to request headers.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToJson(url, headers) {
-    return downloadToString(url, headers)
+function downloadToJson(url) {
+    return downloadToString(url)
         .then(string => JSON.parse(string));
 }
 
@@ -129,8 +155,8 @@ function downloadToJson(url, headers) {
 function downloadToFile(url, filePath) {
     return new Promise((resolve, reject) => {
         downloadToBuffer(url)
-            .then(data => {
-                fs.writeFile(filePath, data, err => {
+            .then(({ buffer }) => {
+                fs.writeFile(filePath, buffer, err => {
                     if (err) {
                         reject(err);
                     } else {
@@ -145,6 +171,7 @@ function downloadToFile(url, filePath) {
 module.exports = {
     downloadToFile,
     downloadToString,
+    downloadToStringIfChanged,
     downloadToJson,
     registerProxyLoginHandler,
 };
