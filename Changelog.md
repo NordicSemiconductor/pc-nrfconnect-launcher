@@ -1,3 +1,9 @@
+## Unreleased
+### Features
+- For developers enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
+### Bug fixes
+- Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
+
 ## Version 3.3.0
 ### Features
 - Added support for nRF53 series, nRF52833, and MCUboot DFU
@@ -172,4 +178,3 @@ Downloads are available for Windows (exe), macOS (dmg), and Linux (tar.gz).
 
 ## Version 2.0.0-alpha.15
 Alpha release for testing.
-
