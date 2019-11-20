@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -133,8 +133,8 @@
         "electron-updater": "4.0.14",
         "fs-extra": "8.1.0",
         "mustache": "3.0.1",
-        "nrf-device-setup": "0.6.0",
-        "pc-ble-driver-js": "2.6.1",
+        "nrf-device-setup": "0.6.2",
+        "pc-ble-driver-js": "2.6.2",
         "react-bootstrap": "1.0.0-beta.9",
         "react-markdown": "4.1.0",
         "roboto-fontface": "0.10.0",

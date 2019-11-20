@@ -83,14 +83,30 @@ function hideLauncherWindow() {
 
 function openAppWindow(app) {
     const lastWindowState = settings.loadLastWindow();
+
+    let { x, y } = lastWindowState;
+    const { width, height } = lastWindowState;
+    if (x && y) {
+        const { bounds } = electron.screen.getDisplayMatching(lastWindowState);
+        const left = Math.max(x, bounds.x);
+        const top = Math.max(y, bounds.y);
+        const right = Math.min(x + width, bounds.x + bounds.width);
+        const bottom = Math.min(y + height, bounds.y + bounds.height);
+        if (left > right || top > bottom) {
+            // the window would be off screen, let's open it where the launcher is
+            x = undefined;
+            y = undefined;
+        }
+    }
+
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${app.path}`,
         icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
-        x: lastWindowState.x,
-        y: lastWindowState.y,
-        width: lastWindowState.width,
-        height: lastWindowState.height,
+        x,
+        y,
+        width,
+        height,
         show: true,
         backgroundColor: '#fff',
     });
