@@ -35,39 +35,13 @@
  */
 
 import React from 'react';
-import { node } from 'prop-types';
+import spinnerImg from '../../resources/ajax-loader.gif';
 
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
-
-import '../../resources/css/brand19/shared.scss';
-import '../../resources/css/brand19/app.scss';
-
-const LogViewer = () => <div>FIXME: core LogViewer</div>;
-
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    {children}
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
-                </div>
-                {sidePanel}
-            </div>
-            {/* FIXME <FirmwareDialogContainer />
-            <AppReloadDialogContainer />
-            <ErrorDialogContainer /> */}
-        </div>
-    </>
+export default () => (
+    <img
+        src={spinnerImg}
+        height="16"
+        width="16"
+        alt="Loading..."
+    />
 );
-
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
-};
-
-export default App;

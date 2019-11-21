@@ -41,6 +41,7 @@ import {
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import HotkeyedDropdown from './HotkeyedDropdown';
+import DeviceSetup from './DeviceSetup';
 
 import '../../../resources/css/brand19/device-selector.scss';
 
@@ -160,6 +161,7 @@ export default class DeviceSelector extends React.Component {
                     { displayCloseItem ? this.getCloseItem() : null }
                 </HotkeyedDropdown>
                 <div className={`core19-device-port-indicator ${portIndicatorStatus}`} />
+                <DeviceSetup />
             </>
         );
     }
