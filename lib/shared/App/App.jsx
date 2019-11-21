@@ -39,8 +39,8 @@ import { node } from 'prop-types';
 
 import { HorizontalSplitter, VerticalSplitter } from './Splitter';
 
-import '../../resources/css/brand19/shared.scss';
-import '../../resources/css/brand19/app.scss';
+import '../../../resources/css/brand19/shared.scss';
+import '../../../resources/css/brand19/app.scss';
 
 const LogViewer = () => <div>FIXME: core LogViewer</div>;
 

@@ -35,26 +35,51 @@
  */
 
 import React from 'react';
-import { openUrlInDefaultBrowser } from '../util/fileUtil';
-import logo from '../../resources/nordic-logo-white-icon-only.png';
-import '../../resources/css/brand19/logo.scss';
+import { ipcRenderer } from 'electron';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-const goToNRFConnectWebsite = () => openUrlInDefaultBrowser('http://www.nordicsemi.com/nRFConnect');
+import MenuItem from './HotkeyedMenuItem';
+import systemReport from '../../util/systemReport';
 
-const Logo = () => (
-    <div
-        className="core19-logo-container"
-        role="link"
-        onClick={goToNRFConnectWebsite}
-        onKeyPress={() => {}}
-        tabIndex="0"
-    >
-        <img
-            className="core19-logo"
-            src={logo}
-            alt="Nordic Semiconductor logo"
-        />
-    </div>
+const menuItems = [{
+    id: 1,
+    text: 'Launch other app...',
+    hotkey: 'Alt+L',
+    onClick: () => ipcRenderer.send('open-app-launcher'),
+}, {
+    id: 2,
+    text: 'System report',
+    onClick: systemReport(false),
+}, {
+    id: 3,
+    text: 'About',
+    onClick: () => ipcRenderer.send('show-about-dialog'),
+}];
+
+const renderMenuItems = () => (
+    menuItems.map(({
+        id, onClick, hotkey = '', text,
+    }) => (
+        <MenuItem
+            key={id}
+            onClick={onClick}
+            hotkey={hotkey.toLowerCase()}
+            title={hotkey ? `${text} (${hotkey})` : text}
+        >
+            {text}
+        </MenuItem>
+    ))
 );
 
-export default Logo;
+const MainMenu = () => (
+    <Dropdown id="main-menu">
+        <Dropdown.Toggle className="core19-btn btn-primary">
+            <span className="mdi mdi-menu" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu id="main-menu-list">
+            { renderMenuItems() }
+        </Dropdown.Menu>
+    </Dropdown>
+);
+
+export default MainMenu;

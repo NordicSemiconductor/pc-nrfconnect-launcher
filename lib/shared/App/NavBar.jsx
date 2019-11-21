@@ -40,7 +40,7 @@ import { string, node } from 'prop-types';
 import MainMenu from './MainMenu';
 import Logo from './Logo';
 
-import '../../resources/css/brand19/nav-bar.scss';
+import '../../../resources/css/brand19/nav-bar.scss';
 
 const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
 NavBarItem.propTypes = {

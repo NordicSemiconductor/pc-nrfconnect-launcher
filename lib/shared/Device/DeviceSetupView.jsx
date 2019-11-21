@@ -40,7 +40,7 @@ import {
     arrayOf, bool, func, string,
 } from 'prop-types';
 import Form from 'react-bootstrap/Form';
-import ConfirmationDialog from '../ConfirmationDialog';
+import ConfirmationDialog from '../Dialog/ConfirmationDialog';
 
 /**
  * Dialog that allows the user to provide input that is required during device setup

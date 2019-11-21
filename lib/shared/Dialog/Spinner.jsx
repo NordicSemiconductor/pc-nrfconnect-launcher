@@ -35,25 +35,13 @@
  */
 
 import React from 'react';
+import spinnerImg from '../../../resources/ajax-loader.gif';
 
-import '../../resources/css/brand19/splitter.scss';
-
-const onMouseDownHorizontal = () => console.log('FIXME onMouseDownHorizontal');
-export const HorizontalSplitter = () => (
-    <div
-        tabIndex={-1}
-        role="button"
-        className="core19-splitter horizontal"
-        onMouseDown={event => onMouseDownHorizontal(event/* , resizeLogContainer */)}
-    />
-);
-
-const onMouseDownVertical = () => console.log('FIXME onMouseDownVertical');
-export const VerticalSplitter = () => (
-    <div
-        tabIndex={-1}
-        role="button"
-        className="core19-splitter vertical"
-        onMouseDown={onMouseDownVertical}
+export default () => (
+    <img
+        src={spinnerImg}
+        height="16"
+        width="16"
+        alt="Loading..."
     />
 );
