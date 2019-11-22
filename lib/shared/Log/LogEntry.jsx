@@ -35,38 +35,70 @@
  */
 
 import React from 'react';
-import { node } from 'prop-types';
+import { shape, number, string } from 'prop-types';
+import moment from 'moment';
+import { shell } from 'electron';
 
-import LogViewer from '../Log/LogViewer';
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
+import '../../../resources/css/brand19/log-entry.scss';
 
-import '../../../resources/css/brand19/shared.scss';
-import '../../../resources/css/brand19/app.scss';
+const regex = /(.*?)(https?:\/\/[^\s]+)/g;
 
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    <div>{children}</div>
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
-                </div>
-                {sidePanel}
-            </div>
-            {/* FIXME <FirmwareDialogContainer />
-            <AppReloadDialogContainer />
-            <ErrorDialogContainer /> */}
+/**
+ * Convert strings to array of strings and JSX <a> tags for hrefs
+ *
+ * E.g. 'For reference see: https://github.com/example/doc.md or reboot Windows.'
+ * will be converted to:
+ * [
+ *    'For reference see: ',
+ *    <a href='https://github.com/example/doc.md'>https://github.com/example/doc.md</a>,
+ *    ' or reboot Windows.',
+ * ]
+ *
+ * @param {string} str input string
+ * @returns {Array} strings and JSX <a> tags
+ */
+function hrefReplacer(str) {
+    const message = [];
+    const remainder = str.replace(regex, (match, before, href, index) => {
+        message.push(before);
+        message.push(
+            <a
+                href={href}
+                key={index}
+                tabIndex={index}
+                onClick={() => shell.openItem(href)}
+                onKeyPress={() => {}}
+            >
+                {href}
+            </a>,
+        );
+        return '';
+    });
+    message.push(remainder);
+    return message;
+}
+
+const LogEntry = ({ entry }) => {
+    const className = `core19-log-entry core19-log-level-${entry.level}`;
+    const time = moment(entry.timestamp).format('HH:mm:ss.SSS');
+
+    return (
+        <div className={className}>
+            <div className="core19-log-cell core19-log-time">{time}</div>
+            <div className="core19-log-cell">{hrefReplacer(entry.message)}</div>
         </div>
-    </>
-);
-
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
+    );
 };
 
-export default App;
+export const entryShape = shape({
+    id: number.isRequired,
+    timestamp: string.isRequired,
+    level: string.isRequired,
+    message: string.isRequired,
+});
+
+LogEntry.propTypes = {
+    entry: entryShape.isRequired,
+};
+
+export default LogEntry;

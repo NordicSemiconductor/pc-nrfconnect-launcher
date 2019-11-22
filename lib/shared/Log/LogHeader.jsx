@@ -35,38 +35,55 @@
  */
 
 import React from 'react';
-import { node } from 'prop-types';
+import { bool, func } from 'prop-types';
+import { connect } from 'react-redux';
 
-import LogViewer from '../Log/LogViewer';
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
+import { logger, getLogFilePath } from '../../api/logging';
+import { clear, toggleAutoScroll } from './logActions';
+import { openFileInDefaultApplication } from '../../util/fileUtil';
+import LogHeaderButton from './LogHeaderButton';
 
-import '../../../resources/css/brand19/shared.scss';
-import '../../../resources/css/brand19/app.scss';
+import '../../../resources/css/brand19/log-header.scss';
 
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    <div>{children}</div>
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
-                </div>
-                {sidePanel}
-            </div>
-            {/* FIXME <FirmwareDialogContainer />
-            <AppReloadDialogContainer />
-            <ErrorDialogContainer /> */}
-        </div>
-    </>
-);
-
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
+const openLogFile = () => {
+    openFileInDefaultApplication(getLogFilePath(), err => {
+        if (err) {
+            logger.error(`Unable to open log file: ${err.message}`);
+        }
+    });
 };
 
-export default App;
+const LogHeader = ({ autoScroll, dispatch }) => (
+    <div className="core19-log-header">
+        <div className="core19-log-header-text">Log</div>
+        <div className="core19-log-header-buttons">
+            <LogHeaderButton
+                title="Open log file"
+                iconCssClass="mdi mdi-file-document-box-outline"
+                onClick={openLogFile}
+            />
+            <LogHeaderButton
+                title="Clear log"
+                iconCssClass="mdi mdi-trash-can-outline"
+                onClick={() => dispatch(clear())}
+            />
+            <LogHeaderButton
+                title="Scroll automatically"
+                iconCssClass="mdi mdi-arrow-down"
+                onClick={() => dispatch(toggleAutoScroll())}
+                isSelected={autoScroll}
+            />
+        </div>
+    </div>
+);
+
+LogHeader.propTypes = {
+    autoScroll: bool.isRequired,
+    dispatch: func.isRequired,
+};
+
+const mapState = state => ({
+    autoScroll: state.core.log.autoScroll,
+});
+
+export default connect(mapState)(LogHeader);

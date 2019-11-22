@@ -35,38 +35,33 @@
  */
 
 import React from 'react';
-import { node } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
-import LogViewer from '../Log/LogViewer';
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
-
-import '../../../resources/css/brand19/shared.scss';
-import '../../../resources/css/brand19/app.scss';
-
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    <div>{children}</div>
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
-                </div>
-                {sidePanel}
-            </div>
-            {/* FIXME <FirmwareDialogContainer />
-            <AppReloadDialogContainer />
-            <ErrorDialogContainer /> */}
-        </div>
-    </>
+const LogHeaderButton = ({
+    title,
+    iconCssClass,
+    isSelected,
+    onClick,
+}) => (
+    <button
+        title={title}
+        className={`btn btn-primary btn-sm core19-btn ${isSelected ? 'active' : ''}`}
+        onClick={onClick}
+        type="button"
+    >
+        <span className={iconCssClass} aria-hidden="true" />
+    </button>
 );
 
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
+LogHeaderButton.propTypes = {
+    title: string.isRequired,
+    onClick: func.isRequired,
+    iconCssClass: string.isRequired,
+    isSelected: bool,
 };
 
-export default App;
+LogHeaderButton.defaultProps = {
+    isSelected: false,
+};
+
+export default LogHeaderButton;

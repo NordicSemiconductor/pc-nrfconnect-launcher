@@ -1,0 +1,17 @@
+@import "../common/variables";
+
+.core19-log-viewer {
+    background-color: $background-color;
+
+    .core19-infinite-log {
+        position: relative;
+        overflow-x: scroll !important;
+        background-color: white;
+
+        > div {
+            position: absolute;
+            display: table;
+            min-width: 100%;
+        }
+    }
+}

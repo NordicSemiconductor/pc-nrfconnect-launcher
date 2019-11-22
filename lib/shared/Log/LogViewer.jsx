@@ -35,38 +35,68 @@
  */
 
 import React from 'react';
-import { node } from 'prop-types';
+import { connect } from 'react-redux';
+import {
+    arrayOf, bool, func, number,
+} from 'prop-types';
+import Infinite from 'react-infinite';
+import LogHeader from './LogHeader';
+import LogEntry, { entryShape } from './LogEntry';
+import { stopListening, startListening } from './logListener';
 
-import LogViewer from '../Log/LogViewer';
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
+import '../../../resources/css/brand19/log-viewer.scss';
 
-import '../../../resources/css/brand19/shared.scss';
-import '../../../resources/css/brand19/app.scss';
+const elementHeight = 20;
 
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    <div>{children}</div>
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
-                </div>
-                {sidePanel}
+class LogViewer extends React.Component {
+    componentDidMount() {
+        const { dispatch } = this.props;
+        startListening(dispatch);
+    }
+
+    componentWillUnmount() {
+        stopListening();
+    }
+
+    render() {
+        const {
+            autoScroll,
+            logEntries,
+            containerHeight,
+        } = this.props;
+
+        const infiniteLoadBeginEdgeOffset = Math.max(
+            containerHeight - elementHeight, elementHeight,
+        );
+
+        return (
+            <div className="core19-log-viewer">
+                <LogHeader />
+                <Infinite
+                    elementHeight={elementHeight}
+                    containerHeight={containerHeight}
+                    infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
+                    className="core19-infinite-log"
+                    autoScroll={autoScroll}
+                >
+                    {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
+                </Infinite>
             </div>
-            {/* FIXME <FirmwareDialogContainer />
-            <AppReloadDialogContainer />
-            <ErrorDialogContainer /> */}
-        </div>
-    </>
-);
+        );
+    }
+}
 
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
+LogViewer.propTypes = {
+    dispatch: func.isRequired,
+    logEntries: arrayOf(entryShape.isRequired).isRequired,
+    autoScroll: bool.isRequired,
+    containerHeight: number.isRequired,
 };
 
-export default App;
+const mapState = ({ core: { log } }) => ({
+    logEntries: log.logEntries,
+    autoScroll: log.autoScroll,
+    containerHeight: log.containerHeight,
+});
+
+export default connect(mapState)(LogViewer);
