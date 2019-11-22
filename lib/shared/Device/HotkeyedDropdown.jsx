@@ -36,7 +36,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import {
+    bool, func, node, string,
+} from 'prop-types';
 import Mousetrap from 'mousetrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -69,9 +71,9 @@ export default class HotkeyedDropdown extends React.Component {
         if (open) {
             // Focus the drop-down
             // eslint-disable-next-line react/no-find-dom-node
-            const node = ReactDOM.findDOMNode(this);
-            if (node) {
-                const button = node.querySelector('button');
+            const dropdown = ReactDOM.findDOMNode(this);
+            if (dropdown) {
+                const button = dropdown.querySelector('button');
                 if (button) {
                     button.focus();
                 }
@@ -106,14 +108,11 @@ export default class HotkeyedDropdown extends React.Component {
 }
 
 HotkeyedDropdown.propTypes = {
-    title: PropTypes.string.isRequired,
-    hotkey: PropTypes.string,
-    onToggle: PropTypes.func,
-    disabled: PropTypes.bool,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
+    title: string.isRequired,
+    hotkey: string,
+    onToggle: func,
+    disabled: bool,
+    children: node,
 };
 
 HotkeyedDropdown.defaultProps = {

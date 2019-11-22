@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string, func } from 'prop-types';
 import Mousetrap from 'mousetrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -59,8 +59,8 @@ export default class HotkeyedMenuItem extends React.Component {
 }
 
 HotkeyedMenuItem.propTypes = {
-    hotkey: PropTypes.string,
-    onClick: PropTypes.func,
+    hotkey: string,
+    onClick: func,
 };
 
 HotkeyedMenuItem.defaultProps = {
