@@ -35,25 +35,69 @@
  */
 
 import React from 'react';
+import { instanceOf, shape } from 'prop-types';
 
 import '../../../resources/css/brand19/splitter.scss';
 
-const onMouseDownHorizontal = () => console.log('FIXME onMouseDownHorizontal');
+const onMouseDownHorizontal = event => {
+    event.preventDefault();
+
+    const target = document.querySelector('.core19-infinite-log');
+    const initial = target.offsetHeight + event.clientY;
+
+    const originalMouseMove = document.onmousemove;
+    document.onmousemove = e => {
+        e.preventDefault();
+        target.style.height = `${initial - e.clientY}px`;
+    };
+
+    const originalMouseUp = document.onmouseup;
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+    };
+};
+
 export const HorizontalSplitter = () => (
     <div
         tabIndex={-1}
         role="button"
         className="core19-splitter horizontal"
-        onMouseDown={event => onMouseDownHorizontal(event/* , resizeLogContainer */)}
+        onMouseDown={onMouseDownHorizontal}
     />
 );
 
-const onMouseDownVertical = () => console.log('FIXME onMouseDownVertical');
-export const VerticalSplitter = () => (
+const onMouseDownVertical = targetRef => event => {
+    event.preventDefault();
+
+    const target = targetRef.current;
+
+    const initial = target.offsetWidth + event.clientX;
+
+    const originalMouseMove = document.onmousemove;
+    document.onmousemove = e => {
+        e.preventDefault();
+        target.style.flexBasis = `${initial - e.clientX}px`;
+    };
+
+    const originalMouseUp = document.onmouseup;
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+    };
+};
+
+export const VerticalSplitter = ({ targetRef }) => (
     <div
         tabIndex={-1}
         role="button"
         className="core19-splitter vertical"
-        onMouseDown={onMouseDownVertical}
+        onMouseDown={onMouseDownVertical(targetRef)}
     />
 );
+
+VerticalSplitter.propTypes = {
+    targetRef: shape({ current: instanceOf(Element) }).isRequired,
+};

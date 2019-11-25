@@ -34,11 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { createRef } from 'react';
 import { connect } from 'react-redux';
-import {
-    arrayOf, bool, func, number,
-} from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 import Infinite from 'react-infinite';
 import LogHeader from './LogHeader';
 import LogEntry, { entryShape } from './LogEntry';
@@ -49,9 +47,28 @@ import '../../../resources/css/brand19/log-viewer.scss';
 const elementHeight = 20;
 
 class LogViewer extends React.Component {
+    logContainer = createRef();
+
+    state = {
+        containerHeight: 200,
+    }
+
     componentDidMount() {
         const { dispatch } = this.props;
         startListening(dispatch);
+
+        const { containerHeight } = this.state;
+        if (containerHeight !== this.logContainer.current.offsetHeight) {
+            this.setState({ containerHeight: this.logContainer.current.offsetHeight });
+        }
+    }
+
+    componentDidUpdate() {
+        const { containerHeight } = this.state;
+        if (containerHeight !== this.logContainer.current.offsetHeight) {
+            // eslint-disable-next-line react/no-did-update-set-state
+            this.setState({ containerHeight: this.logContainer.current.offsetHeight });
+        }
     }
 
     componentWillUnmount() {
@@ -59,11 +76,8 @@ class LogViewer extends React.Component {
     }
 
     render() {
-        const {
-            autoScroll,
-            logEntries,
-            containerHeight,
-        } = this.props;
+        const { autoScroll, logEntries } = this.props;
+        const { containerHeight } = this.state;
 
         const infiniteLoadBeginEdgeOffset = Math.max(
             containerHeight - elementHeight, elementHeight,
@@ -72,15 +86,17 @@ class LogViewer extends React.Component {
         return (
             <div className="core19-log-viewer">
                 <LogHeader />
-                <Infinite
-                    elementHeight={elementHeight}
-                    containerHeight={containerHeight}
-                    infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
-                    className="core19-infinite-log"
-                    autoScroll={autoScroll}
-                >
-                    {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
-                </Infinite>
+                <div ref={this.logContainer}>
+                    <Infinite
+                        elementHeight={elementHeight}
+                        containerHeight={containerHeight}
+                        infiniteLoadBeginEdgeOffset={infiniteLoadBeginEdgeOffset}
+                        className="core19-infinite-log"
+                        autoScroll={autoScroll}
+                    >
+                        {logEntries.map(entry => <LogEntry {...{ entry }} key={entry.id} />)}
+                    </Infinite>
+                </div>
             </div>
         );
     }
@@ -90,13 +106,11 @@ LogViewer.propTypes = {
     dispatch: func.isRequired,
     logEntries: arrayOf(entryShape.isRequired).isRequired,
     autoScroll: bool.isRequired,
-    containerHeight: number.isRequired,
 };
 
 const mapState = ({ core: { log } }) => ({
     logEntries: log.logEntries,
     autoScroll: log.autoScroll,
-    containerHeight: log.containerHeight,
 });
 
 export default connect(mapState)(LogViewer);

@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { node } from 'prop-types';
 
 import LogViewer from '../Log/LogViewer';
@@ -43,27 +43,31 @@ import { HorizontalSplitter, VerticalSplitter } from './Splitter';
 import '../../../resources/css/brand19/shared.scss';
 import '../../../resources/css/brand19/app.scss';
 
-const App = ({ children, navBar, sidePanel }) => (
-    <>
-        <div className="core19-app">
-            {navBar}
-            <div className="core19-app-main-and-log">
-                <div>
-                    <div className="core19-main-view">{children}</div>
-                    <HorizontalSplitter />
-                    <LogViewer />
-                    <VerticalSplitter />  {/* FIXME: Move this one out */}
+const App = ({ children, navBar, sidePanel }) => {
+    const sidePanelRef = useRef();
+    return (
+        <>
+            <div className="core19-app">
+                {navBar}
+                <div className="core19-app-main-and-log">
+                    <div>
+                        <div className="core19-main-view">{children}</div>
+                        <HorizontalSplitter />
+                        <LogViewer />
+                        <VerticalSplitter targetRef={sidePanelRef} />
+                        {/* FIXME: Move VerticalSplitter out one div */}
+                    </div>
+                    <div ref={sidePanelRef} className="core19-side-panel">
+                        {sidePanel}
+                    </div>
                 </div>
-                <div className="core19-side-panel">
-                    {sidePanel}
-                </div>
-            </div>
-            {/* FIXME <FirmwareDialogContainer />
+                {/* FIXME <FirmwareDialogContainer />
             <AppReloadDialogContainer />
             <ErrorDialogContainer /> */}
-        </div>
-    </>
-);
+            </div>
+        </>
+    );
+};
 
 App.propTypes = {
     children: node.isRequired,
