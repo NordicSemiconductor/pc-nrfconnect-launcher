@@ -49,12 +49,14 @@ const App = ({ children, navBar, sidePanel }) => (
             {navBar}
             <div className="core19-app-main-and-log">
                 <div>
-                    <div>{children}</div>
+                    <div className="core19-main-view">{children}</div>
                     <HorizontalSplitter />
                     <LogViewer />
                     <VerticalSplitter />  {/* FIXME: Move this one out */}
                 </div>
-                {sidePanel}
+                <div className="core19-side-panel">
+                    {sidePanel}
+                </div>
             </div>
             {/* FIXME <FirmwareDialogContainer />
             <AppReloadDialogContainer />
