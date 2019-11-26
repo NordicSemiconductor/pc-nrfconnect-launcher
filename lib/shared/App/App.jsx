@@ -49,14 +49,13 @@ const App = ({ children, navBar, sidePanel }) => {
         <>
             <div className="core19-app">
                 {navBar}
-                <div className="core19-app-main-and-log">
-                    <div>
+                <div className="core19-app-content">
+                    <div className="core19-app-left">
                         <div className="core19-main-view">{children}</div>
                         <HorizontalSplitter />
                         <LogViewer />
-                        <VerticalSplitter targetRef={sidePanelRef} />
-                        {/* FIXME: Move VerticalSplitter out one div */}
                     </div>
+                    <VerticalSplitter targetRef={sidePanelRef} />
                     <div ref={sidePanelRef} className="core19-side-panel">
                         {sidePanel}
                     </div>

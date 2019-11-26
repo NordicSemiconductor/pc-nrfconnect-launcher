@@ -9,47 +9,24 @@
     flex-flow: column;
 }
 
-.core19-app-main-and-log {
+.core19-app-content {
     display: flex;
     flex-flow: row;
     height: 100%;
 
-    .core19-main-view {
-        padding: 10px 15px;
-    }
-
-    // FIXME: Replace these with named elements
-    > div:nth-child(1) {
+    .core19-app-left {
         flex: 1;
         display: flex;
         flex-flow: column;
         min-width: 0;
         position: relative;
-        padding-right: 3px;
 
-        // main view
-        > div:nth-child(1) {
+        .core19-main-view {
+            padding: 10px 15px;
             flex: 1;
             border-top: 1px solid gray;
             box-shadow: inset -0px 0px 6px 0px gray;
             overflow: hidden;
-        }
-
-        // horizontal splitter
-        // > div:nth-child(2) {}
-
-        // log viewer
-        > div:nth-child(3) {
-            border-top: 1px solid gray;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        // vertical splitter
-        > div:nth-child(4) {
-            position: absolute;
-            right: 0;
-            height: 100%;
         }
     }
 

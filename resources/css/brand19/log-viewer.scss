@@ -3,6 +3,10 @@
 .core19-log-viewer {
     background-color: $background-color;
 
+    border-top: 1px solid gray;
+    overflow: hidden;
+    width: 100%;
+
     .core19-infinite-log {
         position: relative;
         overflow-x: scroll !important;
