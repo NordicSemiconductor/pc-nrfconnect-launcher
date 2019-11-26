@@ -34,44 +34,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useRef } from 'react';
-import { node } from 'prop-types';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-import LogViewer from '../Log/LogViewer';
-import { HorizontalSplitter, VerticalSplitter } from './Splitter';
+import { hideDialog } from './errorDialogActions';
 
-import '../../../resources/css/brand19/shared.scss';
-import '../../../resources/css/brand19/app.scss';
-import ErrorDialog from '../ErrorDialog/ErrorDialog';
+const ErrorDialog = () => {
+    const { isVisible, messages } = useSelector(state => state.core.errorDialog);
+    const dispatch = useDispatch();
+    const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
 
-const App = ({ children, navBar, sidePanel }) => {
-    const sidePanelRef = useRef();
     return (
-        <>
-            <div className="core19-app">
-                {navBar}
-                <div className="core19-app-content">
-                    <div className="core19-app-left">
-                        <div className="core19-main-view">{children}</div>
-                        <HorizontalSplitter />
-                        <LogViewer />
-                    </div>
-                    <VerticalSplitter targetRef={sidePanelRef} />
-                    <div ref={sidePanelRef} className="core19-side-panel">
-                        {sidePanel}
-                    </div>
-                </div>
-                {/* FIXME <AppReloadDialogContainer /> */}
-                <ErrorDialog />
-            </div>
-        </>
+        <Modal show={isVisible} onHide={doHideDialog}>
+            <Modal.Header closeButton>
+                <Modal.Title>Error</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                { messages.map(message => <p key={message}>{message}</p>)}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={doHideDialog}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     );
 };
 
-App.propTypes = {
-    children: node.isRequired,
-    navBar: node.isRequired,
-    sidePanel: node.isRequired,
-};
-
-export default App;
+export default ErrorDialog;
