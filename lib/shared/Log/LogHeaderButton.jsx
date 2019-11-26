@@ -38,14 +38,11 @@ import React from 'react';
 import { bool, func, string } from 'prop-types';
 
 const LogHeaderButton = ({
-    title,
-    iconCssClass,
-    isSelected,
-    onClick,
+    title, iconCssClass, isSelected, onClick,
 }) => (
     <button
         title={title}
-        className={`btn btn-primary btn-sm core19-btn ${isSelected ? 'active' : ''}`}
+        className={`btn btn-primary btn-sm ${isSelected ? 'active' : ''}`}
         onClick={onClick}
         type="button"
     >

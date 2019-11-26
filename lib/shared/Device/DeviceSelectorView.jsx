@@ -152,7 +152,7 @@ export default class DeviceSelector extends React.Component {
             <>
                 <HotkeyedDropdown
                     id="device-selector"
-                    className="core19-padded-row core19-device-selector"
+                    className="core19-device-selector"
                     disabled={!hasDevices}
                     hotkey="Alt+P"
                     title={`${togglerText}`}

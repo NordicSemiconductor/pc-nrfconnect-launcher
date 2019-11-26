@@ -73,7 +73,7 @@ const renderMenuItems = () => (
 
 const MainMenu = () => (
     <Dropdown id="main-menu">
-        <Dropdown.Toggle className="core19-btn btn-primary">
+        <Dropdown.Toggle className="btn-primary">
             <span className="mdi mdi-menu" />
         </Dropdown.Toggle>
         <Dropdown.Menu id="main-menu-list">

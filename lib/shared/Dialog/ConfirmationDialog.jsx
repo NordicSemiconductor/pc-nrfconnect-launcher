@@ -86,7 +86,6 @@ const ConfirmationDialog = ({
             &nbsp;
             <Button
                 variant="primary"
-                className="core19-btn"
                 onClick={onOk}
                 disabled={!isOkButtonEnabled || isInProgress}
             >
@@ -95,7 +94,6 @@ const ConfirmationDialog = ({
             {
                 onCancel && (
                     <Button
-                        className="core19-btn"
                         onClick={onCancel}
                         disabled={isInProgress}
                     >
