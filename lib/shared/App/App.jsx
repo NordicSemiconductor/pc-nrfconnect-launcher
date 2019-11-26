@@ -60,7 +60,7 @@ const App = ({ children, navBar, sidePanel }) => {
                         {sidePanel}
                     </div>
                 </div>
-                {/* FIXME <FirmwareDialogContainer />
+                {/* FIXME
             <AppReloadDialogContainer />
             <ErrorDialogContainer /> */}
             </div>
