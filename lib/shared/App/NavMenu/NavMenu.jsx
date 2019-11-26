@@ -35,39 +35,36 @@
  */
 
 import React from 'react';
-import { node, string } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { arrayOf, shape } from 'prop-types';
+import NavMenuItem, { navMenuItemType } from './NavMenuItem';
+import { selectItem } from './navMenuActions';
 
-import MainMenu from './MainMenu';
-import NavMenu, { navMenuItemsType } from './NavMenu/NavMenu';
-import Logo from './Logo';
+const NavMenu = ({ items }) => {
+    const selectedItem = useSelector(state => state.core.navMenu.selectedItem);
+    const dispatch = useDispatch();
 
-import '../../../resources/css/brand19/nav-bar.scss';
-
-const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
-NavBarItem.propTypes = {
-    children: node.isRequired,
+    return (
+        <div>
+            { items.map((item, index) => (
+                <NavMenuItem
+                    key={index} // eslint-disable-line react/no-array-index-key
+                    id={index}
+                    isSelected={index === selectedItem}
+                    text={item.text}
+                    hotkey={`Alt+${index + 1}`}
+                    iconClass={item.iconClass}
+                    onClick={() => dispatch(selectItem(index))}
+                />
+            ))}
+        </div>
+    );
 };
 
-const NavBar = ({ deviceSelect, navMenu, title }) => (
-    <div className="core19-nav-bar">
-        <NavBarItem><MainMenu /></NavBarItem>
-        {deviceSelect != null && <NavBarItem>{deviceSelect}</NavBarItem>}
-        <NavBarItem><div>{title}</div></NavBarItem>
-        <NavMenu items={navMenu} />
-        <Logo />
-    </div>
-);
+export const navMenuItemsType = arrayOf(shape(navMenuItemType).isRequired);
 
-NavBar.propTypes = {
-    deviceSelect: node,
-    navMenu: navMenuItemsType,
-    title: string,
+NavMenu.propTypes = {
+    items: navMenuItemsType.isRequired,
 };
 
-NavBar.defaultProps = ({
-    deviceSelect: null,
-    navMenu: [],
-    title: '',
-});
-
-export default NavBar;
+export default NavMenu;

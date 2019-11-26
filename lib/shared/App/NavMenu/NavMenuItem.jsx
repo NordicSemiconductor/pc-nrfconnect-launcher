@@ -35,39 +35,48 @@
  */
 
 import React from 'react';
-import { node, string } from 'prop-types';
+import { bool, func, string } from 'prop-types';
+import Mousetrap from 'mousetrap';
 
-import MainMenu from './MainMenu';
-import NavMenu, { navMenuItemsType } from './NavMenu/NavMenu';
-import Logo from './Logo';
+import '../../../../resources/css/brand19/nav-menu.scss';
 
-import '../../../resources/css/brand19/nav-bar.scss';
+export default class NavMenuItem extends React.Component {
+    componentDidMount() {
+        const { onClick } = this.props;
+        Mousetrap.bind(this.hotkey(), onClick);
+    }
 
-const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
-NavBarItem.propTypes = {
-    children: node.isRequired,
+    componentWillUnmount() {
+        Mousetrap.unbind(this.hotkey());
+    }
+
+    // eslint-disable-next-line react/destructuring-assignment
+    hotkey = () => this.props.hotkey.toLowerCase()
+
+    render() {
+        const {
+            hotkey, iconClass, isSelected, onClick, text,
+        } = this.props;
+
+        return (
+            <button
+                title={`${text} (${hotkey})`}
+                className={`core19-nav-menu-item btn btn-primary ${isSelected ? 'active' : ''}`}
+                onClick={onClick}
+                type="button"
+            >
+                <span className={iconClass} />
+                <span>{text}</span>
+            </button>
+        );
+    }
+}
+
+export const navMenuItemType = { text: string.isRequired, iconClass: string.isRequired };
+
+NavMenuItem.propTypes = {
+    ...navMenuItemType,
+    isSelected: bool.isRequired,
+    onClick: func.isRequired,
+    hotkey: string.isRequired,
 };
-
-const NavBar = ({ deviceSelect, navMenu, title }) => (
-    <div className="core19-nav-bar">
-        <NavBarItem><MainMenu /></NavBarItem>
-        {deviceSelect != null && <NavBarItem>{deviceSelect}</NavBarItem>}
-        <NavBarItem><div>{title}</div></NavBarItem>
-        <NavMenu items={navMenu} />
-        <Logo />
-    </div>
-);
-
-NavBar.propTypes = {
-    deviceSelect: node,
-    navMenu: navMenuItemsType,
-    title: string,
-};
-
-NavBar.defaultProps = ({
-    deviceSelect: null,
-    navMenu: [],
-    title: '',
-});
-
-export default NavBar;
