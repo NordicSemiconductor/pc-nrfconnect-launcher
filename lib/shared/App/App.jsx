@@ -43,6 +43,7 @@ import { HorizontalSplitter, VerticalSplitter } from './Splitter';
 import '../../../resources/css/brand19/shared.scss';
 import '../../../resources/css/brand19/app.scss';
 import ErrorDialog from '../ErrorDialog/ErrorDialog';
+import AppReloadDialog from '../AppReload/AppReloadDialog';
 
 const App = ({ children, navBar, sidePanel }) => {
     const sidePanelRef = useRef();
@@ -61,7 +62,7 @@ const App = ({ children, navBar, sidePanel }) => {
                         {sidePanel}
                     </div>
                 </div>
-                {/* FIXME <AppReloadDialogContainer /> */}
+                <AppReloadDialog />
                 <ErrorDialog />
             </div>
         </>

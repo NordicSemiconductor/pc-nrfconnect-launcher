@@ -34,18 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
-import appReloadDialog from './AppReload/appReloadDialogReducer';
-import device from './Device/deviceReducer';
-import errorDialog from './ErrorDialog/errorDialogReducer';
-import log from './Log/logReducer';
-// FIXME: Use or remove these
-// import navMenu from './navMenuReducer';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { remote } from 'electron';
 
-export default combineReducers({
-    appReloadDialog,
-    device,
-    errorDialog,
-    log,
-    // navMenu,
-});
+import ConfirmationDialog from '../Dialog/ConfirmationDialog';
+import { hideDialog } from './appReloadDialogActions';
+
+const reloadApp = () => setImmediate(() => remote.getCurrentWindow().reload());
+
+const AppReloadDialog = () => {
+    const { isVisible, message } = useSelector(state => state.core.appReloadDialog);
+    const dispatch = useDispatch();
+    const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
+
+    return (
+        <ConfirmationDialog
+            isVisible={isVisible}
+            onOk={reloadApp}
+            onCancel={doHideDialog}
+            okButtonText="Yes"
+            cancelButtonText="No"
+            text={message}
+        />
+    );
+};
+
+export default AppReloadDialog;
