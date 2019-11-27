@@ -45,7 +45,7 @@ const NavMenu = ({ items }) => {
     const dispatch = useDispatch();
 
     return (
-        <div>
+        <div data-testid="nav-menu">
             { items.map((item, index) => (
                 <NavMenuItem
                     key={index} // eslint-disable-line react/no-array-index-key

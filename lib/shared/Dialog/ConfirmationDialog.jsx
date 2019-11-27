@@ -75,10 +75,10 @@ const ConfirmationDialog = ({
 }) => (
     <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
         <Modal.Header closeButton={!isInProgress}>
-            <Modal.Title>{title}</Modal.Title>
+            <Modal.Title data-testid="title">{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            { children || <p>{ text }</p> }
+            { children || <p data-testid="body">{ text }</p> }
         </Modal.Body>
         <Modal.Footer>
             { isInProgress ? <Spinner /> : null }

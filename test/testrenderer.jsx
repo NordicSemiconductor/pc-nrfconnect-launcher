@@ -35,48 +35,22 @@
  */
 
 import React from 'react';
-import { bool, func, string } from 'prop-types';
-import Mousetrap from 'mousetrap';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { render } from '@testing-library/react';
+import coreReducer from '../lib/shared/coreReducer';
 
-import '../../../../resources/css/brand19/nav-menu.scss';
+const createPreparedStore = actions => {
+    const store = createStore(combineReducers({ core: coreReducer }));
+    actions.forEach(store.dispatch);
 
-export default class NavMenuItem extends React.Component {
-    componentDidMount() {
-        const { onClick } = this.props;
-        Mousetrap.bind(this.hotkey(), onClick);
-    }
-
-    componentWillUnmount() {
-        Mousetrap.unbind(this.hotkey());
-    }
-
-    // eslint-disable-next-line react/destructuring-assignment
-    hotkey = () => this.props.hotkey.toLowerCase()
-
-    render() {
-        const {
-            hotkey, iconClass, isSelected, onClick, text,
-        } = this.props;
-
-        return (
-            <button
-                title={`${text} (${hotkey})`}
-                className={`core19-nav-menu-item btn btn-primary ${isSelected ? 'active' : ''}`}
-                onClick={onClick}
-                type="button"
-            >
-                <span className={iconClass} data-testid={iconClass} />
-                <span>{text}</span>
-            </button>
-        );
-    }
-}
-
-export const navMenuItemType = { text: string.isRequired, iconClass: string.isRequired };
-
-NavMenuItem.propTypes = {
-    ...navMenuItemType,
-    isSelected: bool.isRequired,
-    onClick: func.isRequired,
-    hotkey: string.isRequired,
+    return store;
 };
+
+const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
+    <Provider store={createPreparedStore(actions)}>
+        {children}
+    </Provider>
+);
+
+export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
