@@ -22,157 +22,61 @@ exports[`MainMenu should render menu with no items 1`] = `
         onToggle={[Function]}
         show={true}
       >
-        <Manager>
-          <div
-            className="show dropdown"
-            id="main-menu"
-            onKeyDown={[Function]}
+        <div
+          className="show dropdown"
+          id="main-menu"
+          onKeyDown={[Function]}
+        >
+          <DropdownToggle
+            className="core-main-menu core-btn btn-primary"
           >
-            <Bootstrap(DropdownToggle)
-              className="core-main-menu core-btn btn-primary"
+            <Button
+              active={false}
+              aria-expanded={true}
+              aria-haspopup={true}
+              className="core-main-menu core-btn btn-primary dropdown-toggle"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="primary"
             >
-              <DropdownToggle
-                as={
-                  Object {
-                    "$$typeof": Symbol(react.forward_ref),
-                    "defaultProps": Object {
-                      "active": false,
-                      "disabled": false,
-                      "type": "button",
-                      "variant": "primary",
-                    },
-                    "displayName": "Button",
-                    "render": [Function],
-                  }
-                }
-                bsPrefix="dropdown-toggle"
-                className="core-main-menu core-btn btn-primary"
+              <button
+                aria-expanded={true}
+                aria-haspopup={true}
+                className="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
               >
-                <ReactOverlaysDropdownToggle>
-                  <Button
-                    active={false}
-                    aria-expanded={true}
-                    aria-haspopup={true}
-                    className="core-main-menu core-btn btn-primary dropdown-toggle"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="button"
-                    variant="primary"
-                  >
-                    <button
-                      aria-expanded={true}
-                      aria-haspopup={true}
-                      className="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                      disabled={false}
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      <span
-                        className="mdi mdi-menu"
-                      />
-                    </button>
-                  </Button>
-                </ReactOverlaysDropdownToggle>
-              </DropdownToggle>
-            </Bootstrap(DropdownToggle)>
-            <DropdownMenu
-              alignRight={false}
-              className="core-dropdown-menu"
-              flip={true}
+                <span
+                  className="mdi mdi-menu"
+                />
+              </button>
+            </Button>
+          </DropdownToggle>
+          <DropdownMenu
+            alignRight={false}
+            className="core-dropdown-menu"
+            flip={true}
+            id="main-menu-list"
+          >
+            <div
+              aria-labelledby=""
+              className="core-dropdown-menu dropdown-menu show"
               id="main-menu-list"
-            >
-              <ForwardRef(ContextTransform(DropdownMenu))
-                alignEnd={false}
-                flip={true}
-                usePopper={true}
-              >
-                <ReactOverlaysDropdownMenu
-                  alignEnd={false}
-                  flip={true}
-                  menuRef={[Function]}
-                  onToggle={[Function]}
-                  show={true}
-                  toggleNode={
-                    <button
-                      aria-expanded="true"
-                      aria-haspopup="true"
-                      class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                      type="button"
-                    >
-                      <span
-                        class="mdi mdi-menu"
-                      />
-                    </button>
-                  }
-                  usePopper={true}
-                >
-                  <RootCloseWrapper
-                    disabled={false}
-                    event="click"
-                    onRootClose={[Function]}
-                  >
-                    <Popper
-                      eventsEnabled={true}
-                      innerRef={[Function]}
-                      modifiers={
-                        Object {
-                          "flip": Object {
-                            "enabled": true,
-                          },
-                        }
-                      }
-                      placement="bottom-start"
-                      referenceElement={
-                        <button
-                          aria-expanded="true"
-                          aria-haspopup="true"
-                          class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                          type="button"
-                        >
-                          <span
-                            class="mdi mdi-menu"
-                          />
-                        </button>
-                      }
-                    >
-                      <InnerPopper
-                        eventsEnabled={true}
-                        innerRef={[Function]}
-                        modifiers={
-                          Object {
-                            "flip": Object {
-                              "enabled": true,
-                            },
-                          }
-                        }
-                        placement="bottom-start"
-                        positionFixed={false}
-                        referenceElement={
-                          <button
-                            aria-expanded="true"
-                            aria-haspopup="true"
-                            class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                            type="button"
-                          >
-                            <span
-                              class="mdi mdi-menu"
-                            />
-                          </button>
-                        }
-                      >
-                        <div
-                          aria-labelledby=""
-                          className="core-dropdown-menu dropdown-menu show"
-                          id="main-menu-list"
-                        />
-                      </InnerPopper>
-                    </Popper>
-                  </RootCloseWrapper>
-                </ReactOverlaysDropdownMenu>
-              </ForwardRef(ContextTransform(DropdownMenu))>
-            </DropdownMenu>
-          </div>
-        </Manager>
+              style={
+                Object {
+                  "left": "0",
+                  "opacity": "0",
+                  "pointerEvents": "none",
+                  "position": "absolute",
+                  "top": "0",
+                }
+              }
+              x-placement="bottom-start"
+            />
+          </DropdownMenu>
+        </div>
       </ReactOverlaysDropdown>
     </Dropdown>
   </div>
@@ -216,237 +120,153 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
         onToggle={[Function]}
         show={true}
       >
-        <Manager>
-          <div
-            className="show dropdown"
-            id="main-menu"
-            onKeyDown={[Function]}
+        <div
+          className="show dropdown"
+          id="main-menu"
+          onKeyDown={[Function]}
+        >
+          <DropdownToggle
+            className="core-main-menu core-btn btn-primary"
           >
-            <Bootstrap(DropdownToggle)
-              className="core-main-menu core-btn btn-primary"
+            <Button
+              active={false}
+              aria-expanded={true}
+              aria-haspopup={true}
+              className="core-main-menu core-btn btn-primary dropdown-toggle"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+              variant="primary"
             >
-              <DropdownToggle
-                as={
-                  Object {
-                    "$$typeof": Symbol(react.forward_ref),
-                    "defaultProps": Object {
-                      "active": false,
-                      "disabled": false,
-                      "type": "button",
-                      "variant": "primary",
-                    },
-                    "displayName": "Button",
-                    "render": [Function],
-                  }
-                }
-                bsPrefix="dropdown-toggle"
-                className="core-main-menu core-btn btn-primary"
+              <button
+                aria-expanded={true}
+                aria-haspopup={true}
+                className="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
               >
-                <ReactOverlaysDropdownToggle>
-                  <Button
-                    active={false}
-                    aria-expanded={true}
-                    aria-haspopup={true}
-                    className="core-main-menu core-btn btn-primary dropdown-toggle"
+                <span
+                  className="mdi mdi-menu"
+                />
+              </button>
+            </Button>
+          </DropdownToggle>
+          <DropdownMenu
+            alignRight={false}
+            className="core-dropdown-menu"
+            flip={true}
+            id="main-menu-list"
+          >
+            <div
+              aria-labelledby=""
+              className="core-dropdown-menu dropdown-menu show"
+              id="main-menu-list"
+              style={
+                Object {
+                  "left": "0",
+                  "opacity": "0",
+                  "pointerEvents": "none",
+                  "position": "absolute",
+                  "top": "0",
+                }
+              }
+              x-placement="bottom-start"
+            >
+              <HotkeyedMenuItem
+                divider={false}
+                hotkey=""
+                key="1"
+                onClick={[Function]}
+                title="First item"
+              >
+                <DropdownItem
+                  as={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "displayName": "SafeAnchor",
+                      "render": [Function],
+                    }
+                  }
+                  disabled={false}
+                  onClick={[Function]}
+                  title="First item"
+                >
+                  <SafeAnchor
+                    className="dropdown-item"
                     disabled={false}
                     onClick={[Function]}
-                    type="button"
-                    variant="primary"
+                    title="First item"
                   >
-                    <button
-                      aria-expanded={true}
-                      aria-haspopup={true}
-                      className="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                      disabled={false}
+                    <a
+                      className="dropdown-item"
+                      href="#"
                       onClick={[Function]}
-                      type="button"
+                      onKeyDown={[Function]}
+                      role="button"
+                      title="First item"
                     >
-                      <span
-                        className="mdi mdi-menu"
-                      />
-                    </button>
-                  </Button>
-                </ReactOverlaysDropdownToggle>
-              </DropdownToggle>
-            </Bootstrap(DropdownToggle)>
-            <DropdownMenu
-              alignRight={false}
-              className="core-dropdown-menu"
-              flip={true}
-              id="main-menu-list"
-            >
-              <ForwardRef(ContextTransform(DropdownMenu))
-                alignEnd={false}
-                flip={true}
-                usePopper={true}
+                      First item
+                    </a>
+                  </SafeAnchor>
+                </DropdownItem>
+              </HotkeyedMenuItem>
+              <HotkeyedMenuItem
+                divider={true}
+                hotkey=""
+                key="2"
+                onClick={[Function]}
               >
-                <ReactOverlaysDropdownMenu
-                  alignEnd={false}
-                  flip={true}
-                  menuRef={[Function]}
-                  onToggle={[Function]}
-                  show={true}
-                  toggleNode={
-                    <button
-                      aria-expanded="true"
-                      aria-haspopup="true"
-                      class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                      type="button"
-                    >
-                      <span
-                        class="mdi mdi-menu"
-                      />
-                    </button>
-                  }
-                  usePopper={true}
+                <DropdownDivider
+                  role="separator"
                 >
-                  <RootCloseWrapper
+                  <div
+                    className="dropdown-divider"
+                    role="separator"
+                  />
+                </DropdownDivider>
+              </HotkeyedMenuItem>
+              <HotkeyedMenuItem
+                divider={false}
+                hotkey=""
+                key="3"
+                onClick={[Function]}
+                title="Last item"
+              >
+                <DropdownItem
+                  as={
+                    Object {
+                      "$$typeof": Symbol(react.forward_ref),
+                      "displayName": "SafeAnchor",
+                      "render": [Function],
+                    }
+                  }
+                  disabled={false}
+                  onClick={[Function]}
+                  title="Last item"
+                >
+                  <SafeAnchor
+                    className="dropdown-item"
                     disabled={false}
-                    event="click"
-                    onRootClose={[Function]}
+                    onClick={[Function]}
+                    title="Last item"
                   >
-                    <Popper
-                      eventsEnabled={true}
-                      innerRef={[Function]}
-                      modifiers={
-                        Object {
-                          "flip": Object {
-                            "enabled": true,
-                          },
-                        }
-                      }
-                      placement="bottom-start"
-                      referenceElement={
-                        <button
-                          aria-expanded="true"
-                          aria-haspopup="true"
-                          class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                          type="button"
-                        >
-                          <span
-                            class="mdi mdi-menu"
-                          />
-                        </button>
-                      }
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="button"
+                      title="Last item"
                     >
-                      <InnerPopper
-                        eventsEnabled={true}
-                        innerRef={[Function]}
-                        modifiers={
-                          Object {
-                            "flip": Object {
-                              "enabled": true,
-                            },
-                          }
-                        }
-                        placement="bottom-start"
-                        positionFixed={false}
-                        referenceElement={
-                          <button
-                            aria-expanded="true"
-                            aria-haspopup="true"
-                            class="core-main-menu core-btn btn-primary dropdown-toggle btn btn-primary"
-                            type="button"
-                          >
-                            <span
-                              class="mdi mdi-menu"
-                            />
-                          </button>
-                        }
-                      >
-                        <div
-                          aria-labelledby=""
-                          className="core-dropdown-menu dropdown-menu show"
-                          id="main-menu-list"
-                        >
-                          <HotkeyedMenuItem
-                            divider={false}
-                            hotkey=""
-                            key="1"
-                            onClick={[Function]}
-                            title="First item"
-                          >
-                            <DropdownItem
-                              as={[Function]}
-                              disabled={false}
-                              onClick={[Function]}
-                              title="First item"
-                            >
-                              <SafeAnchor
-                                className="dropdown-item"
-                                disabled={false}
-                                onClick={[Function]}
-                                title="First item"
-                              >
-                                <a
-                                  className="dropdown-item"
-                                  href="#"
-                                  onClick={[Function]}
-                                  onKeyDown={[Function]}
-                                  role="button"
-                                  title="First item"
-                                >
-                                  First item
-                                </a>
-                              </SafeAnchor>
-                            </DropdownItem>
-                          </HotkeyedMenuItem>
-                          <HotkeyedMenuItem
-                            divider={true}
-                            hotkey=""
-                            key="2"
-                            onClick={[Function]}
-                          >
-                            <DropdownDivider
-                              role="separator"
-                            >
-                              <div
-                                className="dropdown-divider"
-                                role="separator"
-                              />
-                            </DropdownDivider>
-                          </HotkeyedMenuItem>
-                          <HotkeyedMenuItem
-                            divider={false}
-                            hotkey=""
-                            key="3"
-                            onClick={[Function]}
-                            title="Last item"
-                          >
-                            <DropdownItem
-                              as={[Function]}
-                              disabled={false}
-                              onClick={[Function]}
-                              title="Last item"
-                            >
-                              <SafeAnchor
-                                className="dropdown-item"
-                                disabled={false}
-                                onClick={[Function]}
-                                title="Last item"
-                              >
-                                <a
-                                  className="dropdown-item"
-                                  href="#"
-                                  onClick={[Function]}
-                                  onKeyDown={[Function]}
-                                  role="button"
-                                  title="Last item"
-                                >
-                                  Last item
-                                </a>
-                              </SafeAnchor>
-                            </DropdownItem>
-                          </HotkeyedMenuItem>
-                        </div>
-                      </InnerPopper>
-                    </Popper>
-                  </RootCloseWrapper>
-                </ReactOverlaysDropdownMenu>
-              </ForwardRef(ContextTransform(DropdownMenu))>
-            </DropdownMenu>
-          </div>
-        </Manager>
+                      Last item
+                    </a>
+                  </SafeAnchor>
+                </DropdownItem>
+              </HotkeyedMenuItem>
+            </div>
+          </DropdownMenu>
+        </div>
       </ReactOverlaysDropdown>
     </Dropdown>
   </div>
