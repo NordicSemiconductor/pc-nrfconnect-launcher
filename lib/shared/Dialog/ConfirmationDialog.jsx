@@ -91,16 +91,12 @@ const ConfirmationDialog = ({
             >
                 {okButtonText}
             </Button>
-            {
-                onCancel && (
-                    <Button
-                        onClick={onCancel}
-                        disabled={isInProgress}
-                    >
-                        {cancelButtonText}
-                    </Button>
-                )
-            }
+            <Button
+                onClick={onCancel}
+                disabled={isInProgress}
+            >
+                {cancelButtonText}
+            </Button>
         </Modal.Footer>
     </Modal>
 );
@@ -114,7 +110,7 @@ ConfirmationDialog.propTypes = {
         node,
     ]),
     onOk: func.isRequired,
-    onCancel: func,
+    onCancel: func.isRequired,
     okButtonText: string,
     cancelButtonText: string,
     isInProgress: bool,
@@ -127,7 +123,6 @@ ConfirmationDialog.defaultProps = {
     children: null,
     isInProgress: false,
     isOkButtonEnabled: true,
-    onCancel: null,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',
 };
