@@ -95,6 +95,7 @@ jobs:
     displayName: 'Setup NPM registry for internal workflow'
   - bash: |
       npm i
+      npm run lint
       npm run build
       npm test
     displayName: 'Build'
