@@ -42,8 +42,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { setApp, decorate, decorateReducer, connect, invokeAppFn } from '../apps';
 import renderer from 'react-test-renderer';
+import {
+    setApp, decorate, decorateReducer, connect, invokeAppFn,
+} from '../apps';
 
 describe('decorate', () => {
     const FooComponent = ({ id }) => (
@@ -132,7 +134,7 @@ describe('decorate', () => {
     it('should render with property when app uses a provided property', () => {
         setApp({
             decorateFoo: () => (
-                props => <p id={props.bar} /> // eslint-disable-line react/prop-types
+                ({ bar }) => <p id={bar} /> // eslint-disable-line react/prop-types
             ),
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
@@ -149,7 +151,7 @@ describe('decorate', () => {
 
 describe('connect', () => {
     const FooComponent = ({ id, onClick }) => (
-        <button id={id} onClick={onClick} />
+        <button id={id} onClick={onClick} /> // eslint-disable-line react/button-has-type
     );
     FooComponent.propTypes = {
         id: PropTypes.string.isRequired,
