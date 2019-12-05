@@ -35,7 +35,7 @@
  */
 
 import { remote } from 'electron';
-import * as ErrorDialogActions from '../../../actions/errorDialogActions';
+import * as ErrorDialogActions from '../../actions/errorDialogActions';
 import * as AppsActions from './appsActions';
 import * as AutoUpdateActions from './autoUpdateActions';
 

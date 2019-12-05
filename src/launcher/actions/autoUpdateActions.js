@@ -36,7 +36,7 @@
 
 import { remote } from 'electron';
 import log from 'electron-log';
-import * as ErrorDialogActions from '../../../actions/errorDialogActions';
+import * as ErrorDialogActions from '../../actions/errorDialogActions';
 
 export const AUTO_UPDATE_CHECK = 'AUTO_UPDATE_CHECK';
 export const AUTO_UPDATE_AVAILABLE = 'AUTO_UPDATE_AVAILABLE';

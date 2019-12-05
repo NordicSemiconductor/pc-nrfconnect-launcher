@@ -35,25 +35,31 @@
  */
 
 import { connect } from 'react-redux';
-import ErrorDialog from '../../../components/ErrorDialog';
-import * as ErrorDialogActions from '../../../actions/errorDialogActions';
+import { remote } from 'electron';
+import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
+import * as AutoUpdateActions from '../actions/autoUpdateActions';
+import { openUrlInDefaultBrowser } from '../../util/fileUtil';
+
+const config = remote.require('./main/config');
 
 function mapStateToProps(state) {
-    const { errorDialog } = state;
+    const { autoUpdate } = state;
 
     return {
-        messages: errorDialog.messages,
-        isVisible: errorDialog.isVisible,
+        isVisible: autoUpdate.isUpdateAvailableDialogVisible,
+        version: autoUpdate.latestVersion,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        onClose: () => dispatch(ErrorDialogActions.hideDialog()),
+        onClickReleaseNotes: () => openUrlInDefaultBrowser(config.getReleaseNotesUrl()),
+        onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
+        onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
     };
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ErrorDialog);
+)(UpdateAvailableDialog);

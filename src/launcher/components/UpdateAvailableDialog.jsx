@@ -36,62 +36,53 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import Spinner from '../../../components/Spinner';
 
-const UpdateProgressDialog = ({
+import ConfirmationDialog from '../../components/ConfirmationDialog';
+
+/**
+ * Dialog that is shown if an nRF Connect core update is available. The user
+ * can either upgrade or cancel.
+ *
+ * @param {boolean} isVisible Show the dialog or not.
+ * @param {string} version The new version number that is available.
+ * @param {function} onClickReleaseNotes Invoked when the user clicks to see release notes.
+ * @param {function} onConfirm Invoked when the user confirms the upgrade.
+ * @param {function} onCancel Invoked when the user cancels the upgrade.
+ * @returns {*} React element to be rendered.
+ */
+const UpdateAvailableDialog = ({
     isVisible,
-    isProgressSupported,
-    isCancelSupported,
     version,
-    percentDownloaded,
+    onClickReleaseNotes,
+    onConfirm,
     onCancel,
-    isCancelling,
 }) => (
-    <Modal show={isVisible} backdrop>
-        <Modal.Header closeButton={false}>
-            <Modal.Title>Downloading update</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <p>Downloading nRF Connect {version}...</p>
-            {
-                isProgressSupported
-                && <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
-            }
-            <p>
-                This might take a few minutes. The application will restart and update
-                once the download is complete.
-            </p>
-        </Modal.Body>
-        <Modal.Footer>
-            {
-                !isProgressSupported
-                && <Spinner />
-            }
-            {
-                isCancelSupported && (
-                    <Button
-                        onClick={onCancel}
-                        disabled={isCancelling || percentDownloaded === 100}
-                    >
-                        Cancel
-                    </Button>
-                )
-            }
-        </Modal.Footer>
-    </Modal>
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Update available"
+        text={`A new version (${version}) of nRF Connect is available. `
+            + 'Would you like to upgrade now?'}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        onOk={onConfirm}
+        onCancel={onCancel}
+    >
+        <p>
+            A new version ({version}) of nRF Connect is available. Would you
+            like to upgrade now?
+        </p>
+        <button className="btn btn-link core-btn-link" onClick={onClickReleaseNotes} type="button">
+            Click to see release notes
+        </button>
+    </ConfirmationDialog>
 );
 
-UpdateProgressDialog.propTypes = {
+UpdateAvailableDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    isProgressSupported: PropTypes.bool.isRequired,
-    isCancelSupported: PropTypes.bool.isRequired,
     version: PropTypes.string.isRequired,
-    percentDownloaded: PropTypes.number.isRequired,
+    onClickReleaseNotes: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    isCancelling: PropTypes.bool.isRequired,
 };
 
-export default UpdateProgressDialog;
+export default UpdateAvailableDialog;

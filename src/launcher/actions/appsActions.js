@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer, remote } from 'electron';
-import * as ErrorDialogActions from '../../../actions/errorDialogActions';
+import * as ErrorDialogActions from '../../actions/errorDialogActions';
 
 const net = remote.require('./main/net');
 const fs = remote.require('fs');

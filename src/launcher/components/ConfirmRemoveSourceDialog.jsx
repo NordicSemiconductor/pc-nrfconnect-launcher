@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -37,52 +37,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ConfirmationDialog from '../../../components/ConfirmationDialog';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
-/**
- * Dialog that is shown if an nRF Connect core update is available. The user
- * can either upgrade or cancel.
- *
- * @param {boolean} isVisible Show the dialog or not.
- * @param {string} version The new version number that is available.
- * @param {function} onClickReleaseNotes Invoked when the user clicks to see release notes.
- * @param {function} onConfirm Invoked when the user confirms the upgrade.
- * @param {function} onCancel Invoked when the user cancels the upgrade.
- * @returns {*} React element to be rendered.
- */
-const UpdateAvailableDialog = ({
+const ConfirmRemoveSourceDialog = ({
     isVisible,
-    version,
-    onClickReleaseNotes,
+    source,
     onConfirm,
     onCancel,
 }) => (
     <ConfirmationDialog
         isVisible={isVisible}
-        title="Update available"
-        text={`A new version (${version}) of nRF Connect is available. `
-            + 'Would you like to upgrade now?'}
-        okButtonText="Yes"
-        cancelButtonText="No"
-        onOk={onConfirm}
+        title="Remove app source"
+        text={`Are you sure to remove "${source}" source along with any apps installed from it?`}
+        okButtonText="Yes, remove"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(source)}
         onCancel={onCancel}
-    >
-        <p>
-            A new version ({version}) of nRF Connect is available. Would you
-            like to upgrade now?
-        </p>
-        <button className="btn btn-link core-btn-link" onClick={onClickReleaseNotes} type="button">
-            Click to see release notes
-        </button>
-    </ConfirmationDialog>
+    />
 );
 
-UpdateAvailableDialog.propTypes = {
+ConfirmRemoveSourceDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    version: PropTypes.string.isRequired,
-    onClickReleaseNotes: PropTypes.func.isRequired,
+    source: PropTypes.string,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
 
-export default UpdateAvailableDialog;
+ConfirmRemoveSourceDialog.defaultProps = {
+    source: null,
+};
+
+export default ConfirmRemoveSourceDialog;

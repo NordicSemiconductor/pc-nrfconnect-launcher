@@ -34,32 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import { remote } from 'electron';
-import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
-import * as AutoUpdateActions from '../actions/autoUpdateActions';
-import { openUrlInDefaultBrowser } from '../../../util/fileUtil';
+import { combineReducers } from 'redux';
+import apps from './appsReducer';
+import autoUpdate from './autoUpdateReducer';
+import proxy from './proxyReducer';
+import settings from './settingsReducer';
+import errorDialog from '../../reducers/errorDialogReducer';
+import releaseNotesDialog from './releaseNotesDialogReducer';
 
-const config = remote.require('./main/config');
-
-function mapStateToProps(state) {
-    const { autoUpdate } = state;
-
-    return {
-        isVisible: autoUpdate.isUpdateAvailableDialogVisible,
-        version: autoUpdate.latestVersion,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onClickReleaseNotes: () => openUrlInDefaultBrowser(config.getReleaseNotesUrl()),
-        onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
-        onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(UpdateAvailableDialog);
+export default combineReducers({
+    releaseNotesDialog,
+    apps,
+    autoUpdate,
+    proxy,
+    settings,
+    errorDialog,
+});

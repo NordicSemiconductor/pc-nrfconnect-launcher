@@ -34,39 +34,55 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import 'core-js/es7';
+import 'regenerator-runtime/runtime';
+
 import React from 'react';
+import { render } from 'react-dom';
+import { remote } from 'electron';
+import isDev from 'electron-is-dev';
+import RootContainer from './containers/RootContainer';
+import configureStore from '../store/configureStore';
+import rootReducer from './reducers';
+import * as AppsActions from './actions/appsActions';
+import * as AutoUpdateActions from './actions/autoUpdateActions';
+import * as ProxyActions from './actions/proxyActions';
+import '../../resources/css/launcher.scss';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+const config = remote.require('./main/config');
+const settings = remote.require('./main/settings');
+const net = remote.require('./main/net');
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../../components/Logo';
+const store = configureStore(rootReducer);
+const rootElement = React.createElement(RootContainer, { store });
 
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');
+
+function downloadLatestAppInfo() {
+    if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateApps()) {
+        return store.dispatch(AppsActions.downloadLatestAppInfo());
+    }
+    return Promise.resolve();
+}
+
+function checkForCoreUpdates() {
+    if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateCore() && !isDev) {
+        return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
+    }
+    return Promise.resolve();
+}
+
+net.registerProxyLoginHandler((authInfo, callback) => {
+    store.dispatch(ProxyActions.authenticate(authInfo))
+        .then(credentials => {
+            const { username, password } = credentials;
+            return callback(username, password);
+        });
+});
+
+render(rootElement, document.getElementById('webapp'), async () => {
+    await store.dispatch(AppsActions.loadLocalApps());
+    await store.dispatch(AppsActions.loadOfficialApps());
+    await downloadLatestAppInfo();
+    await checkForCoreUpdates();
+});

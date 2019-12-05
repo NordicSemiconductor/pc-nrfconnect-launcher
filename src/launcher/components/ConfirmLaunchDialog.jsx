@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,45 +34,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import AppManagementView from '../components/AppManagementView';
-import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../../util/fileUtil';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
-import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function mapStateToProps(state) {
-    const {
-        apps: {
-            localApps, officialApps,
-            installingAppName, removingAppName, upgradingAppName,
-        },
-    } = state;
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
-    return {
-        apps: localApps.concat(officialApps),
-        installingAppName,
-        removingAppName,
-        upgradingAppName,
-        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
-    };
-}
+const ConfirmLaunchDialog = ({
+    isVisible,
+    text,
+    app,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Version problem"
+        text={text}
+        okButtonText="Launch anyway"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(app)}
+        onCancel={onCancel}
+    />
+);
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onInstall: (name, source) => dispatch(
-            AppsActions.installOfficialApp(name, source),
-        ),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
-        onReadMore: homepage => openUrlInDefaultBrowser(homepage),
-        // Launcher actions
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
-        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
-    };
-}
+ConfirmLaunchDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }),
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
+ConfirmLaunchDialog.defaultProps = {
+    app: null,
+};
+
+export default ConfirmLaunchDialog;
