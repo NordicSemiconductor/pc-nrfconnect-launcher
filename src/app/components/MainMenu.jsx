@@ -34,23 +34,65 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Immutable from 'immutable';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+import MenuItem from '../../components/HotkeyedMenuItem';
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+const renderItems = menuItems => (
+    menuItems.map(({
+        id, onClick, isDivider, hotkey, text,
+    }) => (
+        <MenuItem
+            key={id}
+            onClick={onClick}
+            divider={isDivider}
+            hotkey={hotkey ? hotkey.toLowerCase() : ''}
+            title={hotkey ? `${text} (${hotkey})` : text}
+        >
+            {text}
+        </MenuItem>
+    ))
+);
+
+const MainMenu = ({
+    menuItems,
+    iconName,
+    cssClass,
+    dropdownCssClass,
+    dropdownMenuCssClass,
+    ...rest
+}) => (
+    <div className={cssClass}>
+        <Dropdown id="main-menu" {...rest}>
+            <Dropdown.Toggle className={dropdownCssClass}>
+                <span className={iconName} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu id="main-menu-list" className={dropdownMenuCssClass}>
+                { renderItems(menuItems) }
+            </Dropdown.Menu>
+        </Dropdown>
+    </div>
+);
+
+MainMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    iconName: PropTypes.string,
+    cssClass: PropTypes.string,
+    dropdownCssClass: PropTypes.string,
+    dropdownMenuCssClass: PropTypes.string,
 };
+
+MainMenu.defaultProps = {
+    iconName: 'mdi mdi-menu',
+    cssClass: 'core-nav-section core-padded-row',
+    dropdownCssClass: 'core-main-menu core-btn btn-primary',
+    dropdownMenuCssClass: 'core-dropdown-menu',
+};
+
+export default MainMenu;

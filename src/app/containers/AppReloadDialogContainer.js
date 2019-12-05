@@ -34,23 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import { remote } from 'electron';
+import AppReloadDialog from '../components/AppReloadDialog';
+import * as AppReloadDialogActions from '../actions/appReloadDialogActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { appReloadDialog } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        isVisible: appReloadDialog.isVisible,
+        message: appReloadDialog.message,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onConfirmReload: () => (
+            dispatch(remote.getCurrentWindow().reload())
+        ),
+        onCancelReload: () => {
+            dispatch(AppReloadDialogActions.hideDialog());
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AppReloadDialog, 'AppReloadDialog');

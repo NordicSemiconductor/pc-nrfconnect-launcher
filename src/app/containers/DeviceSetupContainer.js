@@ -34,23 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import DeviceSetupDialog from '../components/DeviceSetupDialog';
+import * as DeviceActions from '../actions/deviceActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { device } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        isVisible: device.isSetupDialogVisible,
+        isInProgress: device.isSetupDialogVisible && !device.isSetupWaitingForUserInput,
+        text: device.setupDialogText,
+        choices: device.setupDialogChoices,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onOk: input => dispatch(DeviceActions.deviceSetupInputReceived(input)),
+        onCancel: () => dispatch(DeviceActions.deviceSetupInputReceived(false)),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DeviceSetupDialog, 'DeviceSetupDialog');

@@ -34,23 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+/* eslint-disable import/first */
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+// Do not decorate components
+jest.mock('../../../util/apps', () => ({
+    decorate: component => component,
+}));
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+import React from 'react';
+import { mount } from 'enzyme';
+import Immutable from 'immutable';
+import MainMenu from '../MainMenu';
+
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'First item',
+    }, {
+        id: 2,
+        isDivider: true,
+    }, {
+        id: 3,
+        text: 'Last item',
+    },
+]);
+
+describe('MainMenu', () => {
+    it('should render menu with no items', () => {
+        expect(mount(
+            <MainMenu menuItems={[]} defaultShow />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render menu with two items separated by divider', () => {
+        expect(mount(
+            <MainMenu menuItems={menuItems} defaultShow />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onClick when item has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <MainMenu
+                menuItems={[{
+                    id: 1,
+                    text: 'Foo',
+                    onClick,
+                }]}
+                defaultShow
+            />,
+        );
+        wrapper.find('a[title="Foo"]').first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
+});

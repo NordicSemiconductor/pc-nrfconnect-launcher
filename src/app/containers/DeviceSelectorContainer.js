@@ -34,23 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import DeviceSelector from '../components/DeviceSelector';
+import * as DeviceActions from '../actions/deviceActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { device } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        devices: device.devices,
+        selectedSerialNumber: device.selectedSerialNumber,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onMount: () => dispatch(DeviceActions.startWatchingDevices()),
+        onUnmount: () => dispatch(DeviceActions.stopWatchingDevices()),
+        onSelect: device => dispatch(DeviceActions.selectAndSetupDevice(device)),
+        onDeselect: () => dispatch(DeviceActions.deselectDevice()),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DeviceSelector, 'DeviceSelector');

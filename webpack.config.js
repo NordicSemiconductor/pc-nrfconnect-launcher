@@ -25,8 +25,8 @@ module.exports = {
     mode: nodeEnv,
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
-        app: './src/windows/app/index',
-        launcher: './src/launcher/index',
+        app: './src/app',
+        launcher: './src/launcher',
     },
     output: {
         path: path.resolve('dist'),

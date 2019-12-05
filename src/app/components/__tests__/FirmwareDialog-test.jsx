@@ -34,23 +34,48 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+/* eslint-disable import/first */
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+// Do not render react-bootstrap components in tests
+jest.mock('../../../components/ConfirmationDialog', () => 'ConfirmationDialog');
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+import React from 'react';
+import renderer from 'react-test-renderer';
+import FirmwareDialog from '../FirmwareDialog';
+
+describe('FirmwareDialog', () => {
+    it('should render empty div if not visible', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible={false}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render visible dialog with default text for given port', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                port={{
+                    comName: '/dev/tty1',
+                    serialNumber: 1337,
+                }}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should render visible dialog with custom text', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                text="Do you confirm?"
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+});

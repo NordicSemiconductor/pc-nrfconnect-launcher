@@ -34,23 +34,66 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import 'core-js/es7';
+import 'regenerator-runtime/runtime';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+import './module-loader';
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+import React from 'react';
+import { remote } from 'electron';
+import { render } from 'react-dom';
+import RootContainer from './containers/RootContainer';
+import configureStore from '../store/configureStore';
+import {
+    initAppDirectories, getAppLogDir, loadApp, invokeAppFn,
+} from '../util/apps';
+import rootReducer from './reducers';
+import { core } from '../api';
+
+const params = new URL(window.location).searchParams;
+const appPath = params.get('appPath');
+
+const removeLoaderElement = () => {
+    const element = document.getElementById('app-loader');
+    if (element) {
+        element.classList.add('loaded');
+        setTimeout(() => {
+            document.body.removeChild(element);
+        }, 500);
+    }
 };
+
+const isOld = app => typeof app === 'object';
+
+const getRootElement = () => document.getElementById('webapp');
+
+const rendererForClassicApps = app => {
+    const store = configureStore(rootReducer, app);
+    invokeAppFn('onInit', store.dispatch, store.getState);
+    render(<RootContainer store={store} />, getRootElement(), () => {
+        removeLoaderElement();
+        invokeAppFn('onReady', store.dispatch, store.getState);
+    });
+};
+
+const rendererForNewApps = App => {
+    render(<App />, getRootElement(), () => {
+        removeLoaderElement();
+    });
+};
+
+initAppDirectories(appPath).then(() => {
+    core.logger.addFileTransport(getAppLogDir());
+
+    const app = loadApp(appPath);
+
+    const renderApp = isOld(app) ? rendererForClassicApps : rendererForNewApps;
+    renderApp(app);
+})
+    .catch(error => {
+        console.error(error);
+        remote.dialog.showMessageBox({
+            type: 'error',
+            message: error.message,
+        });
+    });

@@ -34,23 +34,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import Root from '../components/Root';
+import { resizeLogContainer } from '../actions/logActions';
+import '../../../resources/css/app.scss';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+const RootContainer = ({ store }) => (
+    React.createElement(Provider, { store },
+        React.createElement(Root, {
+            resizeLogContainer: (...args) => store.dispatch(resizeLogContainer(...args)),
+        }))
+);
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+RootContainer.propTypes = {
+    store: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
+
+export default RootContainer;

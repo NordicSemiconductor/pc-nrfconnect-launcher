@@ -34,23 +34,45 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import { ipcRenderer } from 'electron';
+import systemReport from '../../util/systemReport';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+/**
+ * Indicates that opening the nRF Connect app launcher has been requested.
+ *
+ * @deprecated
+ */
+export const OPEN_APP_LAUNCHER = 'MAIN_MENU_OPEN_APP_LAUNCHER';
+export const GENERATE_SYSTEM_REPORT = 'GENERATE_SYSTEM_REPORT';
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+function openAppLauncherAction() {
+    return {
+        type: OPEN_APP_LAUNCHER,
+    };
+}
+
+function generateSystemReportAction() {
+    return {
+        type: GENERATE_SYSTEM_REPORT,
+    };
+}
+
+export function openAppLauncher() {
+    return dispatch => {
+        dispatch(openAppLauncherAction());
+        ipcRenderer.send('open-app-launcher');
+    };
+}
+
+export function showAboutDialog() {
+    return () => {
+        ipcRenderer.send('show-about-dialog');
+    };
+}
+
+export function generateSystemReport() {
+    return dispatch => {
+        dispatch(generateSystemReportAction());
+        dispatch(systemReport());
+    };
+}

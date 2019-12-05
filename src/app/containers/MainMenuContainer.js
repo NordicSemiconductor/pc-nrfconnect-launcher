@@ -34,23 +34,34 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import MainMenu from '../components/MainMenu';
+import * as MainMenuActions from '../actions/mainMenuActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps() {
+    return {};
+}
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+function mapDispatchToProps(dispatch) {
+    return {
+        menuItems: [{
+            id: 1,
+            text: 'Launch other app...',
+            hotkey: 'Alt+L',
+            onClick: () => dispatch(MainMenuActions.openAppLauncher()),
+        }, {
+            id: 2,
+            text: 'System report',
+            onClick: () => dispatch(MainMenuActions.generateSystemReport()),
+        }, {
+            id: 3,
+            text: 'About',
+            onClick: () => dispatch(MainMenuActions.showAboutDialog()),
+        }],
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MainMenu, 'MainMenu');

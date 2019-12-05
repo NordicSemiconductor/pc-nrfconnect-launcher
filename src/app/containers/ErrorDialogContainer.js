@@ -34,23 +34,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import ErrorDialog from '../../components/ErrorDialog';
+import * as ErrorDialogActions from '../../actions/errorDialogActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { errorDialog } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        messages: errorDialog.messages,
+        isVisible: errorDialog.isVisible,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onClose: () => dispatch(ErrorDialogActions.hideDialog()),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ErrorDialog, 'ErrorDialog');

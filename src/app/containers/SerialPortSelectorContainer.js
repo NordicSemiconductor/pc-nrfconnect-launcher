@@ -34,23 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import SerialPortSelector from '../components/SerialPortSelector';
+import * as SerialPortActions from '../actions/serialPortActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { serialPort } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        ports: serialPort.ports,
+        selectedPort: serialPort.selectedPort,
+        isExpanded: serialPort.isSelectorExpanded,
+        isLoading: serialPort.isLoading,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onSelect: port => dispatch(SerialPortActions.selectPort(port)),
+        onDeselect: () => dispatch(SerialPortActions.deselectPort()),
+        onToggle: () => dispatch(SerialPortActions.toggleSelectorExpanded()),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SerialPortSelector, 'SerialPortSelector');

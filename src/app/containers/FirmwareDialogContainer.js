@@ -34,23 +34,34 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import FirmwareDialog from '../components/FirmwareDialog';
+import * as FirmwareDialogActions from '../actions/firmwareDialogActions';
+import * as SerialPortActions from '../actions/serialPortActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { firmwareDialog } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        port: firmwareDialog.port,
+        isVisible: firmwareDialog.isVisible,
+        isInProgress: firmwareDialog.isInProgress,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onConfirmUpdateFirmware: port => (
+            dispatch(FirmwareDialogActions.firmwareUpdateRequested(port))
+        ),
+        onCancel: () => {
+            dispatch(SerialPortActions.deselectPort());
+            dispatch(FirmwareDialogActions.hideDialog());
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(FirmwareDialog, 'FirmwareDialog');

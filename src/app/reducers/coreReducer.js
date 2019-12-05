@@ -34,23 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import { combineReducers } from 'redux';
+import navMenu from './navMenuReducer';
+import log from './logReducer';
+import serialPort from './serialPortReducer';
+import device from './deviceReducer';
+import firmwareDialog from './firmwareDialogReducer';
+import appReloadDialog from './appReloadDialogReducer';
+import errorDialog from '../../reducers/errorDialogReducer';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
-
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+export default combineReducers({
+    navMenu,
+    log,
+    serialPort,
+    device,
+    firmwareDialog,
+    appReloadDialog,
+    errorDialog,
+});

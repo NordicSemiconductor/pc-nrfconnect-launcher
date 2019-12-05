@@ -34,23 +34,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+/* eslint-disable import/first */
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+// Do not decorate components
+jest.mock('../../../util/apps', () => ({
+    decorate: component => component,
+}));
+
+import React from 'react';
+import renderer from 'react-test-renderer';
+import Immutable from 'immutable';
+import LogViewer from '../LogViewer';
+
+describe('LogViewer', () => {
+    it('should render log entries', () => {
+        const entries = Immutable.List([
+            {
+                id: 1,
+                level: 'info',
+                timestamp: '2017-02-03T12:41:36.020Z',
+                message: 'Info message',
+            }, {
+                id: 2,
+                level: 'error',
+                timestamp: '2017-02-03T13:41:36.020Z',
+                message: 'Error message',
+            }, {
+                id: 3,
+                level: 'info',
+                timestamp: '2017-02-03T13:41:36.020Z',
+                message: 'For reference see: https://github.com/example/doc.md or reboot Windows.',
+            },
+        ]);
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
+    });
+});

@@ -34,23 +34,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+const AppReloadDialog = ({
+    isVisible,
+    onConfirmReload,
+    onCancelReload,
+    message,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        onOk={onConfirmReload}
+        onCancel={onCancelReload}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        text={message}
+    />
+);
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+AppReloadDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onConfirmReload: PropTypes.func.isRequired,
+    onCancelReload: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
 };
+
+export default AppReloadDialog;

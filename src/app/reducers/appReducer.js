@@ -34,23 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import { decorateReducer } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+// The default appReducer should not do anything. It just returns the same
+// state as it receives. Not setting an initial state here, as that would
+// override the initial state given by the decorated reducer.
+const appReducer = state => state;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+const decoratedAppReducer = decorateReducer(appReducer, 'App');
+
+// If the reducer is not decorated, then it will return undefined. Redux does not
+// allow that, so we just return an empty object in that case.
+export default (state, action) => (
+    decoratedAppReducer(state, action) || {}
+);

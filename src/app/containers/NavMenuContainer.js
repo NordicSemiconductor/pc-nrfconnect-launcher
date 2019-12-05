@@ -34,23 +34,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import NavMenu from '../../components/NavMenu';
+import * as NavMenuActions from '../actions/navMenuActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { navMenu } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        menuItems: navMenu.menuItems,
+        selectedItemId: navMenu.selectedItemId,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onItemSelected: id => dispatch(NavMenuActions.menuItemSelected(id)),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(NavMenu, 'NavMenu');

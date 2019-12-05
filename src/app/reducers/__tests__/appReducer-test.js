@@ -34,23 +34,25 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import reducer from '../appReducer';
+import { setApp } from '../../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+describe('appReducer', () => {
+    it('should have empty object as initial state if reducer has not been decorated', () => {
+        setApp({});
+        const initialState = reducer(undefined, {});
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+        expect(initialState).toEqual({});
+    });
+
+    it('should use initial state from app if reducer has been decorated', () => {
+        setApp({
+            reduceApp: (state = { foo: 'bar' }) => ({
+                ...state,
+            }),
+        });
+        const initialState = reducer(undefined, {});
+
+        expect(initialState).toEqual({ foo: 'bar' });
+    });
+});

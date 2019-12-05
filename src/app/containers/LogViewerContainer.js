@@ -34,23 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import LogViewer from '../components/LogViewer';
+import * as LogActions from '../actions/logActions';
+import { connect } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+function mapStateToProps(state) {
+    const { log } = state.core;
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
-};
+    return {
+        logEntries: log.logEntries,
+        autoScroll: log.autoScroll,
+        containerHeight: log.containerHeight,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onMount: () => dispatch(LogActions.startReading()),
+        onUnmount: () => dispatch(LogActions.stopReading()),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LogViewer, 'LogViewer');

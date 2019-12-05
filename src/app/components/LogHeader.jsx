@@ -34,23 +34,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../util/apps';
+import React from 'react';
+import PropTypes from 'prop-types';
+import LogHeaderButton from './LogHeaderButton';
+import { decorate } from '../../util/apps';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 
-export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+const LogHeader = ({
+    text,
+    buttons,
+    onButtonClicked,
+    cssClass,
+    headerTextCssClass,
+    headerButtonsCssClass,
+}) => (
+    <div className={cssClass}>
+        <div className={headerTextCssClass}>{text}</div>
+        <div className={headerButtonsCssClass}>
+            {
+                buttons.map(button => (
+                    <DecoratedLogHeaderButton
+                        key={button.id}
+                        title={button.title}
+                        iconCssClass={button.iconCssClass}
+                        isSelected={button.isSelected}
+                        onClick={() => onButtonClicked(button.id)}
+                    />
+                ))
+            }
+        </div>
+    </div>
+);
+
+LogHeader.propTypes = {
+    text: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        iconCssClass: PropTypes.string,
+        isSelected: PropTypes.bool,
+    })),
+    onButtonClicked: PropTypes.func.isRequired,
+    cssClass: PropTypes.string,
+    headerTextCssClass: PropTypes.string,
+    headerButtonsCssClass: PropTypes.string,
 };
+
+LogHeader.defaultProps = {
+    text: 'Log',
+    buttons: [],
+    cssClass: 'core-log-header',
+    headerTextCssClass: 'core-log-header-text',
+    headerButtonsCssClass: 'core-padded-row core-log-header-buttons',
+};
+
+export default LogHeader;
