@@ -41,8 +41,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { remote } from 'electron';
 import isDev from 'electron-is-dev';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+
 import RootContainer from './containers/RootContainer';
-import configureStore from '../legacy/store/configureStore';
 import rootReducer from './reducers';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
@@ -53,7 +56,7 @@ const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
 const net = remote.require('../main/net');
 
-const store = configureStore(rootReducer);
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 const rootElement = React.createElement(RootContainer, { store });
 
 const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');

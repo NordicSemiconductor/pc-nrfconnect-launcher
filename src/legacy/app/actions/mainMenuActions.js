@@ -36,6 +36,7 @@
 
 import { ipcRenderer } from 'electron';
 import { systemReport } from '../../../shared';
+import { decoratedSystemReport } from '../../decoration';
 
 /**
  * Indicates that opening the nRF Connect app launcher has been requested.
@@ -73,6 +74,6 @@ export function showAboutDialog() {
 export function generateSystemReport() {
     return dispatch => {
         dispatch(generateSystemReportAction());
-        dispatch(systemReport());
+        dispatch(systemReport(decoratedSystemReport));
     };
 }

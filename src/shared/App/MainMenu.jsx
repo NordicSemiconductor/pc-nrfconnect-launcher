@@ -49,7 +49,7 @@ const menuItems = [{
 }, {
     id: 2,
     text: 'System report',
-    onClick: systemReport(false),
+    onClick: systemReport(),
 }, {
     id: 3,
     text: 'About',

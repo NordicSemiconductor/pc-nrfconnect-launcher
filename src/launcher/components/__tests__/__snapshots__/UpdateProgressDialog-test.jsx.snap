@@ -70,10 +70,7 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
     </p>
   </ModalBody>
   <ModalFooter>
-    <Spinner
-      className="core-spinner"
-      size={16}
-    />
+    <_default />
   </ModalFooter>
 </Bootstrap(Modal)>
 `;
@@ -196,10 +193,7 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
     </p>
   </ModalBody>
   <ModalFooter>
-    <Spinner
-      className="core-spinner"
-      size={16}
-    />
+    <_default />
   </ModalFooter>
 </Bootstrap(Modal)>
 `;

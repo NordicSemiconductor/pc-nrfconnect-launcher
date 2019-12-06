@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import * as ErrorDialogActions from '../../legacy/actions/errorDialogActions';
+import { ErrorDialogActions } from '../../shared';
 
 export const PROXY_LOGIN_REQUESTED_BY_SERVER = 'PROXY_LOGIN_REQUESTED_BY_SERVER';
 export const PROXY_LOGIN_CANCELLED_BY_USER = 'PROXY_LOGIN_CANCELLED_BY_USER';

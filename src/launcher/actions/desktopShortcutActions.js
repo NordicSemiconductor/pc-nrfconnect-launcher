@@ -47,7 +47,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 } from 'uuid';
 
-import * as ErrorDialogActions from '../../legacy/actions/errorDialogActions';
+import { ErrorDialogActions } from '../../shared';
 
 const config = remote.require('../main/config');
 const fileUtil = remote.require('../main/fileUtil');

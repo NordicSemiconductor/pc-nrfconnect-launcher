@@ -39,7 +39,7 @@ import apps from './appsReducer';
 import autoUpdate from './autoUpdateReducer';
 import proxy from './proxyReducer';
 import settings from './settingsReducer';
-import errorDialog from '../../legacy/reducers/errorDialogReducer';
+import { errorDialogReducer as errorDialog } from '../../shared';
 import releaseNotesDialog from './releaseNotesDialogReducer';
 
 export default combineReducers({

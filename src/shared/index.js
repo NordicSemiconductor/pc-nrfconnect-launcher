@@ -34,16 +34,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import * as ErrorDialogActions from './ErrorDialog/errorDialogActions';
+
+export { ErrorDialogActions };
+
 export { default as App } from './App/App';
+export { default as Logo } from './App/Logo';
 export { default as NavBar } from './App/NavBar';
 export { default as DeviceSelector } from './Device/DeviceSelector';
+export { default as ConfirmationDialog } from './Dialog/ConfirmationDialog';
+export { default as Spinner } from './Dialog/Spinner';
 
+export { default as ErrorDialog } from './ErrorDialog/ErrorDialog';
+
+export { default as errorDialogReducer } from './ErrorDialog/errorDialogReducer';
 export { default as coreReducer } from './coreReducer';
 export { logger, getLogFilePath, logBuffer } from './logging';
 
 export {
     setAppDirs, getAppDir, getAppDataDir, getAppLogDir, getUserDataDir,
 } from './appDirs';
+
 
 // The exports below can probably be removed when we remove support for legacy apps
 export { openFileInDefaultApplication, openUrlInDefaultBrowser } from './open';

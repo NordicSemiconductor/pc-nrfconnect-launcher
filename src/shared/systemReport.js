@@ -42,7 +42,6 @@ import pretty from 'prettysize';
 import { getAppDataDir } from './appDirs';
 import { logger } from './logging';
 import { openFileInDefaultApplication } from './open';
-import { decoratedSystemReport } from '../legacy/decoration';
 
 /* eslint-disable object-curly-newline */
 
@@ -87,12 +86,13 @@ async function report() {
     };
 }
 
-export default function systemReport(doDecoration = true) {
+// The parameter decoratedSystemReport can be removed when support for legacy apps is dropped
+export default function systemReport(decoratedSystemReport = coreReport => coreReport) {
     return async () => {
         logger.info('Generating system report...');
 
         const { timestamp, coreReport } = await report();
-        const decoratedReport = doDecoration ? decoratedSystemReport(coreReport) : coreReport;
+        const decoratedReport = decoratedSystemReport(coreReport);
         const finalReport = decoratedReport.replace(/\n/g, EOL);
 
         const fileName = `nrfconnect-system-report-${timestamp}.txt`;
