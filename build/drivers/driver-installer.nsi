@@ -13,10 +13,7 @@ InstallDir "$TEMP\nrfconnect-driver-install"
 !include LogicLib.nsh
 !include "x64.nsh"
 
-SilentInstall normal
 RequestExecutionLevel admin
-SetDetailsView show
-LogSet on
 
 ;------------------------------
 ;The stuff to copy and install.

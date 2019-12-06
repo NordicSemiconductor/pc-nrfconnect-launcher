@@ -4,9 +4,11 @@
 ; For ExecShellWaitEx:
 !include 'StdUtils.nsh'
 
-SetDetailsView show
-LogSet on
-LogText "Starting install"
+!macro preInit
+  SetDetailsView show
+  LogSet on
+  LogText "Starting install"
+!macroend
 
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
