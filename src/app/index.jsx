@@ -41,14 +41,10 @@ import './module-loader';
 
 import React from 'react';
 import { remote } from 'electron';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../store/configureStore';
-import {
-    initAppDirectories, getAppLogDir, loadApp, invokeAppFn,
-} from '../util/apps';
-import rootReducer from './reducers';
+import ReactDOM from 'react-dom';
+import { initAppDirectories, getAppLogDir, loadApp } from '../util/apps';
 import { core } from '../api';
+import legacyRenderer from './legacyRenderer';
 
 const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
@@ -63,37 +59,33 @@ const removeLoaderElement = () => {
     }
 };
 
-const isOld = app => typeof app === 'object';
+const isLegacy = app => typeof app === 'object';
 
-const getRootElement = () => document.getElementById('webapp');
+const renderer = (App, container, onLoaded) => {
+    ReactDOM.render(<App />, container, onLoaded);
+};
 
-const rendererForClassicApps = app => {
-    const store = configureStore(rootReducer, app);
-    invokeAppFn('onInit', store.dispatch, store.getState);
-    render(<RootContainer store={store} />, getRootElement(), () => {
-        removeLoaderElement();
-        invokeAppFn('onReady', store.dispatch, store.getState);
+const render = app => {
+    const doRender = isLegacy(app)
+        ? legacyRenderer
+        : renderer;
+
+    doRender(app, document.getElementById('webapp'), removeLoaderElement);
+};
+
+const showLoadingError = error => {
+    console.error(error);
+    remote.dialog.showMessageBox({
+        type: 'error',
+        message: error.message,
     });
 };
 
-const rendererForNewApps = App => {
-    render(<App />, getRootElement(), () => {
-        removeLoaderElement();
-    });
-};
+initAppDirectories(appPath)
+    .then(() => {
+        core.logger.addFileTransport(getAppLogDir());
+        const app = loadApp(appPath);
 
-initAppDirectories(appPath).then(() => {
-    core.logger.addFileTransport(getAppLogDir());
-
-    const app = loadApp(appPath);
-
-    const renderApp = isOld(app) ? rendererForClassicApps : rendererForNewApps;
-    renderApp(app);
-})
-    .catch(error => {
-        console.error(error);
-        remote.dialog.showMessageBox({
-            type: 'error',
-            message: error.message,
-        });
-    });
+        render(app);
+    })
+    .catch(showLoadingError);
