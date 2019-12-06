@@ -37,7 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import logo from '../../../resources/nordic-logo-white-icon-only.png';
-import { openUrlInDefaultBrowser } from '../../util/fileUtil';
+import { openUrlInDefaultBrowser } from '../../shared';
 
 const Logo = ({
     src,

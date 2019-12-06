@@ -39,8 +39,9 @@ import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 
 import { logger, getLogFilePath } from '../logging';
+import { openFileInDefaultApplication } from '../open';
+
 import { clear, toggleAutoScroll } from './logActions';
-import { openFileInDefaultApplication } from '../../util/fileUtil';
 import LogHeaderButton from './LogHeaderButton';
 
 import '../../../resources/css/brand19/log-header.scss';

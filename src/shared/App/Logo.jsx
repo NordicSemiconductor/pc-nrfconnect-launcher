@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import { openUrlInDefaultBrowser } from '../../util/fileUtil';
+import { openUrlInDefaultBrowser } from '../open';
 import logo from '../../../resources/nordic-logo-white-icon-only.png';
 import '../../../resources/css/brand19/logo.scss';
 

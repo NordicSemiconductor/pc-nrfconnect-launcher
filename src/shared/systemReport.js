@@ -39,9 +39,9 @@ import path from 'path';
 import fs from 'fs';
 import { EOL } from 'os';
 import pretty from 'prettysize';
-import { getAppDataDir } from './appLoader';
-import { logger } from '../shared/logging';
-import { openFileInDefaultApplication } from './fileUtil';
+import { getAppDataDir } from './appDirs';
+import { logger } from './logging';
+import { openFileInDefaultApplication } from './open';
 import { decoratedSystemReport } from '../legacy/decoration';
 
 /* eslint-disable object-curly-newline */

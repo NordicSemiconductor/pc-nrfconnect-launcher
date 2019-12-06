@@ -39,7 +39,7 @@ import { ipcRenderer } from 'electron';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import MenuItem from './HotkeyedMenuItem';
-import systemReport from '../../util/systemReport';
+import systemReport from '../systemReport';
 
 const menuItems = [{
     id: 1,

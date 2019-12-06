@@ -40,4 +40,11 @@ export { default as DeviceSelector } from './Device/DeviceSelector';
 
 export { default as coreReducer } from './coreReducer';
 export { logger, getLogFilePath, logBuffer } from './logging';
-export { getAppFile } from '../util/appLoader';
+
+export {
+    setAppDirs, getAppDir, getAppDataDir, getAppLogDir, getUserDataDir,
+} from './appDirs';
+
+// The exports below can probably be removed when we remove support for legacy apps
+export { openFileInDefaultApplication, openUrlInDefaultBrowser } from './open';
+export { default as systemReport } from './systemReport';

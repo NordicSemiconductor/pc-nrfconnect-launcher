@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import systemReport from '../../../util/systemReport';
+import { systemReport } from '../../../shared';
 
 /**
  * Indicates that opening the nRF Connect app launcher has been requested.

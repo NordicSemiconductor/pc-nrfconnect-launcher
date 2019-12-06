@@ -34,76 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import fs from 'fs';
-import os from 'os';
 import path from 'path';
-import { shell } from 'electron';
-import childProcess from 'child_process';
+import fs from 'fs';
+import { mkdirIfNotExists } from '../main/mkdir';
+import { setAppDirs, getUserDataDir } from '../shared';
 
 /**
- * Load a node module dynamically.
+ * Initialize app directory paths and ensure that they are created.
+ * Creates:
+ * .../<userDataDir>/<appName>/
+ * .../<userDataDir>/<appName>/logs/
  *
- * @param {string} modulePath path too the module directory.
- * @returns {Object} the object that the module exports.
+ * @param {string} appPath the filesystem path of the app to load.
+ * @returns {Promise} resolved is all directories are present.
  */
-function loadModule(modulePath) {
-    const moduleManifest = path.join(modulePath, 'package.json');
+function initAppDirectories(appPath) {
+    const appDir = appPath;
+    const appBaseName = path.basename(appPath);
+    const userDataDir = getUserDataDir();
+    const appDataDir = path.join(userDataDir, appBaseName);
+    const appLogDir = path.join(appDataDir, 'logs');
+    setAppDirs(appDir, appDataDir, appLogDir);
+    return new Promise((resolve, reject) => (
+        mkdirIfNotExists(appDataDir).catch(() => {
+            reject(new Error(`Failed to create '${appDataDir}'.`));
+        })
+            .then(() => mkdirIfNotExists(appLogDir).catch(() => {
+                reject(new Error(`Failed to create '${appLogDir}'.`));
+            }))
+            .then(resolve)
+    ));
+}
+
+/**
+ * Load an app from the given path dynamically.
+ *
+ * @param {string} appPath the filesystem path of the app to load.
+ * @returns {Object} The loaded app object.
+ */
+function loadApp(appPath) {
+    const moduleManifest = path.join(appPath, 'package.json');
 
     if (!fs.existsSync(moduleManifest)) {
-        console.log('Trying to load module, but package.json',
-            `is missing in ${modulePath}.`);
+        console.log(`Trying to load module, but package.json is missing in ${appPath}.`);
         return null;
     }
 
     // Using window.require instead of require, so that webpack
     // ignores it when bundling core
-    return window.require(modulePath);
-}
-
-/**
- * Open a file in the default text application, depending on the user's OS.
- *
- * @param {string} filePath path to the file to open.
- * @param {function} callback signature: (error) => {}.
- * @returns {void}
- */
-function openFileInDefaultApplication(filePath, callback) {
-    fs.exists(filePath, exists => {
-        if (!exists) {
-            if (callback) {
-                callback(new Error(`Could not find file at path: ${filePath}`));
-            }
-            return;
-        }
-
-        const escapedPath = filePath.replace(/ /g, '\\ ');
-
-        // Could not find a method that works on all three platforms:
-        // * shell.openItem works on Windows and Linux but not on OSX
-        // * childProcess.execSync works on OSX but not on Windows
-        if (os.type() === 'Darwin') {
-            childProcess.execSync(`open ${escapedPath}`);
-        } else {
-            shell.openItem(escapedPath);
-        }
-        if (callback) {
-            callback();
-        }
-    });
-}
-
-/**
- * Open a URL in the user's default web browser.
- *
- * @param {string} url The URL to open.
- * @returns {void}
- */
-function openUrlInDefaultBrowser(url) {
-    shell.openExternal(url);
+    return window.require(appPath);
 }
 
 export {
-    loadModule,
-    openFileInDefaultApplication,
-    openUrlInDefaultBrowser,
+    initAppDirectories,
+    loadApp,
 };

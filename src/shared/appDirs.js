@@ -34,54 +34,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
 import { remote } from 'electron';
-import { loadModule } from './fileUtil';
-import { mkdirIfNotExists } from '../main/mkdir';
 
 const getUserDataDir = () => remote.getGlobal('userDataDir');
 
-// Directory of the currently loaded app.
 let appDir;
-
-// Directories used by currently loaded app.
 let appDataDir;
 let appLogDir;
 
-/**
- * Initialize app directory paths and ensure that they are created.
- * Creates:
- * .../<userDataDir>/<appName>/
- * .../<userDataDir>/<appName>/logs/
- *
- * @param {string} appPath the filesystem path of the app to load.
- * @returns {Promise} resolved is all directories are present.
- */
-function initAppDirectories(appPath) {
-    appDir = appPath;
-    const appBaseName = path.basename(appPath);
-    const userDataDir = getUserDataDir();
-    appDataDir = path.join(userDataDir, appBaseName);
-    appLogDir = path.join(appDataDir, 'logs');
-    return new Promise((resolve, reject) => (
-        mkdirIfNotExists(appDataDir).catch(() => {
-            reject(new Error(`Failed to create '${appDataDir}'.`));
-        })
-            .then(() => mkdirIfNotExists(appLogDir).catch(() => {
-                reject(new Error(`Failed to create '${appLogDir}'.`));
-            }))
-            .then(resolve)
-    ));
-}
-
-/**
- * Load an app from the given path.
- *
- * @param {string} appPath the filesystem path of the app to load.
- * @returns {Object} The loaded app object.
- */
-function loadApp(appPath) {
-    return loadModule(appPath);
+function setAppDirs(newAppDir, newAppDataDir, newAppLogDir) {
+    appDir = newAppDir;
+    appDataDir = newAppDataDir;
+    appLogDir = newAppLogDir;
 }
 
 /**
@@ -91,16 +55,6 @@ function loadApp(appPath) {
  */
 function getAppDir() {
     return appDir;
-}
-
-/**
- * Get the filesystem path of a file for the currently loaded app.
- *
- * @param {string} filename relative name of file in the app directory
- * @returns {string|undefined} Absolute path of file.
- */
-function getAppFile(filename) {
-    return path.resolve(getAppDir(), filename);
 }
 
 /**
@@ -122,10 +76,8 @@ function getAppLogDir() {
 }
 
 export {
-    initAppDirectories,
-    loadApp,
+    setAppDirs,
     getAppDir,
-    getAppFile,
     getAppDataDir,
     getAppLogDir,
     getUserDataDir,

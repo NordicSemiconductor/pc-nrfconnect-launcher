@@ -35,9 +35,10 @@
  */
 
 import { ipcRenderer } from 'electron';
-import { logger, logBuffer, getLogFilePath } from '../../../shared';
+import {
+    logger, logBuffer, getLogFilePath, openFileInDefaultApplication,
+} from '../../../shared';
 import { getAppDataDir } from '../../api/core';
-import { openFileInDefaultApplication } from '../../../util/fileUtil';
 
 /**
  * Indicates that adding of log entries have been requested. This is dispatched

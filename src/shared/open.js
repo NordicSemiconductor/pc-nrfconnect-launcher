@@ -34,23 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-} from '../../../shared';
+import fs from 'fs';
+import os from 'os';
+import { shell } from 'electron';
+import childProcess from 'child_process';
 
-import {
-    startWatchingDevices,
-    stopWatchingDevices,
-} from '../../app/actions/deviceActions';
+/**
+ * Open a file in the default text application, depending on the user's OS.
+ *
+ * @param {string} filePath path to the file to open.
+ * @param {function} callback signature: (error) => {}.
+ * @returns {void}
+ */
+function openFileInDefaultApplication(filePath, callback) {
+    fs.exists(filePath, exists => {
+        if (!exists) {
+            if (callback) {
+                callback(new Error(`Could not find file at path: ${filePath}`));
+            }
+            return;
+        }
+
+        const escapedPath = filePath.replace(/ /g, '\\ ');
+
+        // Could not find a method that works on all three platforms:
+        // * shell.openItem works on Windows and Linux but not on OSX
+        // * childProcess.execSync works on OSX but not on Windows
+        if (os.type() === 'Darwin') {
+            childProcess.execSync(`open ${escapedPath}`);
+        } else {
+            shell.openItem(escapedPath);
+        }
+        if (callback) {
+            callback();
+        }
+    });
+}
+
+/**
+ * Open a URL in the user's default web browser.
+ *
+ * @param {string} url The URL to open.
+ * @returns {void}
+ */
+function openUrlInDefaultBrowser(url) {
+    shell.openExternal(url);
+}
 
 export {
-    getAppDir,
-    getAppDataDir,
-    getAppLogDir,
-    getUserDataDir,
-    startWatchingDevices,
-    stopWatchingDevices,
+    openFileInDefaultApplication,
+    openUrlInDefaultBrowser,
 };

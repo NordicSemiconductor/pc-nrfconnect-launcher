@@ -36,7 +36,7 @@
 
 import { ipcRenderer } from 'electron';
 import { logger, logBuffer } from '../logging';
-import { getAppDataDir } from '../../util/appLoader';
+import { getAppDataDir } from '../appDirs';
 import { addEntries } from './logActions';
 
 const LOG_UPDATE_INTERVAL = 400;

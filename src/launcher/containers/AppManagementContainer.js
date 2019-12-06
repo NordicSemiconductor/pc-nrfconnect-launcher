@@ -37,7 +37,7 @@
 import { connect } from 'react-redux';
 import AppManagementView from '../components/AppManagementView';
 import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../util/fileUtil';
+import { openUrlInDefaultBrowser } from '../../shared';
 import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 

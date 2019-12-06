@@ -38,7 +38,7 @@ import { connect } from 'react-redux';
 import { remote } from 'electron';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
-import { openUrlInDefaultBrowser } from '../../util/fileUtil';
+import { openUrlInDefaultBrowser } from '../../shared';
 
 const config = remote.require('../main/config');
 
