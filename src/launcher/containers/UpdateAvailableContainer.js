@@ -40,7 +40,7 @@ import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import { openUrlInDefaultBrowser } from '../../util/fileUtil';
 
-const config = remote.require('./main/config');
+const config = remote.require('../main/config');
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;

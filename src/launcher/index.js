@@ -49,9 +49,9 @@ import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
 import '../../resources/css/launcher.scss';
 
-const config = remote.require('./main/config');
-const settings = remote.require('./main/settings');
-const net = remote.require('./main/net');
+const config = remote.require('../main/config');
+const settings = remote.require('../main/settings');
+const net = remote.require('../main/net');
 
 const store = configureStore(rootReducer);
 const rootElement = React.createElement(RootContainer, { store });

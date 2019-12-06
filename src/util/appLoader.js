@@ -37,7 +37,7 @@
 import path from 'path';
 import { remote } from 'electron';
 import { loadModule } from './fileUtil';
-import { mkdirIfNotExists } from '../../main/mkdir';
+import { mkdirIfNotExists } from '../main/mkdir';
 
 const getUserDataDir = () => remote.getGlobal('userDataDir');
 

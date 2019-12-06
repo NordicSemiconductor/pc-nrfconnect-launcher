@@ -47,7 +47,7 @@ export const AUTO_UPDATE_DOWNLOAD_CANCELLED = 'AUTO_UPDATE_DOWNLOAD_CANCELLED';
 export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
 export const AUTO_UPDATE_ERROR = 'AUTO_UPDATE_ERROR';
 
-const { autoUpdater, CancellationToken } = remote.require('./main/autoUpdate');
+const { autoUpdater, CancellationToken } = remote.require('../main/autoUpdate');
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 

@@ -61,11 +61,11 @@ const {
 } = require('electron');
 const { argv } = require('yargs');
 
-const config = require('./main/config');
-const windows = require('./main/windows');
-const apps = require('./main/apps');
-const { createMenu } = require('./main/menu');
-const handleDevtoolsRequest = require('./main/devtools');
+const config = require('./config');
+const windows = require('./windows');
+const apps = require('./apps');
+const { createMenu } = require('./menu');
+const handleDevtoolsRequest = require('./devtools');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));

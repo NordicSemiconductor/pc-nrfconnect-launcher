@@ -37,11 +37,11 @@
 import { ipcRenderer, remote } from 'electron';
 import * as ErrorDialogActions from '../../actions/errorDialogActions';
 
-const net = remote.require('./main/net');
+const net = remote.require('../main/net');
 const fs = remote.require('fs');
 
-const mainApps = remote.require('./main/apps');
-const config = remote.require('./main/config');
+const mainApps = remote.require('../main/apps');
+const config = remote.require('../main/config');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';

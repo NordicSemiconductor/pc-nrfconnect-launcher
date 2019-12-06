@@ -39,8 +39,8 @@ import * as ErrorDialogActions from '../../actions/errorDialogActions';
 import * as AppsActions from './appsActions';
 import * as AutoUpdateActions from './autoUpdateActions';
 
-const settings = remote.require('./main/settings');
-const mainApps = remote.require('./main/apps');
+const settings = remote.require('../main/settings');
+const mainApps = remote.require('../main/apps');
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';

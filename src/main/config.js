@@ -38,7 +38,7 @@
 
 const electronApp = require('electron').app;
 const path = require('path');
-const packageJson = require('../package.json');
+const packageJson = require('../../package.json');
 
 let version;
 let electronRootPath;

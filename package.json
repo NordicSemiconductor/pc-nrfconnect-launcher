@@ -6,7 +6,7 @@
         "type": "git",
         "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-core.git"
     },
-    "main": "index.js",
+    "main": "src/main",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "postinstall": "npm run get-jlink && npm run fix-serialport",
@@ -15,7 +15,7 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint": "nrfconnect-scripts lint main src index.js",
+        "lint": "nrfconnect-scripts lint src",
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
         "test-watch": "jest --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
@@ -41,15 +41,14 @@
         ],
         "files": [
             "dist/",
-            "main/",
+            "src/main/",
             "node_modules/",
             "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
             "resources/*.svg",
-            "resources/mac/",
-            "index.js"
+            "resources/mac/"
         ],
         "directories": {
             "output": "release"

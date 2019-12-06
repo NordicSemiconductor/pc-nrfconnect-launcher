@@ -49,8 +49,8 @@ import { v4 } from 'uuid';
 
 import * as ErrorDialogActions from '../../actions/errorDialogActions';
 
-const config = remote.require('./main/config');
-const fileUtil = remote.require('./main/fileUtil');
+const config = remote.require('../main/config');
+const fileUtil = remote.require('../main/fileUtil');
 
 const mode = (
     fs.constants.S_IRWXU
