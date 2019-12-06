@@ -4,6 +4,10 @@
 ; For ExecShellWaitEx:
 !include 'StdUtils.nsh'
 
+SetDetailsView show
+LogSet on
+LogText "Starting install"
+
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
 !macro customInstall
@@ -15,6 +19,7 @@
   ; Put the files to the output directory.
   File "${BUILD_RESOURCES_DIR}\drivers\nrfconnect-driver-installer.exe"
 
+  LogText "Running ${BUILD_RESOURCES_DIR}\drivers\nrfconnect-driver-installer.exe"
   ExecShell 'runas' '"$INSTDIR\nrfconnect-driver-installer.exe"'
 
   ; ===============================================================
@@ -22,6 +27,7 @@
   ; ===============================================================
 
   ; Adding Visual C++ Redistributable for Visual Studio 2015
+  LogText "Running ${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"
   File "${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"
 
   ; Running installer and waiting before continuing
@@ -52,6 +58,7 @@
 
   ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
     ; J-Link is older than the bundled version. Run installer.
+    LogText "Running JLink installer since installed version is older than new version"
     StrCpy $0 "$INSTDIR\${JLinkInstaller}"
     ${StdUtils.ExecShellWaitEx} $R0 $R1 $0 'runas' '/passive /norestart'
   ${EndIf}
