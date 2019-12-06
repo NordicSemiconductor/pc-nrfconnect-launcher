@@ -42,7 +42,7 @@ import { render } from 'react-dom';
 import { remote } from 'electron';
 import isDev from 'electron-is-dev';
 import RootContainer from './containers/RootContainer';
-import configureStore from '../store/configureStore';
+import configureStore from '../legacy/store/configureStore';
 import rootReducer from './reducers';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';

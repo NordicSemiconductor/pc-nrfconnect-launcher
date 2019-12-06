@@ -60,15 +60,15 @@ hostedModules['redux-thunk'] = require('redux-thunk');
 
 hostedModules.usb = require('usb');
 
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../api');
+const bleDriverJs = require('pc-ble-driver-js');
 
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
+const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
+
+hostedModules.serialport = require('serialport');
+hostedModules.electron = require('electron');
+hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
+hostedModules['nrfconnect/core'] = require('../legacy/api');
 hostedModules['nrfconnect/shared'] = require('../shared');
 
 hostedModules['nrf-device-setup'] = require('nrf-device-setup');

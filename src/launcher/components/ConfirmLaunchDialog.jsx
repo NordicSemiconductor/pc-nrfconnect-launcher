@@ -37,7 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ConfirmationDialog from '../../components/ConfirmationDialog';
+import ConfirmationDialog from '../../legacy/components/ConfirmationDialog';
 
 const ConfirmLaunchDialog = ({
     isVisible,

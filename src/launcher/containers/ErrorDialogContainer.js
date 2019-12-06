@@ -35,8 +35,8 @@
  */
 
 import { connect } from 'react-redux';
-import ErrorDialog from '../../components/ErrorDialog';
-import * as ErrorDialogActions from '../../actions/errorDialogActions';
+import ErrorDialog from '../../legacy/components/ErrorDialog';
+import * as ErrorDialogActions from '../../legacy/actions/errorDialogActions';
 
 function mapStateToProps(state) {
     const { errorDialog } = state;

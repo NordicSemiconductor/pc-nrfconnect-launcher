@@ -37,7 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ConfirmationDialog from '../../components/ConfirmationDialog';
+import ConfirmationDialog from '../../legacy/components/ConfirmationDialog';
 
 /**
  * Dialog that is shown if an nRF Connect core update is available. The user

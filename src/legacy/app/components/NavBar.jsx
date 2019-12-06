@@ -35,38 +35,45 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import Logo from '../../components/Logo';
+import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
+import { decorate, getAppConfig } from '../../decoration';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+const DecoratedLogo = decorate(Logo, 'Logo');
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../legacy/components/Logo';
+function NavBar({
+    cssClass,
+    navSectionCssClass,
+}) {
+    const appConfig = getAppConfig();
+    return (
+        <div className={cssClass}>
+            <MainMenuContainer />
+            <div className={navSectionCssClass}>
+                {
+                    appConfig.selectorTraits
+                        ? <DeviceSelectorContainer traits={appConfig.selectorTraits} />
+                        : <SerialPortSelectorContainer />
+                }
+            </div>
+            <NavMenuContainer />
+            <DecoratedLogo />
+        </div>
+    );
+}
 
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+NavBar.propTypes = {
+    cssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
+};
+
+NavBar.defaultProps = {
+    cssClass: 'core-nav-bar',
+    navSectionCssClass: 'core-nav-section core-padded-row',
+};
+
+export default NavBar;

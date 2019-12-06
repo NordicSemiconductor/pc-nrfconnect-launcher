@@ -34,39 +34,57 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import LogHeader from '../components/LogHeader';
+import * as LogActions from '../actions/logActions';
+import { connect } from '../../decoration';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+const OPEN_LOGFILE_BUTTON_ID = 'openLogFileButton';
+const CLEAR_LOG_BUTTON_ID = 'clearLogButton';
+const TOGGLE_AUTO_SCROLL_BUTTON_ID = 'toggleAutoScrollButton';
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../legacy/components/Logo';
+function mapStateToProps(state) {
+    const { log } = state.core;
 
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+    return {
+        buttons: [
+            {
+                id: OPEN_LOGFILE_BUTTON_ID,
+                title: 'Open log file',
+                iconCssClass: 'mdi mdi-file-document-box-outline',
+            },
+            {
+                id: CLEAR_LOG_BUTTON_ID,
+                title: 'Clear log',
+                iconCssClass: 'mdi mdi-trash-can-outline',
+            },
+            {
+                id: TOGGLE_AUTO_SCROLL_BUTTON_ID,
+                title: 'Scroll automatically',
+                iconCssClass: 'mdi mdi-arrow-down',
+                isSelected: log.autoScroll,
+            },
+        ],
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onButtonClicked: id => {
+            switch (id) {
+                case OPEN_LOGFILE_BUTTON_ID:
+                    return dispatch(LogActions.openLogFile());
+                case CLEAR_LOG_BUTTON_ID:
+                    return dispatch(LogActions.clear());
+                case TOGGLE_AUTO_SCROLL_BUTTON_ID:
+                    return dispatch(LogActions.toggleAutoScroll());
+                default:
+                    return {};
+            }
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LogHeader, 'LogHeader');

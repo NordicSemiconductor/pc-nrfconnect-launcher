@@ -43,7 +43,7 @@ import React from 'react';
 import { remote } from 'electron';
 import ReactDOM from 'react-dom';
 import { initAppDirectories, getAppLogDir, loadApp } from '../util/appLoader';
-import legacyRenderer from './legacyRenderer';
+import legacyRenderer from '../legacy/legacyRenderer';
 import { logger } from '../shared';
 
 const params = new URL(window.location).searchParams;

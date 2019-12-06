@@ -34,39 +34,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import serialPort from 'serialport';
+import bleDriverJs from 'pc-ble-driver-js';
+import nrfjprog from 'pc-nrfjprog-js';
+import usb from 'usb';
+import electron from 'electron';
+import { logger } from '../../shared';
+import * as core from './core';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../legacy/components/Logo';
-
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+export {
+    bleDriver,
+    nrfjprog,
+    usb,
+    serialPort,
+    logger,
+    electron,
+    core,
+};

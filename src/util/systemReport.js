@@ -42,7 +42,7 @@ import pretty from 'prettysize';
 import { getAppDataDir } from './appLoader';
 import { logger } from '../shared/logging';
 import { openFileInDefaultApplication } from './fileUtil';
-import { decoratedSystemReport } from './decoration';
+import { decoratedSystemReport } from '../legacy/decoration';
 
 /* eslint-disable object-curly-newline */
 

@@ -34,39 +34,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import reducer from '../appReducer';
+import { setApp, clearDecorationCache } from '../../../decoration';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+beforeEach(clearDecorationCache);
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../legacy/components/Logo';
+describe('appReducer', () => {
+    it('should have empty object as initial state if reducer has not been decorated', () => {
+        setApp({});
+        const initialState = reducer(undefined, {});
 
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+        expect(initialState).toEqual({});
+    });
+
+    it('should use initial state from app if reducer has been decorated', () => {
+        setApp({
+            reduceApp: (state = { foo: 'bar' }) => ({
+                ...state,
+            }),
+        });
+        const initialState = reducer(undefined, {});
+
+        expect(initialState).toEqual({ foo: 'bar' });
+    });
+});

@@ -34,39 +34,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+jest.mock('react-infinite', () => 'Infinite');
+jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
+
+// Do not decorate components
+jest.mock('../../../decoration', () => ({
+    decorate: component => component,
+}));
+
 import React from 'react';
+import renderer from 'react-test-renderer';
+import Immutable from 'immutable';
+import LogViewer from '../LogViewer';
 
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
-
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import Logo from '../../legacy/components/Logo';
-
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialogContainer />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+describe('LogViewer', () => {
+    it('should render log entries', () => {
+        const entries = Immutable.List([
+            {
+                id: 1,
+                level: 'info',
+                timestamp: '2017-02-03T12:41:36.020Z',
+                message: 'Info message',
+            }, {
+                id: 2,
+                level: 'error',
+                timestamp: '2017-02-03T13:41:36.020Z',
+                message: 'Error message',
+            }, {
+                id: 3,
+                level: 'info',
+                timestamp: '2017-02-03T13:41:36.020Z',
+                message: 'For reference see: https://github.com/example/doc.md or reboot Windows.',
+            },
+        ]);
+        expect(renderer.create(
+            <LogViewer
+                logEntries={entries}
+                onOpenLogFile={() => {}}
+                onClearLog={() => {}}
+                onToggleAutoScroll={() => {}}
+                autoScroll
+            />,
+        )).toMatchSnapshot();
+    });
+});
