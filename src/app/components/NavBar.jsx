@@ -41,7 +41,7 @@ import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
 import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 import NavMenuContainer from '../containers/NavMenuContainer';
 import MainMenuContainer from '../containers/MainMenuContainer';
-import { decorate, getAppConfig } from '../../util/apps';
+import { decorate, getAppConfig } from '../../util/decoration';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 

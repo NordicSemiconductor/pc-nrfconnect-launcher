@@ -35,7 +35,7 @@
  */
 
 import MainView from '../components/MainView';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps() {
     return {};

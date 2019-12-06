@@ -35,20 +35,7 @@
  */
 
 import React from 'react';
-import path from 'path';
-import { remote } from 'electron';
 import { connect as reduxConnect } from 'react-redux';
-import { loadModule } from './fileUtil';
-import { mkdirIfNotExists } from '../../main/mkdir';
-
-const getUserDataDir = () => remote.getGlobal('userDataDir');
-
-// Directory of the currently loaded app.
-let appDir;
-
-// Directories used by currently loaded app.
-let appDataDir;
-let appLogDir;
 
 // The object exported by the currently loaded app.
 let app;
@@ -57,40 +44,16 @@ let app;
 const decoratedComponents = {};
 
 /**
- * Initialize app directory paths and ensure that they are created.
- * Creates:
- * .../<userDataDir>/<appName>/
- * .../<userDataDir>/<appName>/logs/
+ * Clear the decoreation cache. Used when loading
+ * a real app from the file system is not possible, e.g. during unit
+ * testing.
  *
- * @param {string} appPath the filesystem path of the app to load.
- * @returns {Promise} resolved is all directories are present.
+ * @returns {void}
  */
-function initAppDirectories(appPath) {
-    appDir = appPath;
-    const appBaseName = path.basename(appPath);
-    const userDataDir = getUserDataDir();
-    appDataDir = path.join(userDataDir, appBaseName);
-    appLogDir = path.join(appDataDir, 'logs');
-    return new Promise((resolve, reject) => (
-        mkdirIfNotExists(appDataDir).catch(() => {
-            reject(new Error(`Failed to create '${appDataDir}'.`));
-        })
-            .then(() => mkdirIfNotExists(appLogDir).catch(() => {
-                reject(new Error(`Failed to create '${appLogDir}'.`));
-            }))
-            .then(resolve)
-    ));
-}
-
-/**
- * Load an app from the given path.
- *
- * @param {string} appPath the filesystem path of the app to load.
- * @returns {Object} The loaded app object.
- */
-function loadApp(appPath) {
-    app = loadModule(appPath);
-    return app;
+function clearDecorationCache() {
+    Object.keys(decoratedComponents).forEach(key => {
+        delete decoratedComponents[key];
+    });
 }
 
 /**
@@ -103,46 +66,6 @@ function loadApp(appPath) {
  */
 function setApp(appObj) {
     app = appObj;
-    Object.keys(decoratedComponents).forEach(key => {
-        delete decoratedComponents[key];
-    });
-}
-
-/**
- * Get the filesystem path of the currently loaded app.
- *
- * @returns {string|undefined} Absolute path of current app.
- */
-function getAppDir() {
-    return appDir;
-}
-
-/**
- * Get the filesystem path of a file for the currently loaded app.
- *
- * @param {string} filename relative name of file in the app directory
- * @returns {string|undefined} Absolute path of file.
- */
-function getAppFile(filename) {
-    return path.resolve(getAppDir(), filename);
-}
-
-/**
- * Get the filesystem path of the data directory of currently loaded app.
- *
- * @returns {string|undefined} Absolute path of data directory of the current app.
- */
-function getAppDataDir() {
-    return appDataDir;
-}
-
-/**
- * Get the filesystem path of the log directory of currently loaded app.
- *
- * @returns {string|undefined} Absolute path of data directory of the current app.
- */
-function getAppLogDir() {
-    return appLogDir;
 }
 
 /**
@@ -316,18 +239,12 @@ function connect(coreMapStateFn, coreMapDispatchFn, mergeProps, options = {}) {
 }
 
 export {
-    initAppDirectories,
-    loadApp,
     setApp,
+    clearDecorationCache,
     decorateReducer,
     decorate,
     decoratedSystemReport,
     connect,
-    getAppDir,
-    getAppFile,
-    getAppDataDir,
-    getAppLogDir,
     getAppConfig,
-    getUserDataDir,
     invokeAppFn,
 };

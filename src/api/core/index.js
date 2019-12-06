@@ -39,7 +39,7 @@ import {
     getAppDataDir,
     getAppLogDir,
     getUserDataDir,
-} from '../../util/apps';
+} from '../../util/appLoader';
 
 import {
     startWatchingDevices,

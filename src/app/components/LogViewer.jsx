@@ -40,7 +40,7 @@ import Infinite from 'react-infinite';
 import { Iterable } from 'immutable';
 import LogHeaderContainer from '../containers/LogHeaderContainer';
 import LogEntry from './LogEntry';
-import { decorate } from '../../util/apps';
+import { decorate } from '../../util/decoration';
 
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 

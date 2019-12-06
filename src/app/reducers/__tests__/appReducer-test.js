@@ -35,7 +35,9 @@
  */
 
 import reducer from '../appReducer';
-import { setApp } from '../../../util/apps';
+import { setApp, clearDecorationCache } from '../../../util/decoration';
+
+beforeEach(clearDecorationCache);
 
 describe('appReducer', () => {
     it('should have empty object as initial state if reducer has not been decorated', () => {

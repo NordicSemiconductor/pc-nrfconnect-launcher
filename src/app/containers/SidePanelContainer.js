@@ -35,7 +35,7 @@
  */
 
 import SidePanel from '../components/SidePanel';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps() {
     return {};

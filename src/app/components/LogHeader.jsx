@@ -37,7 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LogHeaderButton from './LogHeaderButton';
-import { decorate } from '../../util/apps';
+import { decorate } from '../../util/decoration';
 
 const DecoratedLogHeaderButton = decorate(LogHeaderButton, 'LogHeaderButton');
 

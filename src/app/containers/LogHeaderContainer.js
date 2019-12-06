@@ -36,7 +36,7 @@
 
 import LogHeader from '../components/LogHeader';
 import * as LogActions from '../actions/logActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 const OPEN_LOGFILE_BUTTON_ID = 'openLogFileButton';
 const CLEAR_LOG_BUTTON_ID = 'clearLogButton';

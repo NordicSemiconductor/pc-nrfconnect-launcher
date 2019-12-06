@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { decorateReducer } from '../../util/apps';
+import { decorateReducer } from '../../util/decoration';
 
 // The default appReducer should not do anything. It just returns the same
 // state as it receives. Not setting an initial state here, as that would

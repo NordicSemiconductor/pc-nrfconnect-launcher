@@ -44,7 +44,7 @@ import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
 import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
 import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import { decorate } from '../../util/apps';
+import { decorate } from '../../util/decoration';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 

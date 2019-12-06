@@ -41,7 +41,7 @@ import { EOL } from 'os';
 import pretty from 'prettysize';
 import { logger, core } from '../api';
 import { openFileInDefaultApplication } from './fileUtil';
-import { decoratedSystemReport } from './apps';
+import { decoratedSystemReport } from './decoration';
 
 /* eslint-disable object-curly-newline */
 

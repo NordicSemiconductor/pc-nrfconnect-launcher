@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import configureStore from '../store/configureStore';
-import { invokeAppFn, setApp } from '../util/apps';
+import { invokeAppFn, setApp } from '../util/decoration';
 
 import rootReducer from './reducers';
 import RootContainer from './containers/RootContainer';

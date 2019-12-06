@@ -42,7 +42,7 @@ import './module-loader';
 import React from 'react';
 import { remote } from 'electron';
 import ReactDOM from 'react-dom';
-import { initAppDirectories, getAppLogDir, loadApp } from '../util/apps';
+import { initAppDirectories, getAppLogDir, loadApp } from '../util/appLoader';
 import { core } from '../api';
 import legacyRenderer from './legacyRenderer';
 

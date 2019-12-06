@@ -44,8 +44,10 @@ import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import {
-    setApp, decorate, decorateReducer, connect, invokeAppFn,
-} from '../apps';
+    setApp, clearDecorationCache, decorate, decorateReducer, connect, invokeAppFn,
+} from '../decoration';
+
+beforeEach(clearDecorationCache);
 
 describe('decorate', () => {
     const FooComponent = ({ id }) => (

@@ -36,7 +36,7 @@
 
 import DeviceSetupDialog from '../components/DeviceSetupDialog';
 import * as DeviceActions from '../actions/deviceActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps(state) {
     const { device } = state.core;

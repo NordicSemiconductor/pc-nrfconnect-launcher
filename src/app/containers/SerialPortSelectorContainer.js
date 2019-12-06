@@ -36,7 +36,7 @@
 
 import SerialPortSelector from '../components/SerialPortSelector';
 import * as SerialPortActions from '../actions/serialPortActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps(state) {
     const { serialPort } = state.core;

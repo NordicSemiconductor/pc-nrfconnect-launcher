@@ -40,7 +40,7 @@ jest.mock('react-infinite', () => 'Infinite');
 jest.mock('../../containers/LogHeaderContainer', () => 'LogHeaderContainer');
 
 // Do not decorate components
-jest.mock('../../../util/apps', () => ({
+jest.mock('../../../util/decoration', () => ({
     decorate: component => component,
 }));
 

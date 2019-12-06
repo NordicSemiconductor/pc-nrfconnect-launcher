@@ -36,7 +36,7 @@
 
 import MainMenu from '../components/MainMenu';
 import * as MainMenuActions from '../actions/mainMenuActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps() {
     return {};

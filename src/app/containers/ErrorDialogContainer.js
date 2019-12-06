@@ -36,7 +36,7 @@
 
 import ErrorDialog from '../../components/ErrorDialog';
 import * as ErrorDialogActions from '../../actions/errorDialogActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps(state) {
     const { errorDialog } = state.core;

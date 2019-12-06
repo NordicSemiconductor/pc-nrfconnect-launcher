@@ -37,7 +37,7 @@
 import FirmwareDialog from '../components/FirmwareDialog';
 import * as FirmwareDialogActions from '../actions/firmwareDialogActions';
 import * as SerialPortActions from '../actions/serialPortActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps(state) {
     const { firmwareDialog } = state.core;

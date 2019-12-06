@@ -36,7 +36,7 @@
 
 import LogViewer from '../components/LogViewer';
 import * as LogActions from '../actions/logActions';
-import { connect } from '../../util/apps';
+import { connect } from '../../util/decoration';
 
 function mapStateToProps(state) {
     const { log } = state.core;
