@@ -36,7 +36,7 @@
 
 import SerialPort from 'serialport';
 import { isPortAvailable, decorateWithSerialNumber } from '../../api/jlink';
-import { logger } from '../../api/logging';
+import { logger } from '../../shared';
 
 /**
  * Indicates that loading all available serial ports has been requested. This action is

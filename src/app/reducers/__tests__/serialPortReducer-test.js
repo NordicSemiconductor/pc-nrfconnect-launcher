@@ -34,13 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable import/first */
-
-jest.mock('serialport', () => {});
-jest.mock('../../../api/logging', () => {});
-
 import reducer from '../serialPortReducer';
 import * as SerialPortActions from '../../actions/serialPortActions';
+
+jest.mock('serialport', () => {});
 
 const SEGGER_VENDOR_ID = '0x1366';
 const initialState = reducer(undefined, {});

@@ -34,10 +34,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable import/first */
-
-jest.mock('../../../api/logging', () => {});
-
 import reducer from '../logReducer';
 import * as LogActions from '../../actions/logActions';
 

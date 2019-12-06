@@ -36,7 +36,7 @@
 
 import DeviceLister from 'nrf-device-lister';
 import { setupDevice } from 'nrf-device-setup';
-import { logger } from '../../api/logging';
+import { logger } from '../../shared';
 import { getAppConfig } from '../../util/decoration';
 import * as AppReloadDialogActions from './appReloadDialogActions';
 

@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import { logger, logBuffer, getLogFilePath } from '../../api/logging';
+import { logger, logBuffer, getLogFilePath } from '../../shared';
 import { getAppDataDir } from '../../api/core';
 import { openFileInDefaultApplication } from '../../util/fileUtil';
 

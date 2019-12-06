@@ -39,4 +39,5 @@ export { default as NavBar } from './App/NavBar';
 export { default as DeviceSelector } from './Device/DeviceSelector';
 
 export { default as coreReducer } from './coreReducer';
+export { logger, getLogFilePath, logBuffer } from './logging';
 export { getAppFile } from '../util/appLoader';

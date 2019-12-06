@@ -39,7 +39,8 @@ import path from 'path';
 import fs from 'fs';
 import { EOL } from 'os';
 import pretty from 'prettysize';
-import { logger, core } from '../api';
+import { getAppDataDir } from './appLoader';
+import { logger } from '../shared/logging';
 import { openFileInDefaultApplication } from './fileUtil';
 import { decoratedSystemReport } from './decoration';
 
@@ -95,7 +96,7 @@ export default function systemReport(doDecoration = true) {
         const finalReport = decoratedReport.replace(/\n/g, EOL);
 
         const fileName = `nrfconnect-system-report-${timestamp}.txt`;
-        const filePath = path.resolve(core.getAppDataDir(), fileName);
+        const filePath = path.resolve(getAppDataDir(), fileName);
 
         return new Promise((resolve, reject) => {
             fs.writeFile(filePath, finalReport, err => (err ? reject(err) : resolve()));

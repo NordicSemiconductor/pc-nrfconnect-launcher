@@ -43,8 +43,8 @@ import React from 'react';
 import { remote } from 'electron';
 import ReactDOM from 'react-dom';
 import { initAppDirectories, getAppLogDir, loadApp } from '../util/appLoader';
-import { core } from '../api';
 import legacyRenderer from './legacyRenderer';
+import { logger } from '../shared';
 
 const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
@@ -83,7 +83,7 @@ const showLoadingError = error => {
 
 initAppDirectories(appPath)
     .then(() => {
-        core.logger.addFileTransport(getAppLogDir());
+        logger.addFileTransport(getAppLogDir());
         const app = loadApp(appPath);
 
         render(app);

@@ -38,7 +38,7 @@ import React from 'react';
 import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 
-import { logger, getLogFilePath } from '../../api/logging';
+import { logger, getLogFilePath } from '../logging';
 import { clear, toggleAutoScroll } from './logActions';
 import { openFileInDefaultApplication } from '../../util/fileUtil';
 import LogHeaderButton from './LogHeaderButton';
