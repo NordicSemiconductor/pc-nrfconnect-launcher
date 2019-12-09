@@ -37,55 +37,59 @@
 import path from 'path';
 import fs from 'fs';
 import { mkdirIfNotExists } from '../main/mkdir';
-import { setAppDirs, getUserDataDir } from '../shared';
+import {
+    logger, setAppDirs, getUserDataDir, getAppLogDir,
+} from '../shared';
 
 /**
- * Initialize app directory paths and ensure that they are created.
- * Creates:
- * .../<userDataDir>/<appName>/
- * .../<userDataDir>/<appName>/logs/
+ * Load an app from the given directory dynamically.
  *
- * @param {string} appPath the filesystem path of the app to load.
- * @returns {Promise} resolved is all directories are present.
- */
-function initAppDirectories(appPath) {
-    const appDir = appPath;
-    const appBaseName = path.basename(appPath);
-    const userDataDir = getUserDataDir();
-    const appDataDir = path.join(userDataDir, appBaseName);
-    const appLogDir = path.join(appDataDir, 'logs');
-    setAppDirs(appDir, appDataDir, appLogDir);
-    return new Promise((resolve, reject) => (
-        mkdirIfNotExists(appDataDir).catch(() => {
-            reject(new Error(`Failed to create '${appDataDir}'.`));
-        })
-            .then(() => mkdirIfNotExists(appLogDir).catch(() => {
-                reject(new Error(`Failed to create '${appLogDir}'.`));
-            }))
-            .then(resolve)
-    ));
-}
-
-/**
- * Load an app from the given path dynamically.
- *
- * @param {string} appPath the filesystem path of the app to load.
+ * @param {string} appDir the directory of the app to load.
  * @returns {Object} The loaded app object.
  */
-function loadApp(appPath) {
-    const moduleManifest = path.join(appPath, 'package.json');
+const loadApp = appDir => {
+    const moduleManifest = path.join(appDir, 'package.json');
 
     if (!fs.existsSync(moduleManifest)) {
-        console.log(`Trying to load module, but package.json is missing in ${appPath}.`);
+        console.log(`Trying to load module, but package.json is missing in ${appDir}.`);
         return null;
     }
 
     // Using window.require instead of require, so that webpack
     // ignores it when bundling core
-    return window.require(appPath);
-}
+    return window.require(appDir);
+};
 
-export {
-    initAppDirectories,
-    loadApp,
+const ensureDirExists = async dir => {
+    try {
+        await mkdirIfNotExists(dir);
+    } catch {
+        throw new Error(`Failed to create '${dir}'.`);
+    }
+};
+
+/**
+ * Initializes an app.
+ *
+ * Creates these directories needed for an app:
+ * .../<userDataDir>/<appName>/
+ * .../<userDataDir>/<appName>/logs/
+ *
+ * After that initializes the logger, loads the app and returns it.
+ *
+ * @param {string} appDir the directory of the app to load.
+ * @returns {Promise<object>} Resolving to the loaded app.
+ */
+export default async appDir => {
+    const appBaseName = path.basename(appDir);
+    const userDataDir = getUserDataDir();
+    const appDataDir = path.join(userDataDir, appBaseName);
+    const appLogDir = path.join(appDataDir, 'logs');
+    setAppDirs(appDir, appDataDir, appLogDir);
+
+    await ensureDirExists(appDataDir);
+    await ensureDirExists(appLogDir);
+
+    logger.addFileTransport(getAppLogDir());
+    return loadApp(appDir);
 };
