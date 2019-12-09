@@ -46,7 +46,7 @@ import childProcess from 'child_process';
  * @param {function} callback signature: (error) => {}.
  * @returns {void}
  */
-function openFileInDefaultApplication(filePath, callback) {
+function openFile(filePath, callback) {
     fs.exists(filePath, exists => {
         if (!exists) {
             if (callback) {
@@ -77,11 +77,11 @@ function openFileInDefaultApplication(filePath, callback) {
  * @param {string} url The URL to open.
  * @returns {void}
  */
-function openUrlInDefaultBrowser(url) {
+function openUrl(url) {
     shell.openExternal(url);
 }
 
 export {
-    openFileInDefaultApplication,
-    openUrlInDefaultBrowser,
+    openFile,
+    openUrl,
 };

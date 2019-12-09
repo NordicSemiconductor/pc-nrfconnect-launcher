@@ -41,7 +41,7 @@ import { EOL } from 'os';
 import pretty from 'prettysize';
 import { getAppDataDir } from './appDirs';
 import logger from './logging';
-import { openFileInDefaultApplication } from './open';
+import { openFile } from './open';
 
 /* eslint-disable object-curly-newline */
 
@@ -104,7 +104,7 @@ export default function systemReport(decoratedSystemReport = coreReport => coreR
             .then(() => {
                 logger.info(`System report: ${filePath}`);
                 return new Promise((resolve, reject) => {
-                    openFileInDefaultApplication(filePath, err => (err ? reject(err) : resolve()));
+                    openFile(filePath, err => (err ? reject(err) : resolve()));
                 });
             })
             .catch(err => {

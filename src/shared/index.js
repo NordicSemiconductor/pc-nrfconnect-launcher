@@ -55,7 +55,5 @@ export {
     setAppDirs, getAppDir, getAppDataDir, getAppLogDir, getUserDataDir,
 } from './appDirs';
 
-
-// The exports below can probably be removed when we remove support for legacy apps
-export { openFileInDefaultApplication, openUrlInDefaultBrowser } from './open';
+export { openFile, openUrl } from './open';
 export { default as systemReport } from './systemReport';

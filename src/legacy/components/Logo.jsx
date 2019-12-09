@@ -37,7 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import logo from '../../../resources/nordic-logo-white-icon-only.png';
-import { openUrlInDefaultBrowser } from '../../shared';
+import { openUrl } from '../../shared';
 
 const Logo = ({
     src,
@@ -70,7 +70,7 @@ Logo.defaultProps = {
     alt: 'nRF Connect',
     cssClass: 'core-logo',
     containerCssClass: 'core-logo-container',
-    onClick: () => openUrlInDefaultBrowser('http://www.nordicsemi.com/nRFConnect'),
+    onClick: () => openUrl('http://www.nordicsemi.com/nRFConnect'),
 };
 
 export default Logo;

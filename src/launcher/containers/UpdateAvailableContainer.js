@@ -38,7 +38,7 @@ import { connect } from 'react-redux';
 import { remote } from 'electron';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
-import { openUrlInDefaultBrowser } from '../../shared';
+import { openUrl } from '../../shared';
 
 const config = remote.require('../main/config');
 
@@ -53,7 +53,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onClickReleaseNotes: () => openUrlInDefaultBrowser(config.getReleaseNotesUrl()),
+        onClickReleaseNotes: () => openUrl(config.getReleaseNotesUrl()),
         onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
         onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
     };

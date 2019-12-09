@@ -37,7 +37,7 @@
 import { connect } from 'react-redux';
 import AppManagementView from '../components/AppManagementView';
 import * as AppsActions from '../actions/appsActions';
-import { openUrlInDefaultBrowser } from '../../shared';
+import { openUrl } from '../../shared';
 import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 
@@ -64,7 +64,7 @@ function mapDispatchToProps(dispatch) {
             AppsActions.installOfficialApp(name, source),
         ),
         onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
-        onReadMore: homepage => openUrlInDefaultBrowser(homepage),
+        onReadMore: homepage => openUrl(homepage),
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
         onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
