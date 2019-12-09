@@ -111,7 +111,7 @@
         "mini-css-extract-plugin": "0.8.0",
         "moment": "2.24.0",
         "mousetrap": "1.6.3",
-        "pc-nrfconnect-devdep": "github:NordicSemiconductor/pc-nrfconnect-devdep#c75801b",
+        "pc-nrfconnect-devdep": "github:NordicSemiconductor/pc-nrfconnect-devdep#v3.5.0",
         "prettysize": "2.0.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "spectron": "7.0.0",
