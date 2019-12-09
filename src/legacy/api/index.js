@@ -44,6 +44,8 @@ import * as core from './core';
 
 const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 
+core.logger = logger;
+
 export {
     bleDriver,
     nrfjprog,

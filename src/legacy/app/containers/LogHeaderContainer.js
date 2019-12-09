@@ -72,7 +72,7 @@ function mapDispatchToProps(dispatch) {
         onButtonClicked: id => {
             switch (id) {
                 case OPEN_LOGFILE_BUTTON_ID:
-                    return dispatch(LogActions.openLogFile());
+                    return LogActions.openLogFile();
                 case CLEAR_LOG_BUTTON_ID:
                     return dispatch(LogActions.clear());
                 case TOGGLE_AUTO_SCROLL_BUTTON_ID:

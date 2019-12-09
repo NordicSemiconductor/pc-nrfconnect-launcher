@@ -40,7 +40,7 @@ import fs from 'fs';
 import { EOL } from 'os';
 import pretty from 'prettysize';
 import { getAppDataDir } from './appDirs';
-import { logger } from './logging';
+import logger from './logging';
 import { openFileInDefaultApplication } from './open';
 
 /* eslint-disable object-curly-newline */

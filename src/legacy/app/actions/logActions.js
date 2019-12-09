@@ -35,9 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import {
-    logger, logBuffer, getLogFilePath, openFileInDefaultApplication,
-} from '../../../shared';
+import { logger } from '../../../shared';
 import { getAppDataDir } from '../../api/core';
 
 /**
@@ -49,28 +47,6 @@ import { getAppDataDir } from '../../api/core';
  * (number), message (string), and meta (object) properties.
  */
 export const ADD_ENTRIES = 'LOG_ADD_ENTRIES';
-
-/**
- * Indicates that opening the application's log file has been requested.
- *
- * @deprecated
- */
-export const OPEN_FILE = 'LOG_OPEN_FILE';
-
-/**
- * Indicates that opening the application's log file succeeded.
- *
- * @deprecated
- */
-export const OPEN_FILE_SUCCESS = 'LOG_OPEN_FILE_SUCCESS';
-
-/**
- * Indicates that opening the application's log file failed.
- *
- * @deprecated
- * @param {string} message An error message describing why opening failed.
- */
-export const OPEN_FILE_ERROR = 'LOG_OPEN_FILE_ERROR';
 
 /**
  * Indicates that clearing of all log entries in state has been requested.
@@ -90,45 +66,26 @@ export const RESIZE_LOG_CONTAINER = 'LOG_RESIZE_LOG_CONTAINER';
 const LOG_UPDATE_INTERVAL = 400;
 let logListenerTimeout;
 
-function addEntriesAction(entries) {
+function addEntries(entries) {
     return {
         type: ADD_ENTRIES,
         entries,
     };
 }
 
-function openFileAction() {
-    return {
-        type: OPEN_FILE,
-    };
-}
-
-function openFileSuccessAction() {
-    return {
-        type: OPEN_FILE_SUCCESS,
-    };
-}
-
-function openFileErrorAction(message) {
-    return {
-        type: OPEN_FILE_ERROR,
-        message,
-    };
-}
-
-function clearEntriesAction() {
+function clearEntries() {
     return {
         type: CLEAR_ENTRIES,
     };
 }
 
-function toggleAutoScrollAction() {
+export function toggleAutoScroll() {
     return {
         type: TOGGLE_AUTOSCROLL,
     };
 }
 
-function resizeLogContainerAction(containerHeight) {
+export function resizeLogContainer(containerHeight) {
     return {
         type: RESIZE_LOG_CONTAINER,
         containerHeight,
@@ -143,9 +100,9 @@ function resizeLogContainerAction(containerHeight) {
  * @returns {void}
  */
 function listenToLogUpdates(dispatch) {
-    if (logBuffer.size() > 0) {
-        const entries = logBuffer.clear();
-        dispatch(addEntriesAction(entries));
+    const entries = logger.getAndClearEntries();
+    if (entries.length > 0) {
+        dispatch(addEntries(entries));
     }
 
     logListenerTimeout = setTimeout(() => {
@@ -160,29 +117,11 @@ function stopLogListener() {
 }
 
 export function openLogFile() {
-    return dispatch => {
-        dispatch(openFileAction());
-        openFileInDefaultApplication(getLogFilePath(), err => {
-            if (err) {
-                logger.error(`Unable to open log file: ${err.message}`);
-                dispatch(openFileErrorAction(err.message));
-            } else {
-                dispatch(openFileSuccessAction());
-            }
-        });
-    };
-}
-
-export function toggleAutoScroll() {
-    return toggleAutoScrollAction();
-}
-
-export function resizeLogContainer(containerHeight) {
-    return resizeLogContainerAction(containerHeight);
+    logger.openLogFile();
 }
 
 export function clear() {
-    return clearEntriesAction();
+    return clearEntries();
 }
 
 /**

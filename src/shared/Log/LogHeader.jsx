@@ -38,21 +38,12 @@ import React from 'react';
 import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 
-import { logger, getLogFilePath } from '../logging';
-import { openFileInDefaultApplication } from '../open';
+import logger from '../logging';
 
 import { clear, toggleAutoScroll } from './logActions';
 import LogHeaderButton from './LogHeaderButton';
 
 import '../../../resources/css/brand19/log-header.scss';
-
-const openLogFile = () => {
-    openFileInDefaultApplication(getLogFilePath(), err => {
-        if (err) {
-            logger.error(`Unable to open log file: ${err.message}`);
-        }
-    });
-};
 
 const LogHeader = ({ autoScroll, dispatch }) => (
     <div className="core19-log-header">
@@ -61,7 +52,7 @@ const LogHeader = ({ autoScroll, dispatch }) => (
             <LogHeaderButton
                 title="Open log file"
                 iconCssClass="mdi mdi-file-document-box-outline"
-                onClick={openLogFile}
+                onClick={logger.openLogFile}
             />
             <LogHeaderButton
                 title="Clear log"

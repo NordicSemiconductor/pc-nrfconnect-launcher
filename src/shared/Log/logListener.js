@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import { logger, logBuffer } from '../logging';
+import logger from '../logging';
 import { getAppDataDir } from '../appDirs';
 import { addEntries } from './logActions';
 
@@ -78,8 +78,8 @@ export function startListening(dispatch) {
     ipcRenderer.send('get-app-details');
 
     logListener = setInterval(() => {
-        if (logBuffer.size() > 0) {
-            const entries = logBuffer.clear();
+        const entries = logger.getAndClearEntries();
+        if (entries.length > 0) {
             dispatch(addEntries(entries));
         }
     }, LOG_UPDATE_INTERVAL);

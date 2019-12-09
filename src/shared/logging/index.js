@@ -37,6 +37,7 @@
 import { createLogger, format, transports } from 'winston';
 import { SPLAT } from 'triple-beam';
 import path from 'path';
+import { openFileInDefaultApplication } from '../open';
 import AppTransport from './appTransport';
 import ConsoleTransport from './consoleTransport';
 import createLogBuffer from './logBuffer';
@@ -97,10 +98,14 @@ logger.addFileTransport = appLogDir => {
     logger.add(fileTransport, {}, true);
 };
 
-const getLogFilePath = () => logFilePath;
+logger.getAndClearEntries = () => logBuffer.clear();
 
-export {
-    logger,
-    getLogFilePath,
-    logBuffer,
+logger.openLogFile = () => {
+    openFileInDefaultApplication(logFilePath, err => {
+        if (err) {
+            logger.error(`Unable to open log file: ${err.message}`);
+        }
+    });
 };
+
+export default logger;

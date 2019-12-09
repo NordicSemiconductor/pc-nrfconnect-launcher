@@ -49,7 +49,7 @@ export { default as ErrorDialog } from './ErrorDialog/ErrorDialog';
 
 export { default as errorDialogReducer } from './ErrorDialog/errorDialogReducer';
 export { default as coreReducer } from './coreReducer';
-export { logger, getLogFilePath, logBuffer } from './logging';
+export { default as logger } from './logging';
 
 export {
     setAppDirs, getAppDir, getAppDataDir, getAppLogDir, getUserDataDir,

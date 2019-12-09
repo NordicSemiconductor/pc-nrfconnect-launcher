@@ -36,7 +36,6 @@
 
 import AppTransport from './appTransport';
 
-
 describe('AppTransport', () => {
     const info = {
         message: 'Foobar message',
