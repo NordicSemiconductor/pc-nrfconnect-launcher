@@ -68,7 +68,8 @@ hostedModules['pc-ble-driver-js'] = bleDriver;
 hostedModules.serialport = require('serialport');
 hostedModules.electron = require('electron');
 hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
-hostedModules['nrfconnect/core'] = require('../legacy/api');
+hostedModules['nrfconnect/core'] = require('../legacy/api').core;
+
 hostedModules['nrfconnect/shared'] = require('../shared');
 
 hostedModules['nrf-device-setup'] = require('nrf-device-setup');
