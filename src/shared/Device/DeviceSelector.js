@@ -47,9 +47,8 @@ import {
     stopWatchingDevices,
 } from './deviceActions';
 
-const mapState = state => ({
-    devices: state.core.device.devices,
-    selectedSerialNumber: state.core.device.selectedSerialNumber,
+const mapState = ({ device: { devices, selectedSerialNumber } }) => ({
+    devices, selectedSerialNumber,
 });
 
 const noop = () => {};

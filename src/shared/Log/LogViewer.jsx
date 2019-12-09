@@ -108,9 +108,8 @@ LogViewer.propTypes = {
     autoScroll: bool.isRequired,
 };
 
-const mapState = ({ core: { log } }) => ({
-    logEntries: log.logEntries,
-    autoScroll: log.autoScroll,
+const mapState = ({ log: { autoScroll, logEntries } }) => ({
+    autoScroll, logEntries,
 });
 
 export default connect(mapState)(LogViewer);

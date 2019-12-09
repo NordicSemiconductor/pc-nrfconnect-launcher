@@ -40,14 +40,13 @@ import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
-import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import { Logo } from '../../shared';
+import { Logo, ErrorDialog } from '../../shared';
 
 export default () => (
     <>
@@ -62,7 +61,7 @@ export default () => (
                 <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
             </Tab.Content>
         </Tab.Container>
-        <ErrorDialogContainer />
+        <ErrorDialog />
         <UpdateAvailableContainer />
         <UpdateProgressContainer />
         <ConfirmLaunchContainer />

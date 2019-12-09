@@ -202,8 +202,8 @@ export const startWatchingDevices = (deviceListing, onDeviceDeselected) => (disp
     deviceLister.removeAllListeners('error');
     deviceLister.on('conflated', devices => {
         const state = getState();
-        if (state.core.device.selectedSerialNumber !== null
-                && !devices.has(state.core.device.selectedSerialNumber)) {
+        if (state.device.selectedSerialNumber !== null
+                && !devices.has(state.device.selectedSerialNumber)) {
             dispatch(deselectDevice(onDeviceDeselected));
         }
 

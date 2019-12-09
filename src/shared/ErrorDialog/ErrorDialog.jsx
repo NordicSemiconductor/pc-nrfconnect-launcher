@@ -42,7 +42,7 @@ import Button from 'react-bootstrap/Button';
 import { hideDialog } from './errorDialogActions';
 
 const ErrorDialog = () => {
-    const { isVisible, messages } = useSelector(state => state.core.errorDialog);
+    const { isVisible, messages } = useSelector(state => state.errorDialog);
     const dispatch = useDispatch();
     const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
 

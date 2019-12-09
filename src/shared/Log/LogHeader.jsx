@@ -74,8 +74,6 @@ LogHeader.propTypes = {
     dispatch: func.isRequired,
 };
 
-const mapState = state => ({
-    autoScroll: state.core.log.autoScroll,
-});
+const mapState = ({ log: { autoScroll } }) => ({ autoScroll });
 
 export default connect(mapState)(LogHeader);

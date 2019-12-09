@@ -34,25 +34,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import { ErrorDialog, ErrorDialogActions } from '../../shared';
+import appReloadDialog from './AppReload/appReloadDialogReducer';
+import device from './Device/deviceReducer';
+import errorDialog from './ErrorDialog/errorDialogReducer';
+import log from './Log/logReducer';
+import navMenu from './App/NavMenu/navMenuReducer';
 
-function mapStateToProps(state) {
-    const { errorDialog } = state;
-
-    return {
-        messages: errorDialog.messages,
-        isVisible: errorDialog.isVisible,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onClose: () => dispatch(ErrorDialogActions.hideDialog()),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(ErrorDialog);
+export default {
+    appReloadDialog,
+    device,
+    errorDialog,
+    log,
+    navMenu,
+};

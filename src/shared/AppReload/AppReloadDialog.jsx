@@ -44,7 +44,7 @@ import { hideDialog } from './appReloadDialogActions';
 const reloadApp = () => setImmediate(() => remote.getCurrentWindow().reload());
 
 const AppReloadDialog = () => {
-    const { isVisible, message } = useSelector(state => state.core.appReloadDialog);
+    const { isVisible, message } = useSelector(state => state.appReloadDialog);
     const dispatch = useDispatch();
     const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
 

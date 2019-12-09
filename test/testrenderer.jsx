@@ -38,10 +38,10 @@ import React from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
-import coreReducer from '../src/shared/coreReducer';
+import coreReducers from '../src/shared/coreReducers';
 
 const createPreparedStore = actions => {
-    const store = createStore(combineReducers({ core: coreReducer }));
+    const store = createStore(combineReducers(coreReducers));
     actions.forEach(store.dispatch);
 
     return store;

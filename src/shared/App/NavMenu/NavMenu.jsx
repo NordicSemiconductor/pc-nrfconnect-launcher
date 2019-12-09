@@ -41,7 +41,7 @@ import NavMenuItem, { navMenuItemType } from './NavMenuItem';
 import { selectItem } from './navMenuActions';
 
 const NavMenu = ({ items }) => {
-    const selectedItem = useSelector(state => state.core.navMenu.selectedItem);
+    const selectedItem = useSelector(state => state.navMenu.selectedItem);
     const dispatch = useDispatch();
 
     return (

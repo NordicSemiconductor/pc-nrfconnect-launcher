@@ -48,7 +48,7 @@ export { default as Spinner } from './Dialog/Spinner';
 export { default as ErrorDialog } from './ErrorDialog/ErrorDialog';
 
 export { default as errorDialogReducer } from './ErrorDialog/errorDialogReducer';
-export { default as coreReducer } from './coreReducer';
+export { default as coreReducers } from './coreReducers';
 export { default as logger } from './logging';
 
 export {

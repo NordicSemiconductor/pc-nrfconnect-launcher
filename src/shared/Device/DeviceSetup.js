@@ -38,16 +38,16 @@ import { connect } from 'react-redux';
 import DeviceSetupView from './DeviceSetupView';
 import * as DeviceActions from './deviceActions';
 
-const mapStateToProps = state => {
-    const { device } = state.core;
-
-    return {
-        isVisible: device.isSetupDialogVisible,
-        isInProgress: device.isSetupDialogVisible && !device.isSetupWaitingForUserInput,
-        text: device.setupDialogText,
-        choices: device.setupDialogChoices,
-    };
-};
+const mapStateToProps = ({
+    device: {
+        isSetupDialogVisible, isSetupWaitingForUserInput, setupDialogText, setupDialogChoices,
+    },
+}) => ({
+    isVisible: isSetupDialogVisible,
+    isInProgress: isSetupDialogVisible && !isSetupWaitingForUserInput,
+    text: setupDialogText,
+    choices: setupDialogChoices,
+});
 
 const mapDispatchToProps = dispatch => ({
     onOk: input => dispatch(DeviceActions.deviceSetupInputReceived(input)),
