@@ -35,6 +35,7 @@
  */
 
 import { remote } from 'electron';
+import path from 'path';
 
 const getUserDataDir = () => remote.getGlobal('userDataDir');
 
@@ -58,6 +59,16 @@ function getAppDir() {
 }
 
 /**
+ * Get the filesystem path of a file for the currently loaded app.
+ *
+ * @param {string} filename relative name of file in the app directory
+ * @returns {string|undefined} Absolute path of file.
+ */
+function getAppFile(filename) {
+    return path.resolve(getAppDir(), filename);
+}
+
+/**
  * Get the filesystem path of the data directory of currently loaded app.
  *
  * @returns {string|undefined} Absolute path of data directory of the current app.
@@ -78,6 +89,7 @@ function getAppLogDir() {
 export {
     setAppDirs,
     getAppDir,
+    getAppFile,
     getAppDataDir,
     getAppLogDir,
     getUserDataDir,

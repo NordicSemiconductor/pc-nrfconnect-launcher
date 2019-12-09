@@ -52,7 +52,7 @@ export { default as coreReducers } from './coreReducers';
 export { default as logger } from './logging';
 
 export {
-    setAppDirs, getAppDir, getAppDataDir, getAppLogDir, getUserDataDir,
+    setAppDirs, getAppDir, getAppFile, getAppDataDir, getAppLogDir, getUserDataDir,
 } from './appDirs';
 
 export { openFile, openUrl } from './open';
