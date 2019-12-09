@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import AppTransport from '../appTransport';
+import AppTransport from './appTransport';
 
 
 describe('AppTransport', () => {
