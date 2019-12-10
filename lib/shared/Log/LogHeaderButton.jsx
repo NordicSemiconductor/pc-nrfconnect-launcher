@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,41 +34,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { bool, func, string } from 'prop-types';
 
-const hostedModules = {};
+const LogHeaderButton = ({
+    title, iconCssClass, isSelected, onClick,
+}) => (
+    <button
+        title={title}
+        className={`btn btn-primary btn-sm ${isSelected ? 'active' : ''}`}
+        onClick={onClick}
+        type="button"
+    >
+        <span className={iconCssClass} aria-hidden="true" />
+    </button>
+);
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
-    }
-
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+LogHeaderButton.propTypes = {
+    title: string.isRequired,
+    onClick: func.isRequired,
+    iconCssClass: string.isRequired,
+    isSelected: bool,
 };
 
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
+LogHeaderButton.defaultProps = {
+    isSelected: false,
+};
 
-hostedModules.usb = require('usb');
-
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
-
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+export default LogHeaderButton;

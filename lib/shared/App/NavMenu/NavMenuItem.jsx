@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,41 +34,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { bool, func, string } from 'prop-types';
+import Mousetrap from 'mousetrap';
 
-const hostedModules = {};
+import '../../../../resources/css/brand19/nav-menu.scss';
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
+export default class NavMenuItem extends React.Component {
+    componentDidMount() {
+        const { onClick } = this.props;
+        Mousetrap.bind(this.hotkey(), onClick);
     }
 
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+    componentWillUnmount() {
+        Mousetrap.unbind(this.hotkey());
+    }
+
+    // eslint-disable-next-line react/destructuring-assignment
+    hotkey = () => this.props.hotkey.toLowerCase()
+
+    render() {
+        const {
+            hotkey, iconClass, isSelected, onClick, text,
+        } = this.props;
+
+        return (
+            <button
+                title={`${text} (${hotkey})`}
+                className={`core19-nav-menu-item btn btn-primary ${isSelected ? 'active' : ''}`}
+                onClick={onClick}
+                type="button"
+            >
+                <span className={iconClass} data-testid={iconClass} />
+                <span>{text}</span>
+            </button>
+        );
+    }
+}
+
+export const navMenuItemType = { text: string.isRequired, iconClass: string.isRequired };
+
+NavMenuItem.propTypes = {
+    ...navMenuItemType,
+    isSelected: bool.isRequired,
+    onClick: func.isRequired,
+    hotkey: string.isRequired,
 };
-
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
-
-hostedModules.usb = require('usb');
-
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
-
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');

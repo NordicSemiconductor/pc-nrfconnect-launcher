@@ -34,66 +34,71 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'core-js/es7';
-import 'regenerator-runtime/runtime';
-
-import './module-loader';
-
 import React from 'react';
-import { remote } from 'electron';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import {
-    initAppDirectories, getAppLogDir, loadApp, invokeAppFn,
-} from '../../util/apps';
-import rootReducer from './reducers';
-import { core } from '../../api';
+import { shape, number, string } from 'prop-types';
+import moment from 'moment';
+import { shell } from 'electron';
 
-const params = new URL(window.location).searchParams;
-const appPath = params.get('appPath');
+import '../../../resources/css/brand19/log-entry.scss';
 
-const removeLoaderElement = () => {
-    const element = document.getElementById('app-loader');
-    if (element) {
-        element.classList.add('loaded');
-        setTimeout(() => {
-            document.body.removeChild(element);
-        }, 500);
-    }
+const regex = /(.*?)(https?:\/\/[^\s]+)/g;
+
+/**
+ * Convert strings to array of strings and JSX <a> tags for hrefs
+ *
+ * E.g. 'For reference see: https://github.com/example/doc.md or reboot Windows.'
+ * will be converted to:
+ * [
+ *    'For reference see: ',
+ *    <a href='https://github.com/example/doc.md'>https://github.com/example/doc.md</a>,
+ *    ' or reboot Windows.',
+ * ]
+ *
+ * @param {string} str input string
+ * @returns {Array} strings and JSX <a> tags
+ */
+function hrefReplacer(str) {
+    const message = [];
+    const remainder = str.replace(regex, (match, before, href, index) => {
+        message.push(before);
+        message.push(
+            <a
+                href={href}
+                key={index}
+                tabIndex={index}
+                onClick={() => shell.openItem(href)}
+                onKeyPress={() => {}}
+            >
+                {href}
+            </a>,
+        );
+        return '';
+    });
+    message.push(remainder);
+    return message;
+}
+
+const LogEntry = ({ entry }) => {
+    const className = `core19-log-entry core19-log-level-${entry.level}`;
+    const time = moment(entry.timestamp).format('HH:mm:ss.SSS');
+
+    return (
+        <div className={className}>
+            <div className="core19-log-cell core19-log-time">{time}</div>
+            <div className="core19-log-cell">{hrefReplacer(entry.message)}</div>
+        </div>
+    );
 };
 
-const isOld = app => typeof app === 'object';
+export const entryShape = shape({
+    id: number.isRequired,
+    timestamp: string.isRequired,
+    level: string.isRequired,
+    message: string.isRequired,
+});
 
-const getRootElement = () => document.getElementById('webapp');
-
-const rendererForClassicApps = app => {
-    const store = configureStore(rootReducer, app);
-    invokeAppFn('onInit', store.dispatch, store.getState);
-    render(<RootContainer store={store} />, getRootElement(), () => {
-        removeLoaderElement();
-        invokeAppFn('onReady', store.dispatch, store.getState);
-    });
+LogEntry.propTypes = {
+    entry: entryShape.isRequired,
 };
 
-const rendererForNewApps = App => {
-    render(<App />, getRootElement(), () => {
-        removeLoaderElement();
-    });
-};
-
-initAppDirectories(appPath).then(() => {
-    core.logger.addFileTransport(getAppLogDir());
-
-    const app = loadApp(appPath);
-
-    const renderApp = isOld(app) ? rendererForClassicApps : rendererForNewApps;
-    renderApp(app);
-})
-    .catch(error => {
-        console.error(error);
-        remote.dialog.showMessageBox({
-            type: 'error',
-            message: error.message,
-        });
-    });
+export default LogEntry;

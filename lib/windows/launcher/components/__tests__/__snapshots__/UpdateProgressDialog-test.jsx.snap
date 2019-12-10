@@ -19,9 +19,15 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
       1.2.3
       ...
     </p>
-    <Bootstrap(ProgressBar)
+    <ProgressBar
+      animated={false}
+      isChild={false}
       label="42%"
+      max={100}
+      min={0}
       now={42}
+      srOnly={false}
+      striped={false}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
@@ -91,9 +97,15 @@ exports[`UpdateProgressDialog should render with cancel disabled when 100 percen
       1.2.3
       ...
     </p>
-    <Bootstrap(ProgressBar)
+    <ProgressBar
+      animated={false}
+      isChild={false}
       label="100%"
+      max={100}
+      min={0}
       now={100}
+      srOnly={false}
+      striped={false}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.
@@ -132,9 +144,15 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
       1.2.3
       ...
     </p>
-    <Bootstrap(ProgressBar)
+    <ProgressBar
+      animated={false}
+      isChild={false}
       label="42%"
+      max={100}
+      min={0}
       now={42}
+      srOnly={false}
+      striped={false}
     />
     <p>
       This might take a few minutes. The application will restart and update once the download is complete.

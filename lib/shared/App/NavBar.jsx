@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,41 +34,40 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { node, string } from 'prop-types';
 
-const hostedModules = {};
+import MainMenu from './MainMenu';
+import NavMenu, { navMenuItemsType } from './NavMenu/NavMenu';
+import Logo from './Logo';
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
-    }
+import '../../../resources/css/brand19/nav-bar.scss';
 
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+const NavBarItem = ({ children }) => <div className="core19-nav-bar-item">{children}</div>;
+NavBarItem.propTypes = {
+    children: node.isRequired,
 };
 
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
+const NavBar = ({ deviceSelect, navMenu, title }) => (
+    <div className="core19-nav-bar">
+        <NavBarItem><MainMenu /></NavBarItem>
+        {deviceSelect != null && <NavBarItem>{deviceSelect}</NavBarItem>}
+        <NavBarItem><div>{title}</div></NavBarItem>
+        <NavMenu items={navMenu} />
+        <Logo />
+    </div>
+);
 
-hostedModules.usb = require('usb');
+NavBar.propTypes = {
+    deviceSelect: node,
+    navMenu: navMenuItemsType,
+    title: string,
+};
 
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
+NavBar.defaultProps = ({
+    deviceSelect: null,
+    navMenu: [],
+    title: '',
+});
 
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+export default NavBar;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,41 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { arrayOf, shape } from 'prop-types';
+import NavMenuItem, { navMenuItemType } from './NavMenuItem';
+import { selectItem } from './navMenuActions';
 
-const hostedModules = {};
+const NavMenu = ({ items }) => {
+    const selectedItem = useSelector(state => state.core.navMenu.selectedItem);
+    const dispatch = useDispatch();
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
-    }
-
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+    return (
+        <div data-testid="nav-menu">
+            { items.map((item, index) => (
+                <NavMenuItem
+                    key={index} // eslint-disable-line react/no-array-index-key
+                    id={index}
+                    isSelected={index === selectedItem}
+                    text={item.text}
+                    hotkey={`Alt+${index + 1}`}
+                    iconClass={item.iconClass}
+                    onClick={() => dispatch(selectItem(index))}
+                />
+            ))}
+        </div>
+    );
 };
 
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
+export const navMenuItemsType = arrayOf(shape(navMenuItemType).isRequired);
 
-hostedModules.usb = require('usb');
+NavMenu.propTypes = {
+    items: navMenuItemsType.isRequired,
+};
 
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
-
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+export default NavMenu;

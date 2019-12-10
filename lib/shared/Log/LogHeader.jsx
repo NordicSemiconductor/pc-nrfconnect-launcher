@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,41 +34,56 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Module from 'module';
+import React from 'react';
+import { bool, func } from 'prop-types';
+import { connect } from 'react-redux';
 
-const hostedModules = {};
+import { logger, getLogFilePath } from '../../api/logging';
+import { clear, toggleAutoScroll } from './logActions';
+import { openFileInDefaultApplication } from '../../util/fileUtil';
+import LogHeaderButton from './LogHeaderButton';
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
-    if (hostedModules[modulePath]) {
-        return hostedModules[modulePath];
-    }
+import '../../../resources/css/brand19/log-header.scss';
 
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+const openLogFile = () => {
+    openFileInDefaultApplication(getLogFilePath(), err => {
+        if (err) {
+            logger.error(`Unable to open log file: ${err.message}`);
+        }
+    });
 };
 
-hostedModules.react = require('react');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
+const LogHeader = ({ autoScroll, dispatch }) => (
+    <div className="core19-log-header">
+        <div className="core19-log-header-text">Log</div>
+        <div className="core19-log-header-buttons">
+            <LogHeaderButton
+                title="Open log file"
+                iconCssClass="mdi mdi-file-document-box-outline"
+                onClick={openLogFile}
+            />
+            <LogHeaderButton
+                title="Clear log"
+                iconCssClass="mdi mdi-trash-can-outline"
+                onClick={() => dispatch(clear())}
+            />
+            <LogHeaderButton
+                title="Scroll automatically"
+                iconCssClass="mdi mdi-arrow-down"
+                onClick={() => dispatch(toggleAutoScroll())}
+                isSelected={autoScroll}
+            />
+        </div>
+    </div>
+);
 
-hostedModules.usb = require('usb');
+LogHeader.propTypes = {
+    autoScroll: bool.isRequired,
+    dispatch: func.isRequired,
+};
 
-const {
-    core, serialPort, electron, bleDriver, nrfjprog,
-} = require('../../api');
+const mapState = state => ({
+    autoScroll: state.core.log.autoScroll,
+});
 
-hostedModules.serialport = serialPort;
-hostedModules.electron = electron;
-hostedModules['pc-ble-driver-js'] = bleDriver;
-hostedModules['pc-nrfjprog-js'] = nrfjprog;
-hostedModules['nrfconnect/core'] = core;
-hostedModules['nrfconnect/shared'] = require('../../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+export default connect(mapState)(LogHeader);

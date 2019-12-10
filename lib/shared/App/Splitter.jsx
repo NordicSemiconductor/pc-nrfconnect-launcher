@@ -34,66 +34,70 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'core-js/es7';
-import 'regenerator-runtime/runtime';
-
-import './module-loader';
-
 import React from 'react';
-import { remote } from 'electron';
-import { render } from 'react-dom';
-import RootContainer from './containers/RootContainer';
-import configureStore from '../../store/configureStore';
-import {
-    initAppDirectories, getAppLogDir, loadApp, invokeAppFn,
-} from '../../util/apps';
-import rootReducer from './reducers';
-import { core } from '../../api';
+import { instanceOf, shape } from 'prop-types';
 
-const params = new URL(window.location).searchParams;
-const appPath = params.get('appPath');
+import '../../../resources/css/brand19/splitter.scss';
 
-const removeLoaderElement = () => {
-    const element = document.getElementById('app-loader');
-    if (element) {
-        element.classList.add('loaded');
-        setTimeout(() => {
-            document.body.removeChild(element);
-        }, 500);
-    }
+const onMouseDownHorizontal = event => {
+    event.preventDefault();
+
+    const target = document.querySelector('.core19-infinite-log');
+    const initial = target.offsetHeight + event.clientY;
+
+    const originalMouseMove = document.onmousemove;
+    document.onmousemove = e => {
+        e.preventDefault();
+        target.style.height = `${initial - e.clientY}px`;
+    };
+
+    const originalMouseUp = document.onmouseup;
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+    };
 };
 
-const isOld = app => typeof app === 'object';
+export const HorizontalSplitter = () => (
+    <div
+        tabIndex={-1}
+        role="button"
+        className="core19-splitter horizontal"
+        onMouseDown={onMouseDownHorizontal}
+    />
+);
 
-const getRootElement = () => document.getElementById('webapp');
+const onMouseDownVertical = targetRef => event => {
+    event.preventDefault();
 
-const rendererForClassicApps = app => {
-    const store = configureStore(rootReducer, app);
-    invokeAppFn('onInit', store.dispatch, store.getState);
-    render(<RootContainer store={store} />, getRootElement(), () => {
-        removeLoaderElement();
-        invokeAppFn('onReady', store.dispatch, store.getState);
-    });
+    const target = targetRef.current;
+
+    const initial = target.offsetWidth + event.clientX;
+
+    const originalMouseMove = document.onmousemove;
+    document.onmousemove = e => {
+        e.preventDefault();
+        target.style.flexBasis = `${initial - e.clientX}px`;
+    };
+
+    const originalMouseUp = document.onmouseup;
+    document.onmouseup = e => {
+        e.preventDefault();
+        document.onmousemove = originalMouseMove;
+        document.onmouseup = originalMouseUp;
+    };
 };
 
-const rendererForNewApps = App => {
-    render(<App />, getRootElement(), () => {
-        removeLoaderElement();
-    });
+export const VerticalSplitter = ({ targetRef }) => (
+    <div
+        tabIndex={-1}
+        role="button"
+        className="core19-splitter vertical"
+        onMouseDown={onMouseDownVertical(targetRef)}
+    />
+);
+
+VerticalSplitter.propTypes = {
+    targetRef: shape({ current: instanceOf(Element) }).isRequired,
 };
-
-initAppDirectories(appPath).then(() => {
-    core.logger.addFileTransport(getAppLogDir());
-
-    const app = loadApp(appPath);
-
-    const renderApp = isOld(app) ? rendererForClassicApps : rendererForNewApps;
-    renderApp(app);
-})
-    .catch(error => {
-        console.error(error);
-        remote.dialog.showMessageBox({
-            type: 'error',
-            message: error.message,
-        });
-    });
