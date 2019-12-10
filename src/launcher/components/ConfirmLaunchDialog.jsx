@@ -35,22 +35,40 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import { ConfirmationDialog } from '../../shared';
 
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const ConfirmLaunchDialog = ({
+    isVisible,
+    text,
+    app,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Version problem"
+        text={text}
+        okButtonText="Launch anyway"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(app)}
+        onCancel={onCancel}
+    />
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+ConfirmLaunchDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+    app: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }),
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+ConfirmLaunchDialog.defaultProps = {
+    app: null,
+};
+
+export default ConfirmLaunchDialog;

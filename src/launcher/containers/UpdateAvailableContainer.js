@@ -34,23 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { connect } from 'react-redux';
+import { remote } from 'electron';
+import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
+import * as AutoUpdateActions from '../actions/autoUpdateActions';
+import { openUrl } from '../../shared';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const config = remote.require('../main/config');
 
-    return store;
-};
+function mapStateToProps(state) {
+    const { autoUpdate } = state;
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    return {
+        isVisible: autoUpdate.isUpdateAvailableDialogVisible,
+        version: autoUpdate.latestVersion,
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+function mapDispatchToProps(dispatch) {
+    return {
+        onClickReleaseNotes: () => openUrl(config.getReleaseNotesUrl()),
+        onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
+        onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UpdateAvailableDialog);

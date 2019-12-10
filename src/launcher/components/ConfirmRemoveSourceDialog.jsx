@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -35,22 +35,36 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import { ConfirmationDialog } from '../../shared';
 
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const ConfirmRemoveSourceDialog = ({
+    isVisible,
+    source,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Remove app source"
+        text={`Are you sure to remove "${source}" source along with any apps installed from it?`}
+        okButtonText="Yes, remove"
+        cancelButtonText="Cancel"
+        onOk={() => onConfirm(source)}
+        onCancel={onCancel}
+    />
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+ConfirmRemoveSourceDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    source: PropTypes.string,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+ConfirmRemoveSourceDialog.defaultProps = {
+    source: null,
+};
+
+export default ConfirmRemoveSourceDialog;

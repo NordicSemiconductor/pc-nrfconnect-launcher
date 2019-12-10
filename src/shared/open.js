@@ -34,23 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import fs from 'fs';
+import os from 'os';
+import { shell } from 'electron';
+import childProcess from 'child_process';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+/**
+ * Open a file in the default text application, depending on the user's OS.
+ *
+ * @param {string} filePath path to the file to open.
+ * @param {function} callback signature: (error) => {}.
+ * @returns {void}
+ */
+function openFile(filePath, callback) {
+    fs.exists(filePath, exists => {
+        if (!exists) {
+            if (callback) {
+                callback(new Error(`Could not find file at path: ${filePath}`));
+            }
+            return;
+        }
 
-    return store;
+        const escapedPath = filePath.replace(/ /g, '\\ ');
+
+        // Could not find a method that works on all three platforms:
+        // * shell.openItem works on Windows and Linux but not on OSX
+        // * childProcess.execSync works on OSX but not on Windows
+        if (os.type() === 'Darwin') {
+            childProcess.execSync(`open ${escapedPath}`);
+        } else {
+            shell.openItem(escapedPath);
+        }
+        if (callback) {
+            callback();
+        }
+    });
+}
+
+/**
+ * Open a URL in the user's default web browser.
+ *
+ * @param {string} url The URL to open.
+ * @returns {void}
+ */
+function openUrl(url) {
+    shell.openExternal(url);
+}
+
+export {
+    openFile,
+    openUrl,
 };
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });

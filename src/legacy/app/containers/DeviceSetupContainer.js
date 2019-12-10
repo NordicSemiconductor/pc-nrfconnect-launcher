@@ -34,23 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import DeviceSetupDialog from '../components/DeviceSetupDialog';
+import * as DeviceActions from '../actions/deviceActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps(state) {
+    const { device } = state.core;
 
-    return store;
-};
+    return {
+        isVisible: device.isSetupDialogVisible,
+        isInProgress: device.isSetupDialogVisible && !device.isSetupWaitingForUserInput,
+        text: device.setupDialogText,
+        choices: device.setupDialogChoices,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onOk: input => dispatch(DeviceActions.deviceSetupInputReceived(input)),
+        onCancel: () => dispatch(DeviceActions.deviceSetupInputReceived(false)),
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DeviceSetupDialog, 'DeviceSetupDialog');

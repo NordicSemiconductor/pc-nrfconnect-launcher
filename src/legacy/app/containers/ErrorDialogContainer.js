@@ -34,23 +34,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import ErrorDialog from '../../components/ErrorDialog';
+import * as ErrorDialogActions from '../../actions/errorDialogActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps(state) {
+    const { errorDialog } = state.core;
 
-    return store;
-};
+    return {
+        messages: errorDialog.messages,
+        isVisible: errorDialog.isVisible,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onClose: () => dispatch(ErrorDialogActions.hideDialog()),
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ErrorDialog, 'ErrorDialog');

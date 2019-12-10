@@ -35,22 +35,21 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import spinnerImg from '../../../resources/ajax-loader.gif';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
-
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const Spinner = ({ size, className }) => (
+    <img className={className} src={spinnerImg} height={size} width={size} alt="Loading..." />
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+Spinner.propTypes = {
+    size: PropTypes.number,
+    className: PropTypes.string,
+};
+
+Spinner.defaultProps = {
+    size: 16,
+    className: 'core-spinner',
+};
+
+export default Spinner;

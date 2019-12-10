@@ -34,23 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import reducer from '../logReducer';
+import * as LogActions from '../../actions/logActions';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const initialState = reducer(undefined, {});
 
-    return store;
-};
+describe('logReducer', () => {
+    it('should have autoScroll enabled by default', () => {
+        expect(initialState.autoScroll).toEqual(true);
+    });
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    it('should have empty list of entries by default', () => {
+        expect(initialState.logEntries.toJS()).toEqual([]);
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should toggle autoScroll state', () => {
+        const firstState = reducer(initialState, {
+            type: LogActions.TOGGLE_AUTOSCROLL,
+        });
+        expect(firstState.autoScroll).toEqual(false);
+        const secondState = reducer(firstState, {
+            type: LogActions.TOGGLE_AUTOSCROLL,
+        });
+        expect(secondState.autoScroll).toEqual(true);
+    });
+
+    it('should add entries to state', () => {
+        const entries = [
+            { id: 0, message: 'foo' },
+            { id: 1, message: 'bar' },
+        ];
+        const state = reducer(initialState, {
+            type: LogActions.ADD_ENTRIES,
+            entries,
+        });
+        expect(state.logEntries.toJS()).toEqual(entries);
+    });
+
+    it('should clear entries', () => {
+        const stateWithEntries = reducer(initialState, {
+            type: LogActions.ADD_ENTRIES,
+            entries: [
+                { id: 0, message: 'foo' },
+                { id: 1, message: 'bar' },
+            ],
+        });
+        const state = reducer(stateWithEntries, {
+            type: LogActions.CLEAR_ENTRIES,
+        });
+        expect(state.logEntries.toJS()).toEqual([]);
+    });
+});

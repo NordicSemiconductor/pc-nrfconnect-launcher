@@ -34,23 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+// Do not decorate components
+jest.mock('../../../decoration', () => ({
+    decorate: component => component,
+}));
+
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { mount } from 'enzyme';
+import Immutable from 'immutable';
+import MainMenu from '../MainMenu';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'First item',
+    }, {
+        id: 2,
+        isDivider: true,
+    }, {
+        id: 3,
+        text: 'Last item',
+    },
+]);
 
-    return store;
-};
+describe('MainMenu', () => {
+    it('should render menu with no items', () => {
+        expect(mount(
+            <MainMenu menuItems={[]} defaultShow />,
+        )).toMatchSnapshot();
+    });
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    it('should render menu with two items separated by divider', () => {
+        expect(mount(
+            <MainMenu menuItems={menuItems} defaultShow />,
+        )).toMatchSnapshot();
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should invoke onClick when item has been clicked', () => {
+        const onClick = jest.fn();
+        const wrapper = mount(
+            <MainMenu
+                menuItems={[{
+                    id: 1,
+                    text: 'Foo',
+                    onClick,
+                }]}
+                defaultShow
+            />,
+        );
+        wrapper.find('a[title="Foo"]').first().simulate('click');
+
+        expect(onClick).toHaveBeenCalled();
+    });
+});

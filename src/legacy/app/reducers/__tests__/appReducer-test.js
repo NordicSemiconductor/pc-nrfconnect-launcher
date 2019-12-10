@@ -34,23 +34,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import reducer from '../appReducer';
+import { setApp, clearDecorationCache } from '../../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+beforeEach(clearDecorationCache);
 
-    return store;
-};
+describe('appReducer', () => {
+    it('should have empty object as initial state if reducer has not been decorated', () => {
+        setApp({});
+        const initialState = reducer(undefined, {});
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+        expect(initialState).toEqual({});
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should use initial state from app if reducer has been decorated', () => {
+        setApp({
+            reduceApp: (state = { foo: 'bar' }) => ({
+                ...state,
+            }),
+        });
+        const initialState = reducer(undefined, {});
+
+        expect(initialState).toEqual({ foo: 'bar' });
+    });
+});

@@ -35,22 +35,36 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { useDispatch, useSelector } from 'react-redux';
+import { arrayOf, shape } from 'prop-types';
+import NavMenuItem, { navMenuItemType } from './NavMenuItem';
+import { selectItem } from './navMenuActions';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const NavMenu = ({ items }) => {
+    const selectedItem = useSelector(state => state.navMenu.selectedItem);
+    const dispatch = useDispatch();
 
-    return store;
+    return (
+        <div data-testid="nav-menu">
+            { items.map((item, index) => (
+                <NavMenuItem
+                    key={index} // eslint-disable-line react/no-array-index-key
+                    id={index}
+                    isSelected={index === selectedItem}
+                    text={item.text}
+                    hotkey={`Alt+${index + 1}`}
+                    iconClass={item.iconClass}
+                    onClick={() => dispatch(selectItem(index))}
+                />
+            ))}
+        </div>
+    );
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+export const navMenuItemsType = arrayOf(shape(navMenuItemType).isRequired);
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+NavMenu.propTypes = {
+    items: navMenuItemsType.isRequired,
+};
+
+export default NavMenu;

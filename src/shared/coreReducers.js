@@ -34,23 +34,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import appReloadDialog from './AppReload/appReloadDialogReducer';
+import device from './Device/deviceReducer';
+import errorDialog from './ErrorDialog/errorDialogReducer';
+import log from './Log/logReducer';
+import navMenu from './App/NavMenu/navMenuReducer';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
-
-    return store;
+export default {
+    appReloadDialog,
+    device,
+    errorDialog,
+    log,
+    navMenu,
 };
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });

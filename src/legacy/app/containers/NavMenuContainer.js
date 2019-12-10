@@ -34,23 +34,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import NavMenu from '../../components/NavMenu';
+import * as NavMenuActions from '../actions/navMenuActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps(state) {
+    const { navMenu } = state.core;
 
-    return store;
-};
+    return {
+        menuItems: navMenu.menuItems,
+        selectedItemId: navMenu.selectedItemId,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onItemSelected: id => dispatch(NavMenuActions.menuItemSelected(id)),
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(NavMenu, 'NavMenu');

@@ -34,23 +34,52 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import 'core-js/es7';
+import 'regenerator-runtime/runtime';
+
+import './module-loader';
+
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { remote } from 'electron';
+import ReactDOM from 'react-dom';
+import initApp from './initApp';
+import legacyRenderer from '../legacy/legacyRenderer';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const params = new URL(window.location).searchParams;
+const appPath = params.get('appPath');
 
-    return store;
+const removeLoaderElement = () => {
+    const element = document.getElementById('app-loader');
+    if (element) {
+        element.classList.add('loaded');
+        setTimeout(() => {
+            document.body.removeChild(element);
+        }, 500);
+    }
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+const isLegacy = app => typeof app === 'object';
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+const renderer = (App, container, onLoaded) => {
+    ReactDOM.render(<App />, container, onLoaded);
+};
+
+const render = app => {
+    const doRender = isLegacy(app)
+        ? legacyRenderer
+        : renderer;
+
+    doRender(app, document.getElementById('webapp'), removeLoaderElement);
+};
+
+const showLoadingError = error => {
+    console.error(error);
+    remote.dialog.showMessageBox({
+        type: 'error',
+        message: error.message,
+    });
+};
+
+initApp(appPath)
+    .then(render)
+    .catch(showLoadingError);

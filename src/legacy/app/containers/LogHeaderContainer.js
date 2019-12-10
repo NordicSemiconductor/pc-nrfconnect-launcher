@@ -34,23 +34,57 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import LogHeader from '../components/LogHeader';
+import * as LogActions from '../actions/logActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const OPEN_LOGFILE_BUTTON_ID = 'openLogFileButton';
+const CLEAR_LOG_BUTTON_ID = 'clearLogButton';
+const TOGGLE_AUTO_SCROLL_BUTTON_ID = 'toggleAutoScrollButton';
 
-    return store;
-};
+function mapStateToProps(state) {
+    const { log } = state.core;
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    return {
+        buttons: [
+            {
+                id: OPEN_LOGFILE_BUTTON_ID,
+                title: 'Open log file',
+                iconCssClass: 'mdi mdi-file-document-box-outline',
+            },
+            {
+                id: CLEAR_LOG_BUTTON_ID,
+                title: 'Clear log',
+                iconCssClass: 'mdi mdi-trash-can-outline',
+            },
+            {
+                id: TOGGLE_AUTO_SCROLL_BUTTON_ID,
+                title: 'Scroll automatically',
+                iconCssClass: 'mdi mdi-arrow-down',
+                isSelected: log.autoScroll,
+            },
+        ],
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+function mapDispatchToProps(dispatch) {
+    return {
+        onButtonClicked: id => {
+            switch (id) {
+                case OPEN_LOGFILE_BUTTON_ID:
+                    return LogActions.openLogFile();
+                case CLEAR_LOG_BUTTON_ID:
+                    return dispatch(LogActions.clear());
+                case TOGGLE_AUTO_SCROLL_BUTTON_ID:
+                    return dispatch(LogActions.toggleAutoScroll());
+                default:
+                    return {};
+            }
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LogHeader, 'LogHeader');

@@ -35,22 +35,45 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { bool, func } from 'prop-types';
+import { connect } from 'react-redux';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import logger from '../logging';
 
-    return store;
-};
+import { clear, toggleAutoScroll } from './logActions';
+import LogHeaderButton from './LogHeaderButton';
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+import '../../../resources/css/brand19/log-header.scss';
+
+const LogHeader = ({ autoScroll, dispatch }) => (
+    <div className="core19-log-header">
+        <div className="core19-log-header-text">Log</div>
+        <div className="core19-log-header-buttons">
+            <LogHeaderButton
+                title="Open log file"
+                iconCssClass="mdi mdi-file-document-box-outline"
+                onClick={logger.openLogFile}
+            />
+            <LogHeaderButton
+                title="Clear log"
+                iconCssClass="mdi mdi-trash-can-outline"
+                onClick={() => dispatch(clear())}
+            />
+            <LogHeaderButton
+                title="Scroll automatically"
+                iconCssClass="mdi mdi-arrow-down"
+                onClick={() => dispatch(toggleAutoScroll())}
+                isSelected={autoScroll}
+            />
+        </div>
+    </div>
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+LogHeader.propTypes = {
+    autoScroll: bool.isRequired,
+    dispatch: func.isRequired,
+};
+
+const mapState = ({ log: { autoScroll } }) => ({ autoScroll });
+
+export default connect(mapState)(LogHeader);

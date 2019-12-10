@@ -35,22 +35,53 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
-    return store;
+const FirmwareDialog = ({
+    isVisible,
+    text,
+    isInProgress,
+    port,
+    onConfirmUpdateFirmware,
+    onCancel,
+}) => {
+    if (isVisible) {
+        const textToUse = text || 'Would you like to program the development kit'
+            + ` on ${port.comName} (${port.serialNumber})`
+            + ' with the required firmware?';
+        return (
+            <ConfirmationDialog
+                isVisible={isVisible}
+                isInProgress={isInProgress}
+                text={textToUse}
+                okButtonText="Yes"
+                cancelButtonText="No"
+                onOk={() => onConfirmUpdateFirmware(port)}
+                onCancel={() => onCancel(port)}
+            />
+        );
+    }
+    return <div />;
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+FirmwareDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    isInProgress: PropTypes.bool,
+    port: PropTypes.shape({
+        comName: PropTypes.string,
+        serialNumber: PropTypes.number,
+    }),
+    text: PropTypes.string,
+    onConfirmUpdateFirmware: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+FirmwareDialog.defaultProps = {
+    isInProgress: false,
+    port: null,
+    text: null,
+};
+
+export default FirmwareDialog;

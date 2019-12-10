@@ -35,22 +35,42 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import logo from '../../../resources/nordic-logo-white-icon-only.png';
+import { openUrl } from '../../shared';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
-
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const Logo = ({
+    src,
+    alt,
+    cssClass,
+    containerCssClass,
+    onClick,
+}) => (
+    <div
+        className={containerCssClass}
+        role="link"
+        onClick={onClick}
+        onKeyPress={() => {}}
+        tabIndex="0"
+    >
+        <img className={cssClass} src={src} alt={alt} />
+    </div>
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+Logo.propTypes = {
+    src: PropTypes.string,
+    alt: PropTypes.string,
+    cssClass: PropTypes.string,
+    containerCssClass: PropTypes.string,
+    onClick: PropTypes.func,
+};
+
+Logo.defaultProps = {
+    src: logo,
+    alt: 'nRF Connect',
+    cssClass: 'core-logo',
+    containerCssClass: 'core-logo-container',
+    onClick: () => openUrl('http://www.nordicsemi.com/nRFConnect'),
+};
+
+export default Logo;

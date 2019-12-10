@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,23 +34,42 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import Module from 'module';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const hostedModules = {};
 
-    return store;
+/*
+ * The loaded app may import react and react-redux. We must make sure that the
+ * app uses the same instances of react and react-redux as we have in core.
+ * Cannot have multiple copies of these loaded at the same time.
+ */
+const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
+Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
+    if (hostedModules[modulePath]) {
+        return hostedModules[modulePath];
+    }
+
+    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+hostedModules.react = require('react');
+hostedModules['react-dom'] = require('react-dom');
+hostedModules['react-redux'] = require('react-redux');
+hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
+hostedModules['redux-thunk'] = require('redux-thunk');
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+hostedModules.usb = require('usb');
+
+const bleDriverJs = require('pc-ble-driver-js');
+
+const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
+hostedModules['pc-ble-driver-js'] = bleDriver;
+
+hostedModules.serialport = require('serialport');
+hostedModules.electron = require('electron');
+hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
+hostedModules['nrfconnect/core'] = require('../legacy/api').core;
+
+hostedModules['nrfconnect/shared'] = require('../shared');
+
+hostedModules['nrf-device-setup'] = require('nrf-device-setup');

@@ -34,23 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import createLogBuffer from './logBuffer';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+describe('logBuffer', () => {
+    let logBuffer;
 
-    return store;
-};
+    beforeEach(() => {
+        logBuffer = createLogBuffer();
+    });
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    it('should have no entries when buffer is empty', () => {
+        expect(logBuffer.size()).toEqual(0);
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should have 1 entry when 1 entry has been added', () => {
+        logBuffer.addEntry({ id: 0 });
+        expect(logBuffer.size()).toEqual(1);
+    });
+
+    it('should return all added entries when clearing buffer', () => {
+        const inputEntries = [{ id: 0 }, { id: 1 }];
+        logBuffer.addEntry(inputEntries[0]);
+        logBuffer.addEntry(inputEntries[1]);
+        const outputEntries = logBuffer.clear();
+        expect(outputEntries).toEqual(inputEntries);
+    });
+
+    it('should have no entries when buffer has been cleared', () => {
+        logBuffer.addEntry({ id: 0 });
+        logBuffer.clear();
+        expect(logBuffer.size()).toEqual(0);
+    });
+});

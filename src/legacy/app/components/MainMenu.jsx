@@ -35,22 +35,64 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import Immutable from 'immutable';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import MenuItem from '../../components/HotkeyedMenuItem';
 
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const renderItems = menuItems => (
+    menuItems.map(({
+        id, onClick, isDivider, hotkey, text,
+    }) => (
+        <MenuItem
+            key={id}
+            onClick={onClick}
+            divider={isDivider}
+            hotkey={hotkey ? hotkey.toLowerCase() : ''}
+            title={hotkey ? `${text} (${hotkey})` : text}
+        >
+            {text}
+        </MenuItem>
+    ))
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+const MainMenu = ({
+    menuItems,
+    iconName,
+    cssClass,
+    dropdownCssClass,
+    dropdownMenuCssClass,
+    ...rest
+}) => (
+    <div className={cssClass}>
+        <Dropdown id="main-menu" {...rest}>
+            <Dropdown.Toggle className={dropdownCssClass}>
+                <span className={iconName} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu id="main-menu-list" className={dropdownMenuCssClass}>
+                { renderItems(menuItems) }
+            </Dropdown.Menu>
+        </Dropdown>
+    </div>
+);
+
+MainMenu.propTypes = {
+    menuItems: PropTypes.oneOfType([
+        PropTypes.instanceOf(Array),
+        PropTypes.instanceOf(Immutable.Iterable),
+    ]).isRequired,
+    iconName: PropTypes.string,
+    cssClass: PropTypes.string,
+    dropdownCssClass: PropTypes.string,
+    dropdownMenuCssClass: PropTypes.string,
+};
+
+MainMenu.defaultProps = {
+    iconName: 'mdi mdi-menu',
+    cssClass: 'core-nav-section core-padded-row',
+    dropdownCssClass: 'core-main-menu core-btn btn-primary',
+    dropdownMenuCssClass: 'core-dropdown-menu',
+};
+
+export default MainMenu;

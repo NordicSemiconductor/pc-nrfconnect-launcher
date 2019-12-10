@@ -35,22 +35,54 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import { ConfirmationDialog } from '../../shared';
 
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+/**
+ * Dialog that is shown if an nRF Connect core update is available. The user
+ * can either upgrade or cancel.
+ *
+ * @param {boolean} isVisible Show the dialog or not.
+ * @param {string} version The new version number that is available.
+ * @param {function} onClickReleaseNotes Invoked when the user clicks to see release notes.
+ * @param {function} onConfirm Invoked when the user confirms the upgrade.
+ * @param {function} onCancel Invoked when the user cancels the upgrade.
+ * @returns {*} React element to be rendered.
+ */
+const UpdateAvailableDialog = ({
+    isVisible,
+    version,
+    onClickReleaseNotes,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Update available"
+        text={`A new version (${version}) of nRF Connect is available. `
+            + 'Would you like to upgrade now?'}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        onOk={onConfirm}
+        onCancel={onCancel}
+    >
+        <p>
+            A new version ({version}) of nRF Connect is available. Would you
+            like to upgrade now?
+        </p>
+        <button className="btn btn-link core-btn-link" onClick={onClickReleaseNotes} type="button">
+            Click to see release notes
+        </button>
+    </ConfirmationDialog>
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+UpdateAvailableDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    version: PropTypes.string.isRequired,
+    onClickReleaseNotes: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+export default UpdateAvailableDialog;

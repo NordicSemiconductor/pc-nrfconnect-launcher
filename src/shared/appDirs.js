@@ -34,23 +34,63 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { remote } from 'electron';
+import path from 'path';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const getUserDataDir = () => remote.getGlobal('userDataDir');
 
-    return store;
+let appDir;
+let appDataDir;
+let appLogDir;
+
+function setAppDirs(newAppDir, newAppDataDir, newAppLogDir) {
+    appDir = newAppDir;
+    appDataDir = newAppDataDir;
+    appLogDir = newAppLogDir;
+}
+
+/**
+ * Get the filesystem path of the currently loaded app.
+ *
+ * @returns {string|undefined} Absolute path of current app.
+ */
+function getAppDir() {
+    return appDir;
+}
+
+/**
+ * Get the filesystem path of a file for the currently loaded app.
+ *
+ * @param {string} filename relative name of file in the app directory
+ * @returns {string|undefined} Absolute path of file.
+ */
+function getAppFile(filename) {
+    return path.resolve(getAppDir(), filename);
+}
+
+/**
+ * Get the filesystem path of the data directory of currently loaded app.
+ *
+ * @returns {string|undefined} Absolute path of data directory of the current app.
+ */
+function getAppDataDir() {
+    return appDataDir;
+}
+
+/**
+ * Get the filesystem path of the log directory of currently loaded app.
+ *
+ * @returns {string|undefined} Absolute path of data directory of the current app.
+ */
+function getAppLogDir() {
+    return appLogDir;
+}
+
+export {
+    setAppDirs,
+    getAppDir,
+    getAppFile,
+    getAppDataDir,
+    getAppLogDir,
+    getUserDataDir,
 };
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });

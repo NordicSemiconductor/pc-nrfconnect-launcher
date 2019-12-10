@@ -34,23 +34,48 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
+// Do not render react-bootstrap components in tests
+jest.mock('../../../components/ConfirmationDialog', () => 'ConfirmationDialog');
+
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import renderer from 'react-test-renderer';
+import FirmwareDialog from '../FirmwareDialog';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+describe('FirmwareDialog', () => {
+    it('should render empty div if not visible', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible={false}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-    return store;
-};
+    it('should render visible dialog with default text for given port', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                port={{
+                    comName: '/dev/tty1',
+                    serialNumber: 1337,
+                }}
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should render visible dialog with custom text', () => {
+        expect(renderer.create(
+            <FirmwareDialog
+                isVisible
+                text="Do you confirm?"
+                onCancel={() => {}}
+                onConfirmUpdateFirmware={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+});

@@ -34,23 +34,34 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import MainMenu from '../components/MainMenu';
+import * as MainMenuActions from '../actions/mainMenuActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps() {
+    return {};
+}
 
-    return store;
-};
+function mapDispatchToProps(dispatch) {
+    return {
+        menuItems: [{
+            id: 1,
+            text: 'Launch other app...',
+            hotkey: 'Alt+L',
+            onClick: () => dispatch(MainMenuActions.openAppLauncher()),
+        }, {
+            id: 2,
+            text: 'System report',
+            onClick: () => dispatch(MainMenuActions.generateSystemReport()),
+        }, {
+            id: 3,
+            text: 'About',
+            onClick: () => dispatch(MainMenuActions.showAboutDialog()),
+        }],
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MainMenu, 'MainMenu');

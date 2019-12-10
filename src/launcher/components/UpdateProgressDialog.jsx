@@ -35,22 +35,63 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Spinner } from '../../shared';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
-
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const UpdateProgressDialog = ({
+    isVisible,
+    isProgressSupported,
+    isCancelSupported,
+    version,
+    percentDownloaded,
+    onCancel,
+    isCancelling,
+}) => (
+    <Modal show={isVisible} backdrop>
+        <Modal.Header closeButton={false}>
+            <Modal.Title>Downloading update</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Downloading nRF Connect {version}...</p>
+            {
+                isProgressSupported
+                && <ProgressBar label={`${percentDownloaded}%`} now={percentDownloaded} />
+            }
+            <p>
+                This might take a few minutes. The application will restart and update
+                once the download is complete.
+            </p>
+        </Modal.Body>
+        <Modal.Footer>
+            {
+                !isProgressSupported
+                && <Spinner />
+            }
+            {
+                isCancelSupported && (
+                    <Button
+                        onClick={onCancel}
+                        disabled={isCancelling || percentDownloaded === 100}
+                    >
+                        Cancel
+                    </Button>
+                )
+            }
+        </Modal.Footer>
+    </Modal>
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+UpdateProgressDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    isProgressSupported: PropTypes.bool.isRequired,
+    isCancelSupported: PropTypes.bool.isRequired,
+    version: PropTypes.string.isRequired,
+    percentDownloaded: PropTypes.number.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    isCancelling: PropTypes.bool.isRequired,
+};
+
+export default UpdateProgressDialog;

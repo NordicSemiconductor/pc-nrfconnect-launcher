@@ -34,23 +34,67 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { connect } from 'react-redux';
+import {
+    bool, exact, func, object, oneOf,
+} from 'prop-types';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import DeviceSelectorView from './DeviceSelectorView';
+import {
+    deselectDevice,
+    selectAndSetupDevice,
+    startWatchingDevices,
+    stopWatchingDevices,
+} from './deviceActions';
 
-    return store;
+const mapState = ({ device: { devices, selectedSerialNumber } }) => ({
+    devices, selectedSerialNumber,
+});
+
+const noop = () => {};
+const mapDispatch = (dispatch, {
+    deviceListing,
+    deviceSetup,
+    onDeviceSelected = noop,
+    onDeviceDeselected = noop,
+    onDeviceIsReady = noop,
+    releaseCurrentDevice = noop,
+}) => ({
+    onMount: () => dispatch(startWatchingDevices(deviceListing, onDeviceDeselected)),
+    onUnmount: stopWatchingDevices,
+    onSelect: device => dispatch(selectAndSetupDevice(
+        device,
+        deviceListing,
+        deviceSetup,
+        releaseCurrentDevice,
+        onDeviceDeselected,
+        onDeviceSelected,
+        onDeviceIsReady,
+    )),
+    onDeselect: () => { dispatch(deselectDevice(onDeviceDeselected)); },
+});
+const DeviceSelector = connect(mapState, mapDispatch)(DeviceSelectorView);
+
+DeviceSelector.propTypes = {
+    deviceListing: exact({
+        usb: bool,
+        nordicUsb: bool,
+        seggerUsb: bool,
+        nordicDfu: bool,
+        serialport: bool,
+        jlink: bool,
+    }).isRequired,
+    deviceSetup: exact({
+        jprog: object,
+        dfu: object,
+        needSerialport: bool,
+    }).isRequired,
+    portIndicatorStatus: oneOf(['on', 'off']).isRequired,
+    releaseCurrentDevice: func, // () => {}
+    onDeviceSelected: func, // (device) => {}
+    onDeviceDeselected: func, // () => {}
+    onDeviceIsReady: func, // (device) => {}
+
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default DeviceSelector;

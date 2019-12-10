@@ -34,23 +34,68 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable import/first */
+
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { mount, shallow } from 'enzyme';
+import Immutable from 'immutable';
+import NavMenu from '../NavMenu';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const menuItems = Immutable.List([
+    {
+        id: 1,
+        text: 'Connection map',
+        iconClass: 'icon-columns',
+    }, {
+        id: 2,
+        text: 'Server setup',
+        iconClass: 'icon-indent-right',
+    },
+]);
 
-    return store;
-};
+describe('NavMenu', () => {
+    it('should render menu with no items', () => {
+        expect(shallow(
+            <NavMenu
+                menuItems={[]}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    it('should render menu with two items, and none selected', () => {
+        expect(shallow(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should render menu with two items, and one selected', () => {
+        expect(shallow(
+            <NavMenu
+                menuItems={menuItems}
+                selectedItemId={1}
+                onItemSelected={() => {}}
+                bindHotkey={() => {}}
+            />,
+        )).toMatchSnapshot();
+    });
+
+    it('should invoke onItemSelected when item has been selected', () => {
+        const onItemSelected = jest.fn();
+        const wrapper = mount(
+            <NavMenu
+                menuItems={menuItems}
+                onItemSelected={onItemSelected}
+                bindHotkey={() => {}}
+            />,
+        );
+        wrapper.find('button').first().simulate('click');
+
+        expect(onItemSelected).toHaveBeenCalledWith(menuItems.first().id);
+    });
+});

@@ -34,23 +34,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { remote } from 'electron';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import ConfirmationDialog from '../Dialog/ConfirmationDialog';
+import { hideDialog } from './appReloadDialogActions';
 
-    return store;
+const reloadApp = () => setImmediate(() => remote.getCurrentWindow().reload());
+
+const AppReloadDialog = () => {
+    const { isVisible, message } = useSelector(state => state.appReloadDialog);
+    const dispatch = useDispatch();
+    const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
+
+    return (
+        <ConfirmationDialog
+            isVisible={isVisible}
+            onOk={reloadApp}
+            onCancel={doHideDialog}
+            okButtonText="Yes"
+            cancelButtonText="No"
+            text={message}
+        />
+    );
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default AppReloadDialog;

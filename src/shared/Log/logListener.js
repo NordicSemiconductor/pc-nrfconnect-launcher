@@ -34,23 +34,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { ipcRenderer } from 'electron';
+import logger from '../logging';
+import { getAppDataDir } from '../appDirs';
+import { addEntries } from './logActions';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const LOG_UPDATE_INTERVAL = 400;
+let logListener;
 
-    return store;
-};
+/**
+ * Starts listening to new log entries from the application's log buffer.
+ * Incoming entries are added to the state, so that they can be displayed
+ * in the UI.
+ *
+ * @param {function} dispatch The redux dispatch function.
+ * @returns {function(*)} Function that can be passed to redux dispatch.
+ */
+export function startListening(dispatch) {
+    logger.info(`Application data folder: ${getAppDataDir()}`);
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+    ipcRenderer.once('app-details', (event, details) => {
+        const {
+            name,
+            currentVersion,
+            engineVersion,
+            coreVersion,
+            corePath,
+            isOfficial,
+            isSupportedEngine,
+            path,
+            homeDir,
+            tmpDir,
+        } = details;
+        const official = isOfficial ? 'official' : 'local';
+        const supported = isSupportedEngine ? 'is supported' : 'is not supported';
+        logger.debug(`App ${name} v${currentVersion} ${official}`);
+        logger.debug(`App path: ${path}`);
+        logger.debug(`nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`);
+        logger.debug(`nRFConnect path: ${corePath}`);
+        logger.debug(`HomeDir: ${homeDir}`);
+        logger.debug(`TmpDir: ${tmpDir}`);
+    });
+    ipcRenderer.send('get-app-details');
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    logListener = setInterval(() => {
+        const entries = logger.getAndClearEntries();
+        if (entries.length > 0) {
+            dispatch(addEntries(entries));
+        }
+    }, LOG_UPDATE_INTERVAL);
+}
+
+export function stopListening() {
+    if (logListener) {
+        clearInterval(logListener);
+    }
+}

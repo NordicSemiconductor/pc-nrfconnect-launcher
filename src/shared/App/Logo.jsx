@@ -35,22 +35,26 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { openUrl } from '../open';
+import logo from '../../../resources/nordic-logo-white-icon-only.png';
+import '../../../resources/css/brand19/logo.scss';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const goToNRFConnectWebsite = () => openUrl('http://www.nordicsemi.com/nRFConnect');
 
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const Logo = () => (
+    <div
+        className="core19-logo-container"
+        role="link"
+        onClick={goToNRFConnectWebsite}
+        onKeyPress={() => {}}
+        tabIndex="0"
+    >
+        <img
+            className="core19-logo"
+            src={logo}
+            alt="Nordic Semiconductor logo"
+        />
+    </div>
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default Logo;

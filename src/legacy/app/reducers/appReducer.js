@@ -34,23 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { decorateReducer } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+// The default appReducer should not do anything. It just returns the same
+// state as it receives. Not setting an initial state here, as that would
+// override the initial state given by the decorated reducer.
+const appReducer = state => state;
 
-    return store;
-};
+const decoratedAppReducer = decorateReducer(appReducer, 'App');
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+// If the reducer is not decorated, then it will return undefined. Redux does not
+// allow that, so we just return an empty object in that case.
+export default (state, action) => (
+    decoratedAppReducer(state, action) || {}
 );
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });

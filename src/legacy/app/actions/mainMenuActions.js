@@ -34,23 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { ipcRenderer } from 'electron';
+import { systemReport } from '../../../shared';
+import { decoratedSystemReport } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+/**
+ * Indicates that opening the nRF Connect app launcher has been requested.
+ *
+ * @deprecated
+ */
+export const OPEN_APP_LAUNCHER = 'MAIN_MENU_OPEN_APP_LAUNCHER';
+export const GENERATE_SYSTEM_REPORT = 'GENERATE_SYSTEM_REPORT';
 
-    return store;
-};
+function openAppLauncherAction() {
+    return {
+        type: OPEN_APP_LAUNCHER,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function generateSystemReportAction() {
+    return {
+        type: GENERATE_SYSTEM_REPORT,
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export function openAppLauncher() {
+    return dispatch => {
+        dispatch(openAppLauncherAction());
+        ipcRenderer.send('open-app-launcher');
+    };
+}
+
+export function showAboutDialog() {
+    return () => {
+        ipcRenderer.send('show-about-dialog');
+    };
+}
+
+export function generateSystemReport() {
+    return dispatch => {
+        dispatch(generateSystemReportAction());
+        dispatch(systemReport(decoratedSystemReport));
+    };
+}

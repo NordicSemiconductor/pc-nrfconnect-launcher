@@ -34,23 +34,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import { hideDialog } from './errorDialogActions';
 
-    return store;
+const ErrorDialog = () => {
+    const { isVisible, messages } = useSelector(state => state.errorDialog);
+    const dispatch = useDispatch();
+    const doHideDialog = useCallback(() => dispatch(hideDialog()), [dispatch]);
+
+    return (
+        <Modal show={isVisible} onHide={doHideDialog}>
+            <Modal.Header closeButton>
+                <Modal.Title>Error</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                { messages.map(message => <p key={message}>{message}</p>)}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={doHideDialog}>Close</Button>
+            </Modal.Footer>
+        </Modal>
+    );
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
-
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default ErrorDialog;

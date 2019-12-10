@@ -35,22 +35,51 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { ipcRenderer } from 'electron';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+import MenuItem from './HotkeyedMenuItem';
+import systemReport from '../systemReport';
 
-    return store;
-};
+const menuItems = [{
+    id: 1,
+    text: 'Launch other app...',
+    hotkey: 'Alt+L',
+    onClick: () => ipcRenderer.send('open-app-launcher'),
+}, {
+    id: 2,
+    text: 'System report',
+    onClick: systemReport(),
+}, {
+    id: 3,
+    text: 'About',
+    onClick: () => ipcRenderer.send('show-about-dialog'),
+}];
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const renderMenuItems = () => (
+    menuItems.map(({
+        id, onClick, hotkey = '', text,
+    }) => (
+        <MenuItem
+            key={id}
+            onClick={onClick}
+            hotkey={hotkey.toLowerCase()}
+            title={hotkey ? `${text} (${hotkey})` : text}
+        >
+            {text}
+        </MenuItem>
+    ))
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+const MainMenu = () => (
+    <Dropdown id="main-menu">
+        <Dropdown.Toggle className="btn-primary">
+            <span className="mdi mdi-menu" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu id="main-menu-list">
+            { renderMenuItems() }
+        </Dropdown.Menu>
+    </Dropdown>
+);
+
+export default MainMenu;

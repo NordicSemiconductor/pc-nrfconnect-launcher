@@ -35,22 +35,30 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
-
-    return store;
-};
-
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
+const AppReloadDialog = ({
+    isVisible,
+    onConfirmReload,
+    onCancelReload,
+    message,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        onOk={onConfirmReload}
+        onCancel={onCancelReload}
+        okButtonText="Yes"
+        cancelButtonText="No"
+        text={message}
+    />
 );
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+AppReloadDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onConfirmReload: PropTypes.func.isRequired,
+    onCancelReload: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+};
+
+export default AppReloadDialog;

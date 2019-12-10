@@ -34,23 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import LogViewer from '../components/LogViewer';
+import * as LogActions from '../actions/logActions';
+import { connect } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps(state) {
+    const { log } = state.core;
 
-    return store;
-};
+    return {
+        logEntries: log.logEntries,
+        autoScroll: log.autoScroll,
+        containerHeight: log.containerHeight,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onMount: () => dispatch(LogActions.startReading()),
+        onUnmount: () => dispatch(LogActions.stopReading()),
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LogViewer, 'LogViewer');

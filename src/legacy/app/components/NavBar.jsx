@@ -35,22 +35,45 @@
  */
 
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import PropTypes from 'prop-types';
+import Logo from '../../components/Logo';
+import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
+import { decorate, getAppConfig } from '../../decoration';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+const DecoratedLogo = decorate(Logo, 'Logo');
 
-    return store;
+function NavBar({
+    cssClass,
+    navSectionCssClass,
+}) {
+    const appConfig = getAppConfig();
+    return (
+        <div className={cssClass}>
+            <MainMenuContainer />
+            <div className={navSectionCssClass}>
+                {
+                    appConfig.selectorTraits
+                        ? <DeviceSelectorContainer traits={appConfig.selectorTraits} />
+                        : <SerialPortSelectorContainer />
+                }
+            </div>
+            <NavMenuContainer />
+            <DecoratedLogo />
+        </div>
+    );
+}
+
+NavBar.propTypes = {
+    cssClass: PropTypes.string,
+    navSectionCssClass: PropTypes.string,
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+NavBar.defaultProps = {
+    cssClass: 'core-nav-bar',
+    navSectionCssClass: 'core-nav-section core-padded-row',
+};
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default NavBar;

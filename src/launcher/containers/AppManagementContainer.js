@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,23 +34,45 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import { connect } from 'react-redux';
+import AppManagementView from '../components/AppManagementView';
+import * as AppsActions from '../actions/appsActions';
+import { openUrl } from '../../shared';
+import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
+import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+function mapStateToProps(state) {
+    const {
+        apps: {
+            localApps, officialApps,
+            installingAppName, removingAppName, upgradingAppName,
+        },
+    } = state;
 
-    return store;
-};
+    return {
+        apps: localApps.concat(officialApps),
+        installingAppName,
+        removingAppName,
+        upgradingAppName,
+        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
+    };
+}
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onInstall: (name, source) => dispatch(
+            AppsActions.installOfficialApp(name, source),
+        ),
+        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
+        onReadMore: homepage => openUrl(homepage),
+        // Launcher actions
+        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
+        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
+        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
+    };
+}
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AppManagementView);

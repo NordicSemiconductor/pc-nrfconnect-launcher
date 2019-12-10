@@ -34,23 +34,62 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+import path from 'path';
+import fs from 'fs';
+import { mkdirIfNotExists } from '../main/mkdir';
+import {
+    logger, setAppDirs, getUserDataDir, getAppLogDir,
+} from '../shared';
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+/**
+ * Load an app from the given directory dynamically.
+ *
+ * @param {string} appDir the directory of the app to load.
+ * @returns {Object} The loaded app object.
+ */
+const loadApp = appDir => {
+    const moduleManifest = path.join(appDir, 'package.json');
 
-    return store;
+    if (!fs.existsSync(moduleManifest)) {
+        console.log(`Trying to load module, but package.json is missing in ${appDir}.`);
+        return null;
+    }
+
+    // Using window.require instead of require, so that webpack
+    // ignores it when bundling core
+    return window.require(appDir);
 };
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+const ensureDirExists = async dir => {
+    try {
+        await mkdirIfNotExists(dir);
+    } catch {
+        throw new Error(`Failed to create '${dir}'.`);
+    }
+};
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+/**
+ * Initializes an app.
+ *
+ * Creates these directories needed for an app:
+ * .../<userDataDir>/<appName>/
+ * .../<userDataDir>/<appName>/logs/
+ *
+ * After that initializes the logger, loads the app and returns it.
+ *
+ * @param {string} appDir the directory of the app to load.
+ * @returns {Promise<object>} Resolving to the loaded app.
+ */
+export default async appDir => {
+    const appBaseName = path.basename(appDir);
+    const userDataDir = getUserDataDir();
+    const appDataDir = path.join(userDataDir, appBaseName);
+    const appLogDir = path.join(appDataDir, 'logs');
+    setAppDirs(appDir, appDataDir, appLogDir);
+
+    await ensureDirExists(appDataDir);
+    await ensureDirExists(appLogDir);
+
+    logger.addFileTransport(getAppLogDir());
+    return loadApp(appDir);
+};

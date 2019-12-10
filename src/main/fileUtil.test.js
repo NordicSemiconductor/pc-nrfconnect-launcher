@@ -34,23 +34,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import coreReducers from '../src/shared/coreReducers';
+/* eslint-disable import/first */
 
-const createPreparedStore = actions => {
-    const store = createStore(combineReducers(coreReducers));
-    actions.forEach(store.dispatch);
+jest.mock('fs-extra', () => ({}));
 
-    return store;
-};
+import { getNameFromNpmPackage } from './fileUtil';
 
-const PreparedProvider = actions => ({ children }) => ( // eslint-disable-line react/prop-types
-    <Provider store={createPreparedStore(actions)}>
-        {children}
-    </Provider>
-);
+describe('getNameFromNpmPackage', () => {
+    it('should return null if path is invalid', () => {
+        expect(getNameFromNpmPackage('(invalid)')).toBeNull();
+    });
 
-export default (element, actions = []) => render(element, { wrapper: PreparedProvider(actions) });
+    it('should return null if file name has no no dash', () => {
+        expect(getNameFromNpmPackage('/path/to/package.tgz')).toBeNull();
+    });
+
+    it('should return name if file name is valid', () => {
+        expect(getNameFromNpmPackage('/path/to/my-package-1.2.3.tgz')).toEqual('my-package');
+    });
+});
