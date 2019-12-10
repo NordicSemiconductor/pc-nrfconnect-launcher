@@ -51,34 +51,45 @@ import rootReducer from './reducers';
 import { core } from '../../api';
 import '../../../resources/css/app.scss';
 
-
 const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
+
+const removeLoaderElement = () => {
+    const element = document.getElementById('app-loader');
+    if (element) {
+        element.classList.add('loaded');
+        setTimeout(() => {
+            document.body.removeChild(element);
+        }, 500);
+    }
+};
+
+const isOld = app => typeof app === 'object';
+
+const getRootElement = () => document.getElementById('webapp');
+
+const rendererForClassicApps = app => {
+    const store = configureStore(rootReducer, app);
+    invokeAppFn('onInit', store.dispatch, store.getState);
+    render(<RootContainer store={store} />, getRootElement(), () => {
+        removeLoaderElement();
+        invokeAppFn('onReady', store.dispatch, store.getState);
+    });
+};
+
+const rendererForNewApps = App => {
+    render(<App />, getRootElement(), () => {
+        removeLoaderElement();
+    });
+};
 
 initAppDirectories(appPath).then(() => {
     core.logger.addFileTransport(getAppLogDir());
 
     const app = loadApp(appPath);
 
-    const store = configureStore(rootReducer, app);
-
-    invokeAppFn('onInit', store.dispatch, store.getState);
-
-    const removeLoaderElement = () => {
-        const element = document.getElementById('app-loader');
-        if (element) {
-            element.classList.add('loaded');
-            setTimeout(() => {
-                document.body.removeChild(element);
-            }, 500);
-        }
-    };
-
-    const rootElement = React.createElement(RootContainer, { store });
-    render(rootElement, document.getElementById('webapp'), () => {
-        removeLoaderElement();
-        invokeAppFn('onReady', store.dispatch, store.getState);
-    });
+    const renderApp = isOld(app) ? rendererForClassicApps : rendererForNewApps;
+    renderApp(app);
 })
     .catch(error => {
         console.error(error);
