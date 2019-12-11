@@ -32,11 +32,19 @@
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
         "description": "Capture nRF91 modem trace",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
-    "nrf-framework-courses": {
+    "pc-nrfconnect-gettingstarted": {
         "displayName": "Getting Started Assistant",
         "description": "Guide to set up the nRF Connect SDK",
-        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/nrf-framework-courses"
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-gettingstarted",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-gettingstarted"
+    },
+    "pc-nrfconnect-dtm": {
+        "displayName": "Direct Test Mode",
+        "description": "RF PHY testing of Bluetooth Low Energy devices",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-dtm"
     }
 }

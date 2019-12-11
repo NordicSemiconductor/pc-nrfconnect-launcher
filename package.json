@@ -1,12 +1,12 @@
 {
     "name": "nrfconnect",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
         "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-core.git"
     },
-    "main": "index.js",
+    "main": "src/main",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "postinstall": "npm run get-jlink && npm run fix-serialport",
@@ -15,7 +15,7 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint": "nrfconnect-scripts lint main lib index.js",
+        "lint": "nrfconnect-scripts lint src",
         "test": "jest --testResultsProcessor jest-bamboo-formatter",
         "test-watch": "jest --watch",
         "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
@@ -27,7 +27,9 @@
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "get-jlink -o build",
         "pack": "npm run build && build -p never",
-        "release": "build -p always"
+        "release": "build -p always",
+        "install-devtools": "electron . --install-devtools",
+        "remove-devtools": "electron . --remove-devtools"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
@@ -39,15 +41,14 @@
         ],
         "files": [
             "dist/",
-            "main/",
+            "src/main/",
             "node_modules/",
             "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
             "resources/*.svg",
-            "resources/mac/",
-            "index.js"
+            "resources/mac/"
         ],
         "directories": {
             "output": "release"
@@ -105,15 +106,14 @@
         "bootstrap": "4.3.1",
         "electron": "5.0.6",
         "electron-builder": "20.44.4",
+        "electron-devtools-installer": "2.2.4",
         "electron-is-dev": "1.1.0",
         "mini-css-extract-plugin": "0.8.0",
         "moment": "2.24.0",
         "mousetrap": "1.6.3",
-        "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#v3.1.0",
+        "pc-nrfconnect-devdep": "github:NordicSemiconductor/pc-nrfconnect-devdep#v3.5.0",
         "prettysize": "2.0.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
-        "redux-logger": "3.0.6",
-        "redux-thunk": "2.3.0",
         "spectron": "7.0.0",
         "tar": "4.4.10",
         "util": "0.12.0",
@@ -130,9 +130,8 @@
         "electron-updater": "4.0.14",
         "fs-extra": "8.1.0",
         "mustache": "3.0.1",
-        "nrf-device-setup": "0.6.0",
-        "pc-ble-driver-js": "2.6.1",
-        "react-bootstrap": "1.0.0-beta.9",
+        "nrf-device-setup": "0.6.2",
+        "pc-ble-driver-js": "2.6.2",
         "react-markdown": "4.1.0",
         "roboto-fontface": "0.10.0",
         "shasum": "1.0.2",

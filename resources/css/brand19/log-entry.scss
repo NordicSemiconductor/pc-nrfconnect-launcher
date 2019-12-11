@@ -1,0 +1,27 @@
+@import "../common/variables";
+
+.core19-log-entry {
+    height: 20px;
+    white-space: nowrap;
+    background-color: white;
+    display: table-row;
+    min-width: 100%;
+
+    .core19-log-cell {
+        display: table-cell;
+        padding: 0 20px;
+        border-right: 1px dotted gray;
+        border-bottom: 1px dotted gray;
+        height: 20px;
+        line-height: 20px;
+        user-select: text;
+    }
+    .core19-log-time {
+        width: 132px;
+    }
+}
+
+.core19-log-level-error {
+    color: $state-danger-text;
+    background-color: $state-danger-bg;
+}

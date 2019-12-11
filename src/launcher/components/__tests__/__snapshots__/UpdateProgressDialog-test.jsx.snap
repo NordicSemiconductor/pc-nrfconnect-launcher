@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateProgressDialog should render cancelling 1`] = `
+<Bootstrap(Modal)
+  backdrop={true}
+  show={true}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <ProgressBar
+      animated={false}
+      isChild={false}
+      label="42%"
+      max={100}
+      min={0}
+      now={42}
+      srOnly={false}
+      striped={false}
+    />
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+      variant="primary"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
+
+exports[`UpdateProgressDialog should render invisible 1`] = `
+<Bootstrap(Modal)
+  backdrop={true}
+  show={false}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      ...
+    </p>
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <_default />
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
+
+exports[`UpdateProgressDialog should render with cancel disabled when 100 percent complete 1`] = `
+<Bootstrap(Modal)
+  backdrop={true}
+  show={true}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <ProgressBar
+      animated={false}
+      isChild={false}
+      label="100%"
+      max={100}
+      min={0}
+      now={100}
+      srOnly={false}
+      striped={false}
+    />
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+      variant="primary"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
+
+exports[`UpdateProgressDialog should render with version, percent downloaded, and cancellable 1`] = `
+<Bootstrap(Modal)
+  backdrop={true}
+  show={true}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <ProgressBar
+      animated={false}
+      isChild={false}
+      label="42%"
+      max={100}
+      min={0}
+      now={42}
+      srOnly={false}
+      striped={false}
+    />
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+      variant="primary"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
+
+exports[`UpdateProgressDialog should render with version, without progress, and not cancellable 1`] = `
+<Bootstrap(Modal)
+  backdrop={true}
+  show={true}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Downloading update
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>
+      Downloading nRF Connect 
+      1.2.3
+      ...
+    </p>
+    <p>
+      This might take a few minutes. The application will restart and update once the download is complete.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <_default />
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
