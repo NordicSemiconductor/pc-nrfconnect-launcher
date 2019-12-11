@@ -39,19 +39,12 @@ import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
 
 import AppItem from './AppItem';
+import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
-
-function getSortedApps(apps) {
-    return apps.sort((a, b) => {
-        const cmpInstalled = (!!b.currentVersion - !!a.currentVersion);
-        const aName = a.displayName || a.name;
-        const bName = b.displayName || b.name;
-        return cmpInstalled || aName.localeCompare(bName);
-    });
-}
 
 const AppManagementView = ({
     apps,
+    sources,
     installingAppName,
     upgradingAppName,
     removingAppName,
@@ -64,8 +57,9 @@ const AppManagementView = ({
     onShowReleaseNotes,
 }) => (
     <>
+        <AppManagementFilter apps={apps} sources={sources} />
         {
-            getSortedApps(apps).map(app => (
+            apps.map(app => (
                 <AppItem
                     key={`${app.name}-${app.source}`}
                     app={app}
@@ -88,6 +82,7 @@ const AppManagementView = ({
 
 AppManagementView.propTypes = {
     apps: PropTypes.instanceOf(Iterable).isRequired,
+    sources: PropTypes.instanceOf(Object).isRequired,
     installingAppName: PropTypes.string,
     upgradingAppName: PropTypes.string,
     removingAppName: PropTypes.string,

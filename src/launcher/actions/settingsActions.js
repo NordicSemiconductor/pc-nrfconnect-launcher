@@ -180,7 +180,8 @@ export function removeSource(name) {
                     dispatch(ErrorDialogActions.showDialog(`Unable to save settings: ${error.message}`));
                 }
             })
-            .then(() => dispatch(AppsActions.loadOfficialApps()));
+            .then(() => dispatch(AppsActions.loadOfficialApps()))
+            .then(() => dispatch(AppsActions.setAppManagementSource(name)));
     };
 }
 

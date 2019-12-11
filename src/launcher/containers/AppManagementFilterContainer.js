@@ -35,79 +35,23 @@
  */
 
 import { connect } from 'react-redux';
-import AppManagementView from '../components/AppManagementView';
+import AppManagementFilter from '../components/AppManagementFilter';
 import * as AppsActions from '../actions/appsActions';
-import { openUrl } from '../../shared';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
-import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 
-function mapStateToProps(state) {
-    const {
-        apps: {
-            localApps, officialApps,
-            installingAppName, removingAppName, upgradingAppName,
-            show,
-            filter,
-            sources,
-        },
-    } = state;
-    const allApps = localApps.concat(officialApps);
-    const apps = allApps.filter(app => (
-        new RegExp(filter, 'i').test(app.displayName)
-        && (
-            (app.isOfficial === true && app.path && show.installed)
-            || (app.isOfficial === null && !app.path && show.available)
-            || (app.isOfficial === false)
-        )
-        && (sources[app.source || 'local'] !== false)
-    ))
-        .sort((a, b) => {
-            const cmpInstalled = (!!b.currentVersion - !!a.currentVersion);
-            const aName = a.displayName || a.name;
-            const bName = b.displayName || b.name;
-            return cmpInstalled || aName.localeCompare(bName);
-        });
-
-    const allSources = [...new Set(allApps.map(({ source }) => source || 'local'))];
-    allSources.forEach(x => {
-        if (sources[x] === undefined) {
-            sources[x] = true;
-        }
-    });
-
-    return {
-        apps,
-        installingAppName,
-        removingAppName,
-        upgradingAppName,
-        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
+export default connect(
+    ({ apps: { show, filter } }, { apps }) => ({
         show: { ...show },
         filter,
         upgradeableApps: apps.filter(app => app.upgradeAvailable),
-        sources,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onInstall: (name, source) => dispatch(
-            AppsActions.installOfficialApp(name, source),
-        ),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
-        onReadMore: homepage => openUrl(homepage),
-        // Launcher actions
-        onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
-        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
+    }),
+    dispatch => ({
         onUpgrade: (name, version, source) => dispatch(
             AppsActions.upgradeOfficialApp(name, version, source),
         ),
         setAppManagementShow: show => dispatch(AppsActions.setAppManagementShow(show)),
         setAppManagementFilter: filter => dispatch(AppsActions.setAppManagementFilter(filter)),
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
+        setAppManagementSource: (source, show) => dispatch(
+            AppsActions.setAppManagementSource(source, show),
+        ),
+    }),
+)(AppManagementFilter);

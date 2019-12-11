@@ -52,6 +52,7 @@ const ImmutableApp = Record({
     source: null,
     url: null,
     releaseNote: null,
+    upgradeAvailable: null,
 });
 
 function getImmutableApp(app) {
@@ -71,6 +72,7 @@ function getImmutableApp(app) {
         source: app.source,
         url: app.url,
         releaseNote: app.releaseNote,
+        upgradeAvailable: app.upgradeAvailable,
     });
 }
 

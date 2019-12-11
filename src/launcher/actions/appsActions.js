@@ -42,6 +42,7 @@ const fs = remote.require('fs');
 
 const mainApps = remote.require('../main/apps');
 const config = remote.require('../main/config');
+const settings = remote.require('../main/settings');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
@@ -65,6 +66,9 @@ export const DOWNLOAD_LATEST_APP_INFO_SUCCESS = 'DOWNLOAD_LATEST_APP_INFO_SUCCES
 export const DOWNLOAD_LATEST_APP_INFO_ERROR = 'DOWNLOAD_LATEST_APP_INFO_ERROR';
 export const SET_APP_ICON_PATH = 'SET_APP_ICON_PATH';
 export const SET_APP_RELEASE_NOTE = 'SET_APP_RELEASE_NOTE';
+export const SET_APP_MANAGEMENT_SHOW = 'SET_APP_MANAGEMENT_SHOW';
+export const SET_APP_MANAGEMENT_FILTER = 'SET_APP_MANAGEMENT_FILTER';
+export const SET_APP_MANAGEMENT_SOURCE = 'SET_APP_MANAGEMENT_SOURCE';
 
 function loadLocalAppsAction() {
     return {
@@ -222,6 +226,47 @@ export function setAppReleaseNoteAction(source, name, releaseNote) {
     };
 }
 
+export function setAppManagementShow(show = {}) {
+    const newState = {
+        installed: true,
+        available: true,
+        ...settings.get('app-management.show', {}),
+        ...show,
+    };
+    settings.set('app-management.show', newState);
+    return {
+        type: SET_APP_MANAGEMENT_SHOW,
+        show: newState,
+    };
+}
+
+export function setAppManagementFilter(filter) {
+    const newState = filter === undefined
+        ? settings.get('app-management.filter', '')
+        : filter;
+    settings.set('app-management.filter', newState);
+    return {
+        type: SET_APP_MANAGEMENT_FILTER,
+        filter: newState,
+    };
+}
+
+export function setAppManagementSource(source, show) {
+    const sources = { ...settings.get('app-management.sources', {}) };
+    if (source) {
+        if (show !== undefined) {
+            sources[source] = show;
+        } else {
+            delete sources[source];
+        }
+    }
+    settings.set('app-management.sources', sources);
+    return {
+        type: SET_APP_MANAGEMENT_SOURCE,
+        sources,
+    };
+}
+
 /**
  * Download app icon and dispatch icon update event
  *
@@ -247,7 +292,7 @@ function downloadAppIcon(source, name, iconPath, iconUrl) {
 export function loadLocalApps() {
     return dispatch => {
         dispatch(loadLocalAppsAction());
-        mainApps.getLocalApps()
+        return mainApps.getLocalApps()
             .then(apps => dispatch(loadLocalAppsSuccess(apps)))
             .catch(error => {
                 dispatch(loadLocalAppsError());
@@ -259,7 +304,7 @@ export function loadLocalApps() {
 export function loadOfficialApps() {
     return dispatch => {
         dispatch(loadOfficialAppsAction());
-        mainApps.getOfficialApps()
+        return mainApps.getOfficialApps()
             .then(apps => {
                 dispatch(loadOfficialAppsSuccess(apps));
                 apps.forEach(app => {

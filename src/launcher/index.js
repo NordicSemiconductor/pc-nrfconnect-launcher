@@ -86,6 +86,9 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
+    await store.dispatch(AppsActions.setAppManagementShow());
+    await store.dispatch(AppsActions.setAppManagementFilter());
+    await store.dispatch(AppsActions.setAppManagementSource());
     await downloadLatestAppInfo();
     await checkForCoreUpdates();
 });

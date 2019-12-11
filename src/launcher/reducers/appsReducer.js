@@ -52,6 +52,9 @@ const InitialState = Record({
     isConfirmLaunchDialogVisible: false,
     confirmLaunchText: '',
     confirmLaunchApp: null,
+    show: { installed: true, available: true },
+    filter: '',
+    sources: {},
 });
 const initialState = new InitialState();
 
@@ -147,6 +150,12 @@ const reducer = (state = initialState, action) => {
         case AppsActions.SET_APP_RELEASE_NOTE:
             return state.update('officialApps',
                 x => setAppReleaseNote(x, action.source, action.name, action.releaseNote));
+        case AppsActions.SET_APP_MANAGEMENT_SHOW:
+            return state.set('show', action.show);
+        case AppsActions.SET_APP_MANAGEMENT_FILTER:
+            return state.set('filter', action.filter);
+        case AppsActions.SET_APP_MANAGEMENT_SOURCE:
+            return state.set('sources', action.sources);
         default:
             return state;
     }

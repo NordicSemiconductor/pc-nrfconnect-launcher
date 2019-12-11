@@ -59,6 +59,7 @@ const app1 = {
     latestVersion: null,
     shortcutIconPath: null,
     source: null,
+    upgradeAvailable: null,
     url: null,
     releaseNote: null,
 };
@@ -76,6 +77,7 @@ const app2 = {
     latestVersion: null,
     shortcutIconPath: null,
     source: null,
+    upgradeAvailable: null,
     url: null,
     releaseNote: null,
 };
