@@ -1,0 +1,45 @@
+@import '../common/variables';
+
+.core19-device-selector {
+    .dropdown-toggle.btn {
+        min-width: 143px;
+        height: 34px;
+    }
+    .dropdown-toggle::after {
+        margin-left: 12px;
+    }
+}
+
+.core19-device-selector-item {
+    padding-left: 5px;
+
+    // board version
+    > div:nth-child(1) > span {
+        margin-left: 20px;
+    }
+}
+
+ul.core19-device-selector-item-details {
+    font-size: 11px;
+    padding-left: 25px;
+    margin-bottom: 0;
+}
+
+.core19-device-port-indicator {
+    display: inline-block;
+    height: 11px;
+    width: 11px;
+    border-radius: 50%;
+    border: 1px solid #645e5e;
+    margin-left: 10px;
+
+    &.on {
+        background-color: $brand-success;
+    }
+    &.off {
+        background-color: #cfcfcf;
+    }
+    &.error {
+        background-color: $brand-danger;
+    }
+}

@@ -25,9 +25,8 @@ module.exports = {
     mode: nodeEnv,
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
-        app: './lib/windows/app/index',
-        launcher: './lib/windows/launcher/index',
-        brand19: './resources/css/brand19.scss',
+        app: './src/app',
+        launcher: './src/launcher',
     },
     output: {
         path: path.resolve('dist'),
@@ -48,10 +47,16 @@ module.exports = {
             exclude: /node_modules/,
         }, {
             test: /\.scss|\.css$/,
-            loaders: [
+            use: [
                 MiniCssExtractPlugin.loader,
-                require.resolve('css-loader'),
-                require.resolve('sass-loader'),
+                'css-loader',
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        // eslint-disable-next-line global-require
+                        implementation: require('sass'),
+                    },
+                },
             ],
         }, {
             test: /\.(png|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
