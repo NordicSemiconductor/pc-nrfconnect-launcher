@@ -137,12 +137,10 @@
     },
     "jest": {
         "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/mocks/fileMock.js",
-            "\\.(css|scss)$": "<rootDir>/mocks/styleMock.js",
-            "electron": "<rootDir>/mocks/electronMock.js",
-            "pc-nrfjprog-js": "<rootDir>/mocks/nrfjprogjsMock.js",
-            "nrf-device-lister": "<rootDir>/mocks/emptyMock.js",
-            "nrf-device-setup": "<rootDir>/mocks/emptyMock.js"
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/fileMock.js",
+            "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/emptyMock.js",
+            "electron": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/electronMock.js",
+            "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.jsx?$": [
@@ -157,7 +155,7 @@
         ],
         "testURL": "file:/",
         "setupFilesAfterEnv": [
-            "<rootDir>/test/setupTests.js"
+            "<rootDir>/node_modules/pc-nrfconnect-devdep/test/setupTests.js"
         ],
         "snapshotSerializers": [
             "enzyme-to-json/serializer"
