@@ -52,24 +52,23 @@ Module._load = function load(modulePath) { // eslint-disable-line no-underscore-
     return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
 };
 
-hostedModules.react = require('react');
+/* eslint-disable dot-notation */
+// Disable dot-notation in this file, to keep the syntax below more consistent
+
+hostedModules['electron'] = require('electron');
+hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+hostedModules['nrfconnect/core'] = require('../legacy/api').core;
+hostedModules['nrfconnect/shared'] = require('../shared');
+hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
 hostedModules['react-dom'] = require('react-dom');
 hostedModules['react-redux'] = require('react-redux');
+hostedModules['react'] = require('react');
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
-
-hostedModules.usb = require('usb');
+hostedModules['serialport'] = require('serialport');
+hostedModules['usb'] = require('usb');
 
 const bleDriverJs = require('pc-ble-driver-js');
 
 const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 hostedModules['pc-ble-driver-js'] = bleDriver;
-
-hostedModules.serialport = require('serialport');
-hostedModules.electron = require('electron');
-hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
-hostedModules['nrfconnect/core'] = require('../legacy/api').core;
-
-hostedModules['nrfconnect/shared'] = require('../shared');
-
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
