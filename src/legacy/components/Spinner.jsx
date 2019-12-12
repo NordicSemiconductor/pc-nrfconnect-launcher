@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import spinnerImg from '../../../resources/ajax-loader.gif';
+import spinnerImg from 'pc-nrfconnect-devdep/resources/ajax-loader.gif';
 
 const Spinner = ({ size, className }) => (
     <img className={className} src={spinnerImg} height={size} width={size} alt="Loading..." />

@@ -35,11 +35,12 @@
  */
 
 import { combineReducers } from 'redux';
+import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-devdep';
+
 import apps from './appsReducer';
 import autoUpdate from './autoUpdateReducer';
 import proxy from './proxyReducer';
 import settings from './settingsReducer';
-import { errorDialogReducer as errorDialog } from '../../shared';
 import releaseNotesDialog from './releaseNotesDialogReducer';
 
 export default combineReducers({

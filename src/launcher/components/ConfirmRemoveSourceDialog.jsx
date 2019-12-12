@@ -36,8 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { ConfirmationDialog } from '../../shared';
+import { ConfirmationDialog } from 'pc-nrfconnect-devdep';
 
 const ConfirmRemoveSourceDialog = ({
     isVisible,

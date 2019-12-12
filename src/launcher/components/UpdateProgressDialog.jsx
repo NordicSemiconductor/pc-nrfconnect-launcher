@@ -39,7 +39,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Spinner } from '../../shared';
+import { Spinner } from 'pc-nrfconnect-devdep';
 
 const UpdateProgressDialog = ({
     isVisible,

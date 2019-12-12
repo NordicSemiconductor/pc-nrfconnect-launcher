@@ -38,6 +38,7 @@ import React from 'react';
 
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
+import { Logo, ErrorDialog } from 'pc-nrfconnect-devdep';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import SettingsContainer from '../containers/SettingsContainer';
@@ -46,7 +47,6 @@ import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import { Logo, ErrorDialog } from '../../shared';
 
 export default () => (
     <>
