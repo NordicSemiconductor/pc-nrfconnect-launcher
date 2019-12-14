@@ -1,6 +1,7 @@
 ## Unreleased
 ### Features
 - For developers enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
+- Fewer requests for entering proxy credentials when needed. #370
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 

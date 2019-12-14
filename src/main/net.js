@@ -58,7 +58,7 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url, headers = {}) {
+function downloadToBuffer(url, enableProxyLogin, headers = {}) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
@@ -91,7 +91,9 @@ function downloadToBuffer(url, headers = {}) {
             response.on('error', error => reject(new Error(`Error when reading ${url}: `
                 + `${error.message}`)));
         });
-        request.on('login', onProxyLogin);
+        if (enableProxyLogin) {
+            request.on('login', onProxyLogin);
+        }
         request.on('error', error => reject(new Error(`Unable to download ${url}: `
             + `${error.message}`)));
         request.end();
@@ -100,32 +102,21 @@ function downloadToBuffer(url, headers = {}) {
 
 
 /**
- * Download the given url to a string. Uses the electron net API,
- * which reads proxy settings from the system.
- *
- * @param {string} url the URL to download.
- * @returns {Promise} promise that resolves when the data has been downloaded.
- */
-function downloadToString(url) {
-    return downloadToBuffer(url)
-        .then(({ buffer }) => buffer.toString());
-}
-
-/**
  * Download the given url to a string. If an etag is provided, then use that in the request.
  * If the server returns a 304 (not modified), then just return null.
  *
  * @param {string} url the URL to download.
  * @param {string} previousEtag optional string with the eTag of the known resource.
+ * @param {boolean} enableProxyLogin should the request handle login event.
  * @returns {Promise<{etag: ?string, response: ?string}>} promise that resolves when the data has
  *          been downloaded. If the resource did not change, then property response is null. If
  *          the server did not provide an Etag, then property etag will be undefined.
  */
-function downloadToStringIfChanged(url, previousEtag) {
+function downloadToStringIfChanged(url, previousEtag, enableProxyLogin) {
     const requestHeaders = previousEtag == null ? {} : { 'If-None-Match': previousEtag };
 
     const NOT_MODIFIED = 304;
-    return downloadToBuffer(url, requestHeaders, true)
+    return downloadToBuffer(url, enableProxyLogin, requestHeaders)
         .then(({ buffer, etag, statusCode }) => ({
             etag,
             response: (statusCode === NOT_MODIFIED) ? null : buffer.toString(),
@@ -137,11 +128,12 @@ function downloadToStringIfChanged(url, previousEtag) {
  * which reads proxy settings from the system.
  *
  * @param {string} url the URL to download.
+ * @param {boolean} enableProxyLogin should the request handle login event.
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
-function downloadToJson(url) {
-    return downloadToString(url)
-        .then(string => JSON.parse(string));
+function downloadToJson(url, enableProxyLogin) {
+    return downloadToBuffer(url, enableProxyLogin)
+        .then(({ buffer }) => JSON.parse(buffer));
 }
 
 /**
@@ -150,11 +142,12 @@ function downloadToJson(url) {
  *
  * @param {string} url the URL to download.
  * @param {string} filePath where to store the downloaded file.
+ * @param {boolean} enableProxyLogin should the request handle login event.
  * @returns {Promise} promise that resolves when file has been downloaded.
  */
-function downloadToFile(url, filePath) {
+function downloadToFile(url, filePath, enableProxyLogin) {
     return new Promise((resolve, reject) => {
-        downloadToBuffer(url)
+        downloadToBuffer(url, enableProxyLogin)
             .then(({ buffer }) => {
                 fs.writeFile(filePath, buffer, err => {
                     if (err) {
@@ -170,7 +163,6 @@ function downloadToFile(url, filePath) {
 
 module.exports = {
     downloadToFile,
-    downloadToString,
     downloadToStringIfChanged,
     downloadToJson,
     registerProxyLoginHandler,

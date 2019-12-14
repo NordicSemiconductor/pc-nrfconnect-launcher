@@ -102,7 +102,7 @@ function initSourceDirectory(source) {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFile(appsJsonUrl) {
-    return net.downloadToJson(appsJsonUrl)
+    return net.downloadToJson(appsJsonUrl, true)
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you `
                 + 'are using a proxy server, you may need to configure it as described on '
@@ -545,7 +545,7 @@ async function downloadReleaseNotes({ url, homepage }) {
         const previousAppData = store.get(appDataPath, {});
 
         const previousEtag = previousAppData.changelog ? previousAppData.etag : undefined;
-        const { response, etag } = await net.downloadToStringIfChanged(`${url}-Changelog.md`, previousEtag);
+        const { response, etag } = await net.downloadToStringIfChanged(`${url}-Changelog.md`, previousEtag, false);
         if (response != null) {
             const changelog = replacePrLinks(homepage, response);
             store.set(appDataPath, { etag, changelog });

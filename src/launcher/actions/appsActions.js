@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
 import { ErrorDialogActions } from '../../shared';
 
@@ -283,7 +284,7 @@ function downloadAppIcon(source, name, iconPath, iconUrl) {
         if (fs.existsSync(iconPath)) {
             dispatch(setAppIconPath(source, name, iconPath));
         }
-        net.downloadToFile(iconUrl, iconPath)
+        net.downloadToFile(iconUrl, iconPath, false)
             .then(() => dispatch(setAppIconPath(source, name, iconPath)))
             .catch(() => { /* Ignore 404 not found. */ });
     };
@@ -301,29 +302,29 @@ export function loadLocalApps() {
     };
 }
 
-export function loadOfficialApps() {
+export function loadOfficialApps(appName, appSource) {
     return dispatch => {
         dispatch(loadOfficialAppsAction());
         return mainApps.getOfficialApps()
             .then(apps => {
                 dispatch(loadOfficialAppsSuccess(apps));
-                apps.forEach(app => {
-                    const {
-                        source, name, url, path,
-                    } = app;
-                    if (!path) {
-                        const iconPath = `${config.getAppsRootDir(source)}/${name}.svg`;
-                        const iconUrl = `${url}.svg`;
-                        dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
-                    }
+                apps.filter(({ path }) => !path).forEach(({ source, name, url }) => {
+                    const iconPath = join(`${config.getAppsRootDir(source)}`, `${name}.svg`);
+                    const iconUrl = `${url}.svg`;
+                    dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
                 });
-                const downloadAllReleaseNotes = (app, ...rest) => (
-                    app ? mainApps.downloadReleaseNotes(app)
+                const downloadAllReleaseNotes = (app, ...rest) => {
+                    if (!app) {
+                        return Promise.resolve();
+                    }
+                    if (appName && !(app.name === appName && app.source === appSource)) {
+                        return downloadAllReleaseNotes(...rest);
+                    }
+                    return mainApps.downloadReleaseNotes(app)
                         .then(releaseNote => releaseNote && dispatch(
                             setAppReleaseNoteAction(app.source, app.name, releaseNote),
-                        )).then(() => downloadAllReleaseNotes(...rest))
-                        : Promise.resolve()
-                );
+                        )).then(() => downloadAllReleaseNotes(...rest));
+                };
                 downloadAllReleaseNotes(...apps);
             })
             .catch(error => {
@@ -360,7 +361,7 @@ export function installOfficialApp(name, source) {
         mainApps.installOfficialApp(name, 'latest', source)
             .then(() => {
                 dispatch(installOfficialAppSuccessAction(name, source));
-                dispatch(loadOfficialApps());
+                dispatch(loadOfficialApps(name, source));
             })
             .catch(error => {
                 dispatch(installOfficialAppErrorAction());
@@ -375,7 +376,7 @@ export function removeOfficialApp(name, source) {
         mainApps.removeOfficialApp(name, source)
             .then(() => {
                 dispatch(removeOfficialAppSuccessAction(name, source));
-                dispatch(loadOfficialApps());
+                dispatch(loadOfficialApps(name, source));
             })
             .catch(error => {
                 dispatch(removeOfficialAppErrorAction());
@@ -390,7 +391,7 @@ export function upgradeOfficialApp(name, version, source) {
         return mainApps.installOfficialApp(name, version, source)
             .then(() => {
                 dispatch(upgradeOfficialAppSuccessAction(name, version, source));
-                dispatch(loadOfficialApps());
+                dispatch(loadOfficialApps(name, source));
             })
             .catch(error => {
                 dispatch(upgradeOfficialAppErrorAction());
