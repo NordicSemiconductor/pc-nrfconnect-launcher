@@ -35,16 +35,20 @@
  */
 
 const { app, BrowserWindow } = require('electron');
-const {
-    default: downloadAndInstall,
-    REACT_DEVELOPER_TOOLS,
-    REDUX_DEVTOOLS,
-} = require('electron-devtools-installer');
+
+let devToolsInstaller;
+try {
+    devToolsInstaller = require('electron-devtools-installer');
+} catch {
+    // Ignore missing devtools dependency here, check later for it when needed
+}
 
 const installDevtools = async () => {
     try {
+        const downloadAndInstall = devToolsInstaller.default;
+        const devToolsExtensions = [devToolsInstaller.REACT_DEVELOPER_TOOLS, devToolsInstaller.REDUX_DEVTOOLS];
         const forceReinstall = true;
-        const devToolsExtensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+
         const names = await downloadAndInstall(devToolsExtensions, forceReinstall);
         console.log('Added devtool extensions:', names);
         app.quit();
@@ -66,6 +70,10 @@ const removeDevtools = () => {
 };
 
 module.exports = () => {
+    if (devToolsInstaller == null) {
+        return
+    }
+
     if (process.argv.includes('--install-devtools')) {
         installDevtools();
     }
