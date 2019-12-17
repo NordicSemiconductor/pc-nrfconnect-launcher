@@ -47,7 +47,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 } from 'uuid';
 
-import { ErrorDialogActions } from '../../shared';
+import { ErrorDialogActions } from 'pc-nrfconnect-devdep';
 
 const config = remote.require('../main/config');
 const fileUtil = remote.require('../main/fileUtil');

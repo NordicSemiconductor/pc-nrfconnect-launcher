@@ -36,8 +36,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import logo from '../../../resources/nordic-logo-white-icon-only.png';
-import { openUrl } from '../../shared';
+import { openUrl } from 'pc-nrfconnect-devdep';
+
+import logo from 'pc-nrfconnect-devdep/resources/nordic-logo-white-icon-only.png';
 
 const Logo = ({
     src,

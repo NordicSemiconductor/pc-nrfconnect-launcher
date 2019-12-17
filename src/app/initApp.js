@@ -36,10 +36,11 @@
 
 import path from 'path';
 import fs from 'fs';
-import { mkdirIfNotExists } from '../main/mkdir';
 import {
     logger, setAppDirs, getUserDataDir, getAppLogDir,
-} from '../shared';
+} from 'pc-nrfconnect-devdep';
+
+import { mkdirIfNotExists } from '../main/mkdir';
 
 /**
  * Load an app from the given directory dynamically.

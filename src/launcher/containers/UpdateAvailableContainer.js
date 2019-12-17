@@ -36,9 +36,10 @@
 
 import { connect } from 'react-redux';
 import { remote } from 'electron';
+import { openUrl } from 'pc-nrfconnect-devdep';
+
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
-import { openUrl } from '../../shared';
 
 const config = remote.require('../main/config');
 

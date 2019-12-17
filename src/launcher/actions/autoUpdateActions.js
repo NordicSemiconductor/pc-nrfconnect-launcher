@@ -36,7 +36,7 @@
 
 import { remote } from 'electron';
 import log from 'electron-log';
-import { ErrorDialogActions } from '../../shared';
+import { ErrorDialogActions } from 'pc-nrfconnect-devdep';
 
 export const AUTO_UPDATE_CHECK = 'AUTO_UPDATE_CHECK';
 export const AUTO_UPDATE_AVAILABLE = 'AUTO_UPDATE_AVAILABLE';
