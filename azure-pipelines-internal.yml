@@ -141,7 +141,7 @@ jobs:
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'waylandCI'
-      repositoryName: 'NordicSemiconductor/pc-nrfconnect-core'
+      repositoryName: 'NordicSemiconductor/pc-nrfconnect-launcher'
       action: 'edit'
       tagSource: 'Git tag'
       tag: '$(Build.SourceBranchName)'

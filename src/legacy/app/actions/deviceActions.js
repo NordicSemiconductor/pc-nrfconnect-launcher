@@ -182,7 +182,7 @@ function logDeviceListerError(error) {
                 message += 'Please check your udev rules concerning permissions for USB devices, see '
                     + 'https://github.com/NordicSemiconductor/nrf-udev';
             } else if (process.platform === 'win32') {
-                message += 'Please check that a libusb-compatible kernel driver is bound to this device, see https://github.com/NordicSemiconductor/pc-nrfconnect-core/blob/master/doc/win32-usb-troubleshoot.md';
+                message += 'Please check that a libusb-compatible kernel driver is bound to this device, see https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/master/doc/win32-usb-troubleshoot.md';
             }
 
             dispatch(AppReloadDialogActions.showDialog(
