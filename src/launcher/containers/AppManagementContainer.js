@@ -35,7 +35,7 @@
  */
 
 import { connect } from 'react-redux';
-import { openUrl } from 'pc-nrfconnect-devdep';
+import { openUrl } from 'pc-nrfconnect-shared';
 
 import AppManagementView from '../components/AppManagementView';
 import * as AppsActions from '../actions/appsActions';

@@ -39,7 +39,7 @@ import {
     getAppDataDir,
     getAppLogDir,
     getUserDataDir,
-} from 'pc-nrfconnect-devdep';
+} from 'pc-nrfconnect-shared';
 
 import {
     startWatchingDevices,

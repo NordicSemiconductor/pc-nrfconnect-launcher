@@ -38,7 +38,7 @@ import path from 'path';
 import fs from 'fs';
 import {
     logger, setAppDirs, getUserDataDir, getAppLogDir,
-} from 'pc-nrfconnect-devdep';
+} from 'pc-nrfconnect-shared';
 
 import { mkdirIfNotExists } from '../main/mkdir';
 

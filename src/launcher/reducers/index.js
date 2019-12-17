@@ -35,7 +35,7 @@
  */
 
 import { combineReducers } from 'redux';
-import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-devdep';
+import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 
 import apps from './appsReducer';
 import autoUpdate from './autoUpdateReducer';

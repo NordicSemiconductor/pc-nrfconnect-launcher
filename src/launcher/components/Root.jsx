@@ -38,7 +38,7 @@ import React from 'react';
 
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
-import { Logo, ErrorDialog } from 'pc-nrfconnect-devdep';
+import { Logo, ErrorDialog } from 'pc-nrfconnect-shared';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import SettingsContainer from '../containers/SettingsContainer';
