@@ -35,7 +35,7 @@
  */
 
 import SerialPort from 'serialport';
-import { logger } from 'pc-nrfconnect-devdep';
+import { logger } from 'pc-nrfconnect-shared';
 import { isPortAvailable, decorateWithSerialNumber } from '../../api/jlink';
 
 /**

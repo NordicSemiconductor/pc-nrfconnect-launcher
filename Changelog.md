@@ -5,6 +5,8 @@
 ### Developer features
 - Enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
 - Additional app architecture. #392, #393, #394
+### Changed
+- This project was renamed to pc-nrfconnect-launcher.
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 
@@ -174,7 +176,7 @@ Pre-release with improved support for proxies, ref. #104.
 While nRF Connect v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect framework, and can be installed and launched through the nRF Connect UI.
 ### Main features
 - Allows users to easily install, update, and launch apps
-- Allows developers to [create new apps](https://github.com/NordicSemiconductor/pc-nrfconnect-core#creating-apps)
+- Allows developers to [create new apps](https://nordicsemiconductor.github.io/pc-nrfconnect-docs/create_new_app)
 - Supports Windows, macOS, and Linux
 - Automatic updates for Windows and macOS
 ### Installation

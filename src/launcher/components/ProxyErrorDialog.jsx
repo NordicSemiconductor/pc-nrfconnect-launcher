@@ -57,7 +57,7 @@ const ProxyErrorDialog = ({
                 If you are unable to resolve the issue, then go to Settings and disable
                 &quot;Check for updates at startup&quot;. Then restart nRF Connect and
                 install apps manually by following the instructions at
-                https://github.com/NordicSemiconductor/pc-nrfconnect-core.
+                https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.
             </p>
         </Modal.Body>
         <Modal.Footer>

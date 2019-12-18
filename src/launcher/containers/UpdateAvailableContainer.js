@@ -36,7 +36,7 @@
 
 import { connect } from 'react-redux';
 import { remote } from 'electron';
-import { openUrl } from 'pc-nrfconnect-devdep';
+import { openUrl } from 'pc-nrfconnect-shared';
 
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';

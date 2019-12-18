@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import { logger } from 'pc-nrfconnect-devdep';
+import { logger } from 'pc-nrfconnect-shared';
 import { getAppDataDir } from '../../api/core';
 
 /**

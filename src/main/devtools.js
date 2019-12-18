@@ -38,7 +38,7 @@ const { app, BrowserWindow } = require('electron');
 
 let devToolsInstaller;
 try {
-    devToolsInstaller = require('electron-devtools-installer');
+    devToolsInstaller = require('electron-devtools-installer'); // eslint-disable-line global-require
 } catch {
     // Ignore missing devtools dependency here, check later for it when needed
 }
@@ -46,7 +46,10 @@ try {
 const installDevtools = async () => {
     try {
         const downloadAndInstall = devToolsInstaller.default;
-        const devToolsExtensions = [devToolsInstaller.REACT_DEVELOPER_TOOLS, devToolsInstaller.REDUX_DEVTOOLS];
+        const devToolsExtensions = [
+            devToolsInstaller.REACT_DEVELOPER_TOOLS,
+            devToolsInstaller.REDUX_DEVTOOLS,
+        ];
         const forceReinstall = true;
 
         const names = await downloadAndInstall(devToolsExtensions, forceReinstall);
@@ -71,7 +74,7 @@ const removeDevtools = () => {
 
 module.exports = () => {
     if (devToolsInstaller == null) {
-        return
+        return;
     }
 
     if (process.argv.includes('--install-devtools')) {

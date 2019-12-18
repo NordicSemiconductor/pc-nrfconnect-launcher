@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfirmationDialog } from 'pc-nrfconnect-devdep';
+import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 const ConfirmLaunchDialog = ({
     isVisible,

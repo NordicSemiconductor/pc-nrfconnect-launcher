@@ -48,7 +48,7 @@ const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
 
-const store = new Store({ name: 'pc-nrfconnect-core' });
+const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
 /**
  * Create sources.json if it does not exist.
@@ -106,7 +106,7 @@ function downloadAppsJsonFile(appsJsonUrl) {
         .catch(error => {
             throw new Error(`Unable to download apps list: ${error.message}. If you `
                 + 'are using a proxy server, you may need to configure it as described on '
-                + 'https://github.com/NordicSemiconductor/pc-nrfconnect-core');
+                + 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher');
         })
         .then(appsJson => {
             // underscore is intentially used in JSON as a meta information
@@ -525,6 +525,13 @@ function removeSourceDirectory(source) {
     return fs.remove(config.getAppsRootDir(source));
 }
 
+const migrateStoreIfNeeded = () => {
+    const oldStore = new Store({ name: 'pc-nrfconnect-core' });
+    if (oldStore.size > 0 && store.size === 0) {
+        store.store = JSON.parse(JSON.stringify(oldStore.store));
+    }
+};
+
 const replacePrLinks = (homepage, changelog) => changelog.replace(
     /#(\d+)/g,
     (match, pr) => (`[${match}](${homepage}/pull/${pr})`),
@@ -540,6 +547,8 @@ const replacePrLinks = (homepage, changelog) => changelog.replace(
  * @returns {string | undefined} markdown formatted changelog or null if undefined could be fetched
  */
 async function downloadReleaseNotes({ url, homepage }) {
+    migrateStoreIfNeeded();
+
     const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
     try {
         const previousAppData = store.get(appDataPath, {});

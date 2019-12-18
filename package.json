@@ -4,7 +4,7 @@
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
-        "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-core.git"
+        "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
     },
     "main": "src/main",
     "scripts": {
@@ -109,7 +109,7 @@
         "electron-devtools-installer": "2.2.4",
         "electron-is-dev": "1.1.0",
         "mini-css-extract-plugin": "0.8.0",
-        "pc-nrfconnect-devdep": "github:NordicSemiconductor/pc-nrfconnect-devdep#v3.6.0",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.0.0",
         "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "spectron": "7.0.0",
         "tar": "4.4.10",
@@ -137,25 +137,25 @@
     },
     "jest": {
         "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/fileMock.js",
-            "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/emptyMock.js",
-            "electron": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/electronMock.js",
-            "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-devdep/mocks/emptyMock.js"
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",
+            "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js",
+            "electron": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.js",
+            "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.jsx?$": [
                 "babel-jest",
                 {
-                    "configFile": "./node_modules/pc-nrfconnect-devdep/config/babel.config.js"
+                    "configFile": "./node_modules/pc-nrfconnect-shared/config/babel.config.js"
                 }
             ]
         },
         "transformIgnorePatterns": [
-            "node_modules/(?!(pc-nrfconnect-devdep)/)"
+            "node_modules/(?!(pc-nrfconnect-shared)/)"
         ],
         "testURL": "file:/",
         "setupFilesAfterEnv": [
-            "<rootDir>/node_modules/pc-nrfconnect-devdep/test/setupTests.js"
+            "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.js"
         ],
         "snapshotSerializers": [
             "enzyme-to-json/serializer"

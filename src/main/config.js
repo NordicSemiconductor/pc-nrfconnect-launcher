@@ -96,9 +96,9 @@ function init(argv) {
     appsExternalDir = path.join(appsRootDir, 'external');
     settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
     sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
-    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-core/master/apps.json';
+    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-launcher/master/apps.json';
     registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
-    releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-core/releases';
+    releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;

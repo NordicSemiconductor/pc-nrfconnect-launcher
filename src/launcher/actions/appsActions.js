@@ -36,7 +36,7 @@
 
 import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
-import { ErrorDialogActions } from 'pc-nrfconnect-devdep';
+import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 const net = remote.require('../main/net');
 const fs = remote.require('fs');

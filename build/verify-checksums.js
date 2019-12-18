@@ -40,7 +40,7 @@ const axios = require('axios');
 const jsyaml = require('js-yaml');
 
 const userOrOrg = 'NordicSemiconductor';
-const repo = 'pc-nrfconnect-core';
+const repo = 'pc-nrfconnect-launcher';
 
 const tag = process.argv.pop();
 const ghToken = process.env.GITHUB_TOKEN;

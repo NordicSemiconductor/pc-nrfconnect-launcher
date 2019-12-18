@@ -35,7 +35,7 @@
  */
 
 import { remote } from 'electron';
-import { ErrorDialogActions } from 'pc-nrfconnect-devdep';
+import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions';
 import * as AutoUpdateActions from './autoUpdateActions';

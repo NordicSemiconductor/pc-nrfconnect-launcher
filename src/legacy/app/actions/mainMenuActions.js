@@ -35,7 +35,7 @@
  */
 
 import { ipcRenderer } from 'electron';
-import { systemReport } from 'pc-nrfconnect-devdep';
+import { systemReport } from 'pc-nrfconnect-shared';
 import { decoratedSystemReport } from '../../decoration';
 
 /**

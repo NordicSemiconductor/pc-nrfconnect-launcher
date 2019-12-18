@@ -40,12 +40,12 @@ module.exports = {
                 loader: require.resolve('babel-loader'),
                 options: {
                     cacheDirectory: true,
-                    configFile: './node_modules/pc-nrfconnect-devdep/config/babel.config.js',
+                    configFile: './node_modules/pc-nrfconnect-shared/config/babel.config.js',
                 },
             }, {
                 loader: require.resolve('eslint-loader'),
             }],
-            exclude: /node_modules\/(?!pc-nrfconnect-devdep\/)/,
+            exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
         }, {
             test: /\.scss|\.css$/,
             use: [
