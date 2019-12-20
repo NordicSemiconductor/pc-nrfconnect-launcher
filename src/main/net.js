@@ -161,9 +161,18 @@ function downloadToFile(url, filePath, enableProxyLogin) {
     });
 }
 
+/**
+ * Does this error mean, that a resource was not found on the server?
+ *
+ * @param {object} error An error caught when trying to retrieve something from a server.
+ * @returns {boolean} Whether this error means, that a resource was not found on the server.
+ */
+const isResourceNotFound = error => error.statusCode === 404;
+
 module.exports = {
     downloadToFile,
     downloadToStringIfChanged,
     downloadToJson,
+    isResourceNotFound,
     registerProxyLoginHandler,
 };

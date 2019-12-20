@@ -347,9 +347,13 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
                 dispatch(downloadLatestAppInfoErrorAction());
                 if (options.rejectIfError) {
                     throw error;
+                } else if (net.isResourceNotFound(error)) {
+                    dispatch(ErrorDialogActions.showDialog(
+                        `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n`
+                        + 'This is usually caused by an outdated source file, which was removed from the server.',
+                    ));
                 } else {
-                    dispatch(ErrorDialogActions.showDialog('Unable to download '
-                        + `latest app info: ${error.message}`));
+                    dispatch(ErrorDialogActions.showDialog(`Unable to download latest app info: ${error.message}`));
                 }
             });
     };
