@@ -36,6 +36,7 @@ jobs:
     condition: ne(variables['NODE_ARCH'], '32')
     displayName: 'Install Node.js $(NODE_VERSION)'
   - bash: |
+      set -o errexit -o pipefail
       choco install -y nvm
       export PATH=$NVM_HOME:$PATH
       nvm install $(NODE_VERSION) $(NODE_ARCH)
@@ -49,11 +50,13 @@ jobs:
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
   - bash: |
+      set -o errexit -o pipefail
       sudo apt-get update
       sudo apt-get install libudev-dev
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
   - bash: |
+      set -o errexit -o pipefail
       npm i
       npm run lint
       npm run build
@@ -61,6 +64,7 @@ jobs:
     condition: not(contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on not windows'
   - bash: |
+      set -o errexit -o pipefail
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm i
@@ -94,12 +98,14 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Donwload certificate on macOS'
   - bash: |
+      set -o errexit -o pipefail
       export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
       npx build -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Release on macOS'
   - bash: |
+      set -o errexit -o pipefail
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
       cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
