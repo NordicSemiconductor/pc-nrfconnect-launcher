@@ -110,7 +110,6 @@
         "electron-is-dev": "1.1.0",
         "mini-css-extract-plugin": "0.8.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.0.0",
-        "react-infinite": "github:NordicSemiconductor/react-infinite#react-15.5",
         "spectron": "7.0.0",
         "tar": "4.4.10",
         "util": "0.12.0",

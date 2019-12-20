@@ -37,7 +37,7 @@
 import { Record, List } from 'immutable';
 import * as LogAction from '../actions/logActions';
 
-const MAX_ENTRIES = 10000;
+const MAX_ENTRIES = 1000;
 
 const InitialState = Record({
     autoScroll: true,
@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
                 newEntries = newEntries.slice(-MAX_ENTRIES).unshift({
                     id: -1,
                     level: 'info',
-                    time: new Date(),
+                    timestamp: new Date(),
                     message: 'The log in this view has been shortened. Open the log file to see the full content.',
                 });
             }
