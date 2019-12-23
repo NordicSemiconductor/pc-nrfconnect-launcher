@@ -37,6 +37,7 @@
 import { remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+// eslint-disable-next-line import/no-cycle
 import * as AppsActions from './appsActions';
 import * as AutoUpdateActions from './autoUpdateActions';
 

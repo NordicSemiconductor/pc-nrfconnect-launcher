@@ -38,6 +38,9 @@ import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+// eslint-disable-next-line import/no-cycle
+import { removeSource } from './settingsActions';
+
 const net = remote.require('../main/net');
 const fs = remote.require('fs');
 
@@ -350,7 +353,17 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
                 } else if (net.isResourceNotFound(error)) {
                     dispatch(ErrorDialogActions.showDialog(
                         `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n`
-                        + 'This is usually caused by an outdated source file, which was removed from the server.',
+                        + 'This is usually caused by outdated app sources in the settings, '
+                        + 'where the sources files was removed from the server.',
+                        {
+                            'Remove source': () => {
+                                dispatch(removeSource(error.cause.name));
+                                dispatch(ErrorDialogActions.hideDialog());
+                            },
+                            Cancel: () => {
+                                dispatch(ErrorDialogActions.hideDialog());
+                            },
+                        },
                     ));
                 } else {
                     dispatch(ErrorDialogActions.showDialog(`Unable to download latest app info: ${error.message}`));
