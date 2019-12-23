@@ -37,9 +37,7 @@
 import { remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-// eslint-disable-next-line import/no-cycle
 import * as AppsActions from './appsActions';
-import * as AutoUpdateActions from './autoUpdateActions';
 
 const settings = remote.require('../main/settings');
 const mainApps = remote.require('../main/apps');
@@ -125,19 +123,6 @@ export function hideUpdateCheckCompleteDialog() {
     return {
         type: SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
     };
-}
-
-export function checkForUpdatesButtonClicked() {
-    return dispatch => (
-        dispatch(AppsActions.downloadLatestAppInfo({ rejectIfError: true }))
-            .then(() => {
-                dispatch(AutoUpdateActions.checkForCoreUpdates());
-                dispatch(showUpdateCheckCompleteDialog());
-            })
-            .catch(error => (
-                dispatch(ErrorDialogActions.showDialog(`Unable to check for updates: ${error.message}`))
-            ))
-    );
 }
 
 function addSourceAction(name, url) {
