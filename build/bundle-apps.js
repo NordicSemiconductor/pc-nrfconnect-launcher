@@ -54,8 +54,9 @@ const buildApp = (appName, appVersion) => {
     execSync(`cp ${appName}*.tgz ../resources/apps`, { cwd });
 };
 
-buildApp('pc-nrfconnect-programmer', 'v1.3.1');
 Object.keys(appsJson).forEach(key => {
-    console.log(key);
-    console.log(appsJson[key]);
+    const { bundledVersion } = appsJson[key];
+    if (bundledVersion) {
+        buildApp(key, bundledVersion);
+    }
 });

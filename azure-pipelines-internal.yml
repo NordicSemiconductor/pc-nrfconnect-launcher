@@ -103,6 +103,11 @@ jobs:
       npm test
     displayName: 'Build'
   - bash: |
+      set -o errexit -o pipefail
+      npm run pack-apps
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    displayName: 'Bundle apps'
+  - bash: |
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Setup release environment for Linux'

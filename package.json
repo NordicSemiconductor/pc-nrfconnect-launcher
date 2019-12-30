@@ -49,6 +49,7 @@
             "resources/*.png",
             "resources/*.ico",
             "resources/*.svg",
+            "resources/apps/",
             "resources/mac/"
         ],
         "directories": {

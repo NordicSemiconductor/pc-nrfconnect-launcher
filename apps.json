@@ -19,6 +19,7 @@
     },
     "pc-nrfconnect-programmer": {
         "displayName": "Programmer",
+        "bundledVersion": "v1.3.1",
         "description": "Tool for flash programming of nRF SoCs",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-programmer"
