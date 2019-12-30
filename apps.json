@@ -1,18 +1,21 @@
 {
     "pc-nrfconnect-ble": {
         "displayName": "Bluetooth Low Energy",
+        "bundledVersion": "v2.3.2",
         "description": "General tool for development and testing with Bluetooth Low Energy",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ble",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble"
     },
     "pc-nrfconnect-rssi": {
         "displayName": "RSSI Viewer",
+        "bundledVersion": "v1.2.0",
         "description": "Live visualization of RSSI per frequency for nRF52832",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-rssi",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-rssi"
     },
     "pc-nrfconnect-ppk": {
         "displayName": "Power Profiler",
+        "bundledVersion": "v2.3.1",
         "description": "Tool to measure current for nRF5x applications",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ppk"
@@ -26,24 +29,28 @@
     },
     "pc-nrfconnect-linkmonitor": {
         "displayName": "LTE Link Monitor",
+        "bundledVersion": "v1.1.1",
         "description": "Link monitor and AT command terminal",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-linkmonitor",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-linkmonitor"
     },
     "pc-nrfconnect-tracecollector": {
         "displayName": "Trace Collector",
+        "bundledVersion": "v1.0.0",
         "description": "Capture nRF91 modem trace",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
     "pc-nrfconnect-gettingstarted": {
         "displayName": "Getting Started Assistant",
+        "bundledVersion": "v1.0.5",
         "description": "Guide to set up the nRF Connect SDK",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-gettingstarted",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-gettingstarted"
     },
     "pc-nrfconnect-dtm": {
         "displayName": "Direct Test Mode",
+        "bundledVersion": "v1.0.0",
         "description": "RF PHY testing of Bluetooth Low Energy devices",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-dtm"
