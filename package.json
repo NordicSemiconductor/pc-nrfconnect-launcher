@@ -27,6 +27,7 @@
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "get-jlink -o build",
         "pack": "npm run build && build -p never",
+        "pack-apps": "node ./build/bundle-apps.js",
         "release": "build -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools"
