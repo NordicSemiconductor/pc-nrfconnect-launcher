@@ -264,21 +264,19 @@ export function stopWatchingDevices() {
  * @param {Array<String>} [choices] The choices to display to the user (optional).
  * @returns {Promise<String>} Promise that resolves with the user input.
  */
-function getDeviceSetupUserInput(dispatch, message, choices = undefined) {
-    return new Promise((resolve, reject) => {
-        deviceSetupCallback = choice => {
-            if (!choices) {
-                // for confirmation resolve with boolean
-                resolve(!!choice);
-            } else if (choice) {
-                resolve(choice);
-            } else {
-                reject(new Error('Cancelled by user.'));
-            }
-        };
-        dispatch(deviceSetupInputRequiredAction(message, choices));
-    });
-}
+const getDeviceSetupUserInput = dispatch => (message, choices) => new Promise((resolve, reject) => {
+    deviceSetupCallback = choice => {
+        if (!choices) {
+            // for confirmation resolve with boolean
+            resolve(!!choice);
+        } else if (choice) {
+            resolve(choice);
+        } else {
+            reject(new Error('Cancelled by user.'));
+        }
+    };
+    dispatch(deviceSetupInputRequiredAction(message, choices));
+});
 
 /**
  * Selects a device and sets it up for use according to the `config.deviceSetup`
@@ -300,31 +298,27 @@ export function selectAndSetupDevice(device) {
             // device has been set up.
             dispatch(stopWatchingDevices());
 
-            const deviceSetup = { ...config.deviceSetup };
-            if (!deviceSetup.promiseConfirm) {
-                deviceSetup.promiseConfirm = message => (
-                    getDeviceSetupUserInput(dispatch, message)
-                );
-            }
-            if (!deviceSetup.promiseChoice) {
-                deviceSetup.promiseChoice = (message, choices) => (
-                    getDeviceSetupUserInput(dispatch, message, choices)
-                );
-            }
-
             if (config.releaseCurrentDevice) {
                 await config.releaseCurrentDevice();
             }
 
-            setupDevice(device, deviceSetup)
+            const deviceSetupConfig = {
+                promiseConfirm: getDeviceSetupUserInput(dispatch),
+                promiseChoice: getDeviceSetupUserInput(dispatch),
+                allowCustomDevice: false,
+                ...config.deviceSetup,
+            };
+            setupDevice(device, deviceSetupConfig)
                 .then(preparedDevice => {
                     dispatch(startWatchingDevices());
                     dispatch(deviceSetupCompleteAction(preparedDevice));
                 })
                 .catch(error => {
-                    logger.error(`Error while setting up device ${device.serialNumber}: ${error.message}`);
                     dispatch(deviceSetupErrorAction(device, error));
-                    dispatch(deselectDevice());
+                    if (!deviceSetupConfig.allowCustomDevice) {
+                        logger.error(`Error while setting up device ${device.serialNumber}: ${error.message}`);
+                        dispatch(deselectDevice());
+                    }
                     dispatch(startWatchingDevices());
                 });
         }
