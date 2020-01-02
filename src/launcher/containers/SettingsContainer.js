@@ -37,6 +37,7 @@
 import { connect } from 'react-redux';
 import SettingsView from '../components/SettingsView';
 import * as SettingsActions from '../actions/settingsActions';
+import * as AutoUpdateActions from '../actions/autoUpdateActions';
 
 function isAppUpdateAvailable(officialApps) {
     return !!officialApps.find(app => app.latestVersion
@@ -66,7 +67,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled))
         ),
         onTriggerUpdateCheck: () => (
-            dispatch(SettingsActions.checkForUpdatesButtonClicked())
+            dispatch(AutoUpdateActions.checkForUpdatesManually())
         ),
         onHideUpdateCheckCompleteDialog: () => (
             dispatch(SettingsActions.hideUpdateCheckCompleteDialog())
