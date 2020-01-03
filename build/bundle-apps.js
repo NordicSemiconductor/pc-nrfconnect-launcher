@@ -38,10 +38,9 @@
 
 const path = require('path');
 const { execSync } = require('child_process');
+const { mkdirIfNotExists } = require('../src/main/mkdir');
 
 const appsJson = require('../apps.json');
-
-execSync('mkdir -p resources/apps');
 
 const buildApp = (appName, appVersion) => {
     execSync(`rm -rf ${appName}`);
@@ -54,9 +53,14 @@ const buildApp = (appName, appVersion) => {
     execSync(`cp ${appName}*.tgz ../resources/apps`, { cwd });
 };
 
-Object.keys(appsJson).forEach(key => {
-    const { bundledVersion } = appsJson[key];
-    if (bundledVersion) {
-        buildApp(key, bundledVersion);
-    }
-});
+const packApps = async () => {
+    await mkdirIfNotExists('resources/apps');
+    Object.keys(appsJson).forEach(key => {
+        const { bundledVersion } = appsJson[key];
+        if (bundledVersion) {
+            buildApp(key, bundledVersion);
+        }
+    });
+};
+
+packApps();
