@@ -5,12 +5,8 @@ exports[`LogViewer should render log entries 1`] = `
   className="core-log-viewer"
 >
   <LogHeaderContainer />
-  <Infinite
-    autoScroll={true}
+  <div
     className="core-infinite-log"
-    containerHeight={155}
-    elementHeight={20}
-    infiniteLoadBeginEdgeOffset={135}
   >
     <div
       className="core-log-entry core-log-level-info"
@@ -63,6 +59,6 @@ exports[`LogViewer should render log entries 1`] = `
          or reboot Windows.
       </div>
     </div>
-  </Infinite>
+  </div>
 </div>
 `;

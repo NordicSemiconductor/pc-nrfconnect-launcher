@@ -4,6 +4,7 @@
 ### Developer features
 - Enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
 - Additional app architecture. #392, #393, #394
+- Remove dependency of react-infinite. #401
 ### Changed
 - This project was renamed to pc-nrfconnect-launcher.
 - Fewer requests for entering proxy credentials when needed. #370
