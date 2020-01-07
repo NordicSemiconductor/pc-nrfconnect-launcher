@@ -98,21 +98,25 @@ function initSourceDirectory(source) {
  * Download the apps.json file containing a list of official apps. The file
  * is downloaded from the configured url and written to the apps root dir.
  *
- * @param {string} appsJsonUrl URL of apps.json of external source
+ * @param {string} url URL of apps.json of external source
+ * @param {string?} name optional name of the external source
  * @returns {Promise} promise that resolves if successful.
  */
-function downloadAppsJsonFile(appsJsonUrl) {
-    return net.downloadToJson(appsJsonUrl, true)
+function downloadAppsJsonFile(url, name) {
+    return net.downloadToJson(url, true)
         .catch(error => {
-            throw new Error(`Unable to download apps list: ${error.message}. If you `
+            const wrappedError = new Error(`Unable to download apps list: ${error.message}. If you `
                 + 'are using a proxy server, you may need to configure it as described on '
                 + 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher');
+            wrappedError.statusCode = error.statusCode;
+            wrappedError.cause = { name, url };
+            throw wrappedError;
         })
         .then(appsJson => {
             // underscore is intentially used in JSON as a meta information
             // eslint-disable-next-line no-underscore-dangle
             const source = appsJson._source;
-            if (!source && appsJsonUrl !== config.getAppsJsonUrl()) {
+            if (!source && url !== config.getAppsJsonUrl()) {
                 throw new Error('JSON does not contain expected `_source` tag');
             }
             return initSourceDirectory(source)
@@ -132,7 +136,7 @@ function downloadAppsJsonFiles() {
     const sources = settings.getSources();
     const sequence = (source, ...rest) => (
         source
-            ? downloadAppsJsonFile(sources[source]).then(() => sequence(...rest))
+            ? downloadAppsJsonFile(sources[source], source).then(() => sequence(...rest))
             : Promise.resolve()
     );
     return sequence(...Object.keys(sources));

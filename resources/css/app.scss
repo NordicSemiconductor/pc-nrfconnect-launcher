@@ -182,9 +182,9 @@ ul.core-device-selector-item-details {
         position: relative;
         overflow-x: scroll !important;
         background-color: white;
+        height: 155px;
 
         > div {
-            position: absolute;
             display: table;
             min-width: 100%;
         }
@@ -208,6 +208,7 @@ ul.core-device-selector-item-details {
         }
         .core-log-time {
             width: 132px;
+            min-width: 132px;
         }
     }
 

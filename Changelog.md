@@ -1,12 +1,16 @@
 ## Unreleased
 ### Features
 - App filter and update all apps. #369
-- Fewer requests for entering proxy credentials when needed. #370
 ### Developer features
 - Enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
 - Additional app architecture. #392, #393, #394
+- Remove dependency of react-infinite. #401
 ### Changed
 - This project was renamed to pc-nrfconnect-launcher.
+- Fewer requests for entering proxy credentials when needed. #370
+- Enhanced error messages #403
+    - Links in messages are clickable.
+    - If an app source is removed from the server, users are assisted in removing it from client.
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 

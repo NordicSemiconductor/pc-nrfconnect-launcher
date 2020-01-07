@@ -177,19 +177,19 @@ function upgradeOfficialAppErrorAction() {
     };
 }
 
-function downloadLatestAppInfoAction() {
+export function downloadLatestAppInfoAction() {
     return {
         type: DOWNLOAD_LATEST_APP_INFO,
     };
 }
 
-function downloadLatestAppInfoSuccessAction() {
+export function downloadLatestAppInfoSuccessAction() {
     return {
         type: DOWNLOAD_LATEST_APP_INFO_SUCCESS,
     };
 }
 
-function downloadLatestAppInfoErrorAction() {
+export function downloadLatestAppInfoErrorAction() {
     return {
         type: DOWNLOAD_LATEST_APP_INFO_ERROR,
     };
@@ -331,26 +331,6 @@ export function loadOfficialApps(appName, appSource) {
                 dispatch(loadOfficialAppsError());
                 dispatch(ErrorDialogActions.showDialog('Unable to load apps: '
                     + `${error.message}`));
-            });
-    };
-}
-
-export function downloadLatestAppInfo(options = { rejectIfError: false }) {
-    return dispatch => {
-        dispatch(downloadLatestAppInfoAction());
-
-        return mainApps.downloadAppsJsonFiles()
-            .then(() => mainApps.generateUpdatesJsonFiles())
-            .then(() => dispatch(downloadLatestAppInfoSuccessAction()))
-            .then(() => dispatch(loadOfficialApps()))
-            .catch(error => {
-                dispatch(downloadLatestAppInfoErrorAction());
-                if (options.rejectIfError) {
-                    throw error;
-                } else {
-                    dispatch(ErrorDialogActions.showDialog('Unable to download '
-                        + `latest app info: ${error.message}`));
-                }
             });
     };
 }

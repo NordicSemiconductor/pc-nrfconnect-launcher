@@ -63,7 +63,7 @@ const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStar
 
 function downloadLatestAppInfo() {
     if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateApps()) {
-        return store.dispatch(AppsActions.downloadLatestAppInfo());
+        return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
     }
     return Promise.resolve();
 }
