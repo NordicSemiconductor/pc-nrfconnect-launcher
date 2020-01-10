@@ -54,6 +54,10 @@ export const SETTINGS_ADD_SOURCE_DIALOG_SHOW = 'SETTINGS_ADD_SOURCE_DIALOG_SHOW'
 export const SETTINGS_ADD_SOURCE_DIALOG_HIDE = 'SETTINGS_ADD_SOURCE_DIALOG_HIDE';
 export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW = 'SETTINGS_REMOVE_SOURCE_DIALOG_SHOW';
 export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE = 'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
+export const SETTINGS_USER_DATA_DIALOG_SHOW = 'SETTINGS_USER_DATA_DIALOG_SHOW';
+export const SETTINGS_USER_DATA_DIALOG_HIDE = 'SETTINGS_USER_DATA_DIALOG_HIDE';
+export const SETTINGS_USER_DATA_SEND_ON = 'SETTINGS_USER_DATA_SEND_ON';
+export const SETTINGS_USER_DATA_SEND_OFF = 'SETTINGS_USER_DATA_SEND_OFF';
 
 function loadSettingsAction() {
     return {
@@ -194,5 +198,29 @@ export function showRemoveSourceDialog(name) {
 export function hideRemoveSourceDialog() {
     return {
         type: SETTINGS_REMOVE_SOURCE_DIALOG_HIDE,
+    };
+}
+
+export function showUserDataDialog() {
+    return {
+        type: SETTINGS_USER_DATA_DIALOG_SHOW,
+    };
+}
+
+export function hideUserDataDialog() {
+    return {
+        type: SETTINGS_USER_DATA_DIALOG_HIDE,
+    };
+}
+
+export function setUserDataOn() {
+    return {
+        type: SETTINGS_USER_DATA_SEND_ON,
+    };
+}
+
+export function setUserDataOff() {
+    return {
+        type: SETTINGS_USER_DATA_SEND_OFF,
     };
 }

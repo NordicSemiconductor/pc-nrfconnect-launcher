@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,39 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 import React from 'react';
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+import PropTypes from 'prop-types';
+import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import UserDataDialogContainer from '../containers/UserDataDialogContainer';
-
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialog />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <UserDataDialogContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
+const UserDataDialog = ({
+    isVisible,
+    onConfirm,
+    onCancel,
+}) => (
+    <ConfirmationDialog
+        isVisible={isVisible}
+        title="Help us to improve"
+        text="Would you like to help us to improve our products by sending user data to us?"
+        okButtonText="Yes"
+        cancelButtonText="No"
+        onOk={onConfirm}
+        onCancel={onCancel}
+    />
 );
+
+UserDataDialog.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+UserDataDialog.defaultProps = {
+};
+
+export default UserDataDialog;

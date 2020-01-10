@@ -50,6 +50,7 @@ import rootReducer from './reducers';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
+import * as SettingsAction from './actions/settingsActions';
 import '../../resources/css/launcher.scss';
 
 const config = remote.require('../main/config');
@@ -60,6 +61,14 @@ const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk
 const rootElement = React.createElement(RootContainer, { store });
 
 const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');
+
+function checkUserDataSetting() {
+    const isSendingUserData = settings.get('isSendingUserData');
+    console.log(isSendingUserData);
+    if (isSendingUserData === null) {
+        store.dispatch(SettingsAction.showUserDataDialog());
+    }
+}
 
 function downloadLatestAppInfo() {
     if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateApps()) {
@@ -84,6 +93,7 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 });
 
 render(rootElement, document.getElementById('webapp'), async () => {
+    await checkUserDataSetting();
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
     await store.dispatch(AppsActions.setAppManagementShow());

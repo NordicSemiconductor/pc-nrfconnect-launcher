@@ -45,6 +45,8 @@ const InitialState = Record({
     isAddSourceDialogVisible: false,
     isRemoveSourceDialogVisible: false,
     removeSource: null,
+    isUserDataDialogVisible: false,
+    isSendingUserData: false,
 });
 
 const initialState = new InitialState();
@@ -93,6 +95,15 @@ const reducer = (state = initialState, action) => {
             return state.set('isRemoveSourceDialogVisible', true).set('removeSource', action.name);
         case SettingsActions.SETTINGS_REMOVE_SOURCE_DIALOG_HIDE:
             return state.set('isRemoveSourceDialogVisible', false).set('removeSource', null);
+        case SettingsActions.SETTINGS_USER_DATA_DIALOG_SHOW:
+            console.log('lala');
+            return state.set('isUserDataDialogVisible', true);
+        case SettingsActions.SETTINGS_USER_DATA_DIALOG_HIDE:
+            return state.set('isUserDataDialogVisible', false);
+        case SettingsActions.SETTINGS_USER_DATA_SEND_ON:
+            return state.set('isSendingUserData', true);
+        case SettingsActions.SETTINGS_USER_DATA_SEND_OFF:
+            return state.set('isSendingUserData', false);
         default:
             return state;
     }

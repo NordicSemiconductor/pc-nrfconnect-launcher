@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,39 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
-import React from 'react';
-import Nav from 'react-bootstrap/Nav';
-import Tab from 'react-bootstrap/Tab';
+import { connect } from 'react-redux';
+import UserDataDialog from '../components/UserDataDialog';
+import * as SettingsActions from '../actions/settingsActions';
 
-import AppManagementContainer from '../containers/AppManagementContainer';
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
-import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import UserDataDialogContainer from '../containers/UserDataDialogContainer';
+function mapStateToProps(state) {
+    return {
+        isVisible: state.settings.isUserDataDialogVisible,
+    };
+}
 
-export default () => (
-    <>
-        <Tab.Container id="launcher" defaultActiveKey="apps">
-            <Nav>
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
-                <Logo />
-            </Nav>
-            <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
-            </Tab.Content>
-        </Tab.Container>
-        <ErrorDialog />
-        <UpdateAvailableContainer />
-        <UpdateProgressContainer />
-        <UserDataDialogContainer />
-        <ConfirmLaunchContainer />
-        <ProxyLoginContainer />
-        <ProxyErrorContainer />
-    </>
-);
+function mapDispatchToProps(dispatch) {
+    return {
+        onConfirm: () => {
+            dispatch(SettingsActions.hideUserDataDialog());
+        },
+        onCancel: () => {
+            dispatch(SettingsActions.hideUserDataDialog());
+        },
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserDataDialog);
