@@ -115,10 +115,10 @@ jobs:
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Copy artifacts'
   - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: $(Build.ArtifactStagingDirectory)
-        publishLocation: 'pipeline'
-      displayName: 'Publishing artifacts to artifact storage'
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      publishLocation: 'pipeline'
+    displayName: 'Publishing artifacts to artifact storage'
   # - task: GitHubRelease@0
   #   inputs:
   #     gitHubConnection: 'waylandCI'
