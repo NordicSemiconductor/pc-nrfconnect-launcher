@@ -1,7 +1,6 @@
 trigger:
 - master
 - release/*
-- test-azure
 
 jobs:
 - job: Build
@@ -119,14 +118,3 @@ jobs:
       targetPath: $(Build.ArtifactStagingDirectory)
       publishLocation: 'pipeline'
     displayName: 'Publishing artifacts to artifact storage'
-  # - task: GitHubRelease@0
-  #   inputs:
-  #     gitHubConnection: 'waylandCI'
-  #     repositoryName: 'NordicSemiconductor/pc-nrfconnect-launcher'
-  #     action: 'edit'
-  #     tagSource: 'Git tag'
-  #     tag: '$(Build.SourceBranchName)'
-  #     assetUploadMode: 'replace'
-  #     isDraft: 'true'
-  #     addChangeLog: 'false'
-  #   condition: ne(variables['Build.Reason'], 'PullRequest')
