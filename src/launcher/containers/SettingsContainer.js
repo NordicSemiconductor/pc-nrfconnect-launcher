@@ -57,6 +57,7 @@ function mapStateToProps(state) {
         sources: settings.sources,
         isAddSourceDialogVisible: settings.isAddSourceDialogVisible,
         isRemoveSourceDialogVisible: settings.isRemoveSourceDialogVisible,
+        isSendingUserData: settings.isSendingUserData,
     };
 }
 
@@ -85,6 +86,9 @@ function mapDispatchToProps(dispatch) {
         ),
         onHideRemoveSourceDialog: () => (
             dispatch(SettingsActions.hideRemoveSourceDialog())
+        ),
+        toggleSendingUserData: () => (
+            dispatch(SettingsActions.toggleSendingUserData())
         ),
     };
 }

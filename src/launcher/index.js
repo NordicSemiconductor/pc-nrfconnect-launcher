@@ -64,7 +64,6 @@ const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStar
 
 function checkUserDataSetting() {
     const isSendingUserData = settings.get('isSendingUserData');
-    console.log(isSendingUserData);
     if (isSendingUserData === null) {
         store.dispatch(SettingsAction.showUserDataDialog());
     }

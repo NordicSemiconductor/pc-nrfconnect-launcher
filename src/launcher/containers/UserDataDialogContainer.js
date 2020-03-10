@@ -47,7 +47,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onConfirm: () => {
-            dispatch(SettingsActions.hideUserDataDialog());
+            dispatch(SettingsActions.toggleSendingUserData());
         },
         onCancel: () => {
             dispatch(SettingsActions.hideUserDataDialog());

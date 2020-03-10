@@ -96,7 +96,6 @@ const reducer = (state = initialState, action) => {
         case SettingsActions.SETTINGS_REMOVE_SOURCE_DIALOG_HIDE:
             return state.set('isRemoveSourceDialogVisible', false).set('removeSource', null);
         case SettingsActions.SETTINGS_USER_DATA_DIALOG_SHOW:
-            console.log('lala');
             return state.set('isUserDataDialogVisible', true);
         case SettingsActions.SETTINGS_USER_DATA_DIALOG_HIDE:
             return state.set('isUserDataDialogVisible', false);

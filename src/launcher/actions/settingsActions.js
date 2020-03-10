@@ -224,3 +224,24 @@ export function setUserDataOff() {
         type: SETTINGS_USER_DATA_SEND_OFF,
     };
 }
+
+export function confrimSendingUserData() {
+    return dispatch => {
+        settings.set('isSendingUserData', true);
+        dispatch(setUserDataOn());
+    };
+}
+
+export function toggleSendingUserData() {
+    console.log('abc');
+    return (dispatch, getState) => {
+        const { isSendingUserData } = getState().settings;
+        if (isSendingUserData) {
+            settings.set('isSendingUserData', false);
+            dispatch(setUserDataOff());
+            return;
+        }
+        settings.set('isSendingUserData', true);
+        dispatch(setUserDataOn());
+    };
+}
