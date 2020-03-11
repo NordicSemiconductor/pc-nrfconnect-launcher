@@ -61,13 +61,7 @@ const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk
 const rootElement = React.createElement(RootContainer, { store });
 
 const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');
-
-function checkUserDataSetting() {
-    const isSendingUserData = settings.get('isSendingUserData');
-    if (isSendingUserData === null) {
-        store.dispatch(SettingsAction.showUserDataDialog());
-    }
-}
+const isSendingUserData = settings.get('isSendingUserData');
 
 function downloadLatestAppInfo() {
     if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateApps()) {
@@ -92,7 +86,7 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await checkUserDataSetting();
+    await store.dispatch(SettingsAction.checkUserDataSetting(isSendingUserData));
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
     await store.dispatch(AppsActions.setAppManagementShow());

@@ -35,7 +35,7 @@
  */
 
 import { remote } from 'electron';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { userData, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions';
 
@@ -233,7 +233,6 @@ export function confrimSendingUserData() {
 }
 
 export function toggleSendingUserData() {
-    console.log('abc');
     return (dispatch, getState) => {
         const { isSendingUserData } = getState().settings;
         if (isSendingUserData) {
@@ -243,5 +242,45 @@ export function toggleSendingUserData() {
         }
         settings.set('isSendingUserData', true);
         dispatch(setUserDataOn());
+    };
+}
+
+function initUserData(label) {
+    userData.sendEvent(
+        userData.EventCategory.LAUNCHER_CATEGORY,
+        userData.EventAction.LAUNCH_LAUNCHER_ACTION,
+        label,
+    );
+}
+
+export function checkUserDataSetting(isSendingUserData) {
+    return async dispatch => {
+        await userData.init('Launcher');
+        if (isSendingUserData) {
+            initUserData(userData.EventLabel.LAUNCHER_USER_DATA_ON);
+            dispatch(setUserDataOn());
+            return;
+        }
+        if (isSendingUserData === null) {
+            dispatch(showUserDataDialog());
+            initUserData(userData.EventLabel.LAUNCHER_USER_DATA_NOT_SET);
+            return;
+        }
+        initUserData(userData.EventLabel.LAUNCHER_USER_DATA_OFF);
+        dispatch(setUserDataOff());
+    };
+}
+
+export function sendLauncherUserData(eventAction, eventLabel = null) {
+    return (_, getState) => {
+        const { isSendingUserData } = getState().settings;
+        if (!isSendingUserData) {
+            return;
+        }
+        userData.sendEvent(
+            userData.EventCategory.LAUNCHER_CATEGORY,
+            eventAction,
+            eventLabel,
+        );
     };
 }
