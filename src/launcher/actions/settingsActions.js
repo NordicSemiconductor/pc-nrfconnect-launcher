@@ -262,7 +262,7 @@ export function toggleSendingUserData() {
 function initUserData(label) {
     userData.sendEvent(
         userData.EventCategory.LAUNCHER_CATEGORY,
-        'Launch launcher',
+        EventAction.LAUNCH_LAUNCHER,
         label,
     );
 }
