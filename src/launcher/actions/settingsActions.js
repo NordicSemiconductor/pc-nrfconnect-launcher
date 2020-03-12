@@ -37,7 +37,7 @@
 import { remote } from 'electron';
 import { userData, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import * as AppsActions from './appsActions';
+import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
 
 const settings = remote.require('../main/settings');
 const mainApps = remote.require('../main/apps');
@@ -235,6 +235,7 @@ export function confrimSendingUserData() {
 export function toggleSendingUserData() {
     return (dispatch, getState) => {
         const { isSendingUserData } = getState().settings;
+        dispatch(hideUserDataDialog());
         if (isSendingUserData) {
             settings.set('isSendingUserData', false);
             dispatch(setUserDataOff());
