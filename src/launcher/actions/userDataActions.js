@@ -49,6 +49,7 @@ export const EventCategory = pkgJson.name || 'Launcher';
 
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
+    INSTALL_APP: 'Install app',
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
@@ -131,15 +132,16 @@ export function checkUserDataSetting(isSendingUserData) {
     };
 }
 
-export function sendLauncherUserData(eventAction, eventLabel = null) {
+export function sendLauncherUserData(eventAction, eventLabel = null, appName = null) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
             return;
         }
+        const updatedEventAction = appName ? `${eventAction} ${appName}` : eventAction;
         userData.sendEvent(
             EventCategory,
-            eventAction,
+            updatedEventAction,
             eventLabel,
         );
     };

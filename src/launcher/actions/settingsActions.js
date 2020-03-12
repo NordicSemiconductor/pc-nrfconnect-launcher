@@ -35,7 +35,7 @@
  */
 
 import { remote } from 'electron';
-import { userData, ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
 
