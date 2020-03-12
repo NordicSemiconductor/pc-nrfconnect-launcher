@@ -37,7 +37,7 @@
 import { remote } from 'electron';
 import { userData, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import * as AppsActions from './appsActions';
+import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
 
 const settings = remote.require('../main/settings');
 const mainApps = remote.require('../main/apps');
@@ -58,6 +58,19 @@ export const SETTINGS_USER_DATA_DIALOG_SHOW = 'SETTINGS_USER_DATA_DIALOG_SHOW';
 export const SETTINGS_USER_DATA_DIALOG_HIDE = 'SETTINGS_USER_DATA_DIALOG_HIDE';
 export const SETTINGS_USER_DATA_SEND_ON = 'SETTINGS_USER_DATA_SEND_ON';
 export const SETTINGS_USER_DATA_SEND_OFF = 'SETTINGS_USER_DATA_SEND_OFF';
+
+export const EventAction = {
+    LAUNCH_LAUNCHER: 'Launch launcher',
+    LAUNCH_APP: 'Launch app',
+    REMOVE_APP: 'Remove app',
+    UPGRADE_APP: 'Upgrade app',
+};
+
+const EventLabel = {
+    LAUNCHER_USER_DATA_ON: 'User data on',
+    LAUNCHER_USER_DATA_OFF: 'User data off',
+    LAUNCHER_USER_DATA_NOT_SET: 'User data not set',
+};
 
 function loadSettingsAction() {
     return {
@@ -248,7 +261,7 @@ export function toggleSendingUserData() {
 function initUserData(label) {
     userData.sendEvent(
         userData.EventCategory.LAUNCHER_CATEGORY,
-        userData.EventAction.LAUNCH_LAUNCHER_ACTION,
+        'Launch launcher',
         label,
     );
 }
@@ -257,16 +270,16 @@ export function checkUserDataSetting(isSendingUserData) {
     return async dispatch => {
         await userData.init('Launcher');
         if (isSendingUserData) {
-            initUserData(userData.EventLabel.LAUNCHER_USER_DATA_ON);
+            initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
             dispatch(setUserDataOn());
             return;
         }
         if (isSendingUserData === null) {
             dispatch(showUserDataDialog());
-            initUserData(userData.EventLabel.LAUNCHER_USER_DATA_NOT_SET);
+            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
             return;
         }
-        initUserData(userData.EventLabel.LAUNCHER_USER_DATA_OFF);
+        initUserData(EventLabel.LAUNCHER_USER_DATA_OFF);
         dispatch(setUserDataOff());
     };
 }

@@ -37,7 +37,7 @@
 import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
-import { sendLauncherUserData } from './settingsActions'; // eslint-disable-line import/no-cycle
+import { sendLauncherUserData, EventAction } from './settingsActions'; // eslint-disable-line import/no-cycle
 
 const net = remote.require('../main/net');
 const fs = remote.require('fs');
@@ -354,7 +354,7 @@ export function installOfficialApp(name, source) {
 
 export function removeOfficialApp(name, source) {
     return dispatch => {
-        dispatch(sendLauncherUserData(`Remove ${name}`, source));
+        dispatch(sendLauncherUserData(`${EventAction.REMOVE_APP} ${name}`, source));
         dispatch(removeOfficialAppAction(name, source));
         mainApps.removeOfficialApp(name, source)
             .then(() => {
@@ -370,7 +370,7 @@ export function removeOfficialApp(name, source) {
 
 export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
-        dispatch(sendLauncherUserData(`Upgrade ${name}`, source));
+        dispatch(sendLauncherUserData(`${EventAction.UPGRADE_APP} ${name}`, source));
         dispatch(upgradeOfficialAppAction(name, version, source));
         return mainApps.installOfficialApp(name, version, source)
             .then(() => {
@@ -389,7 +389,7 @@ export function launch(app) {
         // The apps in state are Immutable Maps which cannot be sent over IPC.
         // Converting to plain JS object before sending to the main process.
         const appObj = app.toJS();
-        dispatch(sendLauncherUserData(`Launch ${appObj.name}`, JSON.stringify(appObj)));
+        dispatch(sendLauncherUserData(`${EventAction.LAUNCH_APP} ${appObj.name}`, JSON.stringify(appObj)));
         ipcRenderer.send('open-app', appObj);
     };
 }
