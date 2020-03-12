@@ -36,6 +36,7 @@
 
 import { remote } from 'electron';
 import { userData } from 'pc-nrfconnect-shared';
+import pkgJson from '../../../package.json';
 
 const settings = remote.require('../main/settings');
 
@@ -43,6 +44,8 @@ export const USER_DATA_DIALOG_SHOW = 'USER_DATA_DIALOG_SHOW';
 export const USER_DATA_DIALOG_HIDE = 'USER_DATA_DIALOG_HIDE';
 export const USER_DATA_SEND_ON = 'USER_DATA_SEND_ON';
 export const USER_DATA_SEND_OFF = 'USER_DATA_SEND_OFF';
+
+export const EventCategory = pkgJson.name || 'Launcher';
 
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
@@ -104,7 +107,7 @@ export function toggleSendingUserData() {
 
 function initUserData(label) {
     userData.sendEvent(
-        userData.EventCategory.LAUNCHER_CATEGORY,
+        EventCategory,
         EventAction.LAUNCH_LAUNCHER,
         label,
     );
@@ -135,7 +138,7 @@ export function sendLauncherUserData(eventAction, eventLabel = null) {
             return;
         }
         userData.sendEvent(
-            userData.EventCategory.LAUNCHER_CATEGORY,
+            EventCategory,
             eventAction,
             eventLabel,
         );
