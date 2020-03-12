@@ -248,6 +248,7 @@ export function confrimSendingUserData() {
 export function toggleSendingUserData() {
     return (dispatch, getState) => {
         const { isSendingUserData } = getState().settings;
+        dispatch(hideUserDataDialog());
         if (isSendingUserData) {
             settings.set('isSendingUserData', false);
             dispatch(setUserDataOff());
