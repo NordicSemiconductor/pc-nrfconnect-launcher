@@ -58,6 +58,7 @@ function load() {
     if (data !== null) {
         return;
     }
+    console.log(config.getSettingsJsonPath());
     const settings = parseJsonFile(config.getSettingsJsonPath());
     if (settings && typeof settings === 'object') {
         data = settings;

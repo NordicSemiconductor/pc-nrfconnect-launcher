@@ -389,7 +389,9 @@ export function launch(app) {
         // The apps in state are Immutable Maps which cannot be sent over IPC.
         // Converting to plain JS object before sending to the main process.
         const appObj = app.toJS();
-        dispatch(sendLauncherUserData(`${EventAction.LAUNCH_APP} ${appObj.name}`, JSON.stringify(appObj)));
+        const sharedData = `App version: ${appObj.currentVersion};`
+            + ` Engine version: ${appObj.engineVersion};`;
+        dispatch(sendLauncherUserData(EventAction.LAUNCH_APP, sharedData, appObj.name));
         ipcRenderer.send('open-app', appObj);
     };
 }

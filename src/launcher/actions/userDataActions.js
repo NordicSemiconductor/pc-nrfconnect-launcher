@@ -116,7 +116,7 @@ function initUserData(label) {
 
 export function checkUserDataSetting(isSendingUserData) {
     return async dispatch => {
-        await userData.init('Launcher');
+        await userData.init(EventCategory);
         if (isSendingUserData) {
             initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
             dispatch(setUserDataOn());
