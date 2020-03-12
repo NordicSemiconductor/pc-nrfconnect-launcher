@@ -54,23 +54,6 @@ export const SETTINGS_ADD_SOURCE_DIALOG_SHOW = 'SETTINGS_ADD_SOURCE_DIALOG_SHOW'
 export const SETTINGS_ADD_SOURCE_DIALOG_HIDE = 'SETTINGS_ADD_SOURCE_DIALOG_HIDE';
 export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW = 'SETTINGS_REMOVE_SOURCE_DIALOG_SHOW';
 export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE = 'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
-export const SETTINGS_USER_DATA_DIALOG_SHOW = 'SETTINGS_USER_DATA_DIALOG_SHOW';
-export const SETTINGS_USER_DATA_DIALOG_HIDE = 'SETTINGS_USER_DATA_DIALOG_HIDE';
-export const SETTINGS_USER_DATA_SEND_ON = 'SETTINGS_USER_DATA_SEND_ON';
-export const SETTINGS_USER_DATA_SEND_OFF = 'SETTINGS_USER_DATA_SEND_OFF';
-
-export const EventAction = {
-    LAUNCH_LAUNCHER: 'Launch launcher',
-    LAUNCH_APP: 'Launch app',
-    REMOVE_APP: 'Remove app',
-    UPGRADE_APP: 'Upgrade app',
-};
-
-const EventLabel = {
-    LAUNCHER_USER_DATA_ON: 'User data on',
-    LAUNCHER_USER_DATA_OFF: 'User data off',
-    LAUNCHER_USER_DATA_NOT_SET: 'User data not set',
-};
 
 function loadSettingsAction() {
     return {
@@ -211,90 +194,5 @@ export function showRemoveSourceDialog(name) {
 export function hideRemoveSourceDialog() {
     return {
         type: SETTINGS_REMOVE_SOURCE_DIALOG_HIDE,
-    };
-}
-
-export function showUserDataDialog() {
-    return {
-        type: SETTINGS_USER_DATA_DIALOG_SHOW,
-    };
-}
-
-export function hideUserDataDialog() {
-    return {
-        type: SETTINGS_USER_DATA_DIALOG_HIDE,
-    };
-}
-
-export function setUserDataOn() {
-    return {
-        type: SETTINGS_USER_DATA_SEND_ON,
-    };
-}
-
-export function setUserDataOff() {
-    return {
-        type: SETTINGS_USER_DATA_SEND_OFF,
-    };
-}
-
-export function confrimSendingUserData() {
-    return dispatch => {
-        settings.set('isSendingUserData', true);
-        dispatch(setUserDataOn());
-    };
-}
-
-export function toggleSendingUserData() {
-    return (dispatch, getState) => {
-        const { isSendingUserData } = getState().settings;
-        dispatch(hideUserDataDialog());
-        if (isSendingUserData) {
-            settings.set('isSendingUserData', false);
-            dispatch(setUserDataOff());
-            return;
-        }
-        settings.set('isSendingUserData', true);
-        dispatch(setUserDataOn());
-    };
-}
-
-function initUserData(label) {
-    userData.sendEvent(
-        userData.EventCategory.LAUNCHER_CATEGORY,
-        EventAction.LAUNCH_LAUNCHER,
-        label,
-    );
-}
-
-export function checkUserDataSetting(isSendingUserData) {
-    return async dispatch => {
-        await userData.init('Launcher');
-        if (isSendingUserData) {
-            initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
-            dispatch(setUserDataOn());
-            return;
-        }
-        if (isSendingUserData === null) {
-            dispatch(showUserDataDialog());
-            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
-            return;
-        }
-        initUserData(EventLabel.LAUNCHER_USER_DATA_OFF);
-        dispatch(setUserDataOff());
-    };
-}
-
-export function sendLauncherUserData(eventAction, eventLabel = null) {
-    return (_, getState) => {
-        const { isSendingUserData } = getState().settings;
-        if (!isSendingUserData) {
-            return;
-        }
-        userData.sendEvent(
-            userData.EventCategory.LAUNCHER_CATEGORY,
-            eventAction,
-            eventLabel,
-        );
     };
 }

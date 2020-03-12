@@ -36,7 +36,7 @@
 
 import { connect } from 'react-redux';
 import UserDataDialog from '../components/UserDataDialog';
-import * as SettingsActions from '../actions/settingsActions';
+import * as UserDataActions from '../actions/userDataActions';
 
 function mapStateToProps(state) {
     return {
@@ -47,10 +47,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onConfirm: () => {
-            dispatch(SettingsActions.toggleSendingUserData());
+            dispatch(UserDataActions.toggleSendingUserData());
         },
         onCancel: () => {
-            dispatch(SettingsActions.hideUserDataDialog());
+            dispatch(UserDataActions.hideUserDataDialog());
         },
     };
 }

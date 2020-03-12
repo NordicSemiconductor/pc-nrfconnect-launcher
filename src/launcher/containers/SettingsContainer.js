@@ -37,6 +37,7 @@
 import { connect } from 'react-redux';
 import SettingsView from '../components/SettingsView';
 import * as SettingsActions from '../actions/settingsActions';
+import * as UserDataActions from '../actions/userDataActions';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 
 function isAppUpdateAvailable(officialApps) {
@@ -88,7 +89,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(SettingsActions.hideRemoveSourceDialog())
         ),
         toggleSendingUserData: () => (
-            dispatch(SettingsActions.toggleSendingUserData())
+            dispatch(UserDataActions.toggleSendingUserData())
         ),
     };
 }
