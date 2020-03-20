@@ -226,6 +226,11 @@ body {
 
 
 .filterbox {
+    margin-left: -0.75em;
+    > * {
+        margin-left: 0.75em;
+    }
+
     .btn .mdi {
         margin-right: 0.25rem;
     }

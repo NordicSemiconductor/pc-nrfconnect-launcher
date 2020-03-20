@@ -55,7 +55,20 @@ const AppManagementFilter = ({
     setAppManagementFilter,
     setAppManagementSource,
 }) => (
-    <div className="filterbox mb-3 w-100 d-inline-flex justify-content-between">
+    <div className="filterbox mb-3 w-100 d-inline-flex">
+        { upgradeableApps.size > 0 && (
+            <Button
+                variant="outline-secondary"
+                onClick={() => upgradeableApps.forEach(
+                    ({ name, latestVersion, source }) => (
+                        onUpgrade(name, latestVersion, source)
+                    ),
+                )}
+            >
+                Update { upgradeableApps.size > 1 ? 'all apps' : 'app' }
+            </Button>
+        )}
+        <div className="flex-fill" />
         <Dropdown>
             <Dropdown.Toggle
                 variant="outline-secondary"
@@ -107,18 +120,6 @@ const AppManagementFilter = ({
                 </Row>
             </Dropdown.Menu>
         </Dropdown>
-        { upgradeableApps.size > 0 && (
-            <Button
-                variant="outline-secondary"
-                onClick={() => upgradeableApps.forEach(
-                    ({ name, latestVersion, source }) => (
-                        onUpgrade(name, latestVersion, source)
-                    ),
-                )}
-            >
-                Update { upgradeableApps.size > 1 ? 'all apps' : 'app' }
-            </Button>
-        )}
         <Form.Control
             type="text"
             placeholder="Search..."
