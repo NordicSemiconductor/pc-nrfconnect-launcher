@@ -45,20 +45,31 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+export const sortedSources = sources => {
+    const all = Object.entries(sources);
+    const officialsAndLocal = [
+        ...all.filter(([name]) => name === 'official'),
+        ...all.filter(([name]) => name === 'local'),
+    ];
+    const rest = all
+        .filter(source => !officialsAndLocal.includes(source))
+        .sort((a, b) => a[0].localeCompare(b[0]));
+
+    return [...officialsAndLocal, ...rest];
+};
+
 const SourceFilter = ({ sources, setAppManagementSource }) => (
     <Col className="pl-4 pr-0">
         <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
-        {Object.keys(sources).map((source, i) => (
+        {sortedSources(sources).map(([name, checked], i) => (
             <Form.Check
-                label={source}
-                id={`cb-${source}`}
+                label={name}
+                id={`cb-${name}`}
                 key={`cb-${i + 1}`}
                 className="mx-3 py-1 px-4 text-capitalize"
                 custom
-                checked={sources[source]}
-                onChange={({ target }) => setAppManagementSource(
-                    source, target.checked,
-                )}
+                checked={checked}
+                onChange={({ target }) => setAppManagementSource(name, target.checked)}
             />
         ))}
     </Col>
