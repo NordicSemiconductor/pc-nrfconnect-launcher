@@ -61,8 +61,7 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.so*"
+                    "to": "nrfjprog"
                 }
             ],
             "category": "Development"
