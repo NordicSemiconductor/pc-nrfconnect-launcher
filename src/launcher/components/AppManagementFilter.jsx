@@ -45,10 +45,101 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+const SourceFilter = ({ sources, setAppManagementSource }) => (
+    <Col className="pl-4 pr-0">
+        <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
+        {Object.keys(sources).map((source, i) => (
+            <Form.Check
+                label={source}
+                id={`cb-${source}`}
+                key={`cb-${i + 1}`}
+                className="mx-3 py-1 px-4 text-capitalize"
+                custom
+                checked={sources[source]}
+                onChange={({ target }) => setAppManagementSource(
+                    source, target.checked,
+                )}
+            />
+        ))}
+    </Col>
+);
+SourceFilter.propTypes = {
+    sources: PropTypes.instanceOf(Object).isRequired,
+    setAppManagementSource: PropTypes.func.isRequired,
+};
+
+const StateFilter = ({
+    show: { installed, available },
+    setAppManagementShow,
+}) => (
+    <Col className="pr-4 pl-0">
+        <div className="border-bottom py-1 mx-3 mb-2">State</div>
+        <Form.Check
+            label="Installed"
+            id="cb-installed"
+            className="mx-3 py-1 px-4"
+            custom
+            checked={installed}
+            onChange={({ target }) => setAppManagementShow({
+                installed: target.checked,
+            })}
+        />
+        <Form.Check
+            label="Available"
+            id="cb-available"
+            className="mx-3 py-1 px-4"
+            custom
+            checked={available}
+            onChange={({ target }) => setAppManagementShow({
+                available: target.checked,
+            })}
+        />
+    </Col>
+);
+StateFilter.propTypes = {
+    show: PropTypes.shape({
+        installed: PropTypes.bool,
+        available: PropTypes.bool,
+    }).isRequired,
+    setAppManagementShow: PropTypes.func.isRequired,
+};
+
+const FilterDropdown = ({
+    sources,
+    show,
+    setAppManagementShow,
+    setAppManagementSource,
+}) => (
+    <Dropdown>
+        <Dropdown.Toggle
+            variant="outline-secondary"
+        >
+            <span className="mdi mdi-tune" />
+            Filter
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            <Row className="flex-nowrap">
+                <SourceFilter sources={sources} setAppManagementSource={setAppManagementSource} />
+                <StateFilter show={show} setAppManagementShow={setAppManagementShow} />
+            </Row>
+        </Dropdown.Menu>
+    </Dropdown>
+);
+FilterDropdown.propTypes = ({
+    sources: PropTypes.instanceOf(Object).isRequired,
+    show: PropTypes.shape({
+        installed: PropTypes.bool,
+        available: PropTypes.bool,
+    }).isRequired,
+    setAppManagementShow: PropTypes.func.isRequired,
+    setAppManagementSource: PropTypes.func.isRequired,
+});
+
 const AppManagementFilter = ({
     upgradeableApps,
     sources,
-    show: { installed, available },
+    show,
     filter,
     onUpgrade,
     setAppManagementShow,
@@ -69,57 +160,12 @@ const AppManagementFilter = ({
             </Button>
         )}
         <div className="flex-fill" />
-        <Dropdown>
-            <Dropdown.Toggle
-                variant="outline-secondary"
-            >
-                <span className="mdi mdi-tune" />
-                Filter
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Row className="flex-nowrap">
-                    <Col className="pl-4 pr-0">
-                        <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
-                        {Object.keys(sources).map((source, i) => (
-                            <Form.Check
-                                label={source}
-                                id={`cb-${source}`}
-                                key={`cb-${i + 1}`}
-                                className="mx-3 py-1 px-4 text-capitalize"
-                                custom
-                                checked={sources[source]}
-                                onChange={({ target }) => setAppManagementSource(
-                                    source, target.checked,
-                                )}
-                            />
-                        ))}
-                    </Col>
-                    <Col className="pr-4 pl-0">
-                        <div className="border-bottom py-1 mx-3 mb-2">State</div>
-                        <Form.Check
-                            label="Installed"
-                            id="cb-installed"
-                            className="mx-3 py-1 px-4"
-                            custom
-                            checked={installed}
-                            onChange={({ target }) => setAppManagementShow({
-                                installed: target.checked,
-                            })}
-                        />
-                        <Form.Check
-                            label="Available"
-                            id="cb-available"
-                            className="mx-3 py-1 px-4"
-                            custom
-                            checked={available}
-                            onChange={({ target }) => setAppManagementShow({
-                                available: target.checked,
-                            })}
-                        />
-                    </Col>
-                </Row>
-            </Dropdown.Menu>
-        </Dropdown>
+        <FilterDropdown
+            sources={sources}
+            show={show}
+            setAppManagementShow={setAppManagementShow}
+            setAppManagementSource={setAppManagementSource}
+        />
         <Form.Control
             type="text"
             placeholder="Search..."
