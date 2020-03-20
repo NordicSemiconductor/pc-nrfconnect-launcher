@@ -106,14 +106,8 @@ jobs:
       cp release/latest* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Copy artifacts'
-  - task: GitHubRelease@0
+  - task: PublishPipelineArtifact@1
     inputs:
-      gitHubConnection: 'waylandCI'
-      repositoryName: 'NordicSemiconductor/pc-nrfconnect-core'
-      action: 'edit'
-      tagSource: 'Git tag'
-      tag: '$(Build.SourceBranchName)'
-      assetUploadMode: 'replace'
-      isDraft: 'true'
-      addChangeLog: 'false'
-    condition: ne(variables['Build.Reason'], 'PullRequest')
+      targetPath: $(Build.ArtifactStagingDirectory)
+      publishLocation: 'pipeline'
+    displayName: 'Publishing artifacts to artifact storage'
