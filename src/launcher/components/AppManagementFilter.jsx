@@ -65,7 +65,7 @@ const AppManagementFilter = ({
                     ),
                 )}
             >
-                Update { upgradeableApps.size > 1 ? 'all apps' : 'app' }
+                Update all apps
             </Button>
         )}
         <div className="flex-fill" />
