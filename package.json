@@ -72,8 +72,7 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "Frameworks/nrfjprog",
-                    "filter": "*.dylib"
+                    "to": "Frameworks/nrfjprog"
                 }
             ]
         },
@@ -87,8 +86,7 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.dll"
+                    "to": "nrfjprog"
                 }
             ],
             "publisherName": "Nordic Semiconductor ASA"
