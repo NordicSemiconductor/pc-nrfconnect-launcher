@@ -61,7 +61,8 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog"
+                    "to": "nrfjprog",
+                    "filter": "*.so"
                 }
             ],
             "category": "Development"
@@ -72,7 +73,8 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "Frameworks/nrfjprog"
+                    "to": "Frameworks/nrfjprog",
+                    "filter": "*.dylib*"
                 }
             ]
         },
@@ -86,7 +88,8 @@
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog"
+                    "to": "nrfjprog",
+                    "filter": "*.dll"
                 }
             ],
             "publisherName": "Nordic Semiconductor ASA"
