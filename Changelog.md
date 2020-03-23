@@ -14,6 +14,14 @@
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 
+## Version 3.3.1
+## Features
+* Added support for nRF52820
+* Added support for modem UART DFU
+
+## Updates
+* Updated to pc-nrfjprog-js v1.7.0, including bundled nrfjprog v10.7.0 and JLink 6.62b
+
 ## Version 3.3.0
 ### Features
 - Added support for nRF53 series, nRF52833, and MCUboot DFU
