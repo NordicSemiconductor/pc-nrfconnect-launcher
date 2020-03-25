@@ -26,8 +26,8 @@
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "get-jlink -o build",
-        "pack": "npm run build && build -p never",
-        "release": "build -p always",
+        "pack": "npm run build && electron-builder -p never",
+        "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools"
     },
@@ -36,6 +36,7 @@
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect",
+        "npmRebuild": false,
         "publish": [
             "github"
         ],
@@ -68,9 +69,14 @@
             ],
             "category": "Development"
         },
+        "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",
             "artifactName": "${name}-${version}-${os}.${ext}",
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "entitlements": "build/entitlements.mac.plist",
+            "entitlementsInherit": "build/entitlements.mac.plist",
             "extraFiles": [
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
@@ -80,7 +86,8 @@
             ]
         },
         "dmg": {
-            "artifactName": "${name}-${version}.${ext}"
+            "artifactName": "${name}-${version}.${ext}",
+            "sign": false
         },
         "win": {
             "target": [
@@ -105,9 +112,10 @@
         "asar": "2.0.1",
         "bootstrap": "4.3.1",
         "electron": "5.0.6",
-        "electron-builder": "22.3.2",
+        "electron-builder": "22.4.1",
         "electron-devtools-installer": "2.2.4",
         "electron-is-dev": "1.1.0",
+        "electron-notarize": "0.2.1",
         "mini-css-extract-plugin": "0.8.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.1.0",
         "spectron": "7.0.0",
