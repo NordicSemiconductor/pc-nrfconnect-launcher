@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.3.0",
+    "version": "3.3.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -64,7 +64,7 @@
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
                     "to": "nrfjprog",
-                    "filter": "*.so*"
+                    "filter": "*.so"
                 }
             ],
             "category": "Development"
@@ -81,7 +81,7 @@
                 {
                     "from": "node_modules/pc-nrfjprog-js/nrfjprog",
                     "to": "Frameworks/nrfjprog",
-                    "filter": "*.dylib"
+                    "filter": "*.dylib*"
                 }
             ]
         },
