@@ -9,8 +9,7 @@
     "main": "src/main",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
-        "postinstall": "npm run get-jlink && npm run fix-serialport",
-        "fix-serialport": "cp ./serialport-prebuild-installrc ./node_modules/@serialport/bindings/.prebuild-installrc && electron-builder install-app-deps",
+        "postinstall": "npm run get-jlink",
         "app": "electron .",
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
