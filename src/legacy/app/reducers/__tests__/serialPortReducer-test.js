@@ -69,7 +69,7 @@ describe('serialPortReducer', () => {
 
     it('should add port metadata to state when loading ports has succeeded', () => {
         const seggerPort = {
-            comName: '/dev/tty1',
+            path: '/dev/tty1',
             vendorId: SEGGER_VENDOR_ID,
             manufacturer: 'SEGGER',
             serialNumber: 'SEGGER_J-Link_000680551615',
@@ -83,6 +83,7 @@ describe('serialPortReducer', () => {
 
         expect(state.ports.first().toJS()).toEqual({
             comName: '/dev/tty1',
+            path: '/dev/tty1',
             vendorId: SEGGER_VENDOR_ID,
             manufacturer: 'SEGGER',
             serialNumber: 680551615,
@@ -106,12 +107,7 @@ describe('serialPortReducer', () => {
     });
 
     it('should set selected port comPort when port has been selected', () => {
-        const state = reducer(initialState, {
-            type: SerialPortActions.SERIAL_PORT_SELECTED,
-            port: {
-                comName: '/dev/tty1',
-            },
-        });
+        const state = reducer(initialState, SerialPortActions.selectPortAction({ path: '/dev/tty1' }));
         expect(state.selectedPort).toEqual('/dev/tty1');
     });
 

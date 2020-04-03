@@ -47,6 +47,7 @@ describe('firmwareDialogReducer', () => {
     it('should be visible and have a port object after show action has been dispatched', () => {
         const port = {
             comName: '/dev/tty1',
+            path: '/dev/tty1',
             manufacturer: null,
             productId: null,
             serialNumber: null,
@@ -68,7 +69,7 @@ describe('firmwareDialogReducer', () => {
     });
 
     it('should be hidden, with no port, and not in progress after hide action has been dispatched', () => {
-        const port = { comName: '/dev/tty1' };
+        const port = { path: '/dev/tty1' };
         const firstState = reducer(initialState, {
             type: FirmwareDialogActions.FIRMWARE_DIALOG_SHOW,
             port,

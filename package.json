@@ -133,7 +133,7 @@
         "electron-updater": "4.0.14",
         "fs-extra": "8.1.0",
         "mustache": "3.0.1",
-        "nrf-device-setup": "0.6.3",
+        "nrf-device-setup": "0.6.5",
         "pc-ble-driver-js": "2.6.2",
         "react-markdown": "4.1.0",
         "roboto-fontface": "0.10.0",

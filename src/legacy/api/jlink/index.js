@@ -36,6 +36,7 @@
 
 import SerialPort from 'serialport';
 import JlinkFacade from './jlinkFacade';
+import portPath from '../../portPath';
 
 const SEGGER_VENDOR_ID = '1366';
 
@@ -48,7 +49,7 @@ const SEGGER_VENDOR_ID = '1366';
  */
 function getSeggerComNames(ports) {
     return ports.filter(port => port.vendorId === SEGGER_VENDOR_ID)
-        .map(port => port.comName);
+        .map(port => port.path);
 }
 
 function getPortsWithSerialNumberOnWindows(ports, onWarning) {
@@ -60,7 +61,7 @@ function getPortsWithSerialNumberOnWindows(ports, onWarning) {
         facade.getSerialNumberMap(seggerComNames)
             .then(map => {
                 map.forEach((serialNumber, comName) => {
-                    const port = decoratedPorts.find(p => p.comName === comName);
+                    const port = decoratedPorts.find(p => portPath(p) === comName);
                     port.serialNumber = serialNumber;
                 });
                 resolve(decoratedPorts);
@@ -95,12 +96,12 @@ export function decorateWithSerialNumber(ports, onWarning = () => {}) {
  * Try to open and close the given serial port to see if it is available. This
  * is needed to identify if a SEGGER J-Link device is in a bad state.
  *
- * @param {string} comName The COM name to check.
+ * @param {string} path The system path of the serial port you want to check.
  * @returns {Promise} Promise that resolves if available, and rejects if not.
  */
-export function isPortAvailable(comName) {
+export function isPortAvailable(path) {
     return new Promise((resolve, reject) => {
-        const serialPort = new SerialPort(comName, { autoOpen: false });
+        const serialPort = new SerialPort(path, { autoOpen: false });
         serialPort.open(openErr => {
             if (openErr) {
                 reject(openErr);

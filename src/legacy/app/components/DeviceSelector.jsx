@@ -40,6 +40,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
 
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
+import portPath from '../../portPath';
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
@@ -53,7 +54,7 @@ export default class DeviceSelector extends React.Component {
     static mapSerialPortsToListItems(device) {
         return Object.keys(device)
             .filter(key => key.startsWith('serialport'))
-            .map(key => <li key={device[key].comName}>Serial port: {device[key].comName}</li>);
+            .map(key => <li key={key}>Serial port: {portPath(device[key])}</li>);
     }
 
     componentDidMount() {

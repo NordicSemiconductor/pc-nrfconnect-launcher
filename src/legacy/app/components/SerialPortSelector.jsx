@@ -39,6 +39,7 @@ import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
 
+import portPath from '../../portPath';
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
 
 const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
@@ -62,12 +63,12 @@ class SerialPortSelector extends React.Component {
                 .filter(filter)
                 .map(port => (
                     <Dropdown.Item
-                        key={port.comName}
+                        key={portPath(port)}
                         className={menuItemCssClass}
-                        eventKey={port.comName}
+                        eventKey={portPath(port)}
                         onSelect={() => onSelect(port)}
                     >
-                        <div>{port.comName}</div>
+                        <div>{portPath(port)}</div>
                         <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
                     </Dropdown.Item>
                 ));

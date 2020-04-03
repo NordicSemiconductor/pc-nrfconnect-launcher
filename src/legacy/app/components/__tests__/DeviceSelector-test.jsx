@@ -71,10 +71,10 @@ describe('DeviceSelector', () => {
                     {
                         serialNumber: '123456789',
                         serialport: {
-                            comName: '/dev/ttyACM0',
+                            path: '/dev/ttyACM0',
                         },
                         'serialport.1': {
-                            comName: '/dev/ttyACM1',
+                            path: '/dev/ttyACM1',
                         },
                         usb: {
                             manufacturer: 'Nordic Semiconductor',
