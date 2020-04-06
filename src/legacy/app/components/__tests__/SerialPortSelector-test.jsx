@@ -73,11 +73,11 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: SEGGER_VENDOR_ID,
                     }, {
-                        comName: '/dev/tty1',
+                        path: '/dev/tty1',
                         serialNumber: '456789',
                         vendorId: SEGGER_VENDOR_ID,
                     },
@@ -95,11 +95,11 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: '0x1234',
                     }, {
-                        comName: '/dev/tty1',
+                        path: '/dev/tty1',
                         serialNumber: '456789',
                         vendorId: SEGGER_VENDOR_ID,
                     },
@@ -117,11 +117,11 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: '0x1234',
                     }, {
-                        comName: '/dev/tty1',
+                        path: '/dev/tty1',
                         serialNumber: '456789',
                         vendorId: SEGGER_VENDOR_ID,
                     },
@@ -140,11 +140,11 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: SEGGER_VENDOR_ID,
                     }, {
-                        comName: '/dev/tty1',
+                        path: '/dev/tty1',
                         serialNumber: '456789',
                         vendorId: SEGGER_VENDOR_ID,
                     },
@@ -163,7 +163,7 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: SEGGER_VENDOR_ID,
                     },
@@ -182,7 +182,7 @@ describe('SerialPortSelector', () => {
             <SerialPortSelector
                 ports={[
                     {
-                        comName: '/dev/tty0',
+                        path: '/dev/tty0',
                         serialNumber: '123456',
                         vendorId: SEGGER_VENDOR_ID,
                     },

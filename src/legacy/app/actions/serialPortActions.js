@@ -37,6 +37,7 @@
 import SerialPort from 'serialport';
 import { logger } from 'pc-nrfconnect-shared';
 import { isPortAvailable, decorateWithSerialNumber } from '../../api/jlink';
+import portPath from '../../portPath';
 
 /**
  * Indicates that loading all available serial ports has been requested. This action is
@@ -112,7 +113,7 @@ function selectorToggleExpandedAction() {
     };
 }
 
-function selectPortAction(port) {
+export function selectPortAction(port) {
     return {
         type: SERIAL_PORT_SELECTED,
         port,
@@ -122,15 +123,12 @@ function selectPortAction(port) {
 export function loadPorts() {
     return dispatch => {
         dispatch(loadPortsAction());
-        SerialPort.list((err, ports) => {
-            if (err) {
-                dispatch(loadPortsErrorAction(err.message));
-            } else {
-                decorateWithSerialNumber(ports)
-                    .then(finalPorts => dispatch(loadPortsSuccessAction(finalPorts)))
-                    .catch(error => loadPortsErrorAction(error.message));
-            }
-        });
+
+        SerialPort
+            .list()
+            .then(decorateWithSerialNumber)
+            .then(finalPorts => dispatch(loadPortsSuccessAction(finalPorts)))
+            .catch(error => loadPortsErrorAction(error.message));
     };
 }
 
@@ -146,7 +144,7 @@ export function toggleSelectorExpanded() {
 
 export function selectPort(port) {
     return dispatch => {
-        isPortAvailable(port.comName)
+        isPortAvailable(portPath(port))
             .then(() => dispatch(selectPortAction(port)))
             .catch(error => {
                 logger.error('Unable to open the port. Please power cycle the device and try again.');

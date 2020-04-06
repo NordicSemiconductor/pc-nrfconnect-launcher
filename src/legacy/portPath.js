@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,50 +34,5 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
-import portPath from '../../portPath';
-
-const ImmutableSerialPort = Record({
-    comName: null,
-    path: null,
-    serialNumber: null,
-    manufacturer: null,
-    vendorId: null,
-    productId: null,
-});
-
-const ImmutableDevice = Record({
-    comName: null,
-    path: null,
-    busNumber: null,
-    deviceAddress: null,
-    serialNumber: null,
-    manufacturer: null,
-    product: null,
-    vendorId: null,
-    productId: null,
-});
-
-function getImmutableSerialPort(serialPort) {
-    return new ImmutableSerialPort({
-        comName: portPath(serialPort),
-        path: portPath(serialPort),
-        serialNumber: serialPort.serialNumber,
-        vendorId: serialPort.vendorId,
-        productId: serialPort.productId,
-        manufacturer: serialPort.manufacturer,
-    });
-}
-
-function getImmutableDevice(device) {
-    return new ImmutableDevice({
-        ...device,
-        comName: portPath(device),
-        path: portPath(device),
-    });
-}
-
-export {
-    getImmutableSerialPort,
-    getImmutableDevice,
-};
+// Prefer to use the serialport 8 property or fall back to the serialport 7 property
+export default serialPort => serialPort.path || serialPort.comName;
