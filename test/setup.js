@@ -36,26 +36,15 @@
 
 import path from 'path';
 import { Application } from 'spectron';
+import electron from 'electron';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-const projectPath = path.resolve(__dirname, '../../');
-
-let electronPath;
-if (process.platform === 'win32') {
-    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron.cmd');
-} else {
-    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
-}
+const projectPath = path.resolve(__dirname, '../');
 
 function startElectronApp(extraArgs) {
-    const args = [
-        projectPath,
-        '--skip-update-core',
-        '--skip-splash-screen',
-    ];
     const electronApp = new Application({
-        path: electronPath,
-        args: args.concat(extraArgs),
+        path: electron,
+        args: [projectPath, '--skip-update-core', '--skip-splash-screen', ...extraArgs],
         startTimeout: 30000,
         webdriverOptions: {
             waitforTimeout: 10000,
