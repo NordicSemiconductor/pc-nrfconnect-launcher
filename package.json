@@ -160,7 +160,6 @@
         "transformIgnorePatterns": [
             "node_modules/(?!(pc-nrfconnect-shared)/)"
         ],
-        "testURL": "file:/",
         "setupFilesAfterEnv": [
             "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.js"
         ],
