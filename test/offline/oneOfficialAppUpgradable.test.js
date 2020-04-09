@@ -59,35 +59,27 @@ describe('one official app upgradable', () => {
 
     it('should show Test App in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
+            .waitForVisible('.list-group-item')
+            .getText('.list-group-item .h8')
             .then(text => expect(text).toEqual('Test App'))
-    ));
-
-    it('should show Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test Appofficial'))
     ));
 
     it('should show remove button for Test App in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Remove Test App"]')
+            .click('.list-group-item button[aria-haspopup="true"]')
+            .waitForVisible('a[title="Remove Test App"]')
     ));
 
     it('should show upgrade button in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('button[title="Upgrade Test App from v1.2.3 to v1.2.4"]')
+            .waitForVisible('button[title="Update Test App"]')
+            .getText('.list-group-item')
+            .then(text => expect(text).toContain('v1.2.4 available'))
     ));
 
     it('should not show install button in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
+            .waitForVisible('.list-group-item')
             .isVisible('button[title="Install Test App"]')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));

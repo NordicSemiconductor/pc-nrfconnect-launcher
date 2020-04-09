@@ -45,7 +45,7 @@ const electronArgs = [
 
 let electronApp;
 
-describe('one official app not installed', () => {
+describe('the launcher shows an available official app', () => {
     beforeEach(() => (
         startElectronApp(electronArgs)
             .then(startedApp => {
@@ -57,40 +57,32 @@ describe('one official app not installed', () => {
         stopElectronApp(electronApp)
     ));
 
-    it('should show welcome message in the launcher app list', () => (
+    it('appears in the app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Welcome to nRF Connect'))
-    ));
-
-    it('should show Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Test Appofficial'))
+            .waitForVisible('.list-group-item')
+            .getText('.list-group-item .h8')
+            .then(text => expect(text).toEqual('Test App'))
     ));
 
     it('should show install button for Test App in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
+            .waitForVisible('.list-group-item')
             .waitForVisible('button[title="Install Test App"]')
     ));
 
     it('should not show remove button in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .isVisible('button[title*="Remove"]')
+            .click('.list-group-item button[aria-haspopup="true"]')
+            .isVisible('a[title*="Remove"]')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
 
     it('should not show upgrade button in app management list', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
-            .waitForVisible('.core-app-management-item')
-            .isVisible('button[title*="Upgrade"]')
+            .waitForVisible('.list-group-item')
+            .isVisible('button[title*="Update"]')
             .then(isVisible => expect(isVisible).toEqual(false))
+            .getText('.list-group-item')
+            .then(text => expect(text).not.toContain('available'))
     ));
 });

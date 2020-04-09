@@ -42,9 +42,14 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 const projectPath = path.resolve(__dirname, '../');
 
 function startElectronApp(extraArgs) {
+    const electronArgs = [projectPath, '--skip-update-core', '--skip-splash-screen', ...extraArgs];
+    if (process.env.LOG_ELECTRON_ARGS) {
+        console.log(`Electron is run with these args: ${electronArgs.join(' ')}`);
+    }
+
     const electronApp = new Application({
         path: electron,
-        args: [projectPath, '--skip-update-core', '--skip-splash-screen', ...extraArgs],
+        args: electronArgs,
         startTimeout: 30000,
         webdriverOptions: {
             waitforTimeout: 10000,

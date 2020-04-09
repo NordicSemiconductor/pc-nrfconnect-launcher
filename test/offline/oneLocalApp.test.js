@@ -48,24 +48,24 @@ let electronApp;
 
 function loadFirstApp() {
     return electronApp.client.windowByIndex(0)
-        .waitForVisible('button[title="Launch app"]')
-        .click('button[title="Launch app"]')
+        .waitForVisible('button[title*="Open"]')
+        .click('button[title*="Open"]')
         .then(() => waitForWindowCount(electronApp, 2))
         .then(() => electronApp.client.waitUntilWindowLoaded());
 }
 
-describe('one local app', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+beforeEach(() => (
+    startElectronApp(electronArgs)
+        .then(startedApp => {
+            electronApp = startedApp;
+        })
+));
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
+afterEach(() => (
+    stopElectronApp(electronApp)
+));
 
+describe('the launcher shows a local app', () => {
     it('should show package.json version in launcher window title', () => (
         electronApp.client.windowByIndex(0).browserWindow.getTitle()
             .then(title => expect(title).toContain(packageJson.version))
@@ -73,8 +73,8 @@ describe('one local app', () => {
 
     it('should show Test App in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
+            .waitForVisible('.list-group-item')
+            .getText('.list-group-item .h8')
             .then(text => expect(text).toEqual('Test App'))
     ));
 
@@ -83,7 +83,9 @@ describe('one local app', () => {
             .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
             .then(title => expect(title).toContain('Test App'))
     ));
+});
 
+describe('a local app', () => {
     it('should not show list of main menu items in app window initially', () => (
         loadFirstApp()
             .then(() => electronApp.client.windowByIndex(1))
@@ -105,7 +107,7 @@ describe('one local app', () => {
             .then(() => electronApp.client.windowByIndex(1))
             .waitForVisible('#serial-port-selector')
             .click('#serial-port-selector')
-            .isVisible('#serial-port-selector-list')
+            .isVisible('#serial-port-selector .dropdown-menu')
             .then(isVisible => expect(isVisible).toEqual(true))
     ));
 });

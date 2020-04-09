@@ -64,8 +64,8 @@ describe('one local app without engine definition', () => {
 
     it('should show warning dialog when clicking Launch', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title="Launch app"]')
-            .click('button[title="Launch app"]')
+            .waitForVisible('button[title*="Open"]')
+            .click('button[title*="Open"]')
             .waitForVisible('.modal-dialog')
     ));
 });

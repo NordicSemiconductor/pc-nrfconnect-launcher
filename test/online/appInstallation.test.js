@@ -68,17 +68,16 @@ describe('online app installation', () => {
 
     it('should show at least one app in the Add/remove apps screen', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
             .waitForVisible('button[title*="Install"]')
     ));
 
     it('should install and remove the first app in the Add/remove apps screen', () => (
         electronApp.client.windowByIndex(0)
-            .click('button[title*="Add/remove apps"]')
             .waitForVisible('button[title*="Install"]')
             .click('button[title*="Install"]')
-            .waitForVisible('button[title*="Remove"]')
-            .click('button[title*="Remove"]')
+            .click('.list-group-item button[aria-haspopup="true"]')
+            .waitForVisible('a[title*="Remove"]')
+            .click('a[title*="Remove"]')
             .waitForVisible('button[title*="Install"]')
     ));
 });

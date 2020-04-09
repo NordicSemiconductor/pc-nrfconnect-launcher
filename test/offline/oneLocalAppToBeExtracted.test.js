@@ -78,14 +78,14 @@ describe('one local app to be extracted', () => {
 
     it('should extract archive and show app name in the launcher app list', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
+            .waitForVisible('.list-group-item')
+            .getText('.list-group-item .h8')
             .then(text => expect(text).toEqual('Foo App'))
     ));
 
     it('should remove archive file from apps local directory after extracting', () => (
         electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
+            .waitForVisible('.list-group-item')
             .then(() => {
                 const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
                 expect(exists).toEqual(false);
