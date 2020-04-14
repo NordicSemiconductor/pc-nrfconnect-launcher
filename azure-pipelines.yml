@@ -17,8 +17,8 @@ jobs:
     matrix:
       linux:
         IMAGE_NAME: 'ubuntu-16.04'
-      macOS:
-        IMAGE_NAME: 'macos-10.13'
+      # macOS:
+      #   IMAGE_NAME: 'macos-10.13'
       win32:
         IMAGE_NAME: 'vs2017-win2016'
         ARCH: 'ia32'
