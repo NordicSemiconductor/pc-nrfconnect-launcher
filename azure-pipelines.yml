@@ -60,6 +60,7 @@ jobs:
       npm run lint
       npm run build
       npm test
+      npm run test-e2e
     condition: not(contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on not windows'
   - bash: |
@@ -70,6 +71,7 @@ jobs:
       npm run lint
       npm run build
       npm test
+      npm run test-e2e
     condition: contains(variables['IMAGE_NAME'], 'win')
     displayName: 'Build on windows'
   - bash: |
