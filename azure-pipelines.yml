@@ -15,8 +15,8 @@ jobs:
     value: 10.17.0
   strategy:
     matrix:
-      linux:
-        IMAGE_NAME: 'ubuntu-16.04'
+      # linux:
+      #   IMAGE_NAME: 'ubuntu-16.04'
       # macOS:
       #   IMAGE_NAME: 'macos-10.13'
       win32:
