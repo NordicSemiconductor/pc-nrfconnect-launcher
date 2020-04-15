@@ -57,7 +57,6 @@ jobs:
   - bash: |
       set -o errexit -o pipefail
       npm i
-      npm run lint
       npm run build
       npm test
     condition: not(contains(variables['IMAGE_NAME'], 'win'))
