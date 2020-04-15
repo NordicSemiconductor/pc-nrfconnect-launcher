@@ -54,6 +54,15 @@ Array [
             draggable={false}
             src=""
           />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -454,6 +463,15 @@ Array [
             draggable={false}
             src=""
           />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -537,6 +555,15 @@ Array [
             draggable={false}
             src=""
           />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -620,6 +647,15 @@ Array [
             draggable={false}
             src=""
           />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -770,6 +806,15 @@ Array [
             draggable={false}
             src=""
           />
+          <div>
+            <span
+              className="alert-icon-bg"
+            />
+            <span
+              className="mdi mdi-alert"
+              title="The app does not specify which nRF Connect version(s) it supports"
+            />
+          </div>
         </div>
       </div>
       <div
