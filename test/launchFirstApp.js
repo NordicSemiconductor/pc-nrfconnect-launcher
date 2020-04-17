@@ -34,18 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import setupTestApp from '../setupTestApp';
-import { checkTitleOfWindow } from '../assertions';
+const sleep = millis => new Promise(resolve => setTimeout(resolve, millis));
 
-const app = setupTestApp({
-    appsRootDir: 'offline/fixtures/one-official-app-installed/.nrfconnect-apps',
-    openOfficialApp: 'pc-nrfconnect-test',
-});
+const waitForSecondWindow = async app => {
+    for (let retry = 0; retry < 5; retry += 1) {
+        if (await app.client.getWindowCount() === 2) { // eslint-disable-line no-await-in-loop
+            return;
+        }
+        await sleep(500); // eslint-disable-line no-await-in-loop
+    }
 
-describe('one official app given as command line flag', () => {
-    it('should load app window at startup', async () => {
+    throw new Error('Timed out while waiting for second window');
+};
+
+export default async (app, waitForAppToAppear = true) => {
+    await app.client.waitForVisible('button[title*="Open"]');
+    await app.client.click('button[title*="Open"]');
+    if (waitForAppToAppear) {
+        await waitForSecondWindow(app);
         await app.client.waitUntilWindowLoaded();
-
-        await checkTitleOfWindow(app, 'Test App');
-    });
-});
+    }
+};

@@ -37,58 +37,40 @@
 import path from 'path';
 import fs from 'fs';
 import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import { checkAppListContains } from '../assertions';
 
-const fixtureDir = path.resolve(__dirname, './fixtures/one-local-app-to-be-extracted');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
+const fixtureDir = 'fixtures/one-local-app-to-be-extracted';
+const localDir = path.join(__dirname, fixtureDir, '.nrfconnect-apps', 'local');
 const appName = 'pc-nrfconnect-foo';
 const appArchiveFile = `${appName}-1.2.3.tgz`;
 
-let electronApp;
+const removeAppDirFromLocal = () => {
+    rimraf.sync(path.join(localDir, appName));
+};
 
-function copyArchiveToLocal() {
-    const sourceFile = path.join(fixtureDir, appArchiveFile);
-    const destFile = path.join(appsRootDir, 'local', appArchiveFile);
-    fs.writeFileSync(destFile, fs.readFileSync(sourceFile));
-}
+const copyArchiveToLocal = () => {
+    const sourceFile = path.join(__dirname, fixtureDir, appArchiveFile);
+    const destFile = path.join(localDir, appArchiveFile);
+    fs.copyFileSync(sourceFile, destFile);
+};
 
-function removeAppDirFromLocal() {
-    rimraf.sync(path.join(appsRootDir, 'local', appName));
-}
+const app = setupTestApp({
+    appsRootDir: path.join('offline', fixtureDir, '.nrfconnect-apps'),
+    additionalBeforeEach: copyArchiveToLocal,
+    additionalAfterEach: removeAppDirFromLocal,
+});
+
 
 describe('one local app to be extracted', () => {
-    beforeEach(() => {
-        copyArchiveToLocal();
-        return startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            });
-    });
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                removeAppDirFromLocal();
-            })
-    ));
-
     it('should extract archive and show app name in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .getText('.list-group-item .h8')
-            .then(text => expect(text).toEqual('Foo App'))
+        checkAppListContains(app, 'Foo App')
     ));
 
-    it('should remove archive file from apps local directory after extracting', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .then(() => {
-                const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
-                expect(exists).toEqual(false);
-            })
-    ));
+    it('should remove archive file from apps local directory after extracting', async () => {
+        await app.client.waitForVisible('.list-group-item');
+
+        const exists = fs.existsSync(path.join(localDir, appArchiveFile));
+        expect(exists).toEqual(false);
+    });
 });

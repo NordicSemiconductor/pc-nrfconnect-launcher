@@ -34,65 +34,40 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp, waitForWindowCount } from '../setup';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-installed/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
+import { checkTitleOfSecondWindow, checkAppListContains } from '../assertions';
 
-let electronApp;
-
-function loadFirstApp() {
-    return electronApp.client.windowByIndex(0)
-        .waitForVisible('button[title*="Open"]')
-        .click('button[title*="Open"]')
-        .then(() => waitForWindowCount(electronApp, 2))
-        .then(() => electronApp.client.waitUntilWindowLoaded());
-}
-
-beforeEach(() => (
-    startElectronApp(electronArgs)
-        .then(startedApp => {
-            electronApp = startedApp;
-        })
-));
-
-afterEach(() => (
-    stopElectronApp(electronApp)
-));
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-official-app-installed/.nrfconnect-apps',
+});
 
 describe('the launcher shows an installed official app', () => {
-    it('should show Test App in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .getText('.list-group-item .h8')
-            .then(text => expect(text).toEqual('Test App'))
+    it('shows the app in the launcher app list', () => (
+        checkAppListContains(app, 'Test App')
     ));
 
-    it('should load app window when clicking Launch', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
-            .then(title => expect(title).toContain('Test App'))
-    ));
+    it('launches the app window', async () => {
+        await launchFirstApp(app);
+        await checkTitleOfSecondWindow(app, 'Test App');
+    });
 
     it('should show remove button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
+        app.client.windowByIndex(0)
             .click('.list-group-item button[aria-haspopup="true"]')
             .waitForVisible('a[title="Remove Test App"]')
     ));
 
     it('should not show install button in app management list', () => (
-        electronApp.client.windowByIndex(0)
+        app.client.windowByIndex(0)
             .waitForVisible('.list-group-item')
             .isVisible('button[title="Install Test App"]')
             .then(isVisible => expect(isVisible).toEqual(false))
     ));
 
     it('should not show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(0)
+        app.client.windowByIndex(0)
             .waitForVisible('.list-group-item')
             .isVisible('button[title*="Update"]')
             .then(isVisible => expect(isVisible).toEqual(false))
@@ -102,9 +77,9 @@ describe('the launcher shows an installed official app', () => {
 });
 
 describe('an installed official app app', () => {
-    it('should show main menu in app window', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1))
-            .waitForVisible('#main-menu')
-    ));
+    it('should show main menu in app window', async () => {
+        await launchFirstApp(app);
+
+        await app.client.windowByIndex(1).waitForVisible('#main-menu');
+    });
 });

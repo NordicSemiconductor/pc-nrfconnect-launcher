@@ -34,80 +34,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp, waitForWindowCount } from '../setup';
-import packageJson from '../../package.json';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
+import { checkTitleOfSecondWindow, checkTitleOfWindow, checkAppListContains } from '../assertions';
+import { version } from '../../package.json';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
-
-let electronApp;
-
-function loadFirstApp() {
-    return electronApp.client.windowByIndex(0)
-        .waitForVisible('button[title*="Open"]')
-        .click('button[title*="Open"]')
-        .then(() => waitForWindowCount(electronApp, 2))
-        .then(() => electronApp.client.waitUntilWindowLoaded());
-}
-
-beforeEach(() => (
-    startElectronApp(electronArgs)
-        .then(startedApp => {
-            electronApp = startedApp;
-        })
-));
-
-afterEach(() => (
-    stopElectronApp(electronApp)
-));
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-local-app/.nrfconnect-apps',
+});
 
 describe('the launcher shows a local app', () => {
-    it('should show package.json version in launcher window title', () => (
-        electronApp.client.windowByIndex(0).browserWindow.getTitle()
-            .then(title => expect(title).toContain(packageJson.version))
+    it('shows package.json version in launcher window title', () => (
+        checkTitleOfWindow(app, version)
     ));
 
-    it('should show Test App in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .getText('.list-group-item .h8')
-            .then(text => expect(text).toEqual('Test App'))
+    it('shows the app in the launcher app list', () => (
+        checkAppListContains(app, 'Test App')
     ));
 
-    it('should load app window when clicking Launch', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1).browserWindow.getTitle())
-            .then(title => expect(title).toContain('Test App'))
-    ));
+    it('launches the app window', async () => {
+        await launchFirstApp(app);
+        await checkTitleOfSecondWindow(app, 'Test App');
+    });
 });
 
 describe('a local app', () => {
-    it('should not show list of main menu items in app window initially', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1))
-            .isVisible('#main-menu-list')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
+    it('does not initially show list of main menu items', async () => {
+        await launchFirstApp(app);
 
-    it('should show a "Launch other app" item when main menu button has been clicked in app window', () => (
-        loadFirstApp()
-            .then(() => electronApp.client.windowByIndex(1))
+        const appWindow = app.client.windowByIndex(1);
+
+        await expect(appWindow.isVisible('#main-menu-list')).resolves.toBe(false);
+    });
+
+    it('shows "Launch other app" item when clicked on main menu button', async () => {
+        await launchFirstApp(app);
+
+        const appWindow = app.client.windowByIndex(1);
+
+        await appWindow
             .waitForVisible('#main-menu')
-            .click('#main-menu')
-            .isVisible('#main-menu-list a[title*="Launch other app"]')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
+            .click('#main-menu');
+        await expect(appWindow.isVisible('#main-menu-list a[title*="Launch other app"]')).resolves.toBe(true);
+    });
 
-    it('should show port list when port selector has been clicked in app window', () => (
-        loadFirstApp(electronApp)
-            .then(() => electronApp.client.windowByIndex(1))
+    it('shows port list when clicked on port selector', async () => {
+        await launchFirstApp(app);
+
+        const appWindow = app.client.windowByIndex(1);
+
+        await appWindow
             .waitForVisible('#serial-port-selector')
-            .click('#serial-port-selector')
-            .isVisible('#serial-port-selector .dropdown-menu')
-            .then(isVisible => expect(isVisible).toEqual(true))
-    ));
+            .click('#serial-port-selector');
+        await expect(appWindow.isVisible('#serial-port-selector .dropdown-menu')).resolves.toBe(true);
+    });
 });

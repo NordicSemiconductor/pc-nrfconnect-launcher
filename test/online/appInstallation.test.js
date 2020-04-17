@@ -34,45 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/app-installation/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-];
-
-let electronApp;
-
-function removeAppsRootDir() {
-    rimraf.sync(appsRootDir);
-}
+const app = setupTestApp({
+    appsRootDir: 'online/fixtures/app-installation/.nrfconnect-apps',
+    removeAppsRootDirAfterwards: true,
+    skipUpdateApps: false,
+});
 
 describe('online app installation', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                // The apps root directory is created when starting
-                // the application. Cleaning up.
-                removeAppsRootDir();
-            })
-    ));
-
     it('should show at least one app in the Add/remove apps screen', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title*="Install"]')
+        app.client.waitForVisible('button[title*="Install"]')
     ));
 
     it('should install and remove the first app in the Add/remove apps screen', () => (
-        electronApp.client.windowByIndex(0)
+        app.client
             .waitForVisible('button[title*="Install"]')
             .click('button[title*="Install"]')
             .click('.list-group-item button[aria-haspopup="true"]')

@@ -34,55 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import {
+    checkAppListContains,
+    checkAppListHasNoRemoveButton,
+    checkAppListShowsHasInstallButton,
+    checkAppListShowsNoAppUpdate,
+} from '../assertions';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-not-installed/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-official-app-not-installed/.nrfconnect-apps',
+});
 
-let electronApp;
-
-describe('the launcher shows an available official app', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
+describe('available official app', () => {
+    it('is in the launcher app list', () => (
+        checkAppListContains(app, 'Test App')
     ));
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
+    it('has install button', () => (
+        checkAppListShowsHasInstallButton(app, 'Test App')
     ));
 
-    it('appears in the app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .getText('.list-group-item .h8')
-            .then(text => expect(text).toEqual('Test App'))
+    it('has no remove button', () => (
+        checkAppListHasNoRemoveButton(app)
     ));
 
-    it('should show install button for Test App in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .waitForVisible('button[title="Install Test App"]')
-    ));
-
-    it('should not show remove button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .click('.list-group-item button[aria-haspopup="true"]')
-            .isVisible('a[title*="Remove"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
-
-    it('should not show upgrade button in app management list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .isVisible('button[title*="Update"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
-            .getText('.list-group-item')
-            .then(text => expect(text).not.toContain('available'))
+    it('has no upgrade button', () => (
+        checkAppListShowsNoAppUpdate(app, 'Test App')
     ));
 });

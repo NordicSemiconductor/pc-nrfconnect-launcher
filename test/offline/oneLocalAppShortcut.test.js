@@ -34,35 +34,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import { checkTitleOfWindow } from '../assertions';
 
-const appName = 'pc-nrfconnect-test';
-const appDisplayName = 'Test App';
-const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--open-local-app=${appName}`,
-    '--skip-update-apps',
-];
-
-let electronApp;
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-local-app/.nrfconnect-apps',
+    openLocalApp: 'pc-nrfconnect-test',
+});
 
 describe('one local app given as command line flag', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+    it('should load app window at startup', async () => {
+        await app.client.waitUntilWindowLoaded();
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
-    it('should load app window at startup', () => (
-        electronApp.client.waitUntilWindowLoaded()
-            .then(() => electronApp.client.windowByIndex(0).browserWindow.getTitle())
-            .then(title => expect(title).toContain(appDisplayName))
-    ));
+        await checkTitleOfWindow(app, 'Test App');
+    });
 });

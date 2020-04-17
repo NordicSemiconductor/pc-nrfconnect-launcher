@@ -35,53 +35,32 @@
  */
 
 import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
 
-let electronApp;
+const appsRootDir = 'online/fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps';
+const settingsJsonPath = 'online/fixtures/check-for-updates-at-startup-disabled/settings.json';
 
-const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-disabled');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
-];
-
-function removeAppsRootDir() {
-    rimraf.sync(appsRootDir);
-}
+const app = setupTestApp({
+    appsRootDir,
+    settingsJsonPath,
+    removeAppsRootDirAfterwards: true,
+    skipUpdateApps: false,
+});
 
 describe('when checking for updates at startup is disabled', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+    it('should not populate apps.json in .nrfconnect-apps', async () => {
+        await app.client.waitForVisible('#launcher-tabpane-apps');
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                // The apps root directory is created when starting
-                // the application. Cleaning up.
-                removeAppsRootDir();
-            })
-    ));
+        const appsJsonFile = path.join(__dirname, '..', appsRootDir, 'apps.json');
+        // eslint-disable-next-line import/no-dynamic-require, global-require
+        const appsJson = require(appsJsonFile);
 
-    it('should not populate apps.json in .nrfconnect-apps', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('#launcher-tabpane-apps')
-            .then(() => {
-                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
-                const appsJsonObj = JSON.parse(appsJsonString);
-                expect(appsJsonObj).toEqual({});
-            })
-    ));
+        expect(appsJson).toEqual({});
+    });
 
     // This test still needs to be corrected
     xit('should show checking for updates as disabled in the Settings screen', () => (
-        electronApp.client.windowByIndex(0)
+        app.client
             .click('#launcher-tab-settings')
             .waitForVisible('#checkForUpdates')
             .getAttribute('#checkForUpdates', 'checked')

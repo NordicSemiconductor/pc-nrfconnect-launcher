@@ -34,38 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-unsupported-engine/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
-
-let electronApp;
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps',
+});
 
 describe('one local app with unsupported engine', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
     it('should show warning in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('span[title*="The app only supports nRF Connect 1.x')
+        app.client.waitForVisible('span[title*="The app only supports nRF Connect 1.x')
     ));
 
-    it('should show warning dialog when clicking Launch', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title*="Open"]')
-            .click('button[title*="Open"]')
-            .waitForVisible('.modal-dialog')
-    ));
+    it('should show warning dialog when clicking Launch', async () => {
+        await launchFirstApp(app, false);
+
+        await app.client.waitForVisible('.modal-dialog');
+    });
 });

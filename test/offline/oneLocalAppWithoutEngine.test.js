@@ -34,38 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-without-engine/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
-
-let electronApp;
+const app = setupTestApp({
+    appsRootDir: 'offline/fixtures/one-local-app-without-engine/.nrfconnect-apps',
+});
 
 describe('one local app without engine definition', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
     it('should show warning in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+        app.client.waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
     ));
 
-    it('should show warning dialog when clicking Launch', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title*="Open"]')
-            .click('button[title*="Open"]')
-            .waitForVisible('.modal-dialog')
-    ));
+    it('should show warning dialog when clicking Launch', async () => {
+        await launchFirstApp(app, false);
+
+        await app.client.waitForVisible('.modal-dialog');
+    });
 });
