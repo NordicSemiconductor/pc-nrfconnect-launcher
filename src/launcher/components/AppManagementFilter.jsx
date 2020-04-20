@@ -158,19 +158,6 @@ const AppManagementFilter = ({
     setAppManagementSource,
 }) => (
     <div className="filterbox mb-3 w-100 d-inline-flex">
-        { upgradeableApps.size > 0 && (
-            <Button
-                variant="outline-secondary"
-                onClick={() => upgradeableApps.forEach(
-                    ({ name, latestVersion, source }) => (
-                        onUpgrade(name, latestVersion, source)
-                    ),
-                )}
-            >
-                Update all apps
-            </Button>
-        )}
-        <div className="flex-fill" />
         <FilterDropdown
             sources={sources}
             show={show}
@@ -183,6 +170,19 @@ const AppManagementFilter = ({
             value={filter}
             onChange={({ target }) => setAppManagementFilter(target.value)}
         />
+        <div className="flex-fill" />
+        { upgradeableApps.size > 0 && (
+            <Button
+                variant="outline-secondary"
+                onClick={() => upgradeableApps.forEach(
+                    ({ name, latestVersion, source }) => (
+                        onUpgrade(name, latestVersion, source)
+                    ),
+                )}
+            >
+                Update all apps
+            </Button>
+        )}
     </div>
 );
 
