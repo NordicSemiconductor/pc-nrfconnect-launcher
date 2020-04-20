@@ -49,39 +49,47 @@ export const checkAppListContains = async (app, appName) => {
         .resolves.toEqual(appName);
 };
 
-export const checkAppListHasRemoveButton = async app => {
-    await app.client.click('.list-group-item button[aria-haspopup="true"]');
-    await app.client.waitForVisible('[title="Remove Test App"]');
-};
-
-export const checkAppListHasNoRemoveButton = async app => {
-    await app.client.click('.list-group-item button[aria-haspopup="true"]');
-    await expect(app.client.isVisible('[title="Remove Test App"]'))
-        .resolves.toBe(false);
-};
-
-export const checkAppListShowsHasInstallButton = async (app, appName) => {
+export const checkHasInstallButton = async (app, appName) => {
     await app.client.waitForVisible('.list-group-item');
     await app.client.waitForVisible(`[title="Install ${appName}"]`);
 };
 
-export const checkAppListShowsHasNoInstallButton = async (app, appName) => {
+export const checkHasNoInstallButton = async (app, appName) => {
     await app.client.waitForVisible('.list-group-item');
-
     await expect(app.client.isVisible(`[title="Install ${appName}"]`))
         .resolves.toBe(false);
 };
 
-export const checkAppListShowsAppUpdate = async (app, appName, availableVersion) => {
+export const checkHasNoLaunchButton = async (app, appName) => {
+    await app.client.waitForVisible('.list-group-item');
+    await expect(app.client.isVisible(`[title="Open ${appName}"]`))
+        .resolves.toBe(false);
+};
+
+export const checkShowsAppUpdate = async (app, appName, availableVersion) => {
     await app.client.waitForVisible(`[title="Update ${appName}"]`);
     await expect(app.client.getText('.list-group-item'))
         .resolves.toContain(`${availableVersion} available`);
 };
 
-export const checkAppListShowsNoAppUpdate = async (app, appName) => {
+export const checkShowsNoAppUpdate = async (app, appName) => {
+    await app.client.waitForVisible('.list-group-item');
     await expect(app.client.isVisible(`[title="Update ${appName}"]`))
         .resolves.toBe(false);
 
     await expect(app.client.getText('.list-group-item'))
         .resolves.not.toContain('available');
+};
+
+export const checkHasRemoveButton = async (app, appName) => {
+    await app.client.waitForVisible('.list-group-item');
+    await app.client.click('.list-group-item button[aria-haspopup="true"]');
+    await app.client.waitForVisible(`[title="Remove ${appName}"]`);
+};
+
+export const checkHasNoRemoveButton = async (app, appName) => {
+    await app.client.waitForVisible('.list-group-item');
+    await app.client.click('.list-group-item button[aria-haspopup="true"]');
+    await expect(app.client.isVisible(`[title="Remove ${appName}"]`))
+        .resolves.toBe(false);
 };

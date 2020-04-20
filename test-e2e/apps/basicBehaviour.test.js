@@ -35,51 +35,28 @@
  */
 
 import setupTestApp from '../setupTestApp';
-import launchFirstApp from '../launchFirstApp';
 
-import { checkTitleOfSecondWindow, checkAppListContains } from '../assertions';
-
-const app = setupTestApp({
-    appsRootDir: 'offline/fixtures/one-official-app-installed/.nrfconnect-apps',
-});
-
-describe('the launcher shows an installed official app', () => {
-    it('shows the app in the launcher app list', () => (
-        checkAppListContains(app, 'Test App')
-    ));
-
-    it('launches the app window', async () => {
-        await launchFirstApp(app);
-        await checkTitleOfSecondWindow(app, 'Test App');
+describe('an app', () => {
+    const app = setupTestApp({
+        appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
+        openLocalApp: 'pc-nrfconnect-test',
     });
 
-    it('should show remove button for Test App in app management list', () => (
-        app.client.windowByIndex(0)
-            .click('.list-group-item button[aria-haspopup="true"]')
-            .waitForVisible('a[title="Remove Test App"]')
-    ));
+    it('initially does not show list of main menu items', async () => {
+        await expect(app.client.isVisible('#main-menu-list')).resolves.toBe(false);
+    });
 
-    it('should not show install button in app management list', () => (
-        app.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .isVisible('button[title="Install Test App"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
-    ));
+    it('shows "Launch other app" in main menu', async () => {
+        await app.client
+            .waitForVisible('#main-menu')
+            .click('#main-menu');
+        await expect(app.client.isVisible('#main-menu-list a[title*="Launch other app"]')).resolves.toBe(true);
+    });
 
-    it('should not show upgrade button in app management list', () => (
-        app.client.windowByIndex(0)
-            .waitForVisible('.list-group-item')
-            .isVisible('button[title*="Update"]')
-            .then(isVisible => expect(isVisible).toEqual(false))
-            .getText('.list-group-item')
-            .then(text => expect(text).not.toContain('available'))
-    ));
-});
-
-describe('an installed official app app', () => {
-    it('should show main menu in app window', async () => {
-        await launchFirstApp(app);
-
-        await app.client.windowByIndex(1).waitForVisible('#main-menu');
+    it('shows port list in port selector', async () => {
+        await app.client
+            .waitForVisible('#serial-port-selector')
+            .click('#serial-port-selector');
+        await expect(app.client.isVisible('#serial-port-selector .dropdown-menu')).resolves.toBe(true);
     });
 });

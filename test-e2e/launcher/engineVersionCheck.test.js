@@ -35,17 +35,38 @@
  */
 
 import setupTestApp from '../setupTestApp';
-import { checkTitleOfWindow } from '../assertions';
+import launchFirstApp from '../launchFirstApp';
 
-const app = setupTestApp({
-    appsRootDir: 'offline/fixtures/one-official-app-installed/.nrfconnect-apps',
-    openOfficialApp: 'pc-nrfconnect-test',
-});
+describe('checks the version of the engine against what the app declares', () => {
+    describe('local app with unsupported engine', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps',
+        });
 
-describe('one official app given as command line flag', () => {
-    it('should load app window at startup', async () => {
-        await app.client.waitUntilWindowLoaded();
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title*="The app only supports nRF Connect 1.x')
+        ));
 
-        await checkTitleOfWindow(app, 'Test App');
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
+
+            await app.client.waitForVisible('.modal-dialog');
+        });
+    });
+
+    describe('one local app without engine definition', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-without-engine/.nrfconnect-apps',
+        });
+
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+        ));
+
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
+
+            await app.client.waitForVisible('.modal-dialog');
+        });
     });
 });

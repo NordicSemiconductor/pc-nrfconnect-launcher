@@ -35,57 +35,32 @@
  */
 
 import setupTestApp from '../setupTestApp';
-import launchFirstApp from '../launchFirstApp';
-import { checkTitleOfSecondWindow, checkTitleOfWindow, checkAppListContains } from '../assertions';
-import { version } from '../../package.json';
+import { checkTitleOfWindow } from '../assertions';
 
-const app = setupTestApp({
-    appsRootDir: 'offline/fixtures/one-local-app/.nrfconnect-apps',
-});
+describe('launching apps directly', () => {
+    describe('an official app', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-official-app-installed/.nrfconnect-apps',
+            openOfficialApp: 'pc-nrfconnect-test',
+        });
 
-describe('the launcher shows a local app', () => {
-    it('shows package.json version in launcher window title', () => (
-        checkTitleOfWindow(app, version)
-    ));
+        it('can be launched directly', async () => {
+            await app.client.waitUntilWindowLoaded();
 
-    it('shows the app in the launcher app list', () => (
-        checkAppListContains(app, 'Test App')
-    ));
-
-    it('launches the app window', async () => {
-        await launchFirstApp(app);
-        await checkTitleOfSecondWindow(app, 'Test App');
-    });
-});
-
-describe('a local app', () => {
-    it('does not initially show list of main menu items', async () => {
-        await launchFirstApp(app);
-
-        const appWindow = app.client.windowByIndex(1);
-
-        await expect(appWindow.isVisible('#main-menu-list')).resolves.toBe(false);
+            await checkTitleOfWindow(app, 'Test App');
+        });
     });
 
-    it('shows "Launch other app" item when clicked on main menu button', async () => {
-        await launchFirstApp(app);
+    describe('a local app', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
+            openLocalApp: 'pc-nrfconnect-test',
+        });
 
-        const appWindow = app.client.windowByIndex(1);
+        it('can be launched directly', async () => {
+            await app.client.waitUntilWindowLoaded();
 
-        await appWindow
-            .waitForVisible('#main-menu')
-            .click('#main-menu');
-        await expect(appWindow.isVisible('#main-menu-list a[title*="Launch other app"]')).resolves.toBe(true);
-    });
-
-    it('shows port list when clicked on port selector', async () => {
-        await launchFirstApp(app);
-
-        const appWindow = app.client.windowByIndex(1);
-
-        await appWindow
-            .waitForVisible('#serial-port-selector')
-            .click('#serial-port-selector');
-        await expect(appWindow.isVisible('#serial-port-selector .dropdown-menu')).resolves.toBe(true);
+            await checkTitleOfWindow(app, 'Test App');
+        });
     });
 });
