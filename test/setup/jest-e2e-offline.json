@@ -1,5 +1,0 @@
-{
-  "roots": ["../offline"],
-  "testRegex": ".*-test\\.js$",
-  "testURL": "file:/"
-}

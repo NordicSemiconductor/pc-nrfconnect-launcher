@@ -36,66 +36,76 @@
 
 import path from 'path';
 import { Application } from 'spectron';
+import electron from 'electron';
+import rimraf from 'rimraf';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-const projectPath = path.resolve(__dirname, '../../');
+const startApp = async extraArgs => {
+    const projectPath = path.resolve(__dirname, '../');
+    const electronArgs = [projectPath, '--skip-update-core', '--skip-splash-screen', ...extraArgs];
+    if (process.env.LOG_ELECTRON_ARGS) {
+        console.log(`Electron is run with these args: ${electronArgs.join(' ')}`);
+    }
 
-let electronPath;
-if (process.platform === 'win32') {
-    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron.cmd');
-} else {
-    electronPath = path.resolve(__dirname, '../../node_modules/.bin/electron');
-}
-
-function startElectronApp(extraArgs) {
-    const args = [
-        projectPath,
-        '--skip-update-core',
-        '--skip-splash-screen',
-    ];
-    const electronApp = new Application({
-        path: electronPath,
-        args: args.concat(extraArgs),
+    const app = new Application({
+        path: electron,
+        args: electronArgs,
         startTimeout: 30000,
         webdriverOptions: {
             waitforTimeout: 10000,
         },
     });
-    return electronApp.start()
-        .then(() => expect(electronApp.isRunning()).toEqual(true))
-        .then(() => electronApp);
-}
 
-function stopElectronApp(electronApp) {
-    if (!electronApp || !electronApp.isRunning()) return Promise.resolve();
+    await app.start();
 
-    return electronApp.stop()
-        .then(() => expect(electronApp.isRunning()).toEqual(false));
-}
+    expect(app.isRunning()).toEqual(true);
 
-function waitForWindowCount(electronApp, numWindows) {
-    return new Promise((resolve, reject) => {
-        let retryCount = 0;
-        const getWindowCount = () => {
-            electronApp.client.getWindowCount()
-                .then(count => {
-                    if (count === numWindows) {
-                        resolve();
-                    } else if (retryCount > 5) {
-                        reject(new Error(`Timed out while waiting for ${numWindows} windows`));
-                    } else {
-                        retryCount += 1;
-                        setTimeout(getWindowCount, 500);
-                    }
-                })
-                .catch(error => reject(error));
-        };
-        getWindowCount();
+    return app;
+};
+
+const stopApp = async app => {
+    if (!app || !app.isRunning()) return;
+
+    await app.stop();
+
+    expect(app.isRunning()).toEqual(false);
+};
+
+export default ({
+    appsRootDir,
+    additionalBeforeEach = () => {},
+    additionalAfterEach = () => {},
+    openLocalApp,
+    openOfficialApp,
+    removeAppsRootDirAfterwards = false,
+    settingsJsonPath,
+    skipUpdateApps = true,
+} = {}) => {
+    const app = {};
+    let spectronApp;
+
+    const absoluteAppsRootDir = path.resolve(__dirname, appsRootDir);
+    beforeEach(async () => {
+        additionalBeforeEach();
+
+        const electronArgs = [
+            `--apps-root-dir=${absoluteAppsRootDir}`,
+            ...(settingsJsonPath ? [`--settings-json-path=${path.join(__dirname, settingsJsonPath)}`] : []),
+            ...(skipUpdateApps ? ['--skip-update-apps'] : []),
+            ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),
+            ...(openOfficialApp ? [`--open-official-app=${openOfficialApp}`] : []),
+        ];
+
+        spectronApp = await startApp(electronArgs);
+        app.client = spectronApp.client;
     });
-}
 
-export {
-    startElectronApp,
-    stopElectronApp,
-    waitForWindowCount,
+    afterEach(async () => {
+        await stopApp(spectronApp);
+        if (removeAppsRootDirAfterwards) {
+            rimraf.sync(absoluteAppsRootDir);
+        }
+        additionalAfterEach();
+    });
+
+    return app;
 };

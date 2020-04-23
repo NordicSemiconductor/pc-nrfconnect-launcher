@@ -34,35 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
 
-const appName = 'pc-nrfconnect-test';
-const appDisplayName = 'Test App';
-const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-installed/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--open-official-app=${appName}`,
-    '--skip-update-apps',
-];
+describe('an app', () => {
+    const app = setupTestApp({
+        appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
+        openLocalApp: 'pc-nrfconnect-test',
+    });
 
-let electronApp;
+    it('initially does not show list of main menu items', async () => {
+        await expect(app.client.isVisible('#main-menu-list')).resolves.toBe(false);
+    });
 
-describe('one official app given as command line flag', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+    it('shows "Launch other app" in main menu', async () => {
+        await app.client
+            .waitForVisible('#main-menu')
+            .click('#main-menu');
+        await expect(app.client.isVisible('#main-menu-list a[title*="Launch other app"]')).resolves.toBe(true);
+    });
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
-    it('should load app window at startup', () => (
-        electronApp.client.waitUntilWindowLoaded()
-            .then(() => electronApp.client.windowByIndex(0).browserWindow.getTitle())
-            .then(title => expect(title).toContain(appDisplayName))
-    ));
+    it('shows port list in port selector', async () => {
+        await app.client
+            .waitForVisible('#serial-port-selector')
+            .click('#serial-port-selector');
+        await expect(app.client.isVisible('#serial-port-selector .dropdown-menu')).resolves.toBe(true);
+    });
 });

@@ -34,61 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+const sleep = millis => new Promise(resolve => setTimeout(resolve, millis));
 
-const fixtureDir = path.resolve(__dirname, './fixtures/one-local-app-to-be-extracted');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
-const appName = 'pc-nrfconnect-foo';
-const appArchiveFile = `${appName}-1.2.3.tgz`;
+const waitForSecondWindow = async app => {
+    for (let retry = 0; retry < 5; retry += 1) {
+        if (await app.client.getWindowCount() === 2) { // eslint-disable-line no-await-in-loop
+            return;
+        }
+        await sleep(500); // eslint-disable-line no-await-in-loop
+    }
 
-let electronApp;
+    throw new Error('Timed out while waiting for second window');
+};
 
-function copyArchiveToLocal() {
-    const sourceFile = path.join(fixtureDir, appArchiveFile);
-    const destFile = path.join(appsRootDir, 'local', appArchiveFile);
-    fs.writeFileSync(destFile, fs.readFileSync(sourceFile));
-}
-
-function removeAppDirFromLocal() {
-    rimraf.sync(path.join(appsRootDir, 'local', appName));
-}
-
-describe('one local app to be extracted', () => {
-    beforeEach(() => {
-        copyArchiveToLocal();
-        return startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            });
-    });
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                removeAppDirFromLocal();
-            })
-    ));
-
-    it('should extract archive and show app name in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Foo App'))
-    ));
-
-    it('should remove archive file from apps local directory after extracting', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
-                expect(exists).toEqual(false);
-            })
-    ));
-});
+export default async (app, waitForAppToAppear = true) => {
+    await app.client.waitForVisible('button[title*="Open"]');
+    await app.client.click('button[title*="Open"]');
+    if (waitForAppToAppear) {
+        await waitForSecondWindow(app);
+        await app.client.waitUntilWindowLoaded();
+    }
+};

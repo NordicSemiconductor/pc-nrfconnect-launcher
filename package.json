@@ -14,12 +14,10 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint": "nrfconnect-scripts lint src",
-        "test": "jest --testResultsProcessor jest-bamboo-formatter",
-        "test-watch": "jest --watch",
-        "test-e2e": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e.json",
-        "test-e2e-offline": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-offline.json",
-        "test-e2e-online": "xvfb-maybe jest --runInBand --config test/setup/jest-e2e-online.json",
+        "lint": "nrfconnect-scripts lint src test-e2e *.js",
+        "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
+        "test-watch": "jest --watch src/",
+        "test-e2e": "xvfb-maybe jest --runInBand --moduleNameMapper '{}' --testTimeout=15000 --forceExit test-e2e/",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
         "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",
@@ -159,7 +157,6 @@
         "transformIgnorePatterns": [
             "node_modules/(?!(pc-nrfconnect-shared)/)"
         ],
-        "testURL": "file:/",
         "setupFilesAfterEnv": [
             "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.js"
         ],

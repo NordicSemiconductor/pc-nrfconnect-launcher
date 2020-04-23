@@ -34,56 +34,39 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
 
-let electronApp;
+describe('checks the version of the engine against what the app declares', () => {
+    describe('local app with unsupported engine', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps',
+        });
 
-const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-disabled');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
-];
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title*="The app only supports nRF Connect 1.x')
+        ));
 
-function removeAppsRootDir() {
-    rimraf.sync(appsRootDir);
-}
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
 
-describe('when checking for updates at startup is disabled', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+            await app.client.waitForVisible('.modal-dialog');
+        });
+    });
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                // The apps root directory is created when starting
-                // the application. Cleaning up.
-                removeAppsRootDir();
-            })
-    ));
+    describe('one local app without engine definition', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-without-engine/.nrfconnect-apps',
+        });
 
-    it('should not populate apps.json in .nrfconnect-apps', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
-                const appsJsonObj = JSON.parse(appsJsonString);
-                expect(appsJsonObj).toEqual({});
-            })
-    ));
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+        ));
 
-    it('should show checking for updates as disabled in the Settings screen', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Settings"]')
-            .waitForVisible('.core-settings-update-check-controls')
-            .getAttribute('.core-settings-update-check-controls input[type="checkbox"]', 'checked')
-            .then(checked => expect(checked).not.toEqual('true'))
-    ));
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
+
+            await app.client.waitForVisible('.modal-dialog');
+        });
+    });
 });

@@ -34,57 +34,33 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
+import { checkTitleOfWindow } from '../assertions';
 
-let electronApp;
+describe('launching apps directly', () => {
+    describe('an official app', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-official-app-installed/.nrfconnect-apps',
+            openOfficialApp: 'pc-nrfconnect-test',
+        });
 
-const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-enabled');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
-];
+        it('can be launched directly', async () => {
+            await app.client.waitUntilWindowLoaded();
 
-function removeAppsRootDir() {
-    rimraf.sync(appsRootDir);
-}
+            await checkTitleOfWindow(app, 'Test App');
+        });
+    });
 
-describe('when checking for updates at startup is enabled', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
+    describe('a local app', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
+            openLocalApp: 'pc-nrfconnect-test',
+        });
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                // The apps root directory is created when starting
-                // the application. Cleaning up.
-                removeAppsRootDir();
-            })
-    ));
+        it('can be launched directly', async () => {
+            await app.client.waitUntilWindowLoaded();
 
-    it('should populate apps.json in .nrfconnect-apps', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
-                const appsJsonObj = JSON.parse(appsJsonString);
-                const appNames = Object.keys(appsJsonObj);
-                expect(appNames.length).toBeGreaterThan(0);
-            })
-    ));
-
-    it('should show checking for updates as enabled in the Settings screen', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Settings"]')
-            .waitForVisible('.core-settings-update-check-controls')
-            .getAttribute('.core-settings-update-check-controls input[type="checkbox"]', 'checked')
-            .then(checked => expect(checked).toEqual('true'))
-    ));
+            await checkTitleOfWindow(app, 'Test App');
+        });
+    });
 });
