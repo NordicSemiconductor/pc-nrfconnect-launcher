@@ -74,6 +74,7 @@ jobs:
       npm config set @jest:registry https://registry.npmjs.org/
       npm config set @mdi:registry https://registry.npmjs.org/
       npm config set @protobufjs:registry https://registry.npmjs.org/
+      npm config set @restart:registry https://registry.npmjs.org/
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sheerun:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
@@ -105,6 +106,7 @@ jobs:
       npm config set @jest:registry https://registry.npmjs.org/
       npm config set @mdi:registry https://registry.npmjs.org/
       npm config set @protobufjs:registry https://registry.npmjs.org/
+      npm config set @restart:registry https://registry.npmjs.org/
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sheerun:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
