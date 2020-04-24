@@ -56,12 +56,60 @@ jobs:
     displayName: 'Setup build environment for Linux'
   - bash: |
       set -o errexit -o pipefail
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      npm config set strict-ssl false
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm config set registry https://npm.nordicsemi.no/
+      npm config set @babel:registry https://registry.npmjs.org/
+      npm config set @cnakazawa:registry https://registry.npmjs.org/
+      npm config set @jest:registry https://registry.npmjs.org/
+      npm config set @protobufjs:registry https://registry.npmjs.org/
+      npm config set @serialport:registry https://registry.npmjs.org/
+      npm config set @types:registry https://registry.npmjs.org/
+      npm config set glob:registry https://registry.npmjs.org/
+      npm config set string_decoder:registry https://registry.npmjs.org/
       npm i
       npm run lint
       npm run build
       npm test
       npm run test-e2e
-    condition: not(contains(variables['IMAGE_NAME'], 'win'))
+    condition: and(eq(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
+    displayName: 'Build with internal release'
+  - bash: |
+      set -o errexit -o pipefail
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      npm config set strict-ssl false
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm config set registry https://npm.nordicsemi.no/
+      npm config set @babel:registry https://registry.npmjs.org/
+      npm config set @cnakazawa:registry https://registry.npmjs.org/
+      npm config set @jest:registry https://registry.npmjs.org/
+      npm config set @protobufjs:registry https://registry.npmjs.org/
+      npm config set @serialport:registry https://registry.npmjs.org/
+      npm config set @types:registry https://registry.npmjs.org/
+      npm config set glob:registry https://registry.npmjs.org/
+      npm config set string_decoder:registry https://registry.npmjs.org/
+      npm i -g node-gyp@6.0.1
+      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
+      npm i
+      npm run lint
+      npm run build
+      npm test
+      npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Build with internal release'
+  - bash: |
+      set -o errexit -o pipefail
+      npm i
+      npm run lint
+      npm run build
+      npm test
+      npm run test-e2e
+    condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Build on not windows'
   - bash: |
       set -o errexit -o pipefail
@@ -72,7 +120,7 @@ jobs:
       npm run build
       npm test
       npm run test-e2e
-    condition: contains(variables['IMAGE_NAME'], 'win')
+    condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
   - bash: |
       sudo apt-get install icnsutils
