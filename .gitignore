@@ -4,6 +4,7 @@
 .env
 build/nrfjprog
 build/JLink*
+build/Release
 dist
 jest.json
 /node_modules
