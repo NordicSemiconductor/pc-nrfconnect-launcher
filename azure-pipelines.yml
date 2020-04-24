@@ -70,6 +70,7 @@ jobs:
       npm config set registry https://npm.nordicsemi.no/
       npm config set @babel:registry https://registry.npmjs.org/
       npm config set @cnakazawa:registry https://registry.npmjs.org/
+      npm config set @develar:registry https://registry.npmjs.org/
       npm config set @jest:registry https://registry.npmjs.org/
       npm config set @mdi:registry https://registry.npmjs.org/
       npm config set @protobufjs:registry https://registry.npmjs.org/
@@ -94,6 +95,7 @@ jobs:
       npm config set registry https://npm.nordicsemi.no/
       npm config set @babel:registry https://registry.npmjs.org/
       npm config set @cnakazawa:registry https://registry.npmjs.org/
+      npm config set @develar:registry https://registry.npmjs.org/
       npm config set @jest:registry https://registry.npmjs.org/
       npm config set @mdi:registry https://registry.npmjs.org/
       npm config set @protobufjs:registry https://registry.npmjs.org/
