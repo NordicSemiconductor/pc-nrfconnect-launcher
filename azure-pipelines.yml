@@ -77,6 +77,7 @@ jobs:
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
       npm config set @szmarczak:registry https://registry.npmjs.org/
+      npm config set @testing-library:registry https://registry.npmjs.org/
       npm config set @types:registry https://registry.npmjs.org/
       npm config set @webassemblyjs:registry https://registry.npmjs.org/
       npm config set @xtuc:registry https://registry.npmjs.org/
@@ -106,6 +107,7 @@ jobs:
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
       npm config set @szmarczak:registry https://registry.npmjs.org/
+      npm config set @testing-library:registry https://registry.npmjs.org/
       npm config set @types:registry https://registry.npmjs.org/
       npm config set @webassemblyjs:registry https://registry.npmjs.org/
       npm config set @xtuc:registry https://registry.npmjs.org/
