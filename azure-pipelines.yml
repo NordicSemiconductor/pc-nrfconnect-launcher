@@ -54,6 +54,12 @@ jobs:
       sudo apt-get install libudev-dev
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
+  - task: DownloadSecureFile@1
+    name: nrfjprogLinux
+    inputs:
+      secureFile: "nrfjprog-10.7.0-linux_x64.tar.gz"
+    condition: eq(variables['INTERNAL'], 'true')
+    displayName: 'Donwload internal nrfjprog for release'
   - bash: |
       set -o errexit -o pipefail
       export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
