@@ -76,7 +76,10 @@ jobs:
       npm config set @protobufjs:registry https://registry.npmjs.org/
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
+      npm config set @szmarczak:registry https://registry.npmjs.org/
       npm config set @types:registry https://registry.npmjs.org/
+      npm config set @webassemblyjs:registry https://registry.npmjs.org/
+      npm config set @xtuc:registry https://registry.npmjs.org/
       npm config set glob:registry https://registry.npmjs.org/
       npm config set string_decoder:registry https://registry.npmjs.org/
       npm i
@@ -102,7 +105,10 @@ jobs:
       npm config set @protobufjs:registry https://registry.npmjs.org/
       npm config set @serialport:registry https://registry.npmjs.org/
       npm config set @sindresorhus:registry https://registry.npmjs.org/
+      npm config set @szmarczak:registry https://registry.npmjs.org/
       npm config set @types:registry https://registry.npmjs.org/
+      npm config set @webassemblyjs:registry https://registry.npmjs.org/
+      npm config set @xtuc:registry https://registry.npmjs.org/
       npm config set glob:registry https://registry.npmjs.org/
       npm config set string_decoder:registry https://registry.npmjs.org/
       npm i -g node-gyp@6.0.1
