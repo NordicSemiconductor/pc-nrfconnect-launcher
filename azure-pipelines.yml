@@ -57,7 +57,7 @@ jobs:
   - task: DownloadSecureFile@1
     name: nrfjprogLinux
     inputs:
-      secureFile: "nrfjprog-10.7.0-linux_x64.tar.gz"
+      secureFile: "nrfjprog-10.7.0-linux_x64.tar.gz" # Would be nice to make version as a variable
     condition: eq(variables['INTERNAL'], 'true')
     displayName: 'Donwload internal nrfjprog for release'
   - bash: |
@@ -72,11 +72,37 @@ jobs:
       npm run build
       npm test
       npm run test-e2e
-    condition: and(eq(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Build with internal release'
+  - task: DownloadSecureFile@1
+    name: nrfjprogMac
+    inputs:
+      secureFile: "nrfjprog-10.7.0-darwin_x64.tar.gz" # Would be nice to make version as a variable
+    condition: eq(variables['INTERNAL'], 'true')
+    displayName: 'Donwload internal nrfjprog for release'
   - bash: |
       set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogMac.secureFilePath)
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      cat .npmrc-internal >> .npmrc
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm i
+      npm run lint
+      npm run build
+      npm test
+      npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'macos'))
+    displayName: 'Build with internal release'
+  - task: DownloadSecureFile@1
+    name: nrfjprogWin32
+    inputs:
+      secureFile: "nrfjprog-10.7.0-win32_ia32.tar.gz" # Would be nice to make version as a variable
+    condition: eq(variables['INTERNAL'], 'true')
+    displayName: 'Donwload internal nrfjprog for release'
+  - bash: |
+      set -o errexit -o pipefail
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogWin32.secureFilePath)
       export ENABLE_DRAFT_TEST=true
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
       cat .npmrc-internal >> .npmrc
