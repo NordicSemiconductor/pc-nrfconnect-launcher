@@ -89,6 +89,7 @@ jobs:
       cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm i
+      npm ls
       npm run lint
       npm run build
       npm test
