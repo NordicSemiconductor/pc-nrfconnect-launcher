@@ -32,7 +32,7 @@
   ; ===============================================================
 
   ; J-Link installer (downloaded by 'npm run get-jlink')
-  !define BundledJLinkVersion "V662b"
+  !define BundledJLinkVersion "V662d"
   !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
   !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
 
