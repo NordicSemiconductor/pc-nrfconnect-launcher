@@ -11,7 +11,7 @@ jobs:
   - name: WIN_TZ
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
-    value: 12.13.0
+    value: 10.17.0
   strategy:
     matrix:
       linux:
