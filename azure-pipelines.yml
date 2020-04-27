@@ -98,14 +98,14 @@ jobs:
     name: nrfjprogWin32
     inputs:
       secureFile: "nrfjprog-10.7.0-win32_ia32.tar.gz" # Would be nice to make version as a variable
-    condition: eq(variables['INTERNAL'], 'true')
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
     displayName: 'Donwload internal nrfjprog for release'
-  - bash: |
+  - script: |
       set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogWin32.secureFilePath)
-      export ENABLE_DRAFT_TEST=true
-      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      cat .npmrc-internal >> .npmrc
+      copy .npmrc-internal .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
@@ -114,7 +114,15 @@ jobs:
       npm run build
       npm test
       npm run test-e2e
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
+    env: {
+      LOCAL_NRFJPROG_PATH: $(nrfjprogWin32.secureFilePath),
+      ENABLE_DRAFT_TEST: true,
+      NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
+    }
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
     displayName: 'Build with internal release'
   - bash: |
       set -o errexit -o pipefail
