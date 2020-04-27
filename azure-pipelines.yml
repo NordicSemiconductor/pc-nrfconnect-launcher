@@ -106,6 +106,12 @@ jobs:
     displayName: 'Donwload internal nrfjprog for release'
   - script: |
       copy .npmrc-internal .npmrc
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Copy npmrc on windows'
+  - script: |
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
