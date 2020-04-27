@@ -65,26 +65,8 @@ jobs:
       export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
       export ENABLE_DRAFT_TEST=true
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      npm config set strict-ssl false
+      cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm config set registry https://npm.nordicsemi.no/
-      npm config set @babel:registry https://registry.npmjs.org/
-      npm config set @cnakazawa:registry https://registry.npmjs.org/
-      npm config set @develar:registry https://registry.npmjs.org/
-      npm config set @jest:registry https://registry.npmjs.org/
-      npm config set @mdi:registry https://registry.npmjs.org/
-      npm config set @protobufjs:registry https://registry.npmjs.org/
-      npm config set @restart:registry https://registry.npmjs.org/
-      npm config set @serialport:registry https://registry.npmjs.org/
-      npm config set @sheerun:registry https://registry.npmjs.org/
-      npm config set @sindresorhus:registry https://registry.npmjs.org/
-      npm config set @szmarczak:registry https://registry.npmjs.org/
-      npm config set @testing-library:registry https://registry.npmjs.org/
-      npm config set @types:registry https://registry.npmjs.org/
-      npm config set @webassemblyjs:registry https://registry.npmjs.org/
-      npm config set @xtuc:registry https://registry.npmjs.org/
-      npm config set glob:registry https://registry.npmjs.org/
-      npm config set string_decoder:registry https://registry.npmjs.org/
       npm i
       npm run lint
       npm run build
@@ -97,26 +79,8 @@ jobs:
       export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
       export ENABLE_DRAFT_TEST=true
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      npm config set strict-ssl false
+      cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm config set registry https://npm.nordicsemi.no/
-      npm config set @babel:registry https://registry.npmjs.org/
-      npm config set @cnakazawa:registry https://registry.npmjs.org/
-      npm config set @develar:registry https://registry.npmjs.org/
-      npm config set @jest:registry https://registry.npmjs.org/
-      npm config set @mdi:registry https://registry.npmjs.org/
-      npm config set @protobufjs:registry https://registry.npmjs.org/
-      npm config set @restart:registry https://registry.npmjs.org/
-      npm config set @serialport:registry https://registry.npmjs.org/
-      npm config set @sheerun:registry https://registry.npmjs.org/
-      npm config set @sindresorhus:registry https://registry.npmjs.org/
-      npm config set @szmarczak:registry https://registry.npmjs.org/
-      npm config set @testing-library:registry https://registry.npmjs.org/
-      npm config set @types:registry https://registry.npmjs.org/
-      npm config set @webassemblyjs:registry https://registry.npmjs.org/
-      npm config set @xtuc:registry https://registry.npmjs.org/
-      npm config set glob:registry https://registry.npmjs.org/
-      npm config set string_decoder:registry https://registry.npmjs.org/
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm i
