@@ -52,6 +52,7 @@ jobs:
       set -o errexit -o pipefail
       sudo apt-get update
       sudo apt-get install libudev-dev
+      sudo sysctl kernel.unprivileged_userns_clone=1
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
   - task: DownloadSecureFile@1
@@ -60,42 +61,13 @@ jobs:
       secureFile: "nrfjprog-10.7.0-linux_x64.tar.gz" # Would be nice to make version as a variable
     condition: eq(variables['INTERNAL'], 'true')
     displayName: 'Donwload internal nrfjprog for release'
-  - bash: |
-      set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
-      export ENABLE_DRAFT_TEST=true
-      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      cat .npmrc-internal >> .npmrc
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm i
-      npm ls
-      npm run lint
-      npm run build
-      npm test
-      npm run test-e2e
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Build with internal release'
+  # Internal procedure start
   - task: DownloadSecureFile@1
     name: nrfjprogMac
     inputs:
       secureFile: "nrfjprog-10.7.0-darwin_x64.tar.gz" # Would be nice to make version as a variable
     condition: eq(variables['INTERNAL'], 'true')
     displayName: 'Donwload internal nrfjprog for release'
-  - bash: |
-      set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogMac.secureFilePath)
-      export ENABLE_DRAFT_TEST=true
-      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      cat .npmrc-internal >> .npmrc
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm i
-      npm ls
-      npm run lint
-      npm run build
-      npm test
-      npm run test-e2e
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
-    displayName: 'Build with internal release'
   - task: DownloadSecureFile@1
     name: nrfjprogWin32
     inputs:
@@ -105,6 +77,34 @@ jobs:
       contains(variables['image_name'], 'win'),
       eq(variables['NODE_ARCH'], '32'))
     displayName: 'Donwload internal nrfjprog for release'
+  - bash: |
+      set -o errexit -o pipefail
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      cat .npmrc-internal >> .npmrc
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm i
+      npm run lint
+      npm run build
+      npm test
+      npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Build with internal release [Linux]'
+  - bash: |
+      set -o errexit -o pipefail
+      export LOCAL_NRFJPROG_PATH=$(nrfjprogMac.secureFilePath)
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      cat .npmrc-internal >> .npmrc
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm i
+      npm run lint
+      npm run build
+      npm test
+      npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Build with internal release [macOS]'
   - script: |
       type .npmrc-internal >> .npmrc
     condition: and(
@@ -142,7 +142,8 @@ jobs:
       eq(variables['INTERNAL'], 'true'),
       contains(variables['image_name'], 'win'),
       eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Build with internal release'
+    displayName: 'Build with internal release [Windows]'
+  # Internal procedure end
   - bash: |
       set -o errexit -o pipefail
       npm i
