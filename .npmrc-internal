@@ -5,6 +5,7 @@ registry=https://npm.nordicsemi.no/
 @cnakazawa:registry=https://registry.npmjs.org/
 @debug:registry=https://registry.npmjs.org/
 @develar:registry=https://registry.npmjs.org/
+@istanbuljs:registry=https://registry.npmjs.org/
 @jest:registry=https://registry.npmjs.org/
 @mdi:registry=https://registry.npmjs.org/
 @protobufjs:registry=https://registry.npmjs.org/
