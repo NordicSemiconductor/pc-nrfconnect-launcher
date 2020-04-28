@@ -94,7 +94,7 @@ jobs:
       npm run build
       npm test
       npm run test-e2e
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'macos'))
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Build with internal release'
   - task: DownloadSecureFile@1
     name: nrfjprogWin32
