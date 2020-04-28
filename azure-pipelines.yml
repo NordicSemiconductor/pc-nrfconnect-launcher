@@ -72,7 +72,7 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
+      npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Build with internal release'
   - task: DownloadSecureFile@1
@@ -90,10 +90,10 @@ jobs:
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm i
       npm ls
-      # npm run lint
+      npm run lint
       npm run build
       npm test
-      # npm run test-e2e
+      npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Build with internal release'
   - task: DownloadSecureFile@1
@@ -129,10 +129,10 @@ jobs:
     displayName: 'Copy npmrc on windows'
   - script: |
       npm i
-      # npm run lint
+      npm run lint
       npm run build
       npm test
-      # npm run test-e2e
+      npm run test-e2e
     env: {
       LOCAL_NRFJPROG_PATH: $(nrfjprogWin32.secureFilePath),
       ENABLE_DRAFT_TEST: true,

@@ -338,7 +338,7 @@ describe('decorateReducer', () => {
             switch (action.type) {
                 case BAR_ACTION:
                     return {
-                        state,
+                        ...state,
                         value: action.value,
                     };
                 default:
