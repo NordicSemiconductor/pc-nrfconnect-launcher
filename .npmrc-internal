@@ -1,6 +1,7 @@
 strict-ssl=true
 registry=https://npm.nordicsemi.no/
 @babel:registry=https://registry.npmjs.org/
+@bcoe:registry=https://registry.npmjs.org/
 @cnakazawa:registry=https://registry.npmjs.org/
 @debug:registry=https://registry.npmjs.org/
 @develar:registry=https://registry.npmjs.org/
