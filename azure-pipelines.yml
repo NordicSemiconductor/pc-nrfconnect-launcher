@@ -90,7 +90,7 @@ jobs:
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm i
       npm ls
-      npm run lint
+      # npm run lint
       npm run build
       npm test
       # npm run test-e2e
@@ -129,7 +129,7 @@ jobs:
     displayName: 'Copy npmrc on windows'
   - script: |
       npm i
-      npm run lint
+      # npm run lint
       npm run build
       npm test
       # npm run test-e2e
