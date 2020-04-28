@@ -106,7 +106,7 @@ jobs:
       eq(variables['NODE_ARCH'], '32'))
     displayName: 'Donwload internal nrfjprog for release'
   - script: |
-      type .npmrc-internal > .npmrc
+      type .npmrc-internal >> .npmrc
     condition: and(
       eq(variables['INTERNAL'], 'true'),
       contains(variables['image_name'], 'win'),
