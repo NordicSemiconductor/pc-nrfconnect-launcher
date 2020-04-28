@@ -140,12 +140,13 @@ ipcMain.on('show-about-dialog', () => {
 ipcMain.on('get-app-details', event => {
     const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
-        const details = Object.assign({
+        const details = {
             coreVersion: config.getVersion(),
             corePath: config.getElectronRootPath(),
             homeDir: config.getHomeDir(),
             tmpDir: config.getTmpDir(),
-        }, appWindow.app);
+            ...appWindow.app,
+        };
         event.sender.send('app-details', details);
     }
 });

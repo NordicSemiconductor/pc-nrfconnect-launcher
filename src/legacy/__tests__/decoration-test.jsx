@@ -248,9 +248,10 @@ describe('decorateReducer', () => {
     const fooReducer = (state = initialState, action) => {
         switch (action.type) {
             case FOO_ACTION:
-                return Object.assign({}, state, {
+                return {
+                    ...state,
                     foo: action.value,
-                });
+                };
             default:
                 return state;
         }
@@ -285,9 +286,10 @@ describe('decorateReducer', () => {
             reduceFoo: (state, action) => {
                 switch (action.type) {
                     case FOO_ACTION:
-                        return Object.assign({}, state, {
+                        return {
+                            ...state,
                             foo: `${action.value} override!`,
-                        });
+                        };
                     default:
                         return state;
                 }
@@ -309,9 +311,10 @@ describe('decorateReducer', () => {
             reduceFoo: (state, action) => {
                 switch (action.type) {
                     case BAR_ACTION:
-                        return Object.assign({}, state, {
+                        return {
+                            ...state,
                             bar: action.value,
-                        });
+                        };
                     default:
                         return state;
                 }
@@ -334,9 +337,10 @@ describe('decorateReducer', () => {
         const barReducer = (state = initialState, action) => {
             switch (action.type) {
                 case BAR_ACTION:
-                    return Object.assign({}, state, {
+                    return {
+                        state,
                         value: action.value,
-                    });
+                    };
                 default:
                     return state;
             }
@@ -344,9 +348,10 @@ describe('decorateReducer', () => {
         const bazReducer = (state = initialState, action) => {
             switch (action.type) {
                 case BAZ_ACTION:
-                    return Object.assign({}, state, {
+                    return {
+                        ...state,
                         value: action.value,
-                    });
+                    };
                 default:
                     return state;
             }

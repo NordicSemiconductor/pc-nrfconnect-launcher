@@ -370,7 +370,7 @@ function readAppInfo(appPath) {
 function decorateWithInstalledAppInfo(officialApp, source) {
     const appDir = path.join(config.getNodeModulesDir(source), officialApp.name);
     return readAppInfo(appDir)
-        .then(installedAppInfo => Object.assign({}, installedAppInfo, officialApp));
+        .then(installedAppInfo => ({ ...installedAppInfo, ...officialApp }));
 }
 
 /**
@@ -385,7 +385,8 @@ function decorateWithInstalledAppInfo(officialApp, source) {
  */
 function decorateWithLatestVersion(officialApp, availableUpdates) {
     const latestVersion = availableUpdates[officialApp.name] || officialApp.currentVersion;
-    return Object.assign({}, officialApp, {
+    return ({
+        ...officialApp,
         latestVersion,
         upgradeAvailable: latestVersion && officialApp.currentVersion !== latestVersion,
     });
@@ -401,7 +402,7 @@ function decorateWithLatestVersion(officialApp, availableUpdates) {
  */
 function officialAppsObjToArray(officialAppsObj, source) {
     const names = Object.keys(officialAppsObj);
-    return names.map(name => Object.assign({}, { name, source }, officialAppsObj[name]));
+    return names.map(name => ({ name, source, ...officialAppsObj[name] }));
 }
 
 /**
