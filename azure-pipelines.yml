@@ -132,7 +132,7 @@ jobs:
       npm run lint
       npm run build
       npm test
-      npm run test-e2e
+      # npm run test-e2e
     env: {
       LOCAL_NRFJPROG_PATH: $(nrfjprogWin32.secureFilePath),
       ENABLE_DRAFT_TEST: true,
@@ -161,7 +161,7 @@ jobs:
       npm run lint
       npm run build
       npm test
-      npm run test-e2e
+      # npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
   - bash: |
