@@ -58,7 +58,7 @@ function createSplashScreen() {
 }
 
 function createWindow(options) {
-    const mergedOptions = Object.assign({
+    const mergedOptions = {
         minWidth: 308,
         minHeight: 499,
         show: false,
@@ -66,7 +66,8 @@ function createWindow(options) {
         webPreferences: {
             nodeIntegration: true,
         },
-    }, options);
+        ...options,
+    };
     const browserWindow = new electron.BrowserWindow(mergedOptions);
 
     let splashScreen;

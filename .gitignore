@@ -2,8 +2,10 @@
 .DS_Store
 .idea
 .env
+.eslintrc
 build/nrfjprog
 build/JLink*
+build/Release
 dist
 jest.json
 /node_modules
