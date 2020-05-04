@@ -150,7 +150,7 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
+      npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Build on not windows'
   - bash: |
@@ -161,7 +161,7 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
+      npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
   - bash: |
