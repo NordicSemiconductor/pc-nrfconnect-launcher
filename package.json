@@ -121,7 +121,7 @@
         "electron-is-dev": "1.1.0",
         "electron-notarize": "0.2.1",
         "mini-css-extract-plugin": "0.8.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#7126697",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#c535496",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
         "spectron": "7.0.0",
         "tar": "4.4.10",
