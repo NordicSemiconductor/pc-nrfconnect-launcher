@@ -64,6 +64,7 @@ body {
     .nav {
         background-color: theme-color("primary");
         padding: 0.5rem 2rem;
+        align-items: center;
 
         .nav-link {
             height: 3rem;
@@ -73,7 +74,6 @@ body {
             font-weight: 300;
 
             display: flex;
-            align-items: center;
 
             &.active {
                 font-weight: bold;
@@ -81,18 +81,8 @@ body {
             }
         }
 
-        .core-logo-container {
-            margin-right: 1rem;
-            margin-left: auto;
-
-            display: flex;
-            align-items: center;
-
-            cursor: pointer;
-
-            .core-logo {
-                height: 2.5rem;
-            }
+        .core19-logo {
+            height: 2.5rem;
         }
     }
 

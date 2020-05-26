@@ -343,6 +343,7 @@ function readAppInfo(appPath) {
             const source = isOfficial
                 ? path.basename(path.dirname(path.dirname(appPath)))
                 : null;
+
             return {
                 name: packageJson.name,
                 displayName: packageJson.displayName,
@@ -355,6 +356,7 @@ function readAppInfo(appPath) {
                 engineVersion: getEngineVersion(packageJson),
                 isSupportedEngine: isSupportedEngine(config.getVersion(), packageJson),
                 source,
+                repositoryUrl: packageJson.repository && packageJson.repository.url,
             };
         });
 }
