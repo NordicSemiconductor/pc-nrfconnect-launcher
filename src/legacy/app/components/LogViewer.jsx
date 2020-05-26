@@ -53,7 +53,7 @@ const LogViewer = ({
             logContainer.current.lastChild.scrollIntoView();
         }
     });
-    useEffect(onMount, []);
+    useEffect(onMount, [onMount]);
 
     return (
         <div className={cssClass}>
