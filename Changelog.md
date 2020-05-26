@@ -3,7 +3,7 @@
 - App filter and update all apps. #369
 ### Developer features
 - Enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
-- Additional app architecture. #392, #393, #394
+- Additional app architecture with new design. #392, #393, #394, #433
 - Remove dependency of react-infinite. #401
 ### Changed
 - This project was renamed to pc-nrfconnect-launcher.
