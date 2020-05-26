@@ -44,8 +44,7 @@ const InitialState = Record({
 });
 const initialState = new InitialState();
 
-// # Update
-export default function (state = initialState, action) {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case Actions.HIDE_RELEASE_NOTES:
             return initialState;
@@ -54,4 +53,6 @@ export default function (state = initialState, action) {
         default:
             return state;
     }
-}
+};
+
+export default reducer;
