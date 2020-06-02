@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.4.0-rc.0",
+    "version": "3.4.0-rc.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -143,7 +143,7 @@
         "mousetrap": "1.6.5",
         "mustache": "3.0.1",
         "nrf-device-setup": "0.6.6",
-        "pc-ble-driver-js": "2.7.0",
+        "pc-ble-driver-js": "2.7.1",
         "popper.js": "1.16.1",
         "react": "16.13.1",
         "react-dom": "16.13.1",
