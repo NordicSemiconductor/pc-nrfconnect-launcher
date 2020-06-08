@@ -11,6 +11,8 @@
 - Enhanced error messages #403
     - Links in messages are clickable.
     - If an app source is removed from the server, users are assisted in removing it from client.
+### Updates
+- Update pc-ble-driver-js to 2.7.1 with SoftDevice 5 support. #438
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 
