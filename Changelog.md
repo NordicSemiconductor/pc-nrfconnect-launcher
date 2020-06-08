@@ -1,9 +1,9 @@
-## Unreleased
+## Version 3.4.0
 ### Features
 - App filter and update all apps. #369
 ### Developer features
 - Enable use of Redux DevTools and ease installation of React and Redux DevTools. #381
-- Additional app architecture with new design. #392, #393, #394, #433
+- Additional app architecture with new design. #392, #393, #394, #433, #434
 - Remove dependency of react-infinite. #401
 ### Changed
 - This project was renamed to pc-nrfconnect-launcher.
@@ -14,12 +14,17 @@
 ### Bug fixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 
+## Version 3.3.3
+### Updates
+* Notarized macOS build. #419
+* Updated to pc-nrfjprog-js v1.7.2, including bundled nrfjprog v10.8.0 and JLink 6.70d
+
 ## Version 3.3.1
-## Features
+### Features
 * Added support for nRF52820
 * Added support for modem UART DFU
 
-## Updates
+### Updates
 * Updated to pc-nrfjprog-js v1.7.0, including bundled nrfjprog v10.7.0 and JLink 6.62b
 
 ## Version 3.3.0
