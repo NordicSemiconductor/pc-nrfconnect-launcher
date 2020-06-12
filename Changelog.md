@@ -1,3 +1,7 @@
+## Version 3.4.1
+### Updates
+- Updated to pc-nrfjprog-js v1.7.3, including bundled nrfjprog v10.9.0 and JLink 6.80a
+
 ## Version 3.4.0
 ### Features
 - Added app filter and button to update all apps #369
