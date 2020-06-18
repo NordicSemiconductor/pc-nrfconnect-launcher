@@ -6,7 +6,13 @@
 ### Features
 - Added app filter and button to update all apps #369
 - Updated pc-ble-driver-js to 2.7.1 with SoftDevice 5 support #438
-- Fewer requests for entering proxy credentials when needed #370
+### Developer features
+- Enable use of Redux DevTools and ease installation of React and Redux DevTools #381
+- Additional app architecture with new design. #392, #393, #394, #433, #434
+- Remove dependency of react-infinite. #401
+### Changed
+- This project was renamed to pc-nrfconnect-launcher.
+- Fewer requests for entering proxy credentials when needed. #370
 - Enhanced error messages #403
     - Links in messages are clickable.
     - If an app source is removed from the server, users are assisted in removing it from client.
