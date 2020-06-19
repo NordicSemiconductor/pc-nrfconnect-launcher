@@ -35,19 +35,15 @@
  */
 
 import serialPort from 'serialport';
-import bleDriverJs from 'pc-ble-driver-js';
 import nrfjprog from 'pc-nrfjprog-js';
 import usb from 'usb';
 import electron from 'electron';
 import { logger } from 'pc-nrfconnect-shared';
 import * as core from './core';
 
-const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
-
 core.logger = logger;
 
 export {
-    bleDriver,
     nrfjprog,
     usb,
     serialPort,

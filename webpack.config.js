@@ -9,7 +9,6 @@ function createExternals() {
     // Some libraries, e.g. those with native addons, cannot be bundled
     // by webpack. Adding them as externals so that they are not bundled.
     const libs = [
-        'pc-ble-driver-js',
         'pc-nrfjprog-js',
         'serialport',
         'usb',

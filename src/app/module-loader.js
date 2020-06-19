@@ -89,7 +89,3 @@ hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
 hostedModules['usb'] = require('usb');
 
-const bleDriverJs = require('pc-ble-driver-js');
-
-const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
-hostedModules['pc-ble-driver-js'] = bleDriver;
