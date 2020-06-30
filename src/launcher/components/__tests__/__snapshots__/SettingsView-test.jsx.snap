@@ -80,19 +80,19 @@ exports[`SettingsView should render check for updates completed, with everything
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -101,7 +101,7 @@ exports[`SettingsView should render check for updates completed, with everything
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -225,19 +225,19 @@ exports[`SettingsView should render check for updates completed, with updates av
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -246,7 +246,7 @@ exports[`SettingsView should render check for updates completed, with updates av
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -367,19 +367,19 @@ exports[`SettingsView should render empty div while loading 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -388,7 +388,7 @@ exports[`SettingsView should render empty div while loading 1`] = `
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -509,19 +509,19 @@ exports[`SettingsView should render when checking for updates 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -530,7 +530,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -651,19 +651,19 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -672,7 +672,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -793,19 +793,19 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -814,7 +814,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
@@ -938,19 +938,19 @@ exports[`SettingsView should render with last update check date 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
         <CardTitle>
-          Help to improve app
+          Help to improve
         </CardTitle>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
-      Help to improve the app by sharing the data
+      Help us to improve by sending anonymous data
     </p>
     <FormCheck
       custom={true}
@@ -959,7 +959,7 @@ exports[`SettingsView should render with last update check date 1`] = `
       inline={false}
       isInvalid={false}
       isValid={false}
-      label="Check for sharing"
+      label="Check for sending"
       title=""
       type="checkbox"
     />
