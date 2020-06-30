@@ -1,3 +1,7 @@
+## Not released
+### Features
+- Added Google Analytics
+
 ## Version 3.4.1
 ### Updates
 - Updated to pc-nrfjprog-js v1.7.3, including bundled nrfjprog v10.9.0 and JLink 6.80a
