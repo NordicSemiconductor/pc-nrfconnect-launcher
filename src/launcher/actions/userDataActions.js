@@ -139,14 +139,14 @@ function initUserData(label) {
 export function checkUserDataSetting(isSendingUserData) {
     return async dispatch => {
         await userData.init(EventCategory);
+        if ((typeof isSendingUserData) !== 'boolean') {
+            dispatch(showUserDataDialog());
+            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
+            return;
+        }
         if (isSendingUserData) {
             initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
             dispatch(setUserDataOn());
-            return;
-        }
-        if (isSendingUserData === null) {
-            dispatch(showUserDataDialog());
-            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
             return;
         }
         initUserData(EventLabel.LAUNCHER_USER_DATA_OFF);
