@@ -44,6 +44,7 @@ export const USER_DATA_DIALOG_SHOW = 'USER_DATA_DIALOG_SHOW';
 export const USER_DATA_DIALOG_HIDE = 'USER_DATA_DIALOG_HIDE';
 export const USER_DATA_SEND_ON = 'USER_DATA_SEND_ON';
 export const USER_DATA_SEND_OFF = 'USER_DATA_SEND_OFF';
+export const USER_DATA_SEND_RESET = 'USER_DATA_SEND_RESET';
 
 export const EventCategory = pkgJson.name || 'Launcher';
 
@@ -82,6 +83,13 @@ export function setUserDataOn() {
 export function setUserDataOff() {
     return {
         type: USER_DATA_SEND_OFF,
+    };
+}
+
+export function resetUserData() {
+    settings.set('isSendingUserData', undefined);
+    return {
+        type: USER_DATA_SEND_RESET,
     };
 }
 
