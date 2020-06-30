@@ -123,8 +123,8 @@ const UserDataDialog = ({
         isVisible={isVisible}
         title="Help us to improve"
         text={UserDataPolicy}
-        okButtonText="Agree, I would like to help"
-        cancelButtonText="Do not share"
+        okButtonText="Agree, please send"
+        cancelButtonText="No, do not send"
         onOk={onConfirm}
         onCancel={onCancel}
     />

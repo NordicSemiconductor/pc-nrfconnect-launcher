@@ -186,15 +186,15 @@ class SettingsView extends React.Component {
                 </Card>
                 <Card body>
                     <Row>
-                        <Col><Card.Title>Help to improve app</Card.Title></Col>
+                        <Col><Card.Title>Help to improve</Card.Title></Col>
                     </Row>
                     <p className="small text-muted">
-                        Help to improve the app by sharing the data
+                        Help us to improve by sending anonymous data
                     </p>
                     <Form.Check
                         custom
                         id="checkForShare"
-                        label="Check for sharing"
+                        label="Check for sending"
                         checked={isSendingUserData}
                         onChange={toggleSendingUserData}
                     />

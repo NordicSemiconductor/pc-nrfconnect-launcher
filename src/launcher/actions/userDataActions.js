@@ -89,6 +89,15 @@ export function confrimSendingUserData() {
     return dispatch => {
         settings.set('isSendingUserData', true);
         dispatch(setUserDataOn());
+        dispatch(hideUserDataDialog());
+    };
+}
+
+export function cancelSendingUserData() {
+    return dispatch => {
+        settings.set('isSendingUserData', false);
+        dispatch(setUserDataOff());
+        dispatch(hideUserDataDialog());
     };
 }
 
@@ -99,6 +108,11 @@ export function toggleSendingUserData() {
         if (isSendingUserData) {
             settings.set('isSendingUserData', false);
             dispatch(setUserDataOff());
+            return;
+        }
+        if (!isSendingUserData) {
+            dispatch(showUserDataDialog());
+            settings.set('isSendingUserData', true);
             return;
         }
         settings.set('isSendingUserData', true);
