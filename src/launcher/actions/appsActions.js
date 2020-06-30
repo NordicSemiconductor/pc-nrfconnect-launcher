@@ -37,6 +37,7 @@
 import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { sendLauncherUserData, EventAction } from './userDataActions';
 
 const net = remote.require('../main/net');
 const fs = remote.require('fs');
@@ -337,6 +338,7 @@ export function loadOfficialApps(appName, appSource) {
 
 export function installOfficialApp(name, source) {
     return dispatch => {
+        dispatch(sendLauncherUserData(EventAction.INSTALL_APP, source, name));
         dispatch(installOfficialAppAction(name, source));
         mainApps.installOfficialApp(name, 'latest', source)
             .then(() => {
@@ -352,6 +354,7 @@ export function installOfficialApp(name, source) {
 
 export function removeOfficialApp(name, source) {
     return dispatch => {
+        dispatch(sendLauncherUserData(EventAction.REMOVE_APP, source, name));
         dispatch(removeOfficialAppAction(name, source));
         mainApps.removeOfficialApp(name, source)
             .then(() => {
@@ -367,6 +370,7 @@ export function removeOfficialApp(name, source) {
 
 export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
+        dispatch(sendLauncherUserData(EventAction.UPGRADE_APP, source, name));
         dispatch(upgradeOfficialAppAction(name, version, source));
         return mainApps.installOfficialApp(name, version, source)
             .then(() => {
@@ -381,10 +385,13 @@ export function upgradeOfficialApp(name, version, source) {
 }
 
 export function launch(app) {
-    return () => {
+    return dispatch => {
         // The apps in state are Immutable Maps which cannot be sent over IPC.
         // Converting to plain JS object before sending to the main process.
         const appObj = app.toJS();
+        const sharedData = `App version: ${appObj.currentVersion};`
+            + ` Engine version: ${appObj.engineVersion};`;
+        dispatch(sendLauncherUserData(EventAction.LAUNCH_APP, sharedData, appObj.name));
         ipcRenderer.send('open-app', appObj);
     };
 }

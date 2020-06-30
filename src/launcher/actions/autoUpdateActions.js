@@ -40,6 +40,7 @@ import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions';
 import * as SettingsActions from './settingsActions';
+import * as UserDataActions from './userDataActions';
 
 export const AUTO_UPDATE_CHECK = 'AUTO_UPDATE_CHECK';
 export const AUTO_UPDATE_AVAILABLE = 'AUTO_UPDATE_AVAILABLE';
@@ -156,6 +157,7 @@ export function startDownload() {
         });
 
         autoUpdater.on('update-downloaded', () => {
+            dispatch(UserDataActions.resetUserData());
             cancellationToken = null;
             autoUpdater.removeAllListeners();
             autoUpdater.quitAndInstall();
