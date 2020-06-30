@@ -52,7 +52,9 @@ export default () => (
     <>
         <Tab.Container id="launcher" defaultActiveKey="apps">
             <Nav>
+                {/* eslint-disable-next-line jsx-a11y/no-access-key */}
                 <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
+                {/* eslint-disable-next-line jsx-a11y/no-access-key */}
                 <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
                 <Logo />
             </Nav>

@@ -343,6 +343,7 @@ function readAppInfo(appPath) {
             const source = isOfficial
                 ? path.basename(path.dirname(path.dirname(appPath)))
                 : null;
+
             return {
                 name: packageJson.name,
                 displayName: packageJson.displayName,
@@ -355,6 +356,7 @@ function readAppInfo(appPath) {
                 engineVersion: getEngineVersion(packageJson),
                 isSupportedEngine: isSupportedEngine(config.getVersion(), packageJson),
                 source,
+                repositoryUrl: packageJson.repository && packageJson.repository.url,
             };
         });
 }
@@ -370,7 +372,7 @@ function readAppInfo(appPath) {
 function decorateWithInstalledAppInfo(officialApp, source) {
     const appDir = path.join(config.getNodeModulesDir(source), officialApp.name);
     return readAppInfo(appDir)
-        .then(installedAppInfo => Object.assign({}, installedAppInfo, officialApp));
+        .then(installedAppInfo => ({ ...installedAppInfo, ...officialApp }));
 }
 
 /**
@@ -385,7 +387,8 @@ function decorateWithInstalledAppInfo(officialApp, source) {
  */
 function decorateWithLatestVersion(officialApp, availableUpdates) {
     const latestVersion = availableUpdates[officialApp.name] || officialApp.currentVersion;
-    return Object.assign({}, officialApp, {
+    return ({
+        ...officialApp,
         latestVersion,
         upgradeAvailable: latestVersion && officialApp.currentVersion !== latestVersion,
     });
@@ -401,7 +404,7 @@ function decorateWithLatestVersion(officialApp, availableUpdates) {
  */
 function officialAppsObjToArray(officialAppsObj, source) {
     const names = Object.keys(officialAppsObj);
-    return names.map(name => Object.assign({}, { name, source }, officialAppsObj[name]));
+    return names.map(name => ({ name, source, ...officialAppsObj[name] }));
 }
 
 /**

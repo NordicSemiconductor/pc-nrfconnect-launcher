@@ -34,61 +34,29 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+import setupTestApp from '../setupTestApp';
 
-const fixtureDir = path.resolve(__dirname, './fixtures/one-local-app-to-be-extracted');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
-const appName = 'pc-nrfconnect-foo';
-const appArchiveFile = `${appName}-1.2.3.tgz`;
-
-let electronApp;
-
-function copyArchiveToLocal() {
-    const sourceFile = path.join(fixtureDir, appArchiveFile);
-    const destFile = path.join(appsRootDir, 'local', appArchiveFile);
-    fs.writeFileSync(destFile, fs.readFileSync(sourceFile));
-}
-
-function removeAppDirFromLocal() {
-    rimraf.sync(path.join(appsRootDir, 'local', appName));
-}
-
-describe('one local app to be extracted', () => {
-    beforeEach(() => {
-        copyArchiveToLocal();
-        return startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            });
+describe('an app', () => {
+    const app = setupTestApp({
+        appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
+        openLocalApp: 'pc-nrfconnect-test',
     });
 
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                removeAppDirFromLocal();
-            })
-    ));
+    it('initially does not show list of main menu items', async () => {
+        await expect(app.client.isVisible('#main-menu-list')).resolves.toBe(false);
+    });
 
-    it('should extract archive and show app name in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .getText('h4')
-            .then(text => expect(text).toEqual('Foo App'))
-    ));
+    it('shows "Launch other app" in main menu', async () => {
+        await app.client
+            .waitForVisible('#main-menu')
+            .click('#main-menu');
+        await expect(app.client.isVisible('#main-menu-list a[title*="Launch other app"]')).resolves.toBe(true);
+    });
 
-    it('should remove archive file from apps local directory after extracting', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const exists = fs.existsSync(path.join(appsRootDir, 'local', appArchiveFile));
-                expect(exists).toEqual(false);
-            })
-    ));
+    it('shows port list in port selector', async () => {
+        await app.client
+            .waitForVisible('#serial-port-selector')
+            .click('#serial-port-selector');
+        await expect(app.client.isVisible('#serial-port-selector .dropdown-menu')).resolves.toBe(true);
+    });
 });

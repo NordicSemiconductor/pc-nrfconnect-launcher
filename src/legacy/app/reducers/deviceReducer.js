@@ -39,6 +39,7 @@ import * as DeviceActions from '../actions/deviceActions';
 
 const InitialState = Record({
     devices: List(),
+    deviceInfo: null,
     selectedSerialNumber: null,
     isSetupDialogVisible: false,
     isSetupWaitingForUserInput: false,
@@ -53,7 +54,8 @@ function setSelectedSerialNumber(state, serialNumber) {
 }
 
 function clearSelectedSerialNumber(state) {
-    return state.set('selectedSerialNumber', initialState.selectedSerialNumber);
+    return state.set('selectedSerialNumber', initialState.selectedSerialNumber)
+        .set('deviceInfo', initialState.deviceInfo);
 }
 
 function setDeviceList(state, devices) {
@@ -71,10 +73,11 @@ function setSetupInputReceived(state) {
     return state.set('isSetupWaitingForUserInput', false);
 }
 
-function setSetupComplete(state) {
+function setSetupComplete(state, device) {
     return state.set('isSetupDialogVisible', initialState.isSetupDialogVisible)
         .set('setupDialogText', initialState.setupDialogText)
-        .set('setupDialogChoices', initialState.setupDialogChoices);
+        .set('setupDialogChoices', initialState.setupDialogChoices)
+        .set('deviceInfo', device.deviceInfo);
 }
 
 const reducer = (state = initialState, action) => {
@@ -87,7 +90,7 @@ const reducer = (state = initialState, action) => {
             return clearSelectedSerialNumber(state);
         case DeviceActions.DEVICE_SETUP_COMPLETE:
         case DeviceActions.DEVICE_SETUP_ERROR:
-            return setSetupComplete(state);
+            return setSetupComplete(state, action.device);
         case DeviceActions.DEVICE_SETUP_INPUT_REQUIRED:
             return setSetupInputRequired(state, action.message, action.choices);
         case DeviceActions.DEVICE_SETUP_INPUT_RECEIVED:

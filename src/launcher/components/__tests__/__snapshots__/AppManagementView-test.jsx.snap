@@ -22,6 +22,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
       ]
     }
@@ -136,6 +137,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
       ]
     }
@@ -261,6 +263,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
       ]
     }
@@ -386,6 +389,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
         Immutable.Record {
           "name": "appB",
@@ -404,6 +408,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
         Immutable.Record {
           "name": "appC",
@@ -422,6 +427,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
       ]
     }
@@ -702,6 +708,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
         Immutable.Record {
           "name": "appC",
@@ -720,6 +727,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
         Immutable.Record {
           "name": "appA",
@@ -738,6 +746,7 @@ Array [
           "url": null,
           "releaseNote": null,
           "upgradeAvailable": null,
+          "repositoryUrl": null,
         },
       ]
     }

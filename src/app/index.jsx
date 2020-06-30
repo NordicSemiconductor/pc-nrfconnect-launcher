@@ -61,6 +61,11 @@ const removeLoaderElement = () => {
 const isLegacy = app => typeof app === 'object';
 
 const renderer = (App, container, onLoaded) => {
+    // The next line is only needed as long as we still need to support legacy apps.
+    // Later, when we want to drop support for legacy apps, change "legacy.css" in
+    // app.html to "shared.css" and remove the next line
+    document.getElementById('stylesheet').href = '../dist/shared.css';
+
     ReactDOM.render(<App />, container, onLoaded);
 };
 

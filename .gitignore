@@ -1,12 +1,15 @@
 *~
 .DS_Store
 .idea
+.env
+.eslintrc
 build/nrfjprog
 build/JLink*
+build/Release
 dist
 jest.json
-node_modules
+/node_modules
 npm-debug.log
 package-lock.json
 release
-pc-nrfconnect-*
+nrfjprog

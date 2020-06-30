@@ -36,7 +36,6 @@
 
 import { ipcRenderer } from 'electron';
 import { systemReport } from 'pc-nrfconnect-shared';
-import { decoratedSystemReport } from '../../decoration';
 
 /**
  * Indicates that opening the nRF Connect app launcher has been requested.
@@ -72,8 +71,14 @@ export function showAboutDialog() {
 }
 
 export function generateSystemReport() {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(generateSystemReportAction());
-        dispatch(systemReport(decoratedSystemReport));
+
+        const deviceState = getState().core.device;
+        const allDevices = deviceState.devices;
+        const currentSerialNumber = deviceState.selectedSerialNumber;
+        const currentDevice = deviceState.deviceInfo;
+
+        return systemReport(allDevices, currentSerialNumber, currentDevice);
     };
 }

@@ -34,57 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import fs from 'fs';
-import rimraf from 'rimraf';
-import { startElectronApp, stopElectronApp } from '../setup';
+const sleep = millis => new Promise(resolve => setTimeout(resolve, millis));
 
-let electronApp;
+const waitForSecondWindow = async app => {
+    for (let retry = 0; retry < 5; retry += 1) {
+        if (await app.client.getWindowCount() === 2) { // eslint-disable-line no-await-in-loop
+            return;
+        }
+        await sleep(500); // eslint-disable-line no-await-in-loop
+    }
 
-const fixtureDir = path.resolve(__dirname, './fixtures/check-for-updates-at-startup-enabled');
-const appsRootDir = path.join(fixtureDir, '.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--settings-json-path=${path.join(fixtureDir, 'settings.json')}`,
-];
+    throw new Error('Timed out while waiting for second window');
+};
 
-function removeAppsRootDir() {
-    rimraf.sync(appsRootDir);
-}
-
-describe('when checking for updates at startup is enabled', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-            .then(() => {
-                // The apps root directory is created when starting
-                // the application. Cleaning up.
-                removeAppsRootDir();
-            })
-    ));
-
-    it('should populate apps.json in .nrfconnect-apps', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('h4')
-            .then(() => {
-                const appsJsonString = fs.readFileSync(path.join(appsRootDir, 'apps.json'), 'utf8');
-                const appsJsonObj = JSON.parse(appsJsonString);
-                const appNames = Object.keys(appsJsonObj);
-                expect(appNames.length).toBeGreaterThan(0);
-            })
-    ));
-
-    it('should show checking for updates as enabled in the Settings screen', () => (
-        electronApp.client.windowByIndex(0)
-            .click('button[title*="Settings"]')
-            .waitForVisible('.core-settings-update-check-controls')
-            .getAttribute('.core-settings-update-check-controls input[type="checkbox"]', 'checked')
-            .then(checked => expect(checked).toEqual('true'))
-    ));
-});
+export default async (app, waitForAppToAppear = true) => {
+    await app.client.waitForVisible('button[title*="Open"]');
+    await app.client.click('button[title*="Open"]');
+    if (waitForAppToAppear) {
+        await waitForSecondWindow(app);
+        await app.client.waitUntilWindowLoaded();
+    }
+};

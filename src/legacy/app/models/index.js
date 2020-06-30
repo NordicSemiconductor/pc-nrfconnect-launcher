@@ -35,9 +35,11 @@
  */
 
 import { Record } from 'immutable';
+import portPath from '../../portPath';
 
 const ImmutableSerialPort = Record({
     comName: null,
+    path: null,
     serialNumber: null,
     manufacturer: null,
     vendorId: null,
@@ -46,6 +48,7 @@ const ImmutableSerialPort = Record({
 
 const ImmutableDevice = Record({
     comName: null,
+    path: null,
     busNumber: null,
     deviceAddress: null,
     serialNumber: null,
@@ -57,7 +60,8 @@ const ImmutableDevice = Record({
 
 function getImmutableSerialPort(serialPort) {
     return new ImmutableSerialPort({
-        comName: serialPort.comName,
+        comName: portPath(serialPort),
+        path: portPath(serialPort),
         serialNumber: serialPort.serialNumber,
         vendorId: serialPort.vendorId,
         productId: serialPort.productId,
@@ -66,7 +70,11 @@ function getImmutableSerialPort(serialPort) {
 }
 
 function getImmutableDevice(device) {
-    return new ImmutableDevice(device);
+    return new ImmutableDevice({
+        ...device,
+        comName: portPath(device),
+        path: portPath(device),
+    });
 }
 
 export {

@@ -131,7 +131,7 @@ ipcMain.on('show-about-dialog', () => {
             title: 'About',
             message: `${app.displayName || app.name}`,
             detail,
-            icon: app.iconPath ? app.iconPath : `${__dirname}/resources/nrfconnect.png`,
+            icon: app.iconPath ? app.iconPath : `${config.getElectronResourcesDir()}/nrfconnect.png`,
             buttons: ['OK'],
         }, () => {});
     }
@@ -140,12 +140,12 @@ ipcMain.on('show-about-dialog', () => {
 ipcMain.on('get-app-details', event => {
     const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
-        const details = Object.assign({
+        event.sender.send('app-details', {
             coreVersion: config.getVersion(),
             corePath: config.getElectronRootPath(),
             homeDir: config.getHomeDir(),
             tmpDir: config.getTmpDir(),
-        }, appWindow.app);
-        event.sender.send('app-details', details);
+            ...appWindow.app,
+        });
     }
 });

@@ -37,6 +37,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import portPath from '../../portPath';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 
 const FirmwareDialog = ({
@@ -49,7 +50,7 @@ const FirmwareDialog = ({
 }) => {
     if (isVisible) {
         const textToUse = text || 'Would you like to program the development kit'
-            + ` on ${port.comName} (${port.serialNumber})`
+            + ` on ${portPath(port)} (${port.serialNumber})`
             + ' with the required firmware?';
         return (
             <ConfirmationDialog
@@ -71,6 +72,7 @@ FirmwareDialog.propTypes = {
     isInProgress: PropTypes.bool,
     port: PropTypes.shape({
         comName: PropTypes.string,
+        path: PropTypes.string,
         serialNumber: PropTypes.number,
     }),
     text: PropTypes.string,

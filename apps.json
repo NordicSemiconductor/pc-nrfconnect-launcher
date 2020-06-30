@@ -46,5 +46,11 @@
         "description": "RF PHY testing of Bluetooth Low Energy devices",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-dtm"
+    },
+    "pc-nrfconnect-toolchain-manager": {
+        "displayName": "Toolchain Manager",
+        "description": "Install and manage tools to develop with the nRF Connect SDK (NCS)",
+        "homepage": "https://github.com/NordicPlayground/pc-nrfconnect-toolchain-manager",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-toolchain-manager"
     }
 }

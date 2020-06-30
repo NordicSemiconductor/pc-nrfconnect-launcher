@@ -63,7 +63,8 @@ function renderNotice(app) {
 }
 
 const AppIcon = ({ app }) => {
-    const { engineVersion, iconPath, latestVersion } = app;
+    const { engineVersion, iconPath } = app;
+    const installed = !!app.currentVersion;
     const primaryColorNeedsUpdate = engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
@@ -80,7 +81,7 @@ const AppIcon = ({ app }) => {
                 alt=""
                 draggable={false}
             />
-            {latestVersion && renderNotice(app)}
+            {installed && renderNotice(app)}
         </div>
     );
 };
@@ -88,9 +89,9 @@ const AppIcon = ({ app }) => {
 AppIcon.propTypes = {
     app: PropTypes.shape({
         iconPath: PropTypes.string,
+        currentVersion: PropTypes.string,
         engineVersion: PropTypes.string,
         isSupportedEngine: PropTypes.bool,
-        latestVersion: PropTypes.string,
         url: PropTypes.string,
     }).isRequired,
 };

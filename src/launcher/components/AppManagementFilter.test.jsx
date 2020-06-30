@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,38 +34,25 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
+import { sortedSources } from './AppManagementFilter';
 
-const appsRootDir = path.resolve(__dirname, './fixtures/one-local-app-unsupported-engine/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    '--skip-update-apps',
-];
+test('sortedSources sorts the sources into official, local and then the rest in alphabetical order', () => {
+    const local = {};
+    const official = {};
+    const OtherA = {};
+    const OtherB = {};
 
-let electronApp;
+    const sources = {
+        local,
+        official,
+        OtherA,
+        OtherB,
+    };
 
-describe('one local app with unsupported engine', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
-    it('should show warning in the launcher app list', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('span[title*="The app only supports nRF Connect 1.x')
-    ));
-
-    it('should show warning dialog when clicking Launch', () => (
-        electronApp.client.windowByIndex(0)
-            .waitForVisible('button[title="Launch app"]')
-            .click('button[title="Launch app"]')
-            .waitForVisible('.modal-dialog')
-    ));
+    expect(sortedSources(sources)).toStrictEqual([
+        ['official', official],
+        ['local', local],
+        ['OtherA', OtherA],
+        ['OtherB', OtherB],
+    ]);
 });

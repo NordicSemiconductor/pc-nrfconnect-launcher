@@ -80,7 +80,7 @@ function toggleSelectorExpanded(state) {
 }
 
 function setSelectedPort(state, port) {
-    return state.set('selectedPort', port.comName);
+    return state.set('selectedPort', port.path);
 }
 
 function clearSelectedPort(state) {

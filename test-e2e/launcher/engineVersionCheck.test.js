@@ -34,54 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import reducer from '../firmwareDialogReducer';
-import * as FirmwareDialogActions from '../../actions/firmwareDialogActions';
+import setupTestApp from '../setupTestApp';
+import launchFirstApp from '../launchFirstApp';
 
-const initialState = reducer(undefined, {});
+describe('checks the version of the engine against what the app declares', () => {
+    describe('an official app that is only available', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-official-app-not-installed/.nrfconnect-apps',
+        });
 
-describe('firmwareDialogReducer', () => {
-    it('should be hidden, with no port, and not in progress by default', () => {
-        expect(initialState.isVisible).toEqual(false);
+        it('shows no warning in the app list', async () => {
+            await app.client.waitForVisible('.list-group-item');
+
+            await expect(app.client.isVisible('span[title="The app does not specify which nRF Connect version(s) it supports'))
+                .resolves.toBe(false);
+            await expect(app.client.isVisible('span[title*="The app only supports nRF Connect'))
+                .resolves.toBe(false);
+        });
     });
 
-    it('should be visible and have a port object after show action has been dispatched', () => {
-        const port = {
-            comName: '/dev/tty1',
-            path: '/dev/tty1',
-            manufacturer: null,
-            productId: null,
-            serialNumber: null,
-            vendorId: null,
-        };
-        const state = reducer(initialState, {
-            type: FirmwareDialogActions.FIRMWARE_DIALOG_SHOW,
-            port,
+    describe('local app with unsupported engine', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps',
         });
-        expect(state.isVisible).toEqual(true);
-        expect(state.port.toJS()).toEqual(port);
+
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title*="The app only supports nRF Connect 1.x')
+        ));
+
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
+
+            await app.client.waitForVisible('.modal-dialog');
+        });
     });
 
-    it('should have isInProgress true after firmware update action has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: FirmwareDialogActions.FIRMWARE_DIALOG_UPDATE_REQUESTED,
+    describe('one local app without engine definition', () => {
+        const app = setupTestApp({
+            appsRootDir: 'launcher/fixtures/one-local-app-without-engine/.nrfconnect-apps',
         });
-        expect(state.isInProgress).toEqual(true);
-    });
 
-    it('should be hidden, with no port, and not in progress after hide action has been dispatched', () => {
-        const port = { path: '/dev/tty1' };
-        const firstState = reducer(initialState, {
-            type: FirmwareDialogActions.FIRMWARE_DIALOG_SHOW,
-            port,
+        it('shows a warning in the app list', () => (
+            app.client.waitForVisible('span[title="The app does not specify which nRF Connect version(s) it supports')
+        ));
+
+        it('shows a warning dialog when launching the app', async () => {
+            await launchFirstApp(app, false);
+
+            await app.client.waitForVisible('.modal-dialog');
         });
-        const secondState = reducer(firstState, {
-            type: FirmwareDialogActions.FIRMWARE_DIALOG_UPDATE_REQUESTED,
-        });
-        const thirdState = reducer(secondState, {
-            type: FirmwareDialogActions.FIRMWARE_DIALOG_HIDE,
-        });
-        expect(thirdState.isVisible).toEqual(false);
-        expect(thirdState.isInProgress).toEqual(false);
-        expect(thirdState.port).toEqual(null);
     });
 });

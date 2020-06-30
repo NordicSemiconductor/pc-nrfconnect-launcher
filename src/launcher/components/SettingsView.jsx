@@ -224,7 +224,7 @@ class SettingsView extends React.Component {
                             variant="outline-primary"
                             onClick={onHideUpdateCheckCompleteDialog}
                         >
-                        Got it
+                            Got it
                         </Button>
                     </Modal.Footer>
                 </Modal>

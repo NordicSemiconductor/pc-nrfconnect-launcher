@@ -5,7 +5,7 @@ exports[`SettingsView should render check for updates completed, with everything
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -26,7 +26,7 @@ exports[`SettingsView should render check for updates completed, with everything
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
@@ -54,7 +54,7 @@ exports[`SettingsView should render check for updates completed, with everything
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -75,7 +75,7 @@ exports[`SettingsView should render check for updates completed, with everything
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -150,7 +150,7 @@ exports[`SettingsView should render check for updates completed, with updates av
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -171,7 +171,7 @@ exports[`SettingsView should render check for updates completed, with updates av
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
@@ -199,7 +199,7 @@ exports[`SettingsView should render check for updates completed, with updates av
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -220,7 +220,7 @@ exports[`SettingsView should render check for updates completed, with updates av
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -295,7 +295,7 @@ exports[`SettingsView should render empty div while loading 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -316,7 +316,7 @@ exports[`SettingsView should render empty div while loading 1`] = `
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     />
@@ -341,7 +341,7 @@ exports[`SettingsView should render empty div while loading 1`] = `
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -362,7 +362,7 @@ exports[`SettingsView should render empty div while loading 1`] = `
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -437,7 +437,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -458,7 +458,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
           Checking...
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     />
@@ -483,7 +483,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -504,7 +504,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -579,7 +579,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -600,7 +600,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     />
@@ -625,7 +625,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -646,7 +646,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -721,7 +721,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -742,7 +742,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     />
@@ -767,7 +767,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -788,7 +788,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}
@@ -863,7 +863,7 @@ exports[`SettingsView should render with last update check date 1`] = `
   <Card
     body={true}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -884,7 +884,7 @@ exports[`SettingsView should render with last update check date 1`] = `
           Check for updates
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
     <p
       className="small text-muted"
     >
@@ -912,7 +912,7 @@ exports[`SettingsView should render with last update check date 1`] = `
     onDragOver={[Function]}
     onDrop={[Function]}
   >
-    <ForwardRef
+    <Row
       noGutters={false}
     >
       <Col>
@@ -933,7 +933,7 @@ exports[`SettingsView should render with last update check date 1`] = `
           Add source
         </Button>
       </Col>
-    </ForwardRef>
+    </Row>
   </Card>
   <Card
     body={true}

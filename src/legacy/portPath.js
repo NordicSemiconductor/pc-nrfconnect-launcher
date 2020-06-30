@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,35 +34,5 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { startElectronApp, stopElectronApp } from '../setup';
-
-const appName = 'pc-nrfconnect-test';
-const appDisplayName = 'Test App';
-const appsRootDir = path.resolve(__dirname, './fixtures/one-official-app-installed/.nrfconnect-apps');
-const electronArgs = [
-    `--apps-root-dir=${appsRootDir}`,
-    `--open-official-app=${appName}`,
-    '--skip-update-apps',
-];
-
-let electronApp;
-
-describe('one official app given as command line flag', () => {
-    beforeEach(() => (
-        startElectronApp(electronArgs)
-            .then(startedApp => {
-                electronApp = startedApp;
-            })
-    ));
-
-    afterEach(() => (
-        stopElectronApp(electronApp)
-    ));
-
-    it('should load app window at startup', () => (
-        electronApp.client.waitUntilWindowLoaded()
-            .then(() => electronApp.client.windowByIndex(0).browserWindow.getTitle())
-            .then(title => expect(title).toContain(appDisplayName))
-    ));
-});
+// Prefer to use the serialport 8 property or fall back to the serialport 7 property
+export default serialPort => serialPort.path || serialPort.comName;
