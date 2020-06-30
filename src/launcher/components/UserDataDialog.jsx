@@ -38,6 +38,82 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
+const UserDataPolicy = (
+    <>
+        <p>Would you like to help us to improve our products by sending anonymous data to us?</p>
+        <h3>Data Policy</h3>
+        <p>
+            This Policy describes the information we process to improve nRF Connect for Desktop
+            offered by Nordic Semiconductor ASA.
+            You can turn it on/off to help us to improve nRF Connect for Desktop in settings.
+        </p>
+        <h5>What kinds of information do we collect?</h5>
+        <p>
+            Software info and operations:
+            <ul>
+                <li>
+                    anonymous aggregation of software info,
+                    such as launcher version, app version, module version, etc.
+                </li>
+                <li>
+                    anonymous aggregation of operations in launcher,
+                    such as installing, launching, removing apps, etc.
+                </li>
+                <li>
+                    anonymous aggregation of operations in apps,
+                    such as selecting device and how to use device, etc.
+                </li>
+            </ul>
+        </p>
+        <p>
+            System info:
+            <ul>
+                <li>
+                    anonymous system info such as operating systems (Windows, macOS or Linux), etc.
+                </li>
+            </ul>
+        </p>
+        <p>
+            Device info:
+            <ul>
+                <li>
+                    anonymous device info such as device type,
+                    chip type, etc, but not serial number.
+                </li>
+            </ul>
+        </p>
+        <h5>How do we use this information?</h5>
+        <p>
+            We use the information that we have as described above to:
+
+            <ul>
+                <li>
+                    analyze how well nRF Connect for Desktop is being used by customer
+                </li>
+                <li>
+                    analyze how well nRF Connect for Desktop performances
+                    on different operating systems
+                </li>
+                <li>
+                    analyze how well Nordic devices are being used in nRF Connect for Desktop
+                </li>
+            </ul>
+            Based on the analysis, we will find solutions to improve nRF Connect for Desktop.
+        </p>
+
+        <h5>How is this information processed and shared?</h5>
+        <p>
+            Google Analytics is used for collecting and processing the data.
+            All collected data are anonymous.
+            No personal data is collected.
+            IP address is set to anonymized when we use Google Analytics.
+        </p>
+        <p>
+            We do not share the data to any third-party companies or individuals
+            other than Google Analytics.
+        </p>
+    </>
+);
 const UserDataDialog = ({
     isVisible,
     onConfirm,
@@ -46,9 +122,9 @@ const UserDataDialog = ({
     <ConfirmationDialog
         isVisible={isVisible}
         title="Help us to improve"
-        text="Would you like to help us to improve our products by sending user data to us?"
-        okButtonText="Yes"
-        cancelButtonText="No"
+        text={UserDataPolicy}
+        okButtonText="Agree, I would like to help"
+        cancelButtonText="Do not share"
         onOk={onConfirm}
         onCancel={onCancel}
     />
