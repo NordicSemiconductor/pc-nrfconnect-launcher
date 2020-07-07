@@ -115,7 +115,7 @@
     "devDependencies": {
         "asar": "2.0.1",
         "bootstrap": "4.3.1",
-        "electron": "5.0.6",
+        "electron": "9.1.0",
         "electron-builder": "22.4.1",
         "electron-devtools-installer": "2.2.4",
         "electron-is-dev": "1.1.0",
