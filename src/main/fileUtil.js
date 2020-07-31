@@ -44,7 +44,9 @@ const fse = require('fs-extra');
 const path = require('path');
 const targz = require('targz');
 const chmodr = require('chmodr');
+const { v4 } = require('uuid');
 const { mkdir, mkdirIfNotExists } = require('./mkdir');
+const config = require('./config');
 
 /**
  * Open the given file path and return its string contents.
@@ -229,14 +231,32 @@ function chmodDir(src, mode) {
 }
 
 /**
+ * Create a unique name for a temporary file or folder. The file is not
+ * created, this just generates an absolute name for it in the directory
+ * for temporary files.
+ *
+ * @param {string} basename a basename to include in the name to make it easier
+ * to recognise
+ * @returns {string} the unique file name
+ */
+function getTmpFilename(basename) {
+    return path.join(config.getTmpDir(), `${basename}-${v4()}`);
+}
+
+/**
  * Extract the given npm package (tgz file) to the given destination directory.
  *
+ * @param {string} appName  the name of the app to extract
  * @param {string} tgzFile the tgz file path to extract.
  * @param {string} destinationDir the destination directory.
  * @returns {Promise} promise that resolves if successful.
  */
-function extractNpmPackage(tgzFile, destinationDir) {
-    return untar(tgzFile, destinationDir, 1);
+function extractNpmPackage(appName, tgzFile, destinationDir) {
+    const tmpDir = getTmpFilename(appName);
+    const moveToDestinationDir = () => fse.move(tmpDir, destinationDir, { overwrite: true });
+
+    return untar(tgzFile, tmpDir, 1)
+        .then(moveToDestinationDir);
 }
 
 /**
@@ -296,6 +316,7 @@ module.exports = {
     copy,
     untar,
     chmodDir,
+    getTmpFilename,
     extractNpmPackage,
     getNameFromNpmPackage,
     mkdir,

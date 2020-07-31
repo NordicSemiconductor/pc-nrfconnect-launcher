@@ -239,7 +239,7 @@ function installLocalAppArchive(tgzFilePath) {
         .then(isInstalled => {
             if (!isInstalled) {
                 return fileUtil.mkdir(appPath)
-                    .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+                    .then(() => fileUtil.extractNpmPackage(appName, tgzFilePath, appPath))
                     .then(() => fileUtil.deleteFile(tgzFilePath));
             }
             return Promise.resolve();
@@ -490,7 +490,11 @@ function removeOfficialApp(name, source) {
             + `to remove app directory ${appPath}. The directory does not `
             + 'have node_modules in its path.'));
     }
-    return fs.remove(appPath);
+
+    const tmpDir = fileUtil.getTmpFilename(name);
+
+    return fs.move(appPath, tmpDir)
+        .then(() => fs.remove(tmpDir));
 }
 
 /**
@@ -513,7 +517,7 @@ function installOfficialApp(name, version, source) {
                     }
                     return Promise.resolve();
                 })
-                .then(() => fileUtil.extractNpmPackage(tgzFilePath, appPath))
+                .then(() => fileUtil.extractNpmPackage(name, tgzFilePath, appPath))
                 .then(() => fileUtil.deleteFile(tgzFilePath));
         });
 }
