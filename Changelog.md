@@ -1,3 +1,8 @@
+## Version 3.4.2
+### Fixes
+- “Update all apps” sometimes showed an error message (even though it worked
+  correctly). #451
+
 ## Version 3.4.1
 ### Updates
 - Updated to pc-nrfjprog-js v1.7.3, including bundled nrfjprog v10.9.0 and JLink 6.80a
