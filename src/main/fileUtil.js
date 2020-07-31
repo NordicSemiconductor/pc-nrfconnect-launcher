@@ -288,7 +288,6 @@ function createJsonFileIfNotExists(filePath, jsonData) {
 }
 
 module.exports = {
-    readFile,
     readJsonFile,
     listDirectories,
     listFiles,
