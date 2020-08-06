@@ -39,7 +39,7 @@ import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 const UserDataPolicy = (
-    <>
+    <div className="user-data-policy">
         <p>Would you like to help us to improve our products by sending anonymous data to us?</p>
         <h3>Data Policy</h3>
         <p>
@@ -112,7 +112,7 @@ const UserDataPolicy = (
             We do not share the data to any third-party companies or individuals
             other than Google Analytics.
         </p>
-    </>
+    </div>
 );
 const UserDataDialog = ({
     isVisible,
