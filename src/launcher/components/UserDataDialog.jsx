@@ -40,12 +40,13 @@ import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 const UserDataPolicy = (
     <div className="user-data-policy">
-        <p>Would you like to help us to improve our products by sending anonymous data to us?</p>
-        <h3>Data Policy</h3>
+        <p>Would you help us improve?</p>
         <p>
-            This Policy describes the information we process to improve nRF Connect for Desktop
-            offered by Nordic Semiconductor ASA.
-            You can turn it on/off to help us to improve nRF Connect for Desktop in settings.
+            We would like to collect anonymous usage data
+            by following the data policy described below,
+            to improve nRF Connect for Desktop offered by Nordic Semiconductor ASA.
+            This policy describes the information we process to improve nRF Connect for Desktop.
+            You can turn it on/off to help us improve nRF Connect for Desktop in settings.
         </p>
         <h5>What kinds of information do we collect?</h5>
         <p>

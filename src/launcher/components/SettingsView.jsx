@@ -186,18 +186,28 @@ class SettingsView extends React.Component {
                 </Card>
                 <Card body>
                     <Row>
-                        <Col><Card.Title>Help to improve</Card.Title></Col>
+                        <Col><Card.Title>Usage statistics</Card.Title></Col>
                     </Row>
-                    <p className="small text-muted">
-                        Help us to improve by sending anonymous data
-                    </p>
-                    <Form.Check
-                        custom
-                        id="checkForShare"
-                        label="Check for sending"
-                        checked={isSendingUserData}
-                        onChange={toggleSendingUserData}
-                    />
+                    <Row>
+
+                        <Col>
+                            <Form.Check
+                                custom
+                                id="checkForShare"
+                                label="Collect anonymous usage data"
+                                checked={isSendingUserData}
+                                onChange={toggleSendingUserData}
+                            />
+                        </Col>
+                        <Col xs="auto">
+                            <Button
+                                variant="outline-primary"
+                                onClick={onShowAddSourceDialog}
+                            >
+                                Show agreement
+                            </Button>
+                        </Col>
+                    </Row>
                 </Card>
                 <Modal
                     show={isUpdateCheckCompleteDialogVisible}
