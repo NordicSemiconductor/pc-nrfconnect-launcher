@@ -103,6 +103,7 @@ class SettingsView extends React.Component {
             onShowRemoveSourceDialog,
             isSendingUserData,
             toggleSendingUserData,
+            showUserDataDialog,
         } = this.props;
 
         const sourcesJS = sources.toJS();
@@ -202,7 +203,7 @@ class SettingsView extends React.Component {
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
-                                onClick={onShowAddSourceDialog}
+                                onClick={showUserDataDialog}
                             >
                                 Show agreement
                             </Button>
