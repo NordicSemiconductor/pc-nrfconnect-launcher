@@ -273,6 +273,7 @@ SettingsView.propTypes = {
     onHideAddSourceDialog: PropTypes.func.isRequired,
     isSendingUserData: PropTypes.bool.isRequired,
     toggleSendingUserData: PropTypes.func.isRequired,
+    showUserDataDialog: PropTypes.func.isRequired,
 };
 
 SettingsView.defaultProps = {
