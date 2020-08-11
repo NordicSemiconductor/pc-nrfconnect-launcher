@@ -52,8 +52,8 @@ const installDevtools = async () => {
         ];
         const forceReinstall = true;
 
-        const names = await downloadAndInstall(devToolsExtensions, forceReinstall);
-        console.log('Added devtool extensions:', names);
+        await downloadAndInstall(devToolsExtensions, forceReinstall);
+        console.log('Added devtool extensions');
         app.quit();
     } catch (err) {
         console.log('An error occurred while adding the devtools: ', err);

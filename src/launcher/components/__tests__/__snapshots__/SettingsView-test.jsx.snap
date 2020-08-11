@@ -77,6 +77,35 @@ exports[`SettingsView should render check for updates completed, with everything
       </Col>
     </Row>
   </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
+  </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
     show={true}
@@ -193,6 +222,35 @@ exports[`SettingsView should render check for updates completed, with updates av
       </Col>
     </Row>
   </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
+  </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
     show={true}
@@ -305,6 +363,35 @@ exports[`SettingsView should render empty div while loading 1`] = `
         </Button>
       </Col>
     </Row>
+  </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
   </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
@@ -419,6 +506,35 @@ exports[`SettingsView should render when checking for updates 1`] = `
       </Col>
     </Row>
   </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
+  </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
     show={false}
@@ -532,6 +648,35 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       </Col>
     </Row>
   </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
+  </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
     show={false}
@@ -644,6 +789,35 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
         </Button>
       </Col>
     </Row>
+  </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
   </Card>
   <Bootstrap(Modal)
     onHide={[Function]}
@@ -760,6 +934,35 @@ exports[`SettingsView should render with last update check date 1`] = `
         </Button>
       </Col>
     </Row>
+  </Card>
+  <Card
+    body={true}
+  >
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <CardTitle>
+          Help to improve
+        </CardTitle>
+      </Col>
+    </Row>
+    <p
+      className="small text-muted"
+    >
+      Help us to improve by sending anonymous data
+    </p>
+    <FormCheck
+      custom={true}
+      disabled={false}
+      id="checkForShare"
+      inline={false}
+      isInvalid={false}
+      isValid={false}
+      label="Check for sending"
+      title=""
+      type="checkbox"
+    />
   </Card>
   <Bootstrap(Modal)
     onHide={[Function]}

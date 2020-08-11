@@ -1,3 +1,7 @@
+## Not released
+### Features
+- Added Google Analytics
+
 ## Version 3.4.2
 ### Updates
 - Updated pc-ble-driver-js to 2.7.2 #452

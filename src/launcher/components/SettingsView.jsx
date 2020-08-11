@@ -101,6 +101,8 @@ class SettingsView extends React.Component {
             onShowAddSourceDialog,
             onHideAddSourceDialog,
             onShowRemoveSourceDialog,
+            isSendingUserData,
+            toggleSendingUserData,
         } = this.props;
 
         const sourcesJS = sources.toJS();
@@ -120,7 +122,6 @@ class SettingsView extends React.Component {
                             </Button>
                         </Col>
                     </Row>
-
                     <p className="small text-muted">
                         {
                             lastUpdateCheckDate
@@ -183,6 +184,21 @@ class SettingsView extends React.Component {
                             ))
                     }
                 </Card>
+                <Card body>
+                    <Row>
+                        <Col><Card.Title>Help to improve</Card.Title></Col>
+                    </Row>
+                    <p className="small text-muted">
+                        Help us to improve by sending anonymous data
+                    </p>
+                    <Form.Check
+                        custom
+                        id="checkForShare"
+                        label="Check for sending"
+                        checked={isSendingUserData}
+                        onChange={toggleSendingUserData}
+                    />
+                </Card>
                 <Modal
                     show={isUpdateCheckCompleteDialogVisible}
                     onHide={onHideUpdateCheckCompleteDialog}
@@ -244,6 +260,8 @@ SettingsView.propTypes = {
     isAddSourceDialogVisible: PropTypes.bool,
     onShowAddSourceDialog: PropTypes.func.isRequired,
     onHideAddSourceDialog: PropTypes.func.isRequired,
+    isSendingUserData: PropTypes.bool.isRequired,
+    toggleSendingUserData: PropTypes.func.isRequired,
 };
 
 SettingsView.defaultProps = {
