@@ -46,7 +46,7 @@ const UserDataPolicy = (
             The following information includes the type of data collected and how it will be used.
             You can enable/disable this feature at any time by going to Settings.
         </p>
-        <h5>What kinds of information do we collect?</h5>
+        <h5>What kind of information do we collect?</h5>
         <p>
             Anonymous aggregation of software and operational info including:
         </p>
@@ -77,9 +77,8 @@ const UserDataPolicy = (
         <h5>How is this information processed and shared?</h5>
         <p>
             Google Analytics is used for collecting and processing the data.
-            All collected data are anonymous.
-            No personal data is collected.
-            IP address is set to anonymized when we use Google Analytics.
+            All data collected is anonymous and no personal data is ever collected.
+            IP address is set to anonymized when using Google Analytics.
         </p>
         <p>
             We do not share the data to any third-party companies or individuals
