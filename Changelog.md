@@ -2,6 +2,14 @@
 ### Features
 - Added Google Analytics
 
+## Version 3.4.2
+### Updates
+- Updated pc-ble-driver-js to 2.7.2 #452
+    See changes https://github.com/NordicSemiconductor/pc-ble-driver-js/releases/tag/v2.7.2
+### Fixes
+- “Update all apps” sometimes showed an error message (even though it worked
+  correctly). #451
+
 ## Version 3.4.1
 ### Updates
 - Updated to pc-nrfjprog-js v1.7.3, including bundled nrfjprog v10.9.0 and JLink 6.80a
