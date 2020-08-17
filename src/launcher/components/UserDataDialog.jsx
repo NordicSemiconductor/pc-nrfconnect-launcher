@@ -41,10 +41,9 @@ import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 const UserDataPolicy = (
     <div className="user-data-policy">
         <p>
-            You can help improve nRF Connect for Desktop by sending Nordic Semiconductor statistics
-            on how you interact with the app.
-            The following information includes the type of data collected and how it will be used.
-            You can enable/disable this feature at any time by going to Settings.
+            You can help improve nRF Connect for Desktop by sending Nordic Semiconductor
+            anonymous statistics on how you interact with the app.
+            You can enable/disable this feature at any time in Settings.
         </p>
         <h5>What kind of information do we collect?</h5>
         <p>
