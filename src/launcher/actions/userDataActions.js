@@ -118,11 +118,6 @@ export function toggleSendingUserData() {
             dispatch(setUserDataOff());
             return;
         }
-        if (!isSendingUserData) {
-            dispatch(showUserDataDialog());
-            settings.set('isSendingUserData', true);
-            return;
-        }
         settings.set('isSendingUserData', true);
         dispatch(setUserDataOn());
     };
