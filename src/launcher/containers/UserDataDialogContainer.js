@@ -50,7 +50,7 @@ function mapDispatchToProps(dispatch) {
             dispatch(UserDataActions.confrimSendingUserData());
         },
         onCancel: () => {
-            dispatch(UserDataActions.hideUserDataDialog());
+            dispatch(UserDataActions.cancelSendingUserData());
         },
     };
 }

@@ -58,6 +58,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
@@ -76,6 +79,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
@@ -94,6 +100,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 onTriggerUpdateCheck={() => {}}
@@ -112,6 +121,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates
                 onTriggerUpdateCheck={() => {}}
@@ -130,6 +142,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
@@ -149,6 +164,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
@@ -170,6 +188,9 @@ describe('SettingsView', () => {
         expect(shallow(
             <SettingsView
                 isLoading={false}
+                isSendingUserData={false}
+                showUserDataDialog={() => {}}
+                toggleSendingUserData={() => {}}
                 shouldCheckForUpdatesAtStartup={false}
                 isCheckingForUpdates={false}
                 lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}

@@ -91,6 +91,9 @@ function mapDispatchToProps(dispatch) {
         toggleSendingUserData: () => (
             dispatch(UserDataActions.toggleSendingUserData())
         ),
+        showUserDataDialog: () => (
+            dispatch(UserDataActions.showUserDataDialog())
+        ),
     };
 }
 
