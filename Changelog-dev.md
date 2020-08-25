@@ -1,6 +1,7 @@
 ## Not released
 ### Features
 - Added Google Analytics
+- Updated shared to v4.8.10
 
 ## Version 3.4.1
 ### Updates
