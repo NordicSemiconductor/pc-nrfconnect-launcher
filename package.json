@@ -96,7 +96,7 @@
         "win": {
             "target": [
                 "nsis",
-                "partable"
+                "portable"
             ],
             "extraFiles": [
                 {
