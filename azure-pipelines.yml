@@ -178,7 +178,10 @@ jobs:
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
   - script: |
+      dir
       dir release
+      ls
+      ls release
       tar czf release\nrfconnect-win-ia32.tar.gz release\win-ia32-unpacked
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
