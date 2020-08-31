@@ -189,8 +189,11 @@ jobs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-ia32-unpacked'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-ia32.zip'
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia32-$($(Build.BuildNumber).zip'
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
     displayName: 'Pack on Windows'
   - task: DownloadSecureFile@1
     inputs:
