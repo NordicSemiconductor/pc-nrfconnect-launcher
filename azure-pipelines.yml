@@ -184,6 +184,17 @@ jobs:
       tar czvf release/nrfconnect-win-ia32.tar.gz release/win-ia32-unpacked
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-ia32-unpacked'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia32-$(Build.BuildNumber).zip'
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Pack on Windows'
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
