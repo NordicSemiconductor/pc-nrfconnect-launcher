@@ -189,7 +189,7 @@ jobs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-ia32-unpacked'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia32-$($(Build.BuildNumber).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia32-$(Build.BuildNumber).zip'
     condition: and(
       ne(variables['Build.Reason'], 'PullRequest'),
       contains(variables['IMAGE_NAME'], 'win'),
