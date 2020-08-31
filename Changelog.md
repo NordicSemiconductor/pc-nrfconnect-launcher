@@ -1,6 +1,7 @@
-## Not released
+## Version 3.5.0
 ### Features
-- Added Google Analytics
+- Added new design for apps #458
+- Added ussage statistics #457
 
 ## Version 3.4.2
 ### Updates

@@ -1,6 +1,16 @@
-## Not released
+## Version 3.5.0
 ### Features
-- Added Google Analytics
+- Added new design for apps #458
+- Added ussage statistics #457
+- Added portable executable for Windows #459 #460
+
+## Version 3.4.2
+### Updates
+- Updated pc-ble-driver-js to 2.7.2 #452
+    See changes https://github.com/NordicSemiconductor/pc-ble-driver-js/releases/tag/v2.7.2
+### Fixes
+- “Update all apps” sometimes showed an error message (even though it worked
+  correctly). #451
 
 ## Version 3.4.1
 ### Updates
