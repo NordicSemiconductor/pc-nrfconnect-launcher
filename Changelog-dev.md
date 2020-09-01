@@ -1,7 +1,7 @@
 ## Version 3.5.0
 ### Features
 - Added new design for apps #458
-- Added ussage statistics #457
+- Added usage statistics #457
 - Added portable executable for Windows #459 #460
 
 ## Version 3.4.2
