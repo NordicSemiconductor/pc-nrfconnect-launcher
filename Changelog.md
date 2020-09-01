@@ -1,7 +1,7 @@
 ## Version 3.5.0
 ### Features
-- Added new design for apps #458
-- Added ussage statistics #457
+- Update design for new apps #458
+- Added usage statistics #457
 
 ## Version 3.4.2
 ### Updates
