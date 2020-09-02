@@ -2,6 +2,8 @@
 ### Features
 - Update design for new apps #458
 - Added usage statistics #457
+### Bugfixes
+- Fixed JLink device connecting issue at first try​
 
 ## Version 3.4.2
 ### Updates
