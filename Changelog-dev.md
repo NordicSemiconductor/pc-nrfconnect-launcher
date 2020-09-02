@@ -1,8 +1,10 @@
 ## Version 3.5.0
 ### Features
-- Update design for new apps #458
+- Updated design for new apps #458
 - Added usage statistics #457
 - Added portable executable for Windows #459 #460
+### Bugfixes
+- Fixed JLink device connecting issue at first try​
 
 ## Version 3.4.2
 ### Updates
