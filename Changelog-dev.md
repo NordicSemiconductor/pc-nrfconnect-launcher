@@ -4,7 +4,7 @@
 - Added usage statistics #457
 - Added portable executable for Windows #459 #460
 ### Bugfixes
-- Fixed JLink device connecting issue at first try​
+- Fixed JLink device enumerating issue
 
 ## Version 3.4.2
 ### Updates
