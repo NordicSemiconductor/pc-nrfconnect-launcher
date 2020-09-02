@@ -3,7 +3,7 @@
 - Updated design for new apps #458
 - Added usage statistics #457
 ### Bugfixes
-- Fixed JLink device enumerating issue
+- Fixed JLink device enumeration issue
 
 ## Version 3.4.2
 ### Updates
