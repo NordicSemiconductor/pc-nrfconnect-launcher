@@ -1,6 +1,9 @@
-## Not released
+## Version 3.5.0
 ### Features
-- Added Google Analytics
+- Updated design for new apps #458
+- Added usage statistics #457
+### Bugfixes
+- Fixed JLink device enumeration issue
 
 ## Version 3.4.2
 ### Updates
