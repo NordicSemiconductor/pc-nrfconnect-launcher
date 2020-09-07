@@ -58,16 +58,15 @@ export const EventAction = {
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
     REPORT_SYSTEM_INFO: 'Report system info',
-    REPORT_BIOS_INFO: 'Report bios info',
     REPORT_OS_INFO: 'Report OS info',
     REPORT_KERNEL_INFO: 'Report kernel info',
     REPORT_CPU_INFO: 'Report CPU info',
     REPORT_MEMORY_INFO: 'Report memory info',
     REPORT_FILE_SYSTEM_INFO: 'Report file system info',
-    REPORT_GIT_VERSION: 'Report git version',
-    REPORT_NODE_VERSION: 'Report node version',
-    REPORT_PYTHON_VERSION: 'Report python version',
-    REPORT_PYTHON3_VERSION: 'Report python3 version',
+    REPORT_GIT_VERSION: 'Report Git version',
+    REPORT_NODE_VERSION: 'Report Node.js version',
+    REPORT_PYTHON_VERSION: 'Report Python version',
+    REPORT_PYTHON3_VERSION: 'Report Python3 version',
 };
 
 const EventLabel = {
@@ -216,7 +215,7 @@ export function sendEnvInfo() {
         dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
         dispatch(sendLauncherUsageData(EventAction.REPORT_KERNEL_INFO, kernel));
 
-        const cpuInfo = `${cpuManufacturer}; ${brand}; ${speed} GHz`
+        const cpuInfo = `${cpuManufacturer}; ${brand}; ${speed} GHz;`
             + ` ${processors} processor(s); ${cores} core(s); ${physicalCores} physical core(s)`;
         dispatch(sendLauncherUsageData(EventAction.REPORT_CPU_INFO, cpuInfo));
 
