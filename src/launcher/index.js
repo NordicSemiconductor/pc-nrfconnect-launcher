@@ -94,4 +94,5 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.setAppManagementSource());
     await downloadLatestAppInfo();
     await checkForCoreUpdates();
+    store.dispatch(UserDataActions.sendEnvInfo());
 });

@@ -36,6 +36,9 @@
 
 import { remote } from 'electron';
 import { userData } from 'pc-nrfconnect-shared';
+import pretty from 'prettysize';
+import si from 'systeminformation';
+
 import pkgJson from '../../../package.json';
 
 const settings = remote.require('../main/settings');
@@ -54,6 +57,17 @@ export const EventAction = {
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
+    REPORT_SYSTEM_INFO: 'Report system info',
+    REPORT_BIOS_INFO: 'Report bios info',
+    REPORT_OS_INFO: 'Report OS info',
+    REPORT_KERNEL_INFO: 'Report kernel info',
+    REPORT_CPU_INFO: 'Report CPU info',
+    REPORT_MEMORY_INFO: 'Report memory info',
+    REPORT_FILE_SYSTEM_INFO: 'Report file system info',
+    REPORT_GIT_VERSION: 'Report git version',
+    REPORT_NODE_VERSION: 'Report node version',
+    REPORT_PYTHON_VERSION: 'Report python version',
+    REPORT_PYTHON3_VERSION: 'Report python3 version',
 };
 
 const EventLabel = {
@@ -149,7 +163,21 @@ export function checkUserDataSetting(isSendingUserData) {
     };
 }
 
-export function sendLauncherUserData(eventAction, eventLabel = null, appName = null) {
+export function sendLauncherUsageData(eventAction, eventLabel) {
+    return (_, getState) => {
+        const { isSendingUserData } = getState().settings;
+        if (!isSendingUserData) {
+            return;
+        }
+        userData.sendEvent(
+            EventCategory,
+            eventAction,
+            eventLabel,
+        );
+    };
+}
+
+export function sendAppUsageData(eventAction, eventLabel = null, appName = null) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
@@ -161,5 +189,48 @@ export function sendLauncherUserData(eventAction, eventLabel = null, appName = n
             updatedEventAction,
             eventLabel,
         );
+    };
+}
+
+export function sendEnvInfo() {
+    return async dispatch => {
+        const [
+            { manufacturer, model },
+            { platform, arch },
+            {
+                kernel, git, node, python, python3,
+            },
+            {
+                manufacturer: cpuManufacturer, brand, speed, cores, physicalCores, processors,
+            },
+            { total, free },
+            fsSize,
+        ] = await Promise.all([
+            si.system(), si.osInfo(), si.versions(), si.cpu(), si.mem(), si.fsSize(),
+        ]);
+
+        const systemInfo = `${manufacturer}; ${model}`;
+        dispatch(sendLauncherUsageData(EventAction.REPORT_SYSTEM_INFO, systemInfo));
+
+        const osInfo = `${platform}; ${arch}`;
+        dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
+        dispatch(sendLauncherUsageData(EventAction.REPORT_KERNEL_INFO, kernel));
+
+        const cpuInfo = `${cpuManufacturer}; ${brand}; ${speed} GHz`
+            + ` ${processors} processor(s); ${cores} core(s); ${physicalCores} physical core(s)`;
+        dispatch(sendLauncherUsageData(EventAction.REPORT_CPU_INFO, cpuInfo));
+
+        const memoryInfo = `${pretty(total)} in total; ${pretty(free)} free`;
+        dispatch(sendLauncherUsageData(EventAction.REPORT_MEMORY_INFO, memoryInfo));
+
+
+        const fileSystemInfo = `${fsSize[0].fs}; ${fsSize[0].type}; ${pretty(Number(fsSize[0].size) || 0)}; `
+            + ` ${fsSize[0].use.toFixed(1)}% used`;
+        dispatch(sendLauncherUsageData(EventAction.REPORT_FILE_SYSTEM_INFO, fileSystemInfo));
+
+        dispatch(sendLauncherUsageData(EventAction.REPORT_GIT_VERSION, git));
+        dispatch(sendLauncherUsageData(EventAction.REPORT_NODE_VERSION, node));
+        dispatch(sendLauncherUsageData(EventAction.REPORT_PYTHON_VERSION, python));
+        dispatch(sendLauncherUsageData(EventAction.REPORT_PYTHON3_VERSION, python3));
     };
 }
