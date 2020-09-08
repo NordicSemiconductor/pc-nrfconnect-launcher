@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.4.2",
+    "version": "3.5.0",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -95,8 +95,7 @@
         },
         "win": {
             "target": [
-                "nsis",
-                "portable"
+                "nsis"
             ],
             "extraFiles": [
                 {
