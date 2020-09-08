@@ -180,5 +180,6 @@
         "snapshotSerializers": [
             "enzyme-to-json/serializer"
         ]
-    }
+    },
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
 }

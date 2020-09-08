@@ -55,156 +55,170 @@ import SettingsView from '../SettingsView';
 
 describe('SettingsView', () => {
     it('should render empty div while loading', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup
-                isCheckingForUpdates={false}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup
+                    isCheckingForUpdates={false}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with check for updates enabled', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup
-                isCheckingForUpdates={false}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup
+                    isCheckingForUpdates={false}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with check for updates disabled', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup={false}
-                isCheckingForUpdates={false}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup={false}
+                    isCheckingForUpdates={false}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render when checking for updates', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup={false}
-                isCheckingForUpdates
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup={false}
+                    isCheckingForUpdates
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with last update check date', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup={false}
-                isCheckingForUpdates={false}
-                lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup={false}
+                    isCheckingForUpdates={false}
+                    lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render check for updates completed, with updates available', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup={false}
-                isCheckingForUpdates={false}
-                lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                isUpdateCheckCompleteDialogVisible
-                isAppUpdateAvailable
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup={false}
+                    isCheckingForUpdates={false}
+                    lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    isUpdateCheckCompleteDialogVisible
+                    isAppUpdateAvailable
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render check for updates completed, with everything up to date', () => {
-        expect(shallow(
-            <SettingsView
-                isLoading={false}
-                isSendingUserData={false}
-                showUserDataDialog={() => {}}
-                toggleSendingUserData={() => {}}
-                shouldCheckForUpdatesAtStartup={false}
-                isCheckingForUpdates={false}
-                lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
-                onTriggerUpdateCheck={() => {}}
-                onCheckUpdatesAtStartupChanged={() => {}}
-                onHideUpdateCheckCompleteDialog={() => {}}
-                isUpdateCheckCompleteDialogVisible
-                isAppUpdateAvailable={false}
-                sources={Map({})}
-                addSource={() => {}}
-                onShowRemoveSourceDialog={() => {}}
-                onShowAddSourceDialog={() => {}}
-                onHideAddSourceDialog={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <SettingsView
+                    isLoading={false}
+                    isSendingUserData={false}
+                    showUserDataDialog={() => {}}
+                    toggleSendingUserData={() => {}}
+                    shouldCheckForUpdatesAtStartup={false}
+                    isCheckingForUpdates={false}
+                    lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
+                    onTriggerUpdateCheck={() => {}}
+                    onCheckUpdatesAtStartupChanged={() => {}}
+                    onHideUpdateCheckCompleteDialog={() => {}}
+                    isUpdateCheckCompleteDialogVisible
+                    isAppUpdateAvailable={false}
+                    sources={Map({})}
+                    addSource={() => {}}
+                    onShowRemoveSourceDialog={() => {}}
+                    onShowAddSourceDialog={() => {}}
+                    onHideAddSourceDialog={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

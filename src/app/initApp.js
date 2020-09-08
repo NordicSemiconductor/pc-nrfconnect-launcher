@@ -37,7 +37,10 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    logger, setAppDirs, getUserDataDir, getAppLogDir,
+    logger,
+    setAppDirs,
+    getUserDataDir,
+    getAppLogDir,
 } from 'pc-nrfconnect-shared';
 
 import { mkdirIfNotExists } from '../main/mkdir';
@@ -52,7 +55,9 @@ const loadApp = appDir => {
     const moduleManifest = path.join(appDir, 'package.json');
 
     if (!fs.existsSync(moduleManifest)) {
-        console.log(`Trying to load module, but package.json is missing in ${appDir}.`);
+        console.log(
+            `Trying to load module, but package.json is missing in ${appDir}.`
+        );
         return null;
     }
 

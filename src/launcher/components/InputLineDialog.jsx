@@ -56,7 +56,8 @@ const InputLineDialog = ({
         </Modal.Header>
         <Form
             onSubmit={e => {
-                onOk(e.currentTarget.inputField.value); e.preventDefault();
+                onOk(e.currentTarget.inputField.value);
+                e.preventDefault();
             }}
         >
             <Modal.Body>
@@ -70,10 +71,7 @@ const InputLineDialog = ({
             </Modal.Body>
             <Modal.Footer>
                 <ButtonToolbar className="wide-btns">
-                    <Button
-                        type="submit"
-                        variant="outline-primary"
-                    >
+                    <Button type="submit" variant="outline-primary">
                         Add
                     </Button>
                     <Button

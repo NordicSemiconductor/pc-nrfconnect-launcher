@@ -59,19 +59,19 @@ class SerialPortSelector extends React.Component {
         } = this.props;
 
         if (!isLoading) {
-            return ports
-                .filter(filter)
-                .map(port => (
-                    <Dropdown.Item
-                        key={portPath(port)}
-                        className={menuItemCssClass}
-                        eventKey={portPath(port)}
-                        onSelect={() => onSelect(port)}
-                    >
-                        <div>{portPath(port)}</div>
-                        <div style={{ fontSize: 'small' }}>{port.serialNumber || ''}</div>
-                    </Dropdown.Item>
-                ));
+            return ports.filter(filter).map(port => (
+                <Dropdown.Item
+                    key={portPath(port)}
+                    className={menuItemCssClass}
+                    eventKey={portPath(port)}
+                    onSelect={() => onSelect(port)}
+                >
+                    <div>{portPath(port)}</div>
+                    <div style={{ fontSize: 'small' }}>
+                        {port.serialNumber || ''}
+                    </div>
+                </Dropdown.Item>
+            ));
         }
         return null;
     }
@@ -120,12 +120,14 @@ class SerialPortSelector extends React.Component {
                     hotkey="Alt+P"
                     title={`${selectorText}`}
                 >
-                    { this.renderSerialPortItems() }
-                    { this.renderCloseItem() }
+                    {this.renderSerialPortItems()}
+                    {this.renderCloseItem()}
                 </HotkeyedDropdown>
-                {
-                    showPortIndicator ? <div className={indicatorCssClass} /> : <div />
-                }
+                {showPortIndicator ? (
+                    <div className={indicatorCssClass} />
+                ) : (
+                    <div />
+                )}
             </div>
         );
     }

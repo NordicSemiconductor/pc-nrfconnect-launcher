@@ -51,9 +51,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onConfirmUpdateFirmware: port => (
-            dispatch(FirmwareDialogActions.firmwareUpdateRequested(port))
-        ),
+        onConfirmUpdateFirmware: port =>
+            dispatch(FirmwareDialogActions.firmwareUpdateRequested(port)),
         onCancel: () => {
             dispatch(SerialPortActions.deselectPort());
             dispatch(FirmwareDialogActions.hideDialog());
@@ -61,7 +60,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(FirmwareDialog, 'FirmwareDialog');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    FirmwareDialog,
+    'FirmwareDialog'
+);

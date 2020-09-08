@@ -124,17 +124,13 @@ export function toggleSendingUserData() {
 }
 
 function initUserData(label) {
-    userData.sendEvent(
-        EventCategory,
-        EventAction.LAUNCH_LAUNCHER,
-        label,
-    );
+    userData.sendEvent(EventCategory, EventAction.LAUNCH_LAUNCHER, label);
 }
 
 export function checkUserDataSetting(isSendingUserData) {
     return async dispatch => {
         await userData.init(EventCategory);
-        if ((typeof isSendingUserData) !== 'boolean') {
+        if (typeof isSendingUserData !== 'boolean') {
             dispatch(showUserDataDialog());
             initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
             return;
@@ -149,17 +145,19 @@ export function checkUserDataSetting(isSendingUserData) {
     };
 }
 
-export function sendLauncherUserData(eventAction, eventLabel = null, appName = null) {
+export function sendLauncherUserData(
+    eventAction,
+    eventLabel = null,
+    appName = null
+) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
             return;
         }
-        const updatedEventAction = appName ? `${eventAction} ${appName}` : eventAction;
-        userData.sendEvent(
-            EventCategory,
-            updatedEventAction,
-            eventLabel,
-        );
+        const updatedEventAction = appName
+            ? `${eventAction} ${appName}`
+            : eventAction;
+        userData.sendEvent(EventCategory, updatedEventAction, eventLabel);
     };
 }

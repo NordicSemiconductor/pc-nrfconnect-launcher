@@ -51,12 +51,13 @@ function mapDispatchToProps(dispatch) {
     return {
         onMount: () => dispatch(DeviceActions.startWatchingDevices()),
         onUnmount: () => dispatch(DeviceActions.stopWatchingDevices()),
-        onSelect: device => dispatch(DeviceActions.selectAndSetupDevice(device)),
+        onSelect: device =>
+            dispatch(DeviceActions.selectAndSetupDevice(device)),
         onDeselect: () => dispatch(DeviceActions.deselectDevice()),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(DeviceSelector, 'DeviceSelector');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    DeviceSelector,
+    'DeviceSelector'
+);

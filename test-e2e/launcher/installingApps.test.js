@@ -48,20 +48,24 @@ describe('app installation', () => {
             skipUpdateApps: false,
         });
 
-        it('installs and removes an online available app', () => (
+        it('installs and removes an online available app', () =>
             app.client
                 .waitForVisible('button[title*="Install"]')
                 .click('button[title*="Install"]')
                 .click('.list-group-item button[aria-haspopup="true"]')
                 .waitForVisible('a[title*="Remove"]')
                 .click('a[title*="Remove"]')
-                .waitForVisible('button[title*="Install"]')
-        ));
+                .waitForVisible('button[title*="Install"]'));
     });
 
     describe('offline from an app archive file', () => {
         const fixtureDir = 'fixtures/one-local-app-to-be-extracted';
-        const localDir = path.join(__dirname, fixtureDir, '.nrfconnect-apps', 'local');
+        const localDir = path.join(
+            __dirname,
+            fixtureDir,
+            '.nrfconnect-apps',
+            'local'
+        );
         const appName = 'pc-nrfconnect-foo';
         const appArchiveFile = `${appName}-1.2.3.tgz`;
 
@@ -81,9 +85,8 @@ describe('app installation', () => {
             additionalAfterEach: removeAppDirFromLocal,
         });
 
-        it('shows the app name in the launcher app list', () => (
-            checkAppListContains(app, 'Foo App')
-        ));
+        it('shows the app name in the launcher app list', () =>
+            checkAppListContains(app, 'Foo App'));
 
         it('removes the archive file', async () => {
             await app.client.waitForVisible('.list-group-item');

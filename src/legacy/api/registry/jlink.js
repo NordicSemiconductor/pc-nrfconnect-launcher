@@ -35,9 +35,14 @@
  */
 
 import { query } from './reg';
-import { parseMatchingKeys, parseParentIdPrefix, parseJlinkId } from './parsing';
+import {
+    parseMatchingKeys,
+    parseParentIdPrefix,
+    parseJlinkId,
+} from './parsing';
 
-const REGISTRY_USB_PATH = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB';
+const REGISTRY_USB_PATH =
+    'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB';
 
 function unique(array) {
     return [...new Set(array)];
@@ -54,17 +59,16 @@ function findParentIdPrefixes(comName) {
 }
 
 function findJlinkIds(parentIdPrefixes) {
-    const promises = parentIdPrefixes.map(parentIdPrefix => (
+    const promises = parentIdPrefixes.map(parentIdPrefix =>
         query(REGISTRY_USB_PATH, parentIdPrefix)
-            .then(output => parseMatchingKeys(output, 'ParentIdPrefix', parentIdPrefix))
+            .then(output =>
+                parseMatchingKeys(output, 'ParentIdPrefix', parentIdPrefix)
+            )
             .then(keys => keys.map(key => parseJlinkId(key)))
-    ));
+    );
     return Promise.all(promises)
         .then(jlinkIdArrays => concat(jlinkIdArrays))
         .then(jlinkIds => unique(jlinkIds));
 }
 
-export {
-    findParentIdPrefixes,
-    findJlinkIds,
-};
+export { findParentIdPrefixes, findJlinkIds };

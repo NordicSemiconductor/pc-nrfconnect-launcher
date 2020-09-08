@@ -45,9 +45,7 @@ const InitialState = Record({
 const initialState = new InitialState();
 
 function showDialog(state, action) {
-    return state
-        .set('isVisible', true)
-        .set('message', action.message);
+    return state.set('isVisible', true).set('message', action.message);
 }
 
 const reducer = (state = initialState, action) => {

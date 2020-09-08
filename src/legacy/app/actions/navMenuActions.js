@@ -45,7 +45,6 @@
  */
 export const ITEM_SELECTED = 'NAV_MENU_ITEM_SELECTED';
 
-
 export function menuItemSelected(id) {
     return {
         type: ITEM_SELECTED,

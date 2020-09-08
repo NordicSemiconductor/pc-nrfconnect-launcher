@@ -62,13 +62,12 @@ function cleanSerialNumber(serialNumber) {
 }
 
 function getSeggerPorts(ports) {
-    return ports
-        .map(port => {
-            const serialPort = Object.assign(port, {
-                serialNumber: cleanSerialNumber(port.serialNumber),
-            });
-            return getImmutableSerialPort(serialPort);
+    return ports.map(port => {
+        const serialPort = Object.assign(port, {
+            serialNumber: cleanSerialNumber(port.serialNumber),
         });
+        return getImmutableSerialPort(serialPort);
+    });
 }
 
 function setLoading(state, isLoading) {

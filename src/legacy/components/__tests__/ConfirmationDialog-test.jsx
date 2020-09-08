@@ -52,46 +52,54 @@ import ConfirmationDialog from '../ConfirmationDialog';
 
 describe('ConfirmationDialog', () => {
     it('should render invisible dialog', () => {
-        expect(shallow(
-            <ConfirmationDialog
-                isVisible={false}
-                text="Do you confirm?"
-                onCancel={() => {}}
-                onOk={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ConfirmationDialog
+                    isVisible={false}
+                    text="Do you confirm?"
+                    onCancel={() => {}}
+                    onOk={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render visible dialog with text', () => {
-        expect(shallow(
-            <ConfirmationDialog
-                isVisible
-                text="Do you confirm?"
-                onCancel={() => {}}
-                onOk={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ConfirmationDialog
+                    isVisible
+                    text="Do you confirm?"
+                    onCancel={() => {}}
+                    onOk={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render visible dialog with text and operation in progress', () => {
-        expect(shallow(
-            <ConfirmationDialog
-                isVisible
-                isInProgress
-                text="Do you confirm?"
-                onCancel={() => {}}
-                onOk={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ConfirmationDialog
+                    isVisible
+                    isInProgress
+                    text="Do you confirm?"
+                    onCancel={() => {}}
+                    onOk={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should not render cancel button if onCancel function is not provided', () => {
-        expect(shallow(
-            <ConfirmationDialog
-                isVisible
-                text="Something happened."
-                onOk={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ConfirmationDialog
+                    isVisible
+                    text="Something happened."
+                    onOk={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

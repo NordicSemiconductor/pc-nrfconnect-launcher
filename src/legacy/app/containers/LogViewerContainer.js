@@ -55,7 +55,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(LogViewer, 'LogViewer');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    LogViewer,
+    'LogViewer'
+);

@@ -58,24 +58,22 @@ const AppManagementView = ({
 }) => (
     <>
         <AppManagementFilter apps={apps} sources={sources} />
-        {
-            apps.map(app => (
-                <AppItem
-                    key={`${app.name}-${app.source}`}
-                    app={app}
-                    isDisabled={isProcessing}
-                    isInstalling={installingAppName === `${app.source}/${app.name}`}
-                    isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
-                    isRemoving={removingAppName === `${app.source}/${app.name}`}
-                    onRemove={() => onRemove(app.name, app.source)}
-                    onInstall={() => onInstall(app.name, app.source)}
-                    onReadMore={() => onReadMore(app.homepage)}
-                    onAppSelected={() => onAppSelected(app)}
-                    onCreateShortcut={() => onCreateShortcut(app)}
-                    onShowReleaseNotes={() => onShowReleaseNotes(app)}
-                />
-            ))
-        }
+        {apps.map(app => (
+            <AppItem
+                key={`${app.name}-${app.source}`}
+                app={app}
+                isDisabled={isProcessing}
+                isInstalling={installingAppName === `${app.source}/${app.name}`}
+                isUpgrading={upgradingAppName === `${app.source}/${app.name}`}
+                isRemoving={removingAppName === `${app.source}/${app.name}`}
+                onRemove={() => onRemove(app.name, app.source)}
+                onInstall={() => onInstall(app.name, app.source)}
+                onReadMore={() => onReadMore(app.homepage)}
+                onAppSelected={() => onAppSelected(app)}
+                onCreateShortcut={() => onCreateShortcut(app)}
+                onShowReleaseNotes={() => onShowReleaseNotes(app)}
+            />
+        ))}
         <ReleaseNotesDialog />
     </>
 );

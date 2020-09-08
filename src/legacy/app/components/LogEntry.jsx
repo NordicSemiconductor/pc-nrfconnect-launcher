@@ -68,7 +68,7 @@ function hrefReplacer(str) {
                 onKeyPress={() => {}}
             >
                 {href}
-            </a>,
+            </a>
         );
         return '';
     });
@@ -83,7 +83,9 @@ const LogEntry = ({ entry }) => {
     return (
         <div className={className}>
             <div className="core-log-time">{time}</div>
-            <div className="core-log-message">{hrefReplacer(entry.message)}</div>
+            <div className="core-log-message">
+                {hrefReplacer(entry.message)}
+            </div>
         </div>
     );
 };
