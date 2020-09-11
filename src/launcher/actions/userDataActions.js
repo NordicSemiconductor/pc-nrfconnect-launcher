@@ -61,9 +61,9 @@ export const EventAction = {
 };
 
 const EventLabel = {
-    LAUNCHER_USAGE_DATA_ON: 'Usage data on',
-    LAUNCHER_USAGE_DATA_OFF: 'Usage data off',
-    LAUNCHER_USAGE_DATA_NOT_SET: 'Usage data not set',
+    LAUNCHER_USER_DATA_ON: 'User data on',
+    LAUNCHER_USER_DATA_OFF: 'User data off',
+    LAUNCHER_USER_DATA_NOT_SET: 'User data not set',
 };
 
 export function showUserDataDialog() {
@@ -143,7 +143,7 @@ export function checkUserDataSetting(isSendingUserData) {
             return;
         }
         if (isSendingUserData) {
-            initUserData(EventLabel.LAUNCHER_USAGE_DATA_ON);
+            initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
             dispatch(setUserDataOn());
             return;
         }
@@ -151,7 +151,7 @@ export function checkUserDataSetting(isSendingUserData) {
     };
 }
 
-export function sendLauncherUsageData(eventAction, eventLabel) {
+export function sendLauncherUserData(eventAction, eventLabel) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
@@ -165,7 +165,7 @@ export function sendLauncherUsageData(eventAction, eventLabel) {
     };
 }
 
-export function sendAppUsageData(eventAction, eventLabel = null, appName = null) {
+export function sendAppUserData(eventAction, eventLabel = null, appName = null) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
@@ -184,6 +184,6 @@ export function sendEnvInfo() {
     return async dispatch => {
         const [{ platform, arch }] = await Promise.all([si.osInfo()]);
         const osInfo = `${platform}; ${arch}`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
+        dispatch(sendLauncherUserData(EventAction.REPORT_OS_INFO, osInfo));
     };
 }
