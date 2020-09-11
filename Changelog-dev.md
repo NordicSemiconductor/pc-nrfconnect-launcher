@@ -1,3 +1,7 @@
+## Unreleased
+### Features
+- Send system report
+
 ## Version 3.5.0
 ### Features
 - Updated design for new apps #458
