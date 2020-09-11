@@ -36,7 +36,6 @@
 
 import { remote } from 'electron';
 import { userData } from 'pc-nrfconnect-shared';
-import pretty from 'prettysize';
 import si from 'systeminformation';
 
 import pkgJson from '../../../package.json';
