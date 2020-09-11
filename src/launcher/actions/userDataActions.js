@@ -57,22 +57,13 @@ export const EventAction = {
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
-    REPORT_SYSTEM_INFO: 'Report system info',
     REPORT_OS_INFO: 'Report OS info',
-    REPORT_KERNEL_INFO: 'Report kernel info',
-    REPORT_CPU_INFO: 'Report CPU info',
-    REPORT_MEMORY_INFO: 'Report memory info',
-    REPORT_FILE_SYSTEM_INFO: 'Report file system info',
-    REPORT_GIT_VERSION: 'Report Git version',
-    REPORT_NODE_VERSION: 'Report Node.js version',
-    REPORT_PYTHON_VERSION: 'Report Python version',
-    REPORT_PYTHON3_VERSION: 'Report Python3 version',
 };
 
 const EventLabel = {
-    LAUNCHER_USER_DATA_ON: 'User data on',
-    LAUNCHER_USER_DATA_OFF: 'User data off',
-    LAUNCHER_USER_DATA_NOT_SET: 'User data not set',
+    LAUNCHER_USAGE_DATA_ON: 'Usage data on',
+    LAUNCHER_USAGE_DATA_OFF: 'Usage data off',
+    LAUNCHER_USAGE_DATA_NOT_SET: 'Usage data not set',
 };
 
 export function showUserDataDialog() {
@@ -149,15 +140,13 @@ export function checkUserDataSetting(isSendingUserData) {
         await userData.init(EventCategory);
         if ((typeof isSendingUserData) !== 'boolean') {
             dispatch(showUserDataDialog());
-            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
             return;
         }
         if (isSendingUserData) {
-            initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
+            initUserData(EventLabel.LAUNCHER_USAGE_DATA_ON);
             dispatch(setUserDataOn());
             return;
         }
-        initUserData(EventLabel.LAUNCHER_USER_DATA_OFF);
         dispatch(setUserDataOff());
     };
 }
@@ -193,43 +182,8 @@ export function sendAppUsageData(eventAction, eventLabel = null, appName = null)
 
 export function sendEnvInfo() {
     return async dispatch => {
-        const [
-            { manufacturer, model },
-            { platform, arch },
-            {
-                kernel, git, node, python, python3,
-            },
-            {
-                manufacturer: cpuManufacturer, brand, speed, cores, physicalCores, processors,
-            },
-            { total, free },
-            fsSize,
-        ] = await Promise.all([
-            si.system(), si.osInfo(), si.versions(), si.cpu(), si.mem(), si.fsSize(),
-        ]);
-
-        const systemInfo = `${manufacturer}; ${model}`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_SYSTEM_INFO, systemInfo));
-
+        const [{ platform, arch }] = await Promise.all([si.osInfo()]);
         const osInfo = `${platform}; ${arch}`;
         dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
-        dispatch(sendLauncherUsageData(EventAction.REPORT_KERNEL_INFO, kernel));
-
-        const cpuInfo = `${cpuManufacturer}; ${brand}; ${speed} GHz;`
-            + ` ${processors} processor(s); ${cores} core(s); ${physicalCores} physical core(s)`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_CPU_INFO, cpuInfo));
-
-        const memoryInfo = `${pretty(total)} in total; ${pretty(free)} free`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_MEMORY_INFO, memoryInfo));
-
-
-        const fileSystemInfo = `${fsSize[0].fs}; ${fsSize[0].type}; ${pretty(Number(fsSize[0].size) || 0)}; `
-            + ` ${fsSize[0].use.toFixed(1)}% used`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_FILE_SYSTEM_INFO, fileSystemInfo));
-
-        dispatch(sendLauncherUsageData(EventAction.REPORT_GIT_VERSION, git));
-        dispatch(sendLauncherUsageData(EventAction.REPORT_NODE_VERSION, node));
-        dispatch(sendLauncherUsageData(EventAction.REPORT_PYTHON_VERSION, python));
-        dispatch(sendLauncherUsageData(EventAction.REPORT_PYTHON3_VERSION, python3));
     };
 }
