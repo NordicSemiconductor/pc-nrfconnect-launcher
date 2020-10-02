@@ -3,6 +3,7 @@
 .idea
 .env
 .eslintrc
+prettier.config.js
 build/nrfjprog
 build/JLink*
 build/Release
@@ -10,6 +11,5 @@ dist
 jest.json
 /node_modules
 npm-debug.log
-package-lock.json
 release
 nrfjprog
