@@ -189,17 +189,20 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
                     }
                   }
                   disabled={false}
+                  hotkey=""
                   onClick={[Function]}
                   title="First item"
                 >
                   <SafeAnchor
                     className="dropdown-item"
                     disabled={false}
+                    hotkey=""
                     onClick={[Function]}
                     title="First item"
                   >
                     <a
                       className="dropdown-item"
+                      hotkey=""
                       href="#"
                       onClick={[Function]}
                       onKeyDown={[Function]}
@@ -242,17 +245,20 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
                     }
                   }
                   disabled={false}
+                  hotkey=""
                   onClick={[Function]}
                   title="Last item"
                 >
                   <SafeAnchor
                     className="dropdown-item"
                     disabled={false}
+                    hotkey=""
                     onClick={[Function]}
                     title="Last item"
                   >
                     <a
                       className="dropdown-item"
+                      hotkey=""
                       href="#"
                       onClick={[Function]}
                       onKeyDown={[Function]}
