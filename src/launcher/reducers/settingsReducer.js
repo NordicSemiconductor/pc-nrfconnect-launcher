@@ -53,8 +53,12 @@ const InitialState = Record({
 const initialState = new InitialState();
 
 function setSettings(state, settings) {
-    return state.set('isLoading', false)
-        .set('shouldCheckForUpdatesAtStartup', !!settings.shouldCheckForUpdatesAtStartup)
+    return state
+        .set('isLoading', false)
+        .set(
+            'shouldCheckForUpdatesAtStartup',
+            !!settings.shouldCheckForUpdatesAtStartup
+        )
         .set('sources', new Map(settings.sources));
 }
 
@@ -79,7 +83,10 @@ const reducer = (state = initialState, action) => {
         case SettingsActions.SETTINGS_LOAD_ERROR:
             return state.set('isLoading', false);
         case SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED:
-            return state.set('shouldCheckForUpdatesAtStartup', action.isEnabled);
+            return state.set(
+                'shouldCheckForUpdatesAtStartup',
+                action.isEnabled
+            );
         case SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW:
             return state.set('isUpdateCheckCompleteDialogVisible', true);
         case SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE:
@@ -93,9 +100,13 @@ const reducer = (state = initialState, action) => {
         case SettingsActions.SETTINGS_ADD_SOURCE_DIALOG_HIDE:
             return state.set('isAddSourceDialogVisible', false);
         case SettingsActions.SETTINGS_REMOVE_SOURCE_DIALOG_SHOW:
-            return state.set('isRemoveSourceDialogVisible', true).set('removeSource', action.name);
+            return state
+                .set('isRemoveSourceDialogVisible', true)
+                .set('removeSource', action.name);
         case SettingsActions.SETTINGS_REMOVE_SOURCE_DIALOG_HIDE:
-            return state.set('isRemoveSourceDialogVisible', false).set('removeSource', null);
+            return state
+                .set('isRemoveSourceDialogVisible', false)
+                .set('removeSource', null);
         case UserDataActions.USER_DATA_DIALOG_SHOW:
             return state.set('isUserDataDialogVisible', true);
         case UserDataActions.USER_DATA_DIALOG_HIDE:

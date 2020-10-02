@@ -122,8 +122,10 @@ export function checkForCoreUpdates() {
 
         const checkForUpdatesPromise = autoUpdater.checkForUpdates();
         if (!checkForUpdatesPromise) {
-            log.warn('Not checking for nRF Connect updates. Auto update is not '
-                + 'yet supported for this platform.');
+            log.warn(
+                'Not checking for nRF Connect updates. Auto update is not ' +
+                    'yet supported for this platform.'
+            );
             return Promise.resolve();
         }
 
@@ -145,8 +147,12 @@ export function checkForCoreUpdates() {
 export function startDownload() {
     return dispatch => {
         if (cancellationToken) {
-            dispatch(ErrorDialogActions.showDialog('Download was requested '
-                + 'but another download operation is already in progress.'));
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    'Download was requested ' +
+                        'but another download operation is already in progress.'
+                )
+            );
             return;
         }
 
@@ -185,8 +191,11 @@ export function cancelDownload() {
             cancellationToken.cancel();
             dispatch(cancelDownloadAction());
         } else {
-            dispatch(ErrorDialogActions.showDialog('Unable to cancel. '
-                + 'No download is in progress.'));
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    'Unable to cancel. ' + 'No download is in progress.'
+                )
+            );
         }
     };
 }
@@ -195,45 +204,61 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
     return dispatch => {
         dispatch(AppsActions.downloadLatestAppInfoAction());
 
-        return mainApps.downloadAppsJsonFiles()
+        return mainApps
+            .downloadAppsJsonFiles()
             .then(() => mainApps.generateUpdatesJsonFiles())
-            .then(() => dispatch(AppsActions.downloadLatestAppInfoSuccessAction()))
+            .then(() =>
+                dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
+            )
             .then(() => dispatch(AppsActions.loadOfficialApps()))
             .catch(error => {
                 dispatch(AppsActions.downloadLatestAppInfoErrorAction());
                 if (options.rejectIfError) {
                     throw error;
                 } else if (net.isResourceNotFound(error)) {
-                    dispatch(ErrorDialogActions.showDialog(
-                        `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n`
-                        + 'This is usually caused by outdated app sources in the settings, '
-                        + 'where the sources files was removed from the server.',
-                        {
-                            'Remove source': () => {
-                                dispatch(SettingsActions.removeSource(error.cause.name));
-                                dispatch(ErrorDialogActions.hideDialog());
-                            },
-                            Cancel: () => {
-                                dispatch(ErrorDialogActions.hideDialog());
-                            },
-                        },
-                    ));
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +
+                                'This is usually caused by outdated app sources in the settings, ' +
+                                'where the sources files was removed from the server.',
+                            {
+                                'Remove source': () => {
+                                    dispatch(
+                                        SettingsActions.removeSource(
+                                            error.cause.name
+                                        )
+                                    );
+                                    dispatch(ErrorDialogActions.hideDialog());
+                                },
+                                Cancel: () => {
+                                    dispatch(ErrorDialogActions.hideDialog());
+                                },
+                            }
+                        )
+                    );
                 } else {
-                    dispatch(ErrorDialogActions.showDialog(`Unable to download latest app info: ${error.message}`));
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to download latest app info: ${error.message}`
+                        )
+                    );
                 }
             });
     };
 }
 
 export function checkForUpdatesManually() {
-    return dispatch => (
+    return dispatch =>
         dispatch(downloadLatestAppInfo({ rejectIfError: true }))
             .then(() => {
                 dispatch(checkForCoreUpdates());
                 dispatch(SettingsActions.showUpdateCheckCompleteDialog());
             })
-            .catch(error => (
-                dispatch(ErrorDialogActions.showDialog(`Unable to check for updates: ${error.message}`))
-            ))
-    );
+            .catch(error =>
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        `Unable to check for updates: ${error.message}`
+                    )
+                )
+            );
 }

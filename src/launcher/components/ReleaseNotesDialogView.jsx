@@ -62,13 +62,10 @@ const view = ({
             <Modal.Title>Release notes for {displayName}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="release-notes">
-            <ReactMarkdown
-                source={releaseNote}
-                linkTarget="_blank"
-            />
+            <ReactMarkdown source={releaseNote} linkTarget="_blank" />
         </Modal.Body>
         <Modal.Footer>
-            { canUpdate && (
+            {canUpdate && (
                 <Button
                     variant="primary"
                     onClick={() => {
@@ -79,10 +76,7 @@ const view = ({
                     Update to latest version
                 </Button>
             )}
-            <Button
-                variant="outline-primary"
-                onClick={onHideReleaseNotes}
-            >
+            <Button variant="outline-primary" onClick={onHideReleaseNotes}>
                 Close
             </Button>
         </Modal.Footer>

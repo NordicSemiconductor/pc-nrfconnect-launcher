@@ -58,7 +58,9 @@ function readFile(filePath) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (error, data) => {
             if (error) {
-                reject(new Error(`Unable to read ${filePath}: ${error.message}`));
+                reject(
+                    new Error(`Unable to read ${filePath}: ${error.message}`)
+                );
             } else {
                 resolve(data);
             }
@@ -73,14 +75,13 @@ function readFile(filePath) {
  * @returns {Promise} promise that resolves with the parsed object.
  */
 function readJsonFile(filePath) {
-    return readFile(filePath)
-        .then(data => {
-            try {
-                return JSON.parse(data);
-            } catch (error) {
-                throw new Error(`Unable to parse ${filePath}: ${error.message}`);
-            }
-        });
+    return readFile(filePath).then(data => {
+        try {
+            return JSON.parse(data);
+        } catch (error) {
+            throw new Error(`Unable to parse ${filePath}: ${error.message}`);
+        }
+    });
 }
 
 /**
@@ -91,11 +92,10 @@ function readJsonFile(filePath) {
  */
 function listDirectories(dirPath) {
     if (fs.existsSync(dirPath)) {
-        return fs.readdirSync(dirPath)
-            .filter(file => {
-                const fileStats = fs.statSync(path.join(dirPath, file));
-                return fileStats.isDirectory();
-            });
+        return fs.readdirSync(dirPath).filter(file => {
+            const fileStats = fs.statSync(path.join(dirPath, file));
+            return fileStats.isDirectory();
+        });
     }
     return [];
 }
@@ -110,7 +110,8 @@ function listDirectories(dirPath) {
  */
 function listFiles(dirPath, regex) {
     if (fs.existsSync(dirPath)) {
-        return fs.readdirSync(dirPath)
+        return fs
+            .readdirSync(dirPath)
             .filter(file => {
                 const fileStats = fs.statSync(path.join(dirPath, file));
                 return fileStats.isFile();
@@ -135,14 +136,15 @@ function deleteFile(filePath) {
     return new Promise((resolve, reject) => {
         fs.unlink(filePath, error => {
             if (error) {
-                reject(new Error(`Unable to delete ${filePath}: ${error.message}`));
+                reject(
+                    new Error(`Unable to delete ${filePath}: ${error.message}`)
+                );
             } else {
                 resolve();
             }
         });
     });
 }
-
 
 /**
  * Delete the folder at the given path.
@@ -154,7 +156,11 @@ function deleteDir(folderPath) {
     return new Promise((resolve, reject) => {
         fse.remove(folderPath, error => {
             if (error) {
-                reject(new Error(`Unable to delete ${folderPath}: ${error.message}`));
+                reject(
+                    new Error(
+                        `Unable to delete ${folderPath}: ${error.message}`
+                    )
+                );
             } else {
                 resolve();
             }
@@ -192,22 +198,27 @@ function copy(src, dest) {
 function untar(src, dest, stripComponents = 0) {
     const pattern = new RegExp(`(.*?/){${stripComponents}}`);
     return new Promise((resolve, reject) => {
-        targz.decompress({
-            src,
-            dest,
-            tar: {
-                map: header => ({
-                    ...header,
-                    name: header.name.replace(pattern, ''),
-                }),
+        targz.decompress(
+            {
+                src,
+                dest,
+                tar: {
+                    map: header => ({
+                        ...header,
+                        name: header.name.replace(pattern, ''),
+                    }),
+                },
             },
-        }, error => {
-            if (error) {
-                reject(new Error(`Unable to extract ${src}: ${error.message}`));
-            } else {
-                resolve();
+            error => {
+                if (error) {
+                    reject(
+                        new Error(`Unable to extract ${src}: ${error.message}`)
+                    );
+                } else {
+                    resolve();
+                }
             }
-        });
+        );
     });
 }
 
@@ -222,7 +233,11 @@ function chmodDir(src, mode) {
     return new Promise((resolve, reject) => {
         chmodr(src, mode, error => {
             if (error) {
-                reject(new Error(`Unable to change mode to ${src}: ${error.message}`));
+                reject(
+                    new Error(
+                        `Unable to change mode to ${src}: ${error.message}`
+                    )
+                );
             } else {
                 resolve();
             }
@@ -253,10 +268,10 @@ function getTmpFilename(basename) {
  */
 function extractNpmPackage(appName, tgzFile, destinationDir) {
     const tmpDir = getTmpFilename(appName);
-    const moveToDestinationDir = () => fse.move(tmpDir, destinationDir, { overwrite: true });
+    const moveToDestinationDir = () =>
+        fse.move(tmpDir, destinationDir, { overwrite: true });
 
-    return untar(tgzFile, tmpDir, 1)
-        .then(moveToDestinationDir);
+    return untar(tgzFile, tmpDir, 1).then(moveToDestinationDir);
 }
 
 /**
@@ -279,7 +294,11 @@ function createTextFile(filePath, text) {
     return new Promise((resolve, reject) => {
         fs.writeFile(filePath, text, error => {
             if (error) {
-                reject(new Error(`Unable to initialize ${filePath}: ${error.message}`));
+                reject(
+                    new Error(
+                        `Unable to initialize ${filePath}: ${error.message}`
+                    )
+                );
             } else {
                 resolve();
             }

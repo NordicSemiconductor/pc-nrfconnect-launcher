@@ -59,7 +59,8 @@ describe('findParentIdPrefixes', () => {
     });
 
     it('should return array with one ParentIdPrefix value if one exists in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015&MI_00\\7&717c78b&0&0000\\Device Parameters
   PortName  REG_SZ  COM1
 `);
@@ -69,7 +70,8 @@ HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015&MI_0
     });
 
     it('should return array with two ParentIdPrefix values if two exist in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015&MI_00\\7&717c78b&0&0000\\Device Parameters
   PortName  REG_SZ  COM1
 
@@ -108,7 +110,8 @@ describe('findJlinkIds', () => {
     });
 
     it('should return array with one jlinkId if parentIdPrefix is given, and match exists in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000680551615
   ParentIdPrefix  REG_SZ  7&717c78b&0
 `);
@@ -118,7 +121,8 @@ HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000
     });
 
     it('should return array with two jlinkIds if parentIdPrefix is given, and two matches exist in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000680551615
   ParentIdPrefix  REG_SZ  7&717c78b&0
 
@@ -131,7 +135,8 @@ HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000
     });
 
     it('should return array with one jlinkId if parentIdPrefix is given, and duplicate match exists in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000680551615
   ParentIdPrefix  REG_SZ  7&717c78b&0
 
@@ -144,7 +149,8 @@ HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015&1337
     });
 
     it('should return array with two jlinkId if two parentIdPrefixes are given, and both exist in query output', () => {
-        reg.query = () => Promise.resolve(`
+        reg.query = () =>
+            Promise.resolve(`
 HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_1366&PID_1015\\000680551615
   ParentIdPrefix  REG_SZ  7&717c78b&0
 

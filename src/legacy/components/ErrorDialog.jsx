@@ -47,11 +47,11 @@ const ErrorDialog = ({ isVisible, messages, onClose }) => (
             <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {
-                messages.map(message => (
-                    <p className="core-error-dialog-message" key={message}>{message}</p>
-                ))
-            }
+            {messages.map(message => (
+                <p className="core-error-dialog-message" key={message}>
+                    {message}
+                </p>
+            ))}
         </Modal.Body>
         <Modal.Footer>
             <Button onClick={onClose}>Close</Button>

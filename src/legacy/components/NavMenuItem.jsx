@@ -55,7 +55,12 @@ export default class NavMenuItem extends React.Component {
 
     render() {
         const {
-            title, text, cssClass, iconClass, isSelected, onClick,
+            title,
+            text,
+            cssClass,
+            iconClass,
+            isSelected,
+            onClick,
         } = this.props;
         return (
             <button

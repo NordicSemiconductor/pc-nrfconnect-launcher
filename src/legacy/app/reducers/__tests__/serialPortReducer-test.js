@@ -107,7 +107,10 @@ describe('serialPortReducer', () => {
     });
 
     it('should set selected port comPort when port has been selected', () => {
-        const state = reducer(initialState, SerialPortActions.selectPortAction({ path: '/dev/tty1' }));
+        const state = reducer(
+            initialState,
+            SerialPortActions.selectPortAction({ path: '/dev/tty1' })
+        );
         expect(state.selectedPort).toEqual('/dev/tty1');
     });
 

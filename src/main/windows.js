@@ -100,8 +100,12 @@ function openAppWindow(app) {
     }
 
     const appWindow = browser.createWindow({
-        title: `nRF Connect v${config.getVersion()} - ${app.displayName || app.name}`,
-        url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${app.path}`,
+        title: `nRF Connect v${config.getVersion()} - ${
+            app.displayName || app.name
+        }`,
+        url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
+            app.path
+        }`,
         icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
         x,
         y,
@@ -127,41 +131,48 @@ function openAppWindow(app) {
     });
 
     appWindow.on('closed', () => {
-        const index = appWindows.findIndex(appWin => appWin.browserWindow === appWindow);
+        const index = appWindows.findIndex(
+            appWin => appWin.browserWindow === appWindow
+        );
         if (index > -1) {
             appWindows.splice(index, 1);
         }
-        if (appWindows.length === 0 && !(launcherWindow && launcherWindow.isVisible())) {
+        if (
+            appWindows.length === 0 &&
+            !(launcherWindow && launcherWindow.isVisible())
+        ) {
             electron.app.quit();
         }
     });
 }
 
 function openOfficialAppWindow(appName, sourceName) {
-    return apps.getOfficialApps()
-        .then(appList => {
-            const officialApp = appList.find(app => (
-                app.name === appName && app.source === sourceName
-            ));
-            const isInstalled = officialApp && officialApp.path;
-            if (isInstalled) {
-                openAppWindow(officialApp);
-            } else {
-                throw new Error(`Tried to open app ${appName} from source ${sourceName}, but it is not installed`);
-            }
-        });
+    return apps.getOfficialApps().then(appList => {
+        const officialApp = appList.find(
+            app => app.name === appName && app.source === sourceName
+        );
+        const isInstalled = officialApp && officialApp.path;
+        if (isInstalled) {
+            openAppWindow(officialApp);
+        } else {
+            throw new Error(
+                `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
+            );
+        }
+    });
 }
 
 function openLocalAppWindow(appName) {
-    return apps.getLocalApps()
-        .then(appList => {
-            const localApp = appList.find(app => app.name === appName);
-            if (localApp) {
-                openAppWindow(localApp);
-            } else {
-                throw new Error(`Tried to open local app ${appName}, but it is not installed`);
-            }
-        });
+    return apps.getLocalApps().then(appList => {
+        const localApp = appList.find(app => app.name === appName);
+        if (localApp) {
+            openAppWindow(localApp);
+        } else {
+            throw new Error(
+                `Tried to open local app ${appName}, but it is not installed`
+            );
+        }
+    });
 }
 
 function getFocusedAppWindow() {

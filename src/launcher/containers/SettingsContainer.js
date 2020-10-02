@@ -41,8 +41,9 @@ import * as UserDataActions from '../actions/userDataActions';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 
 function isAppUpdateAvailable(officialApps) {
-    return !!officialApps.find(app => app.latestVersion
-        && app.currentVersion !== app.latestVersion);
+    return !!officialApps.find(
+        app => app.latestVersion && app.currentVersion !== app.latestVersion
+    );
 }
 
 function mapStateToProps(state) {
@@ -52,7 +53,8 @@ function mapStateToProps(state) {
         isLoading: settings.isLoading,
         shouldCheckForUpdatesAtStartup: settings.shouldCheckForUpdatesAtStartup,
         isCheckingForUpdates: apps.isDownloadingLatestAppInfo,
-        isUpdateCheckCompleteDialogVisible: settings.isUpdateCheckCompleteDialogVisible,
+        isUpdateCheckCompleteDialogVisible:
+            settings.isUpdateCheckCompleteDialogVisible,
         lastUpdateCheckDate: apps.lastUpdateCheckDate,
         isAppUpdateAvailable: isAppUpdateAvailable(apps.officialApps),
         sources: settings.sources,
@@ -65,39 +67,27 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onMount: () => dispatch(SettingsActions.loadSettings()),
-        onCheckUpdatesAtStartupChanged: isEnabled => (
-            dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled))
-        ),
-        onTriggerUpdateCheck: () => (
-            dispatch(AutoUpdateActions.checkForUpdatesManually())
-        ),
-        onHideUpdateCheckCompleteDialog: () => (
-            dispatch(SettingsActions.hideUpdateCheckCompleteDialog())
-        ),
+        onCheckUpdatesAtStartupChanged: isEnabled =>
+            dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled)),
+        onTriggerUpdateCheck: () =>
+            dispatch(AutoUpdateActions.checkForUpdatesManually()),
+        onHideUpdateCheckCompleteDialog: () =>
+            dispatch(SettingsActions.hideUpdateCheckCompleteDialog()),
         addSource: url => dispatch(SettingsActions.addSource(url)),
         removeSource: name => dispatch(SettingsActions.removeSource(name)),
-        onShowAddSourceDialog: () => (
-            dispatch(SettingsActions.showAddSourceDialog())
-        ),
-        onHideAddSourceDialog: () => (
-            dispatch(SettingsActions.hideAddSourceDialog())
-        ),
-        onShowRemoveSourceDialog: name => (
-            dispatch(SettingsActions.showRemoveSourceDialog(name))
-        ),
-        onHideRemoveSourceDialog: () => (
-            dispatch(SettingsActions.hideRemoveSourceDialog())
-        ),
-        toggleSendingUserData: () => (
-            dispatch(UserDataActions.toggleSendingUserData())
-        ),
-        showUserDataDialog: () => (
-            dispatch(UserDataActions.showUserDataDialog())
-        ),
+        onShowAddSourceDialog: () =>
+            dispatch(SettingsActions.showAddSourceDialog()),
+        onHideAddSourceDialog: () =>
+            dispatch(SettingsActions.hideAddSourceDialog()),
+        onShowRemoveSourceDialog: name =>
+            dispatch(SettingsActions.showRemoveSourceDialog(name)),
+        onHideRemoveSourceDialog: () =>
+            dispatch(SettingsActions.hideRemoveSourceDialog()),
+        toggleSendingUserData: () =>
+            dispatch(UserDataActions.toggleSendingUserData()),
+        showUserDataDialog: () =>
+            dispatch(UserDataActions.showUserDataDialog()),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(SettingsView);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView);

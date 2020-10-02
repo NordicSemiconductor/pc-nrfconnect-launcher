@@ -39,9 +39,8 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import Root from '../components/Root';
 
-const RootContainer = ({ store }) => (
-    React.createElement(Provider, { store }, React.createElement(Root))
-);
+const RootContainer = ({ store }) =>
+    React.createElement(Provider, { store }, React.createElement(Root));
 
 RootContainer.propTypes = {
     store: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

@@ -45,6 +45,4 @@ const decoratedAppReducer = decorateReducer(appReducer, 'App');
 
 // If the reducer is not decorated, then it will return undefined. Redux does not
 // allow that, so we just return an empty object in that case.
-export default (state, action) => (
-    decoratedAppReducer(state, action) || {}
-);
+export default (state, action) => decoratedAppReducer(state, action) || {};

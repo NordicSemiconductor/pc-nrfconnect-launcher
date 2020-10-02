@@ -59,8 +59,10 @@ const UpdateAvailableDialog = ({
     <ConfirmationDialog
         isVisible={isVisible}
         title="Update available"
-        text={`A new version (${version}) of nRF Connect is available. `
-            + 'Would you like to upgrade now?'}
+        text={
+            `A new version (${version}) of nRF Connect is available. ` +
+            'Would you like to upgrade now?'
+        }
         okButtonText="Yes"
         cancelButtonText="No"
         onOk={onConfirm}
@@ -70,7 +72,11 @@ const UpdateAvailableDialog = ({
             A new version ({version}) of nRF Connect is available. Would you
             like to upgrade now?
         </p>
-        <button className="btn btn-link core-btn-link" onClick={onClickReleaseNotes} type="button">
+        <button
+            className="btn btn-link core-btn-link"
+            onClick={onClickReleaseNotes}
+            type="button"
+        >
             Click to see release notes
         </button>
     </ConfirmationDialog>

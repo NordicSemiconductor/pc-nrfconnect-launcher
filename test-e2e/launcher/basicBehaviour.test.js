@@ -44,15 +44,16 @@ describe('basic behaviour of the launcher', () => {
         appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
     });
 
-    it('shows package.json version in launcher window title', () => (
-        checkTitleOfWindow(app, version)
-    ));
+    it('shows package.json version in launcher window title', () =>
+        checkTitleOfWindow(app, version));
 });
 
 describe('automatic update check', () => {
     describe('When enabled', () => {
-        const appsRootDir = 'launcher/fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps';
-        const settingsJsonPath = 'launcher/fixtures/check-for-updates-at-startup-enabled/settings.json';
+        const appsRootDir =
+            'launcher/fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps';
+        const settingsJsonPath =
+            'launcher/fixtures/check-for-updates-at-startup-enabled/settings.json';
 
         const app = setupTestApp({
             appsRootDir,
@@ -64,7 +65,12 @@ describe('automatic update check', () => {
         it('populates apps.json in .nrfconnect-apps', async () => {
             await app.client.waitForVisible('.list-group-item');
 
-            const appsJsonFile = path.join(__dirname, '..', appsRootDir, 'apps.json');
+            const appsJsonFile = path.join(
+                __dirname,
+                '..',
+                appsRootDir,
+                'apps.json'
+            );
             // eslint-disable-next-line import/no-dynamic-require, global-require
             const appsJson = require(appsJsonFile);
             const appNames = Object.keys(appsJson);
@@ -74,8 +80,10 @@ describe('automatic update check', () => {
     });
 
     describe('When disabled', () => {
-        const appsRootDir = 'launcher/fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps';
-        const settingsJsonPath = 'launcher/fixtures/check-for-updates-at-startup-disabled/settings.json';
+        const appsRootDir =
+            'launcher/fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps';
+        const settingsJsonPath =
+            'launcher/fixtures/check-for-updates-at-startup-disabled/settings.json';
 
         const app = setupTestApp({
             appsRootDir,
@@ -87,7 +95,12 @@ describe('automatic update check', () => {
         it('populates not apps.json in .nrfconnect-apps', async () => {
             await app.client.waitForVisible('#launcher-tabpane-apps');
 
-            const appsJsonFile = path.join(__dirname, '..', appsRootDir, 'apps.json');
+            const appsJsonFile = path.join(
+                __dirname,
+                '..',
+                appsRootDir,
+                'apps.json'
+            );
             // eslint-disable-next-line import/no-dynamic-require, global-require
             const appsJson = require(appsJsonFile);
 
@@ -103,7 +116,6 @@ describe('showing apps available on the server', () => {
         skipUpdateApps: false,
     });
 
-    it('shows apps available on the server', () => (
-        app.client.waitForVisible('button[title*="Install"]')
-    ));
+    it('shows apps available on the server', () =>
+        app.client.waitForVisible('button[title*="Install"]'));
 });

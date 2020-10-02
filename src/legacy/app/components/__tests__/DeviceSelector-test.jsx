@@ -52,44 +52,48 @@ const selectDeviceText = 'Select device';
 
 describe('DeviceSelector', () => {
     it('should render empty device list', () => {
-        expect(renderer.create(
-            <DeviceSelector
-                devices={[]}
-                togglerText={selectDeviceText}
-                onToggle={() => {}}
-                displayCloseItem={false}
-                onSelect={() => {}}
-                onDeselect={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <DeviceSelector
+                    devices={[]}
+                    togglerText={selectDeviceText}
+                    onToggle={() => {}}
+                    displayCloseItem={false}
+                    onSelect={() => {}}
+                    onDeselect={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render one device with serialport, usb, and jlink traits', () => {
-        expect(renderer.create(
-            <DeviceSelector
-                devices={[
-                    {
-                        serialNumber: '123456789',
-                        serialport: {
-                            path: '/dev/ttyACM0',
+        expect(
+            renderer.create(
+                <DeviceSelector
+                    devices={[
+                        {
+                            serialNumber: '123456789',
+                            serialport: {
+                                path: '/dev/ttyACM0',
+                            },
+                            'serialport.1': {
+                                path: '/dev/ttyACM1',
+                            },
+                            usb: {
+                                manufacturer: 'Nordic Semiconductor',
+                                product: 'nRF52 USB',
+                            },
+                            boardVersion: 'PCA42424',
+                            traits: ['serialport', 'nordicUsb', 'jlink'],
                         },
-                        'serialport.1': {
-                            path: '/dev/ttyACM1',
-                        },
-                        usb: {
-                            manufacturer: 'Nordic Semiconductor',
-                            product: 'nRF52 USB',
-                        },
-                        boardVersion: 'PCA42424',
-                        traits: ['serialport', 'nordicUsb', 'jlink'],
-                    },
-                ]}
-                togglerText={selectDeviceText}
-                onToggle={() => {}}
-                displayCloseItem={false}
-                onSelect={() => {}}
-                onDeselect={() => {}}
-            />,
-        )).toMatchSnapshot();
+                    ]}
+                    togglerText={selectDeviceText}
+                    onToggle={() => {}}
+                    displayCloseItem={false}
+                    onSelect={() => {}}
+                    onDeselect={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

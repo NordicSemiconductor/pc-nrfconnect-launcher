@@ -50,10 +50,12 @@ const menuItems = Immutable.List([
     {
         id: 1,
         text: 'First item',
-    }, {
+    },
+    {
         id: 2,
         isDivider: true,
-    }, {
+    },
+    {
         id: 3,
         text: 'Last item',
     },
@@ -61,28 +63,30 @@ const menuItems = Immutable.List([
 
 describe('MainMenu', () => {
     it('should render menu with no items', () => {
-        expect(mount(
-            <MainMenu menuItems={[]} defaultShow />,
-        )).toMatchSnapshot();
+        expect(
+            mount(<MainMenu menuItems={[]} defaultShow />)
+        ).toMatchSnapshot();
     });
 
     it('should render menu with two items separated by divider', () => {
-        expect(mount(
-            <MainMenu menuItems={menuItems} defaultShow />,
-        )).toMatchSnapshot();
+        expect(
+            mount(<MainMenu menuItems={menuItems} defaultShow />)
+        ).toMatchSnapshot();
     });
 
     it('should invoke onClick when item has been clicked', () => {
         const onClick = jest.fn();
         const wrapper = mount(
             <MainMenu
-                menuItems={[{
-                    id: 1,
-                    text: 'Foo',
-                    onClick,
-                }]}
+                menuItems={[
+                    {
+                        id: 1,
+                        text: 'Foo',
+                        onClick,
+                    },
+                ]}
                 defaultShow
-            />,
+            />
         );
         wrapper.find('a[title="Foo"]').first().simulate('click');
 

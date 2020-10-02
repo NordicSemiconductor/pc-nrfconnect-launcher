@@ -48,48 +48,54 @@ import LogHeader from '../LogHeader';
 
 describe('LogHeader', () => {
     it('should render when text and no buttons provided', () => {
-        expect(renderer.create(
-            <LogHeader
-                text="Foobar log header"
-                onButtonClicked={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <LogHeader
+                    text="Foobar log header"
+                    onButtonClicked={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render when buttons are provided', () => {
-        expect(renderer.create(
-            <LogHeader
-                buttons={[
-                    {
-                        id: 'foo',
-                        title: 'Foo button',
-                        iconCssClass: 'foo-btn-class',
-                    },
-                    {
-                        id: 'bar',
-                        title: 'Bar button',
-                        iconCssClass: 'bar-btn-class',
-                    },
-                ]}
-                onButtonClicked={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <LogHeader
+                    buttons={[
+                        {
+                            id: 'foo',
+                            title: 'Foo button',
+                            iconCssClass: 'foo-btn-class',
+                        },
+                        {
+                            id: 'bar',
+                            title: 'Bar button',
+                            iconCssClass: 'bar-btn-class',
+                        },
+                    ]}
+                    onButtonClicked={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render when selected button is provided', () => {
-        expect(renderer.create(
-            <LogHeader
-                buttons={[
-                    {
-                        id: 'foo',
-                        title: 'Foo button',
-                        iconCssClass: 'foo-btn-class',
-                        isSelected: true,
-                    },
-                ]}
-                onButtonClicked={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <LogHeader
+                    buttons={[
+                        {
+                            id: 'foo',
+                            title: 'Foo button',
+                            iconCssClass: 'foo-btn-class',
+                            isSelected: true,
+                        },
+                    ]}
+                    onButtonClicked={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should invoke onButtonClicked with button id when button is clicked', () => {
@@ -104,7 +110,7 @@ describe('LogHeader', () => {
                     },
                 ]}
                 onButtonClicked={onButtonClicked}
-            />,
+            />
         );
         wrapper.find('LogHeaderButton[title="Foo button"]').simulate('click');
 
