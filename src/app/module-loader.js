@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable no-underscore-dangle */
 import Module from 'module';
 
 const hostedModules = {};
@@ -43,9 +44,8 @@ const hostedModules = {};
  * app uses the same instances of react and react-redux as we have in core.
  * Cannot have multiple copies of these loaded at the same time.
  */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
+const originalLoad = Module._load;
 Module._load = function load(modulePath) {
-    // eslint-disable-line no-underscore-dangle
     if (hostedModules[modulePath]) {
         return hostedModules[modulePath];
     }

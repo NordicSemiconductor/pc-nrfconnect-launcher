@@ -138,7 +138,7 @@ function mapToProps(mapSubject, coreMapFn, appMapFnName) {
     if (appMapFn) {
         if (typeof appMapFn !== 'function') {
             throw new Error(
-                `Error when calling '${appMapFnName}': ` + 'Not a function.'
+                `Error when calling '${appMapFnName}': Not a function.`
             );
         }
 
@@ -175,7 +175,7 @@ function decorateReducer(coreReducerFn, name) {
         if (appReducerFn) {
             if (typeof appReducerFn !== 'function') {
                 throw new Error(
-                    `Error when calling '${method}': ` + 'Not a function.'
+                    `Error when calling '${method}': Not a function.`
                 );
             }
 

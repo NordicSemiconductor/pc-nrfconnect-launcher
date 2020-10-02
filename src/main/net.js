@@ -96,20 +96,14 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
                 })
             );
             response.on('error', error =>
-                reject(
-                    new Error(
-                        `Error when reading ${url}: ` + `${error.message}`
-                    )
-                )
+                reject(new Error(`Error when reading ${url}: ${error.message}`))
             );
         });
         if (enableProxyLogin) {
             request.on('login', onProxyLogin);
         }
         request.on('error', error =>
-            reject(
-                new Error(`Unable to download ${url}: ` + `${error.message}`)
-            )
+            reject(new Error(`Unable to download ${url}: ${error.message}`))
         );
         request.end();
     });

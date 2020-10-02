@@ -38,8 +38,8 @@ const sleep = millis => new Promise(resolve => setTimeout(resolve, millis));
 
 const waitForSecondWindow = async app => {
     for (let retry = 0; retry < 5; retry += 1) {
+        // eslint-disable-next-line no-await-in-loop
         if ((await app.client.getWindowCount()) === 2) {
-            // eslint-disable-line no-await-in-loop
             return;
         }
         await sleep(500); // eslint-disable-line no-await-in-loop

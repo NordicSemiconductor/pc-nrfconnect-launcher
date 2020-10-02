@@ -358,7 +358,7 @@ export function loadOfficialApps(appName, appSource) {
                 dispatch(loadOfficialAppsError());
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        'Unable to load apps: ' + `${error.message}`
+                        `Unable to load apps: ${error.message}`
                     )
                 );
             });

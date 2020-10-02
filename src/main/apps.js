@@ -482,7 +482,7 @@ function getOfficialAppsFromSource(source) {
         fileUtil.readJsonFile(config.getAppsJsonPath(source)),
         fileUtil.readJsonFile(config.getUpdatesJsonPath(source)),
     ]).then(([officialApps, availableUpdates]) => {
-        const { _source, ...cleanedApps } = officialApps;
+        const { ...cleanedApps } = officialApps;
         const officialAppsArray = officialAppsObjToArray(cleanedApps, source);
         const promises = officialAppsArray.map(officialApp =>
             fs

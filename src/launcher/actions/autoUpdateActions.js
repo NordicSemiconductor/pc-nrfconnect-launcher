@@ -193,7 +193,7 @@ export function cancelDownload() {
         } else {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    'Unable to cancel. ' + 'No download is in progress.'
+                    'Unable to cancel. No download is in progress.'
                 )
             );
         }
