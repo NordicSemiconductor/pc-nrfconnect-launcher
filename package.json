@@ -115,14 +115,14 @@
     "devDependencies": {
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
-        "electron": "5.0.13",
+        "electron": "7.2.4",
         "electron-builder": "22.7.0",
         "electron-devtools-installer": "3.1.1",
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.8.15",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.9.7",
         "spectron": "7.0.0",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
