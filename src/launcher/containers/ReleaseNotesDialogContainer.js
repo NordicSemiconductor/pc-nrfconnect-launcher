@@ -45,7 +45,7 @@ function mapStateToProps({
 }) {
     if (name) {
         const app = officialApps.find(
-            x => x.source === source && x.name === name
+            x => x.source === source && x.name === name,
         );
         return {
             source: app.source,
@@ -62,8 +62,7 @@ function mapStateToProps({
 
 function mapDispatchToProps(dispatch) {
     return {
-        onUpgrade: (name, version, source) =>
-            dispatch(upgradeOfficialApp(name, version, source)),
+        onUpgrade: (name, version, source) => dispatch(upgradeOfficialApp(name, version, source)),
         onHideReleaseNotes: () => dispatch(ReleaseNotes.hide()),
     };
 }

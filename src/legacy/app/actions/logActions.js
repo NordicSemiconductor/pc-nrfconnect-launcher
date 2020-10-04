@@ -155,7 +155,7 @@ export function startReading() {
             logger.debug(`App ${name} v${currentVersion} ${official}`);
             logger.debug(`App path: ${path}`);
             logger.debug(
-                `nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`
+                `nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`,
             );
             logger.debug(`nRFConnect path: ${corePath}`);
             logger.debug(`HomeDir: ${homeDir}`);

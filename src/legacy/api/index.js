@@ -46,4 +46,6 @@ const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 
 core.logger = logger;
 
-export { bleDriver, nrfjprog, usb, serialPort, logger, electron, core };
+export {
+    bleDriver, nrfjprog, usb, serialPort, logger, electron, core,
+};

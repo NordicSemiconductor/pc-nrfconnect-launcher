@@ -60,8 +60,8 @@ const UpdateAvailableDialog = ({
         isVisible={isVisible}
         title="Update available"
         text={
-            `A new version (${version}) of nRF Connect is available. ` +
-            'Would you like to upgrade now?'
+            `A new version (${version}) of nRF Connect is available. `
+            + 'Would you like to upgrade now?'
         }
         okButtonText="Yes"
         cancelButtonText="No"

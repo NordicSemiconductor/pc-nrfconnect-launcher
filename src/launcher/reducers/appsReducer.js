@@ -84,7 +84,7 @@ function hideConfirmLaunchDialog(state) {
         .set('confirmLaunchApp', initialState.app)
         .set(
             'isConfirmLaunchDialogVisible',
-            initialState.isConfirmLaunchDialogVisible
+            initialState.isConfirmLaunchDialogVisible,
         );
 }
 
@@ -98,14 +98,14 @@ function setLatestAppInfoDownloaded(state) {
 function setAppIconPath(state, source, name, iconPath) {
     return state.update(
         state.findKey(x => x.source === source && x.name === name),
-        x => x.merge({ iconPath })
+        x => x.merge({ iconPath }),
     );
 }
 
 function setAppReleaseNote(state, source, name, releaseNote) {
     return state.update(
         state.findKey(x => x.source === source && x.name === name),
-        x => x.merge({ releaseNote })
+        x => x.merge({ releaseNote }),
     );
 }
 
@@ -126,22 +126,22 @@ const reducer = (state = initialState, action) => {
         case AppsActions.INSTALL_OFFICIAL_APP:
             return state.set(
                 'installingAppName',
-                `${action.source}/${action.name}`
+                `${action.source}/${action.name}`,
             );
         case AppsActions.REMOVE_OFFICIAL_APP:
             return state.set(
                 'removingAppName',
-                `${action.source}/${action.name}`
+                `${action.source}/${action.name}`,
             );
         case AppsActions.UPGRADE_OFFICIAL_APP:
             return state.set(
                 'upgradingAppName',
-                `${action.source}/${action.name}`
+                `${action.source}/${action.name}`,
             );
         case AppsActions.INSTALL_OFFICIAL_APP_SUCCESS:
             return state.set(
                 'installingAppName',
-                initialState.installingAppName
+                initialState.installingAppName,
             );
         case AppsActions.REMOVE_OFFICIAL_APP_SUCCESS:
             return state.set('removingAppName', initialState.removingAppName);
@@ -150,7 +150,7 @@ const reducer = (state = initialState, action) => {
         case AppsActions.INSTALL_OFFICIAL_APP_ERROR:
             return state.set(
                 'installingAppName',
-                initialState.installingAppName
+                initialState.installingAppName,
             );
         case AppsActions.REMOVE_OFFICIAL_APP_ERROR:
             return state.set('removingAppName', initialState.removingAppName);
@@ -167,18 +167,14 @@ const reducer = (state = initialState, action) => {
         case AppsActions.DOWNLOAD_LATEST_APP_INFO_ERROR:
             return state.set('isDownloadingLatestAppInfo', false);
         case AppsActions.SET_APP_ICON_PATH:
-            return state.update('officialApps', x =>
-                setAppIconPath(x, action.source, action.name, action.iconPath)
-            );
+            return state.update('officialApps', x => setAppIconPath(x, action.source, action.name, action.iconPath));
         case AppsActions.SET_APP_RELEASE_NOTE:
-            return state.update('officialApps', x =>
-                setAppReleaseNote(
-                    x,
-                    action.source,
-                    action.name,
-                    action.releaseNote
-                )
-            );
+            return state.update('officialApps', x => setAppReleaseNote(
+                x,
+                action.source,
+                action.name,
+                action.releaseNote,
+            ));
         case AppsActions.SET_APP_MANAGEMENT_SHOW:
             return state.set('show', action.show);
         case AppsActions.SET_APP_MANAGEMENT_FILTER:

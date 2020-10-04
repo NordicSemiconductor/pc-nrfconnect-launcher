@@ -40,7 +40,9 @@ import { openUrl } from 'pc-nrfconnect-shared';
 
 import logo from 'pc-nrfconnect-shared/src/Logo/nordic-logo-white-icon-only.png';
 
-const Logo = ({ src, alt, cssClass, containerCssClass, onClick }) => (
+const Logo = ({
+    src, alt, cssClass, containerCssClass, onClick,
+}) => (
     <div
         className={containerCssClass}
         role="link"

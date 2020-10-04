@@ -84,33 +84,30 @@ export default class JlinkFacade extends EventEmitter {
      */
     getSerialNumberMap(comNames) {
         const promises = comNames.map(
-            comName =>
-                new Promise(resolve => {
-                    this.registry
-                        .findJlinkIds(comName)
-                        .then(serialNumbers =>
-                            resolve({ comName, serialNumbers })
-                        )
-                        .catch(error => {
-                            // Catching and emitting here, as we don't want one bad device
-                            // to block all other lookups.
-                            this.emitWarning(
-                                `Unable to read serial number for ${comName} ` +
-                                    `from registry: ${error.message}`
-                            );
-                            resolve();
-                        });
-                })
+            comName => new Promise(resolve => {
+                this.registry
+                    .findJlinkIds(comName)
+                    .then(serialNumbers => resolve({ comName, serialNumbers }))
+                    .catch(error => {
+                        // Catching and emitting here, as we don't want one bad device
+                        // to block all other lookups.
+                        this.emitWarning(
+                            `Unable to read serial number for ${comName} `
+                                    + `from registry: ${error.message}`,
+                        );
+                        resolve();
+                    });
+            }),
         );
         return Promise.all(promises)
             .then(results => results.filter(result => !!result))
             .then(results => {
                 const hasMultipleSnrs = results.some(
-                    result => result.serialNumbers.length > 1
+                    result => result.serialNumbers.length > 1,
                 );
                 if (hasMultipleSnrs) {
                     return this.getConnectedSerialNumbers().then(
-                        connectedSnrs => this.createMap(results, connectedSnrs)
+                        connectedSnrs => this.createMap(results, connectedSnrs),
                     );
                 }
                 return this.createMap(results);
@@ -152,26 +149,25 @@ export default class JlinkFacade extends EventEmitter {
                 map.set(comName, serialNumbers[0]);
             } else if (serialNumbers.length > 1 && connectedSerialNumbers) {
                 const serialNumber = serialNumbers.find(
-                    snr =>
-                        connectedSerialNumbers.indexOf(parseInt(snr, 10)) !== -1
+                    snr => connectedSerialNumbers.indexOf(parseInt(snr, 10)) !== -1,
                 );
                 if (serialNumber) {
                     this.emitWarning(
-                        `Found serial numbers ${serialNumbers.join(', ')} ` +
-                            `for ${comName} in registry. ${serialNumber} is connected, so ` +
-                            'using that.'
+                        `Found serial numbers ${serialNumbers.join(', ')} `
+                            + `for ${comName} in registry. ${serialNumber} is connected, so `
+                            + 'using that.',
                     );
                     map.set(comName, serialNumber);
                 } else {
                     this.emitWarning(
-                        `Found serial numbers ${serialNumbers.join(', ')} ` +
-                            `for ${comName} in registry, but none of these are connected. ` +
-                            'Unable to identify serial number.'
+                        `Found serial numbers ${serialNumbers.join(', ')} `
+                            + `for ${comName} in registry, but none of these are connected. `
+                            + 'Unable to identify serial number.',
                     );
                 }
             } else {
                 this.emitWarning(
-                    `Could not find serial number for ${comName} in registry.`
+                    `Could not find serial number for ${comName} in registry.`,
                 );
             }
         });

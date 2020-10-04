@@ -62,7 +62,7 @@ const installDevtools = async () => {
 
 const removeDevtools = () => {
     const devToolsExtensions = Object.keys(
-        BrowserWindow.getDevToolsExtensions()
+        BrowserWindow.getDevToolsExtensions(),
     );
     console.log('Removing devtool extensions:', devToolsExtensions);
 

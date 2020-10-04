@@ -83,7 +83,9 @@ export default class HotkeyedDropdown extends React.Component {
     }
 
     render() {
-        const { hotkey, disabled, title, children, ...childProps } = this.props;
+        const {
+            hotkey, disabled, title, children, ...childProps
+        } = this.props;
         const { open } = this.state;
         return (
             <Dropdown

@@ -72,8 +72,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -95,8 +95,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -118,8 +118,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -141,8 +141,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -165,8 +165,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -191,8 +191,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -217,8 +217,8 @@ describe('SettingsView', () => {
                     onShowRemoveSourceDialog={() => {}}
                     onShowAddSourceDialog={() => {}}
                     onHideAddSourceDialog={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });

@@ -45,13 +45,9 @@ export default connect(
         upgradeableApps: apps.filter(app => app.upgradeAvailable),
     }),
     dispatch => ({
-        onUpgrade: (name, version, source) =>
-            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
-        setAppManagementShow: show =>
-            dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter =>
-            dispatch(AppsActions.setAppManagementFilter(filter)),
-        setAppManagementSource: (source, show) =>
-            dispatch(AppsActions.setAppManagementSource(source, show)),
-    })
+        onUpgrade: (name, version, source) => dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+        setAppManagementShow: show => dispatch(AppsActions.setAppManagementShow(show)),
+        setAppManagementFilter: filter => dispatch(AppsActions.setAppManagementFilter(filter)),
+        setAppManagementSource: (source, show) => dispatch(AppsActions.setAppManagementSource(source, show)),
+    }),
 )(AppManagementFilter);

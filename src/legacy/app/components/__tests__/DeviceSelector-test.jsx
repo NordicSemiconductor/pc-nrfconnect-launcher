@@ -61,8 +61,8 @@ describe('DeviceSelector', () => {
                     displayCloseItem={false}
                     onSelect={() => {}}
                     onDeselect={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -92,8 +92,8 @@ describe('DeviceSelector', () => {
                     displayCloseItem={false}
                     onSelect={() => {}}
                     onDeselect={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });

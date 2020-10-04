@@ -80,7 +80,7 @@ function parseResults(regOutput) {
 function hasValue(result, name, value) {
     if (result.values) {
         const found = result.values.find(
-            entry => entry.name === name && entry.value === value
+            entry => entry.name === name && entry.value === value,
         );
         if (found) {
             return true;

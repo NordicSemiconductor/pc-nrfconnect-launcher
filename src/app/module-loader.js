@@ -59,7 +59,7 @@ let hasShownDeprecatedPropertyWarning = false;
 const mayShowWarningAboutDeprecatedProperty = () => {
     if (!hasShownDeprecatedPropertyWarning) {
         console.warn(
-            'Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.'
+            'Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.',
         );
     }
     hasShownDeprecatedPropertyWarning = true;
@@ -73,8 +73,7 @@ const ducktapeComName = port => ({
 });
 
 const originalSerialPortList = SerialPort.list;
-SerialPort.list = () =>
-    originalSerialPortList().then(ports => ports.map(ducktapeComName));
+SerialPort.list = () => originalSerialPortList().then(ports => ports.map(ducktapeComName));
 
 /* eslint-disable dot-notation */
 // Disable dot-notation in this file, to keep the syntax below more consistent

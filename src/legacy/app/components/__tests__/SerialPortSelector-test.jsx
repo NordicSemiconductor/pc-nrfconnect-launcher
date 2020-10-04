@@ -65,8 +65,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -90,8 +90,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -115,8 +115,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -141,8 +141,8 @@ describe('SerialPortSelector', () => {
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
                     filter={port => port.serialNumber === '123456'}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -167,8 +167,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -188,8 +188,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -210,8 +210,8 @@ describe('SerialPortSelector', () => {
                     onSelect={() => {}}
                     onDeselect={() => {}}
                     bindHotkey={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });

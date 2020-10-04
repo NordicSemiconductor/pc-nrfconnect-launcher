@@ -91,19 +91,14 @@ function init(argv) {
     userDataDir = electronApp.getPath('userData');
     desktopDir = electronApp.getPath('desktop');
     tmpDir = electronApp.getPath('temp');
-    appsRootDir =
-        argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
+    appsRootDir = argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
     appsLocalDir = path.join(appsRootDir, 'local');
     appsExternalDir = path.join(appsRootDir, 'external');
-    settingsJsonPath =
-        argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
-    sourcesJsonPath =
-        argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
-    appsJsonUrl =
-        'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-launcher/master/apps.json';
+    settingsJsonPath = argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
+    sourcesJsonPath = argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
+    appsJsonUrl = 'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-launcher/master/apps.json';
     registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
-    releaseNotesUrl =
-        'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
+    releaseNotesUrl = 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
     skipUpdateCore = argv['skip-update-core'] || false;
     skipSplashScreen = argv['skip-splash-screen'] || false;
@@ -132,10 +127,8 @@ module.exports = {
     getAppsRootDir,
     getAppsLocalDir: () => appsLocalDir,
     getAppsExternalDir: () => appsExternalDir,
-    getNodeModulesDir: source =>
-        path.join(getAppsRootDir(source), 'node_modules'),
-    getUpdatesJsonPath: source =>
-        path.join(getAppsRootDir(source), 'updates.json'),
+    getNodeModulesDir: source => path.join(getAppsRootDir(source), 'node_modules'),
+    getUpdatesJsonPath: source => path.join(getAppsRootDir(source), 'updates.json'),
     getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
     getSettingsJsonPath: () => settingsJsonPath,
     getSourcesJsonPath: () => sourcesJsonPath,

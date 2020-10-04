@@ -47,5 +47,5 @@ function mapDispatchToProps() {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     MainView,
-    'MainView'
+    'MainView',
 );

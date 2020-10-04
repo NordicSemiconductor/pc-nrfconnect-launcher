@@ -79,7 +79,7 @@ describe('decorate', () => {
             decorateFoo: () => null,
         });
         expect(decorate(FooComponent, 'Foo')).toThrow(
-            /No React component found/
+            /No React component found/,
         );
     });
 
@@ -88,7 +88,7 @@ describe('decorate', () => {
             decorateFoo: () => {},
         });
         expect(decorate(FooComponent, 'Foo')).toThrow(
-            /No React component found/
+            /No React component found/,
         );
     });
 
@@ -169,21 +169,20 @@ describe('connect', () => {
         dispatch: () => {},
         getState: () => {},
     });
-    const renderWithProvider = Component =>
-        renderer
-            .create(
-                <Provider store={storeFake()}>
-                    <Component />
-                </Provider>
-            )
-            .toJSON();
+    const renderWithProvider = Component => renderer
+        .create(
+            <Provider store={storeFake()}>
+                <Component />
+            </Provider>,
+        )
+        .toJSON();
 
     it('should render with default props when app does not implement mapToProps functions', () => {
         setApp({});
 
         const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
             FooComponent,
-            'Foo'
+            'Foo',
         );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
@@ -204,7 +203,7 @@ describe('connect', () => {
 
         const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
             FooComponent,
-            'Foo'
+            'Foo',
         );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
@@ -225,7 +224,7 @@ describe('connect', () => {
 
         const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
             FooComponent,
-            'Foo'
+            'Foo',
         );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
@@ -273,12 +272,10 @@ describe('decorateReducer', () => {
         });
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
-        expect(() =>
-            decoratedReducer(initialState, {
-                type: FOO_ACTION,
-                value: 'foobar',
-            })
-        ).toThrow(/Not a function/);
+        expect(() => decoratedReducer(initialState, {
+            type: FOO_ACTION,
+            value: 'foobar',
+        })).toThrow(/Not a function/);
     });
 
     it('should override value set by default reducer when app decorates reducer with new value', () => {

@@ -91,9 +91,9 @@ function verifyShasum(filePath, expectedShasum) {
             if (err) {
                 reject(
                     new Error(
-                        'Unable to read file when verifying shasum: ' +
-                            `${filePath}`
-                    )
+                        'Unable to read file when verifying shasum: '
+                            + `${filePath}`,
+                    ),
                 );
             } else {
                 const computedShasum = shasum(buffer);
@@ -102,9 +102,9 @@ function verifyShasum(filePath, expectedShasum) {
                 } else {
                     reject(
                         new Error(
-                            `Shasum verification failed for ${filePath}. Expected ` +
-                                `'${expectedShasum}', but got '${computedShasum}'.`
-                        )
+                            `Shasum verification failed for ${filePath}. Expected `
+                                + `'${expectedShasum}', but got '${computedShasum}'.`,
+                        ),
                     );
                 }
             }
@@ -127,7 +127,7 @@ function downloadTarball(name, version, destinationDir, source) {
     return getDistInfo(name, version, regUrl).then(distInfo => {
         if (!distInfo.tarball) {
             return Promise.reject(
-                new Error(`No tarball found for ${name}@${version}`)
+                new Error(`No tarball found for ${name}@${version}`),
             );
         }
         const tarballUrl = distInfo.tarball;
@@ -142,9 +142,7 @@ function downloadTarball(name, version, destinationDir, source) {
 }
 
 function getLatestPackageVersion(name, regUrl) {
-    return getPackageInfo(name, regUrl).then(packageInfo =>
-        getLatestFromPackageInfo(packageInfo)
-    );
+    return getPackageInfo(name, regUrl).then(packageInfo => getLatestFromPackageInfo(packageInfo));
 }
 
 /**
@@ -157,24 +155,17 @@ function getLatestPackageVersion(name, regUrl) {
  * @returns {Promise} promise that resolves with path to the downloaded file.
  */
 function getLatestPackageVersions(names, source) {
-    const promises = names.map(name =>
-        getLatestPackageVersion(name, getRegistryUrl(source)).then(
-            latestVersion => ({
-                [name]: latestVersion,
-            })
-        )
-    );
+    const promises = names.map(name => getLatestPackageVersion(name, getRegistryUrl(source)).then(
+        latestVersion => ({
+            [name]: latestVersion,
+        }),
+    ));
     // Performing the network requests in sequence in case proxy auth is
     // required. When running in sequence, the first request will require
     // authentication, while subsequent requests use cached credentials.
     return promises.reduce(
-        (prev, curr) =>
-            prev.then(packages =>
-                curr.then(packageVersion =>
-                    Object.assign(packages, packageVersion)
-                )
-            ),
-        Promise.resolve({})
+        (prev, curr) => prev.then(packages => curr.then(packageVersion => Object.assign(packages, packageVersion))),
+        Promise.resolve({}),
     );
 }
 

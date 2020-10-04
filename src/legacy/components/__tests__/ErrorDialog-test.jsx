@@ -59,8 +59,8 @@ describe('ErrorDialog', () => {
                     messages={List([])}
                     onClose={() => {}}
                     isVisible={false}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -71,8 +71,8 @@ describe('ErrorDialog', () => {
                     messages={List(['Oops. An error occurred.'])}
                     onClose={() => {}}
                     isVisible
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -86,8 +86,8 @@ describe('ErrorDialog', () => {
                     ])}
                     onClose={() => {}}
                     isVisible
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });

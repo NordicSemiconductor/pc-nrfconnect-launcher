@@ -65,15 +65,13 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
-        Object.keys(headers).forEach(key =>
-            request.setHeader(key, headers[key])
-        );
+        Object.keys(headers).forEach(key => request.setHeader(key, headers[key]));
 
         request.on('response', response => {
             const { statusCode } = response;
             if (statusCode >= 400) {
                 const error = new Error(
-                    `Unable to download ${url}. Got status code ${statusCode}`
+                    `Unable to download ${url}. Got status code ${statusCode}`,
                 );
                 error.statusCode = statusCode;
                 reject(error);
@@ -88,23 +86,17 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
                 buffer.push(data);
             };
             response.on('data', data => addToBuffer(data));
-            response.on('end', () =>
-                resolve({
-                    buffer: Buffer.concat(buffer),
-                    etag,
-                    statusCode,
-                })
-            );
-            response.on('error', error =>
-                reject(new Error(`Error when reading ${url}: ${error.message}`))
-            );
+            response.on('end', () => resolve({
+                buffer: Buffer.concat(buffer),
+                etag,
+                statusCode,
+            }));
+            response.on('error', error => reject(new Error(`Error when reading ${url}: ${error.message}`)));
         });
         if (enableProxyLogin) {
             request.on('login', onProxyLogin);
         }
-        request.on('error', error =>
-            reject(new Error(`Unable to download ${url}: ${error.message}`))
-        );
+        request.on('error', error => reject(new Error(`Unable to download ${url}: ${error.message}`)));
         request.end();
     });
 }
@@ -121,15 +113,14 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
  *          the server did not provide an Etag, then property etag will be undefined.
  */
 function downloadToStringIfChanged(url, previousEtag, enableProxyLogin) {
-    const requestHeaders =
-        previousEtag == null ? {} : { 'If-None-Match': previousEtag };
+    const requestHeaders = previousEtag == null ? {} : { 'If-None-Match': previousEtag };
 
     const NOT_MODIFIED = 304;
     return downloadToBuffer(url, enableProxyLogin, requestHeaders).then(
         ({ buffer, etag, statusCode }) => ({
             etag,
             response: statusCode === NOT_MODIFIED ? null : buffer.toString(),
-        })
+        }),
     );
 }
 
@@ -142,9 +133,7 @@ function downloadToStringIfChanged(url, previousEtag, enableProxyLogin) {
  * @returns {Promise} promise that resolves when the data has been downloaded.
  */
 function downloadToJson(url, enableProxyLogin) {
-    return downloadToBuffer(url, enableProxyLogin).then(({ buffer }) =>
-        JSON.parse(buffer)
-    );
+    return downloadToBuffer(url, enableProxyLogin).then(({ buffer }) => JSON.parse(buffer));
 }
 
 /**

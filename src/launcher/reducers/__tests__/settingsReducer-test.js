@@ -85,7 +85,7 @@ describe('settingsReducer', () => {
                 settings: {
                     shouldCheckForUpdatesAtStartup: true,
                 },
-            }
+            },
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
@@ -98,7 +98,7 @@ describe('settingsReducer', () => {
                 settings: {
                     shouldCheckForUpdatesAtStartup: false,
                 },
-            }
+            },
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
@@ -111,7 +111,7 @@ describe('settingsReducer', () => {
                 settings: {
                     shouldCheckForUpdatesAtStartup: null,
                 },
-            }
+            },
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
@@ -122,7 +122,7 @@ describe('settingsReducer', () => {
             {
                 type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
                 isEnabled: true,
-            }
+            },
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
@@ -133,7 +133,7 @@ describe('settingsReducer', () => {
             {
                 type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
                 isEnabled: false,
-            }
+            },
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
@@ -151,7 +151,7 @@ describe('settingsReducer', () => {
             {
                 type:
                     SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
-            }
+            },
         );
         expect(state.isUpdateCheckCompleteDialogVisible).toEqual(false);
     });

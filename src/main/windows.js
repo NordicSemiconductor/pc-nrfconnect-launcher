@@ -132,14 +132,14 @@ function openAppWindow(app) {
 
     appWindow.on('closed', () => {
         const index = appWindows.findIndex(
-            appWin => appWin.browserWindow === appWindow
+            appWin => appWin.browserWindow === appWindow,
         );
         if (index > -1) {
             appWindows.splice(index, 1);
         }
         if (
-            appWindows.length === 0 &&
-            !(launcherWindow && launcherWindow.isVisible())
+            appWindows.length === 0
+            && !(launcherWindow && launcherWindow.isVisible())
         ) {
             electron.app.quit();
         }
@@ -149,14 +149,14 @@ function openAppWindow(app) {
 function openOfficialAppWindow(appName, sourceName) {
     return apps.getOfficialApps().then(appList => {
         const officialApp = appList.find(
-            app => app.name === appName && app.source === sourceName
+            app => app.name === appName && app.source === sourceName,
         );
         const isInstalled = officialApp && officialApp.path;
         if (isInstalled) {
             openAppWindow(officialApp);
         } else {
             throw new Error(
-                `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
+                `Tried to open app ${appName} from source ${sourceName}, but it is not installed`,
             );
         }
     });
@@ -169,7 +169,7 @@ function openLocalAppWindow(appName) {
             openAppWindow(localApp);
         } else {
             throw new Error(
-                `Tried to open local app ${appName}, but it is not installed`
+                `Tried to open local app ${appName}, but it is not installed`,
             );
         }
     });

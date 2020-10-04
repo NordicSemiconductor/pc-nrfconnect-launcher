@@ -59,8 +59,8 @@ describe('ConfirmationDialog', () => {
                     text="Do you confirm?"
                     onCancel={() => {}}
                     onOk={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -72,8 +72,8 @@ describe('ConfirmationDialog', () => {
                     text="Do you confirm?"
                     onCancel={() => {}}
                     onOk={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -86,8 +86,8 @@ describe('ConfirmationDialog', () => {
                     text="Do you confirm?"
                     onCancel={() => {}}
                     onOk={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -98,8 +98,8 @@ describe('ConfirmationDialog', () => {
                     isVisible
                     text="Something happened."
                     onOk={() => {}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });

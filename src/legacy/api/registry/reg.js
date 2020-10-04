@@ -61,8 +61,8 @@ function regCmd(args) {
                 // zero results. However, this could also indicate that there
                 // is an error, so logging it for traceability reasons.
                 console.log(
-                    `The reg.exe command exited with code ${code}. ` +
-                        `Arguments: ${JSON.stringify(args)}. Output: ${buffer}.`
+                    `The reg.exe command exited with code ${code}. `
+                        + `Arguments: ${JSON.stringify(args)}. Output: ${buffer}.`,
                 );
             }
             resolve(buffer);

@@ -64,8 +64,7 @@ export const UPGRADE_OFFICIAL_APP_ERROR = 'UPGRADE_OFFICIAL_APP_ERROR';
 export const SHOW_CONFIRM_LAUNCH_DIALOG = 'SHOW_CONFIRM_LAUNCH_DIALOG';
 export const HIDE_CONFIRM_LAUNCH_DIALOG = 'HIDE_CONFIRM_LAUNCH_DIALOG';
 export const DOWNLOAD_LATEST_APP_INFO = 'DOWNLOAD_LATEST_APP_INFO';
-export const DOWNLOAD_LATEST_APP_INFO_SUCCESS =
-    'DOWNLOAD_LATEST_APP_INFO_SUCCESS';
+export const DOWNLOAD_LATEST_APP_INFO_SUCCESS = 'DOWNLOAD_LATEST_APP_INFO_SUCCESS';
 export const DOWNLOAD_LATEST_APP_INFO_ERROR = 'DOWNLOAD_LATEST_APP_INFO_ERROR';
 export const SET_APP_ICON_PATH = 'SET_APP_ICON_PATH';
 export const SET_APP_RELEASE_NOTE = 'SET_APP_RELEASE_NOTE';
@@ -244,10 +243,9 @@ export function setAppManagementShow(show = {}) {
 }
 
 export function setAppManagementFilter(filter) {
-    const newState =
-        filter === undefined
-            ? settings.get('app-management.filter', '')
-            : filter;
+    const newState = filter === undefined
+        ? settings.get('app-management.filter', '')
+        : filter;
     settings.set('app-management.filter', newState);
     return {
         type: SET_APP_MANAGEMENT_FILTER,
@@ -319,36 +317,35 @@ export function loadOfficialApps(appName, appSource) {
                     ({ source, name, url }) => {
                         const iconPath = join(
                             `${config.getAppsRootDir(source)}`,
-                            `${name}.svg`
+                            `${name}.svg`,
                         );
                         const iconUrl = `${url}.svg`;
                         dispatch(
-                            downloadAppIcon(source, name, iconPath, iconUrl)
+                            downloadAppIcon(source, name, iconPath, iconUrl),
                         );
-                    }
+                    },
                 );
                 const downloadAllReleaseNotes = (app, ...rest) => {
                     if (!app) {
                         return Promise.resolve();
                     }
                     if (
-                        appName &&
-                        !(app.name === appName && app.source === appSource)
+                        appName
+                        && !(app.name === appName && app.source === appSource)
                     ) {
                         return downloadAllReleaseNotes(...rest);
                     }
                     return mainApps
                         .downloadReleaseNotes(app)
                         .then(
-                            releaseNote =>
-                                releaseNote &&
-                                dispatch(
+                            releaseNote => releaseNote
+                                && dispatch(
                                     setAppReleaseNoteAction(
                                         app.source,
                                         app.name,
-                                        releaseNote
-                                    )
-                                )
+                                        releaseNote,
+                                    ),
+                                ),
                         )
                         .then(() => downloadAllReleaseNotes(...rest));
                 };
@@ -358,8 +355,8 @@ export function loadOfficialApps(appName, appSource) {
                 dispatch(loadOfficialAppsError());
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to load apps: ${error.message}`
-                    )
+                        `Unable to load apps: ${error.message}`,
+                    ),
                 );
             });
     };
@@ -379,8 +376,8 @@ export function installOfficialApp(name, source) {
                 dispatch(installOfficialAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to install: ${error.message}`
-                    )
+                        `Unable to install: ${error.message}`,
+                    ),
                 );
             });
     };
@@ -400,8 +397,8 @@ export function removeOfficialApp(name, source) {
                 dispatch(removeOfficialAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to remove: ${error.message}`
-                    )
+                        `Unable to remove: ${error.message}`,
+                    ),
                 );
             });
     };
@@ -415,7 +412,7 @@ export function upgradeOfficialApp(name, version, source) {
             .installOfficialApp(name, version, source)
             .then(() => {
                 dispatch(
-                    upgradeOfficialAppSuccessAction(name, version, source)
+                    upgradeOfficialAppSuccessAction(name, version, source),
                 );
                 dispatch(loadOfficialApps(name, source));
             })
@@ -423,8 +420,8 @@ export function upgradeOfficialApp(name, version, source) {
                 dispatch(upgradeOfficialAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to upgrade: ${error.message}`
-                    )
+                        `Unable to upgrade: ${error.message}`,
+                    ),
                 );
             });
     };
@@ -435,11 +432,10 @@ export function launch(app) {
         // The apps in state are Immutable Maps which cannot be sent over IPC.
         // Converting to plain JS object before sending to the main process.
         const appObj = app.toJS();
-        const sharedData =
-            `App version: ${appObj.currentVersion};` +
-            ` Engine version: ${appObj.engineVersion};`;
+        const sharedData = `App version: ${appObj.currentVersion};`
+            + ` Engine version: ${appObj.engineVersion};`;
         dispatch(
-            sendAppUserData(EventAction.LAUNCH_APP, sharedData, appObj.name)
+            sendAppUserData(EventAction.LAUNCH_APP, sharedData, appObj.name),
         );
         ipcRenderer.send('open-app', appObj);
     };
@@ -450,21 +446,21 @@ export function checkEngineAndLaunch(app) {
         if (!app.engineVersion) {
             dispatch(
                 showConfirmLaunchDialogAction(
-                    'The app does not specify ' +
-                        'which nRF Connect version(s) it supports. Ask the app ' +
-                        'author to add an engines.nrfconnect definition to package.json, ' +
-                        'ref. the documentation.',
-                    app
-                )
+                    'The app does not specify '
+                        + 'which nRF Connect version(s) it supports. Ask the app '
+                        + 'author to add an engines.nrfconnect definition to package.json, '
+                        + 'ref. the documentation.',
+                    app,
+                ),
             );
         } else if (!app.isSupportedEngine) {
             dispatch(
                 showConfirmLaunchDialogAction(
-                    'The app only supports ' +
-                        `nRF Connect ${app.engineVersion} while your installed version ` +
-                        `is ${config.getVersion()}. It might not work as expected.`,
-                    app
-                )
+                    'The app only supports '
+                        + `nRF Connect ${app.engineVersion} while your installed version `
+                        + `is ${config.getVersion()}. It might not work as expected.`,
+                    app,
+                ),
             );
         } else {
             dispatch(launch(app));

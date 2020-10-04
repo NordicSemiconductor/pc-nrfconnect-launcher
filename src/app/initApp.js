@@ -56,7 +56,7 @@ const loadApp = appDir => {
 
     if (!fs.existsSync(moduleManifest)) {
         console.log(
-            `Trying to load module, but package.json is missing in ${appDir}.`
+            `Trying to load module, but package.json is missing in ${appDir}.`,
         );
         return null;
     }

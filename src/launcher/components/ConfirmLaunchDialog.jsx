@@ -38,7 +38,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
-const ConfirmLaunchDialog = ({ isVisible, text, app, onConfirm, onCancel }) => (
+const ConfirmLaunchDialog = ({
+    isVisible, text, app, onConfirm, onCancel,
+}) => (
     <ConfirmationDialog
         isVisible={isVisible}
         title="Version problem"

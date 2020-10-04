@@ -59,19 +59,19 @@ const net = remote.require('../main/net');
 
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk)),
 );
 const rootElement = React.createElement(RootContainer, { store });
 
 const shouldCheckForUpdatesAtStartup = settings.get(
-    'shouldCheckForUpdatesAtStartup'
+    'shouldCheckForUpdatesAtStartup',
 );
 const isSendingUserData = settings.get('isSendingUserData');
 
 function downloadLatestAppInfo() {
     if (
-        shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateApps()
+        shouldCheckForUpdatesAtStartup !== false
+        && !config.isSkipUpdateApps()
     ) {
         return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
     }
@@ -80,9 +80,9 @@ function downloadLatestAppInfo() {
 
 function checkForCoreUpdates() {
     if (
-        shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateCore() &&
-        !isDev
+        shouldCheckForUpdatesAtStartup !== false
+        && !config.isSkipUpdateCore()
+        && !isDev
     ) {
         return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
     }
@@ -98,7 +98,7 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 
 render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(
-        UserDataActions.checkUserDataSetting(isSendingUserData)
+        UserDataActions.checkUserDataSetting(isSendingUserData),
     );
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());

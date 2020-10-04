@@ -62,10 +62,10 @@ class SettingsView extends React.Component {
     constructor() {
         super();
         this.onCheckUpdatesAtStartupChanged = this.onCheckUpdatesAtStartupChanged.bind(
-            this
+            this,
         );
         this.onTriggerUpdateCheckClicked = this.onTriggerUpdateCheckClicked.bind(
-            this
+            this,
         );
     }
 
@@ -136,7 +136,7 @@ class SettingsView extends React.Component {
                             <>
                                 Last update check performed:{' '}
                                 {moment(lastUpdateCheckDate).format(
-                                    'YYYY-MM-DD HH:mm:ss'
+                                    'YYYY-MM-DD HH:mm:ss',
                                 )}
                             </>
                         )}
@@ -181,11 +181,9 @@ class SettingsView extends React.Component {
                                         <Button
                                             variant="outline-secondary"
                                             size="sm"
-                                            onClick={() =>
-                                                clipboard.writeText(
-                                                    sourcesJS[name]
-                                                )
-                                            }
+                                            onClick={() => clipboard.writeText(
+                                                sourcesJS[name],
+                                            )}
                                             title="Copy URL to clipboard"
                                         >
                                             Copy URL
@@ -193,9 +191,7 @@ class SettingsView extends React.Component {
                                         <Button
                                             variant="outline-secondary"
                                             size="sm"
-                                            onClick={() =>
-                                                onShowRemoveSourceDialog(name)
-                                            }
+                                            onClick={() => onShowRemoveSourceDialog(name)}
                                             title="Remove source and associated apps"
                                         >
                                             Remove

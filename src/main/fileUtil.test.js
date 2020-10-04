@@ -51,7 +51,7 @@ describe('getNameFromNpmPackage', () => {
 
     it('should return name if file name is valid', () => {
         expect(getNameFromNpmPackage('/path/to/my-package-1.2.3.tgz')).toEqual(
-            'my-package'
+            'my-package',
         );
     });
 });

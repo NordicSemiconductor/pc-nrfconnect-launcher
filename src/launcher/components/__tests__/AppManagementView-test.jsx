@@ -71,8 +71,8 @@ describe('AppManagementView', () => {
                     onMount={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -109,8 +109,8 @@ describe('AppManagementView', () => {
                     onReadMore={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -136,8 +136,8 @@ describe('AppManagementView', () => {
                     onReadMore={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -165,8 +165,8 @@ describe('AppManagementView', () => {
                     onReadMore={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -194,8 +194,8 @@ describe('AppManagementView', () => {
                     onReadMore={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -219,7 +219,7 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />
+            />,
         );
         wrapper
             .find('button[title="Install Foobar displayName"]')
@@ -250,7 +250,7 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />
+            />,
         );
 
         wrapper.find('.dropdown-toggle').first().simulate('click');
@@ -293,8 +293,8 @@ describe('AppManagementView', () => {
                     onReadMore={() => {}}
                     onShowReleaseNotes={() => {}}
                     sources={{}}
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 
@@ -319,7 +319,7 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />
+            />,
         );
         wrapper
             .find('button[title="Open Foobar displayName"]')

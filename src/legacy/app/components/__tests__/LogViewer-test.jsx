@@ -79,8 +79,8 @@ describe('LogViewer', () => {
                     onClearLog={() => {}}
                     onToggleAutoScroll={() => {}}
                     autoScroll
-                />
-            )
+                />,
+            ),
         ).toMatchSnapshot();
     });
 });
