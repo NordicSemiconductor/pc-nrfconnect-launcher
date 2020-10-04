@@ -59,5 +59,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     DeviceSetupDialog,
-    'DeviceSetupDialog',
+    'DeviceSetupDialog'
 );

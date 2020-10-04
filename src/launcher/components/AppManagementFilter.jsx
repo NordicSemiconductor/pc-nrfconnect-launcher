@@ -69,7 +69,9 @@ const SourceFilter = ({ sources, setAppManagementSource }) => (
                 className="mx-3 py-1 px-4 text-capitalize"
                 custom
                 checked={checked}
-                onChange={({ target }) => setAppManagementSource(name, target.checked)}
+                onChange={({ target }) =>
+                    setAppManagementSource(name, target.checked)
+                }
             />
         ))}
     </Col>
@@ -91,9 +93,11 @@ const StateFilter = ({
             className="mx-3 py-1 px-4"
             custom
             checked={installed}
-            onChange={({ target }) => setAppManagementShow({
-                installed: target.checked,
-            })}
+            onChange={({ target }) =>
+                setAppManagementShow({
+                    installed: target.checked,
+                })
+            }
         />
         <Form.Check
             label="Available"
@@ -101,9 +105,11 @@ const StateFilter = ({
             className="mx-3 py-1 px-4"
             custom
             checked={available}
-            onChange={({ target }) => setAppManagementShow({
-                available: target.checked,
-            })}
+            onChange={({ target }) =>
+                setAppManagementShow({
+                    available: target.checked,
+                })
+            }
         />
     </Col>
 );
@@ -178,7 +184,11 @@ const AppManagementFilter = ({
         {upgradeableApps.size > 0 && (
             <Button
                 variant="outline-secondary"
-                onClick={() => upgradeableApps.forEach(({ name, latestVersion, source }) => onUpgrade(name, latestVersion, source))}
+                onClick={() =>
+                    upgradeableApps.forEach(({ name, latestVersion, source }) =>
+                        onUpgrade(name, latestVersion, source)
+                    )
+                }
             >
                 Update all apps
             </Button>

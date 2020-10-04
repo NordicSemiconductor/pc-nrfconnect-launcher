@@ -43,9 +43,7 @@ import { decorate } from '../../decoration';
 
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
-const LogViewer = ({
-    logEntries, autoScroll, onMount, cssClass,
-}) => {
+const LogViewer = ({ logEntries, autoScroll, onMount, cssClass }) => {
     const logContainer = useRef(null);
 
     useEffect(() => {

@@ -43,7 +43,8 @@ import {
     parseJlinkId,
 } from '../parsing';
 
-const REGISTRY_USB_PATH = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB';
+const REGISTRY_USB_PATH =
+    'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB';
 
 describe('parseVariableLine', () => {
     it('should return empty object if line is empty', () => {
@@ -120,13 +121,14 @@ describe('parseResults', () => {
     });
 
     it('should return two results if reg.exe output contains two results', () => {
-        const regOutput = `${REGISTRY_USB_PATH}\\Foo\n`
-            + 'foo REG_SZ bar\n'
-            + 'baz REG_SZ test\n'
-            + '\n'
-            + `${REGISTRY_USB_PATH}\\Bar\n`
-            + 'bar REG_SZ foobar\n'
-            + 'foo REG_SZ test\n';
+        const regOutput =
+            `${REGISTRY_USB_PATH}\\Foo\n` +
+            'foo REG_SZ bar\n' +
+            'baz REG_SZ test\n' +
+            '\n' +
+            `${REGISTRY_USB_PATH}\\Bar\n` +
+            'bar REG_SZ foobar\n' +
+            'foo REG_SZ test\n';
         expect(parseResults(regOutput)).toEqual([
             {
                 key: `${REGISTRY_USB_PATH}\\Foo`,
@@ -156,13 +158,14 @@ describe('parseMatchingKeys', () => {
     });
 
     it('should return no matching keys if reg.exe output contains results, but no match', () => {
-        const regOutput = `${REGISTRY_USB_PATH}\\Foo\n`
-            + 'foobar REG_SZ baz\n'
-            + 'baz REG_SZ test\n'
-            + '\n'
-            + `${REGISTRY_USB_PATH}\\Bar\n`
-            + 'bar REG_SZ foobar\n'
-            + 'foo REG_SZ test\n';
+        const regOutput =
+            `${REGISTRY_USB_PATH}\\Foo\n` +
+            'foobar REG_SZ baz\n' +
+            'baz REG_SZ test\n' +
+            '\n' +
+            `${REGISTRY_USB_PATH}\\Bar\n` +
+            'bar REG_SZ foobar\n' +
+            'foo REG_SZ test\n';
         const name = 'foo';
         const value = 'bar';
 
@@ -170,13 +173,14 @@ describe('parseMatchingKeys', () => {
     });
 
     it('should return one matching key if reg.exe output contains one result with match', () => {
-        const regOutput = `${REGISTRY_USB_PATH}\\Foo\n`
-            + 'foobar REG_SZ baz\n'
-            + 'foo REG_SZ bar\n'
-            + '\n'
-            + `${REGISTRY_USB_PATH}\\Bar\n`
-            + 'bar REG_SZ foobar\n'
-            + 'foo REG_SZ test\n';
+        const regOutput =
+            `${REGISTRY_USB_PATH}\\Foo\n` +
+            'foobar REG_SZ baz\n' +
+            'foo REG_SZ bar\n' +
+            '\n' +
+            `${REGISTRY_USB_PATH}\\Bar\n` +
+            'bar REG_SZ foobar\n' +
+            'foo REG_SZ test\n';
         const name = 'foo';
         const value = 'bar';
 
@@ -193,14 +197,16 @@ describe('parseParentIdPrefix', () => {
     });
 
     it('should return null if the parentId part does not have an ampersand character', () => {
-        const key = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\'
-            + 'VID_1366&PID_1015&MI_00\\parentIdWithoutAmpersand';
+        const key =
+            'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\' +
+            'VID_1366&PID_1015&MI_00\\parentIdWithoutAmpersand';
         expect(parseParentIdPrefix(key)).toEqual(null);
     });
 
     it('should return parentIdPrefix value if key contains parentIdPrefix', () => {
-        const key = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\'
-            + 'VID_1366&PID_1015&MI_00\\7&717c78b&0&0000\\Device Parameters';
+        const key =
+            'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\' +
+            'VID_1366&PID_1015&MI_00\\7&717c78b&0&0000\\Device Parameters';
         expect(parseParentIdPrefix(key)).toEqual('7&717c78b&0');
     });
 });
@@ -212,8 +218,9 @@ describe('parseJlinkId', () => {
     });
 
     it('should return jlinkId value if key contains jlinkId', () => {
-        const key = 'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\'
-            + 'VID_1366&PID_1015\\000680551615';
+        const key =
+            'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB\\' +
+            'VID_1366&PID_1015\\000680551615';
         expect(parseJlinkId(key)).toEqual('000680551615');
     });
 });

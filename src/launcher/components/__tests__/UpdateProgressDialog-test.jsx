@@ -63,8 +63,8 @@ describe('UpdateProgressDialog', () => {
                     percentDownloaded={0}
                     onCancel={() => {}}
                     isCancelling={false}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -79,8 +79,8 @@ describe('UpdateProgressDialog', () => {
                     percentDownloaded={42}
                     onCancel={() => {}}
                     isCancelling={false}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -95,8 +95,8 @@ describe('UpdateProgressDialog', () => {
                     percentDownloaded={0}
                     onCancel={() => {}}
                     isCancelling={false}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -111,8 +111,8 @@ describe('UpdateProgressDialog', () => {
                     percentDownloaded={42}
                     onCancel={() => {}}
                     isCancelling
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -127,8 +127,8 @@ describe('UpdateProgressDialog', () => {
                     percentDownloaded={100}
                     onCancel={() => {}}
                     isCancelling={false}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 });

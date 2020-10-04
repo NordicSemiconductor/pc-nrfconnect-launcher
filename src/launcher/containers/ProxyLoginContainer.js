@@ -50,9 +50,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onUsernameChanged: username => dispatch(ProxyActions.changeUserName(username)),
+        onUsernameChanged: username =>
+            dispatch(ProxyActions.changeUserName(username)),
         onCancel: () => dispatch(ProxyActions.loginCancelledByUser()),
-        onSubmit: (username, password) => dispatch(ProxyActions.sendLoginRequest(username, password)),
+        onSubmit: (username, password) =>
+            dispatch(ProxyActions.sendLoginRequest(username, password)),
     };
 }
 

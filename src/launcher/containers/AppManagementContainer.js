@@ -58,11 +58,12 @@ function mapStateToProps(state) {
     const allApps = localApps.concat(officialApps);
     const apps = allApps
         .filter(
-            app => new RegExp(filter, 'i').test(app.displayName)
-                && ((app.isOfficial === true && app.path && show.installed)
-                    || (app.isOfficial === null && !app.path && show.available)
-                    || app.isOfficial === false)
-                && sources[app.source || 'local'] !== false,
+            app =>
+                new RegExp(filter, 'i').test(app.displayName) &&
+                ((app.isOfficial === true && app.path && show.installed) ||
+                    (app.isOfficial === null && !app.path && show.available) ||
+                    app.isOfficial === false) &&
+                sources[app.source || 'local'] !== false
         )
         .sort((a, b) => {
             const cmpInstalled = !!b.currentVersion - !!a.currentVersion;
@@ -96,16 +97,22 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onInstall: (name, source) => dispatch(AppsActions.installOfficialApp(name, source)),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
+        onInstall: (name, source) =>
+            dispatch(AppsActions.installOfficialApp(name, source)),
+        onRemove: (name, source) =>
+            dispatch(AppsActions.removeOfficialApp(name, source)),
         onReadMore: homepage => openUrl(homepage),
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
+        onCreateShortcut: app =>
+            dispatch(DesktopShortcutActions.createShortcut(app)),
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
-        onUpgrade: (name, version, source) => dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
-        setAppManagementShow: show => dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter => dispatch(AppsActions.setAppManagementFilter(filter)),
+        onUpgrade: (name, version, source) =>
+            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+        setAppManagementShow: show =>
+            dispatch(AppsActions.setAppManagementShow(show)),
+        setAppManagementFilter: filter =>
+            dispatch(AppsActions.setAppManagementFilter(filter)),
     };
 }
 

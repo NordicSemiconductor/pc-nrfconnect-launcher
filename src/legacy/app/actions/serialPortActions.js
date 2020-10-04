@@ -63,7 +63,8 @@ export const SERIAL_PORTS_LOAD_ERROR = 'SERIAL_PORTS_LOAD_ERROR';
 /**
  * Indicates that the expanded state of the SerialPortSelector was toggled.
  */
-export const SERIAL_PORT_SELECTOR_TOGGLE_EXPANDED = 'SERIAL_PORT_SELECTOR_TOGGLE_EXPANDED';
+export const SERIAL_PORT_SELECTOR_TOGGLE_EXPANDED =
+    'SERIAL_PORT_SELECTOR_TOGGLE_EXPANDED';
 
 /**
  * Indicates that a serial port was selected.
@@ -146,7 +147,7 @@ export function selectPort(port) {
             .then(() => dispatch(selectPortAction(port)))
             .catch(error => {
                 logger.error(
-                    'Unable to open the port. Please power cycle the device and try again.',
+                    'Unable to open the port. Please power cycle the device and try again.'
                 );
                 logger.debug(error.message);
             });

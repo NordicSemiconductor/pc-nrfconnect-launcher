@@ -49,7 +49,7 @@ const startApp = async extraArgs => {
     ];
     if (process.env.LOG_ELECTRON_ARGS) {
         console.log(
-            `Electron is run with these args: ${electronArgs.join(' ')}`,
+            `Electron is run with these args: ${electronArgs.join(' ')}`
         );
     }
 
@@ -98,11 +98,11 @@ export default ({
             `--apps-root-dir=${absoluteAppsRootDir}`,
             ...(settingsJsonPath
                 ? [
-                    `--settings-json-path=${path.join(
-                        __dirname,
-                        settingsJsonPath,
-                    )}`,
-                ]
+                      `--settings-json-path=${path.join(
+                          __dirname,
+                          settingsJsonPath
+                      )}`,
+                  ]
                 : []),
             ...(skipUpdateApps ? ['--skip-update-apps'] : []),
             ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),

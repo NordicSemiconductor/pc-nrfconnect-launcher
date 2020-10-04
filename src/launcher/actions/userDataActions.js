@@ -159,7 +159,7 @@ export function sendLauncherUserData(eventAction, eventLabel) {
 export function sendAppUserData(
     eventAction,
     eventLabel = null,
-    appName = null,
+    appName = null
 ) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;

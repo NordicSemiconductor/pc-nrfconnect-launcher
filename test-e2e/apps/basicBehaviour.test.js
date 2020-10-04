@@ -44,14 +44,14 @@ describe('an app', () => {
 
     it('initially does not show list of main menu items', async () => {
         await expect(app.client.isVisible('#main-menu-list')).resolves.toBe(
-            false,
+            false
         );
     });
 
     it('shows "Launch other app" in main menu', async () => {
         await app.client.waitForVisible('#main-menu').click('#main-menu');
         await expect(
-            app.client.isVisible('#main-menu-list a[title*="Launch other app"]'),
+            app.client.isVisible('#main-menu-list a[title*="Launch other app"]')
         ).resolves.toBe(true);
     });
 
@@ -60,7 +60,7 @@ describe('an app', () => {
             .waitForVisible('#serial-port-selector')
             .click('#serial-port-selector');
         await expect(
-            app.client.isVisible('#serial-port-selector .dropdown-menu'),
+            app.client.isVisible('#serial-port-selector .dropdown-menu')
         ).resolves.toBe(true);
     });
 });

@@ -64,13 +64,13 @@ const menuItems = Immutable.List([
 describe('MainMenu', () => {
     it('should render menu with no items', () => {
         expect(
-            mount(<MainMenu menuItems={[]} defaultShow />),
+            mount(<MainMenu menuItems={[]} defaultShow />)
         ).toMatchSnapshot();
     });
 
     it('should render menu with two items separated by divider', () => {
         expect(
-            mount(<MainMenu menuItems={menuItems} defaultShow />),
+            mount(<MainMenu menuItems={menuItems} defaultShow />)
         ).toMatchSnapshot();
     });
 
@@ -86,7 +86,7 @@ describe('MainMenu', () => {
                     },
                 ]}
                 defaultShow
-            />,
+            />
         );
         wrapper.find('a[title="Foo"]').first().simulate('click');
 

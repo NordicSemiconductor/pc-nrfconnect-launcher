@@ -53,8 +53,8 @@ describe('LogHeader', () => {
                 <LogHeader
                     text="Foobar log header"
                     onButtonClicked={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -75,8 +75,8 @@ describe('LogHeader', () => {
                         },
                     ]}
                     onButtonClicked={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -93,8 +93,8 @@ describe('LogHeader', () => {
                         },
                     ]}
                     onButtonClicked={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -110,7 +110,7 @@ describe('LogHeader', () => {
                     },
                 ]}
                 onButtonClicked={onButtonClicked}
-            />,
+            />
         );
         wrapper.find('LogHeaderButton[title="Foo button"]').simulate('click');
 

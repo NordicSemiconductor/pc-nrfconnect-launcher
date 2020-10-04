@@ -47,7 +47,7 @@ describe('proxyReducer', () => {
         });
         expect(state.isLoginDialogVisible).toEqual(true);
         expect(state.loginDialogMessage).toEqual(
-            'Please enter proxy credentials',
+            'Please enter proxy credentials'
         );
     });
 

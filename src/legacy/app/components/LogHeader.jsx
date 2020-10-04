@@ -73,7 +73,7 @@ LogHeader.propTypes = {
             title: PropTypes.string,
             iconCssClass: PropTypes.string,
             isSelected: PropTypes.bool,
-        }),
+        })
     ),
     onButtonClicked: PropTypes.func.isRequired,
     cssClass: PropTypes.string,

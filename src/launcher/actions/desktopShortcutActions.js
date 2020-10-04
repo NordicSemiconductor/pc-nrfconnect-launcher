@@ -52,11 +52,12 @@ import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 const config = remote.require('../main/config');
 const fileUtil = remote.require('../main/fileUtil');
 
-const mode = fs.constants.S_IRWXU
-    | fs.constants.S_IRGRP
-    | fs.constants.S_IXGRP
-    | fs.constants.S_IROTH
-    | fs.constants.S_IXOTH;
+const mode =
+    fs.constants.S_IRWXU |
+    fs.constants.S_IRGRP |
+    fs.constants.S_IXGRP |
+    fs.constants.S_IROTH |
+    fs.constants.S_IXOTH;
 
 /**
  * Get file name according to app
@@ -86,7 +87,7 @@ function getArgs(app) {
             '--open-official-app',
             app.name,
             '--source',
-            `"${app.source}"`,
+            `"${app.source}"`
         );
     } else {
         args.push('--open-local-app', app.name);
@@ -116,15 +117,15 @@ function createShortcutForWindows(app) {
             if (shortcutStatus !== true) {
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        'Fail with shell.writeShortcutLink',
-                    ),
+                        'Fail with shell.writeShortcutLink'
+                    )
                 );
             }
         } else {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    'Fail to create desktop since app.iconPath is not set',
-                ),
+                    'Fail to create desktop since app.iconPath is not set'
+                )
             );
         }
     };
@@ -166,22 +167,22 @@ function createShortcutForLinux(app) {
         const fileName = getFileName(app);
         const filePath = path.join(
             config.getDesktopDir(),
-            `${fileName}.desktop`,
+            `${fileName}.desktop`
         );
         const shortcutContent = generateShortcutContent(app);
         if (!shortcutContent) {
             return dispatch(
                 ErrorDialogActions.showDialog(
-                    'Fail to create desktop shortcut since the shortcut content is empty',
-                ),
+                    'Fail to create desktop shortcut since the shortcut content is empty'
+                )
             );
         }
         fs.writeFile(filePath, shortcutContent, err => {
             if (err) {
                 return dispatch(
                     ErrorDialogActions.showDialog(
-                        `Fail to create desktop shortcut on Linux with error: ${err}`,
-                    ),
+                        `Fail to create desktop shortcut on Linux with error: ${err}`
+                    )
                 );
             }
             fs.chmodSync(filePath, mode);
@@ -211,20 +212,20 @@ function createShortcutForMacOS(app) {
         const templateName = `template-${v4()}.app`;
         const appTemplateTarPath = path.join(
             config.getElectronRootPath(),
-            '/resources/mac/template.tar.gz',
+            '/resources/mac/template.tar.gz'
         );
         const tmpAppPath = path.join(
             config.getTmpDir(),
-            '/com.nordicsemi.nrfconnect',
+            '/com.nordicsemi.nrfconnect'
         );
         const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
         const appExecPath = path.join(
             filePath,
-            '/Contents/MacOS/Application Stub',
+            '/Contents/MacOS/Application Stub'
         );
         const icnsPath = path.join(
             tmpAppTemplatePath,
-            '/Contents/Resources/icon.icns',
+            '/Contents/Resources/icon.icns'
         );
 
         try {
@@ -235,7 +236,7 @@ function createShortcutForMacOS(app) {
             // Create Info.plist
             const infoTmpPath = path.join(
                 tmpAppTemplatePath,
-                '/Contents/Info.plist',
+                '/Contents/Info.plist'
             );
             const identifier = `com.nordicsemi.nrfconnect.${app.name}${
                 app.isOfficial ? '' : '-local'
@@ -248,13 +249,13 @@ function createShortcutForMacOS(app) {
             };
             const infoContent = Mustache.render(
                 infoContentSource,
-                infoContentData,
+                infoContentData
             );
 
             // Create document.wflow
             const wflowTmpPath = path.join(
                 tmpAppTemplatePath,
-                '/Contents/document.wflow',
+                '/Contents/document.wflow'
             );
             // In MacOS spaces should be replaced
             const shortcutCMD = `${config
@@ -267,7 +268,7 @@ function createShortcutForMacOS(app) {
             };
             const wflowContent = Mustache.render(
                 wflowContentSource,
-                wflowContentData,
+                wflowContentData
             );
 
             await fileUtil.createTextFile(infoTmpPath, infoContent);
@@ -280,7 +281,7 @@ function createShortcutForMacOS(app) {
             // Copy to Applications
             filePath = path.join(
                 config.getHomeDir(),
-                `/Applications/${fileName}.app/`,
+                `/Applications/${fileName}.app/`
             );
             await fileUtil.copy(tmpAppTemplatePath, filePath);
 
@@ -289,8 +290,8 @@ function createShortcutForMacOS(app) {
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    `Error occured while creating desktop shortcut on MacOS with error: ${error}`,
-                ),
+                    `Error occured while creating desktop shortcut on MacOS with error: ${error}`
+                )
             );
         }
     };
@@ -312,9 +313,10 @@ export function createShortcut(app) {
     if (process.platform === 'darwin') {
         return createShortcutForMacOS(app);
     }
-    return dispatch => dispatch(
-        ErrorDialogActions.showDialog(
-            'Your operating system is neither win32, linux nor darwin',
-        ),
-    );
+    return dispatch =>
+        dispatch(
+            ErrorDialogActions.showDialog(
+                'Your operating system is neither win32, linux nor darwin'
+            )
+        );
 }

@@ -49,10 +49,11 @@ const FirmwareDialog = ({
     onCancel,
 }) => {
     if (isVisible) {
-        const textToUse = text
-            || 'Would you like to program the development kit'
-                + ` on ${portPath(port)} (${port.serialNumber})`
-                + ' with the required firmware?';
+        const textToUse =
+            text ||
+            'Would you like to program the development kit' +
+                ` on ${portPath(port)} (${port.serialNumber})` +
+                ' with the required firmware?';
         return (
             <ConfirmationDialog
                 isVisible={isVisible}

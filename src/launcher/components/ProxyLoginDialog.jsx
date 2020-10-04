@@ -87,9 +87,7 @@ class ProxyLoginDialog extends React.Component {
     }
 
     render() {
-        const {
-            isVisible, message, onCancel, username,
-        } = this.props;
+        const { isVisible, message, onCancel, username } = this.props;
         const { password } = this.state;
         return (
             <Modal show={isVisible} backdrop>

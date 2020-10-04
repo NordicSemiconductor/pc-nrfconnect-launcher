@@ -48,4 +48,5 @@ function createMiddleware(appMiddleware) {
     return composeWithDevTools(applyMiddleware(...middlewares));
 }
 
-export default (rootReducer, app = {}) => createStore(rootReducer, createMiddleware(app.middleware));
+export default (rootReducer, app = {}) =>
+    createStore(rootReducer, createMiddleware(app.middleware));

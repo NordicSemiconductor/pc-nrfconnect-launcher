@@ -41,13 +41,15 @@ import Root from '../components/Root';
 import { resizeLogContainer } from '../actions/logActions';
 import '../../../../resources/css/app.scss';
 
-const RootContainer = ({ store }) => React.createElement(
-    Provider,
-    { store },
-    React.createElement(Root, {
-        resizeLogContainer: (...args) => store.dispatch(resizeLogContainer(...args)),
-    }),
-);
+const RootContainer = ({ store }) =>
+    React.createElement(
+        Provider,
+        { store },
+        React.createElement(Root, {
+            resizeLogContainer: (...args) =>
+                store.dispatch(resizeLogContainer(...args)),
+        })
+    );
 
 RootContainer.propTypes = {
     store: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

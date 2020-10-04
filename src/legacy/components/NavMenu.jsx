@@ -39,9 +39,7 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
 
-const NavMenu = ({
-    menuItems, selectedItemId, onItemSelected, cssClass,
-}) => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
     <div className={cssClass}>
         {menuItems.map((item, index) => {
             const hotkey = `Alt+${index + 1}`;

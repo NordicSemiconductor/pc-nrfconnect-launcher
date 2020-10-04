@@ -18,7 +18,7 @@ function createExternals() {
     ];
     return libs.reduce(
         (prev, lib) => Object.assign(prev, { [lib]: `commonjs ${lib}` }),
-        {},
+        {}
     );
 }
 
@@ -86,7 +86,8 @@ module.exports = {
             // The next line is only needed as long as we still need to support legacy apps.
             // Later, when we want to drop support for legacy apps, just replace that line with
             // filename: '[name].css',
-            moduleFilename: ({ name }) => (name === 'app' ? 'legacy.css' : '[name].css'),
+            moduleFilename: ({ name }) =>
+                name === 'app' ? 'legacy.css' : '[name].css',
             chunkFilename: '[id].css',
         }),
     ],

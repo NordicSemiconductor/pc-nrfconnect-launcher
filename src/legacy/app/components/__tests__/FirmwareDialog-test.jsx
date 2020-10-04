@@ -51,8 +51,8 @@ describe('FirmwareDialog', () => {
                     isVisible={false}
                     onCancel={() => {}}
                     onConfirmUpdateFirmware={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -67,8 +67,8 @@ describe('FirmwareDialog', () => {
                     }}
                     onCancel={() => {}}
                     onConfirmUpdateFirmware={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -80,8 +80,8 @@ describe('FirmwareDialog', () => {
                     text="Do you confirm?"
                     onCancel={() => {}}
                     onConfirmUpdateFirmware={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 });

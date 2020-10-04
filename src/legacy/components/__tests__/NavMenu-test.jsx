@@ -62,8 +62,8 @@ describe('NavMenu', () => {
                     menuItems={[]}
                     onItemSelected={() => {}}
                     bindHotkey={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -74,8 +74,8 @@ describe('NavMenu', () => {
                     menuItems={menuItems}
                     onItemSelected={() => {}}
                     bindHotkey={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -87,8 +87,8 @@ describe('NavMenu', () => {
                     selectedItemId={1}
                     onItemSelected={() => {}}
                     bindHotkey={() => {}}
-                />,
-            ),
+                />
+            )
         ).toMatchSnapshot();
     });
 
@@ -99,7 +99,7 @@ describe('NavMenu', () => {
                 menuItems={menuItems}
                 onItemSelected={onItemSelected}
                 bindHotkey={() => {}}
-            />,
+            />
         );
         wrapper.find('button').first().simulate('click');
 

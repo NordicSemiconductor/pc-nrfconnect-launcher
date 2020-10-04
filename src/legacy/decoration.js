@@ -111,10 +111,10 @@ function createDecoratedComponent(parent, name) {
 
         if (!decorated || typeof decorated !== 'function') {
             throw new Error(
-                `Error when calling '${method}': `
-                    + `No React component found. The return value of '${method}' `
-                    + 'must be a stateless functional component or a class that '
-                    + 'implements render().',
+                `Error when calling '${method}': ` +
+                    `No React component found. The return value of '${method}' ` +
+                    'must be a stateless functional component or a class that ' +
+                    'implements render().'
             );
         }
     }
@@ -138,7 +138,7 @@ function mapToProps(mapSubject, coreMapFn, appMapFnName) {
     if (appMapFn) {
         if (typeof appMapFn !== 'function') {
             throw new Error(
-                `Error when calling '${appMapFnName}': Not a function.`,
+                `Error when calling '${appMapFnName}': Not a function.`
             );
         }
 
@@ -146,7 +146,7 @@ function mapToProps(mapSubject, coreMapFn, appMapFnName) {
             return appMapFn(mapSubject, coreProps);
         } catch (err) {
             throw new Error(
-                `Error when calling '${appMapFnName}': ${err.message}`,
+                `Error when calling '${appMapFnName}': ${err.message}`
             );
         }
     }
@@ -175,7 +175,7 @@ function decorateReducer(coreReducerFn, name) {
         if (appReducerFn) {
             if (typeof appReducerFn !== 'function') {
                 throw new Error(
-                    `Error when calling '${method}': Not a function.`,
+                    `Error when calling '${method}': Not a function.`
                 );
             }
 
@@ -183,7 +183,7 @@ function decorateReducer(coreReducerFn, name) {
                 return appReducerFn(coreState, action);
             } catch (err) {
                 throw new Error(
-                    `Error when calling '${method}': ${err.message}`,
+                    `Error when calling '${method}': ${err.message}`
                 );
             }
         }
@@ -220,12 +220,14 @@ function decorate(Component, name) {
  * @returns {function} function that wraps 'connect' from react-redux.
  */
 function connect(coreMapStateFn, coreMapDispatchFn, mergeProps, options = {}) {
-    return (Component, name) => reduxConnect(
-        state => mapToProps(state, coreMapStateFn, `map${name}State`),
-        dispatch => mapToProps(dispatch, coreMapDispatchFn, `map${name}Dispatch`),
-        mergeProps,
-        options,
-    )(decorate(Component, name));
+    return (Component, name) =>
+        reduxConnect(
+            state => mapToProps(state, coreMapStateFn, `map${name}State`),
+            dispatch =>
+                mapToProps(dispatch, coreMapDispatchFn, `map${name}Dispatch`),
+            mergeProps,
+            options
+        )(decorate(Component, name));
 }
 
 export {

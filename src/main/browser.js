@@ -51,7 +51,7 @@ function createSplashScreen() {
         transparent: true,
     });
     splashScreen.loadURL(
-        `file://${config.getElectronResourcesDir()}/splashscreen.html`,
+        `file://${config.getElectronResourcesDir()}/splashscreen.html`
     );
     splashScreen.on('closed', () => {
         splashScreen = null;

@@ -92,7 +92,7 @@ function createMenu(app) {
                     click: (item, focusedWindow) => {
                         if (focusedWindow) {
                             focusedWindow.setFullScreen(
-                                !focusedWindow.isFullScreen(),
+                                !focusedWindow.isFullScreen()
                             );
                         }
                     },

@@ -59,7 +59,7 @@ function readFile(filePath) {
         fs.readFile(filePath, 'utf8', (error, data) => {
             if (error) {
                 reject(
-                    new Error(`Unable to read ${filePath}: ${error.message}`),
+                    new Error(`Unable to read ${filePath}: ${error.message}`)
                 );
             } else {
                 resolve(data);
@@ -137,7 +137,7 @@ function deleteFile(filePath) {
         fs.unlink(filePath, error => {
             if (error) {
                 reject(
-                    new Error(`Unable to delete ${filePath}: ${error.message}`),
+                    new Error(`Unable to delete ${filePath}: ${error.message}`)
                 );
             } else {
                 resolve();
@@ -158,8 +158,8 @@ function deleteDir(folderPath) {
             if (error) {
                 reject(
                     new Error(
-                        `Unable to delete ${folderPath}: ${error.message}`,
-                    ),
+                        `Unable to delete ${folderPath}: ${error.message}`
+                    )
                 );
             } else {
                 resolve();
@@ -212,12 +212,12 @@ function untar(src, dest, stripComponents = 0) {
             error => {
                 if (error) {
                     reject(
-                        new Error(`Unable to extract ${src}: ${error.message}`),
+                        new Error(`Unable to extract ${src}: ${error.message}`)
                     );
                 } else {
                     resolve();
                 }
-            },
+            }
         );
     });
 }
@@ -235,8 +235,8 @@ function chmodDir(src, mode) {
             if (error) {
                 reject(
                     new Error(
-                        `Unable to change mode to ${src}: ${error.message}`,
-                    ),
+                        `Unable to change mode to ${src}: ${error.message}`
+                    )
                 );
             } else {
                 resolve();
@@ -268,7 +268,8 @@ function getTmpFilename(basename) {
  */
 function extractNpmPackage(appName, tgzFile, destinationDir) {
     const tmpDir = getTmpFilename(appName);
-    const moveToDestinationDir = () => fse.move(tmpDir, destinationDir, { overwrite: true });
+    const moveToDestinationDir = () =>
+        fse.move(tmpDir, destinationDir, { overwrite: true });
 
     return untar(tgzFile, tmpDir, 1).then(moveToDestinationDir);
 }
@@ -295,8 +296,8 @@ function createTextFile(filePath, text) {
             if (error) {
                 reject(
                     new Error(
-                        `Unable to initialize ${filePath}: ${error.message}`,
-                    ),
+                        `Unable to initialize ${filePath}: ${error.message}`
+                    )
                 );
             } else {
                 resolve();

@@ -77,7 +77,7 @@ const reducer = (state = initialState, action) => {
         case AutoUpdateActions.AUTO_UPDATE_DOWNLOADING:
             return setPercentDownloadedAsInteger(
                 state,
-                action.percentDownloaded,
+                action.percentDownloaded
             );
         case AutoUpdateActions.AUTO_UPDATE_CANCEL_DOWNLOAD:
             return state.set('isCancelling', true);

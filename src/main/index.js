@@ -58,9 +58,7 @@ if (nRFjprogSearchPath) {
     process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
 }
 
-const {
-    Menu, ipcMain, dialog, app: electronApp,
-} = require('electron');
+const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
 
 const config = require('./config');
@@ -88,7 +86,7 @@ electronApp.on('ready', () => {
             if (config.getOfficialAppName()) {
                 return windows.openOfficialAppWindow(
                     config.getOfficialAppName(),
-                    config.getSourceName(),
+                    config.getSourceName()
                 );
             }
             if (config.getLocalAppName()) {
@@ -105,7 +103,7 @@ electronApp.on('ready', () => {
                     detail: error.message,
                     buttons: ['OK'],
                 },
-                () => electronApp.quit(),
+                () => electronApp.quit()
             );
         });
 });
@@ -126,12 +124,13 @@ ipcMain.on('show-about-dialog', () => {
     const appWindow = windows.getFocusedAppWindow();
     if (appWindow) {
         const { app } = appWindow;
-        const detail = `${app.description}\n\n`
-            + `Version: ${app.currentVersion}\n`
-            + `Official: ${app.isOfficial}\n`
-            + `Supported engines: nRF Connect ${app.engineVersion}\n`
-            + `Current engine: nRF Connect ${config.getVersion()}\n`
-            + `App directory: ${app.path}`;
+        const detail =
+            `${app.description}\n\n` +
+            `Version: ${app.currentVersion}\n` +
+            `Official: ${app.isOfficial}\n` +
+            `Supported engines: nRF Connect ${app.engineVersion}\n` +
+            `Current engine: nRF Connect ${config.getVersion()}\n` +
+            `App directory: ${app.path}`;
         dialog.showMessageBox(
             appWindow.browserWindow,
             {
@@ -144,7 +143,7 @@ ipcMain.on('show-about-dialog', () => {
                     : `${config.getElectronResourcesDir()}/nrfconnect.png`,
                 buttons: ['OK'],
             },
-            () => {},
+            () => {}
         );
     }
 });

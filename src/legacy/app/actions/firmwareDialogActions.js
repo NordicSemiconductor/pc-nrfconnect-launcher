@@ -59,7 +59,8 @@ export const FIRMWARE_DIALOG_HIDE = 'FIRMWARE_DIALOG_HIDE';
  *
  * @param {Object} port Serial port object, ref. the serialport library.
  */
-export const FIRMWARE_DIALOG_UPDATE_REQUESTED = 'FIRMWARE_DIALOG_UPDATE_REQUESTED';
+export const FIRMWARE_DIALOG_UPDATE_REQUESTED =
+    'FIRMWARE_DIALOG_UPDATE_REQUESTED';
 
 export function showDialog(port) {
     return {

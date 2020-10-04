@@ -50,14 +50,14 @@ function renderAlert(altText) {
 function renderNotice(app) {
     if (!app.engineVersion) {
         return renderAlert(
-            'The app does not specify which nRF Connect version(s) '
-                + 'it supports',
+            'The app does not specify which nRF Connect version(s) ' +
+                'it supports'
         );
     }
     if (!app.isSupportedEngine) {
         return renderAlert(
-            `The app only supports nRF Connect ${app.engineVersion}, `
-                + 'which does not match your currently installed version',
+            `The app only supports nRF Connect ${app.engineVersion}, ` +
+                'which does not match your currently installed version'
         );
     }
     return null;
@@ -66,7 +66,8 @@ function renderNotice(app) {
 const AppIcon = ({ app }) => {
     const { engineVersion, iconPath } = app;
     const installed = !!app.currentVersion;
-    const primaryColorNeedsUpdate = engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
+    const primaryColorNeedsUpdate =
+        engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
             className={`core-app-icon ${

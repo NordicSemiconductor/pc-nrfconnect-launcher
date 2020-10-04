@@ -57,7 +57,7 @@ function setSettings(state, settings) {
         .set('isLoading', false)
         .set(
             'shouldCheckForUpdatesAtStartup',
-            !!settings.shouldCheckForUpdatesAtStartup,
+            !!settings.shouldCheckForUpdatesAtStartup
         )
         .set('sources', new Map(settings.sources));
 }
@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => {
         case SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED:
             return state.set(
                 'shouldCheckForUpdatesAtStartup',
-                action.isEnabled,
+                action.isEnabled
             );
         case SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW:
             return state.set('isUpdateCheckCompleteDialogVisible', true);

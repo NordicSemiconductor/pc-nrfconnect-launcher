@@ -64,7 +64,7 @@ function getPortsWithSerialNumberOnWindows(ports, onWarning) {
             .then(map => {
                 map.forEach((serialNumber, comName) => {
                     const port = decoratedPorts.find(
-                        p => portPath(p) === comName,
+                        p => portPath(p) === comName
                     );
                     port.serialNumber = serialNumber;
                 });

@@ -123,8 +123,8 @@ export function checkForCoreUpdates() {
         const checkForUpdatesPromise = autoUpdater.checkForUpdates();
         if (!checkForUpdatesPromise) {
             log.warn(
-                'Not checking for nRF Connect updates. Auto update is not '
-                    + 'yet supported for this platform.',
+                'Not checking for nRF Connect updates. Auto update is not ' +
+                    'yet supported for this platform.'
             );
             return Promise.resolve();
         }
@@ -149,9 +149,9 @@ export function startDownload() {
         if (cancellationToken) {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    'Download was requested '
-                        + 'but another download operation is already in progress.',
-                ),
+                    'Download was requested ' +
+                        'but another download operation is already in progress.'
+                )
             );
             return;
         }
@@ -193,8 +193,8 @@ export function cancelDownload() {
         } else {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    'Unable to cancel. No download is in progress.',
-                ),
+                    'Unable to cancel. No download is in progress.'
+                )
             );
         }
     };
@@ -207,7 +207,9 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
         return mainApps
             .downloadAppsJsonFiles()
             .then(() => mainApps.generateUpdatesJsonFiles())
-            .then(() => dispatch(AppsActions.downloadLatestAppInfoSuccessAction()))
+            .then(() =>
+                dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
+            )
             .then(() => dispatch(AppsActions.loadOfficialApps()))
             .catch(error => {
                 dispatch(AppsActions.downloadLatestAppInfoErrorAction());
@@ -216,29 +218,29 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
                 } else if (net.isResourceNotFound(error)) {
                     dispatch(
                         ErrorDialogActions.showDialog(
-                            `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n`
-                                + 'This is usually caused by outdated app sources in the settings, '
-                                + 'where the sources files was removed from the server.',
+                            `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +
+                                'This is usually caused by outdated app sources in the settings, ' +
+                                'where the sources files was removed from the server.',
                             {
                                 'Remove source': () => {
                                     dispatch(
                                         SettingsActions.removeSource(
-                                            error.cause.name,
-                                        ),
+                                            error.cause.name
+                                        )
                                     );
                                     dispatch(ErrorDialogActions.hideDialog());
                                 },
                                 Cancel: () => {
                                     dispatch(ErrorDialogActions.hideDialog());
                                 },
-                            },
-                        ),
+                            }
+                        )
                     );
                 } else {
                     dispatch(
                         ErrorDialogActions.showDialog(
-                            `Unable to download latest app info: ${error.message}`,
-                        ),
+                            `Unable to download latest app info: ${error.message}`
+                        )
                     );
                 }
             });
@@ -246,14 +248,17 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
 }
 
 export function checkForUpdatesManually() {
-    return dispatch => dispatch(downloadLatestAppInfo({ rejectIfError: true }))
-        .then(() => {
-            dispatch(checkForCoreUpdates());
-            dispatch(SettingsActions.showUpdateCheckCompleteDialog());
-        })
-        .catch(error => dispatch(
-            ErrorDialogActions.showDialog(
-                `Unable to check for updates: ${error.message}`,
-            ),
-        ));
+    return dispatch =>
+        dispatch(downloadLatestAppInfo({ rejectIfError: true }))
+            .then(() => {
+                dispatch(checkForCoreUpdates());
+                dispatch(SettingsActions.showUpdateCheckCompleteDialog());
+            })
+            .catch(error =>
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        `Unable to check for updates: ${error.message}`
+                    )
+                )
+            );
 }

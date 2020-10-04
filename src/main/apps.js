@@ -70,7 +70,7 @@ function createSourcesJsonIfNotExists() {
 function createAppsJsonIfNotExists(source) {
     return fileUtil.createJsonFileIfNotExists(
         config.getAppsJsonPath(source),
-        {},
+        {}
     );
 }
 
@@ -83,7 +83,7 @@ function createAppsJsonIfNotExists(source) {
 function createUpdatesJsonIfNotExists(source) {
     return fileUtil.createJsonFileIfNotExists(
         config.getUpdatesJsonPath(source),
-        {},
+        {}
     );
 }
 
@@ -114,9 +114,9 @@ function downloadAppsJsonFile(url, name) {
         .downloadToJson(url, true)
         .catch(error => {
             const wrappedError = new Error(
-                `Unable to download apps list: ${error.message}. If you `
-                    + 'are using a proxy server, you may need to configure it as described on '
-                    + 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher',
+                `Unable to download apps list: ${error.message}. If you ` +
+                    'are using a proxy server, you may need to configure it as described on ' +
+                    'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher'
             );
             wrappedError.statusCode = error.statusCode;
             wrappedError.cause = { name, url };
@@ -130,10 +130,12 @@ function downloadAppsJsonFile(url, name) {
                 throw new Error('JSON does not contain expected `_source` tag');
             }
             return initSourceDirectory(source)
-                .then(() => fileUtil.createJsonFile(
-                    config.getAppsJsonPath(source),
-                    appsJson,
-                ))
+                .then(() =>
+                    fileUtil.createJsonFile(
+                        config.getAppsJsonPath(source),
+                        appsJson
+                    )
+                )
                 .then(() => source);
         });
 }
@@ -147,9 +149,12 @@ function downloadAppsJsonFile(url, name) {
  */
 function downloadAppsJsonFiles() {
     const sources = settings.getSources();
-    const sequence = (source, ...rest) => (source
-        ? downloadAppsJsonFile(sources[source], source).then(() => sequence(...rest))
-        : Promise.resolve());
+    const sequence = (source, ...rest) =>
+        source
+            ? downloadAppsJsonFile(sources[source], source).then(() =>
+                  sequence(...rest)
+              )
+            : Promise.resolve();
     return sequence(...Object.keys(sources));
 }
 
@@ -162,7 +167,7 @@ function downloadAppsJsonFiles() {
 function getInstalledAppNames(source) {
     return fileUtil.readJsonFile(config.getAppsJsonPath(source)).then(apps => {
         const installedPackages = fileUtil.listDirectories(
-            config.getNodeModulesDir(source),
+            config.getNodeModulesDir(source)
         );
         const availableApps = Object.keys(apps);
         const installedApps = [];
@@ -185,8 +190,12 @@ function getInstalledAppNames(source) {
 function generateUpdatesJsonFile(source) {
     const fileName = config.getUpdatesJsonPath(source);
     return getInstalledAppNames(source)
-        .then(installedApps => registryApi.getLatestPackageVersions(installedApps, source))
-        .then(latestVersions => fileUtil.createJsonFile(fileName, latestVersions));
+        .then(installedApps =>
+            registryApi.getLatestPackageVersions(installedApps, source)
+        )
+        .then(latestVersions =>
+            fileUtil.createJsonFile(fileName, latestVersions)
+        );
 }
 
 /**
@@ -198,7 +207,7 @@ function generateUpdatesJsonFile(source) {
 function generateUpdatesJsonFiles() {
     const sources = settings.getSources();
     return Promise.all(
-        Object.keys(sources).map(source => generateUpdatesJsonFile(source)),
+        Object.keys(sources).map(source => generateUpdatesJsonFile(source))
     );
 }
 
@@ -216,9 +225,9 @@ function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
                 type: 'question',
                 title: 'Existing app directory',
                 message:
-                    `Tried to extract archive ${tgzFilePath}, `
-                    + `but app directory ${appPath} already exists.\n\n`
-                    + 'Do you want to remove existing app in order to extract the archive?',
+                    `Tried to extract archive ${tgzFilePath}, ` +
+                    `but app directory ${appPath} already exists.\n\n` +
+                    'Do you want to remove existing app in order to extract the archive?',
                 buttons: ['Remove', 'Cancel'],
             },
             btnIndex => {
@@ -226,7 +235,7 @@ function confirmAndRemoveOldLocalApp(tgzFilePath, appPath) {
                     return fs.remove(appPath).then(resolve);
                 }
                 return resolve();
-            },
+            }
         );
     });
 }
@@ -242,9 +251,9 @@ function installLocalAppArchive(tgzFilePath) {
     if (!appName) {
         return Promise.reject(
             new Error(
-                'Unable to get app name from archive: '
-                    + `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`,
-            ),
+                'Unable to get app name from archive: ' +
+                    `${tgzFilePath}. Expected file name format: {name}-{version}.tgz.`
+            )
         );
     }
     const appPath = path.join(config.getAppsLocalDir(), appName);
@@ -261,11 +270,13 @@ function installLocalAppArchive(tgzFilePath) {
             if (!isInstalled) {
                 return fileUtil
                     .mkdir(appPath)
-                    .then(() => fileUtil.extractNpmPackage(
-                        appName,
-                        tgzFilePath,
-                        appPath,
-                    ))
+                    .then(() =>
+                        fileUtil.extractNpmPackage(
+                            appName,
+                            tgzFilePath,
+                            appPath
+                        )
+                    )
                     .then(() => fileUtil.deleteFile(tgzFilePath));
             }
             return Promise.resolve();
@@ -281,8 +292,11 @@ function installLocalAppArchives() {
     const appsLocalDir = config.getAppsLocalDir();
     const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
     return tgzFiles.reduce(
-        (prev, tgzFile) => prev.then(() => installLocalAppArchive(path.join(appsLocalDir, tgzFile))),
-        Promise.resolve(),
+        (prev, tgzFile) =>
+            prev.then(() =>
+                installLocalAppArchive(path.join(appsLocalDir, tgzFile))
+            ),
+        Promise.resolve()
     );
 }
 
@@ -300,9 +314,11 @@ function initAppsDirectory() {
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsExternalDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
         .then(() => createSourcesJsonIfNotExists())
-        .then(sources => Promise.all(
-            Object.keys(sources).map(source => initSourceDirectory(source)),
-        ))
+        .then(sources =>
+            Promise.all(
+                Object.keys(sources).map(source => initSourceDirectory(source))
+            )
+        )
         .then(() => installLocalAppArchives());
 }
 
@@ -384,7 +400,7 @@ function readAppInfo(appPath) {
             engineVersion: getEngineVersion(packageJson),
             isSupportedEngine: isSupportedEngine(
                 config.getVersion(),
-                packageJson,
+                packageJson
             ),
             source,
             repositoryUrl: packageJson.repository && packageJson.repository.url,
@@ -403,7 +419,7 @@ function readAppInfo(appPath) {
 function decorateWithInstalledAppInfo(officialApp, source) {
     const appDir = path.join(
         config.getNodeModulesDir(source),
-        officialApp.name,
+        officialApp.name
     );
     return readAppInfo(appDir).then(installedAppInfo => ({
         ...installedAppInfo,
@@ -422,7 +438,8 @@ function decorateWithInstalledAppInfo(officialApp, source) {
  * @returns {Object} a new app object that has a latestVersion property.
  */
 function decorateWithLatestVersion(officialApp, availableUpdates) {
-    const latestVersion = availableUpdates[officialApp.name] || officialApp.currentVersion;
+    const latestVersion =
+        availableUpdates[officialApp.name] || officialApp.currentVersion;
     return {
         ...officialApp,
         latestVersion,
@@ -467,22 +484,26 @@ function getOfficialAppsFromSource(source) {
     ]).then(([officialApps, availableUpdates]) => {
         const { ...cleanedApps } = officialApps;
         const officialAppsArray = officialAppsObjToArray(cleanedApps, source);
-        const promises = officialAppsArray.map(officialApp => fs
-            .exists(
-                path.join(
-                    config.getNodeModulesDir(source),
-                    officialApp.name,
-                ),
-            )
-            .then(isInstalled => {
-                if (isInstalled) {
-                    return decorateWithInstalledAppInfo(
-                        officialApp,
-                        source,
-                    ).then(app => decorateWithLatestVersion(app, availableUpdates));
-                }
-                return Promise.resolve(officialApp);
-            }));
+        const promises = officialAppsArray.map(officialApp =>
+            fs
+                .exists(
+                    path.join(
+                        config.getNodeModulesDir(source),
+                        officialApp.name
+                    )
+                )
+                .then(isInstalled => {
+                    if (isInstalled) {
+                        return decorateWithInstalledAppInfo(
+                            officialApp,
+                            source
+                        ).then(app =>
+                            decorateWithLatestVersion(app, availableUpdates)
+                        );
+                    }
+                    return Promise.resolve(officialApp);
+                })
+        );
         return Promise.all(promises);
     });
 }
@@ -490,11 +511,13 @@ function getOfficialAppsFromSource(source) {
 function getOfficialApps() {
     const sources = settings.getSources();
     return Promise.all(
-        Object.keys(sources).map(source => getOfficialAppsFromSource(source)),
-    ).then(arrayOfArrays => arrayOfArrays.reduce(
-        (accumulator, currentValue) => [...accumulator, ...currentValue],
-        [],
-    ));
+        Object.keys(sources).map(source => getOfficialAppsFromSource(source))
+    ).then(arrayOfArrays =>
+        arrayOfArrays.reduce(
+            (accumulator, currentValue) => [...accumulator, ...currentValue],
+            []
+        )
+    );
 }
 
 /**
@@ -530,10 +553,10 @@ function removeOfficialApp(name, source) {
     if (!appPath.includes('node_modules')) {
         return Promise.reject(
             new Error(
-                'Sanity check failed when trying '
-                    + `to remove app directory ${appPath}. The directory does not `
-                    + 'have node_modules in its path.',
-            ),
+                'Sanity check failed when trying ' +
+                    `to remove app directory ${appPath}. The directory does not ` +
+                    'have node_modules in its path.'
+            )
         );
     }
 
@@ -564,7 +587,9 @@ function installOfficialApp(name, version, source) {
                     }
                     return Promise.resolve();
                 })
-                .then(() => fileUtil.extractNpmPackage(name, tgzFilePath, appPath))
+                .then(() =>
+                    fileUtil.extractNpmPackage(name, tgzFilePath, appPath)
+                )
                 .then(() => fileUtil.deleteFile(tgzFilePath));
         });
 }
@@ -579,7 +604,7 @@ function removeSourceDirectory(source) {
     if (!source || source === 'official') {
         // Sanity check, this cannot happen anyway
         return Promise.reject(
-            new Error('The official source shall not be removed.'),
+            new Error('The official source shall not be removed.')
         );
     }
     return fs.remove(config.getAppsRootDir(source));
@@ -592,10 +617,11 @@ const migrateStoreIfNeeded = () => {
     }
 };
 
-const replacePrLinks = (homepage, changelog) => changelog.replace(
-    /#(\d+)/g,
-    (match, pr) => `[${match}](${homepage}/pull/${pr})`,
-);
+const replacePrLinks = (homepage, changelog) =>
+    changelog.replace(
+        /#(\d+)/g,
+        (match, pr) => `[${match}](${homepage}/pull/${pr})`
+    );
 
 /**
  * Download release notes.
@@ -619,7 +645,7 @@ async function downloadReleaseNotes({ url, homepage }) {
         const { response, etag } = await net.downloadToStringIfChanged(
             `${url}-Changelog.md`,
             previousEtag,
-            false,
+            false
         );
         if (response != null) {
             const changelog = replacePrLinks(homepage, response);
