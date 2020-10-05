@@ -1,3 +1,8 @@
+## Version 3.5.1
+### Updates
+- Send system arch to usage statistics
+- Fix client id generation on Linux
+
 ## Version 3.5.0
 ### Features
 - Updated design for new apps #458
