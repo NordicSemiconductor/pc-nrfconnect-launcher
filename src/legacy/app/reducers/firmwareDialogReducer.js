@@ -47,7 +47,8 @@ const InitialState = Record({
 const initialState = new InitialState();
 
 function showDialog(state, port) {
-    return state.set('port', getImmutableSerialPort(port))
+    return state
+        .set('port', getImmutableSerialPort(port))
         .set('isVisible', true);
 }
 

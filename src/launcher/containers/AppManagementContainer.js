@@ -45,31 +45,36 @@ import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 function mapStateToProps(state) {
     const {
         apps: {
-            localApps, officialApps,
-            installingAppName, removingAppName, upgradingAppName,
+            localApps,
+            officialApps,
+            installingAppName,
+            removingAppName,
+            upgradingAppName,
             show,
             filter,
             sources,
         },
     } = state;
     const allApps = localApps.concat(officialApps);
-    const apps = allApps.filter(app => (
-        new RegExp(filter, 'i').test(app.displayName)
-        && (
-            (app.isOfficial === true && app.path && show.installed)
-            || (app.isOfficial === null && !app.path && show.available)
-            || (app.isOfficial === false)
+    const apps = allApps
+        .filter(
+            app =>
+                new RegExp(filter, 'i').test(app.displayName) &&
+                ((app.isOfficial === true && app.path && show.installed) ||
+                    (app.isOfficial === null && !app.path && show.available) ||
+                    app.isOfficial === false) &&
+                sources[app.source || 'local'] !== false
         )
-        && (sources[app.source || 'local'] !== false)
-    ))
         .sort((a, b) => {
-            const cmpInstalled = (!!b.currentVersion - !!a.currentVersion);
+            const cmpInstalled = !!b.currentVersion - !!a.currentVersion;
             const aName = a.displayName || a.name;
             const bName = b.displayName || b.name;
             return cmpInstalled || aName.localeCompare(bName);
         });
 
-    const allSources = [...new Set(allApps.map(({ source }) => source || 'local'))];
+    const allSources = [
+        ...new Set(allApps.map(({ source }) => source || 'local')),
+    ];
     allSources.forEach(x => {
         if (sources[x] === undefined) {
             sources[x] = true;
@@ -81,7 +86,8 @@ function mapStateToProps(state) {
         installingAppName,
         removingAppName,
         upgradingAppName,
-        isProcessing: !!installingAppName || !!upgradingAppName || !!removingAppName,
+        isProcessing:
+            !!installingAppName || !!upgradingAppName || !!removingAppName,
         show: { ...show },
         filter,
         upgradeableApps: apps.filter(app => app.upgradeAvailable),
@@ -91,24 +97,23 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onInstall: (name, source) => dispatch(
-            AppsActions.installOfficialApp(name, source),
-        ),
-        onRemove: (name, source) => dispatch(AppsActions.removeOfficialApp(name, source)),
+        onInstall: (name, source) =>
+            dispatch(AppsActions.installOfficialApp(name, source)),
+        onRemove: (name, source) =>
+            dispatch(AppsActions.removeOfficialApp(name, source)),
         onReadMore: homepage => openUrl(homepage),
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app => dispatch(DesktopShortcutActions.createShortcut(app)),
+        onCreateShortcut: app =>
+            dispatch(DesktopShortcutActions.createShortcut(app)),
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
-        onUpgrade: (name, version, source) => dispatch(
-            AppsActions.upgradeOfficialApp(name, version, source),
-        ),
-        setAppManagementShow: show => dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter => dispatch(AppsActions.setAppManagementFilter(filter)),
+        onUpgrade: (name, version, source) =>
+            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+        setAppManagementShow: show =>
+            dispatch(AppsActions.setAppManagementShow(show)),
+        setAppManagementFilter: filter =>
+            dispatch(AppsActions.setAppManagementFilter(filter)),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppManagementView);
+export default connect(mapStateToProps, mapDispatchToProps)(AppManagementView);

@@ -44,24 +44,28 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        menuItems: [{
-            id: 1,
-            text: 'Launch other app...',
-            hotkey: 'Alt+L',
-            onClick: () => dispatch(MainMenuActions.openAppLauncher()),
-        }, {
-            id: 2,
-            text: 'System report',
-            onClick: () => dispatch(MainMenuActions.generateSystemReport()),
-        }, {
-            id: 3,
-            text: 'About',
-            onClick: () => dispatch(MainMenuActions.showAboutDialog()),
-        }],
+        menuItems: [
+            {
+                id: 1,
+                text: 'Launch other app...',
+                hotkey: 'Alt+L',
+                onClick: () => dispatch(MainMenuActions.openAppLauncher()),
+            },
+            {
+                id: 2,
+                text: 'System report',
+                onClick: () => dispatch(MainMenuActions.generateSystemReport()),
+            },
+            {
+                id: 3,
+                text: 'About',
+                onClick: () => dispatch(MainMenuActions.showAboutDialog()),
+            },
+        ],
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(MainMenu, 'MainMenu');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    MainMenu,
+    'MainMenu'
+);

@@ -69,19 +69,20 @@ const AppItem = ({
                     <AppIcon app={app} />
                 </Col>
                 <Col>
-                    <div className="h8">
-                        {app.displayName || app.name}
-                    </div>
-                    <div className="small text-muted">
-                        {app.description}
-                    </div>
+                    <div className="h8">{app.displayName || app.name}</div>
+                    <div className="small text-muted">{app.description}</div>
                     <div className="small text-muted-more">
                         {app.source || 'local'}
                         {installed && <>, v{app.currentVersion}</>}
-                        {app.upgradeAvailable && <> (v{app.latestVersion} available)</>}
+                        {app.upgradeAvailable && (
+                            <> (v{app.latestVersion} available)</>
+                        )}
                     </div>
                 </Col>
-                <Col xs="auto ml-auto" className="d-flex align-items-center my-3 pl-3">
+                <Col
+                    xs="auto ml-auto"
+                    className="d-flex align-items-center my-3 pl-3"
+                >
                     <ButtonToolbar className="wide-btns">
                         {app.upgradeAvailable && (
                             <Button
@@ -113,7 +114,11 @@ const AppItem = ({
                             </Button>
                         )}
                         <DropdownButton
-                            variant={installed ? 'outline-primary' : 'outline-secondary'}
+                            variant={
+                                installed
+                                    ? 'outline-primary'
+                                    : 'outline-secondary'
+                            }
                             title=""
                             alignRight
                         >
@@ -147,7 +152,9 @@ const AppItem = ({
                                     disabled={isDisabled}
                                     onClick={onRemove}
                                 >
-                                    {isRemoving ? 'Uninstalling...' : 'Uninstall'}
+                                    {isRemoving
+                                        ? 'Uninstalling...'
+                                        : 'Uninstall'}
                                 </Dropdown.Item>
                             )}
                         </DropdownButton>

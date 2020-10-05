@@ -39,14 +39,15 @@ import PropTypes from 'prop-types';
 
 const MainView = ({ children, cssClass }) => (
     <div className={cssClass}>
-        {
-            children || (
-                <div>
-                    <h4>Main view</h4>
-                    <p>Implement <code>decorateMainView</code> to add your own content here.</p>
-                </div>
-            )
-        }
+        {children || (
+            <div>
+                <h4>Main view</h4>
+                <p>
+                    Implement <code>decorateMainView</code> to add your own
+                    content here.
+                </p>
+            </div>
+        )}
     </div>
 );
 

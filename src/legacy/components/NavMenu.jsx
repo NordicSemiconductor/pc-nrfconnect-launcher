@@ -39,29 +39,25 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import NavMenuItem from './NavMenuItem';
 
-const NavMenu = ({
-    menuItems, selectedItemId, onItemSelected, cssClass,
-}) => (
+const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
     <div className={cssClass}>
-        {
-            menuItems.map((item, index) => {
-                const hotkey = `Alt+${index + 1}`;
-                const onSelected = () => onItemSelected(item.id);
+        {menuItems.map((item, index) => {
+            const hotkey = `Alt+${index + 1}`;
+            const onSelected = () => onItemSelected(item.id);
 
-                return (
-                    <NavMenuItem
-                        key={item.id}
-                        id={item.id}
-                        isSelected={item.id === selectedItemId}
-                        text={item.text}
-                        title={`${item.text} (${hotkey})`}
-                        hotkey={hotkey.toLowerCase()}
-                        iconClass={item.iconClass}
-                        onClick={onSelected}
-                    />
-                );
-            })
-        }
+            return (
+                <NavMenuItem
+                    key={item.id}
+                    id={item.id}
+                    isSelected={item.id === selectedItemId}
+                    text={item.text}
+                    title={`${item.text} (${hotkey})`}
+                    hotkey={hotkey.toLowerCase()}
+                    iconClass={item.iconClass}
+                    onClick={onSelected}
+                />
+            );
+        })}
     </div>
 );
 

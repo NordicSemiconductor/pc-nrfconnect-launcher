@@ -50,13 +50,14 @@ const initialState = new InitialState();
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LogAction.ADD_ENTRIES: {
-            let newEntries = state.logEntries.push(...(action.entries));
+            let newEntries = state.logEntries.push(...action.entries);
             if (newEntries.size > MAX_ENTRIES) {
                 newEntries = newEntries.slice(-MAX_ENTRIES).unshift({
                     id: -1,
                     level: 'info',
                     timestamp: new Date(),
-                    message: 'The log in this view has been shortened. Open the log file to see the full content.',
+                    message:
+                        'The log in this view has been shortened. Open the log file to see the full content.',
                 });
             }
             return state.set('logEntries', newEntries);

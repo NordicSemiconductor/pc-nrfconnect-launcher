@@ -53,35 +53,41 @@ import ErrorDialog from '../ErrorDialog';
 
 describe('ErrorDialog', () => {
     it('should render hidden dialog', () => {
-        expect(shallow(
-            <ErrorDialog
-                messages={List([])}
-                onClose={() => {}}
-                isVisible={false}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ErrorDialog
+                    messages={List([])}
+                    onClose={() => {}}
+                    isVisible={false}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render visible dialog with one message', () => {
-        expect(shallow(
-            <ErrorDialog
-                messages={List(['Oops. An error occurred.'])}
-                onClose={() => {}}
-                isVisible
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ErrorDialog
+                    messages={List(['Oops. An error occurred.'])}
+                    onClose={() => {}}
+                    isVisible
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render visible dialog with two messages', () => {
-        expect(shallow(
-            <ErrorDialog
-                messages={List([
-                    'Oops. An error occurred.',
-                    'Another error',
-                ])}
-                onClose={() => {}}
-                isVisible
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <ErrorDialog
+                    messages={List([
+                        'Oops. An error occurred.',
+                        'Another error',
+                    ])}
+                    onClose={() => {}}
+                    isVisible
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

@@ -54,9 +54,21 @@ function createMenu(app) {
             label: 'Edit',
             submenu: [
                 { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
-                { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-                { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
-                { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+                {
+                    label: 'Copy',
+                    accelerator: 'CmdOrCtrl+C',
+                    selector: 'copy:',
+                },
+                {
+                    label: 'Paste',
+                    accelerator: 'CmdOrCtrl+V',
+                    selector: 'paste:',
+                },
+                {
+                    label: 'Select All',
+                    accelerator: 'CmdOrCtrl+A',
+                    selector: 'selectAll:',
+                },
             ],
         },
         {
@@ -73,16 +85,24 @@ function createMenu(app) {
                 },
                 {
                     label: 'Toggle &Full Screen',
-                    accelerator: process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11',
+                    accelerator:
+                        process.platform === 'darwin'
+                            ? 'Ctrl+Command+F'
+                            : 'F11',
                     click: (item, focusedWindow) => {
                         if (focusedWindow) {
-                            focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+                            focusedWindow.setFullScreen(
+                                !focusedWindow.isFullScreen()
+                            );
                         }
                     },
                 },
                 {
                     label: 'Toggle &Developer Tools',
-                    accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+                    accelerator:
+                        process.platform === 'darwin'
+                            ? 'Alt+Command+I'
+                            : 'Ctrl+Shift+I',
                     visible: true,
                     click: (item, focusedWindow) => {
                         if (focusedWindow) {

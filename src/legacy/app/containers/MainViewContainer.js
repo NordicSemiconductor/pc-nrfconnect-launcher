@@ -45,7 +45,7 @@ function mapDispatchToProps() {
     return {};
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(MainView, 'MainView');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    MainView,
+    'MainView'
+);

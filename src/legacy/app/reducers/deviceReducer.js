@@ -54,7 +54,8 @@ function setSelectedSerialNumber(state, serialNumber) {
 }
 
 function clearSelectedSerialNumber(state) {
-    return state.set('selectedSerialNumber', initialState.selectedSerialNumber)
+    return state
+        .set('selectedSerialNumber', initialState.selectedSerialNumber)
         .set('deviceInfo', initialState.deviceInfo);
 }
 
@@ -63,7 +64,8 @@ function setDeviceList(state, devices) {
 }
 
 function setSetupInputRequired(state, message, choices = List()) {
-    return state.set('isSetupDialogVisible', true)
+    return state
+        .set('isSetupDialogVisible', true)
         .set('isSetupWaitingForUserInput', true)
         .set('setupDialogText', message)
         .set('setupDialogChoices', List(choices));
@@ -74,7 +76,8 @@ function setSetupInputReceived(state) {
 }
 
 function setSetupComplete(state, device) {
-    return state.set('isSetupDialogVisible', initialState.isSetupDialogVisible)
+    return state
+        .set('isSetupDialogVisible', initialState.isSetupDialogVisible)
         .set('setupDialogText', initialState.setupDialogText)
         .set('setupDialogChoices', initialState.setupDialogChoices)
         .set('deviceInfo', device.deviceInfo);
