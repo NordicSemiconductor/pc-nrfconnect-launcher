@@ -158,6 +158,7 @@ jobs:
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm i
+      npm run lint-init
       npm run lint
       npm run build
       npm test
