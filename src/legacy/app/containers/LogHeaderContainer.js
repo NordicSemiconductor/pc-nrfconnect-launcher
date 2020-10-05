@@ -84,7 +84,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(LogHeader, 'LogHeader');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    LogHeader,
+    'LogHeader'
+);

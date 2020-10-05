@@ -46,7 +46,8 @@ const menuItems = Immutable.List([
         id: 1,
         text: 'Connection map',
         iconClass: 'icon-columns',
-    }, {
+    },
+    {
         id: 2,
         text: 'Server setup',
         iconClass: 'icon-indent-right',
@@ -55,34 +56,40 @@ const menuItems = Immutable.List([
 
 describe('NavMenu', () => {
     it('should render menu with no items', () => {
-        expect(shallow(
-            <NavMenu
-                menuItems={[]}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <NavMenu
+                    menuItems={[]}
+                    onItemSelected={() => {}}
+                    bindHotkey={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render menu with two items, and none selected', () => {
-        expect(shallow(
-            <NavMenu
-                menuItems={menuItems}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <NavMenu
+                    menuItems={menuItems}
+                    onItemSelected={() => {}}
+                    bindHotkey={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render menu with two items, and one selected', () => {
-        expect(shallow(
-            <NavMenu
-                menuItems={menuItems}
-                selectedItemId={1}
-                onItemSelected={() => {}}
-                bindHotkey={() => {}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <NavMenu
+                    menuItems={menuItems}
+                    selectedItemId={1}
+                    onItemSelected={() => {}}
+                    bindHotkey={() => {}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should invoke onItemSelected when item has been selected', () => {
@@ -92,7 +99,7 @@ describe('NavMenu', () => {
                 menuItems={menuItems}
                 onItemSelected={onItemSelected}
                 bindHotkey={() => {}}
-            />,
+            />
         );
         wrapper.find('button').first().simulate('click');
 

@@ -57,36 +57,49 @@ const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
 const net = remote.require('../main/net');
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk))
+);
 const rootElement = React.createElement(RootContainer, { store });
 
-const shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');
+const shouldCheckForUpdatesAtStartup = settings.get(
+    'shouldCheckForUpdatesAtStartup'
+);
 const isSendingUserData = settings.get('isSendingUserData');
 
 function downloadLatestAppInfo() {
-    if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateApps()) {
+    if (
+        shouldCheckForUpdatesAtStartup !== false &&
+        !config.isSkipUpdateApps()
+    ) {
         return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
     }
     return Promise.resolve();
 }
 
 function checkForCoreUpdates() {
-    if (shouldCheckForUpdatesAtStartup !== false && !config.isSkipUpdateCore() && !isDev) {
+    if (
+        shouldCheckForUpdatesAtStartup !== false &&
+        !config.isSkipUpdateCore() &&
+        !isDev
+    ) {
         return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
     }
     return Promise.resolve();
 }
 
 net.registerProxyLoginHandler((authInfo, callback) => {
-    store.dispatch(ProxyActions.authenticate(authInfo))
-        .then(credentials => {
-            const { username, password } = credentials;
-            return callback(username, password);
-        });
+    store.dispatch(ProxyActions.authenticate(authInfo)).then(credentials => {
+        const { username, password } = credentials;
+        return callback(username, password);
+    });
 });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await store.dispatch(UserDataActions.checkUserDataSetting(isSendingUserData));
+    await store.dispatch(
+        UserDataActions.checkUserDataSetting(isSendingUserData)
+    );
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
     await store.dispatch(AppsActions.setAppManagementShow());
@@ -94,4 +107,5 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.setAppManagementSource());
     await downloadLatestAppInfo();
     await checkForCoreUpdates();
+    store.dispatch(UserDataActions.sendEnvInfo());
 });

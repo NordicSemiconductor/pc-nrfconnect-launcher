@@ -149,10 +149,14 @@ export function startReading() {
                 tmpDir,
             } = details;
             const official = isOfficial ? 'official' : 'local';
-            const supported = isSupportedEngine ? 'is supported' : 'is not supported';
+            const supported = isSupportedEngine
+                ? 'is supported'
+                : 'is not supported';
             logger.debug(`App ${name} v${currentVersion} ${official}`);
             logger.debug(`App path: ${path}`);
-            logger.debug(`nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`);
+            logger.debug(
+                `nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`
+            );
             logger.debug(`nRFConnect path: ${corePath}`);
             logger.debug(`HomeDir: ${homeDir}`);
             logger.debug(`TmpDir: ${tmpDir}`);

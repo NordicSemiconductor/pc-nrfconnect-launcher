@@ -44,7 +44,9 @@ function mapStateToProps({
     releaseNotesDialog: { source, name },
 }) {
     if (name) {
-        const app = officialApps.find(x => x.source === source && x.name === name);
+        const app = officialApps.find(
+            x => x.source === source && x.name === name
+        );
         return {
             source: app.source,
             name: app.name,
@@ -60,14 +62,10 @@ function mapStateToProps({
 
 function mapDispatchToProps(dispatch) {
     return {
-        onUpgrade: (name, version, source) => dispatch(
-            upgradeOfficialApp(name, version, source),
-        ),
+        onUpgrade: (name, version, source) =>
+            dispatch(upgradeOfficialApp(name, version, source)),
         onHideReleaseNotes: () => dispatch(ReleaseNotes.hide()),
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(ReleaseNotesView);
+export default connect(mapStateToProps, mapDispatchToProps)(ReleaseNotesView);

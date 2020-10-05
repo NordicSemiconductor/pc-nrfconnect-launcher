@@ -70,9 +70,7 @@ const renderer = (App, container, onLoaded) => {
 };
 
 const render = app => {
-    const doRender = isLegacy(app)
-        ? legacyRenderer
-        : renderer;
+    const doRender = isLegacy(app) ? legacyRenderer : renderer;
 
     doRender(app, document.getElementById('webapp'), removeLoaderElement);
 };
@@ -85,6 +83,4 @@ const showLoadingError = error => {
     });
 };
 
-initApp(appPath)
-    .then(render)
-    .catch(showLoadingError);
+initApp(appPath).then(render).catch(showLoadingError);

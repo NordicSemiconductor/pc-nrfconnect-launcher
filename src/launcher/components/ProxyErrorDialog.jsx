@@ -39,24 +39,23 @@ import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const ProxyErrorDialog = ({
-    isVisible,
-    onOk,
-}) => (
+const ProxyErrorDialog = ({ isVisible, onOk }) => (
     <Modal show={isVisible} backdrop>
         <Modal.Header>
             <Modal.Title>Proxy error</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <p>
-                It appears that you are having problems authenticating with a proxy server.
-                This will prevent you from using certain features of nRF Connect, such as
-                installing apps from the &quot;Add/remove apps&quot; screen.
+                It appears that you are having problems authenticating with a
+                proxy server. This will prevent you from using certain features
+                of nRF Connect, such as installing apps from the
+                &quot;Add/remove apps&quot; screen.
             </p>
             <p>
-                If you are unable to resolve the issue, then go to Settings and disable
-                &quot;Check for updates at startup&quot;. Then restart nRF Connect and
-                install apps manually by following the instructions at
+                If you are unable to resolve the issue, then go to Settings and
+                disable &quot;Check for updates at startup&quot;. Then restart
+                nRF Connect and install apps manually by following the
+                instructions at
                 https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.
             </p>
         </Modal.Body>

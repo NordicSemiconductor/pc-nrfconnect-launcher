@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable no-underscore-dangle */
 import Module from 'module';
 
 const hostedModules = {};
@@ -43,8 +44,8 @@ const hostedModules = {};
  * app uses the same instances of react and react-redux as we have in core.
  * Cannot have multiple copies of these loaded at the same time.
  */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
+const originalLoad = Module._load;
+Module._load = function load(modulePath) {
     if (hostedModules[modulePath]) {
         return hostedModules[modulePath];
     }
@@ -52,13 +53,14 @@ Module._load = function load(modulePath) { // eslint-disable-line no-underscore-
     return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
 };
 
-
 const SerialPort = require('serialport');
 
 let hasShownDeprecatedPropertyWarning = false;
 const mayShowWarningAboutDeprecatedProperty = () => {
     if (!hasShownDeprecatedPropertyWarning) {
-        console.warn('Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.');
+        console.warn(
+            'Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.'
+        );
     }
     hasShownDeprecatedPropertyWarning = true;
 };
@@ -71,7 +73,8 @@ const ducktapeComName = port => ({
 });
 
 const originalSerialPortList = SerialPort.list;
-SerialPort.list = () => originalSerialPortList().then(ports => ports.map(ducktapeComName));
+SerialPort.list = () =>
+    originalSerialPortList().then(ports => ports.map(ducktapeComName));
 
 /* eslint-disable dot-notation */
 // Disable dot-notation in this file, to keep the syntax below more consistent

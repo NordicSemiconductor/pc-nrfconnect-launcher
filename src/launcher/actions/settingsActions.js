@@ -45,15 +45,22 @@ const mainApps = remote.require('../main/apps');
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';
 export const SETTINGS_LOAD_ERROR = 'SETTINGS_LOAD_ERROR';
-export const SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED = 'SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED';
-export const SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW = 'SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW';
-export const SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE = 'SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE';
+export const SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED =
+    'SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED';
+export const SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW =
+    'SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW';
+export const SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE =
+    'SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE';
 export const SETTINGS_SOURCE_ADDED = 'SETTINGS_SOURCE_ADDED';
 export const SETTINGS_SOURCE_REMOVED = 'SETTINGS_SOURCE_REMOVED';
-export const SETTINGS_ADD_SOURCE_DIALOG_SHOW = 'SETTINGS_ADD_SOURCE_DIALOG_SHOW';
-export const SETTINGS_ADD_SOURCE_DIALOG_HIDE = 'SETTINGS_ADD_SOURCE_DIALOG_HIDE';
-export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW = 'SETTINGS_REMOVE_SOURCE_DIALOG_SHOW';
-export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE = 'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
+export const SETTINGS_ADD_SOURCE_DIALOG_SHOW =
+    'SETTINGS_ADD_SOURCE_DIALOG_SHOW';
+export const SETTINGS_ADD_SOURCE_DIALOG_HIDE =
+    'SETTINGS_ADD_SOURCE_DIALOG_HIDE';
+export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW =
+    'SETTINGS_REMOVE_SOURCE_DIALOG_SHOW';
+export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE =
+    'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
 
 function loadSettingsAction() {
     return {
@@ -86,18 +93,26 @@ export function loadSettings() {
     return dispatch => {
         dispatch(loadSettingsAction());
         try {
-            let shouldCheckForUpdatesAtStartup = settings.get('shouldCheckForUpdatesAtStartup');
+            let shouldCheckForUpdatesAtStartup = settings.get(
+                'shouldCheckForUpdatesAtStartup'
+            );
             if (shouldCheckForUpdatesAtStartup === null) {
                 shouldCheckForUpdatesAtStartup = true;
             }
             const sources = settings.getSources();
-            dispatch(loadSettingsSuccessAction({
-                shouldCheckForUpdatesAtStartup,
-                sources,
-            }));
+            dispatch(
+                loadSettingsSuccessAction({
+                    shouldCheckForUpdatesAtStartup,
+                    sources,
+                })
+            );
         } catch (error) {
             dispatch(loadSettingsErrorAction(error));
-            dispatch(ErrorDialogActions.showDialog(`Unable to load settings: ${error.message}`));
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Unable to load settings: ${error.message}`
+                )
+            );
         }
     };
 }
@@ -108,7 +123,11 @@ export function checkUpdatesAtStartupChanged(isEnabled) {
         try {
             settings.set('shouldCheckForUpdatesAtStartup', isEnabled);
         } catch (error) {
-            dispatch(ErrorDialogActions.showDialog(`Unable to save settings: ${error.message}`));
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Unable to save settings: ${error.message}`
+                )
+            );
         }
     };
 }
@@ -135,16 +154,23 @@ function addSourceAction(name, url) {
 
 export function addSource(url) {
     return (dispatch, getState) => {
-        mainApps.downloadAppsJsonFile(url)
+        mainApps
+            .downloadAppsJsonFile(url)
             .then(source => dispatch(addSourceAction(source, url)))
             .then(() => {
                 try {
                     settings.setSources(getState().settings.sources.toJS());
                 } catch (error) {
-                    dispatch(ErrorDialogActions.showDialog(`Unable to save settings: ${error.message}`));
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to save settings: ${error.message}`
+                        )
+                    );
                 }
             })
-            .catch(error => dispatch(ErrorDialogActions.showDialog(error.message)))
+            .catch(error =>
+                dispatch(ErrorDialogActions.showDialog(error.message))
+            )
             .then(() => dispatch(AppsActions.loadOfficialApps()));
     };
 }
@@ -158,13 +184,18 @@ function sourceRemovedAction(name) {
 
 export function removeSource(name) {
     return (dispatch, getState) => {
-        mainApps.removeSourceDirectory(name)
+        mainApps
+            .removeSourceDirectory(name)
             .then(() => dispatch(sourceRemovedAction(name)))
             .then(() => {
                 try {
                     settings.setSources(getState().settings.sources.toJS());
                 } catch (error) {
-                    dispatch(ErrorDialogActions.showDialog(`Unable to save settings: ${error.message}`));
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to save settings: ${error.message}`
+                        )
+                    );
                 }
             })
             .then(() => dispatch(AppsActions.loadOfficialApps()))

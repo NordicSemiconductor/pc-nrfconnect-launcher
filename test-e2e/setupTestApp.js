@@ -41,9 +41,16 @@ import rimraf from 'rimraf';
 
 const startApp = async extraArgs => {
     const projectPath = path.resolve(__dirname, '../');
-    const electronArgs = [projectPath, '--skip-update-core', '--skip-splash-screen', ...extraArgs];
+    const electronArgs = [
+        projectPath,
+        '--skip-update-core',
+        '--skip-splash-screen',
+        ...extraArgs,
+    ];
     if (process.env.LOG_ELECTRON_ARGS) {
-        console.log(`Electron is run with these args: ${electronArgs.join(' ')}`);
+        console.log(
+            `Electron is run with these args: ${electronArgs.join(' ')}`
+        );
     }
 
     const app = new Application({
@@ -89,10 +96,19 @@ export default ({
 
         const electronArgs = [
             `--apps-root-dir=${absoluteAppsRootDir}`,
-            ...(settingsJsonPath ? [`--settings-json-path=${path.join(__dirname, settingsJsonPath)}`] : []),
+            ...(settingsJsonPath
+                ? [
+                      `--settings-json-path=${path.join(
+                          __dirname,
+                          settingsJsonPath
+                      )}`,
+                  ]
+                : []),
             ...(skipUpdateApps ? ['--skip-update-apps'] : []),
             ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),
-            ...(openOfficialApp ? [`--open-official-app=${openOfficialApp}`] : []),
+            ...(openOfficialApp
+                ? [`--open-official-app=${openOfficialApp}`]
+                : []),
         ];
 
         spectronApp = await startApp(electronArgs);

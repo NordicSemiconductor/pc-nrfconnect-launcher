@@ -30,7 +30,8 @@ exports[`SettingsView should render check for updates completed, with everything
     <p
       className="small text-muted"
     >
-      Last update check performed: 
+      Last update check performed:
+       
       2017-02-03 13:41:36
     </p>
     <FormCheck
@@ -191,7 +192,8 @@ exports[`SettingsView should render check for updates completed, with updates av
     <p
       className="small text-muted"
     >
-      Last update check performed: 
+      Last update check performed:
+       
       2017-02-03 13:41:36
     </p>
     <FormCheck
@@ -984,7 +986,8 @@ exports[`SettingsView should render with last update check date 1`] = `
     <p
       className="small text-muted"
     >
-      Last update check performed: 
+      Last update check performed:
+       
       2017-02-03 13:41:36
     </p>
     <FormCheck

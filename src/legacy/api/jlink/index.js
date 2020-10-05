@@ -48,7 +48,8 @@ const SEGGER_VENDOR_ID = '1366';
  * @returns {Array<string>} COM names for the SEGGER devices.
  */
 function getSeggerComNames(ports) {
-    return ports.filter(port => port.vendorId === SEGGER_VENDOR_ID)
+    return ports
+        .filter(port => port.vendorId === SEGGER_VENDOR_ID)
         .map(port => port.path);
 }
 
@@ -58,10 +59,13 @@ function getPortsWithSerialNumberOnWindows(ports, onWarning) {
         const seggerComNames = getSeggerComNames(ports);
         const facade = new JlinkFacade();
         facade.on('warn', onWarning);
-        facade.getSerialNumberMap(seggerComNames)
+        facade
+            .getSerialNumberMap(seggerComNames)
             .then(map => {
                 map.forEach((serialNumber, comName) => {
-                    const port = decoratedPorts.find(p => portPath(p) === comName);
+                    const port = decoratedPorts.find(
+                        p => portPath(p) === comName
+                    );
                     port.serialNumber = serialNumber;
                 });
                 resolve(decoratedPorts);

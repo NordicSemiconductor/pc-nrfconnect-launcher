@@ -99,7 +99,9 @@ const Root = ({ resizeLogContainer }) => (
                     tabIndex={-1}
                     role="button"
                     className="core-splitter horizontal"
-                    onMouseDown={event => onMouseDownHorizontal(event, resizeLogContainer)}
+                    onMouseDown={event =>
+                        onMouseDownHorizontal(event, resizeLogContainer)
+                    }
                 />
                 <LogViewerContainer />
                 <div

@@ -83,9 +83,7 @@ export default class HotkeyedDropdown extends React.Component {
     }
 
     render() {
-        const {
-            hotkey, disabled, title, children, ...childProps
-        } = this.props;
+        const { hotkey, disabled, title, children, ...childProps } = this.props;
         const { open } = this.state;
         return (
             <Dropdown
@@ -95,11 +93,9 @@ export default class HotkeyedDropdown extends React.Component {
                 onToggle={this.toggle}
             >
                 <Dropdown.Toggle title={`${title} (${hotkey})`}>
-                    { title }
+                    {title}
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    { children }
-                </Dropdown.Menu>
+                <Dropdown.Menu>{children}</Dropdown.Menu>
             </Dropdown>
         );
     }

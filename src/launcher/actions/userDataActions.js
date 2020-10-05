@@ -36,6 +36,8 @@
 
 import { remote } from 'electron';
 import { userData } from 'pc-nrfconnect-shared';
+import si from 'systeminformation';
+
 import pkgJson from '../../../package.json';
 
 const settings = remote.require('../main/settings');
@@ -54,6 +56,7 @@ export const EventAction = {
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
+    REPORT_OS_INFO: 'Report OS info',
 };
 
 const EventLabel = {
@@ -124,19 +127,14 @@ export function toggleSendingUserData() {
 }
 
 function initUserData(label) {
-    userData.sendEvent(
-        EventCategory,
-        EventAction.LAUNCH_LAUNCHER,
-        label,
-    );
+    userData.sendEvent(EventCategory, EventAction.LAUNCH_LAUNCHER, label);
 }
 
 export function checkUserDataSetting(isSendingUserData) {
     return async dispatch => {
         await userData.init(EventCategory);
-        if ((typeof isSendingUserData) !== 'boolean') {
+        if (typeof isSendingUserData !== 'boolean') {
             dispatch(showUserDataDialog());
-            initUserData(EventLabel.LAUNCHER_USER_DATA_NOT_SET);
             return;
         }
         if (isSendingUserData) {
@@ -144,22 +142,41 @@ export function checkUserDataSetting(isSendingUserData) {
             dispatch(setUserDataOn());
             return;
         }
-        initUserData(EventLabel.LAUNCHER_USER_DATA_OFF);
         dispatch(setUserDataOff());
     };
 }
 
-export function sendLauncherUserData(eventAction, eventLabel = null, appName = null) {
+export function sendLauncherUserData(eventAction, eventLabel) {
     return (_, getState) => {
         const { isSendingUserData } = getState().settings;
         if (!isSendingUserData) {
             return;
         }
-        const updatedEventAction = appName ? `${eventAction} ${appName}` : eventAction;
-        userData.sendEvent(
-            EventCategory,
-            updatedEventAction,
-            eventLabel,
-        );
+        userData.sendEvent(EventCategory, eventAction, eventLabel);
+    };
+}
+
+export function sendAppUserData(
+    eventAction,
+    eventLabel = null,
+    appName = null
+) {
+    return (_, getState) => {
+        const { isSendingUserData } = getState().settings;
+        if (!isSendingUserData) {
+            return;
+        }
+        const updatedEventAction = appName
+            ? `${eventAction} ${appName}`
+            : eventAction;
+        userData.sendEvent(EventCategory, updatedEventAction, eventLabel);
+    };
+}
+
+export function sendEnvInfo() {
+    return async dispatch => {
+        const [{ platform, arch }] = await Promise.all([si.osInfo()]);
+        const osInfo = `${platform}; ${arch}`;
+        dispatch(sendLauncherUserData(EventAction.REPORT_OS_INFO, osInfo));
     };
 }

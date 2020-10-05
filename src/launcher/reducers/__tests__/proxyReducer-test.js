@@ -46,7 +46,9 @@ describe('proxyReducer', () => {
             message: 'Please enter proxy credentials',
         });
         expect(state.isLoginDialogVisible).toEqual(true);
-        expect(state.loginDialogMessage).toEqual('Please enter proxy credentials');
+        expect(state.loginDialogMessage).toEqual(
+            'Please enter proxy credentials'
+        );
     });
 
     it('should hide login dialog when PROXY_LOGIN_CANCELLED_BY_USER has been dispatched', () => {

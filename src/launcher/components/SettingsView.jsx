@@ -61,8 +61,12 @@ function cancel(event) {
 class SettingsView extends React.Component {
     constructor() {
         super();
-        this.onCheckUpdatesAtStartupChanged = this.onCheckUpdatesAtStartupChanged.bind(this);
-        this.onTriggerUpdateCheckClicked = this.onTriggerUpdateCheckClicked.bind(this);
+        this.onCheckUpdatesAtStartupChanged = this.onCheckUpdatesAtStartupChanged.bind(
+            this
+        );
+        this.onTriggerUpdateCheckClicked = this.onTriggerUpdateCheckClicked.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -112,22 +116,30 @@ class SettingsView extends React.Component {
             <>
                 <Card body>
                     <Row>
-                        <Col><Card.Title>Updates</Card.Title></Col>
+                        <Col>
+                            <Card.Title>Updates</Card.Title>
+                        </Col>
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
                                 onClick={this.onTriggerUpdateCheckClicked}
                                 disabled={isCheckingForUpdates}
                             >
-                                { isCheckingForUpdates ? 'Checking...' : 'Check for updates' }
+                                {isCheckingForUpdates
+                                    ? 'Checking...'
+                                    : 'Check for updates'}
                             </Button>
                         </Col>
                     </Row>
                     <p className="small text-muted">
-                        {
-                            lastUpdateCheckDate
-                                && <>Last update check performed: { moment(lastUpdateCheckDate).format('YYYY-MM-DD HH:mm:ss') }</>
-                        }
+                        {lastUpdateCheckDate && (
+                            <>
+                                Last update check performed:{' '}
+                                {moment(lastUpdateCheckDate).format(
+                                    'YYYY-MM-DD HH:mm:ss'
+                                )}
+                            </>
+                        )}
                     </p>
                     <Form.Check
                         custom
@@ -145,7 +157,9 @@ class SettingsView extends React.Component {
                     id="app-sources"
                 >
                     <Row>
-                        <Col><Card.Title>App sources</Card.Title></Col>
+                        <Col>
+                            <Card.Title>App sources</Card.Title>
+                        </Col>
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
@@ -155,42 +169,49 @@ class SettingsView extends React.Component {
                             </Button>
                         </Col>
                     </Row>
-                    {
-                        Object.keys(sourcesJS)
-                            .filter(name => name !== 'official')
-                            .map(name => (
-                                <Row key={name}>
-                                    <Col className="item-name text-capitalize">{name}</Col>
-                                    <Col xs="auto">
-                                        <ButtonToolbar>
-                                            <Button
-                                                variant="outline-secondary"
-                                                size="sm"
-                                                onClick={() => clipboard.writeText(sourcesJS[name])}
-                                                title="Copy URL to clipboard"
-                                            >
-                                                Copy URL
-                                            </Button>
-                                            <Button
-                                                variant="outline-secondary"
-                                                size="sm"
-                                                onClick={() => onShowRemoveSourceDialog(name)}
-                                                title="Remove source and associated apps"
-                                            >
-                                                Remove
-                                            </Button>
-                                        </ButtonToolbar>
-                                    </Col>
-                                </Row>
-                            ))
-                    }
+                    {Object.keys(sourcesJS)
+                        .filter(name => name !== 'official')
+                        .map(name => (
+                            <Row key={name}>
+                                <Col className="item-name text-capitalize">
+                                    {name}
+                                </Col>
+                                <Col xs="auto">
+                                    <ButtonToolbar>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() =>
+                                                clipboard.writeText(
+                                                    sourcesJS[name]
+                                                )
+                                            }
+                                            title="Copy URL to clipboard"
+                                        >
+                                            Copy URL
+                                        </Button>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() =>
+                                                onShowRemoveSourceDialog(name)
+                                            }
+                                            title="Remove source and associated apps"
+                                        >
+                                            Remove
+                                        </Button>
+                                    </ButtonToolbar>
+                                </Col>
+                            </Row>
+                        ))}
                 </Card>
                 <Card body>
                     <Row>
-                        <Col><Card.Title>Usage statistics</Card.Title></Col>
+                        <Col>
+                            <Card.Title>Usage statistics</Card.Title>
+                        </Col>
                     </Row>
                     <Row>
-
                         <Col>
                             <Form.Check
                                 custom
@@ -218,17 +239,14 @@ class SettingsView extends React.Component {
                         <Modal.Title>Update check completed</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {
-                            isAppUpdateAvailable
-                                ? (
-                                    <>
-                                        One or more updates are
-                                        available. Go to the
-                                        apps screen to update.
-                                    </>
-                                )
-                                : <>All apps are up to date.</>
-                        }
+                        {isAppUpdateAvailable ? (
+                            <>
+                                One or more updates are available. Go to the
+                                apps screen to update.
+                            </>
+                        ) : (
+                            <>All apps are up to date.</>
+                        )}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -244,7 +262,10 @@ class SettingsView extends React.Component {
                     title="Add source"
                     placeholder="https://..."
                     subtext="The source file must be in .json format"
-                    onOk={url => { addSource(url); onHideAddSourceDialog(); }}
+                    onOk={url => {
+                        addSource(url);
+                        onHideAddSourceDialog();
+                    }}
                     onCancel={onHideAddSourceDialog}
                 />
                 <ConfirmRemoveSourceDialog />

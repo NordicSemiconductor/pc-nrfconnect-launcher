@@ -1,0 +1,5 @@
+{
+    "hooks": {
+        "pre-push": "bash node_modules/pc-nrfconnect-shared/scripts/pre-push.sh"
+    }
+}

@@ -52,29 +52,29 @@ const LogHeader = ({
     <div className={cssClass}>
         <div className={headerTextCssClass}>{text}</div>
         <div className={headerButtonsCssClass}>
-            {
-                buttons.map(button => (
-                    <DecoratedLogHeaderButton
-                        key={button.id}
-                        title={button.title}
-                        iconCssClass={button.iconCssClass}
-                        isSelected={button.isSelected}
-                        onClick={() => onButtonClicked(button.id)}
-                    />
-                ))
-            }
+            {buttons.map(button => (
+                <DecoratedLogHeaderButton
+                    key={button.id}
+                    title={button.title}
+                    iconCssClass={button.iconCssClass}
+                    isSelected={button.isSelected}
+                    onClick={() => onButtonClicked(button.id)}
+                />
+            ))}
         </div>
     </div>
 );
 
 LogHeader.propTypes = {
     text: PropTypes.string,
-    buttons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        title: PropTypes.string,
-        iconCssClass: PropTypes.string,
-        isSelected: PropTypes.bool,
-    })),
+    buttons: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            title: PropTypes.string,
+            iconCssClass: PropTypes.string,
+            isSelected: PropTypes.bool,
+        })
+    ),
     onButtonClicked: PropTypes.func.isRequired,
     cssClass: PropTypes.string,
     headerTextCssClass: PropTypes.string,

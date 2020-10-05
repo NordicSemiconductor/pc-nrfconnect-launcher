@@ -43,7 +43,8 @@ function mapStateToProps(state) {
 
     return {
         isVisible: device.isSetupDialogVisible,
-        isInProgress: device.isSetupDialogVisible && !device.isSetupWaitingForUserInput,
+        isInProgress:
+            device.isSetupDialogVisible && !device.isSetupWaitingForUserInput,
         text: device.setupDialogText,
         choices: device.setupDialogChoices,
     };
@@ -56,7 +57,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(DeviceSetupDialog, 'DeviceSetupDialog');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    DeviceSetupDialog,
+    'DeviceSetupDialog'
+);

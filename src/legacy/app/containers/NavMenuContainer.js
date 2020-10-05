@@ -53,7 +53,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(NavMenu, 'NavMenu');
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu, 'NavMenu');

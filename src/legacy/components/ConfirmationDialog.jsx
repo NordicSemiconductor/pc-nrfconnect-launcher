@@ -71,16 +71,17 @@ const ConfirmationDialog = ({
     cancelButtonText,
     isOkButtonEnabled,
 }) => (
-    <Modal show={isVisible} onHide={onCancel} backdrop={isInProgress ? 'static' : false}>
+    <Modal
+        show={isVisible}
+        onHide={onCancel}
+        backdrop={isInProgress ? 'static' : false}
+    >
         <Modal.Header closeButton={!isInProgress}>
             <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            { children || <p>{ text }</p> }
-        </Modal.Body>
+        <Modal.Body>{children || <p>{text}</p>}</Modal.Body>
         <Modal.Footer>
-            { isInProgress ? <Spinner /> : null }
-
+            {isInProgress ? <Spinner /> : null}
             &nbsp;
             <Button
                 variant="primary"
@@ -90,17 +91,15 @@ const ConfirmationDialog = ({
             >
                 {okButtonText}
             </Button>
-            {
-                onCancel && (
-                    <Button
-                        className="core-btn"
-                        onClick={onCancel}
-                        disabled={isInProgress}
-                    >
-                        {cancelButtonText}
-                    </Button>
-                )
-            }
+            {onCancel && (
+                <Button
+                    className="core-btn"
+                    onClick={onCancel}
+                    disabled={isInProgress}
+                >
+                    {cancelButtonText}
+                </Button>
+            )}
         </Modal.Footer>
     </Modal>
 );

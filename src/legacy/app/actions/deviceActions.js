@@ -167,10 +167,16 @@ function logDeviceListerError(error) {
             // to a libusb-compatible-driver will fail to enumerate and trigger a
             // LIBUSB_* error. This is the case of a nRF52840 in DFU mode.
             // We don't want to show an error to the user in this particular case.
-            if (error.errorCode === DeviceLister.ErrorCodes.LIBUSB_ERROR_NOT_FOUND
-                && error.usb.deviceDescriptor) {
+            if (
+                error.errorCode ===
+                    DeviceLister.ErrorCodes.LIBUSB_ERROR_NOT_FOUND &&
+                error.usb.deviceDescriptor
+            ) {
                 const { idProduct, idVendor } = error.usb.deviceDescriptor;
-                if (idVendor === NORDIC_VENDOR_ID && idProduct === NORDIC_BOOTLOADER_PRODUCT_ID) {
+                if (
+                    idVendor === NORDIC_VENDOR_ID &&
+                    idProduct === NORDIC_BOOTLOADER_PRODUCT_ID
+                ) {
                     return;
                 }
             }
@@ -179,18 +185,25 @@ function logDeviceListerError(error) {
 
             let message = `Error while probing usb device at bus.address ${usbAddr}: ${error.message}. `;
             if (process.platform === 'linux') {
-                message += 'Please check your udev rules concerning permissions for USB devices, see '
-                    + 'https://github.com/NordicSemiconductor/nrf-udev';
+                message +=
+                    'Please check your udev rules concerning permissions for USB devices, see ' +
+                    'https://github.com/NordicSemiconductor/nrf-udev';
             } else if (process.platform === 'win32') {
-                message += 'Please check that a libusb-compatible kernel driver is bound to this device, see https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/master/doc/win32-usb-troubleshoot.md';
+                message +=
+                    'Please check that a libusb-compatible kernel driver is bound to this device, see https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/master/doc/win32-usb-troubleshoot.md';
             }
 
-            dispatch(AppReloadDialogActions.showDialog(
-                'LIBUSB error is detected. Reloading app could resolve the issue. Would you like to reload now?',
-            ));
+            dispatch(
+                AppReloadDialogActions.showDialog(
+                    'LIBUSB error is detected. Reloading app could resolve the issue. Would you like to reload now?'
+                )
+            );
             logger.error(message);
-        } else if (error.serialport
-            && error.errorCode === DeviceLister.ErrorCodes.COULD_NOT_FETCH_SNO_FOR_PORT) {
+        } else if (
+            error.serialport &&
+            error.errorCode ===
+                DeviceLister.ErrorCodes.COULD_NOT_FETCH_SNO_FOR_PORT
+        ) {
             // Explicitly hide errors about serial ports without serial numbers
             logger.verbose(error.message);
         } else {
@@ -228,14 +241,18 @@ export function startWatchingDevices() {
         deviceLister.removeAllListeners('error');
         deviceLister.on('conflated', devices => {
             const state = getState();
-            if (state.core.device.selectedSerialNumber !== null
-                && !devices.has(state.core.device.selectedSerialNumber)) {
+            if (
+                state.core.device.selectedSerialNumber !== null &&
+                !devices.has(state.core.device.selectedSerialNumber)
+            ) {
                 dispatch(deselectDevice());
             }
 
             dispatch(devicesDetectedAction(Array.from(devices.values())));
         });
-        deviceLister.on('error', error => dispatch(logDeviceListerError(error)));
+        deviceLister.on('error', error =>
+            dispatch(logDeviceListerError(error))
+        );
         deviceLister.start();
     };
 }
@@ -264,19 +281,20 @@ export function stopWatchingDevices() {
  * @param {Array<String>} [choices] The choices to display to the user (optional).
  * @returns {Promise<String>} Promise that resolves with the user input.
  */
-const getDeviceSetupUserInput = dispatch => (message, choices) => new Promise((resolve, reject) => {
-    deviceSetupCallback = choice => {
-        if (!choices) {
-            // for confirmation resolve with boolean
-            resolve(!!choice);
-        } else if (choice) {
-            resolve(choice);
-        } else {
-            reject(new Error('Cancelled by user.'));
-        }
-    };
-    dispatch(deviceSetupInputRequiredAction(message, choices));
-});
+const getDeviceSetupUserInput = dispatch => (message, choices) =>
+    new Promise((resolve, reject) => {
+        deviceSetupCallback = choice => {
+            if (!choices) {
+                // for confirmation resolve with boolean
+                resolve(!!choice);
+            } else if (choice) {
+                resolve(choice);
+            } else {
+                reject(new Error('Cancelled by user.'));
+            }
+        };
+        dispatch(deviceSetupInputRequiredAction(message, choices));
+    });
 
 /**
  * Selects a device and sets it up for use according to the `config.deviceSetup`
@@ -316,7 +334,9 @@ export function selectAndSetupDevice(device) {
                 .catch(error => {
                     dispatch(deviceSetupErrorAction(device, error));
                     if (!deviceSetupConfig.allowCustomDevice) {
-                        logger.error(`Error while setting up device ${device.serialNumber}: ${error.message}`);
+                        logger.error(
+                            `Error while setting up device ${device.serialNumber}: ${error.message}`
+                        );
                         dispatch(deselectDevice());
                     }
                     dispatch(startWatchingDevices());
@@ -339,7 +359,9 @@ export function deviceSetupInputReceived(input) {
             deviceSetupCallback(input);
             deviceSetupCallback = undefined;
         } else {
-            logger.error('Received device setup input, but no callback exists.');
+            logger.error(
+                'Received device setup input, but no callback exists.'
+            );
         }
     };
 }

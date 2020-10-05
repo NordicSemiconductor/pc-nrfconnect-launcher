@@ -41,10 +41,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import MenuItem from '../../components/HotkeyedMenuItem';
 
-const renderItems = menuItems => (
-    menuItems.map(({
-        id, onClick, isDivider, hotkey, text,
-    }) => (
+const renderItems = menuItems =>
+    menuItems.map(({ id, onClick, isDivider, hotkey, text }) => (
         <MenuItem
             key={id}
             onClick={onClick}
@@ -54,8 +52,7 @@ const renderItems = menuItems => (
         >
             {text}
         </MenuItem>
-    ))
-);
+    ));
 
 const MainMenu = ({
     menuItems,
@@ -71,7 +68,7 @@ const MainMenu = ({
                 <span className={iconName} />
             </Dropdown.Toggle>
             <Dropdown.Menu id="main-menu-list" className={dropdownMenuCssClass}>
-                { renderItems(menuItems) }
+                {renderItems(menuItems)}
             </Dropdown.Menu>
         </Dropdown>
     </div>
