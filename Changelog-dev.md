@@ -1,6 +1,8 @@
-## Unreleased
+## Version 3.5.1
 ### Features
-- Send system report
+- Send system architecture to usage statistics
+- Fix client id generation on Linux
+- Update electron to version 8
 
 ## Version 3.5.0
 ### Features
