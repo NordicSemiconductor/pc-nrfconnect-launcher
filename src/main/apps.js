@@ -458,7 +458,9 @@ function decorateWithLatestVersion(officialApp, availableUpdates) {
  */
 function officialAppsObjToArray(officialAppsObj, source) {
     const names = Object.keys(officialAppsObj);
-    return names.map(name => ({ name, source, ...officialAppsObj[name] }));
+    return names
+        .map(name => ({ name, source, ...officialAppsObj[name] }))
+        .filter(app => app.name && app.name !== '_source');
 }
 
 /**
