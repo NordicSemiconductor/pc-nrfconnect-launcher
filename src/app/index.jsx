@@ -49,11 +49,12 @@ const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
 
 const removeLoaderElement = () => {
-    const element = document.getElementById('app-loader');
-    if (element) {
-        element.classList.add('loaded');
+    const loader = document.getElementById('app-loader');
+    const webapp = document.getElementById('webapp');
+    if (loader) {
+        webapp.classList.add('loaded');
         setTimeout(() => {
-            document.body.removeChild(element);
+            document.body.removeChild(loader);
         }, 500);
     }
 };
@@ -64,9 +65,17 @@ const renderer = (App, container, onLoaded) => {
     // The next line is only needed as long as we still need to support legacy apps.
     // Later, when we want to drop support for legacy apps, change "legacy.css" in
     // app.html to "shared.css" and remove the next line
-    document.getElementById('stylesheet').href = '../dist/shared.css';
+    const stylesheet = document.getElementById('stylesheet');
+    stylesheet.href = '';
+    const interval = setInterval(() => {
+        if (stylesheet.sheet && stylesheet.sheet.cssRules.length > 0) {
+            clearInterval(interval);
+            onLoaded();
+        }
+    }, 1);
+    stylesheet.href = '../dist/shared.css';
 
-    ReactDOM.render(<App />, container, onLoaded);
+    ReactDOM.render(<App />, container);
 };
 
 const render = app => {
