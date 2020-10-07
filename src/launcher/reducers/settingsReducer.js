@@ -36,7 +36,7 @@
 
 import { Map, Record } from 'immutable';
 import * as SettingsActions from '../actions/settingsActions';
-import * as UserDataActions from '../actions/userDataActions';
+import * as UsageDataActions from '../actions/usageDataActions';
 
 const InitialState = Record({
     shouldCheckForUpdatesAtStartup: true,
@@ -46,8 +46,8 @@ const InitialState = Record({
     isAddSourceDialogVisible: false,
     isRemoveSourceDialogVisible: false,
     removeSource: null,
-    isUserDataDialogVisible: false,
-    isSendingUserData: false,
+    isUsageDataDialogVisible: false,
+    isSendingUsageData: false,
 });
 
 const initialState = new InitialState();
@@ -107,14 +107,14 @@ const reducer = (state = initialState, action) => {
             return state
                 .set('isRemoveSourceDialogVisible', false)
                 .set('removeSource', null);
-        case UserDataActions.USER_DATA_DIALOG_SHOW:
-            return state.set('isUserDataDialogVisible', true);
-        case UserDataActions.USER_DATA_DIALOG_HIDE:
-            return state.set('isUserDataDialogVisible', false);
-        case UserDataActions.USER_DATA_SEND_ON:
-            return state.set('isSendingUserData', true);
-        case UserDataActions.USER_DATA_SEND_OFF:
-            return state.set('isSendingUserData', false);
+        case UsageDataActions.USAGE_DATA_DIALOG_SHOW:
+            return state.set('isUsageDataDialogVisible', true);
+        case UsageDataActions.USAGE_DATA_DIALOG_HIDE:
+            return state.set('isUsageDataDialogVisible', false);
+        case UsageDataActions.USAGE_DATA_SEND_ON:
+            return state.set('isSendingUsageData', true);
+        case UsageDataActions.USAGE_DATA_SEND_OFF:
+            return state.set('isSendingUsageData', false);
         default:
             return state;
     }

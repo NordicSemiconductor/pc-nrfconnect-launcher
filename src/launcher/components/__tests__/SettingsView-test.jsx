@@ -59,9 +59,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup
                     isCheckingForUpdates={false}
                     onTriggerUpdateCheck={() => {}}
@@ -82,9 +82,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup
                     isCheckingForUpdates={false}
                     onTriggerUpdateCheck={() => {}}
@@ -105,9 +105,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup={false}
                     isCheckingForUpdates={false}
                     onTriggerUpdateCheck={() => {}}
@@ -128,9 +128,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup={false}
                     isCheckingForUpdates
                     onTriggerUpdateCheck={() => {}}
@@ -151,9 +151,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup={false}
                     isCheckingForUpdates={false}
                     lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
@@ -175,9 +175,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup={false}
                     isCheckingForUpdates={false}
                     lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
@@ -201,9 +201,9 @@ describe('SettingsView', () => {
             shallow(
                 <SettingsView
                     isLoading={false}
-                    isSendingUserData={false}
-                    showUserDataDialog={() => {}}
-                    toggleSendingUserData={() => {}}
+                    isSendingUsageData={false}
+                    showUsageDataDialog={() => {}}
+                    toggleSendingUsageData={() => {}}
                     shouldCheckForUpdatesAtStartup={false}
                     isCheckingForUpdates={false}
                     lastUpdateCheckDate={new Date(2017, 1, 3, 13, 41, 36, 20)}
