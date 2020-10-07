@@ -3,6 +3,10 @@
 - Send system architecture to usage statistics
 - Fix client id generation on Linux
 - Update electron to version 8
+### Bugfixes
+- Added workaround to prevent errors when proxy authentication is required
+- Fixed when error message is object instead of string
+- Fixed app loader animation
 
 ## Version 3.5.0
 ### Features
