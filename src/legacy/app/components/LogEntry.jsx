@@ -56,22 +56,26 @@ const regex = /(.*?)(https?:\/\/[^\s]+)/g;
  * @returns {Array} strings and JSX <a> tags
  */
 function hrefReplacer(str) {
+    const errorMessage = typeof str === 'object' ? str.message || '' : str;
     const message = [];
-    const remainder = str.replace(regex, (match, before, href, index) => {
-        message.push(before);
-        message.push(
-            <a
-                href={href}
-                key={index}
-                tabIndex={index}
-                onClick={() => shell.openItem(href)}
-                onKeyPress={() => {}}
-            >
-                {href}
-            </a>
-        );
-        return '';
-    });
+    const remainder = errorMessage.replace(
+        regex,
+        (match, before, href, index) => {
+            message.push(before);
+            message.push(
+                <a
+                    href={href}
+                    key={index}
+                    tabIndex={index}
+                    onClick={() => shell.openItem(href)}
+                    onKeyPress={() => {}}
+                >
+                    {href}
+                </a>
+            );
+            return '';
+        }
+    );
     message.push(remainder);
     return message;
 }
