@@ -46,7 +46,7 @@ import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import UserDataDialogContainer from '../containers/UserDataDialogContainer';
+import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
 
 export default () => (
     <>
@@ -74,7 +74,7 @@ export default () => (
         <ErrorDialog />
         <UpdateAvailableContainer />
         <UpdateProgressContainer />
-        <UserDataDialogContainer />
+        <UsageDataDialogContainer />
         <ConfirmLaunchContainer />
         <ProxyLoginContainer />
         <ProxyErrorContainer />

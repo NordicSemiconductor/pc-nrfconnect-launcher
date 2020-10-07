@@ -38,7 +38,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
-const UserDataPolicy = (
+const UsageDataPolicy = (
     <div className="user-data-policy">
         <p>
             You can help improve nRF Connect for Desktop by sending Nordic
@@ -77,7 +77,7 @@ const UserDataPolicy = (
         </p>
     </div>
 );
-const UserDataDialog = ({ isVisible, onConfirm, onCancel }) => (
+const UsageDataDialog = ({ isVisible, onConfirm, onCancel }) => (
     <ConfirmationDialog
         isVisible={isVisible}
         title="Help us improve nRF Connect for Desktop"
@@ -86,16 +86,16 @@ const UserDataDialog = ({ isVisible, onConfirm, onCancel }) => (
         onOk={onConfirm}
         onCancel={onCancel}
     >
-        {UserDataPolicy}
+        {UsageDataPolicy}
     </ConfirmationDialog>
 );
 
-UserDataDialog.propTypes = {
+UsageDataDialog.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
 
-UserDataDialog.defaultProps = {};
+UsageDataDialog.defaultProps = {};
 
-export default UserDataDialog;
+export default UsageDataDialog;
