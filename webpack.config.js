@@ -38,7 +38,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.(js|jsx|ts|tsx)$/,
                 use: [
                     {
                         loader: require.resolve('babel-loader'),
@@ -75,7 +75,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
         symlinks: false,
     },
     plugins: [

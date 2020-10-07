@@ -50,7 +50,7 @@ import rootReducer from './reducers';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
-import * as UserDataActions from './actions/userDataActions';
+import * as UsageDataActions from './actions/usageDataActions';
 import '../../resources/css/launcher.scss';
 
 const config = remote.require('../main/config');
@@ -66,7 +66,6 @@ const rootElement = React.createElement(RootContainer, { store });
 const shouldCheckForUpdatesAtStartup = settings.get(
     'shouldCheckForUpdatesAtStartup'
 );
-const isSendingUserData = settings.get('isSendingUserData');
 
 function downloadLatestAppInfo() {
     if (
@@ -97,9 +96,7 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await store.dispatch(
-        UserDataActions.checkUserDataSetting(isSendingUserData)
-    );
+    await store.dispatch(UsageDataActions.checkUsageDataSetting());
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
     await store.dispatch(AppsActions.setAppManagementShow());
@@ -107,5 +104,5 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.setAppManagementSource());
     await downloadLatestAppInfo();
     await checkForCoreUpdates();
-    store.dispatch(UserDataActions.sendEnvInfo());
+    store.dispatch(UsageDataActions.sendEnvInfo());
 });

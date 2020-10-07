@@ -105,9 +105,9 @@ class SettingsView extends React.Component {
             onShowAddSourceDialog,
             onHideAddSourceDialog,
             onShowRemoveSourceDialog,
-            isSendingUserData,
-            toggleSendingUserData,
-            showUserDataDialog,
+            isSendingUsageData,
+            toggleSendingUsageData,
+            showUsageDataDialog,
         } = this.props;
 
         const sourcesJS = sources.toJS();
@@ -217,14 +217,14 @@ class SettingsView extends React.Component {
                                 custom
                                 id="checkForShare"
                                 label="Collect anonymous usage data"
-                                checked={isSendingUserData}
-                                onChange={toggleSendingUserData}
+                                checked={isSendingUsageData}
+                                onChange={toggleSendingUsageData}
                             />
                         </Col>
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
-                                onClick={showUserDataDialog}
+                                onClick={showUsageDataDialog}
                             >
                                 Show agreement
                             </Button>
@@ -292,9 +292,9 @@ SettingsView.propTypes = {
     isAddSourceDialogVisible: PropTypes.bool,
     onShowAddSourceDialog: PropTypes.func.isRequired,
     onHideAddSourceDialog: PropTypes.func.isRequired,
-    isSendingUserData: PropTypes.bool.isRequired,
-    toggleSendingUserData: PropTypes.func.isRequired,
-    showUserDataDialog: PropTypes.func.isRequired,
+    isSendingUsageData: PropTypes.bool.isRequired,
+    toggleSendingUsageData: PropTypes.func.isRequired,
+    showUsageDataDialog: PropTypes.func.isRequired,
 };
 
 SettingsView.defaultProps = {

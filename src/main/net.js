@@ -76,6 +76,8 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
                     `Unable to download ${url}. Got status code ${statusCode}`
                 );
                 error.statusCode = statusCode;
+                // https://github.com/electron/electron/issues/24948
+                response.on('error', () => {});
                 reject(error);
                 return;
             }

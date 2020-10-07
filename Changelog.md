@@ -2,6 +2,9 @@
 ### Updates
 - Send system architecture to usage statistics
 - Fix client id generation on Linux
+### Bugfixes
+- Added workaround to prevent errors when proxy authentication is required
+
 
 ## Version 3.5.0
 ### Features
