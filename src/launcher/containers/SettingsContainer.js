@@ -37,7 +37,7 @@
 import { connect } from 'react-redux';
 import SettingsView from '../components/SettingsView';
 import * as SettingsActions from '../actions/settingsActions';
-import * as UserDataActions from '../actions/userDataActions';
+import * as UsageDataActions from '../actions/usageDataActions';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 
 function isAppUpdateAvailable(officialApps) {
@@ -60,7 +60,7 @@ function mapStateToProps(state) {
         sources: settings.sources,
         isAddSourceDialogVisible: settings.isAddSourceDialogVisible,
         isRemoveSourceDialogVisible: settings.isRemoveSourceDialogVisible,
-        isSendingUserData: settings.isSendingUserData,
+        isSendingUsageData: settings.isSendingUsageData,
     };
 }
 
@@ -83,10 +83,10 @@ function mapDispatchToProps(dispatch) {
             dispatch(SettingsActions.showRemoveSourceDialog(name)),
         onHideRemoveSourceDialog: () =>
             dispatch(SettingsActions.hideRemoveSourceDialog()),
-        toggleSendingUserData: () =>
-            dispatch(UserDataActions.toggleSendingUserData()),
-        showUserDataDialog: () =>
-            dispatch(UserDataActions.showUserDataDialog()),
+        toggleSendingUsageData: () =>
+            dispatch(UsageDataActions.toggleSendingUsageData()),
+        showUsageDataDialog: () =>
+            dispatch(UsageDataActions.showUsageDataDialog()),
     };
 }
 

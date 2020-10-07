@@ -40,7 +40,7 @@ import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions';
 import * as SettingsActions from './settingsActions';
-import * as UserDataActions from './userDataActions';
+import * as UsageDataActions from './usageDataActions';
 
 export const AUTO_UPDATE_CHECK = 'AUTO_UPDATE_CHECK';
 export const AUTO_UPDATE_AVAILABLE = 'AUTO_UPDATE_AVAILABLE';
@@ -162,8 +162,11 @@ export function startDownload() {
             dispatch(updateDownloadingAction(progressObj.percent));
         });
 
-        autoUpdater.on('update-downloaded', () => {
-            dispatch(UserDataActions.resetUserData());
+        autoUpdater.on('update-downloaded', async () => {
+            if (!UsageDataActions.isUsageDataOn()) {
+                dispatch(UsageDataActions.resetUsageData());
+            }
+
             cancellationToken = null;
             autoUpdater.removeAllListeners();
             autoUpdater.quitAndInstall();

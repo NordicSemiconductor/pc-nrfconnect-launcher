@@ -34,19 +34,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { remote } from 'electron';
-import { userData } from 'pc-nrfconnect-shared';
+import { usageData } from 'pc-nrfconnect-shared';
 import si from 'systeminformation';
 
 import pkgJson from '../../../package.json';
 
-const settings = remote.require('../main/settings');
-
-export const USER_DATA_DIALOG_SHOW = 'USER_DATA_DIALOG_SHOW';
-export const USER_DATA_DIALOG_HIDE = 'USER_DATA_DIALOG_HIDE';
-export const USER_DATA_SEND_ON = 'USER_DATA_SEND_ON';
-export const USER_DATA_SEND_OFF = 'USER_DATA_SEND_OFF';
-export const USER_DATA_SEND_RESET = 'USER_DATA_SEND_RESET';
+export const USAGE_DATA_DIALOG_SHOW = 'USAGE_DATA_DIALOG_SHOW';
+export const USAGE_DATA_DIALOG_HIDE = 'USAGE_DATA_DIALOG_HIDE';
+export const USAGE_DATA_SEND_ON = 'USAGE_DATA_SEND_ON';
+export const USAGE_DATA_SEND_OFF = 'USAGE_DATA_SEND_OFF';
+export const USAGE_DATA_SEND_RESET = 'USAGE_DATA_SEND_RESET';
 
 export const EventCategory = pkgJson.name || 'Launcher';
 
@@ -57,119 +54,121 @@ export const EventAction = {
     REMOVE_APP: 'Remove app',
     UPGRADE_APP: 'Upgrade app',
     REPORT_OS_INFO: 'Report OS info',
+    REPORT_LAUNCHER_INFO: 'Report launcher info',
 };
 
 const EventLabel = {
-    LAUNCHER_USER_DATA_ON: 'User data on',
-    LAUNCHER_USER_DATA_OFF: 'User data off',
-    LAUNCHER_USER_DATA_NOT_SET: 'User data not set',
+    LAUNCHER_USAGE_DATA_ON: 'Usage data on',
+    LAUNCHER_USAGE_DATA_OFF: 'Usage data off',
+    LAUNCHER_USAGE_DATA_NOT_SET: 'Usage data not set',
 };
 
-export function showUserDataDialog() {
+export function showUsageDataDialog() {
     return {
-        type: USER_DATA_DIALOG_SHOW,
+        type: USAGE_DATA_DIALOG_SHOW,
     };
 }
 
-export function hideUserDataDialog() {
+export function hideUsageDataDialog() {
     return {
-        type: USER_DATA_DIALOG_HIDE,
+        type: USAGE_DATA_DIALOG_HIDE,
     };
 }
 
-export function setUserDataOn() {
+export function setUsageDataOn() {
     return {
-        type: USER_DATA_SEND_ON,
+        type: USAGE_DATA_SEND_ON,
     };
 }
 
-export function setUserDataOff() {
+export function setUsageDataOff() {
     return {
-        type: USER_DATA_SEND_OFF,
+        type: USAGE_DATA_SEND_OFF,
     };
 }
 
-export function resetUserData() {
-    settings.set('isSendingUserData', undefined);
+export function resetUsageData() {
+    usageData.reset();
     return {
-        type: USER_DATA_SEND_RESET,
+        type: USAGE_DATA_SEND_RESET,
     };
 }
 
-export function confrimSendingUserData() {
+export function isUsageDataOn() {
+    return usageData.isEnabled();
+}
+
+export function confrimSendingUsageData() {
     return dispatch => {
-        settings.set('isSendingUserData', true);
-        dispatch(setUserDataOn());
-        dispatch(hideUserDataDialog());
+        usageData.enable();
+        dispatch(setUsageDataOn());
+        dispatch(hideUsageDataDialog());
     };
 }
 
-export function cancelSendingUserData() {
+export function cancelSendingUsageData() {
     return dispatch => {
-        settings.set('isSendingUserData', false);
-        dispatch(setUserDataOff());
-        dispatch(hideUserDataDialog());
+        usageData.disable();
+        dispatch(setUsageDataOff());
+        dispatch(hideUsageDataDialog());
     };
 }
 
-export function toggleSendingUserData() {
+export function toggleSendingUsageData() {
     return (dispatch, getState) => {
-        const { isSendingUserData } = getState().settings;
-        dispatch(hideUserDataDialog());
-        if (isSendingUserData) {
-            settings.set('isSendingUserData', false);
-            dispatch(setUserDataOff());
+        const { isSendingUsageData } = getState().settings;
+        dispatch(hideUsageDataDialog());
+        if (isSendingUsageData) {
+            usageData.disable();
+            dispatch(setUsageDataOff());
             return;
         }
-        settings.set('isSendingUserData', true);
-        dispatch(setUserDataOn());
+        usageData.enable();
+        dispatch(setUsageDataOn());
     };
 }
 
-function initUserData(label) {
-    userData.sendEvent(EventCategory, EventAction.LAUNCH_LAUNCHER, label);
+function initUsageData(label) {
+    usageData.sendEvent(EventCategory, EventAction.LAUNCH_LAUNCHER, label);
 }
 
-export function checkUserDataSetting(isSendingUserData) {
+export function checkUsageDataSetting() {
     return async dispatch => {
-        await userData.init(EventCategory);
-        if (typeof isSendingUserData !== 'boolean') {
-            dispatch(showUserDataDialog());
+        await usageData.init(EventCategory);
+        const isSendingUsageData = usageData.isEnabled();
+        if (typeof isSendingUsageData !== 'boolean') {
+            dispatch(showUsageDataDialog());
             return;
         }
-        if (isSendingUserData) {
-            initUserData(EventLabel.LAUNCHER_USER_DATA_ON);
-            dispatch(setUserDataOn());
+        if (isSendingUsageData) {
+            initUsageData(EventLabel.LAUNCHER_USAGE_DATA_ON);
+            dispatch(setUsageDataOn());
             return;
         }
-        dispatch(setUserDataOff());
+        dispatch(setUsageDataOff());
     };
 }
 
-export function sendLauncherUserData(eventAction, eventLabel) {
+export function sendLauncherUsageData(eventAction, eventLabel) {
     return (_, getState) => {
-        const { isSendingUserData } = getState().settings;
-        if (!isSendingUserData) {
+        const { isSendingUsageData } = getState().settings;
+        if (!isSendingUsageData) {
             return;
         }
-        userData.sendEvent(EventCategory, eventAction, eventLabel);
+        usageData.sendEvent(EventCategory, eventAction, eventLabel);
     };
 }
 
-export function sendAppUserData(
+export function sendAppUsageData(
     eventAction,
     eventLabel = null,
     appName = null
 ) {
-    return (_, getState) => {
-        const { isSendingUserData } = getState().settings;
-        if (!isSendingUserData) {
-            return;
-        }
+    return () => {
         const updatedEventAction = appName
             ? `${eventAction} ${appName}`
             : eventAction;
-        userData.sendEvent(EventCategory, updatedEventAction, eventLabel);
+        usageData.sendEvent(EventCategory, updatedEventAction, eventLabel);
     };
 }
 
@@ -177,6 +176,13 @@ export function sendEnvInfo() {
     return async dispatch => {
         const [{ platform, arch }] = await Promise.all([si.osInfo()]);
         const osInfo = `${platform}; ${arch}`;
-        dispatch(sendLauncherUserData(EventAction.REPORT_OS_INFO, osInfo));
+        dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
+        const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
+        dispatch(
+            sendLauncherUsageData(
+                EventAction.REPORT_LAUNCHER_INFO,
+                launcherInfo
+            )
+        );
     };
 }
