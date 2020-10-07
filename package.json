@@ -163,7 +163,7 @@
             "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
         },
         "transform": {
-            "^.+\\.jsx?$": [
+            "^.+\\.[jt]sx?$": [
                 "babel-jest",
                 {
                     "configFile": "./node_modules/pc-nrfconnect-shared/config/babel.config.js"
