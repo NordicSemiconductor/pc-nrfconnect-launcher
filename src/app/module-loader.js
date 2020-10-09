@@ -36,6 +36,8 @@
 
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
+import semver from 'semver';
+import { readJsonFile } from '../main/fileUtil';
 
 const hostedModules = {};
 
@@ -100,25 +102,37 @@ hostedModules['pc-ble-driver-js'] = bleDriver;
 // Temporary workaround. To be removed after all the related apps are updated.
 // Electron dialog api change breaks the behaviour of show[Open|Save]Dialog() calls.
 // Update apps by either calling the synchronous version or to expect
-// a Promise return value.
-const { remote } = hostedModules['electron'];
+// a Promise return value. After updating change the required minimum nrfconnect
+// engine version to 3.6+ in package.json
+const params = new URL(window.location).searchParams;
+const appPath = params.get('appPath');
+readJsonFile(`${appPath}/package.json`)
+    .then(({ engines }) => {
+        const { nrfconnect } = engines || {};
+        if (nrfconnect && semver.lt(semver.minVersion(nrfconnect), '3.6.0')) {
+            const { dialog } = hostedModules['electron'].remote;
 
-remote.dialog.showSaveDialog = (...args) => {
-    const lastArg = args[args.length - 1];
-    const result = remote.dialog.showSaveDialogSync(...args);
-    if (typeof lastArg === 'function') {
-        const callback = lastArg;
-        callback(result);
-    }
-    return result;
-};
+            dialog.showSaveDialog = (...args) => {
+                const lastArg = args[args.length - 1];
+                const result = dialog.showSaveDialogSync(...args);
+                if (typeof lastArg === 'function') {
+                    const callback = lastArg;
+                    callback(result);
+                }
+                return result;
+            };
 
-remote.dialog.showOpenDialog = (...args) => {
-    const lastArg = args[args.length - 1];
-    const result = remote.dialog.showOpenDialogSync(...args);
-    if (typeof lastArg === 'function') {
-        const callback = lastArg;
-        callback(result);
-    }
-    return result;
-};
+            dialog.showOpenDialog = (...args) => {
+                const lastArg = args[args.length - 1];
+                const result = dialog.showOpenDialogSync(...args);
+                if (typeof lastArg === 'function') {
+                    const callback = lastArg;
+                    callback(result);
+                }
+                return result;
+            };
+
+            console.log('Electron dialog api is has been patched.');
+        }
+    })
+    .catch(() => {});
