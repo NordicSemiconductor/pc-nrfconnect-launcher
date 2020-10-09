@@ -1,8 +1,13 @@
-## Version 3.5.1
+## Version 3.6.0
 ### Features
 - Send system architecture to usage statistics
 - Fix client id generation on Linux
 - Update electron to version 8
+### Bugfixes
+- Added workaround to prevent errors when proxy authentication is required
+- Fixed when error message is object instead of string
+- Fixed app loader animation
+- Temporary fix to hide electron dialog api change for apps not yet requiring 3.6+ engine #485
 
 ## Version 3.5.0
 ### Features
