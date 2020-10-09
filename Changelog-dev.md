@@ -1,6 +1,7 @@
 ## Unreleased
 ### Features
 - Send system report
+- Temporary fix to hide electron dialog api change for apps not yet requiring 3.6+ engine #485
 
 ## Version 3.5.0
 ### Features
