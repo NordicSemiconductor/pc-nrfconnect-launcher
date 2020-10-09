@@ -1,4 +1,4 @@
-## Version 3.5.1
+## Version 3.6.0
 ### Updates
 - Send system architecture to usage statistics
 - Fix client id generation on Linux

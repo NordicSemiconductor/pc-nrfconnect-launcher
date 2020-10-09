@@ -64,6 +64,7 @@ html, body, #webapp {
     display: flex;
     flex-flow: row;
     height: 100%;
+    min-height: 0;
 
     > div:nth-child(1) {
         flex: 1;
