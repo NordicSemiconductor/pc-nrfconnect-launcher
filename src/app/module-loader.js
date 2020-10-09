@@ -96,3 +96,29 @@ const bleDriverJs = require('pc-ble-driver-js');
 
 const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 hostedModules['pc-ble-driver-js'] = bleDriver;
+
+// Temporary workaround. To be removed after all the related apps are updated.
+// Electron dialog api change breaks the behaviour of show[Open|Save]Dialog() calls.
+// Update apps by either calling the synchronous version or to expect
+// a Promise return value.
+const { remote } = hostedModules['electron'];
+
+remote.dialog.showSaveDialog = (...args) => {
+    const lastArg = args[args.length - 1];
+    const result = remote.dialog.showSaveDialogSync(...args);
+    if (typeof lastArg === 'function') {
+        const callback = lastArg;
+        callback(result);
+    }
+    return result;
+};
+
+remote.dialog.showOpenDialog = (...args) => {
+    const lastArg = args[args.length - 1];
+    const result = remote.dialog.showOpenDialogSync(...args);
+    if (typeof lastArg === 'function') {
+        const callback = lastArg;
+        callback(result);
+    }
+    return result;
+};
