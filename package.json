@@ -154,6 +154,7 @@
         "uuid": "8.1.0",
         "yargs": "15.3.1"
     },
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",
