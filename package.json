@@ -14,7 +14,6 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint-init": "nrfconnect-scripts lint-init",
         "lint": "nrfconnect-scripts lint src test-e2e *.js",
         "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
         "test-watch": "jest --watch src/",
