@@ -1,11 +1,9 @@
 ## Version 3.6.0
 ### Updates
-- Send system architecture to usage statistics
-- Fix client id generation on Linux
+- Upgraded Electron to version 8
 ### Bugfixes
 - Added workaround to prevent errors when proxy authentication is required
 - Fixed app loader animation
-
 
 ## Version 3.5.0
 ### Features
@@ -18,8 +16,8 @@
 ### Updates
 - Updated pc-ble-driver-js to 2.7.2 #452
     See changes https://github.com/NordicSemiconductor/pc-ble-driver-js/releases/tag/v2.7.2
-### Fixes
-- “Update all apps” sometimes showed an error message (even though it worked
+### Bugfixes
+- Fixed that “Update all apps” sometimes showed an error message (even though it worked
   correctly). #451
 
 ## Version 3.4.1
@@ -30,11 +28,11 @@
 ### Features
 - Added app filter and button to update all apps #369
 - Updated pc-ble-driver-js to 2.7.1 with SoftDevice 5 support #438
-- Fewer requests for entering proxy credentials when needed #370
+- Updated with fewer requests for entering proxy credentials when needed #370
 - Enhanced error messages #403
     - Links in messages are clickable.
     - If an app source is removed from the server, users are assisted in removing it from client.
-### Bug fixes
+### Bugfixes
 - Made retrieval of release notes more reliable, by not retrieving them from GitHub Releases anymore but our own server instead #388
 
 ## Version 3.3.3
@@ -55,19 +53,19 @@
 - Added support for nRF53 series, nRF52833, and MCUboot DFU
 - Updated to pc-nrfjprog-js v1.6.0, including bundled nrfjprog v10.5.0 and JLink 6.54c #385
 - Updated icon colors #373
-### Bug fixes
+### Bugfixes
 - Fixed bug where app was opened in unreachable location #383
 
 ## Version 3.2.0
 ### Features
-- Launcher has a new look #326
-- Logo and brand color updated  #352
-- Installation and launch of apps are now unified on the same page #326
+- Updated UI design of Launcher #326
+- Updated logo and brand color #352
+- Unified installation and launch of apps into the same page #326
 - Added ability to show release notes for apps in launcher #351
-- Release notes are shown before updating #351
+- Shown release notes before updating #351
 - Faster startup #350
 - Apps get a read more link when the source provides a homepage URL #344
-### Bug fixes
+### Bugfixes
 - Desktop shortcuts for apps from sources with names with white space are now generated correctly #358
 - Text in log views is now selectable again #343
 
@@ -76,7 +74,7 @@
 - Updated to pc-ble-driver-js v2.6.1 with electron 5 support #324
 - Updated to pc-nrfjprog-js v1.5.8, including bundled nrfjprog v10.3.0 and electron 5 support #324
 - Updated log transports to winston 3 API #327
-### Bug fixes
+### Bugfixes
 - Fixed shortcut generation on macOS #331 #332 #333  #334
 - Fixed libusb errors and multiple event handlers #337
 - Fixed winston multiple arguments #325
@@ -89,18 +87,18 @@
 React Bootstrap is a fundamental dependency for nRF Connect for Desktop, used for UI components and layout. The update is a breaking change, requiring all apps to be updated.
 There are no changes to nRF Connect features, except for some minor visual differences.
 - Updated to pc-nrfjprog-js v1.5.4, including bundled nrfjprog v10.2.1 #319
-### Bug fixes
+### Bugfixes
 - Fixed auto update issue #317
 - Fixed nrfjprog library path issue for pc-nrfjprog-js #310 #311 #312
 - Fixed shortcut generation on macOS #314
 
 ## Version 2.7.0
-### New features
+### Features
 - Added support for pc-nrfjprog-js v1.5.1, including nrfjprog v10.1.1 with DFU programming #295 #296  #301
 - Added system report generation #289
 - Bundled nrfjprog libraries on Windows #296
 - Added copy-to-clipboard to source URL and make it selectable #291
-### Bug fixes
+### Bugfixes
 - Fixed proxy handling by ensuring sequential requests #302
 - Fixed multiple loading of libusb issue #288
 
@@ -110,7 +108,7 @@ There are no changes to nRF Connect features, except for some minor visual diffe
 - Updated related prebuilt modules
 
 ## Version 2.6.1
-### Bugfix
+### Bugfixes
 - Fixed multiple source updating issue  #272
 
 ## Version 2.6.0
@@ -123,7 +121,7 @@ There are no changes to nRF Connect features, except for some minor visual diffe
 - Updated electron to 2.0.11 #261
 - Supported displaying multiple serialports and board version of a device #262
 - Removed 'Debug probe' item in device selector #264
-### Bugfix
+### Bugfixes
 - Fixed links in LogViewer to open urls in browser #258
 
 ## Version 2.5.0
@@ -136,7 +134,7 @@ There are no changes to nRF Connect features, except for some minor visual diffe
 - Supported link in log messages #245
 - Supported to relaunch app when encountering libusb error #242
 - Exposed start & stop watching device API #244  #246
-### Bugfix
+### Bugfixes
 - Fixed tests for breaking issue of jsdom #251
 
 ## Version 2.4.0
@@ -144,18 +142,18 @@ There are no changes to nRF Connect features, except for some minor visual diffe
 - Added support for nRF52840 dongle #204, #219, #220
 - Updated pc-ble-driver-js to 2.4.1 #214
     See changes for v2.4.0 and v2.4.1 https://github.com/NordicSemiconductor/pc-ble-driver-js/releases
-- Support for generic (jprog/dfu) device setup by nrf-device-setup module
+- Added support for generic (jprog/dfu) device setup by nrf-device-setup module
 - Upgraded to Electron v1.8 #203
-- API documentation of using the new DeviceSelector and device setup configuration
-- Troubleshooting documentation related to USB issues #208, #212, #223
+- Added API documentation of using the new DeviceSelector and device setup configuration
+- Added troubleshooting documentation related to USB issues #208, #212, #223
 
 ## Version 2.3.2
 ### Bugfixes
-- Use developer.nordicsemi.com as registry for apps (0c6a405)
+- Used developer.nordicsemi.com as registry for apps (0c6a405)
 
 ## Version 2.3.1
 ### Bugfixes
-- Fix issue with apps failing to install (#206)
+- Fixed issue with apps failing to install (#206)
 
 ## Version 2.3.0-alpha.6
 Pre-release with Linux AppImage.
@@ -214,7 +212,7 @@ Pre-release with improved support for proxies, ref. #104.
 
 ## Version 2.0.0
 While nRF Connect v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect framework, and can be installed and launched through the nRF Connect UI.
-### Main features
+### Features
 - Allows users to easily install, update, and launch apps
 - Allows developers to [create new apps](https://nordicsemiconductor.github.io/pc-nrfconnect-docs/create_new_app)
 - Supports Windows, macOS, and Linux
