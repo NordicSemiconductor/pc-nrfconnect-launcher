@@ -2,7 +2,6 @@
 ### Updates
 - Upgraded Electron to version 8
 ### Bugfixes
-- Added workaround to prevent errors when proxy authentication is required
 - Fixed app loader animation
 
 ## Version 3.5.0
