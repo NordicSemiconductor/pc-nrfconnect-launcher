@@ -1,7 +1,6 @@
 ## Version 3.6.0
 ### Updates
 - Upgraded Electron to version 8
-- Added sending system architecture to usage statistics
 ### Bugfixes
 - Added workaround to prevent errors when proxy authentication is required
 - Fixed when error message is object instead of string
