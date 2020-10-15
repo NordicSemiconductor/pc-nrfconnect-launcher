@@ -59,7 +59,7 @@
 ## Version 3.2.0
 ### Features
 - Updated UI design of Launcher #326
-- Updated logo and brand color updated  #352
+- Updated logo and brand color #352
 - Unified installation and launch of apps into the same page #326
 - Added ability to show release notes for apps in launcher #351
 - Shown release notes before updating #351
