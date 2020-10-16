@@ -69,7 +69,7 @@ const handleDevtoolsRequest = require('./devtools');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
-electronApp.commandLine.appendSwitch('js-flags', '--max-old-space-size=2048');
+electronApp.commandLine.appendSwitch('js-flags', '--max-old-space-size=3072');
 
 config.init(argv);
 global.homeDir = config.getHomeDir();
