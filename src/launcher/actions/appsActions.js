@@ -37,7 +37,7 @@
 import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
-import { sendAppUserData, EventAction } from './userDataActions';
+import { sendAppUsageData, EventAction } from './usageDataActions';
 
 const net = remote.require('../main/net');
 const fs = remote.require('fs');
@@ -367,7 +367,7 @@ export function loadOfficialApps(appName, appSource) {
 
 export function installOfficialApp(name, source) {
     return dispatch => {
-        dispatch(sendAppUserData(EventAction.INSTALL_APP, source, name));
+        dispatch(sendAppUsageData(EventAction.INSTALL_APP, source, name));
         dispatch(installOfficialAppAction(name, source));
         mainApps
             .installOfficialApp(name, 'latest', source)
@@ -388,7 +388,7 @@ export function installOfficialApp(name, source) {
 
 export function removeOfficialApp(name, source) {
     return dispatch => {
-        dispatch(sendAppUserData(EventAction.REMOVE_APP, source, name));
+        dispatch(sendAppUsageData(EventAction.REMOVE_APP, source, name));
         dispatch(removeOfficialAppAction(name, source));
         mainApps
             .removeOfficialApp(name, source)
@@ -409,7 +409,7 @@ export function removeOfficialApp(name, source) {
 
 export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
-        dispatch(sendAppUserData(EventAction.UPGRADE_APP, source, name));
+        dispatch(sendAppUsageData(EventAction.UPGRADE_APP, source, name));
         dispatch(upgradeOfficialAppAction(name, version, source));
         return mainApps
             .installOfficialApp(name, version, source)
@@ -439,7 +439,7 @@ export function launch(app) {
             `App version: ${appObj.currentVersion};` +
             ` Engine version: ${appObj.engineVersion};`;
         dispatch(
-            sendAppUserData(EventAction.LAUNCH_APP, sharedData, appObj.name)
+            sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name)
         );
         ipcRenderer.send('open-app', appObj);
     };
