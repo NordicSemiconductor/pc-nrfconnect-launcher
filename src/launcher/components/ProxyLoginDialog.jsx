@@ -87,9 +87,7 @@ class ProxyLoginDialog extends React.Component {
     }
 
     render() {
-        const {
-            isVisible, message, onCancel, username,
-        } = this.props;
+        const { isVisible, message, onCancel, username } = this.props;
         const { password } = this.state;
         return (
             <Modal show={isVisible} backdrop>
@@ -97,7 +95,7 @@ class ProxyLoginDialog extends React.Component {
                     <Modal.Title>Proxy authentication required</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{ message }</p>
+                    <p>{message}</p>
                     <Form.Group controlId="username">
                         <Form.Label>Username:</Form.Label>
                         <InputGroup>
@@ -123,7 +121,10 @@ class ProxyLoginDialog extends React.Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={onCancel}>Cancel</Button>
-                    <Button onClick={this.onSubmitClicked} disabled={!this.isValidInput()}>
+                    <Button
+                        onClick={this.onSubmitClicked}
+                        disabled={!this.isValidInput()}
+                    >
                         Login
                     </Button>
                 </Modal.Footer>

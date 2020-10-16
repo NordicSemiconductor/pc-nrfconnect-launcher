@@ -54,7 +54,9 @@ export default class DeviceSelector extends React.Component {
     static mapSerialPortsToListItems(device) {
         return Object.keys(device)
             .filter(key => key.startsWith('serialport'))
-            .map(key => <li key={key}>Serial port: {portPath(device[key])}</li>);
+            .map(key => (
+                <li key={key}>Serial port: {portPath(device[key])}</li>
+            ));
     }
 
     componentDidMount() {
@@ -74,12 +76,9 @@ export default class DeviceSelector extends React.Component {
      * @returns {*} A 'close device' menu item.
      */
     getCloseItem() {
-        const {
-            onDeselect,
-            menuItemCssClass,
-        } = this.props;
+        const { onDeselect, menuItemCssClass } = this.props;
 
-        return ([
+        return [
             <Dropdown.Divider key="close-divider" />,
             <Dropdown.Item
                 key="close-device"
@@ -89,7 +88,7 @@ export default class DeviceSelector extends React.Component {
             >
                 <div>Close device</div>
             </Dropdown.Item>,
-        ]);
+        ];
     }
 
     /**
@@ -106,7 +105,10 @@ export default class DeviceSelector extends React.Component {
             menuItemDetailsCssClass,
         } = this.props;
 
-        const menuItemCssClassWithTraits = [menuItemCssClass, ...device.traits].join(' ');
+        const menuItemCssClassWithTraits = [
+            menuItemCssClass,
+            ...device.traits,
+        ].join(' ');
         return (
             <Dropdown.Item
                 key={device.serialNumber}
@@ -114,14 +116,16 @@ export default class DeviceSelector extends React.Component {
                 onSelect={() => onSelect(device)}
             >
                 <div>
-                    { device.serialNumber }
-                    <span>{ device.boardVersion }</span>
+                    {device.serialNumber}
+                    <span>{device.boardVersion}</span>
                 </div>
                 <ul className={menuItemDetailsCssClass}>
-                    { DeviceSelector.mapSerialPortsToListItems(device) }
-                    { device.usb
-                        ? (<li>USB: {device.usb.manufacturer} {device.usb.product}</li>)
-                        : null }
+                    {DeviceSelector.mapSerialPortsToListItems(device)}
+                    {device.usb ? (
+                        <li>
+                            USB: {device.usb.manufacturer} {device.usb.product}
+                        </li>
+                    ) : null}
                 </ul>
             </Dropdown.Item>
         );
@@ -162,12 +166,14 @@ export default class DeviceSelector extends React.Component {
                     hotkey="Alt+P"
                     title={`${togglerText}`}
                 >
-                    { devices.map(device => this.getItemFromDevice(device)) }
-                    { displayCloseItem ? this.getCloseItem() : null }
+                    {devices.map(device => this.getItemFromDevice(device))}
+                    {displayCloseItem ? this.getCloseItem() : null}
                 </HotkeyedDropdown>
-                {
-                    showPortIndicator ? <div className={indicatorCssClass} /> : <div />
-                }
+                {showPortIndicator ? (
+                    <div className={indicatorCssClass} />
+                ) : (
+                    <div />
+                )}
             </>
         );
     }

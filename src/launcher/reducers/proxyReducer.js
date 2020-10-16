@@ -46,23 +46,23 @@ const InitialState = Record({
 const initialState = new InitialState();
 
 function showLoginDialog(state, message) {
-    return state.set('loginDialogMessage', message)
+    return state
+        .set('loginDialogMessage', message)
         .set('isLoginDialogVisible', true);
 }
 
 function hideLoginDialog(state) {
-    return state.set('loginDialogMessage', initialState.loginDialogMessage)
+    return state
+        .set('loginDialogMessage', initialState.loginDialogMessage)
         .set('isLoginDialogVisible', false);
 }
 
 function cancelLoginDialog(state) {
-    return hideLoginDialog(state)
-        .set('isErrorDialogVisible', true);
+    return hideLoginDialog(state).set('isErrorDialogVisible', true);
 }
 
 function setLoginRequestSent(state, username) {
-    return hideLoginDialog(state)
-        .set('username', username);
+    return hideLoginDialog(state).set('username', username);
 }
 
 const reducer = (state = initialState, action) => {

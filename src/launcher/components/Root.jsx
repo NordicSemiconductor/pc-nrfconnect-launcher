@@ -46,27 +46,35 @@ import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
-import UserDataDialogContainer from '../containers/UserDataDialogContainer';
+import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
 
 export default () => (
     <>
         <Tab.Container id="launcher" defaultActiveKey="apps">
             <Nav>
                 {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                <Nav.Link accessKey="1" eventKey="apps">apps</Nav.Link>
+                <Nav.Link accessKey="1" eventKey="apps">
+                    apps
+                </Nav.Link>
                 {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                <Nav.Link accessKey="2" eventKey="settings">settings</Nav.Link>
+                <Nav.Link accessKey="2" eventKey="settings">
+                    settings
+                </Nav.Link>
                 <Logo />
             </Nav>
             <Tab.Content>
-                <Tab.Pane eventKey="apps"><AppManagementContainer /></Tab.Pane>
-                <Tab.Pane eventKey="settings"><SettingsContainer /></Tab.Pane>
+                <Tab.Pane eventKey="apps">
+                    <AppManagementContainer />
+                </Tab.Pane>
+                <Tab.Pane eventKey="settings">
+                    <SettingsContainer />
+                </Tab.Pane>
             </Tab.Content>
         </Tab.Container>
         <ErrorDialog />
         <UpdateAvailableContainer />
         <UpdateProgressContainer />
-        <UserDataDialogContainer />
+        <UsageDataDialogContainer />
         <ConfirmLaunchContainer />
         <ProxyLoginContainer />
         <ProxyErrorContainer />

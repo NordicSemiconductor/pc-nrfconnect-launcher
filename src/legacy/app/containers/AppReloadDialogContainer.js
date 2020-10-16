@@ -50,16 +50,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onConfirmReload: () => (
-            dispatch(remote.getCurrentWindow().reload())
-        ),
+        onConfirmReload: () => dispatch(remote.getCurrentWindow().reload()),
         onCancelReload: () => {
             dispatch(AppReloadDialogActions.hideDialog());
         },
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AppReloadDialog, 'AppReloadDialog');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    AppReloadDialog,
+    'AppReloadDialog'
+);

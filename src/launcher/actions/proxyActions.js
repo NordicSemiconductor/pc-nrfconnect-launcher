@@ -36,10 +36,13 @@
 
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-export const PROXY_LOGIN_REQUESTED_BY_SERVER = 'PROXY_LOGIN_REQUESTED_BY_SERVER';
+export const PROXY_LOGIN_REQUESTED_BY_SERVER =
+    'PROXY_LOGIN_REQUESTED_BY_SERVER';
 export const PROXY_LOGIN_CANCELLED_BY_USER = 'PROXY_LOGIN_CANCELLED_BY_USER';
-export const PROXY_LOGIN_ERROR_DIALOG_CLOSED = 'PROXY_LOGIN_ERROR_DIALOG_CLOSED';
-export const PROXY_LOGIN_DIALOG_USERNAME_CHANGED = 'PROXY_LOGIN_DIALOG_USERNAME_CHANGED';
+export const PROXY_LOGIN_ERROR_DIALOG_CLOSED =
+    'PROXY_LOGIN_ERROR_DIALOG_CLOSED';
+export const PROXY_LOGIN_DIALOG_USERNAME_CHANGED =
+    'PROXY_LOGIN_DIALOG_USERNAME_CHANGED';
 export const PROXY_LOGIN_REQUEST_SENT = 'PROXY_LOGIN_REQUEST_SENT';
 export const PROXY_LOGIN_REQUEST_ERROR = 'PROXY_LOGIN_REQUEST_ERROR';
 
@@ -92,7 +95,7 @@ export function loginRequestedByServer(message, loginCallback) {
 }
 
 export function authenticate(authInfo) {
-    return dispatch => (
+    return dispatch =>
         new Promise(resolve => {
             const onSubmit = (username, password) => {
                 resolve({ username, password });
@@ -101,13 +104,14 @@ export function authenticate(authInfo) {
             if (authInfo.realm) {
                 proxyString += ` (realm: ${authInfo.realm})`;
             }
-            dispatch(loginRequestedByServer(
-                `The proxy server ${proxyString} `
-                    + 'requires authentication. Please enter username and password',
-                onSubmit,
-            ));
-        })
-    );
+            dispatch(
+                loginRequestedByServer(
+                    `The proxy server ${proxyString} ` +
+                        'requires authentication. Please enter username and password',
+                    onSubmit
+                )
+            );
+        });
 }
 
 export function loginCancelledByUser() {
@@ -125,8 +129,12 @@ export function sendLoginRequest(username, password) {
             dispatch(loginRequestSentAction(username));
         } else {
             dispatch(loginRequestErrorAction());
-            dispatch(ErrorDialogActions.showDialog('No login callback found '
-                + 'when authenticating with proxy.'));
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    'No login callback found ' +
+                        'when authenticating with proxy.'
+                )
+            );
         }
     };
 }

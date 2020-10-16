@@ -43,9 +43,7 @@ import { decorate } from '../../decoration';
 
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
-const LogViewer = ({
-    logEntries, autoScroll, onMount, cssClass,
-}) => {
+const LogViewer = ({ logEntries, autoScroll, onMount, cssClass }) => {
     const logContainer = useRef(null);
 
     useEffect(() => {
@@ -59,7 +57,9 @@ const LogViewer = ({
         <div className={cssClass}>
             <LogHeaderContainer />
             <div ref={logContainer} className="core-infinite-log">
-                {logEntries.map(entry => <DecoratedLogEntry {...{ entry }} key={entry.id} />)}
+                {logEntries.map(entry => (
+                    <DecoratedLogEntry {...{ entry }} key={entry.id} />
+                ))}
             </div>
         </div>
     );

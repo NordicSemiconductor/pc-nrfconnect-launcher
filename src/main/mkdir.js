@@ -42,7 +42,9 @@ function mkdir(dirPath) {
     return new Promise((resolve, reject) => {
         fs.mkdir(dirPath, 0o775, error => {
             if (error) {
-                reject(new Error(`Unable to create ${dirPath}: ${error.message}`));
+                reject(
+                    new Error(`Unable to create ${dirPath}: ${error.message}`)
+                );
             } else {
                 resolve();
             }

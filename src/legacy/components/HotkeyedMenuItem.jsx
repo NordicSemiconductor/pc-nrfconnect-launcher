@@ -54,11 +54,11 @@ export default class HotkeyedMenuItem extends React.Component {
     }
 
     render() {
-        const { hotkey, divider, ...childProps } = this.props;
+        const { divider, ...childProps } = this.props;
         if (divider) {
-            return (<Dropdown.Divider />);
+            return <Dropdown.Divider />;
         }
-        return (<Dropdown.Item {...childProps} />);
+        return <Dropdown.Item {...childProps} />;
     }
 }
 

@@ -40,7 +40,8 @@ import { checkTitleOfWindow } from '../assertions';
 describe('launching apps directly', () => {
     describe('an official app', () => {
         const app = setupTestApp({
-            appsRootDir: 'launcher/fixtures/one-official-app-installed/.nrfconnect-apps',
+            appsRootDir:
+                'launcher/fixtures/one-official-app-installed/.nrfconnect-apps',
             openOfficialApp: 'pc-nrfconnect-test',
         });
 

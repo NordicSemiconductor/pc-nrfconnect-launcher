@@ -77,7 +77,4 @@ function getImmutableDevice(device) {
     });
 }
 
-export {
-    getImmutableSerialPort,
-    getImmutableDevice,
-};
+export { getImmutableSerialPort, getImmutableDevice };

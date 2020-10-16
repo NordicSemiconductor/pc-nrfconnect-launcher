@@ -45,7 +45,7 @@ function mapDispatchToProps() {
     return {};
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(SidePanel, 'SidePanel');
+export default connect(mapStateToProps, mapDispatchToProps)(
+    SidePanel,
+    'SidePanel'
+);

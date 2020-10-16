@@ -58,27 +58,29 @@ import getImmutableApp from '../../models';
 
 describe('AppManagementView', () => {
     it('should render without any apps', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={List()}
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onMount={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List()}
+                    isRetrievingApps={false}
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onMount={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render not-installed, installed, and upgradable apps', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={
-                    List([
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List([
                         getImmutableApp({
                             name: 'appB',
                             displayName: 'App B',
@@ -98,97 +100,103 @@ describe('AppManagementView', () => {
                             currentVersion: '1.2.3',
                             latestVersion: '1.2.4',
                         }),
-                    ])
-                }
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+                    ])}
+                    isRetrievingApps={false}
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should disable buttons and display "Installing..." button text when installing app', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={List([
-                    getImmutableApp({
-                        name: 'pc-nrfconnect-foo',
-                        displayName: 'Foo app',
-                        description: 'Foo description',
-                        source: 'bar',
-                    }),
-                ])}
-                isRetrievingApps={false}
-                installingAppName="bar/pc-nrfconnect-foo"
-                isProcessing
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List([
+                        getImmutableApp({
+                            name: 'pc-nrfconnect-foo',
+                            displayName: 'Foo app',
+                            description: 'Foo description',
+                            source: 'bar',
+                        }),
+                    ])}
+                    isRetrievingApps={false}
+                    installingAppName="bar/pc-nrfconnect-foo"
+                    isProcessing
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should disable buttons and display "Removing..." button text when removing app', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={List([
-                    getImmutableApp({
-                        name: 'pc-nrfconnect-foo',
-                        displayName: 'Foo app',
-                        description: 'Foo description',
-                        currentVersion: '1.2.3',
-                        latestVersion: '1.2.3',
-                        source: 'bar',
-                    }),
-                ])}
-                isRetrievingApps={false}
-                removingAppName="bar/pc-nrfconnect-foo"
-                isProcessing
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List([
+                        getImmutableApp({
+                            name: 'pc-nrfconnect-foo',
+                            displayName: 'Foo app',
+                            description: 'Foo description',
+                            currentVersion: '1.2.3',
+                            latestVersion: '1.2.3',
+                            source: 'bar',
+                        }),
+                    ])}
+                    isRetrievingApps={false}
+                    removingAppName="bar/pc-nrfconnect-foo"
+                    isProcessing
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should disable buttons and display "Upgrading..." button text when upgrading app', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={List([
-                    getImmutableApp({
-                        name: 'pc-nrfconnect-foo',
-                        displayName: 'Foo app',
-                        description: 'Foo description',
-                        currentVersion: '1.2.3',
-                        latestVersion: '1.2.4',
-                        source: 'bar',
-                    }),
-                ])}
-                isRetrievingApps={false}
-                upgradingAppName="bar/pc-nrfconnect-foo"
-                isProcessing
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List([
+                        getImmutableApp({
+                            name: 'pc-nrfconnect-foo',
+                            displayName: 'Foo app',
+                            description: 'Foo description',
+                            currentVersion: '1.2.3',
+                            latestVersion: '1.2.4',
+                            source: 'bar',
+                        }),
+                    ])}
+                    isRetrievingApps={false}
+                    upgradingAppName="bar/pc-nrfconnect-foo"
+                    isProcessing
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should invoke onInstall with app name, source and url when install button is clicked', () => {
@@ -211,9 +219,12 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />,
+            />
         );
-        wrapper.find('button[title="Install Foobar displayName"]').first().simulate('click');
+        wrapper
+            .find('button[title="Install Foobar displayName"]')
+            .first()
+            .simulate('click');
 
         expect(onInstall).toHaveBeenCalledWith(app.name, app.source);
     });
@@ -239,20 +250,23 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />,
+            />
         );
 
         wrapper.find('.dropdown-toggle').first().simulate('click');
-        wrapper.find('a[title="Remove Foobar displayName"]').first().simulate('click');
+        wrapper
+            .find('a[title="Remove Foobar displayName"]')
+            .first()
+            .simulate('click');
 
         expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
     });
 
     it('should render more info links for correctly defined homepage', () => {
-        expect(renderer.create(
-            <AppManagementView
-                apps={
-                    List([
+        expect(
+            renderer.create(
+                <AppManagementView
+                    apps={List([
                         getImmutableApp({
                             name: 'appA',
                             displayName: 'App A',
@@ -270,18 +284,18 @@ describe('AppManagementView', () => {
                             displayName: 'App C',
                             description: 'appC description',
                         }),
-                    ])
-                }
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />,
-        )).toMatchSnapshot();
+                    ])}
+                    isRetrievingApps={false}
+                    onAppSelected={() => {}}
+                    onCreateShortcut={() => {}}
+                    onInstall={() => {}}
+                    onRemove={() => {}}
+                    onReadMore={() => {}}
+                    onShowReleaseNotes={() => {}}
+                    sources={{}}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should invoke onAppSelected with given app item when Open is clicked', () => {
@@ -305,9 +319,12 @@ describe('AppManagementView', () => {
                 onReadMore={() => {}}
                 onShowReleaseNotes={() => {}}
                 sources={{}}
-            />,
+            />
         );
-        wrapper.find('button[title="Open Foobar displayName"]').first().simulate('click');
+        wrapper
+            .find('button[title="Open Foobar displayName"]')
+            .first()
+            .simulate('click');
 
         expect(onAppSelected).toHaveBeenCalledWith(app);
     });

@@ -40,15 +40,18 @@ import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import {
-    setApp, clearDecorationCache, decorate, decorateReducer, connect, invokeAppFn,
+    setApp,
+    clearDecorationCache,
+    decorate,
+    decorateReducer,
+    connect,
+    invokeAppFn,
 } from '../decoration';
 
 beforeEach(clearDecorationCache);
 
 describe('decorate', () => {
-    const FooComponent = ({ id }) => (
-        <div id={id} />
-    );
+    const FooComponent = ({ id }) => <div id={id} />;
     FooComponent.propTypes = { id: PropTypes.string };
     FooComponent.defaultProps = { id: 'foo' };
 
@@ -75,21 +78,23 @@ describe('decorate', () => {
         setApp({
             decorateFoo: () => null,
         });
-        expect(decorate(FooComponent, 'Foo')).toThrow(/No React component found/);
+        expect(decorate(FooComponent, 'Foo')).toThrow(
+            /No React component found/
+        );
     });
 
     it('should throw error when decorate method returns an object', () => {
         setApp({
             decorateFoo: () => {},
         });
-        expect(decorate(FooComponent, 'Foo')).toThrow(/No React component found/);
+        expect(decorate(FooComponent, 'Foo')).toThrow(
+            /No React component found/
+        );
     });
 
     it('should render null when app decorates and returns null', () => {
         setApp({
-            decorateFoo: () => (
-                () => null
-            ),
+            decorateFoo: () => () => null,
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo />).toJSON();
@@ -99,9 +104,7 @@ describe('decorate', () => {
 
     it('should render new element when app decorates and returns its own element', () => {
         setApp({
-            decorateFoo: () => (
-                () => <p>Foobar</p>
-            ),
+            decorateFoo: () => () => <p>Foobar</p>,
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo />).toJSON();
@@ -115,9 +118,7 @@ describe('decorate', () => {
 
     it('should render component with new property value when app adds own value', () => {
         setApp({
-            decorateFoo: Foo => (
-                () => <Foo id="bar" />
-            ),
+            decorateFoo: Foo => () => <Foo id="bar" />,
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo />).toJSON();
@@ -131,9 +132,7 @@ describe('decorate', () => {
 
     it('should render with property when app uses a provided property', () => {
         setApp({
-            decorateFoo: () => (
-                ({ bar }) => <p id={bar} /> // eslint-disable-line react/prop-types
-            ),
+            decorateFoo: () => ({ bar }) => <p id={bar} />, // eslint-disable-line react/prop-types
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo bar="baz" />).toJSON();
@@ -145,7 +144,6 @@ describe('decorate', () => {
         });
     });
 });
-
 
 describe('connect', () => {
     const FooComponent = ({ id, onClick }) => (
@@ -171,21 +169,22 @@ describe('connect', () => {
         dispatch: () => {},
         getState: () => {},
     });
-    const renderWithProvider = Component => (
-        renderer.create(
-            <Provider store={storeFake()}>
-                <Component />
-            </Provider>,
-        ).toJSON()
-    );
+    const renderWithProvider = Component =>
+        renderer
+            .create(
+                <Provider store={storeFake()}>
+                    <Component />
+                </Provider>
+            )
+            .toJSON();
 
     it('should render with default props when app does not implement mapToProps functions', () => {
         setApp({});
 
-        const ConnectedFoo = connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        )(FooComponent, 'Foo');
+        const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
+            FooComponent,
+            'Foo'
+        );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
             type: 'button',
@@ -203,10 +202,10 @@ describe('connect', () => {
             mapFooState: () => appStateProps,
         });
 
-        const ConnectedFoo = connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        )(FooComponent, 'Foo');
+        const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
+            FooComponent,
+            'Foo'
+        );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
             type: 'button',
@@ -224,10 +223,10 @@ describe('connect', () => {
             mapFooDispatch: () => appDispatchProps,
         });
 
-        const ConnectedFoo = connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        )(FooComponent, 'Foo');
+        const ConnectedFoo = connect(mapStateToProps, mapDispatchToProps)(
+            FooComponent,
+            'Foo'
+        );
 
         expect(renderWithProvider(ConnectedFoo)).toEqual({
             type: 'button',
@@ -239,7 +238,6 @@ describe('connect', () => {
         });
     });
 });
-
 
 describe('decorateReducer', () => {
     const initialState = {};
@@ -275,10 +273,12 @@ describe('decorateReducer', () => {
         });
         const decoratedReducer = decorateReducer(fooReducer, 'Foo');
 
-        expect(() => decoratedReducer(initialState, {
-            type: FOO_ACTION,
-            value: 'foobar',
-        })).toThrow(/Not a function/);
+        expect(() =>
+            decoratedReducer(initialState, {
+                type: FOO_ACTION,
+                value: 'foobar',
+            })
+        ).toThrow(/Not a function/);
     });
 
     it('should override value set by default reducer when app decorates reducer with new value', () => {

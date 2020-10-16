@@ -35,27 +35,24 @@
  */
 
 import { connect } from 'react-redux';
-import UserDataDialog from '../components/UserDataDialog';
-import * as UserDataActions from '../actions/userDataActions';
+import UsageDataDialog from '../components/UsageDataDialog';
+import * as UsageDataActions from '../actions/usageDataActions';
 
 function mapStateToProps(state) {
     return {
-        isVisible: state.settings.isUserDataDialogVisible,
+        isVisible: state.settings.isUsageDataDialogVisible,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         onConfirm: () => {
-            dispatch(UserDataActions.confrimSendingUserData());
+            dispatch(UsageDataActions.confrimSendingUsageData());
         },
         onCancel: () => {
-            dispatch(UserDataActions.cancelSendingUserData());
+            dispatch(UsageDataActions.cancelSendingUsageData());
         },
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(UserDataDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(UsageDataDialog);

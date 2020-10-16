@@ -56,26 +56,31 @@ describe('LogViewer', () => {
                 level: 'info',
                 timestamp: '2017-02-03T12:41:36.020Z',
                 message: 'Info message',
-            }, {
+            },
+            {
                 id: 2,
                 level: 'error',
                 timestamp: '2017-02-03T13:41:36.020Z',
                 message: 'Error message',
-            }, {
+            },
+            {
                 id: 3,
                 level: 'info',
                 timestamp: '2017-02-03T13:41:36.020Z',
-                message: 'For reference see: https://github.com/example/doc.md or reboot Windows.',
+                message:
+                    'For reference see: https://github.com/example/doc.md or reboot Windows.',
             },
         ]);
-        expect(renderer.create(
-            <LogViewer
-                logEntries={entries}
-                onOpenLogFile={() => {}}
-                onClearLog={() => {}}
-                onToggleAutoScroll={() => {}}
-                autoScroll
-            />,
-        )).toMatchSnapshot();
+        expect(
+            renderer.create(
+                <LogViewer
+                    logEntries={entries}
+                    onOpenLogFile={() => {}}
+                    onClearLog={() => {}}
+                    onToggleAutoScroll={() => {}}
+                    autoScroll
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

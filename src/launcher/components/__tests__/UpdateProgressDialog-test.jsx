@@ -53,72 +53,82 @@ import UpdateProgressDialog from '../UpdateProgressDialog';
 
 describe('UpdateProgressDialog', () => {
     it('should render invisible', () => {
-        expect(shallow(
-            <UpdateProgressDialog
-                isVisible={false}
-                isProgressSupported={false}
-                isCancelSupported={false}
-                version=""
-                percentDownloaded={0}
-                onCancel={() => {}}
-                isCancelling={false}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <UpdateProgressDialog
+                    isVisible={false}
+                    isProgressSupported={false}
+                    isCancelSupported={false}
+                    version=""
+                    percentDownloaded={0}
+                    onCancel={() => {}}
+                    isCancelling={false}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with version, percent downloaded, and cancellable', () => {
-        expect(shallow(
-            <UpdateProgressDialog
-                isVisible
-                isProgressSupported
-                isCancelSupported
-                version="1.2.3"
-                percentDownloaded={42}
-                onCancel={() => {}}
-                isCancelling={false}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <UpdateProgressDialog
+                    isVisible
+                    isProgressSupported
+                    isCancelSupported
+                    version="1.2.3"
+                    percentDownloaded={42}
+                    onCancel={() => {}}
+                    isCancelling={false}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with version, without progress, and not cancellable', () => {
-        expect(shallow(
-            <UpdateProgressDialog
-                isVisible
-                isProgressSupported={false}
-                isCancelSupported={false}
-                version="1.2.3"
-                percentDownloaded={0}
-                onCancel={() => {}}
-                isCancelling={false}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <UpdateProgressDialog
+                    isVisible
+                    isProgressSupported={false}
+                    isCancelSupported={false}
+                    version="1.2.3"
+                    percentDownloaded={0}
+                    onCancel={() => {}}
+                    isCancelling={false}
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render cancelling', () => {
-        expect(shallow(
-            <UpdateProgressDialog
-                isVisible
-                isProgressSupported
-                isCancelSupported
-                version="1.2.3"
-                percentDownloaded={42}
-                onCancel={() => {}}
-                isCancelling
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <UpdateProgressDialog
+                    isVisible
+                    isProgressSupported
+                    isCancelSupported
+                    version="1.2.3"
+                    percentDownloaded={42}
+                    onCancel={() => {}}
+                    isCancelling
+                />
+            )
+        ).toMatchSnapshot();
     });
 
     it('should render with cancel disabled when 100 percent complete', () => {
-        expect(shallow(
-            <UpdateProgressDialog
-                isVisible
-                isProgressSupported
-                isCancelSupported
-                version="1.2.3"
-                percentDownloaded={100}
-                onCancel={() => {}}
-                isCancelling={false}
-            />,
-        )).toMatchSnapshot();
+        expect(
+            shallow(
+                <UpdateProgressDialog
+                    isVisible
+                    isProgressSupported
+                    isCancelSupported
+                    version="1.2.3"
+                    percentDownloaded={100}
+                    onCancel={() => {}}
+                    isCancelling={false}
+                />
+            )
+        ).toMatchSnapshot();
     });
 });

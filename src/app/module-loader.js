@@ -34,7 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable no-underscore-dangle */
 import Module from 'module';
+import semver from 'semver';
+import { readJsonFile } from '../main/fileUtil';
 
 const hostedModules = {};
 
@@ -43,8 +46,8 @@ const hostedModules = {};
  * app uses the same instances of react and react-redux as we have in core.
  * Cannot have multiple copies of these loaded at the same time.
  */
-const originalLoad = Module._load; // eslint-disable-line no-underscore-dangle
-Module._load = function load(modulePath) { // eslint-disable-line no-underscore-dangle
+const originalLoad = Module._load;
+Module._load = function load(modulePath) {
     if (hostedModules[modulePath]) {
         return hostedModules[modulePath];
     }
@@ -52,13 +55,14 @@ Module._load = function load(modulePath) { // eslint-disable-line no-underscore-
     return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
 };
 
-
 const SerialPort = require('serialport');
 
 let hasShownDeprecatedPropertyWarning = false;
 const mayShowWarningAboutDeprecatedProperty = () => {
     if (!hasShownDeprecatedPropertyWarning) {
-        console.warn('Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.');
+        console.warn(
+            'Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.'
+        );
     }
     hasShownDeprecatedPropertyWarning = true;
 };
@@ -71,7 +75,8 @@ const ducktapeComName = port => ({
 });
 
 const originalSerialPortList = SerialPort.list;
-SerialPort.list = () => originalSerialPortList().then(ports => ports.map(ducktapeComName));
+SerialPort.list = () =>
+    originalSerialPortList().then(ports => ports.map(ducktapeComName));
 
 /* eslint-disable dot-notation */
 // Disable dot-notation in this file, to keep the syntax below more consistent
@@ -93,3 +98,41 @@ const bleDriverJs = require('pc-ble-driver-js');
 
 const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;
 hostedModules['pc-ble-driver-js'] = bleDriver;
+
+// Temporary workaround. To be removed after all the related apps are updated.
+// Electron dialog api change breaks the behaviour of show[Open|Save]Dialog() calls.
+// Update apps by either calling the synchronous version or to expect
+// a Promise return value. After updating change the required minimum nrfconnect
+// engine version to 3.6+ in package.json
+const params = new URL(window.location).searchParams;
+const appPath = params.get('appPath');
+readJsonFile(`${appPath}/package.json`)
+    .then(({ engines }) => {
+        const { nrfconnect } = engines || {};
+        if (nrfconnect && semver.lt(semver.minVersion(nrfconnect), '3.6.0')) {
+            const { dialog } = hostedModules['electron'].remote;
+
+            dialog.showSaveDialog = (...args) => {
+                const lastArg = args[args.length - 1];
+                const result = dialog.showSaveDialogSync(...args);
+                if (typeof lastArg === 'function') {
+                    const callback = lastArg;
+                    callback(result);
+                }
+                return result;
+            };
+
+            dialog.showOpenDialog = (...args) => {
+                const lastArg = args[args.length - 1];
+                const result = dialog.showOpenDialogSync(...args);
+                if (typeof lastArg === 'function') {
+                    const callback = lastArg;
+                    callback(result);
+                }
+                return result;
+            };
+
+            console.log('Electron dialog api is has been patched.');
+        }
+    })
+    .catch(() => {});

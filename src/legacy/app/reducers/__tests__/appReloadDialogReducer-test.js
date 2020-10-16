@@ -47,14 +47,20 @@ describe('appReloadDialogReducer', () => {
 
     it('should be visible and carry message when showing dialog', () => {
         const message = 'App needs reload';
-        const newState = reducer(initialState, AppReloadDialogActions.showDialog(message));
+        const newState = reducer(
+            initialState,
+            AppReloadDialogActions.showDialog(message)
+        );
 
         expect(newState.isVisible).toEqual(true);
         expect(newState.message).toEqual(message);
     });
 
     it('should be initial state when hiding dialog', () => {
-        const newState = reducer(initialState, AppReloadDialogActions.hideDialog());
+        const newState = reducer(
+            initialState,
+            AppReloadDialogActions.hideDialog()
+        );
 
         expect(newState.isVisible).toEqual(false);
         expect(newState.message).toEqual('');

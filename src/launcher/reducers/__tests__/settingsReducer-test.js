@@ -78,48 +78,63 @@ describe('settingsReducer', () => {
     });
 
     it('should set shouldCheckForUpdatesAtStartup to true after loading when enabled', () => {
-        const state = reducer(initialState.set('shouldCheckForUpdatesAtStartup', false), {
-            type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-            settings: {
-                shouldCheckForUpdatesAtStartup: true,
-            },
-        });
+        const state = reducer(
+            initialState.set('shouldCheckForUpdatesAtStartup', false),
+            {
+                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
+                settings: {
+                    shouldCheckForUpdatesAtStartup: true,
+                },
+            }
+        );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to false after loading when disabled', () => {
-        const state = reducer(initialState.set('shouldCheckForUpdatesAtStartup', true), {
-            type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-            settings: {
-                shouldCheckForUpdatesAtStartup: false,
-            },
-        });
+        const state = reducer(
+            initialState.set('shouldCheckForUpdatesAtStartup', true),
+            {
+                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
+                settings: {
+                    shouldCheckForUpdatesAtStartup: false,
+                },
+            }
+        );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to false after loading if it is not defined in settings', () => {
-        const state = reducer(initialState.set('shouldCheckForUpdatesAtStartup', true), {
-            type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-            settings: {
-                shouldCheckForUpdatesAtStartup: null,
-            },
-        });
+        const state = reducer(
+            initialState.set('shouldCheckForUpdatesAtStartup', true),
+            {
+                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
+                settings: {
+                    shouldCheckForUpdatesAtStartup: null,
+                },
+            }
+        );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to true when changed to enabled', () => {
-        const state = reducer(initialState.set('shouldCheckForUpdatesAtStartup', false), {
-            type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
-            isEnabled: true,
-        });
+        const state = reducer(
+            initialState.set('shouldCheckForUpdatesAtStartup', false),
+            {
+                type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
+                isEnabled: true,
+            }
+        );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to false when changed to disabled', () => {
-        const state = reducer(initialState.set('shouldCheckForUpdatesAtStartup', false), {
-            type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
-            isEnabled: false,
-        });
+        const state = reducer(
+            initialState.set('shouldCheckForUpdatesAtStartup', false),
+            {
+                type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
+                isEnabled: false,
+            }
+        );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
 
@@ -131,9 +146,13 @@ describe('settingsReducer', () => {
     });
 
     it('should not show update check complete dialog when SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE has been dispatched', () => {
-        const state = reducer(initialState.set('isUpdateCheckCompleteDialogVisible', true), {
-            type: SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
-        });
+        const state = reducer(
+            initialState.set('isUpdateCheckCompleteDialogVisible', true),
+            {
+                type:
+                    SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
+            }
+        );
         expect(state.isUpdateCheckCompleteDialogVisible).toEqual(false);
     });
 });
