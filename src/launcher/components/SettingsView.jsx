@@ -137,7 +137,7 @@ class SettingsView extends React.Component {
                                 Last update check performed:{' '}
                                 {formatDate(
                                     lastUpdateCheckDate,
-                                    'YYYY-MM-DD HH:mm:ss'
+                                    'yyyy-MM-dd HH:mm:ss'
                                 )}
                             </>
                         )}
