@@ -247,3 +247,8 @@ body {
     overflow-y: scroll;
     height: 40vh;
 }
+
+.dropdown-toggle:empty::after {
+    position: relative;
+    top: 2px;
+}
