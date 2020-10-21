@@ -35,17 +35,13 @@ module.exports = {
     },
     output: {
         path: path.resolve('dist'),
-        publicPath: isDev
-            ? `http://localhost:${process.env.PORT || 5004}/`
-            : '../dist/',
+        publicPath: '../dist/',
         filename: '[name]-bundle.js',
     },
     devServer: {
         hot: true,
-        contentBase: path.join(__dirname, '/dist/'),
-        inline: true,
+        publicPath: '../dist/',
         stats: { colors: true },
-        port: process.env.PORT || 5004,
     },
     module: {
         rules: [
@@ -62,9 +58,6 @@ module.exports = {
                     },
                     {
                         loader: require.resolve('eslint-loader'),
-                        options: {
-                            emitWarning: true,
-                        },
                     },
                 ],
                 exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
