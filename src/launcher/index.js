@@ -53,6 +53,8 @@ import * as ProxyActions from './actions/proxyActions';
 import * as UsageDataActions from './actions/usageDataActions';
 import '../../resources/css/launcher.scss';
 
+module.hot.accept();
+
 const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
 const net = remote.require('../main/net');
