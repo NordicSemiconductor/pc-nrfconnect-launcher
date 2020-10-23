@@ -36,13 +36,15 @@ module.exports = {
     },
     output: {
         path: path.resolve('dist'),
-        publicPath: '../dist/',
+        publicPath: isDev ? 'http://localhost:8080/' : '../dist/',
         filename: '[name]-bundle.js',
     },
     devServer: {
         hot: true,
-        publicPath: '../dist/',
+        contentBase: path.join(__dirname, '/dist/'),
+        inline: true,
         stats: { colors: true },
+        port: 8080
     },
     module: {
         rules: [
@@ -59,6 +61,9 @@ module.exports = {
                     },
                     {
                         loader: require.resolve('eslint-loader'),
+                        options: {
+                            emitWarning: true
+                        }
                     },
                 ],
                 exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
@@ -88,7 +93,6 @@ module.exports = {
         symlinks: false,
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         isDev && new ReactRefreshWebpackPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
