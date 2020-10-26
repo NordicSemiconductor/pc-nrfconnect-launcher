@@ -37,6 +37,7 @@
 'use strict';
 
 const electron = require('electron');
+const isDev = require('electron-is-dev');
 const path = require('path');
 const browser = require('./browser');
 const config = require('./config');
@@ -58,9 +59,11 @@ function openLauncherWindow() {
     if (launcherWindow) {
         launcherWindow.show();
     } else {
+        const launcherTemplate = isDev ? 'launcher-dev.html' : 'launcher.html';
+
         launcherWindow = browser.createWindow({
             title: `nRF Connect v${config.getVersion()}`,
-            url: `file://${config.getElectronResourcesDir()}/launcher.html`,
+            url: `file://${config.getElectronResourcesDir()}/${launcherTemplate}`,
             icon: getDefaultIconPath(),
             width: 760,
             height: 500,
