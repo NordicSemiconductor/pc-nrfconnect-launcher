@@ -35,7 +35,7 @@ module.exports = {
     },
     output: {
         path: path.resolve('dist'),
-        publicPath: isDev ? 'http://localhost:8080/' : '../dist/',
+        publicPath: isDev ? 'http://localhost:5004/' : '../dist/',
         filename: '[name]-bundle.js',
     },
     devServer: {
@@ -43,7 +43,7 @@ module.exports = {
         contentBase: path.join(__dirname, '/dist/'),
         inline: true,
         stats: { colors: true },
-        port: 8080,
+        port: 5004,
     },
     module: {
         rules: [
