@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='UTF-8'/>
-    <link rel='stylesheet' type='text/css' href='http://localhost:5004/launcher.css'>
+    <meta charset="UTF-8"/>
 </head>
 <body>
-<div id='webapp'></div>
-<script src="http://localhost:5004/launcher-bundle.js"></script>
+<div id="webapp"></div>
+<script>
+    const port = process.env.PORT || 5004;
+    const devServer = `http://localhost:${process.env.PORT}`;
+
+    const css = document.createElement('link');
+    css.setAttribute('rel', 'stylesheet');
+    css.setAttribute('type', 'text/css');
+    css.setAttribute('href', `${devServer}/launcher.css`);
+    document.querySelector('head').appendChild(css);
+
+    const javascript = document.createElement('script');
+    javascript.setAttribute('src', `${devServer}/launcher-bundle.js`);
+    document.querySelector('body').appendChild(javascript);
+</script>
 </body>
 </html>
