@@ -93,6 +93,9 @@ hostedModules['react'] = require('react');
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
 hostedModules['usb'] = require('usb');
+hostedModules[
+    'nrf-device-lib-js'
+] = require('../../../nrf-device-lib-js-Darwin-x64/package');
 
 const bleDriverJs = require('pc-ble-driver-js');
 

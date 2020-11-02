@@ -110,7 +110,10 @@
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
             "artifactName": "${name}-setup-${version}-${env.ARCH}.${ext}"
-        }
+        },
+        "externals": [
+            "nrf-device-lib-js"
+        ]
     },
     "devDependencies": {
         "asar": "3.0.3",
@@ -142,6 +145,7 @@
         "mousetrap": "1.6.5",
         "mustache": "4.0.1",
         "nrf-device-setup": "0.6.7",
+        "nrf-device-lib-js": "/Users/dee/Programming/work/nordic/nrf-device-lib-js-Darwin-x64/package",
         "pc-ble-driver-js": "2.7.2",
         "popper.js": "1.16.1",
         "react": "16.13.1",
