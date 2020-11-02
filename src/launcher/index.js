@@ -51,6 +51,9 @@ import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
 import * as UsageDataActions from './actions/usageDataActions';
+// eslint-disable-next-line
+const nrfdl = require('nrf-device-lib-js');
+
 import '../../resources/css/launcher.scss';
 
 module.hot.accept();
@@ -58,6 +61,8 @@ module.hot.accept();
 const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
 const net = remote.require('../main/net');
+
+console.info(`Using nrf-device-lib-js version ${nrfdl.apiVersion()}`);
 
 const store = createStore(
     rootReducer,

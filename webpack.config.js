@@ -17,6 +17,7 @@ function createExternals() {
         'usb',
         'nrf-device-setup',
         'osx-temperature-sensor',
+        'nrf-device-lib-js',
     ];
 
     return libs.reduce(
