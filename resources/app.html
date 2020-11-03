@@ -28,10 +28,14 @@
     <div id='app-loader'></div>
 
 <script>
-    const { NRFJPROG_LIBRARY_PATH } = require('electron').remote.process.env;
+    const { NRFJPROG_LIBRARY_PATH, NRFDL_LIBRARY_PATH } = require('electron').remote.process.env;
 
     if (NRFJPROG_LIBRARY_PATH) {
         process.env.NRFJPROG_LIBRARY_PATH = NRFJPROG_LIBRARY_PATH;
+    }
+
+    if (NRFDL_LIBRARY_PATH) {
+        process.env.NRFDL_LIBRARY_PATH = NRFDL_LIBRARY_PATH;
     }
 </script>
 <script src="../dist/app-bundle.js"></script>
