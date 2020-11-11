@@ -58,23 +58,20 @@ if (nRFjprogSearchPath) {
     process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
 }
 
-const nrfdlSearchPath = [
-    resolve('/Users/dee/Programming/work/nordic/nrf-device-lib-js-Darwin-x64/package'),
-    resolve(process.cwd(), 'nrf-device-lib-js'),
-].find(existsSync);
+// const nrfdlSearchPath = [
+//     resolve(
+//         '/Users/dee/Programming/work/nordic/nrf-device-lib-js-Darwin-x64/package'
+//     ),
+//     resolve(process.cwd(), 'nrf-device-lib-js'),
+// ].find(existsSync);
 
-
-if (nrfdlSearchPath) {
-    process.env.NRFDL_LIBRARY_PATH = nrfdlSearchPath;
-    const original = process.env.LD_LIBRARY_PATH
-        ? `:${process.env.LD_LIBRARY_PATH}`
-        : '';
-    process.env.LD_LIBRARY_PATH = `${nrfdlSearchPath}${original}`;
-}
-
-console.log(process.env.LD_LIBRARY_PATH)
-
-// console.log(nrfdlSearchPath)
+// if (nrfdlSearchPath) {
+//     process.env.NRFDL_LIBRARY_PATH = nrfdlSearchPath;
+//     const original = process.env.LD_LIBRARY_PATH
+//         ? `:${process.env.LD_LIBRARY_PATH}`
+//         : '';
+//     process.env.LD_LIBRARY_PATH = `${nrfdlSearchPath}${original}`;
+// }
 
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
