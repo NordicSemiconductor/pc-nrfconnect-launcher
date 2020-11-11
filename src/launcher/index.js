@@ -51,10 +51,10 @@ import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
 import * as UsageDataActions from './actions/usageDataActions';
-// eslint-disable-next-line
-const nrfdl = require('nrf-device-lib-js');
 
 import '../../resources/css/launcher.scss';
+
+const nrfdl = require('nrf-device-lib-js');
 
 const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
