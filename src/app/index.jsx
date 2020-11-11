@@ -34,10 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import './module-loader';
 import 'core-js/es7';
 import 'regenerator-runtime/runtime';
-
-import './module-loader';
 
 import React from 'react';
 import { remote } from 'electron';
