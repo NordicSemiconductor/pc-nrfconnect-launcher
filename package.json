@@ -147,7 +147,6 @@
         "mustache": "4.0.1",
         "nrf-device-lib-js": "^0.1.0",
         "nrf-device-setup": "0.6.7",
-        "nrf-device-lib-js": "/Users/dee/Programming/work/nordic/nrf-device-lib-js-Darwin-x64/package",
         "pc-ble-driver-js": "2.7.2",
         "popper.js": "1.16.1",
         "react": "16.13.1",
