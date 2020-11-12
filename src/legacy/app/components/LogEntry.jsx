@@ -36,7 +36,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import formatDate from 'date-fns/format';
 import { shell } from 'electron';
 
 const regex = /(.*?)(https?:\/\/[^\s]+)/g;
@@ -82,7 +82,7 @@ function hrefReplacer(str) {
 
 const LogEntry = ({ entry }) => {
     const className = `core-log-entry core-log-level-${entry.level}`;
-    const time = moment(entry.timestamp).format('HH:mm:ss.SSS');
+    const time = formatDate(new Date(entry.timestamp), 'HH:mm:ss.SSS');
 
     return (
         <div className={className}>

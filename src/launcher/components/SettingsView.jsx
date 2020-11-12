@@ -46,7 +46,7 @@ import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 
 import { clipboard } from 'electron';
-import moment from 'moment';
+import formatDate from 'date-fns/format';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';
@@ -135,8 +135,9 @@ class SettingsView extends React.Component {
                         {lastUpdateCheckDate && (
                             <>
                                 Last update check performed:{' '}
-                                {moment(lastUpdateCheckDate).format(
-                                    'YYYY-MM-DD HH:mm:ss'
+                                {formatDate(
+                                    lastUpdateCheckDate,
+                                    'yyyy-MM-dd HH:mm:ss'
                                 )}
                             </>
                         )}
