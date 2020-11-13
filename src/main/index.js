@@ -58,6 +58,7 @@ if (nRFjprogSearchPath) {
     process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
 }
 
+
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
 
