@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.6.0",
+    "version": "3.6.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -121,7 +121,7 @@
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.10.4",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.15.0",
         "spectron": "7.0.0",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
@@ -153,7 +153,9 @@
         "uuid": "8.1.0",
         "yargs": "15.3.1"
     },
-    "eslintConfig": { "extends" : "./node_modules/pc-nrfconnect-shared/config/eslintrc.json" },
+    "eslintConfig": {
+        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"
+    },
     "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "jest": {
         "moduleNameMapper": {
