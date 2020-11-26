@@ -145,7 +145,7 @@
         "jquery": "3.5.1",
         "mousetrap": "1.6.5",
         "mustache": "4.0.1",
-        "nrf-device-lib-js": "^0.1.0",
+        "nrf-device-lib-js": "^0.2.0",
         "nrf-device-setup": "0.6.7",
         "pc-ble-driver-js": "2.7.2",
         "popper.js": "1.16.1",
