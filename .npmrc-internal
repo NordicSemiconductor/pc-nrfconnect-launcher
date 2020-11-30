@@ -11,6 +11,7 @@ registry=https://npm.nordicsemi.no/
 @istanbuljs:registry=https://registry.npmjs.org/
 @jest:registry=https://registry.npmjs.org/
 @mdi:registry=https://registry.npmjs.org/
+@popperjs:registry=https://registry.npmjs.org/
 @protobufjs:registry=https://registry.npmjs.org/
 @restart:registry=https://registry.npmjs.org/
 @serialport:registry=https://registry.npmjs.org/
