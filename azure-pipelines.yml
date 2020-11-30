@@ -84,7 +84,7 @@ jobs:
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
       cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm i
+      npm ci
       npm run lint
       npm run build
       npm test
@@ -98,7 +98,7 @@ jobs:
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
       cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm i
+      npm ci
       npm run lint
       npm run build
       npm test
@@ -128,7 +128,7 @@ jobs:
       eq(variables['NODE_ARCH'], '32'))
     displayName: 'Copy npmrc on windows'
   - script: |
-      npm i
+      npm ci
       npm run lint
       npm run build
       npm test
@@ -146,7 +146,7 @@ jobs:
   # Internal procedure end
   - bash: |
       set -o errexit -o pipefail
-      npm i
+      npm ci
       npm run lint-init
       npm run lint
       npm run build
@@ -158,7 +158,7 @@ jobs:
       set -o errexit -o pipefail
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
-      npm i
+      npm ci
       npm run lint-init
       npm run lint
       npm run build
