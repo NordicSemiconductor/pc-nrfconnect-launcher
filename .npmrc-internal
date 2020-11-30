@@ -21,6 +21,7 @@ registry=https://npm.nordicsemi.no/
 @szmarczak:registry=https://registry.npmjs.org/
 @testing-library:registry=https://registry.npmjs.org/
 @types:registry=https://registry.npmjs.org/
+@typescript-eslint:registry=https://registry.npmjs.org/
 @webassemblyjs:registry=https://registry.npmjs.org/
 @xtuc:registry=https://registry.npmjs.org/
 glob:registry=https://registry.npmjs.org/
