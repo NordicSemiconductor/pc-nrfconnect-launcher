@@ -11,10 +11,9 @@
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "postinstall": "npm run get-jlink",
         "app": "electron .",
-        "dev": "npm run lint-init && nrfconnect-scripts build-watch",
-        "webpack": "npm run lint-init && nrfconnect-scripts build-dev",
-        "build": "npm run lint-init && nrfconnect-scripts build-prod",
-        "lint-init": "nrfconnect-scripts lint-init",
+        "dev": "nrfconnect-scripts build-watch",
+        "webpack": "nrfconnect-scripts build-dev",
+        "build": "nrfconnect-scripts build-prod",
         "lint": "nrfconnect-scripts lint src test-e2e *.js",
         "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
         "test-watch": "jest --watch src/",
@@ -122,7 +121,7 @@
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.13.0",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.15.0",
         "spectron": "7.0.0",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
@@ -155,6 +154,10 @@
         "uuid": "8.1.0",
         "yargs": "15.3.1"
     },
+    "eslintConfig": {
+        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"
+    },
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",

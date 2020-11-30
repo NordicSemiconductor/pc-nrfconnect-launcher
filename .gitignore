@@ -2,8 +2,6 @@
 .DS_Store
 .idea
 .env
-.eslintrc
-prettier.config.js
 build/nrfjprog
 build/JLink*
 build/Release

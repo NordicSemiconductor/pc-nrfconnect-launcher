@@ -1,3 +1,7 @@
+## Version 3.6.1
+### Updates
+- Small visual enhancements to apps using the new design
+
 ## Version 3.6.0
 ### Updates
 - Upgraded Electron to version 8
