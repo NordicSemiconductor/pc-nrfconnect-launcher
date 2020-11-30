@@ -17,6 +17,7 @@ registry=https://npm.nordicsemi.no/
 @sheerun:registry=https://registry.npmjs.org/
 @sindresorhus:registry=https://registry.npmjs.org/
 @sinonjs:registry=https://registry.npmjs.org/
+@svgr:registry=https://registry.npmjs.org/
 @szmarczak:registry=https://registry.npmjs.org/
 @testing-library:registry=https://registry.npmjs.org/
 @types:registry=https://registry.npmjs.org/
