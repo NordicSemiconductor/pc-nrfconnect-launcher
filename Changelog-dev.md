@@ -1,6 +1,8 @@
 ## Version 3.6.1
 ### Updates
 - Small visual enhancements to apps using the new design
+### Bugfixes
+- After updating an app, the other apps showed no release notes anymore #502
 
 ## Version 3.6.0
 ### Updates
