@@ -1,5 +1,6 @@
 ## Version 3.6.1
 ### Updates
+- Updated to pc-nrfjprog-js v1.7.6, including bundled nrfjprog v10.12.1 and JLink 6.88a
 - Small visual enhancements to apps using the new design
 ### Bugfixes
 - After updating an app, the other apps showed no release notes anymore #502
