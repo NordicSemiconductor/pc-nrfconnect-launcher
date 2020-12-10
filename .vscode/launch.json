@@ -5,6 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/app.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Electron Main",
+            "program": "${workspaceFolder}/main.js",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "name": "nodemon",
