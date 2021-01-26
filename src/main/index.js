@@ -41,11 +41,6 @@ const { resolve } = require('path');
 
 const { execPath } = process;
 
-const nrfdl = require('nrf-device-lib-js');
-//const nrfdlBridge = require('nrfdl_bridge');
-
-// nrfdlBridge.processEvents(nrfdl);
-
 // In order to correctly set the library search path of pc-nrfjprog-js module
 // we need to set the environment variable before the module is loaded.
 const nRFjprogSearchPath = [
