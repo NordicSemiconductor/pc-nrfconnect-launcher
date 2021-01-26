@@ -54,13 +54,9 @@ import * as UsageDataActions from './actions/usageDataActions';
 
 import '../../resources/css/launcher.scss';
 
-const nrfdl = require('nrf-device-lib-js');
-
 const config = remote.require('../main/config');
 const settings = remote.require('../main/settings');
 const net = remote.require('../main/net');
-
-console.info(`Using nrf-device-lib-js version ${nrfdl.apiVersion()}`);
 
 const store = createStore(
     rootReducer,
