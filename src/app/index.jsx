@@ -34,7 +34,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import './module-loader';
 import 'core-js/es7';
 import 'regenerator-runtime/runtime';
 
@@ -43,6 +42,8 @@ import { remote } from 'electron';
 import ReactDOM from 'react-dom';
 import initApp from './initApp';
 import legacyRenderer from '../legacy/legacyRenderer';
+
+import './module-loader';
 
 const params = new URL(window.location).searchParams;
 const appPath = params.get('appPath');
