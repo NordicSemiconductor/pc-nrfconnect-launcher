@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import reducer from '../serialPortReducer';
 import * as SerialPortActions from '../../actions/serialPortActions';
+import reducer from '../serialPortReducer';
 
 jest.mock('serialport', () => {});
 

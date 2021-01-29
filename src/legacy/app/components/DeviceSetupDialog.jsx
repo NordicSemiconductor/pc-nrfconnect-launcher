@@ -35,9 +35,10 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import { Iterable } from 'immutable';
+import PropTypes from 'prop-types';
+
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 
 /**

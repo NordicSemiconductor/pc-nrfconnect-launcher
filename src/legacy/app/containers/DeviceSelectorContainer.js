@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import DeviceSelector from '../components/DeviceSelector';
-import * as DeviceActions from '../actions/deviceActions';
 import { connect } from '../../decoration';
+import * as DeviceActions from '../actions/deviceActions';
+import DeviceSelector from '../components/DeviceSelector';
 
 function mapStateToProps(state) {
     const { device } = state.core;

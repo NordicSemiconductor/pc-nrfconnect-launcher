@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import * as AppReloadDialogActions from '../actions/appReloadDialogActions';
 
 const InitialState = Record({

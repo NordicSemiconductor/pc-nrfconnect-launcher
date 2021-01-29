@@ -46,6 +46,7 @@ jest.mock('react-bootstrap', () => ({
 
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 import DeviceSelector from '../DeviceSelector';
 
 const selectDeviceText = 'Select device';

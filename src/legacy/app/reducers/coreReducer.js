@@ -35,13 +35,14 @@
  */
 
 import { combineReducers } from 'redux';
-import navMenu from './navMenuReducer';
-import log from './logReducer';
-import serialPort from './serialPortReducer';
+
+import errorDialog from '../../reducers/errorDialogReducer';
+import appReloadDialog from './appReloadDialogReducer';
 import device from './deviceReducer';
 import firmwareDialog from './firmwareDialogReducer';
-import appReloadDialog from './appReloadDialogReducer';
-import errorDialog from '../../reducers/errorDialogReducer';
+import log from './logReducer';
+import navMenu from './navMenuReducer';
+import serialPort from './serialPortReducer';
 
 export default combineReducers({
     navMenu,

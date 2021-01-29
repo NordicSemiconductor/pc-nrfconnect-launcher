@@ -35,18 +35,16 @@
  */
 
 import React from 'react';
-
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-
-import { clipboard } from 'electron';
 import formatDate from 'date-fns/format';
+import { clipboard } from 'electron';
+import PropTypes from 'prop-types';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';

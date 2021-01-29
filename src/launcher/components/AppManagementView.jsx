@@ -35,12 +35,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Iterable } from 'immutable';
+import PropTypes from 'prop-types';
 
-import AppItem from './AppItem';
 import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
+import AppItem from './AppItem';
 
 const AppManagementView = ({
     apps,

@@ -35,15 +35,13 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Iterable } from 'immutable';
-
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
-
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Iterable } from 'immutable';
+import PropTypes from 'prop-types';
 
 export const sortedSources = sources => {
     const all = Object.entries(sources);

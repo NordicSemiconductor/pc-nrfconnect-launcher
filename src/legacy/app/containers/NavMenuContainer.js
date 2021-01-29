@@ -35,8 +35,8 @@
  */
 
 import NavMenu from '../../components/NavMenu';
-import * as NavMenuActions from '../actions/navMenuActions';
 import { connect } from '../../decoration';
+import * as NavMenuActions from '../actions/navMenuActions';
 
 function mapStateToProps(state) {
     const { navMenu } = state.core;

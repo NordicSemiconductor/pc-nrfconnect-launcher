@@ -36,12 +36,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import Logo from '../../components/Logo';
-import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
-import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
-import NavMenuContainer from '../containers/NavMenuContainer';
-import MainMenuContainer from '../containers/MainMenuContainer';
 import { decorate, getAppConfig } from '../../decoration';
+import DeviceSelectorContainer from '../containers/DeviceSelectorContainer';
+import MainMenuContainer from '../containers/MainMenuContainer';
+import NavMenuContainer from '../containers/NavMenuContainer';
+import SerialPortSelectorContainer from '../containers/SerialPortSelectorContainer';
 
 const DecoratedLogo = decorate(Logo, 'Logo');
 

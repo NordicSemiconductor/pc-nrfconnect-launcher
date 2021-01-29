@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import * as ProxyActions from '../actions/proxyActions';
 
 const InitialState = Record({

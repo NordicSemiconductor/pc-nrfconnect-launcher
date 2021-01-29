@@ -50,11 +50,12 @@ jest.mock('../../containers/AppManagementFilterContainer', () => 'div');
 jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
 
 import React from 'react';
-import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import AppManagementView from '../AppManagementView';
+import { List } from 'immutable';
+
 import getImmutableApp from '../../models';
+import AppManagementView from '../AppManagementView';
 
 describe('AppManagementView', () => {
     it('should render without any apps', () => {

@@ -1,3 +1,7 @@
+## Unreleased
+### Changed
+- Updated to pc-nrfconnect-shared 4.17.1
+
 ## Version 3.6.0
 ### Bugfixes
 - Added workaround to prevent errors when proxy authentication is required

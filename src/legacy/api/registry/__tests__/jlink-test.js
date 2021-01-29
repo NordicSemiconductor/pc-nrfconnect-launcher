@@ -36,8 +36,8 @@
 
 /* eslint-disable import/first */
 
+import { findJlinkIds, findParentIdPrefixes } from '../jlink';
 import * as reg from '../reg';
-import { findParentIdPrefixes, findJlinkIds } from '../jlink';
 
 describe('findParentIdPrefixes', () => {
     const comName = 'COM1';

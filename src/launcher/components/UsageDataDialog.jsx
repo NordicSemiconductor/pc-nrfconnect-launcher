@@ -35,8 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import PropTypes from 'prop-types';
 
 const UsageDataPolicy = (
     <div className="user-data-policy">

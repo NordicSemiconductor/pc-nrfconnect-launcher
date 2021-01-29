@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 
 const InitialState = Record({

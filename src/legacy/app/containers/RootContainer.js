@@ -35,10 +35,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import Root from '../components/Root';
+import PropTypes from 'prop-types';
+
 import { resizeLogContainer } from '../actions/logActions';
+import Root from '../components/Root';
+
 import '../../../../resources/css/app.scss';
 
 const RootContainer = ({ store }) =>

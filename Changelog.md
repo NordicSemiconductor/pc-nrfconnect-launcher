@@ -1,3 +1,9 @@
+## Unreleased
+### Updates
+- Links to product page added for PPK2 and updated for nRF5340 DK.
+### Bugfixes
+- macOS: When clicking on URLs in log entries the web site was not opened
+
 ## Version 3.6.1
 ### Updates
 - Updated to pc-nrfjprog-js v1.7.6, including bundled nrfjprog v10.12.1 and JLink 6.88a

@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import setupTestApp from '../setupTestApp';
 import launchFirstApp from '../launchFirstApp';
+import setupTestApp from '../setupTestApp';
 
 describe('checks the version of the engine against what the app declares', () => {
     describe('an official app that is only available', () => {

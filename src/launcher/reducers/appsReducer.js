@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
+import { List, Record } from 'immutable';
+
 import * as AppsActions from '../actions/appsActions';
 import getImmutableApp from '../models';
 

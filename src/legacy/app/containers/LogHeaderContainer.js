@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import LogHeader from '../components/LogHeader';
-import * as LogActions from '../actions/logActions';
 import { connect } from '../../decoration';
+import * as LogActions from '../actions/logActions';
+import LogHeader from '../components/LogHeader';
 
 const OPEN_LOGFILE_BUTTON_ID = 'openLogFileButton';
 const CLEAR_LOG_BUTTON_ID = 'clearLogButton';

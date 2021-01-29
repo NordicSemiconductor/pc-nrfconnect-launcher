@@ -37,8 +37,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import portPath from '../../portPath';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
+import portPath from '../../portPath';
 
 const FirmwareDialog = ({
     isVisible,

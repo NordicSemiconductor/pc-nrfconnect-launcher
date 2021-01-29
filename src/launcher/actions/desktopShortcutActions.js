@@ -41,13 +41,11 @@
 'use strict';
 
 import { remote, shell } from 'electron';
-
-import Mustache from 'mustache';
 import fs from 'fs';
+import Mustache from 'mustache';
 import path from 'path';
-import { v4 } from 'uuid';
-
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { v4 } from 'uuid';
 
 const config = remote.require('../main/config');
 const fileUtil = remote.require('../main/fileUtil');

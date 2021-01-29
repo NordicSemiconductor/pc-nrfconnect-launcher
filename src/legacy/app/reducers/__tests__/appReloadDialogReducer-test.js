@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import reducer from '../appReloadDialogReducer';
 import * as AppReloadDialogActions from '../../actions/appReloadDialogActions';
+import reducer from '../appReloadDialogReducer';
 
 const initialState = reducer(undefined, {});
 

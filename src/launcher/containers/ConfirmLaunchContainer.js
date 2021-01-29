@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import ConfirmLaunchDialog from '../components/ConfirmLaunchDialog';
+
 import * as AppsActions from '../actions/appsActions';
+import ConfirmLaunchDialog from '../components/ConfirmLaunchDialog';
 
 function mapStateToProps(state) {
     const { apps } = state;

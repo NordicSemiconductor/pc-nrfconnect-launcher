@@ -35,15 +35,14 @@
  */
 
 import React from 'react';
-
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
+import PropTypes from 'prop-types';
 
 import AppIcon from './AppIcon';
 

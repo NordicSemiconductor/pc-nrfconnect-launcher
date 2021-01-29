@@ -35,17 +35,18 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
+import PropTypes from 'prop-types';
+import { combineReducers } from 'redux';
+
 import {
-    setApp,
     clearDecorationCache,
+    connect,
     decorate,
     decorateReducer,
-    connect,
     invokeAppFn,
+    setApp,
 } from '../decoration';
 
 beforeEach(clearDecorationCache);

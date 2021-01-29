@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { query } from './reg';
 import {
+    parseJlinkId,
     parseMatchingKeys,
     parseParentIdPrefix,
-    parseJlinkId,
 } from './parsing';
+import { query } from './reg';
 
 const REGISTRY_USB_PATH =
     'HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Enum\\USB';

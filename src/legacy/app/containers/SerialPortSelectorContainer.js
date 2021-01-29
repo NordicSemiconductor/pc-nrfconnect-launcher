@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import SerialPortSelector from '../components/SerialPortSelector';
-import * as SerialPortActions from '../actions/serialPortActions';
 import { connect } from '../../decoration';
+import * as SerialPortActions from '../actions/serialPortActions';
+import SerialPortSelector from '../components/SerialPortSelector';
 
 function mapStateToProps(state) {
     const { serialPort } = state.core;

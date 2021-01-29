@@ -36,6 +36,7 @@
 
 import EventEmitter from 'events';
 import nrfjprogjs from 'pc-nrfjprog-js';
+
 import registry from '../registry';
 
 /**

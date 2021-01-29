@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import ProxyLoginDialog from '../components/ProxyLoginDialog';
+
 import * as ProxyActions from '../actions/proxyActions';
+import ProxyLoginDialog from '../components/ProxyLoginDialog';
 
 function mapStateToProps(state) {
     const { proxy } = state;

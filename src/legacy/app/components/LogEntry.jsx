@@ -35,9 +35,9 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import formatDate from 'date-fns/format';
 import { shell } from 'electron';
+import PropTypes from 'prop-types';
 
 const regex = /(.*?)(https?:\/\/[^\s]+)/g;
 

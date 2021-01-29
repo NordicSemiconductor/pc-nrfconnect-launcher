@@ -35,10 +35,10 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import Mousetrap from 'mousetrap';
 import Dropdown from 'react-bootstrap/Dropdown';
+import ReactDOM from 'react-dom';
+import Mousetrap from 'mousetrap';
+import PropTypes from 'prop-types';
 
 // Like react-bootstrap's `Dropdown`, but can receive an extra `hotkey` prop:
 // a key combination handled by `mousetrap` that will toggle the open state

@@ -35,9 +35,9 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Mousetrap from 'mousetrap';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Mousetrap from 'mousetrap';
+import PropTypes from 'prop-types';
 
 // Like react-bootstrap's `MenuItem`, but can receive an extra `hotkey` prop:
 // a key combination handled by `mousetrap` that will click this item.

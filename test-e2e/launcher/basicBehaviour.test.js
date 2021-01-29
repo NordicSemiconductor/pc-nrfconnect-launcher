@@ -35,9 +35,10 @@
  */
 
 import path from 'path';
-import setupTestApp from '../setupTestApp';
-import { checkTitleOfWindow } from '../assertions';
+
 import { version } from '../../package.json';
+import { checkTitleOfWindow } from '../assertions';
+import setupTestApp from '../setupTestApp';
 
 describe('basic behaviour of the launcher', () => {
     const app = setupTestApp({

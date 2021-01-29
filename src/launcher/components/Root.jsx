@@ -34,10 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
+import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';

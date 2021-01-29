@@ -49,6 +49,7 @@ jest.mock('react-bootstrap', () => ({
 
 import React from 'react';
 import { shallow } from 'enzyme';
+
 import UpdateProgressDialog from '../UpdateProgressDialog';
 
 describe('UpdateProgressDialog', () => {

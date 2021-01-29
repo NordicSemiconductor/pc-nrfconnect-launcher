@@ -35,6 +35,7 @@
  */
 
 import { Map, Record } from 'immutable';
+
 import * as SettingsActions from '../actions/settingsActions';
 import * as UsageDataActions from '../actions/usageDataActions';
 
