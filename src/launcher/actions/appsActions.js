@@ -98,10 +98,11 @@ function loadOfficialAppsAction() {
     };
 }
 
-function loadOfficialAppsSuccess(apps) {
+function loadOfficialAppsSuccess(apps, appToUpdate) {
     return {
         type: LOAD_OFFICIAL_APPS_SUCCESS,
         apps,
+        appToUpdate,
     };
 }
 
@@ -314,7 +315,12 @@ export function loadOfficialApps(appName, appSource) {
         return mainApps
             .getOfficialApps()
             .then(apps => {
-                dispatch(loadOfficialAppsSuccess(apps));
+                dispatch(
+                    loadOfficialAppsSuccess(
+                        apps,
+                        appName && { name: appName, source: appSource }
+                    )
+                );
                 apps.filter(({ path }) => !path).forEach(
                     ({ source, name, url }) => {
                         const iconPath = join(

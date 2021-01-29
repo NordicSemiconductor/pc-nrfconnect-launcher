@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.6.0",
+    "version": "3.6.1",
     "description": "nRF Connect for PC",
     "repository": {
         "type": "git",
@@ -11,10 +11,9 @@
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
         "postinstall": "npm run get-jlink",
         "app": "electron .",
-        "dev": "npm run lint-init && nrfconnect-scripts build-watch",
-        "webpack": "npm run lint-init && nrfconnect-scripts build-dev",
-        "build": "npm run lint-init && nrfconnect-scripts build-prod",
-        "lint-init": "nrfconnect-scripts lint-init",
+        "dev": "nrfconnect-scripts build-watch",
+        "webpack": "nrfconnect-scripts build-dev",
+        "build": "nrfconnect-scripts build-prod",
         "lint": "nrfconnect-scripts lint src test-e2e *.js",
         "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
         "test-watch": "jest --watch src/",
@@ -122,7 +121,7 @@
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.13.0",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.15.0",
         "spectron": "7.0.0",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
@@ -141,8 +140,9 @@
         "jquery": "3.5.1",
         "mousetrap": "1.6.5",
         "mustache": "4.0.1",
-        "nrf-device-setup": "0.6.7",
+        "nrf-device-setup": "^0.6.8",
         "pc-ble-driver-js": "2.7.2",
+        "pc-nrfjprog-js": "^1.7.6",
         "popper.js": "1.16.1",
         "react": "16.13.1",
         "react-dom": "16.13.1",
@@ -154,6 +154,10 @@
         "uuid": "8.1.0",
         "yargs": "15.3.1"
     },
+    "eslintConfig": {
+        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"
+    },
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",
