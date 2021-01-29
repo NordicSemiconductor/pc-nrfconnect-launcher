@@ -42,6 +42,15 @@ import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 import AppManagementView from '../components/AppManagementView';
 
+const filterByInput = filter => app => {
+    try {
+        return new RegExp(filter, 'i').test(app.displayName);
+    } catch (_) {
+        //
+    }
+    return app.displayName.includes(filter);
+};
+
 function mapStateToProps(state) {
     const {
         apps: {
@@ -57,9 +66,9 @@ function mapStateToProps(state) {
     } = state;
     const allApps = localApps.concat(officialApps);
     const apps = allApps
+        .filter(filterByInput(filter))
         .filter(
             app =>
-                new RegExp(filter, 'i').test(app.displayName) &&
                 ((app.isOfficial === true && app.path && show.installed) ||
                     (app.isOfficial === null && !app.path && show.available) ||
                     app.isOfficial === false) &&
