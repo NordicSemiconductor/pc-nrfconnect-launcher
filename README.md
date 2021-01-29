@@ -11,6 +11,7 @@ While it may vary in individual apps, nRF Connect for Desktop aims to support al
 
 * nRF51
 * nRF52
+* nRF53
 * nRF91
 
 You can run nRF Connect for Desktop on:

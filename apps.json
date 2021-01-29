@@ -13,7 +13,7 @@
     },
     "pc-nrfconnect-ppk": {
         "displayName": "Power Profiler",
-        "description": "Tool to measure current for nRF5x applications",
+        "description": "App for use with Nordic Power Profiler Kits",
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ppk",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ppk"
     },
