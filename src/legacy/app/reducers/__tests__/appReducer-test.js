@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { clearDecorationCache, setApp } from '../../../decoration';
 import reducer from '../appReducer';
-import { setApp, clearDecorationCache } from '../../../decoration';
 
 beforeEach(clearDecorationCache);
 

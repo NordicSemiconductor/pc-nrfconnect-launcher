@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import ErrorDialog from '../../components/ErrorDialog';
 import * as ErrorDialogActions from '../../actions/errorDialogActions';
+import ErrorDialog from '../../components/ErrorDialog';
 import { connect } from '../../decoration';
 
 function mapStateToProps(state) {

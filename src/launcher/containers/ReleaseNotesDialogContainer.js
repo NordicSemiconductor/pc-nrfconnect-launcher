@@ -35,9 +35,10 @@
  */
 
 import { connect } from 'react-redux';
-import ReleaseNotesView from '../components/ReleaseNotesDialogView';
+
 import { upgradeOfficialApp } from '../actions/appsActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
+import ReleaseNotesView from '../components/ReleaseNotesDialogView';
 
 function mapStateToProps({
     apps: { officialApps },

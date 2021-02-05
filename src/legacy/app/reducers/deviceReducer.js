@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
+import { List, Record } from 'immutable';
+
 import * as DeviceActions from '../actions/deviceActions';
 
 const InitialState = Record({

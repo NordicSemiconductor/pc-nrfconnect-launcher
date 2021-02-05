@@ -35,8 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Mousetrap from 'mousetrap';
+import PropTypes from 'prop-types';
 
 function getClassName(baseClass, isSelected) {
     return `${baseClass} ${isSelected ? 'active' : ''}`;

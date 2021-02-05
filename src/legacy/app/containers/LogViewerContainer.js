@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import LogViewer from '../components/LogViewer';
-import * as LogActions from '../actions/logActions';
 import { connect } from '../../decoration';
+import * as LogActions from '../actions/logActions';
+import LogViewer from '../components/LogViewer';
 
 function mapStateToProps(state) {
     const { log } = state.core;

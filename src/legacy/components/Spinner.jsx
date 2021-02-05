@@ -35,8 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import spinnerImg from 'pc-nrfconnect-shared/src/Dialog/ajax-loader.gif';
+import PropTypes from 'prop-types';
 
 const Spinner = ({ size, className }) => (
     <img

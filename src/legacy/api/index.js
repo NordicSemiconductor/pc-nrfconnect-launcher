@@ -34,12 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import serialPort from 'serialport';
-import bleDriverJs from 'pc-ble-driver-js';
-import nrfjprog from 'pc-nrfjprog-js';
-import usb from 'usb';
 import electron from 'electron';
+import bleDriverJs from 'pc-ble-driver-js';
 import { logger } from 'pc-nrfconnect-shared';
+import nrfjprog from 'pc-nrfjprog-js';
+import serialPort from 'serialport';
+import usb from 'usb';
+
 import * as core from './core';
 
 const bleDriver = bleDriverJs.api ? bleDriverJs.api : bleDriverJs;

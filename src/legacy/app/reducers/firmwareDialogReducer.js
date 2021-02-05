@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import * as FirmwareDialogActions from '../actions/firmwareDialogActions';
 import { getImmutableSerialPort } from '../models';
 

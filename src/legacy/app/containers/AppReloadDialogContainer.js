@@ -35,9 +35,10 @@
  */
 
 import { remote } from 'electron';
-import AppReloadDialog from '../components/AppReloadDialog';
-import * as AppReloadDialogActions from '../actions/appReloadDialogActions';
+
 import { connect } from '../../decoration';
+import * as AppReloadDialogActions from '../actions/appReloadDialogActions';
+import AppReloadDialog from '../components/AppReloadDialog';
 
 function mapStateToProps(state) {
     const { appReloadDialog } = state.core;

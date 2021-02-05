@@ -34,10 +34,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
+import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
-import { sendAppUsageData, EventAction } from './usageDataActions';
+
+import { EventAction, sendAppUsageData } from './usageDataActions';
 
 const net = remote.require('../main/net');
 const fs = remote.require('fs');

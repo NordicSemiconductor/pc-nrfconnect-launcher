@@ -37,10 +37,10 @@
 import { connect } from 'react-redux';
 import { openUrl } from 'pc-nrfconnect-shared';
 
-import AppManagementView from '../components/AppManagementView';
 import * as AppsActions from '../actions/appsActions';
 import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
+import AppManagementView from '../components/AppManagementView';
 
 function mapStateToProps(state) {
     const {

@@ -34,14 +34,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
 import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
+import { combineReducers } from 'redux';
 
 import apps from './appsReducer';
 import autoUpdate from './autoUpdateReducer';
 import proxy from './proxyReducer';
-import settings from './settingsReducer';
 import releaseNotesDialog from './releaseNotesDialogReducer';
+import settings from './settingsReducer';
 
 export default combineReducers({
     releaseNotesDialog,

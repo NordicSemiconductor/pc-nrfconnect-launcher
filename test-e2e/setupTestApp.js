@@ -34,10 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
-import { Application } from 'spectron';
 import electron from 'electron';
+import path from 'path';
 import rimraf from 'rimraf';
+import { Application } from 'spectron';
 
 const startApp = async extraArgs => {
     const projectPath = path.resolve(__dirname, '../');

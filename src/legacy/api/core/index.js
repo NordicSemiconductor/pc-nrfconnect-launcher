@@ -35,8 +35,8 @@
  */
 
 import {
-    getAppDir,
     getAppDataDir,
+    getAppDir,
     getAppLogDir,
     getUserDataDir,
 } from 'pc-nrfconnect-shared';

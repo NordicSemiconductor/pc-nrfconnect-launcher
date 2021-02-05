@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import reducer from '../logReducer';
 import * as LogActions from '../../actions/logActions';
+import reducer from '../logReducer';
 
 const initialState = reducer(undefined, {});
 

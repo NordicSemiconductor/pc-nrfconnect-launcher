@@ -36,15 +36,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavBar from './NavBar';
-import SidePanelContainer from '../containers/SidePanelContainer';
-import LogViewerContainer from '../containers/LogViewerContainer';
-import MainViewContainer from '../containers/MainViewContainer';
-import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+
+import { decorate } from '../../decoration';
 import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
 import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import { decorate } from '../../decoration';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import LogViewerContainer from '../containers/LogViewerContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import SidePanelContainer from '../containers/SidePanelContainer';
+import NavBar from './NavBar';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 

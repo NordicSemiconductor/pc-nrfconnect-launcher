@@ -34,10 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import FirmwareDialog from '../components/FirmwareDialog';
+import { connect } from '../../decoration';
 import * as FirmwareDialogActions from '../actions/firmwareDialogActions';
 import * as SerialPortActions from '../actions/serialPortActions';
-import { connect } from '../../decoration';
+import FirmwareDialog from '../components/FirmwareDialog';
 
 function mapStateToProps(state) {
     const { firmwareDialog } = state.core;

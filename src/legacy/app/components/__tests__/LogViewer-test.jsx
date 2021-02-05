@@ -46,6 +46,7 @@ jest.mock('../../../decoration', () => ({
 import React from 'react';
 import renderer from 'react-test-renderer';
 import Immutable from 'immutable';
+
 import LogViewer from '../LogViewer';
 
 describe('LogViewer', () => {

@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { findParentIdPrefixes, findJlinkIds } from './jlink';
+import { findJlinkIds, findParentIdPrefixes } from './jlink';
 
 // Finding the J-Link ID involves:
 // 1. Query the registry for keys below HKLM\SYSTEM\CurrentControlSet\Enum\USB

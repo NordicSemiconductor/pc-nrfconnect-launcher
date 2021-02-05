@@ -35,10 +35,11 @@
  */
 
 import { connect } from 'react-redux';
-import SettingsView from '../components/SettingsView';
+
+import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import * as SettingsActions from '../actions/settingsActions';
 import * as UsageDataActions from '../actions/usageDataActions';
-import * as AutoUpdateActions from '../actions/autoUpdateActions';
+import SettingsView from '../components/SettingsView';
 
 function isAppUpdateAvailable(officialApps) {
     return !!officialApps.find(

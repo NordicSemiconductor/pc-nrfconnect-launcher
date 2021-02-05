@@ -35,8 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import PropTypes from 'prop-types';
 
 /**
  * Dialog that is shown if an nRF Connect core update is available. The user

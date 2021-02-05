@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
+import { List, Record } from 'immutable';
+
 import * as LogAction from '../actions/logActions';
 
 const MAX_ENTRIES = 1000;

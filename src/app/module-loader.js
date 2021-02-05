@@ -37,6 +37,7 @@
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
 import semver from 'semver';
+
 import { readJsonFile } from '../main/fileUtil';
 
 const hostedModules = {};

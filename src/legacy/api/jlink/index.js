@@ -35,8 +35,9 @@
  */
 
 import SerialPort from 'serialport';
-import JlinkFacade from './jlinkFacade';
+
 import portPath from '../../portPath';
+import JlinkFacade from './jlinkFacade';
 
 const SEGGER_VENDOR_ID = '1366';
 

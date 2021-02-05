@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import SidePanel from '../components/SidePanel';
 import { connect } from '../../decoration';
+import SidePanel from '../components/SidePanel';
 
 function mapStateToProps() {
     return {};

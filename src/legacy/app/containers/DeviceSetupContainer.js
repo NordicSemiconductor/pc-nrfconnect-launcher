@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import DeviceSetupDialog from '../components/DeviceSetupDialog';
-import * as DeviceActions from '../actions/deviceActions';
 import { connect } from '../../decoration';
+import * as DeviceActions from '../actions/deviceActions';
+import DeviceSetupDialog from '../components/DeviceSetupDialog';
 
 function mapStateToProps(state) {
     const { device } = state.core;

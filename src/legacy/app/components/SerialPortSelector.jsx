@@ -35,12 +35,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
+import PropTypes from 'prop-types';
 
-import portPath from '../../portPath';
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
+import portPath from '../../portPath';
 
 const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
 

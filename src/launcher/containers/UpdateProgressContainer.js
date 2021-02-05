@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import UpdateProgressDialog from '../components/UpdateProgressDialog';
+
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
+import UpdateProgressDialog from '../components/UpdateProgressDialog';
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;

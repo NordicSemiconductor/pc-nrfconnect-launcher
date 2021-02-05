@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import UsageDataDialog from '../components/UsageDataDialog';
+
 import * as UsageDataActions from '../actions/usageDataActions';
+import UsageDataDialog from '../components/UsageDataDialog';
 
 function mapStateToProps(state) {
     return {

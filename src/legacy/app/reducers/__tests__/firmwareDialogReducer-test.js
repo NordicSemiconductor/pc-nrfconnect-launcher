@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import reducer from '../firmwareDialogReducer';
 import * as FirmwareDialogActions from '../../actions/firmwareDialogActions';
+import reducer from '../firmwareDialogReducer';
 
 const initialState = reducer(undefined, {});
 

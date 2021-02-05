@@ -35,8 +35,9 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Immutable from 'immutable';
+import PropTypes from 'prop-types';
+
 import NavMenuItem from './NavMenuItem';
 
 const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (

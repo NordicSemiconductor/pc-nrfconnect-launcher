@@ -34,13 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import {
+    getAppLogDir,
+    getUserDataDir,
     logger,
     setAppDirs,
-    getUserDataDir,
-    getAppLogDir,
 } from 'pc-nrfconnect-shared';
 
 import { mkdirIfNotExists } from '../main/mkdir';

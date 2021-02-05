@@ -35,11 +35,10 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
-
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import ReactMarkdown from 'react-markdown';
+import PropTypes from 'prop-types';
 
 const view = ({
     canUpdate,

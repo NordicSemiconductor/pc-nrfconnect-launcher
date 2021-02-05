@@ -35,11 +35,10 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { List } from 'immutable';
-
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { List } from 'immutable';
+import PropTypes from 'prop-types';
 
 const ErrorDialog = ({ isVisible, messages, onClose }) => (
     <Modal show={isVisible} onHide={onClose}>

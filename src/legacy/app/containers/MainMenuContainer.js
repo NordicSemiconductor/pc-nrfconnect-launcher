@@ -34,9 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import MainMenu from '../components/MainMenu';
-import * as MainMenuActions from '../actions/mainMenuActions';
 import { connect } from '../../decoration';
+import * as MainMenuActions from '../actions/mainMenuActions';
+import MainMenu from '../components/MainMenu';
 
 function mapStateToProps() {
     return {};

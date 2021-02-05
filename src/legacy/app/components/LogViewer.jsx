@@ -34,12 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 import { Iterable } from 'immutable';
+import PropTypes from 'prop-types';
+
+import { decorate } from '../../decoration';
 import LogHeaderContainer from '../containers/LogHeaderContainer';
 import LogEntry from './LogEntry';
-import { decorate } from '../../decoration';
 
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 

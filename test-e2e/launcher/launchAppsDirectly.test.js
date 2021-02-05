@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import setupTestApp from '../setupTestApp';
 import { checkTitleOfWindow } from '../assertions';
+import setupTestApp from '../setupTestApp';
 
 describe('launching apps directly', () => {
     describe('an official app', () => {
