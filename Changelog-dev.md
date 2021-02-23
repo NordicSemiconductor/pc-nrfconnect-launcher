@@ -1,6 +1,7 @@
 ## Unreleased
 ### Changed
-- Updated to pc-nrfconnect-shared 4.17.1
+- Updated to pc-nrfconnect-shared 4.18.0
+- Updated API call to send usage data, replacing `sendEvent` by `sendUsageData`
 
 ## Version 3.6.0
 ### Bugfixes
