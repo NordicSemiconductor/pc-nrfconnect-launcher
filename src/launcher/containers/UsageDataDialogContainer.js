@@ -48,7 +48,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onConfirm: () => {
-            dispatch(UsageDataActions.confrimSendingUsageData());
+            dispatch(UsageDataActions.confirmSendingUsageData());
         },
         onCancel: () => {
             dispatch(UsageDataActions.cancelSendingUsageData());
