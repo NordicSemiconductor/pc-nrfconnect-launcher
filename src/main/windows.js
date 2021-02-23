@@ -102,7 +102,7 @@ function openAppWindow(app) {
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${
             app.displayName || app.name
-        }`,
+        } v${app.currentVersion}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
             app.path
         }`,
