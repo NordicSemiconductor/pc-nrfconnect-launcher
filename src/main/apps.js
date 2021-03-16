@@ -416,6 +416,7 @@ function readAppInfo(appPath) {
                 ? shortcutIconPath
                 : null,
             isOfficial,
+            sharedVersion: getSharedVersion(packageJson),
             engineVersion: getEngineVersion(packageJson),
             isSupportedEngine: isSupportedEngine(
                 config.getVersion(),
