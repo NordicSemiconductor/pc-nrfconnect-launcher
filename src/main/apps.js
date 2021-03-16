@@ -335,6 +335,25 @@ function getEngineVersion(packageJson) {
 }
 
 /**
+ * Get from package.json the version of pc-nrfconnect-shared, that the
+ * app requires. If the app does not have pc-nrfconnect-shared in it's
+ * dependencies, then undefined is returned.
+ *
+ * @param {Object} packageJson the package.json object.
+ * @returns {string|undefined} Required version of pc-nrfconnect-shared
+ */
+function getSharedVersion(packageJson) {
+    const allDependencies = {
+        ...(packageJson.dependencies || {}),
+        ...(packageJson.devDependencies || {}),
+    };
+
+    return allDependencies['pc-nrfconnect-shared']
+        ?.replace(/.*#/, '')
+        .replace(/^semver:/, '');
+}
+
+/**
  * Checks if the given core engine version is compatible with the
  * engines.nrfconnect definition in the given package.json object.
  *
@@ -672,4 +691,5 @@ module.exports = {
     removeOfficialApp,
     removeSourceDirectory,
     downloadReleaseNotes,
+    getSharedVersion,
 };
