@@ -34,10 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { remote } from 'electron';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';
 import requiredVersionOfShared from '../../main/requiredVersionOfShared';
+
+const config = remote.require('../main/config');
 
 const requiresMoreRecentVersionOfShared = (
     requestedVersionOfShared,
@@ -52,6 +55,11 @@ export default app => {
             warning:
                 'The app does not specify which nRF Connect version(s) ' +
                 'it supports',
+            longWarning:
+                'The app does not specify ' +
+                'which nRF Connect version(s) it supports. Ask the app ' +
+                'author to add an engines.nrfconnect definition to package.json, ' +
+                'ref. the documentation.',
         };
     }
     if (!app.isSupportedEngine) {
@@ -59,6 +67,10 @@ export default app => {
             warning:
                 `The app only supports nRF Connect ${app.engineVersion}, ` +
                 'which does not match your currently installed version',
+            longWarning:
+                'The app only supports ' +
+                `nRF Connect ${app.engineVersion} while your installed version ` +
+                `is ${config.getVersion()}. It might not work as expected.`,
         };
     }
     const providedVersionOfShared = requiredVersionOfShared(
@@ -76,6 +88,11 @@ export default app => {
                 `but nRF Connect only provided ${providedVersionOfShared}. ` +
                 `Inform the app developer, that the app needs a more recent ` +
                 `version of nRF Connect.`,
+            longWarning:
+                `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
+                `but nRF Connect only provided ${providedVersionOfShared}. ` +
+                `Inform the app developer, that the app needs a more recent ` +
+                `version of nRF Connect. The app might not work as expected.`,
         };
     }
 

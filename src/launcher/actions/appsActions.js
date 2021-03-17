@@ -38,6 +38,7 @@ import { ipcRenderer, remote } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import checkAppCompatibility from '../util/checkAppCompatibility';
 import { EventAction, sendAppUsageData } from './usageDataActions';
 
 const net = remote.require('../main/net');
@@ -454,27 +455,15 @@ export function launch(app) {
 
 export function checkEngineAndLaunch(app) {
     return dispatch => {
-        if (!app.engineVersion) {
-            dispatch(
-                showConfirmLaunchDialogAction(
-                    'The app does not specify ' +
-                        'which nRF Connect version(s) it supports. Ask the app ' +
-                        'author to add an engines.nrfconnect definition to package.json, ' +
-                        'ref. the documentation.',
-                    app
-                )
-            );
-        } else if (!app.isSupportedEngine) {
-            dispatch(
-                showConfirmLaunchDialogAction(
-                    'The app only supports ' +
-                        `nRF Connect ${app.engineVersion} while your installed version ` +
-                        `is ${config.getVersion()}. It might not work as expected.`,
-                    app
-                )
-            );
-        } else {
-            dispatch(launch(app));
-        }
+        const appIncompatibility = checkAppCompatibility(app);
+
+        dispatch(
+            appIncompatibility != null
+                ? showConfirmLaunchDialogAction(
+                      appIncompatibility.longWarning,
+                      app
+                  )
+                : launch(app)
+        );
     };
 }
