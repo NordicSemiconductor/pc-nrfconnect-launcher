@@ -38,6 +38,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import semver from 'semver';
 
+import launcherPackageJson from '../../../package.json';
+import requiredVersionOfShared from '../../main/requiredVersionOfShared';
+
+const requiresMoreRecentVersionOfShared = (
+    requestedVersionOfShared,
+    providedVersionOfShared
+) =>
+    requestedVersionOfShared != null &&
+    semver.gt(requestedVersionOfShared, providedVersionOfShared);
+
 function renderAlert(altText) {
     return (
         <div>
@@ -58,6 +68,22 @@ function renderNotice(app) {
         return renderAlert(
             `The app only supports nRF Connect ${app.engineVersion}, ` +
                 'which does not match your currently installed version'
+        );
+    }
+    const providedVersionOfShared = requiredVersionOfShared(
+        launcherPackageJson
+    );
+    if (
+        requiresMoreRecentVersionOfShared(
+            app.sharedVersion,
+            providedVersionOfShared
+        )
+    ) {
+        return renderAlert(
+            `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
+                `but nRF Connect only provided ${providedVersionOfShared}. ` +
+                `Inform the app developer, that the app needs a more recent ` +
+                `version of nRF Connect.`
         );
     }
     return null;
