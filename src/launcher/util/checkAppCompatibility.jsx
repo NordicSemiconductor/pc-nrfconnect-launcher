@@ -34,58 +34,50 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
 import semver from 'semver';
 
-import checkAppCompatibility from '../util/checkAppCompatibility';
+import launcherPackageJson from '../../../package.json';
+import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
-const renderAlert = altText => (
-    <div>
-        <span className="alert-icon-bg" />
-        <span className="mdi mdi-alert" title={altText} />
-    </div>
-);
+const requiresMoreRecentVersionOfShared = (
+    requestedVersionOfShared,
+    providedVersionOfShared
+) =>
+    requestedVersionOfShared != null &&
+    semver.gt(requestedVersionOfShared, providedVersionOfShared);
 
-const renderNotice = app => {
-    const installed = !!app.currentVersion;
-    const appIncompatibility = checkAppCompatibility(app);
-
-    return installed && appIncompatibility != null
-        ? renderAlert(appIncompatibility.warning)
-        : null;
-};
-
-const AppIcon = ({ app }) => {
-    const { engineVersion, iconPath } = app;
-    const primaryColorNeedsUpdate =
-        engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
-    return (
-        <div
-            className={`core-app-icon ${
-                primaryColorNeedsUpdate ? 'old-app-icon' : ''
-            }`}
-            style={{
-                borderRadius: 7,
-                background: '#e6f8ff',
-                width: '48px',
-                height: '48px',
-            }}
-        >
-            <img src={iconPath || ''} alt="" draggable={false} />
-            {renderNotice(app)}
-        </div>
+export default app => {
+    if (!app.engineVersion) {
+        return {
+            warning:
+                'The app does not specify which nRF Connect version(s) ' +
+                'it supports',
+        };
+    }
+    if (!app.isSupportedEngine) {
+        return {
+            warning:
+                `The app only supports nRF Connect ${app.engineVersion}, ` +
+                'which does not match your currently installed version',
+        };
+    }
+    const providedVersionOfShared = requiredVersionOfShared(
+        launcherPackageJson
     );
-};
+    if (
+        requiresMoreRecentVersionOfShared(
+            app.sharedVersion,
+            providedVersionOfShared
+        )
+    ) {
+        return {
+            warning:
+                `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
+                `but nRF Connect only provided ${providedVersionOfShared}. ` +
+                `Inform the app developer, that the app needs a more recent ` +
+                `version of nRF Connect.`,
+        };
+    }
 
-AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        currentVersion: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-        url: PropTypes.string,
-    }).isRequired,
+    return undefined;
 };
-
-export default AppIcon;
