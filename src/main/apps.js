@@ -47,6 +47,7 @@ const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
+const requiredVersionOfShared = require('./requiredVersionOfShared');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
@@ -323,25 +324,6 @@ function initAppsDirectory() {
 }
 
 /**
- * Get from package.json the version of pc-nrfconnect-shared, that the
- * app requires. If the app does not have pc-nrfconnect-shared in it's
- * dependencies, then undefined is returned.
- *
- * @param {Object} packageJson the package.json object.
- * @returns {string|undefined} Required version of pc-nrfconnect-shared
- */
-function getSharedVersion(packageJson) {
-    const allDependencies = {
-        ...(packageJson.dependencies || {}),
-        ...(packageJson.devDependencies || {}),
-    };
-
-    return allDependencies['pc-nrfconnect-shared']
-        ?.replace(/.*#/, '')
-        .replace(/^semver:/, '');
-}
-
-/**
  * Checks if the given core engine version is compatible with the
  * engines.nrfconnect definition in the given package.json object.
  *
@@ -404,7 +386,7 @@ function readAppInfo(appPath) {
                 ? shortcutIconPath
                 : null,
             isOfficial,
-            sharedVersion: getSharedVersion(packageJson),
+            sharedVersion: requiredVersionOfShared(packageJson),
             engineVersion: packageJson.engines?.nrfconnect,
             isSupportedEngine: isSupportedEngine(
                 config.getVersion(),
@@ -680,5 +662,4 @@ module.exports = {
     removeOfficialApp,
     removeSourceDirectory,
     downloadReleaseNotes,
-    getSharedVersion,
 };

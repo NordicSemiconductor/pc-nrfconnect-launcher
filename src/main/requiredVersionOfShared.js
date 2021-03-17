@@ -34,43 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { getSharedVersion } from './apps';
+module.exports = packageJson => {
+    const allDependencies = {
+        ...(packageJson.dependencies || {}),
+        ...(packageJson.devDependencies || {}),
+    };
 
-describe('getting the version of pc-nrfconnect-shared the app requires', () => {
-    it('should return undefined if there is no such dependency', () => {
-        expect(getSharedVersion({})).toBeUndefined();
-    });
-
-    it('should find the version if it is in the dependencies', () => {
-        expect(
-            getSharedVersion({
-                dependencies: {
-                    'pc-nrfconnect-shared':
-                        'github:NordicSemiconductor/pc-nrfconnect-shared#v4.19.0',
-                },
-            })
-        ).toBe('v4.19.0');
-    });
-
-    it('should find the version if it is in the devDependencies', () => {
-        expect(
-            getSharedVersion({
-                devDependencies: {
-                    'pc-nrfconnect-shared':
-                        'github:NordicSemiconductor/pc-nrfconnect-shared#v4.19.0',
-                },
-            })
-        ).toBe('v4.19.0');
-    });
-
-    it('should remove a leading "semver:"', () => {
-        expect(
-            getSharedVersion({
-                devDependencies: {
-                    'pc-nrfconnect-shared':
-                        'github:NordicSemiconductor/pc-nrfconnect-shared#semver:4.19.0',
-                },
-            })
-        ).toBe('4.19.0');
-    });
-});
+    return allDependencies['pc-nrfconnect-shared']
+        ?.replace(/.*#/, '')
+        .replace(/^semver:[~^]?/, '');
+};
