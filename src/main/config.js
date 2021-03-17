@@ -38,6 +38,7 @@
 
 const electronApp = require('electron').app;
 const path = require('path');
+const fs = require('fs');
 const packageJson = require('../../package.json');
 
 let version;
@@ -62,6 +63,7 @@ let skipSplashScreen;
 let officialAppName;
 let localAppName;
 let sourceName;
+let isRunningLauncherFromSource;
 
 /**
  * Init the config values based on the given command line arguments.
@@ -110,6 +112,9 @@ function init(argv) {
     officialAppName = argv['open-official-app'] || null;
     localAppName = argv['open-local-app'] || null;
     sourceName = argv.source || 'official';
+    isRunningLauncherFromSource = fs.existsSync(
+        path.join(electronRootPath, 'README.md')
+    );
 }
 
 function getAppsRootDir(source = 'official') {
@@ -148,4 +153,5 @@ module.exports = {
     getOfficialAppName: () => officialAppName,
     getLocalAppName: () => localAppName,
     getSourceName: () => sourceName,
+    isRunningLauncherFromSource: () => isRunningLauncherFromSource,
 };

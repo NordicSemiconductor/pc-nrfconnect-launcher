@@ -456,9 +456,12 @@ export function launch(app) {
 export function checkEngineAndLaunch(app) {
     return dispatch => {
         const appCompatibility = checkAppCompatibility(app);
+        const launchAppWithoutWarning =
+            appCompatibility.isCompatible ||
+            config.isRunningLauncherFromSource();
 
         dispatch(
-            appCompatibility.isCompatible
+            launchAppWithoutWarning
                 ? launch(app)
                 : showConfirmLaunchDialogAction(
                       appCompatibility.longWarning,
