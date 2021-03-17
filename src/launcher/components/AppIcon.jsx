@@ -49,11 +49,11 @@ const renderAlert = altText => (
 
 const renderNotice = app => {
     const installed = !!app.currentVersion;
-    const appIncompatibility = checkAppCompatibility(app);
+    const appCompatibility = checkAppCompatibility(app);
 
-    return installed && appIncompatibility != null
-        ? renderAlert(appIncompatibility.warning)
-        : null;
+    return !installed || appCompatibility.isCompatible
+        ? null
+        : renderAlert(appCompatibility.warning);
 };
 
 const AppIcon = ({ app }) => {

@@ -52,6 +52,7 @@ const requiresMoreRecentVersionOfShared = (
 export default app => {
     if (!app.engineVersion) {
         return {
+            isCompatible: false,
             warning:
                 'The app does not specify which nRF Connect version(s) ' +
                 'it supports',
@@ -64,6 +65,7 @@ export default app => {
     }
     if (!app.isSupportedEngine) {
         return {
+            isCompatible: false,
             warning:
                 `The app only supports nRF Connect ${app.engineVersion}, ` +
                 'which does not match your currently installed version',
@@ -83,6 +85,7 @@ export default app => {
         )
     ) {
         return {
+            isCompatible: false,
             warning:
                 `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
                 `but nRF Connect only provided ${providedVersionOfShared}. ` +
@@ -96,5 +99,5 @@ export default app => {
         };
     }
 
-    return undefined;
+    return { isCompatible: true };
 };

@@ -455,15 +455,15 @@ export function launch(app) {
 
 export function checkEngineAndLaunch(app) {
     return dispatch => {
-        const appIncompatibility = checkAppCompatibility(app);
+        const appCompatibility = checkAppCompatibility(app);
 
         dispatch(
-            appIncompatibility != null
-                ? showConfirmLaunchDialogAction(
-                      appIncompatibility.longWarning,
+            appCompatibility.isCompatible
+                ? launch(app)
+                : showConfirmLaunchDialogAction(
+                      appCompatibility.longWarning,
                       app
                   )
-                : launch(app)
         );
     };
 }
