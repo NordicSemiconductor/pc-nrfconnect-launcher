@@ -1,6 +1,9 @@
 ## Unreleased
 ### Updates
-- Show app version in title bar (before only the version of the launcher was shown)
+- Warn when apps require a more recent of the shared code than is provided by
+  the launcher #519
+- Show app version in title bar (before only the version of the launcher was
+  shown) #515
 - Links to product page added for PPK2 and updated for nRF5340 DK
 ### Bugfixes
 - macOS: When clicking on URLs in log entries the web site was not opened
