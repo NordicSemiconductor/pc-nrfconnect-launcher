@@ -81,6 +81,11 @@ export default app => {
     const providedVersionOfShared = requiredVersionOfShared(
         launcherPackageJson
     );
+
+    if (app.sharedVersion === providedVersionOfShared) {
+        return { isCompatible: true };
+    }
+
     if (
         app.sharedVersion != null &&
         isNotAVersionNumber(providedVersionOfShared)
