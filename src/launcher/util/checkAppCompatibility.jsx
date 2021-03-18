@@ -78,16 +78,18 @@ export default app => {
                 `is ${config.getVersion()}. It might not work as expected.`,
         };
     }
+
+    const requestedVersionOfShared = app.sharedVersion;
     const providedVersionOfShared = requiredVersionOfShared(
         launcherPackageJson
     );
 
-    if (app.sharedVersion === providedVersionOfShared) {
+    if (requestedVersionOfShared === providedVersionOfShared) {
         return { isCompatible: true };
     }
 
     if (
-        app.sharedVersion != null &&
+        requestedVersionOfShared != null &&
         isNotAVersionNumber(providedVersionOfShared)
     ) {
         return {
@@ -104,39 +106,43 @@ export default app => {
                 'not work as expected.',
         };
     }
-    if (app.sharedVersion != null && isNotAVersionNumber(app.sharedVersion)) {
+    if (
+        requestedVersionOfShared != null &&
+        isNotAVersionNumber(requestedVersionOfShared)
+    ) {
         return {
             isCompatible: false,
             warning:
-                `The app requires "${app.sharedVersion}" of shared which ` +
-                'cannot be checked against the version provided by nRF ' +
-                'Connect.',
+                `The app requires "${requestedVersionOfShared}" of shared ` +
+                'which cannot be checked against the version provided by ' +
+                'nRF Connect.',
             longWarning:
-                `The app requires "${app.sharedVersion}" of shared which ` +
-                'cannot be checked against the version provided by nRF ' +
-                'Connect. Inform the developer, that the app needs ' +
+                `The app requires "${requestedVersionOfShared}" of shared ` +
+                'which cannot be checked against the version provided by ' +
+                'nRF Connect. Inform the developer, that the app needs ' +
                 'to reference a correct version of shared. The app might ' +
                 'not work as expected.',
         };
     }
     if (
         requiresMoreRecentVersionOfShared(
-            app.sharedVersion,
+            requestedVersionOfShared,
             providedVersionOfShared
         )
     ) {
         return {
             isCompatible: false,
             warning:
-                `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
-                `but nRF Connect only provided ${providedVersionOfShared}. ` +
-                `Inform the app developer, that the app needs a more recent ` +
-                `version of nRF Connect.`,
+                `The app requires ${requestedVersionOfShared} of ` +
+                'pc-nrfconnect-shared, but nRF Connect only provided ' +
+                `${providedVersionOfShared}. Inform the app developer, that ` +
+                'the app needs a more recent version of nRF Connect.',
             longWarning:
-                `The app requires ${app.sharedVersion} of pc-nrfconnect-shared, ` +
-                `but nRF Connect only provided ${providedVersionOfShared}. ` +
-                `Inform the app developer, that the app needs a more recent ` +
-                `version of nRF Connect. The app might not work as expected.`,
+                `The app requires ${requestedVersionOfShared} of ` +
+                'pc-nrfconnect-shared, but nRF Connect only provided ' +
+                `${providedVersionOfShared}. Inform the app developer, that ` +
+                'the app needs a more recent version of nRF Connect. The app ' +
+                'might not work as expected.',
         };
     }
 
