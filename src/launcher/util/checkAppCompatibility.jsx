@@ -49,6 +49,9 @@ const requiresMoreRecentVersionOfShared = (
     requestedVersionOfShared != null &&
     semver.gt(requestedVersionOfShared, providedVersionOfShared);
 
+const isNotAVersionNumber = versionNumberString =>
+    semver.valid(versionNumberString) == null;
+
 export default app => {
     if (!app.engineVersion) {
         return {
@@ -78,6 +81,39 @@ export default app => {
     const providedVersionOfShared = requiredVersionOfShared(
         launcherPackageJson
     );
+    if (
+        app.sharedVersion != null &&
+        isNotAVersionNumber(providedVersionOfShared)
+    ) {
+        return {
+            isCompatible: false,
+            warning:
+                `nRF Connect uses "${providedVersionOfShared}" of shared ` +
+                'which cannot be checked against the version required by ' +
+                'this app.',
+            longWarning:
+                `nRF Connect uses "${providedVersionOfShared}" of shared ` +
+                'which cannot be checked against the version required by ' +
+                'this app. Inform the developer, that the launcher needs ' +
+                'to reference a correct version of shared. The app might ' +
+                'not work as expected.',
+        };
+    }
+    if (app.sharedVersion != null && isNotAVersionNumber(app.sharedVersion)) {
+        return {
+            isCompatible: false,
+            warning:
+                `The app requires "${app.sharedVersion}" of shared which ` +
+                'cannot be checked against the version provided by nRF ' +
+                'Connect.',
+            longWarning:
+                `The app requires "${app.sharedVersion}" of shared which ` +
+                'cannot be checked against the version provided by nRF ' +
+                'Connect. Inform the developer, that the app needs ' +
+                'to reference a correct version of shared. The app might ' +
+                'not work as expected.',
+        };
+    }
     if (
         requiresMoreRecentVersionOfShared(
             app.sharedVersion,
