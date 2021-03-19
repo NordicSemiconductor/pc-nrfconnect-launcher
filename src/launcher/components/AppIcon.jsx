@@ -83,7 +83,6 @@ AppIcon.propTypes = {
         iconPath: PropTypes.string,
         currentVersion: PropTypes.string,
         engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
         url: PropTypes.string,
     }).isRequired,
 };

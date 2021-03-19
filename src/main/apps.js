@@ -38,7 +38,6 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const semver = require('semver');
 const { dialog } = require('electron');
 const Store = require('electron-store');
 
@@ -324,28 +323,9 @@ function initAppsDirectory() {
 }
 
 /**
- * Checks if the given core engine version is compatible with the
- * engines.nrfconnect definition in the given package.json object.
- *
- * @param {string} coreEngineVersion core engine version.
- * @param {string} requiredVersionOfEngine the version of the engine the app needs.
- * @returns {boolean} true if version is compatible, false if not
- */
-function isSupportedEngine(coreEngineVersion, requiredVersionOfEngine) {
-    // The semver.satisfies() check will return false if receiving a pre-release
-    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
-    const currentEngine = [
-        semver.major(coreEngineVersion),
-        semver.minor(coreEngineVersion),
-        semver.patch(coreEngineVersion),
-    ].join('.');
-    return semver.satisfies(currentEngine, requiredVersionOfEngine);
-}
-
-/**
  * Read app info from the given app directory. The returned object can
  * have name, displayName, currentVersion, description, path, isOfficial,
- * engineVersion, isSupportedEngine, and iconPath. The iconPath is only
+ * engineVersion, and iconPath. The iconPath is only
  * returned if the app has an 'icon.png' in the app directory.
  *
  * @param {string} appPath path to the app directory.
@@ -388,10 +368,6 @@ function readAppInfo(appPath) {
             isOfficial,
             sharedVersion: requiredVersionOfShared(packageJson),
             engineVersion: packageJson.engines?.nrfconnect,
-            isSupportedEngine: isSupportedEngine(
-                config.getVersion(),
-                packageJson.engines?.nrfconnect
-            ),
             source,
             repositoryUrl: packageJson.repository?.url,
         };

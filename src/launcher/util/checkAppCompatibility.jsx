@@ -42,6 +42,19 @@ import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
 const config = remote.require('../main/config');
 
+const isSupportedEngine = requiredVersionOfEngine => {
+    const coreEngineVersion = config.getVersion();
+
+    // The semver.satisfies() check will return false if receiving a pre-release
+    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
+    const currentEngine = [
+        semver.major(coreEngineVersion),
+        semver.minor(coreEngineVersion),
+        semver.patch(coreEngineVersion),
+    ].join('.');
+    return semver.satisfies(currentEngine, requiredVersionOfEngine);
+};
+
 const requiresMoreRecentVersionOfShared = (
     requestedVersionOfShared,
     providedVersionOfShared
@@ -66,7 +79,8 @@ export default app => {
                 'ref. the documentation.',
         };
     }
-    if (!app.isSupportedEngine) {
+
+    if (!isSupportedEngine(app.engineVersion)) {
         return {
             isCompatible: false,
             warning:
@@ -106,6 +120,7 @@ export default app => {
                 'not work as expected.',
         };
     }
+
     if (
         requestedVersionOfShared != null &&
         isNotAVersionNumber(requestedVersionOfShared)
@@ -124,6 +139,7 @@ export default app => {
                 'not work as expected.',
         };
     }
+
     if (
         requiresMoreRecentVersionOfShared(
             requestedVersionOfShared,
