@@ -40,20 +40,20 @@ import semver from 'semver';
 
 import checkAppCompatibility from '../util/checkAppCompatibility';
 
-const renderAlert = altText => (
+const warning = altText => (
     <div>
         <span className="alert-icon-bg" />
         <span className="mdi mdi-alert" title={altText} />
     </div>
 );
 
-const renderNotice = app => {
+const appBadge = app => {
     const notInstalled = !app.currentVersion;
     const appCompatibility = checkAppCompatibility(app);
 
     return notInstalled || appCompatibility.isCompatible
         ? null
-        : renderAlert(appCompatibility.warning);
+        : warning(appCompatibility.warning);
 };
 
 const AppIcon = ({ app }) => {
@@ -73,7 +73,7 @@ const AppIcon = ({ app }) => {
             }}
         >
             <img src={iconPath || ''} alt="" draggable={false} />
-            {renderNotice(app)}
+            {appBadge(app)}
         </div>
     );
 };
