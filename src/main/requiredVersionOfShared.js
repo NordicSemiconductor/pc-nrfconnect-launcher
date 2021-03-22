@@ -34,58 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import semver from 'semver';
+module.exports = packageJson => {
+    const allDependencies = {
+        ...(packageJson.dependencies || {}),
+        ...(packageJson.devDependencies || {}),
+    };
 
-import checkAppCompatibility from '../util/checkAppCompatibility';
-
-const renderAlert = altText => (
-    <div>
-        <span className="alert-icon-bg" />
-        <span className="mdi mdi-alert" title={altText} />
-    </div>
-);
-
-const renderNotice = app => {
-    const installed = !!app.currentVersion;
-    const appCompatibility = checkAppCompatibility(app);
-
-    return !installed || appCompatibility.isCompatible
-        ? null
-        : renderAlert(appCompatibility.warning);
+    return allDependencies['pc-nrfconnect-shared']
+        ?.replace(/.*#/, '')
+        .replace(/^semver:[~^]?/, '');
 };
-
-const AppIcon = ({ app }) => {
-    const { engineVersion, iconPath } = app;
-    const primaryColorNeedsUpdate =
-        engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
-    return (
-        <div
-            className={`core-app-icon ${
-                primaryColorNeedsUpdate ? 'old-app-icon' : ''
-            }`}
-            style={{
-                borderRadius: 7,
-                background: '#e6f8ff',
-                width: '48px',
-                height: '48px',
-            }}
-        >
-            <img src={iconPath || ''} alt="" draggable={false} />
-            {renderNotice(app)}
-        </div>
-    );
-};
-
-AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        currentVersion: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-        url: PropTypes.string,
-    }).isRequired,
-};
-
-export default AppIcon;

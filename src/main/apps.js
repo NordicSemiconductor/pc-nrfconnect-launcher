@@ -47,6 +47,7 @@ const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
+const requiredVersionOfShared = require('./requiredVersionOfShared');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
@@ -323,26 +324,14 @@ function initAppsDirectory() {
 }
 
 /**
- * Get the engines.nrfconnect value from the given package.json object.
- * This is a semver range that indicates which core version(s) the app
- * supports. Returns null if no value is specified.
- *
- * @param {Object} packageJson the package.json object.
- * @returns {string|null} semver range indicating supported core version(s)
- */
-function getEngineVersion(packageJson) {
-    return packageJson.engines ? packageJson.engines.nrfconnect : null;
-}
-
-/**
  * Checks if the given core engine version is compatible with the
  * engines.nrfconnect definition in the given package.json object.
  *
  * @param {string} coreEngineVersion core engine version.
- * @param {Object} packageJson package.json object to check.
+ * @param {string} requiredVersionOfEngine the version of the engine the app needs.
  * @returns {boolean} true if version is compatible, false if not
  */
-function isSupportedEngine(coreEngineVersion, packageJson) {
+function isSupportedEngine(coreEngineVersion, requiredVersionOfEngine) {
     // The semver.satisfies() check will return false if receiving a pre-release
     // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
     const currentEngine = [
@@ -350,7 +339,7 @@ function isSupportedEngine(coreEngineVersion, packageJson) {
         semver.minor(coreEngineVersion),
         semver.patch(coreEngineVersion),
     ].join('.');
-    return semver.satisfies(currentEngine, getEngineVersion(packageJson));
+    return semver.satisfies(currentEngine, requiredVersionOfEngine);
 }
 
 /**
@@ -397,13 +386,14 @@ function readAppInfo(appPath) {
                 ? shortcutIconPath
                 : null,
             isOfficial,
-            engineVersion: getEngineVersion(packageJson),
+            sharedVersion: requiredVersionOfShared(packageJson),
+            engineVersion: packageJson.engines?.nrfconnect,
             isSupportedEngine: isSupportedEngine(
                 config.getVersion(),
-                packageJson
+                packageJson.engines?.nrfconnect
             ),
             source,
-            repositoryUrl: packageJson.repository && packageJson.repository.url,
+            repositoryUrl: packageJson.repository?.url,
         };
     });
 }
