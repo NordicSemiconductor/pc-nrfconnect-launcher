@@ -48,10 +48,10 @@ const renderAlert = altText => (
 );
 
 const renderNotice = app => {
-    const installed = !!app.currentVersion;
+    const notInstalled = !app.currentVersion;
     const appCompatibility = checkAppCompatibility(app);
 
-    return !installed || appCompatibility.isCompatible
+    return notInstalled || appCompatibility.isCompatible
         ? null
         : renderAlert(appCompatibility.warning);
 };
