@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { shape, string } from 'prop-types';
 import semver from 'semver';
 
 import checkAppCompatibility from '../util/checkAppCompatibility';
@@ -79,11 +79,10 @@ const AppIcon = ({ app }) => {
 };
 
 AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        currentVersion: PropTypes.string,
-        engineVersion: PropTypes.string,
-        url: PropTypes.string,
+    app: shape({
+        iconPath: string,
+        currentVersion: string,
+        engineVersion: string,
     }).isRequired,
 };
 
