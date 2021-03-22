@@ -41,14 +41,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -156,14 +148,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -282,14 +266,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -446,14 +422,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -529,14 +497,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -612,14 +572,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -765,14 +717,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -848,14 +792,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""
@@ -942,14 +878,6 @@ Array [
       >
         <div
           className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
         >
           <img
             alt=""

@@ -65,12 +65,6 @@ const AppIcon = ({ app }) => {
             className={`core-app-icon ${
                 primaryColorNeedsUpdate ? 'old-app-icon' : ''
             }`}
-            style={{
-                borderRadius: 7,
-                background: '#e6f8ff',
-                width: '48px',
-                height: '48px',
-            }}
         >
             <img src={iconPath || ''} alt="" draggable={false} />
             {appBadge(app)}
