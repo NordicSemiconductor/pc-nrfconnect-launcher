@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import { classNames } from 'pc-nrfconnect-shared';
 import { shape, string } from 'prop-types';
 import semver from 'semver';
 
@@ -62,9 +63,10 @@ const AppIcon = ({ app }) => {
         engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
-            className={`core-app-icon ${
-                primaryColorNeedsUpdate ? 'old-app-icon' : ''
-            }`}
+            className={classNames(
+                'core-app-icon',
+                primaryColorNeedsUpdate && 'old-app-icon'
+            )}
         >
             <img src={iconPath || ''} alt="" draggable={false} />
             {appBadge(app)}
