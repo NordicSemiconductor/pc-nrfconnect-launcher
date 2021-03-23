@@ -17,7 +17,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": "bar",
           "url": null,
@@ -41,15 +40,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -133,7 +124,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": "bar",
           "url": null,
@@ -157,15 +147,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -260,7 +242,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": "bar",
           "url": null,
@@ -284,15 +265,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -387,7 +360,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -407,7 +379,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -427,7 +398,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -451,15 +421,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -534,15 +496,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -617,15 +571,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -709,7 +655,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -729,7 +674,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -749,7 +693,6 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
           "sharedVersion": null,
           "source": null,
           "url": null,
@@ -773,15 +716,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -856,15 +791,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""
@@ -950,15 +877,7 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
           <img
             alt=""

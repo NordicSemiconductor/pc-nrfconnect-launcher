@@ -35,25 +35,26 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { classNames } from 'pc-nrfconnect-shared';
+import { shape, string } from 'prop-types';
 import semver from 'semver';
 
 import checkAppCompatibility from '../util/checkAppCompatibility';
 
-const renderAlert = altText => (
+const warning = altText => (
     <div>
         <span className="alert-icon-bg" />
         <span className="mdi mdi-alert" title={altText} />
     </div>
 );
 
-const renderNotice = app => {
-    const installed = !!app.currentVersion;
+const appBadge = app => {
+    const notInstalled = !app.currentVersion;
     const appCompatibility = checkAppCompatibility(app);
 
-    return !installed || appCompatibility.isCompatible
+    return notInstalled || appCompatibility.isCompatible
         ? null
-        : renderAlert(appCompatibility.warning);
+        : warning(appCompatibility.warning);
 };
 
 const AppIcon = ({ app }) => {
@@ -62,29 +63,22 @@ const AppIcon = ({ app }) => {
         engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
-            className={`core-app-icon ${
-                primaryColorNeedsUpdate ? 'old-app-icon' : ''
-            }`}
-            style={{
-                borderRadius: 7,
-                background: '#e6f8ff',
-                width: '48px',
-                height: '48px',
-            }}
+            className={classNames(
+                'core-app-icon',
+                primaryColorNeedsUpdate && 'old-app-icon'
+            )}
         >
             <img src={iconPath || ''} alt="" draggable={false} />
-            {renderNotice(app)}
+            {appBadge(app)}
         </div>
     );
 };
 
 AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        currentVersion: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-        url: PropTypes.string,
+    app: shape({
+        iconPath: string,
+        currentVersion: string,
+        engineVersion: string,
     }).isRequired,
 };
 

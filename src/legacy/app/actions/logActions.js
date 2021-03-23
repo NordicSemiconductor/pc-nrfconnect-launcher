@@ -144,19 +144,15 @@ export function startReading() {
                 coreVersion,
                 corePath,
                 isOfficial,
-                isSupportedEngine,
                 path,
                 homeDir,
                 tmpDir,
             } = details;
             const official = isOfficial ? 'official' : 'local';
-            const supported = isSupportedEngine
-                ? 'is supported'
-                : 'is not supported';
             logger.debug(`App ${name} v${currentVersion} ${official}`);
             logger.debug(`App path: ${path}`);
             logger.debug(
-                `nRFConnect ${coreVersion} ${supported} by the app (${engineVersion})`
+                `nRFConnect ${coreVersion}, required by the app is (${engineVersion})`
             );
             logger.debug(`nRFConnect path: ${corePath}`);
             logger.debug(`HomeDir: ${homeDir}`);
