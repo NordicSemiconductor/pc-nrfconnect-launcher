@@ -42,8 +42,8 @@ import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
 const config = remote.require('../main/config');
 
-const isVersionNumber = versionNumberString =>
-    semver.valid(versionNumberString) != null;
+const isValidVersionNumber = maybeVersionNumber =>
+    semver.valid(maybeVersionNumber) != null;
 
 const providedVersionOfShared = requiredVersionOfShared(launcherPackageJson);
 
@@ -102,7 +102,7 @@ const checkIdenticalShared = app =>
 
 const checkProvidedVersionOfSharedIsValid = app =>
     requestedVersionOfShared(app) == null ||
-    isVersionNumber(providedVersionOfShared)
+    isValidVersionNumber(providedVersionOfShared)
         ? undefined
         : {
               isCompatible: false,
@@ -120,7 +120,7 @@ const checkProvidedVersionOfSharedIsValid = app =>
 
 const checkRequestedVersionOfSharedIsValid = app =>
     requestedVersionOfShared(app) == null ||
-    isVersionNumber(requestedVersionOfShared(app))
+    isValidVersionNumber(requestedVersionOfShared(app))
         ? undefined
         : {
               isCompatible: false,
