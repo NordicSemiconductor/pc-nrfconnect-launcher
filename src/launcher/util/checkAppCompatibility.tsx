@@ -38,18 +38,25 @@ import { remote } from 'electron';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';
+import { App } from '../../main/apps';
 import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
 const config = remote.require('../main/config');
 
-const isValidVersionNumber = maybeVersionNumber =>
+const isValidVersionNumber = (maybeVersionNumber?: string) =>
     semver.valid(maybeVersionNumber) != null;
 
 const providedVersionOfShared = requiredVersionOfShared(launcherPackageJson);
 
-const requestedVersionOfShared = app => app.sharedVersion;
+const requestedVersionOfShared = (app: App) => app.sharedVersion;
 
-const checkEngineVersionIsSet = app =>
+type CheckResult =
+    | { isCompatible: true }
+    | { isCompatible: false; warning: string; longWarning: string };
+
+type AppCompatibilityChecker = (app: App) => CheckResult | undefined;
+
+const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
         ? undefined
         : {
@@ -64,7 +71,7 @@ const checkEngineVersionIsSet = app =>
                   'ref. the documentation.',
           };
 
-const checkEngineIsSupported = app => {
+const checkEngineIsSupported: AppCompatibilityChecker = app => {
     const requiredVersionOfEngine = app.engineVersion;
 
     // The semver.satisfies() check will return false if receiving a pre-release
@@ -78,7 +85,7 @@ const checkEngineIsSupported = app => {
 
     const isSupportedEngine = semver.satisfies(
         providedVersionOfEngine,
-        requiredVersionOfEngine
+        requiredVersionOfEngine! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
@@ -95,12 +102,12 @@ const checkEngineIsSupported = app => {
           };
 };
 
-const checkIdenticalShared = app =>
+const checkIdenticalShared: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) === providedVersionOfShared
         ? { isCompatible: true }
         : undefined;
 
-const checkProvidedVersionOfSharedIsValid = app =>
+const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(providedVersionOfShared)
         ? undefined
@@ -118,7 +125,7 @@ const checkProvidedVersionOfSharedIsValid = app =>
                   'not work as expected.',
           };
 
-const checkRequestedVersionOfSharedIsValid = app =>
+const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(requestedVersionOfShared(app))
         ? undefined
@@ -136,10 +143,11 @@ const checkRequestedVersionOfSharedIsValid = app =>
                   'app might not work as expected.',
           };
 
-const checkRequestedSharedIsProvided = app => {
+const checkRequestedSharedIsProvided: AppCompatibilityChecker = app => {
+    const requestedVersionOfSharedByApp = requestedVersionOfShared(app);
     const providesRequestedVersionOfShared =
-        requestedVersionOfShared(app) == null ||
-        semver.lte(requestedVersionOfShared(app), providedVersionOfShared);
+        requestedVersionOfSharedByApp == null ||
+        semver.lte(requestedVersionOfSharedByApp, providedVersionOfShared!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
     return providesRequestedVersionOfShared
         ? undefined
@@ -159,7 +167,7 @@ const checkRequestedSharedIsProvided = app => {
           };
 };
 
-export default app => {
+export default (app: App): CheckResult => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
