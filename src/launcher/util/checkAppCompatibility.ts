@@ -53,19 +53,25 @@ interface LauncherCompatibilityConfig {
     providedVersionOfShared: string;
 }
 
-type CheckResult =
-    | { isCompatible: true }
-    | { isCompatible: false; warning: string; longWarning: string };
+type Undecided = { isDecided: false };
+type Compatible = { isDecided: true; isCompatible: true };
+type Incompatible = {
+    isDecided: true;
+    isCompatible: false;
+    warning: string;
+    longWarning: string;
+};
 
 type AppCompatibilityChecker = (
     app: App,
     launcherCompatibilityConfig: LauncherCompatibilityConfig
-) => CheckResult | undefined;
+) => Undecided | Compatible | Incompatible;
 
 export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
-        ? undefined
+        ? { isDecided: false }
         : {
+              isDecided: true,
               isCompatible: false,
               warning:
                   'The app does not specify which nRF Connect version(s) ' +
@@ -97,8 +103,9 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
     );
 
     return isSupportedEngine
-        ? undefined
+        ? { isDecided: false }
         : {
+              isDecided: true,
               isCompatible: false,
               warning:
                   `The app only supports nRF Connect ${app.engineVersion}, ` +
@@ -115,8 +122,8 @@ export const checkIdenticalShared: AppCompatibilityChecker = (
     { providedVersionOfShared }
 ) =>
     requestedVersionOfShared(app) === providedVersionOfShared
-        ? { isCompatible: true }
-        : undefined;
+        ? { isDecided: true, isCompatible: true }
+        : { isDecided: false };
 
 export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
     app,
@@ -124,8 +131,9 @@ export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
 ) =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(providedVersionOfShared)
-        ? undefined
+        ? { isDecided: false }
         : {
+              isDecided: true,
               isCompatible: false,
               warning:
                   `nRF Connect uses "${providedVersionOfShared}" of shared ` +
@@ -142,8 +150,9 @@ export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
 export const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(requestedVersionOfShared(app))
-        ? undefined
+        ? { isDecided: false }
         : {
+              isDecided: true,
               isCompatible: false,
               warning:
                   `The app requires "${requestedVersionOfShared(app)}" of ` +
@@ -167,8 +176,9 @@ export const checkRequestedSharedIsProvided: AppCompatibilityChecker = (
         semver.lte(requestedVersionOfSharedByApp, providedVersionOfShared!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
     return providesRequestedVersionOfShared
-        ? undefined
+        ? { isDecided: false }
         : {
+              isDecided: true,
               isCompatible: false,
               warning:
                   `The app requires ${requestedVersionOfShared(app)} of ` +
@@ -204,7 +214,7 @@ export default (
         providedVersionOfEngine: config.getVersion(),
         providedVersionOfShared: getProvidedVersionOfShared(),
     }
-): CheckResult => {
+): Compatible | Incompatible => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
@@ -215,10 +225,10 @@ export default (
         checkRequestedSharedIsProvided,
     ]) {
         const result = check(app, launcherCompatibilityConfig);
-        if (result != null) {
+        if (result.isDecided) {
             return result;
         }
     }
 
-    return { isCompatible: true };
+    return { isDecided: true, isCompatible: true };
 };

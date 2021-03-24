@@ -65,13 +65,19 @@ const requiringShared = (sharedVersion?: string) => ({
 });
 
 const failingCheck = {
+    isDecided: true,
     isCompatible: false,
     warning: expect.anything(),
     longWarning: expect.anything(),
 };
 
 const successfulCheck = {
+    isDecided: true,
     isCompatible: true,
+};
+
+const undecidedCheck = {
+    isDecided: false,
 };
 
 describe('check compatibility of an app with the launcher', () => {
@@ -91,7 +97,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine('^1.0.0'),
                     providingEngine('irrelevant')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
     });
 
@@ -102,7 +108,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine('^1.0.0'),
                     providingEngine('1.2.3')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('is undefined if the app requires the same version', () => {
@@ -111,7 +117,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine('^1.2.3'),
                     providingEngine('1.2.3')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('is undefined if the engine is just a pre-release', () => {
@@ -120,7 +126,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine('^1.2.3'),
                     providingEngine('1.2.3-alpha.0')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('fails if the app requires a higher version', () => {
@@ -159,7 +165,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared('test/branch'),
                     providingShared('ec5bfa74149d19b233e446a23b8f09b7f8dde4d8')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
     });
 
@@ -170,7 +176,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared(),
                     providingShared('test/branch')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('is undefined if engine provides a normal version of shared', () => {
@@ -179,7 +185,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared('2.0.0'),
                     providingShared('1.2.3')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('fails if the engine depends on a non numeric version of shared', () => {
@@ -199,7 +205,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared(),
                     providingShared('irrelevant')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('is undefined if the app depends on a normal version of shared', () => {
@@ -208,7 +214,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared('2.0.0'),
                     providingShared('irrelevant')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('fails if the app depends on a non numeric version of shared', () => {
@@ -228,7 +234,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared(),
                     providingShared('3.0.0')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('is undefined if the app depends on a lower version of shared', () => {
@@ -237,7 +243,7 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringShared('2.0.0'),
                     providingShared('3.0.0')
                 )
-            ).toBeUndefined();
+            ).toMatchObject(undecidedCheck);
         });
 
         it('fails if the app depends on a higher version of shared', () => {
