@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
 
 import { decorate } from '../../decoration';
 import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
@@ -122,7 +122,7 @@ const Root = ({ resizeLogContainer }) => (
 );
 
 Root.propTypes = {
-    resizeLogContainer: PropTypes.func.isRequired,
+    resizeLogContainer: func.isRequired,
 };
 
 export default Root;

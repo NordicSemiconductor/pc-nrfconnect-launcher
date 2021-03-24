@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { node, number, string } from 'prop-types';
 
 const SidePanel = ({ children, cssClass, width }) => (
     <div className={cssClass} style={{ width: `${width}px` }}>
@@ -52,9 +52,9 @@ const SidePanel = ({ children, cssClass, width }) => (
 );
 
 SidePanel.propTypes = {
-    width: PropTypes.number,
-    children: PropTypes.node,
-    cssClass: PropTypes.string,
+    width: number,
+    children: node,
+    cssClass: string,
 };
 
 SidePanel.defaultProps = {

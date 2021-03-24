@@ -37,7 +37,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import PropTypes from 'prop-types';
+import { func, string } from 'prop-types';
 import { combineReducers } from 'redux';
 
 import {
@@ -53,7 +53,7 @@ beforeEach(clearDecorationCache);
 
 describe('decorate', () => {
     const FooComponent = ({ id }) => <div id={id} />;
-    FooComponent.propTypes = { id: PropTypes.string };
+    FooComponent.propTypes = { id: string };
     FooComponent.defaultProps = { id: 'foo' };
 
     it('should render default component when app does not implement decorate method', () => {
@@ -151,8 +151,8 @@ describe('connect', () => {
         <button id={id} onClick={onClick} /> // eslint-disable-line react/button-has-type
     );
     FooComponent.propTypes = {
-        id: PropTypes.string.isRequired,
-        onClick: PropTypes.func.isRequired,
+        id: string.isRequired,
+        onClick: func.isRequired,
     };
 
     const defaultStateProps = { id: 'foo' };

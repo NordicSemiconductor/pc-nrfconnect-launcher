@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, func, number, shape, string } from 'prop-types';
 
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import portPath from '../../portPath';
@@ -70,16 +70,16 @@ const FirmwareDialog = ({
 };
 
 FirmwareDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    isInProgress: PropTypes.bool,
-    port: PropTypes.shape({
-        comName: PropTypes.string,
-        path: PropTypes.string,
-        serialNumber: PropTypes.number,
+    isVisible: bool.isRequired,
+    isInProgress: bool,
+    port: shape({
+        comName: string,
+        path: string,
+        serialNumber: number,
     }),
-    text: PropTypes.string,
-    onConfirmUpdateFirmware: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    text: string,
+    onConfirmUpdateFirmware: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 FirmwareDialog.defaultProps = {

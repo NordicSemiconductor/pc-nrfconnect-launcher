@@ -41,7 +41,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Iterable } from 'immutable';
-import PropTypes from 'prop-types';
+import { bool, func, instanceOf, shape, string } from 'prop-types';
 
 export const sortedSources = sources => {
     const all = Object.entries(sources);
@@ -75,8 +75,8 @@ const SourceFilter = ({ sources, setAppManagementSource }) => (
     </Col>
 );
 SourceFilter.propTypes = {
-    sources: PropTypes.instanceOf(Object).isRequired,
-    setAppManagementSource: PropTypes.func.isRequired,
+    sources: instanceOf(Object).isRequired,
+    setAppManagementSource: func.isRequired,
 };
 
 const StateFilter = ({
@@ -112,11 +112,11 @@ const StateFilter = ({
     </Col>
 );
 StateFilter.propTypes = {
-    show: PropTypes.shape({
-        installed: PropTypes.bool,
-        available: PropTypes.bool,
+    show: shape({
+        installed: bool,
+        available: bool,
     }).isRequired,
-    setAppManagementShow: PropTypes.func.isRequired,
+    setAppManagementShow: func.isRequired,
 };
 
 const FilterDropdown = ({
@@ -146,13 +146,13 @@ const FilterDropdown = ({
     </Dropdown>
 );
 FilterDropdown.propTypes = {
-    sources: PropTypes.instanceOf(Object).isRequired,
-    show: PropTypes.shape({
-        installed: PropTypes.bool,
-        available: PropTypes.bool,
+    sources: instanceOf(Object).isRequired,
+    show: shape({
+        installed: bool,
+        available: bool,
     }).isRequired,
-    setAppManagementShow: PropTypes.func.isRequired,
-    setAppManagementSource: PropTypes.func.isRequired,
+    setAppManagementShow: func.isRequired,
+    setAppManagementSource: func.isRequired,
 };
 
 const AppManagementFilter = ({
@@ -195,17 +195,17 @@ const AppManagementFilter = ({
 );
 
 AppManagementFilter.propTypes = {
-    upgradeableApps: PropTypes.instanceOf(Iterable).isRequired,
-    sources: PropTypes.instanceOf(Object).isRequired,
-    onUpgrade: PropTypes.func.isRequired,
-    show: PropTypes.shape({
-        installed: PropTypes.bool,
-        available: PropTypes.bool,
+    upgradeableApps: instanceOf(Iterable).isRequired,
+    sources: instanceOf(Object).isRequired,
+    onUpgrade: func.isRequired,
+    show: shape({
+        installed: bool,
+        available: bool,
     }).isRequired,
-    filter: PropTypes.string.isRequired,
-    setAppManagementShow: PropTypes.func.isRequired,
-    setAppManagementFilter: PropTypes.func.isRequired,
-    setAppManagementSource: PropTypes.func.isRequired,
+    filter: string.isRequired,
+    setAppManagementShow: func.isRequired,
+    setAppManagementFilter: func.isRequired,
+    setAppManagementSource: func.isRequired,
 };
 
 export default AppManagementFilter;

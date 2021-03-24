@@ -36,7 +36,7 @@
 
 import React from 'react';
 import spinnerImg from 'pc-nrfconnect-shared/src/Dialog/ajax-loader.gif';
-import PropTypes from 'prop-types';
+import { number, string } from 'prop-types';
 
 const Spinner = ({ size, className }) => (
     <img
@@ -49,8 +49,8 @@ const Spinner = ({ size, className }) => (
 );
 
 Spinner.propTypes = {
-    size: PropTypes.number,
-    className: PropTypes.string,
+    size: number,
+    className: string,
 };
 
 Spinner.defaultProps = {

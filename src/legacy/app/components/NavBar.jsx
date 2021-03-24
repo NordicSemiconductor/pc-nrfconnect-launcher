@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string } from 'prop-types';
 
 import Logo from '../../components/Logo';
 import { decorate, getAppConfig } from '../../decoration';
@@ -67,8 +67,8 @@ function NavBar({ cssClass, navSectionCssClass }) {
 }
 
 NavBar.propTypes = {
-    cssClass: PropTypes.string,
-    navSectionCssClass: PropTypes.string,
+    cssClass: string,
+    navSectionCssClass: string,
 };
 
 NavBar.defaultProps = {

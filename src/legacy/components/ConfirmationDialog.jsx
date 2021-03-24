@@ -37,7 +37,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
+import { arrayOf, bool, func, node, oneOfType, string } from 'prop-types';
 
 import Spinner from './Spinner';
 
@@ -105,19 +105,16 @@ const ConfirmationDialog = ({
 );
 
 ConfirmationDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    title: PropTypes.string,
-    text: PropTypes.string,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
-    onOk: PropTypes.func.isRequired,
-    onCancel: PropTypes.func,
-    okButtonText: PropTypes.string,
-    cancelButtonText: PropTypes.string,
-    isInProgress: PropTypes.bool,
-    isOkButtonEnabled: PropTypes.bool,
+    isVisible: bool.isRequired,
+    title: string,
+    text: string,
+    children: oneOfType([arrayOf(node), node]),
+    onOk: func.isRequired,
+    onCancel: func,
+    okButtonText: string,
+    cancelButtonText: string,
+    isInProgress: bool,
+    isOkButtonEnabled: bool,
 };
 
 ConfirmationDialog.defaultProps = {

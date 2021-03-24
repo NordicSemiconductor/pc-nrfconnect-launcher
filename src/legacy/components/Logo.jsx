@@ -37,7 +37,7 @@
 import React from 'react';
 import { openUrl } from 'pc-nrfconnect-shared';
 import logo from 'pc-nrfconnect-shared/src/Logo/nordic-logo-white-icon-only.png';
-import PropTypes from 'prop-types';
+import { func, string } from 'prop-types';
 
 const Logo = ({ src, alt, cssClass, containerCssClass, onClick }) => (
     <div
@@ -52,11 +52,11 @@ const Logo = ({ src, alt, cssClass, containerCssClass, onClick }) => (
 );
 
 Logo.propTypes = {
-    src: PropTypes.string,
-    alt: PropTypes.string,
-    cssClass: PropTypes.string,
-    containerCssClass: PropTypes.string,
-    onClick: PropTypes.func,
+    src: string,
+    alt: string,
+    cssClass: string,
+    containerCssClass: string,
+    onClick: func,
 };
 
 Logo.defaultProps = {

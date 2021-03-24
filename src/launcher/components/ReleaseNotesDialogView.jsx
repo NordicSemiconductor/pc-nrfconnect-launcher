@@ -38,7 +38,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ReactMarkdown from 'react-markdown';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 const view = ({
     canUpdate,
@@ -83,14 +83,14 @@ const view = ({
 );
 
 view.propTypes = {
-    canUpdate: PropTypes.bool,
-    displayName: PropTypes.string,
-    latestVersion: PropTypes.string,
-    releaseNote: PropTypes.string,
-    source: PropTypes.string,
-    name: PropTypes.string,
-    onUpgrade: PropTypes.func.isRequired,
-    onHideReleaseNotes: PropTypes.func.isRequired,
+    canUpdate: bool,
+    displayName: string,
+    latestVersion: string,
+    releaseNote: string,
+    source: string,
+    name: string,
+    onUpgrade: func.isRequired,
+    onHideReleaseNotes: func.isRequired,
 };
 
 view.defaultProps = {

@@ -37,7 +37,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
+import { bool, func } from 'prop-types';
 
 const ProxyErrorDialog = ({ isVisible, onOk }) => (
     <Modal show={isVisible} backdrop>
@@ -66,8 +66,8 @@ const ProxyErrorDialog = ({ isVisible, onOk }) => (
 );
 
 ProxyErrorDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    onOk: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    onOk: func.isRequired,
 };
 
 export default ProxyErrorDialog;
