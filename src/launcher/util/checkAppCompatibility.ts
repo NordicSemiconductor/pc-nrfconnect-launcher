@@ -88,19 +88,9 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
     app,
     { providedVersionOfEngine }
 ) => {
-    const requiredVersionOfEngine = app.engineVersion;
-
-    // The semver.satisfies() check will return false if receiving a pre-release
-    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
-    const providedVersionOfEngineWithoutPrerelease = [
-        semver.major(providedVersionOfEngine),
-        semver.minor(providedVersionOfEngine),
-        semver.patch(providedVersionOfEngine),
-    ].join('.');
-
     const isSupportedEngine = semver.satisfies(
-        providedVersionOfEngineWithoutPrerelease,
-        requiredVersionOfEngine! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
+        semver.coerce(providedVersionOfEngine) ?? '0.0.0',
+        app.engineVersion! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
