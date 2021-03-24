@@ -46,17 +46,23 @@ const config = remote.require('../main/config');
 const isValidVersionNumber = (maybeVersionNumber?: string) =>
     semver.valid(maybeVersionNumber) != null;
 
-const providedVersionOfShared = requiredVersionOfShared(launcherPackageJson);
-
 const requestedVersionOfShared = (app: App) => app.sharedVersion;
+
+interface LauncherCompatibilityConfig {
+    providedVersionOfEngine: string;
+    providedVersionOfShared: string;
+}
 
 type CheckResult =
     | { isCompatible: true }
     | { isCompatible: false; warning: string; longWarning: string };
 
-type AppCompatibilityChecker = (app: App) => CheckResult | undefined;
+type AppCompatibilityChecker = (
+    app: App,
+    launcherCompatibilityConfig: LauncherCompatibilityConfig
+) => CheckResult | undefined;
 
-const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
+export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
         ? undefined
         : {
@@ -71,20 +77,22 @@ const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
                   'ref. the documentation.',
           };
 
-const checkEngineIsSupported: AppCompatibilityChecker = app => {
+export const checkEngineIsSupported: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfEngine }
+) => {
     const requiredVersionOfEngine = app.engineVersion;
 
     // The semver.satisfies() check will return false if receiving a pre-release
     // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
-    const coreEngineVersion = config.getVersion();
-    const providedVersionOfEngine = [
-        semver.major(coreEngineVersion),
-        semver.minor(coreEngineVersion),
-        semver.patch(coreEngineVersion),
+    const providedVersionOfEngineWithoutPrerelease = [
+        semver.major(providedVersionOfEngine),
+        semver.minor(providedVersionOfEngine),
+        semver.patch(providedVersionOfEngine),
     ].join('.');
 
     const isSupportedEngine = semver.satisfies(
-        providedVersionOfEngine,
+        providedVersionOfEngineWithoutPrerelease,
         requiredVersionOfEngine! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
@@ -98,16 +106,22 @@ const checkEngineIsSupported: AppCompatibilityChecker = app => {
               longWarning:
                   'The app only supports ' +
                   `nRF Connect ${app.engineVersion} while your installed version ` +
-                  `is ${config.getVersion()}. It might not work as expected.`,
+                  `is ${providedVersionOfEngine}. It might not work as expected.`,
           };
 };
 
-const checkIdenticalShared: AppCompatibilityChecker = app =>
+export const checkIdenticalShared: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) =>
     requestedVersionOfShared(app) === providedVersionOfShared
         ? { isCompatible: true }
         : undefined;
 
-const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
+export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(providedVersionOfShared)
         ? undefined
@@ -125,7 +139,7 @@ const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
                   'not work as expected.',
           };
 
-const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
+export const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) == null ||
     isValidVersionNumber(requestedVersionOfShared(app))
         ? undefined
@@ -143,7 +157,10 @@ const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
                   'app might not work as expected.',
           };
 
-const checkRequestedSharedIsProvided: AppCompatibilityChecker = app => {
+export const checkRequestedSharedIsProvided: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) => {
     const requestedVersionOfSharedByApp = requestedVersionOfShared(app);
     const providesRequestedVersionOfShared =
         requestedVersionOfSharedByApp == null ||
@@ -167,7 +184,27 @@ const checkRequestedSharedIsProvided: AppCompatibilityChecker = app => {
           };
 };
 
-export default (app: App): CheckResult => {
+const getProvidedVersionOfShared = () => {
+    const providedVersionOfShared = requiredVersionOfShared(
+        launcherPackageJson
+    );
+
+    if (providedVersionOfShared == null) {
+        throw new Error(
+            'The launcher must depend on a version of pc-nrfconnect-shared'
+        );
+    }
+
+    return providedVersionOfShared;
+};
+
+export default (
+    app: App,
+    launcherCompatibilityConfig = {
+        providedVersionOfEngine: config.getVersion(),
+        providedVersionOfShared: getProvidedVersionOfShared(),
+    }
+): CheckResult => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
@@ -177,7 +214,7 @@ export default (app: App): CheckResult => {
         checkRequestedVersionOfSharedIsValid,
         checkRequestedSharedIsProvided,
     ]) {
-        const result = check(app);
+        const result = check(app, launcherCompatibilityConfig);
         if (result != null) {
             return result;
         }
