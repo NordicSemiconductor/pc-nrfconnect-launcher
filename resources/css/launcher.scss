@@ -100,9 +100,15 @@ body {
 .core-app-icon {
     position: relative;
 
-    img {
+
+    img,.icon-replacement {
         height: 48px;
         width: 48px;
+    }
+
+    .icon-replacement {
+        border-radius: 7px;
+        background: #e6f8ff;
     }
 
     // Transform old primary color to match brand.

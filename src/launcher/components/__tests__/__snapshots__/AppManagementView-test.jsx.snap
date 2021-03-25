@@ -42,10 +42,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -149,10 +147,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -267,10 +263,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -423,10 +417,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -498,10 +490,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -573,10 +563,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -718,10 +706,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -793,10 +779,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -879,10 +863,8 @@ Array [
         <div
           className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
