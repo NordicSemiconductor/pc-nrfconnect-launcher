@@ -7,6 +7,7 @@
 - Links to product page added for PPK2 and updated for nRF5340 DK
 ### Bugfixes
 - macOS: When clicking on URLs in log entries the web site was not opened
+- Fixed issue where undefined serialport attribute causes crash #521
 
 ## Version 3.6.1
 ### Updates

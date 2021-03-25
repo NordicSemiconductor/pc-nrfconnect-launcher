@@ -1,7 +1,4 @@
 ## Unreleased
-### Bugfixes
-- Fixed issue where undefined serialport attribute causes crash #521
-
 ### Changed
 - Updated to pc-nrfconnect-shared 4.18.0
 
