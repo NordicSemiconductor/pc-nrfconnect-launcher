@@ -38,128 +38,158 @@ import { remote } from 'electron';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';
+import { App } from '../../main/apps';
 import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
 const config = remote.require('../main/config');
 
-const isVersionNumber = versionNumberString =>
-    semver.valid(versionNumberString) != null;
+const isValidVersionNumber = (maybeVersionNumber?: string) =>
+    semver.valid(maybeVersionNumber) != null;
 
-const providedVersionOfShared = requiredVersionOfShared(launcherPackageJson);
+const requestedVersionOfShared = (app: App) => app.sharedVersion;
 
-const requestedVersionOfShared = app => app.sharedVersion;
+interface LauncherCompatibilityConfig {
+    providedVersionOfEngine: string;
+    providedVersionOfShared: string;
+}
 
-const checkEngineVersionIsSet = app =>
+const undecided = { isDecided: false } as const;
+const compatible = { isDecided: true, isCompatible: true } as const;
+const incompatible = (warning: string, longWarning: string) =>
+    ({
+        isDecided: true,
+        isCompatible: false,
+        warning,
+        longWarning,
+    } as const);
+
+type Undecided = typeof undecided;
+type Compatible = typeof compatible;
+type Incompatible = ReturnType<typeof incompatible>;
+
+type AppCompatibilityChecker = (
+    app: App,
+    launcherCompatibilityConfig: LauncherCompatibilityConfig
+) => Undecided | Compatible | Incompatible;
+
+export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
-        ? undefined
-        : {
-              isCompatible: false,
-              warning:
-                  'The app does not specify which nRF Connect version(s) ' +
+        ? undecided
+        : incompatible(
+              'The app does not specify which nRF Connect version(s) ' +
                   'it supports',
-              longWarning:
-                  'The app does not specify ' +
+              'The app does not specify ' +
                   'which nRF Connect version(s) it supports. Ask the app ' +
                   'author to add an engines.nrfconnect definition to package.json, ' +
-                  'ref. the documentation.',
-          };
+                  'ref. the documentation.'
+          );
 
-const checkEngineIsSupported = app => {
-    const requiredVersionOfEngine = app.engineVersion;
-
-    // The semver.satisfies() check will return false if receiving a pre-release
-    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
-    const coreEngineVersion = config.getVersion();
-    const providedVersionOfEngine = [
-        semver.major(coreEngineVersion),
-        semver.minor(coreEngineVersion),
-        semver.patch(coreEngineVersion),
-    ].join('.');
-
+export const checkEngineIsSupported: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfEngine }
+) => {
     const isSupportedEngine = semver.satisfies(
-        providedVersionOfEngine,
-        requiredVersionOfEngine
+        semver.coerce(providedVersionOfEngine) ?? '0.0.0',
+        app.engineVersion! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
-        ? undefined
-        : {
-              isCompatible: false,
-              warning:
-                  `The app only supports nRF Connect ${app.engineVersion}, ` +
+        ? undecided
+        : incompatible(
+              `The app only supports nRF Connect ${app.engineVersion}, ` +
                   'which does not match your currently installed version',
-              longWarning:
-                  'The app only supports ' +
+              'The app only supports ' +
                   `nRF Connect ${app.engineVersion} while your installed version ` +
-                  `is ${config.getVersion()}. It might not work as expected.`,
-          };
+                  `is ${providedVersionOfEngine}. It might not work as expected.`
+          );
 };
 
-const checkIdenticalShared = app =>
+export const checkIdenticalShared: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) =>
     requestedVersionOfShared(app) === providedVersionOfShared
-        ? { isCompatible: true }
-        : undefined;
+        ? compatible
+        : undecided;
 
-const checkProvidedVersionOfSharedIsValid = app =>
+export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) =>
     requestedVersionOfShared(app) == null ||
-    isVersionNumber(providedVersionOfShared)
-        ? undefined
-        : {
-              isCompatible: false,
-              warning:
-                  `nRF Connect uses "${providedVersionOfShared}" of shared ` +
+    isValidVersionNumber(providedVersionOfShared)
+        ? undecided
+        : incompatible(
+              `nRF Connect uses "${providedVersionOfShared}" of shared ` +
                   'which cannot be checked against the version required by ' +
                   'this app.',
-              longWarning:
-                  `nRF Connect uses "${providedVersionOfShared}" of shared ` +
+              `nRF Connect uses "${providedVersionOfShared}" of shared ` +
                   'which cannot be checked against the version required by ' +
                   'this app. Inform the developer, that the launcher needs ' +
                   'to reference a correct version of shared. The app might ' +
-                  'not work as expected.',
-          };
+                  'not work as expected.'
+          );
 
-const checkRequestedVersionOfSharedIsValid = app =>
+export const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
     requestedVersionOfShared(app) == null ||
-    isVersionNumber(requestedVersionOfShared(app))
-        ? undefined
-        : {
-              isCompatible: false,
-              warning:
-                  `The app requires "${requestedVersionOfShared(app)}" of ` +
+    isValidVersionNumber(requestedVersionOfShared(app))
+        ? undecided
+        : incompatible(
+              `The app requires "${requestedVersionOfShared(app)}" of ` +
                   'shared which cannot be checked against the version ' +
                   'provided by nRF Connect.',
-              longWarning:
-                  `The app requires "${requestedVersionOfShared(app)}" of ` +
+              `The app requires "${requestedVersionOfShared(app)}" of ` +
                   'shared which cannot be checked against the version ' +
                   'provided by nRF Connect. Inform the developer, that the ' +
                   'app needs to reference a correct version of shared. The ' +
-                  'app might not work as expected.',
-          };
+                  'app might not work as expected.'
+          );
 
-const checkRequestedSharedIsProvided = app => {
+export const checkRequestedSharedIsProvided: AppCompatibilityChecker = (
+    app,
+    { providedVersionOfShared }
+) => {
+    const requestedVersionOfSharedByApp = requestedVersionOfShared(app);
     const providesRequestedVersionOfShared =
-        requestedVersionOfShared(app) == null ||
-        semver.lte(requestedVersionOfShared(app), providedVersionOfShared);
+        requestedVersionOfSharedByApp == null ||
+        semver.lte(requestedVersionOfSharedByApp, providedVersionOfShared!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
     return providesRequestedVersionOfShared
-        ? undefined
-        : {
-              isCompatible: false,
-              warning:
-                  `The app requires ${requestedVersionOfShared(app)} of ` +
+        ? undecided
+        : incompatible(
+              `The app requires ${requestedVersionOfShared(app)} of ` +
                   'pc-nrfconnect-shared, but nRF Connect only provided ' +
                   `${providedVersionOfShared}. Inform the app developer, that ` +
                   'the app needs a more recent version of nRF Connect.',
-              longWarning:
-                  `The app requires ${requestedVersionOfShared(app)} of ` +
+              `The app requires ${requestedVersionOfShared(app)} of ` +
                   'pc-nrfconnect-shared, but nRF Connect only provided ' +
                   `${providedVersionOfShared}. Inform the app developer, that ` +
                   'the app needs a more recent version of nRF Connect. The app ' +
-                  'might not work as expected.',
-          };
+                  'might not work as expected.'
+          );
 };
 
-export default app => {
+const getProvidedVersionOfShared = () => {
+    const providedVersionOfShared = requiredVersionOfShared(
+        launcherPackageJson
+    );
+
+    if (providedVersionOfShared == null) {
+        throw new Error(
+            'The launcher must depend on a version of pc-nrfconnect-shared'
+        );
+    }
+
+    return providedVersionOfShared;
+};
+
+export default (
+    app: App,
+    launcherCompatibilityConfig = {
+        providedVersionOfEngine: config.getVersion(),
+        providedVersionOfShared: getProvidedVersionOfShared(),
+    }
+): Compatible | Incompatible => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
@@ -169,11 +199,11 @@ export default app => {
         checkRequestedVersionOfSharedIsValid,
         checkRequestedSharedIsProvided,
     ]) {
-        const result = check(app);
-        if (result != null) {
+        const result = check(app, launcherCompatibilityConfig);
+        if (result.isDecided) {
             return result;
         }
     }
 
-    return { isCompatible: true };
+    return compatible;
 };

@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { node, string } from 'prop-types';
 
 const MainView = ({ children, cssClass }) => (
     <div className={cssClass}>
@@ -52,8 +52,8 @@ const MainView = ({ children, cssClass }) => (
 );
 
 MainView.propTypes = {
-    children: PropTypes.node,
-    cssClass: PropTypes.string,
+    children: node,
+    cssClass: string,
 };
 
 MainView.defaultProps = {

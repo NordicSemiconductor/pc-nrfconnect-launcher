@@ -36,7 +36,7 @@
 
 import React from 'react';
 import Immutable from 'immutable';
-import PropTypes from 'prop-types';
+import { func, instanceOf, number, oneOfType, string } from 'prop-types';
 
 import NavMenuItem from './NavMenuItem';
 
@@ -63,13 +63,11 @@ const NavMenu = ({ menuItems, selectedItemId, onItemSelected, cssClass }) => (
 );
 
 NavMenu.propTypes = {
-    menuItems: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Immutable.Iterable),
-    ]).isRequired,
-    onItemSelected: PropTypes.func.isRequired,
-    selectedItemId: PropTypes.number,
-    cssClass: PropTypes.string,
+    menuItems: oneOfType([instanceOf(Array), instanceOf(Immutable.Iterable)])
+        .isRequired,
+    onItemSelected: func.isRequired,
+    selectedItemId: number,
+    cssClass: string,
 };
 
 NavMenu.defaultProps = {

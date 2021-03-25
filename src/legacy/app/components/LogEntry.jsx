@@ -37,7 +37,7 @@
 import React from 'react';
 import formatDate from 'date-fns/format';
 import { shell } from 'electron';
-import PropTypes from 'prop-types';
+import { number, shape, string } from 'prop-types';
 
 const regex = /(.*?)(https?:\/\/[^\s]+)/g;
 
@@ -95,11 +95,11 @@ const LogEntry = ({ entry }) => {
 };
 
 LogEntry.propTypes = {
-    entry: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        timestamp: PropTypes.string.isRequired,
-        level: PropTypes.string.isRequired,
-        message: PropTypes.string.isRequired,
+    entry: shape({
+        id: number.isRequired,
+        timestamp: string.isRequired,
+        level: string.isRequired,
+        message: string.isRequired,
     }).isRequired,
 };
 

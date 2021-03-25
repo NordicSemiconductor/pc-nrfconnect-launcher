@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { arrayOf, bool, func, shape, string } from 'prop-types';
 
 import { decorate } from '../../decoration';
 import LogHeaderButton from './LogHeaderButton';
@@ -67,19 +67,19 @@ const LogHeader = ({
 );
 
 LogHeader.propTypes = {
-    text: PropTypes.string,
-    buttons: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string,
-            title: PropTypes.string,
-            iconCssClass: PropTypes.string,
-            isSelected: PropTypes.bool,
+    text: string,
+    buttons: arrayOf(
+        shape({
+            id: string,
+            title: string,
+            iconCssClass: string,
+            isSelected: bool,
         })
     ),
-    onButtonClicked: PropTypes.func.isRequired,
-    cssClass: PropTypes.string,
-    headerTextCssClass: PropTypes.string,
-    headerButtonsCssClass: PropTypes.string,
+    onButtonClicked: func.isRequired,
+    cssClass: string,
+    headerTextCssClass: string,
+    headerButtonsCssClass: string,
 };
 
 LogHeader.defaultProps = {

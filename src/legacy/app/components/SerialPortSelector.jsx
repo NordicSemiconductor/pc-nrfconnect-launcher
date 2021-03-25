@@ -37,7 +37,7 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
-import PropTypes from 'prop-types';
+import { bool, func, instanceOf, oneOfType, string } from 'prop-types';
 
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
 import portPath from '../../portPath';
@@ -134,21 +134,18 @@ class SerialPortSelector extends React.Component {
 }
 
 SerialPortSelector.propTypes = {
-    ports: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    selectedPort: PropTypes.string,
-    showPortIndicator: PropTypes.bool,
-    portIndicatorStatus: PropTypes.string,
-    isLoading: PropTypes.bool,
-    isExpanded: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    onDeselect: PropTypes.func.isRequired,
-    cssClass: PropTypes.string,
-    menuItemCssClass: PropTypes.string,
-    filter: PropTypes.func,
+    ports: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    selectedPort: string,
+    showPortIndicator: bool,
+    portIndicatorStatus: string,
+    isLoading: bool,
+    isExpanded: bool,
+    onToggle: func.isRequired,
+    onSelect: func.isRequired,
+    onDeselect: func.isRequired,
+    cssClass: string,
+    menuItemCssClass: string,
+    filter: func,
 };
 
 SerialPortSelector.defaultProps = {

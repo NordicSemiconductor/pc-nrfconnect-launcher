@@ -34,37 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import { openUrl } from 'pc-nrfconnect-shared';
-import logo from 'pc-nrfconnect-shared/src/Logo/nordic-logo-white-icon-only.png';
-import { func, string } from 'prop-types';
-
-const Logo = ({ src, alt, cssClass, containerCssClass, onClick }) => (
-    <div
-        className={containerCssClass}
-        role="link"
-        onClick={onClick}
-        onKeyPress={() => {}}
-        tabIndex="0"
-    >
-        <img className={cssClass} src={src} alt={alt} />
-    </div>
-);
-
-Logo.propTypes = {
-    src: string,
-    alt: string,
-    cssClass: string,
-    containerCssClass: string,
-    onClick: func,
-};
-
-Logo.defaultProps = {
-    src: logo,
-    alt: 'nRF Connect',
-    cssClass: 'core-logo',
-    containerCssClass: 'core-logo-container',
-    onClick: () => openUrl('http://www.nordicsemi.com/nRFConnect'),
-};
-
-export default Logo;
+jest.mock('electron', () => ({
+    remote: {
+        require: module =>
+            module === '../main/config'
+                ? {
+                      getVersion: () => '1.2.3-running_in_unit_test',
+                  }
+                : undefined,
+    },
+}));

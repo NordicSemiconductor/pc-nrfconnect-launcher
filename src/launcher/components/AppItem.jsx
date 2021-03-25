@@ -42,7 +42,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
-import PropTypes from 'prop-types';
+import { bool, func, shape, string } from 'prop-types';
 
 import AppIcon from './AppIcon';
 
@@ -165,27 +165,27 @@ const AppItem = ({
 };
 
 AppItem.propTypes = {
-    app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        displayName: PropTypes.string,
-        description: PropTypes.string.isRequired,
-        homepage: PropTypes.string,
-        currentVersion: PropTypes.string,
-        latestVersion: PropTypes.string,
-        releaseNote: PropTypes.string,
-        source: PropTypes.string,
-        upgradeAvailable: PropTypes.bool,
+    app: shape({
+        name: string.isRequired,
+        displayName: string,
+        description: string.isRequired,
+        homepage: string,
+        currentVersion: string,
+        latestVersion: string,
+        releaseNote: string,
+        source: string,
+        upgradeAvailable: bool,
     }).isRequired,
-    isUpgrading: PropTypes.bool,
-    isRemoving: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    isInstalling: PropTypes.bool,
-    onReadMore: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onAppSelected: PropTypes.func.isRequired,
-    onCreateShortcut: PropTypes.func.isRequired,
-    onInstall: PropTypes.func.isRequired,
-    onShowReleaseNotes: PropTypes.func.isRequired,
+    isUpgrading: bool,
+    isRemoving: bool,
+    isDisabled: bool,
+    isInstalling: bool,
+    onReadMore: func.isRequired,
+    onRemove: func.isRequired,
+    onAppSelected: func.isRequired,
+    onCreateShortcut: func.isRequired,
+    onInstall: func.isRequired,
+    onShowReleaseNotes: func.isRequired,
 };
 
 AppItem.defaultProps = {

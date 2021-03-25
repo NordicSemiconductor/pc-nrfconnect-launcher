@@ -36,7 +36,7 @@
 
 import React from 'react';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 /**
  * Dialog that is shown if an nRF Connect core update is available. The user
@@ -83,11 +83,11 @@ const UpdateAvailableDialog = ({
 );
 
 UpdateAvailableDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    version: PropTypes.string.isRequired,
-    onClickReleaseNotes: PropTypes.func.isRequired,
-    onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    version: string.isRequired,
+    onClickReleaseNotes: func.isRequired,
+    onConfirm: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 export default UpdateAvailableDialog;

@@ -36,7 +36,7 @@
 
 import React from 'react';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
+import { bool, func } from 'prop-types';
 
 const UsageDataPolicy = (
     <div className="user-data-policy">
@@ -91,9 +91,9 @@ const UsageDataDialog = ({ isVisible, onConfirm, onCancel }) => (
 );
 
 UsageDataDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    onConfirm: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 UsageDataDialog.defaultProps = {};

@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 const LogHeaderButton = ({
     title,
@@ -56,12 +56,12 @@ const LogHeaderButton = ({
 );
 
 LogHeaderButton.propTypes = {
-    title: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    iconCssClass: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool,
-    cssClass: PropTypes.string,
-    selectedCssClass: PropTypes.string,
+    title: string.isRequired,
+    onClick: func.isRequired,
+    iconCssClass: string.isRequired,
+    isSelected: bool,
+    cssClass: string,
+    selectedCssClass: string,
 };
 
 LogHeaderButton.defaultProps = {

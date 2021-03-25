@@ -36,7 +36,7 @@
 
 import React from 'react';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 const ConfirmRemoveSourceDialog = ({
     isVisible,
@@ -56,10 +56,10 @@ const ConfirmRemoveSourceDialog = ({
 );
 
 ConfirmRemoveSourceDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    source: PropTypes.string,
-    onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    source: string,
+    onConfirm: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 ConfirmRemoveSourceDialog.defaultProps = {

@@ -36,7 +36,7 @@
 
 import React from 'react';
 import { Iterable } from 'immutable';
-import PropTypes from 'prop-types';
+import { bool, func, instanceOf, string } from 'prop-types';
 
 import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
@@ -79,18 +79,18 @@ const AppManagementView = ({
 );
 
 AppManagementView.propTypes = {
-    apps: PropTypes.instanceOf(Iterable).isRequired,
-    sources: PropTypes.instanceOf(Object).isRequired,
-    installingAppName: PropTypes.string,
-    upgradingAppName: PropTypes.string,
-    removingAppName: PropTypes.string,
-    isProcessing: PropTypes.bool,
-    onInstall: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onReadMore: PropTypes.func.isRequired,
-    onAppSelected: PropTypes.func.isRequired,
-    onCreateShortcut: PropTypes.func.isRequired,
-    onShowReleaseNotes: PropTypes.func.isRequired,
+    apps: instanceOf(Iterable).isRequired,
+    sources: instanceOf(Object).isRequired,
+    installingAppName: string,
+    upgradingAppName: string,
+    removingAppName: string,
+    isProcessing: bool,
+    onInstall: func.isRequired,
+    onRemove: func.isRequired,
+    onReadMore: func.isRequired,
+    onAppSelected: func.isRequired,
+    onCreateShortcut: func.isRequired,
+    onShowReleaseNotes: func.isRequired,
 };
 
 AppManagementView.defaultProps = {

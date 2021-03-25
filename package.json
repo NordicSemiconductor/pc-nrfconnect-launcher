@@ -112,6 +112,7 @@
         }
     },
     "devDependencies": {
+        "@types/node": "12.20.6",
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
         "electron": "8.2.5",
@@ -178,7 +179,8 @@
             "node_modules/(?!(pc-nrfconnect-shared)/)"
         ],
         "setupFilesAfterEnv": [
-            "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.js"
+            "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.js",
+            "<rootDir>/src/setupMocks.js"
         ],
         "snapshotSerializers": [
             "enzyme-to-json/serializer"

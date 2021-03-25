@@ -36,7 +36,7 @@
 
 import React from 'react';
 import Mousetrap from 'mousetrap';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 function getClassName(baseClass, isSelected) {
     return `${baseClass} ${isSelected ? 'active' : ''}`;
@@ -77,13 +77,13 @@ export default class NavMenuItem extends React.Component {
 }
 
 NavMenuItem.propTypes = {
-    isSelected: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    iconClass: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    cssClass: PropTypes.string,
-    hotkey: PropTypes.string.isRequired,
+    isSelected: bool.isRequired,
+    text: string.isRequired,
+    title: string.isRequired,
+    iconClass: string.isRequired,
+    onClick: func.isRequired,
+    cssClass: string,
+    hotkey: string.isRequired,
 };
 
 NavMenuItem.defaultProps = {

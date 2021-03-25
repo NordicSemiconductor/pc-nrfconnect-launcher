@@ -36,7 +36,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Iterable } from 'immutable';
-import PropTypes from 'prop-types';
+import { bool, func, instanceOf, oneOfType, string } from 'prop-types';
 
 import { decorate } from '../../decoration';
 import LogHeaderContainer from '../containers/LogHeaderContainer';
@@ -67,13 +67,10 @@ const LogViewer = ({ logEntries, autoScroll, onMount, cssClass }) => {
 };
 
 LogViewer.propTypes = {
-    onMount: PropTypes.func,
-    logEntries: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    autoScroll: PropTypes.bool.isRequired,
-    cssClass: PropTypes.string,
+    onMount: func,
+    logEntries: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    autoScroll: bool.isRequired,
+    cssClass: string,
 };
 
 LogViewer.defaultProps = {

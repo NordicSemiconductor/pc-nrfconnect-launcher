@@ -37,7 +37,7 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
-import PropTypes from 'prop-types';
+import { bool, func, instanceOf, number, oneOfType, string } from 'prop-types';
 
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
 import portPath from '../../portPath';
@@ -180,23 +180,17 @@ export default class DeviceSelector extends React.Component {
 }
 
 DeviceSelector.propTypes = {
-    onSelect: PropTypes.func.isRequired,
-    onDeselect: PropTypes.func.isRequired,
-    cssClass: PropTypes.string,
-    menuItemCssClass: PropTypes.string,
-    menuItemDetailsCssClass: PropTypes.string,
-    showPortIndicator: PropTypes.bool,
-    portIndicatorStatus: PropTypes.string,
-    devices: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    selectedSerialNumber: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
+    onSelect: func.isRequired,
+    onDeselect: func.isRequired,
+    cssClass: string,
+    menuItemCssClass: string,
+    menuItemDetailsCssClass: string,
+    showPortIndicator: bool,
+    portIndicatorStatus: string,
+    devices: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    selectedSerialNumber: oneOfType([string, number]),
+    onMount: func,
+    onUnmount: func,
 };
 
 DeviceSelector.defaultProps = {
