@@ -68,7 +68,11 @@ const AppIcon = ({ app }) => {
                 primaryColorNeedsUpdate && 'old-app-icon'
             )}
         >
-            <img src={iconPath || ''} alt="" draggable={false} />
+            {iconPath ? (
+                <img src={iconPath} alt="" draggable={false} />
+            ) : (
+                <div className="icon-replacement" />
+            )}
             {appBadge(app)}
         </div>
     );
