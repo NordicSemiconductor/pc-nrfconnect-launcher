@@ -129,7 +129,7 @@
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
-        "axios": "0.19.2",
+        "axios": "0.21.1",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
         "electron-log": "4.2.0",
