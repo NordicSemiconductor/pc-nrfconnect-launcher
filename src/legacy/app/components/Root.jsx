@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import { ErrorBoundary } from 'pc-nrfconnect-shared';
 import { func } from 'prop-types';
 
 import { decorate } from '../../decoration';
@@ -92,32 +93,34 @@ function onMouseDownVertical(event) {
 
 const Root = ({ resizeLogContainer }) => (
     <div className="core-main-area">
-        <DecoratedNavBar />
-        <div className="core-main-layout">
-            <div>
-                <MainViewContainer />
-                <div
-                    tabIndex={-1}
-                    role="button"
-                    className="core-splitter horizontal"
-                    onMouseDown={event =>
-                        onMouseDownHorizontal(event, resizeLogContainer)
-                    }
-                />
-                <LogViewerContainer />
-                <div
-                    tabIndex={-1}
-                    role="button"
-                    className="core-splitter vertical"
-                    onMouseDown={onMouseDownVertical}
-                />
+        <ErrorBoundary>
+            <DecoratedNavBar />
+            <div className="core-main-layout">
+                <div>
+                    <MainViewContainer />
+                    <div
+                        tabIndex={-1}
+                        role="button"
+                        className="core-splitter horizontal"
+                        onMouseDown={event =>
+                            onMouseDownHorizontal(event, resizeLogContainer)
+                        }
+                    />
+                    <LogViewerContainer />
+                    <div
+                        tabIndex={-1}
+                        role="button"
+                        className="core-splitter vertical"
+                        onMouseDown={onMouseDownVertical}
+                    />
+                </div>
+                <SidePanelContainer />
             </div>
-            <SidePanelContainer />
-        </div>
-        <FirmwareDialogContainer />
-        <AppReloadDialogContainer />
-        <DeviceSetupContainer />
-        <ErrorDialogContainer />
+            <FirmwareDialogContainer />
+            <AppReloadDialogContainer />
+            <DeviceSetupContainer />
+            <ErrorDialogContainer />
+        </ErrorBoundary>
     </div>
 );
 

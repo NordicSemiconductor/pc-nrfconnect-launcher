@@ -99,11 +99,8 @@ export default class DeviceSelector extends React.Component {
      * @returns {*} One menu item element.
      */
     getItemFromDevice(device) {
-        const {
-            onSelect,
-            menuItemCssClass,
-            menuItemDetailsCssClass,
-        } = this.props;
+        const { onSelect, menuItemCssClass, menuItemDetailsCssClass } =
+            this.props;
 
         const menuItemCssClassWithTraits = [
             menuItemCssClass,

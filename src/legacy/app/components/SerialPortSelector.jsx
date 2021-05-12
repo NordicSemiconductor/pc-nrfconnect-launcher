@@ -50,13 +50,8 @@ function filterSeggerPorts(port) {
 
 class SerialPortSelector extends React.Component {
     renderSerialPortItems() {
-        const {
-            ports,
-            onSelect,
-            isLoading,
-            menuItemCssClass,
-            filter,
-        } = this.props;
+        const { ports, onSelect, isLoading, menuItemCssClass, filter } =
+            this.props;
 
         if (!isLoading) {
             return ports.filter(filter).map(port => (
@@ -77,12 +72,8 @@ class SerialPortSelector extends React.Component {
     }
 
     renderCloseItem() {
-        const {
-            selectedPort,
-            isLoading,
-            onDeselect,
-            menuItemCssClass,
-        } = this.props;
+        const { selectedPort, isLoading, onDeselect, menuItemCssClass } =
+            this.props;
 
         if (selectedPort && !isLoading) {
             return (

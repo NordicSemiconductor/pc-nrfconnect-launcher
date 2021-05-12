@@ -59,12 +59,10 @@ function cancel(event) {
 class SettingsView extends React.Component {
     constructor() {
         super();
-        this.onCheckUpdatesAtStartupChanged = this.onCheckUpdatesAtStartupChanged.bind(
-            this
-        );
-        this.onTriggerUpdateCheckClicked = this.onTriggerUpdateCheckClicked.bind(
-            this
-        );
+        this.onCheckUpdatesAtStartupChanged =
+            this.onCheckUpdatesAtStartupChanged.bind(this);
+        this.onTriggerUpdateCheckClicked =
+            this.onTriggerUpdateCheckClicked.bind(this);
     }
 
     componentDidMount() {
