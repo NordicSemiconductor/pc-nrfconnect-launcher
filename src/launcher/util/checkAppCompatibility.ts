@@ -130,20 +130,21 @@ export const checkProvidedVersionOfSharedIsValid: AppCompatibilityChecker = (
                   'not work as expected.'
           );
 
-export const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker = app =>
-    requestedVersionOfShared(app) == null ||
-    isValidVersionNumber(requestedVersionOfShared(app))
-        ? undecided
-        : incompatible(
-              `The app requires "${requestedVersionOfShared(app)}" of ` +
-                  'shared which cannot be checked against the version ' +
-                  'provided by nRF Connect.',
-              `The app requires "${requestedVersionOfShared(app)}" of ` +
-                  'shared which cannot be checked against the version ' +
-                  'provided by nRF Connect. Inform the developer, that the ' +
-                  'app needs to reference a correct version of shared. The ' +
-                  'app might not work as expected.'
-          );
+export const checkRequestedVersionOfSharedIsValid: AppCompatibilityChecker =
+    app =>
+        requestedVersionOfShared(app) == null ||
+        isValidVersionNumber(requestedVersionOfShared(app))
+            ? undecided
+            : incompatible(
+                  `The app requires "${requestedVersionOfShared(app)}" of ` +
+                      'shared which cannot be checked against the version ' +
+                      'provided by nRF Connect.',
+                  `The app requires "${requestedVersionOfShared(app)}" of ` +
+                      'shared which cannot be checked against the version ' +
+                      'provided by nRF Connect. Inform the developer, that the ' +
+                      'app needs to reference a correct version of shared. The ' +
+                      'app might not work as expected.'
+              );
 
 export const checkRequestedSharedIsProvided: AppCompatibilityChecker = (
     app,
@@ -170,9 +171,8 @@ export const checkRequestedSharedIsProvided: AppCompatibilityChecker = (
 };
 
 const getProvidedVersionOfShared = () => {
-    const providedVersionOfShared = requiredVersionOfShared(
-        launcherPackageJson
-    );
+    const providedVersionOfShared =
+        requiredVersionOfShared(launcherPackageJson);
 
     if (providedVersionOfShared == null) {
         throw new Error(

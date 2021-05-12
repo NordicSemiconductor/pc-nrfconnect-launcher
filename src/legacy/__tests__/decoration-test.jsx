@@ -133,7 +133,10 @@ describe('decorate', () => {
 
     it('should render with property when app uses a provided property', () => {
         setApp({
-            decorateFoo: () => ({ bar }) => <p id={bar} />, // eslint-disable-line react/prop-types
+            decorateFoo:
+                () =>
+                ({ bar }) =>
+                    <p id={bar} />, // eslint-disable-line react/prop-types
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo bar="baz" />).toJSON();

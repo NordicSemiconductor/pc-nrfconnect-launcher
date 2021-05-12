@@ -149,8 +149,7 @@ describe('settingsReducer', () => {
         const state = reducer(
             initialState.set('isUpdateCheckCompleteDialogVisible', true),
             {
-                type:
-                    SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
+                type: SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
             }
         );
         expect(state.isUpdateCheckCompleteDialogVisible).toEqual(false);

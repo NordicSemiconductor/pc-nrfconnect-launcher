@@ -64,14 +64,8 @@ export default class DeviceSetupDialog extends React.Component {
     }
 
     render() {
-        const {
-            isVisible,
-            isInProgress,
-            text,
-            choices,
-            onOk,
-            onCancel,
-        } = this.props;
+        const { isVisible, isInProgress, text, choices, onOk, onCancel } =
+            this.props;
         const { selectedChoice } = this.state;
 
         if (choices && (choices.length > 0 || choices.size > 0)) {
