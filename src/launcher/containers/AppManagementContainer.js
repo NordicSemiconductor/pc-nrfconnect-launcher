@@ -48,7 +48,7 @@ const filterByInput = filter => app => {
     } catch (_) {
         //
     }
-    return app.displayName.includes(filter);
+    return app.displayName?.includes(filter);
 };
 
 function mapStateToProps(state) {
