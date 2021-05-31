@@ -47,9 +47,10 @@ import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
+import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
 
 export default () => (
-    <>
+    <ErrorBoundaryLauncher>
         <Tab.Container id="launcher" defaultActiveKey="apps">
             <Nav>
                 {/* eslint-disable-next-line jsx-a11y/no-access-key */}
@@ -78,5 +79,5 @@ export default () => (
         <ConfirmLaunchContainer />
         <ProxyLoginContainer />
         <ProxyErrorContainer />
-    </>
+    </ErrorBoundaryLauncher>
 );
