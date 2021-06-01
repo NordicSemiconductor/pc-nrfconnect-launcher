@@ -120,6 +120,7 @@ function downloadAppsJsonFile(url, name) {
             );
             wrappedError.statusCode = error.statusCode;
             wrappedError.cause = { name, url };
+            wrappedError.sourceNotFound = net.isResourceNotFound(error);
             throw wrappedError;
         })
         .then(appsJson => {
