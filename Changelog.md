@@ -10,6 +10,8 @@
 ### Bugfixes
 - macOS: When clicking on URLs in log entries the web site was not opened
 - Fixed issue where undefined serialport attribute causes crash #521
+- The error message from #403 for an apps.json that is not found for a
+  source on the server did not show up correctly. #531
 
 ## Version 3.6.2
 ### Updates
