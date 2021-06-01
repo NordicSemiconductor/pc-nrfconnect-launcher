@@ -11,6 +11,10 @@
 - macOS: When clicking on URLs in log entries the web site was not opened
 - Fixed issue where undefined serialport attribute causes crash #521
 
+## Version 3.6.2
+### Updates
+- Prevented crash when incomplete regular expression is entered in search box
+
 ## Version 3.6.1
 ### Updates
 - Updated to pc-nrfjprog-js v1.7.6, including bundled nrfjprog v10.12.1 and JLink 6.88a
