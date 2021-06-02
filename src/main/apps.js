@@ -496,6 +496,8 @@ function getOfficialApps() {
             currentValue.value.forEach(result => {
                 if (result.value.status === 'rejected') {
                     rejected.push({ ...result.value });
+                } else if (result.status === 'rejected') {
+                    throw new Error(result.value);
                 } else {
                     fulfilled.push(result.value);
                 }
