@@ -374,7 +374,7 @@ const handleAppsWithErrors = (dispatch, apps) => {
         dispatch(
             sendLauncherUsageData(
                 EventAction.REPORT_INSTALLATION_ERROR,
-                app.name
+                `${app.source} - ${app.name}`
             )
         );
     });

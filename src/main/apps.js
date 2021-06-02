@@ -477,6 +477,7 @@ function getOfficialAppsFromSource(source) {
                         reason: err,
                         path: filePath,
                         name: officialApp.name,
+                        source,
                     });
                 });
         });
