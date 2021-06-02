@@ -459,7 +459,7 @@ function getOfficialAppsFromSource(source) {
                 officialApp.name
             );
             return fs
-                .exists(filePath)
+                .pathExists(filePath)
                 .then(isInstalled => {
                     if (isInstalled) {
                         return decorateWithInstalledAppInfo(
