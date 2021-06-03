@@ -16,6 +16,7 @@ function createExternals() {
         'usb',
         'nrf-device-setup',
         'osx-temperature-sensor',
+        '@nordicsemiconductor/nrf-device-lib-js',
     ];
     return libs.reduce(
         (prev, lib) => Object.assign(prev, { [lib]: `commonjs ${lib}` }),

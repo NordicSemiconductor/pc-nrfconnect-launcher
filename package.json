@@ -129,6 +129,7 @@
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.10",
         "axios": "0.19.2",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
