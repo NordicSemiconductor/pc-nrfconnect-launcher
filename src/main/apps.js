@@ -453,14 +453,13 @@ function getOfficialAppsFromSource(source) {
     ]).then(([officialApps, availableUpdates]) => {
         const { ...cleanedApps } = officialApps;
         const officialAppsArray = officialAppsObjToArray(cleanedApps, source);
-        const promises = officialAppsArray.map(officialApp =>
-            fs
-                .exists(
-                    path.join(
-                        config.getNodeModulesDir(source),
-                        officialApp.name
-                    )
-                )
+        const promises = officialAppsArray.map(officialApp => {
+            const filePath = path.join(
+                config.getNodeModulesDir(source),
+                officialApp.name
+            );
+            return fs
+                .pathExists(filePath)
                 .then(isInstalled => {
                     if (isInstalled) {
                         return decorateWithInstalledAppInfo(
@@ -472,20 +471,42 @@ function getOfficialAppsFromSource(source) {
                     }
                     return Promise.resolve(officialApp);
                 })
-        );
-        return Promise.all(promises);
+                .catch(err => {
+                    return Promise.resolve({
+                        status: 'rejected',
+                        reason: err,
+                        path: filePath,
+                        name: officialApp.name,
+                        source,
+                    });
+                });
+        });
+        return Promise.allSettled(promises);
     });
 }
 
 function getOfficialApps() {
     const sources = settings.getSources();
-    return Promise.all(
+    return Promise.allSettled(
         Object.keys(sources).map(source => getOfficialAppsFromSource(source))
     ).then(arrayOfArrays =>
-        arrayOfArrays.reduce(
-            (accumulator, currentValue) => [...accumulator, ...currentValue],
-            []
-        )
+        arrayOfArrays.reduce((acc, currentValue) => {
+            const fulfilled = acc.fulfilled ? [...acc.fulfilled] : [];
+            const rejected = acc.rejected ? [...acc.rejected] : [];
+            currentValue.value.forEach(result => {
+                if (result.value.status === 'rejected') {
+                    rejected.push({ ...result.value });
+                } else if (result.status === 'rejected') {
+                    throw new Error(result.value);
+                } else {
+                    fulfilled.push(result.value);
+                }
+            });
+            return {
+                fulfilled,
+                rejected,
+            };
+        }, {})
     );
 }
 

@@ -53,6 +53,7 @@ export const EventAction = {
     UPGRADE_APP: 'Upgrade app',
     REPORT_OS_INFO: 'Report OS info',
     REPORT_LAUNCHER_INFO: 'Report launcher info',
+    REPORT_INSTALLATION_ERROR: 'Report installation error',
 };
 
 const EventLabel = {
