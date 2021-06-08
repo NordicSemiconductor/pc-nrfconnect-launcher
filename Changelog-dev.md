@@ -1,6 +1,6 @@
 ## Unreleased
 ### Changed
-- Updated to pc-nrfconnect-shared 4.25.0
+- Updated to pc-nrfconnect-shared 4.26.0
 
 ## Version 3.6.0
 ### Bugfixes
