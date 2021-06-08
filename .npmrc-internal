@@ -1,5 +1,6 @@
-strict-ssl=true
+strict-ssl=false
 always-auth=true
+
 registry=https://npm.nordicsemi.no/
 @babel:registry=https://registry.npmjs.org/
 @bcoe:registry=https://registry.npmjs.org/
@@ -11,6 +12,7 @@ registry=https://npm.nordicsemi.no/
 @istanbuljs:registry=https://registry.npmjs.org/
 @jest:registry=https://registry.npmjs.org/
 @mdi:registry=https://registry.npmjs.org/
+@nordicsemiconductor:registry=https://npm.nordicsemi.no/
 @popperjs:registry=https://registry.npmjs.org/
 @protobufjs:registry=https://registry.npmjs.org/
 @restart:registry=https://registry.npmjs.org/
@@ -28,7 +30,12 @@ registry=https://npm.nordicsemi.no/
 glob:registry=https://registry.npmjs.org/
 micromatch:registry=https://registry.npmjs.org/
 string_decoder:registry=https://registry.npmjs.org/
+
 fetch-retries=20
 fetch-retry-factor=100
 fetch-retry-mintimeout=100000
 fetch-retry-maxtimeout=600000
+
+runtime = electron
+target = 8.2.5
+disturl = https://electronjs.org/headers
