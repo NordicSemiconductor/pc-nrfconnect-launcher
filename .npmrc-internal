@@ -1,5 +1,4 @@
-strict-ssl=false
-always-auth=true
+strict-ssl=true
 
 registry=https://npm.nordicsemi.no/
 @babel:registry=https://registry.npmjs.org/
