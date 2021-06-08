@@ -7,6 +7,10 @@
 - Links to product page added for PPK2 and updated for nRF5340 DK
 - Make use of the ErrorBoundary component added in [`pc-nrfconnect-shared`](https://github.com/NordicSemiconductor/pc-nrfconnect-shared)
   in legacy apps
+- When the files of an app are corrupted (e.g. by a partial sync of a file sync tool)
+  the launcher used to be blocked. Now the launcher is not blocked anymore and offers
+  an additional recovery mechanism.
+
 ### Bugfixes
 - macOS: When clicking on URLs in log entries the web site was not opened
 - Fixed issue where undefined serialport attribute causes crash #521
