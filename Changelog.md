@@ -1,6 +1,6 @@
 ## Version 3.7.0
 ### Updates
-- Warn when apps require a more recent of the shared version than is provided by
+- Warn when apps require a more recent version of the shared code than is provided by
   the launcher #519
 - Show app version in title bar (before only the version of the launcher was
   shown) #515
