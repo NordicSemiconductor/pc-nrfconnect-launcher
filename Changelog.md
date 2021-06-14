@@ -1,4 +1,4 @@
-## Unreleased
+## Version 3.7.0
 ### Updates
 - Warn when apps require a more recent of the shared code than is provided by
   the launcher #519
