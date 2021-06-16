@@ -16,6 +16,8 @@
 - Fixed issue where undefined serialport attribute causes crash #521
 - The error message from #403 for an apps.json that is not found for a
   source on the server did not show up correctly. #531
+- GA events were sent even when the user had not consented.
+- `Restore defaults` button styling inside `ErrorBoundary` component was broken.
 
 ## Version 3.6.2
 ### Updates
