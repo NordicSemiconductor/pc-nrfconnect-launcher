@@ -147,7 +147,7 @@ function openAppWindow(app) {
 }
 
 function openOfficialAppWindow(appName, sourceName) {
-    return apps.getOfficialApps().then(appList => {
+    return apps.getOfficialApps().then(({ fulfilled: appList }) => {
         const officialApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );
