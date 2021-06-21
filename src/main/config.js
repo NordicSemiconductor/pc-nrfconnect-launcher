@@ -48,6 +48,7 @@ let electronExePath;
 let homeDir;
 let userDataDir;
 let desktopDir;
+let ubuntuDesktopDir;
 let tmpDir;
 let appsRootDir;
 let appsLocalDir;
@@ -92,6 +93,7 @@ function init(argv) {
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     desktopDir = electronApp.getPath('desktop');
+    ubuntuDesktopDir = path.join(homeDir, '.local', 'share', 'applications');
     tmpDir = electronApp.getPath('temp');
     appsRootDir =
         argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
@@ -133,6 +135,7 @@ module.exports = {
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
     getDesktopDir: () => desktopDir,
+    getUbuntuDesktopDir: () => ubuntuDesktopDir,
     getTmpDir: () => tmpDir,
     getAppsRootDir,
     getAppsLocalDir: () => appsLocalDir,
