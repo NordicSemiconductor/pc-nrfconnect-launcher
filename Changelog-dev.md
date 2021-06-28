@@ -1,6 +1,6 @@
-## Unreleased
-### Changed
-- Updated to pc-nrfconnect-shared 4.26.0
+## Version 3.7.0
+### Updates
+- Updated to pc-nrfconnect-shared 4.27.1
 
 ## Version 3.6.0
 ### Bugfixes
@@ -18,6 +18,6 @@
 - Enabled use of Redux DevTools and ease installation of React and Redux DevTools #381
 - Updated additional app architecture with new design. #392, #393, #394, #433, #434
 - Removed dependency of react-infinite. #401
-### Changed
+### Updates
 - This project was renamed to pc-nrfconnect-launcher.
 - Fewer requests for entering proxy credentials when needed. #370
