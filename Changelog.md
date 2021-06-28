@@ -1,27 +1,20 @@
 ## Version 3.7.0
 ### Updates
-- Warn when apps require a more recent version of the shared code than is provided by
-  the launcher #519
-- Show app version in title bar (before only the version of the launcher was
-  shown) #515
-- Links to product page added for PPK2 and updated for nRF5340 DK
-- Make use of the ErrorBoundary component added in [`pc-nrfconnect-shared`](https://github.com/NordicSemiconductor/pc-nrfconnect-shared)
-  in legacy apps
-- When the files of an app are corrupted (e.g. by a partial sync of a file sync tool)
-  the launcher used to be blocked. Now the launcher is not blocked anymore and offers
-  an additional recovery mechanism.
+- Added recovery assistance for when the application encounters an error
+- Added `Restore Default` button in the `About` pane in the apps which have the `About` pane
+- Added app version in title bar (previously only the version of the launcher was shown) #515
+- Added links to product page for Power Profiler Kit 2 and updated links for nRF5340 Development Kit
+- Updated styles in the `About` pane
+- Created shortcut in `~/.local/share/applications` for Ubuntu #545
 
 ### Bugfixes
-- macOS: When clicking on URLs in log entries the web site was not opened
-- Fixed issue where undefined serialport attribute causes crash #521
-- The error message from #403 for an apps.json that is not found for a
-  source on the server did not show up correctly. #531
-- GA events were sent even when the user had not consented.
-- `Restore defaults` button styling inside `ErrorBoundary` component was broken.
-
-## Version 3.6.2
-### Updates
 - Prevented crash when incomplete regular expression is entered in search box
+- Fixed that the launcher does not show any apps when the files of an app are corrupted (e.g. by a partial sync of a file sync tool)
+  Now the launcher offers an additional recovery mechanism.
+- Fixed when clicking on URLs in log entries the web site was not opened on macOS
+- Fixed issue where undefined serialport attribute causes crash #521
+- Fixed the error message from #403 for an apps.json that is not found for a
+  source on the server did not show up correctly. #531
 
 ## Version 3.6.1
 ### Updates
