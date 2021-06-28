@@ -1,3 +1,4 @@
+## Version 3.7.0
 ### Updates
 - Added recovery assistance for when the application encounters an error
 - Added `Restore Default` button in the `About` pane in the apps which have the `About` pane
@@ -14,10 +15,6 @@
 - Fixed issue where undefined serialport attribute causes crash #521
 - Fixed the error message from #403 for an apps.json that is not found for a
   source on the server did not show up correctly. #531
-
-## Version 3.6.2
-### Updates
-- Prevented crash when incomplete regular expression is entered in search box
 
 ## Version 3.6.1
 ### Updates
