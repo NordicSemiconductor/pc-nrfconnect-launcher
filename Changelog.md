@@ -1,3 +1,7 @@
+## Unreleased
+### Updates
+- Display app version for uninstalled apps if the information is present in `apps.json` in the source.
+
 ## Version 3.7.0
 ### Updates
 - Added recovery assistance for when the application encounters an error
