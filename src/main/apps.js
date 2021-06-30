@@ -469,7 +469,10 @@ function getOfficialAppsFromSource(source) {
                             decorateWithLatestVersion(app, availableUpdates)
                         );
                     }
-                    return Promise.resolve(officialApp);
+
+                    return decorateWithLatestVersion(officialApp, {
+                        [officialApp.name]: officialApp.version,
+                    });
                 })
                 .catch(err => {
                     return Promise.resolve({
