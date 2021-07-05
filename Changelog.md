@@ -1,6 +1,6 @@
 ## Unreleased
 ### Updates
-- Display app version for uninstalled apps if the information is present in `apps.json` in the source.
+- Display app version for uninstalled apps.
 
 ## Version 3.7.0
 ### Updates
