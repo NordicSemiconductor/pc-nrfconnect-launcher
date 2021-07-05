@@ -469,17 +469,27 @@ function getOfficialAppsFromSource(source) {
                             decorateWithLatestVersion(app, availableUpdates)
                         );
                     }
-                    return Promise.resolve(officialApp);
+                    return registryApi
+                        .getLatestPackageVersions([officialApp.name], source)
+                        .then(latestVersions =>
+                            decorateWithLatestVersion(
+                                officialApp,
+                                latestVersions
+                            )
+                        )
+                        .catch(err =>
+                            Promise.resolve({ status: 'invalid', reason: err })
+                        );
                 })
-                .catch(err => {
-                    return Promise.resolve({
+                .catch(err =>
+                    Promise.resolve({
                         status: 'rejected',
                         reason: err,
                         path: filePath,
                         name: officialApp.name,
                         source,
-                    });
-                });
+                    })
+                );
         });
         return Promise.allSettled(promises);
     });
@@ -494,7 +504,14 @@ function getOfficialApps() {
             const fulfilled = acc.fulfilled ? [...acc.fulfilled] : [];
             const rejected = acc.rejected ? [...acc.rejected] : [];
             currentValue.value.forEach(result => {
-                if (result.value.status === 'rejected') {
+                if (result.value.status === 'invalid') {
+                    // this can happen if for example the apps.json for a source
+                    // is not properly updated so that there is a mismatch
+                    // between what is claims is there and what is actually there.
+                    // In this case we want to hide the error to the user as they
+                    // cannot do anything to prevent this besides removing the source.
+                    console.debug(result.value.reason);
+                } else if (result.value.status === 'rejected') {
                     rejected.push({ ...result.value });
                 } else if (result.status === 'rejected') {
                     throw new Error(result.value);

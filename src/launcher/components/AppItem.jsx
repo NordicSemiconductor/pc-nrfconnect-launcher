@@ -73,8 +73,11 @@ const AppItem = ({
                     <div className="small text-muted-more">
                         {app.source || 'local'}
                         {installed && <>, v{app.currentVersion}</>}
-                        {app.upgradeAvailable && (
+                        {installed && app.upgradeAvailable && (
                             <> (v{app.latestVersion} available)</>
+                        )}
+                        {!installed && app.latestVersion && (
+                            <>, v{app.latestVersion}</>
                         )}
                     </div>
                 </Col>
@@ -83,7 +86,7 @@ const AppItem = ({
                     className="d-flex align-items-center my-3 pl-3"
                 >
                     <ButtonToolbar className="wide-btns">
-                        {app.upgradeAvailable && (
+                        {installed && app.upgradeAvailable && (
                             <Button
                                 variant="outline-primary"
                                 title={`Update ${app.displayName}`}
