@@ -1,3 +1,10 @@
+## Unreleased
+### Added
+- Set
+  [user data directory](https://www.electronjs.org/docs/api/app#appgetpathname)
+  through command line switch `--user-data-dir` or environment variable
+  `NRF_USER_DATA_DIR`.
+
 ## Version 3.7.0
 ### Updates
 - Added recovery assistance for when the application encounters an error
