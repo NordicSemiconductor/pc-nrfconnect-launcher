@@ -36,6 +36,9 @@
 
 'use strict';
 
+// Run this as soon as possible, so that the user data folder is not already initialised by Electron
+require('./setUserDataDir');
+
 const { existsSync } = require('fs');
 const { resolve } = require('path');
 
