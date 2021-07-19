@@ -111,7 +111,7 @@
             "artifactName": "${name}-setup-${version}-${env.ARCH}.${ext}"
         },
         "externals": [
-            "nrf-device-lib-js"
+            "@nordicsemiconductor/nrf-device-lib-js"
         ]
     },
     "devDependencies": {
