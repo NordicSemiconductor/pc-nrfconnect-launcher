@@ -35,24 +35,25 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
+import { func, string } from 'prop-types';
+import { combineReducers } from 'redux';
+
 import {
-    setApp,
     clearDecorationCache,
+    connect,
     decorate,
     decorateReducer,
-    connect,
     invokeAppFn,
+    setApp,
 } from '../decoration';
 
 beforeEach(clearDecorationCache);
 
 describe('decorate', () => {
     const FooComponent = ({ id }) => <div id={id} />;
-    FooComponent.propTypes = { id: PropTypes.string };
+    FooComponent.propTypes = { id: string };
     FooComponent.defaultProps = { id: 'foo' };
 
     it('should render default component when app does not implement decorate method', () => {
@@ -132,7 +133,10 @@ describe('decorate', () => {
 
     it('should render with property when app uses a provided property', () => {
         setApp({
-            decorateFoo: () => ({ bar }) => <p id={bar} />, // eslint-disable-line react/prop-types
+            decorateFoo:
+                () =>
+                ({ bar }) =>
+                    <p id={bar} />, // eslint-disable-line react/prop-types
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo bar="baz" />).toJSON();
@@ -150,8 +154,8 @@ describe('connect', () => {
         <button id={id} onClick={onClick} /> // eslint-disable-line react/button-has-type
     );
     FooComponent.propTypes = {
-        id: PropTypes.string.isRequired,
-        onClick: PropTypes.func.isRequired,
+        id: string.isRequired,
+        onClick: func.isRequired,
     };
 
     const defaultStateProps = { id: 'foo' };

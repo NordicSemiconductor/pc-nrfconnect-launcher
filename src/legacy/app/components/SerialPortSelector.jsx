@@ -35,12 +35,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Iterable } from 'immutable';
+import { bool, func, instanceOf, oneOfType, string } from 'prop-types';
 
-import portPath from '../../portPath';
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
+import portPath from '../../portPath';
 
 const SEGGER_VENDOR_IDS = new Set(['0x1366', '1366']);
 
@@ -50,13 +50,8 @@ function filterSeggerPorts(port) {
 
 class SerialPortSelector extends React.Component {
     renderSerialPortItems() {
-        const {
-            ports,
-            onSelect,
-            isLoading,
-            menuItemCssClass,
-            filter,
-        } = this.props;
+        const { ports, onSelect, isLoading, menuItemCssClass, filter } =
+            this.props;
 
         if (!isLoading) {
             return ports.filter(filter).map(port => (
@@ -77,12 +72,8 @@ class SerialPortSelector extends React.Component {
     }
 
     renderCloseItem() {
-        const {
-            selectedPort,
-            isLoading,
-            onDeselect,
-            menuItemCssClass,
-        } = this.props;
+        const { selectedPort, isLoading, onDeselect, menuItemCssClass } =
+            this.props;
 
         if (selectedPort && !isLoading) {
             return (
@@ -134,21 +125,18 @@ class SerialPortSelector extends React.Component {
 }
 
 SerialPortSelector.propTypes = {
-    ports: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    selectedPort: PropTypes.string,
-    showPortIndicator: PropTypes.bool,
-    portIndicatorStatus: PropTypes.string,
-    isLoading: PropTypes.bool,
-    isExpanded: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    onDeselect: PropTypes.func.isRequired,
-    cssClass: PropTypes.string,
-    menuItemCssClass: PropTypes.string,
-    filter: PropTypes.func,
+    ports: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    selectedPort: string,
+    showPortIndicator: bool,
+    portIndicatorStatus: string,
+    isLoading: bool,
+    isExpanded: bool,
+    onToggle: func.isRequired,
+    onSelect: func.isRequired,
+    onDeselect: func.isRequired,
+    cssClass: string,
+    menuItemCssClass: string,
+    filter: func,
 };
 
 SerialPortSelector.defaultProps = {

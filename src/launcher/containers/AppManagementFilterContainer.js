@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import AppManagementFilter from '../components/AppManagementFilter';
+
 import * as AppsActions from '../actions/appsActions';
+import AppManagementFilter from '../components/AppManagementFilter';
 
 export default connect(
     ({ apps: { show, filter } }, { apps }) => ({

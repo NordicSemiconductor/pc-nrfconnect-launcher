@@ -41,13 +41,11 @@
 'use strict';
 
 import { remote, shell } from 'electron';
-
-import Mustache from 'mustache';
 import fs from 'fs';
+import Mustache from 'mustache';
 import path from 'path';
-import { v4 } from 'uuid';
-
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { v4 } from 'uuid';
 
 const config = remote.require('../main/config');
 const fileUtil = remote.require('../main/fileUtil');
@@ -165,8 +163,12 @@ function generateShortcutContent(app) {
 function createShortcutForLinux(app) {
     return dispatch => {
         const fileName = getFileName(app);
-        const filePath = path.join(
+        const desktopFilePath = path.join(
             config.getDesktopDir(),
+            `${fileName}.desktop`
+        );
+        const applicationsFilePath = path.join(
+            config.getUbuntuDesktopDir(),
             `${fileName}.desktop`
         );
         const shortcutContent = generateShortcutContent(app);
@@ -177,17 +179,19 @@ function createShortcutForLinux(app) {
                 )
             );
         }
-        fs.writeFile(filePath, shortcutContent, err => {
-            if (err) {
-                return dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Fail to create desktop shortcut on Linux with error: ${err}`
-                    )
-                );
-            }
-            fs.chmodSync(filePath, mode);
-            return null;
-        });
+
+        try {
+            fs.writeFileSync(desktopFilePath, shortcutContent);
+            fs.chmodSync(desktopFilePath, mode);
+            fs.writeFileSync(applicationsFilePath, shortcutContent);
+            fs.chmodSync(applicationsFilePath, mode);
+        } catch (err) {
+            return dispatch(
+                ErrorDialogActions.showDialog(
+                    `Fail to create desktop shortcut on Linux with error: ${err}`
+                )
+            );
+        }
         return null;
     };
 }

@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import ConfirmRemoveSourceDialog from '../components/ConfirmRemoveSourceDialog';
+
 import * as SettingsActions from '../actions/settingsActions';
+import ConfirmRemoveSourceDialog from '../components/ConfirmRemoveSourceDialog';
 
 function mapStateToProps(state) {
     return {

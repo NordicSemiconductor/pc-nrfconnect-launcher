@@ -35,11 +35,11 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Spinner } from 'pc-nrfconnect-shared';
+import { bool, func, number, string } from 'prop-types';
 
 const UpdateProgressDialog = ({
     isVisible,
@@ -82,13 +82,13 @@ const UpdateProgressDialog = ({
 );
 
 UpdateProgressDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    isProgressSupported: PropTypes.bool.isRequired,
-    isCancelSupported: PropTypes.bool.isRequired,
-    version: PropTypes.string.isRequired,
-    percentDownloaded: PropTypes.number.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    isCancelling: PropTypes.bool.isRequired,
+    isVisible: bool.isRequired,
+    isProgressSupported: bool.isRequired,
+    isCancelSupported: bool.isRequired,
+    version: string.isRequired,
+    percentDownloaded: number.isRequired,
+    onCancel: func.isRequired,
+    isCancelling: bool.isRequired,
 };
 
 export default UpdateProgressDialog;

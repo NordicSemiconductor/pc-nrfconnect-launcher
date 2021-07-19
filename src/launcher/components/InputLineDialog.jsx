@@ -35,12 +35,11 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import { bool, func, string } from 'prop-types';
 
 const InputLineDialog = ({
     isVisible,
@@ -87,12 +86,12 @@ const InputLineDialog = ({
 );
 
 InputLineDialog.propTypes = {
-    isVisible: PropTypes.bool,
-    title: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
-    subtext: PropTypes.string,
-    onOk: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    isVisible: bool,
+    title: string.isRequired,
+    placeholder: string,
+    subtext: string,
+    onOk: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 InputLineDialog.defaultProps = {

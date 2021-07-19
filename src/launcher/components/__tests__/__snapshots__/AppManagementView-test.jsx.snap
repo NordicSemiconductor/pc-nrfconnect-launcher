@@ -17,7 +17,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": "bar",
           "url": null,
           "releaseNote": null,
@@ -40,20 +40,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -132,7 +122,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": "bar",
           "url": null,
           "releaseNote": null,
@@ -155,20 +145,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -258,7 +238,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": "bar",
           "url": null,
           "releaseNote": null,
@@ -281,20 +261,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -384,7 +354,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -403,7 +373,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -422,7 +392,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -445,20 +415,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -528,20 +488,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -611,20 +561,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -703,7 +643,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -722,7 +662,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -741,7 +681,7 @@ Array [
           "iconPath": null,
           "shortcutIconPath": null,
           "isOfficial": null,
-          "isSupportedEngine": null,
+          "sharedVersion": null,
           "source": null,
           "url": null,
           "releaseNote": null,
@@ -764,20 +704,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
         </div>
       </div>
@@ -847,20 +777,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span
@@ -941,20 +861,10 @@ Array [
         className="d-flex align-items-start col-auto my-2 mr-3"
       >
         <div
-          className="core-app-icon "
-          style={
-            Object {
-              "background": "#e6f8ff",
-              "borderRadius": 7,
-              "height": "48px",
-              "width": "48px",
-            }
-          }
+          className="core-app-icon"
         >
-          <img
-            alt=""
-            draggable={false}
-            src=""
+          <div
+            className="icon-replacement"
           />
           <div>
             <span

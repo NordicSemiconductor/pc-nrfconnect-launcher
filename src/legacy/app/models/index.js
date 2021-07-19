@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import portPath from '../../portPath';
 
 const ImmutableSerialPort = Record({

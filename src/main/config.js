@@ -38,6 +38,7 @@
 
 const electronApp = require('electron').app;
 const path = require('path');
+const fs = require('fs');
 const packageJson = require('../../package.json');
 
 let version;
@@ -47,6 +48,7 @@ let electronExePath;
 let homeDir;
 let userDataDir;
 let desktopDir;
+let ubuntuDesktopDir;
 let tmpDir;
 let appsRootDir;
 let appsLocalDir;
@@ -62,6 +64,7 @@ let skipSplashScreen;
 let officialAppName;
 let localAppName;
 let sourceName;
+let isRunningLauncherFromSource;
 
 /**
  * Init the config values based on the given command line arguments.
@@ -90,6 +93,7 @@ function init(argv) {
     homeDir = electronApp.getPath('home');
     userDataDir = electronApp.getPath('userData');
     desktopDir = electronApp.getPath('desktop');
+    ubuntuDesktopDir = path.join(homeDir, '.local', 'share', 'applications');
     tmpDir = electronApp.getPath('temp');
     appsRootDir =
         argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
@@ -110,6 +114,9 @@ function init(argv) {
     officialAppName = argv['open-official-app'] || null;
     localAppName = argv['open-local-app'] || null;
     sourceName = argv.source || 'official';
+    isRunningLauncherFromSource = fs.existsSync(
+        path.join(electronRootPath, 'README.md')
+    );
 }
 
 function getAppsRootDir(source = 'official') {
@@ -128,6 +135,7 @@ module.exports = {
     getHomeDir: () => homeDir,
     getUserDataDir: () => userDataDir,
     getDesktopDir: () => desktopDir,
+    getUbuntuDesktopDir: () => ubuntuDesktopDir,
     getTmpDir: () => tmpDir,
     getAppsRootDir,
     getAppsLocalDir: () => appsLocalDir,
@@ -148,4 +156,5 @@ module.exports = {
     getOfficialAppName: () => officialAppName,
     getLocalAppName: () => localAppName,
     getSourceName: () => sourceName,
+    isRunningLauncherFromSource: () => isRunningLauncherFromSource,
 };

@@ -35,64 +35,54 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { classNames } from 'pc-nrfconnect-shared';
+import { shape, string } from 'prop-types';
 import semver from 'semver';
 
-function renderAlert(altText) {
-    return (
-        <div>
-            <span className="alert-icon-bg" />
-            <span className="mdi mdi-alert" title={altText} />
-        </div>
-    );
-}
+import checkAppCompatibility from '../util/checkAppCompatibility';
 
-function renderNotice(app) {
-    if (!app.engineVersion) {
-        return renderAlert(
-            'The app does not specify which nRF Connect version(s) ' +
-                'it supports'
-        );
-    }
-    if (!app.isSupportedEngine) {
-        return renderAlert(
-            `The app only supports nRF Connect ${app.engineVersion}, ` +
-                'which does not match your currently installed version'
-        );
-    }
-    return null;
-}
+const warning = altText => (
+    <div>
+        <span className="alert-icon-bg" />
+        <span className="mdi mdi-alert" title={altText} />
+    </div>
+);
+
+const appBadge = app => {
+    const notInstalled = !app.currentVersion;
+    const appCompatibility = checkAppCompatibility(app);
+
+    return notInstalled || appCompatibility.isCompatible
+        ? null
+        : warning(appCompatibility.warning);
+};
 
 const AppIcon = ({ app }) => {
     const { engineVersion, iconPath } = app;
-    const installed = !!app.currentVersion;
     const primaryColorNeedsUpdate =
         engineVersion && semver.lt(semver.minVersion(engineVersion), '3.2.0');
     return (
         <div
-            className={`core-app-icon ${
-                primaryColorNeedsUpdate ? 'old-app-icon' : ''
-            }`}
-            style={{
-                borderRadius: 7,
-                background: '#e6f8ff',
-                width: '48px',
-                height: '48px',
-            }}
+            className={classNames(
+                'core-app-icon',
+                primaryColorNeedsUpdate && 'old-app-icon'
+            )}
         >
-            <img src={iconPath || ''} alt="" draggable={false} />
-            {installed && renderNotice(app)}
+            {iconPath ? (
+                <img src={iconPath} alt="" draggable={false} />
+            ) : (
+                <div className="icon-replacement" />
+            )}
+            {appBadge(app)}
         </div>
     );
 };
 
 AppIcon.propTypes = {
-    app: PropTypes.shape({
-        iconPath: PropTypes.string,
-        currentVersion: PropTypes.string,
-        engineVersion: PropTypes.string,
-        isSupportedEngine: PropTypes.bool,
-        url: PropTypes.string,
+    app: shape({
+        iconPath: string,
+        currentVersion: string,
+        engineVersion: string,
     }).isRequired,
 };
 

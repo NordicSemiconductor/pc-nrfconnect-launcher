@@ -35,15 +35,16 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { object } from 'prop-types';
+
 import Root from '../components/Root';
 
 const RootContainer = ({ store }) =>
     React.createElement(Provider, { store }, React.createElement(Root));
 
 RootContainer.propTypes = {
-    store: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    store: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default RootContainer;

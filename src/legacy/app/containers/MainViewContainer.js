@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import MainView from '../components/MainView';
 import { connect } from '../../decoration';
+import MainView from '../components/MainView';
 
 function mapStateToProps() {
     return {};

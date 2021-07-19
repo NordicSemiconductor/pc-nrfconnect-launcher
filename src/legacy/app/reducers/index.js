@@ -35,8 +35,9 @@
  */
 
 import { combineReducers } from 'redux';
-import core from './coreReducer';
+
 import app from './appReducer';
+import core from './coreReducer';
 
 export default combineReducers({
     core,

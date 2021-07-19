@@ -34,13 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { join } from 'path';
 import { ipcRenderer, remote } from 'electron';
+import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
-import { sendAppUsageData, EventAction } from './usageDataActions';
+
+import checkAppCompatibility from '../util/checkAppCompatibility';
+import {
+    EventAction,
+    sendAppUsageData,
+    sendLauncherUsageData,
+} from './usageDataActions';
 
 const net = remote.require('../main/net');
-const fs = remote.require('fs');
+const fs = remote.require('fs-extra');
 
 const mainApps = remote.require('../main/apps');
 const config = remote.require('../main/config');
@@ -98,10 +104,11 @@ function loadOfficialAppsAction() {
     };
 }
 
-function loadOfficialAppsSuccess(apps) {
+function loadOfficialAppsSuccess(apps, appToUpdate) {
     return {
         type: LOAD_OFFICIAL_APPS_SUCCESS,
         apps,
+        appToUpdate,
     };
 }
 
@@ -309,61 +316,87 @@ export function loadLocalApps() {
 }
 
 export function loadOfficialApps(appName, appSource) {
-    return dispatch => {
+    return async dispatch => {
         dispatch(loadOfficialAppsAction());
-        return mainApps
-            .getOfficialApps()
-            .then(apps => {
-                dispatch(loadOfficialAppsSuccess(apps));
-                apps.filter(({ path }) => !path).forEach(
-                    ({ source, name, url }) => {
-                        const iconPath = join(
-                            `${config.getAppsRootDir(source)}`,
-                            `${name}.svg`
-                        );
-                        const iconUrl = `${url}.svg`;
+        const { fulfilled: apps, rejected: appsWithErrors } =
+            await mainApps.getOfficialApps();
+
+        dispatch(
+            loadOfficialAppsSuccess(
+                apps,
+                appName && { name: appName, source: appSource }
+            )
+        );
+        apps.filter(({ path }) => !path).forEach(({ source, name, url }) => {
+            const iconPath = join(
+                `${config.getAppsRootDir(source)}`,
+                `${name}.svg`
+            );
+            const iconUrl = `${url}.svg`;
+            dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
+        });
+        const downloadAllReleaseNotes = (app, ...rest) => {
+            if (!app) {
+                return Promise.resolve();
+            }
+            if (
+                appName &&
+                !(app.name === appName && app.source === appSource)
+            ) {
+                return downloadAllReleaseNotes(...rest);
+            }
+            return mainApps
+                .downloadReleaseNotes(app)
+                .then(
+                    releaseNote =>
+                        releaseNote &&
                         dispatch(
-                            downloadAppIcon(source, name, iconPath, iconUrl)
-                        );
-                    }
-                );
-                const downloadAllReleaseNotes = (app, ...rest) => {
-                    if (!app) {
-                        return Promise.resolve();
-                    }
-                    if (
-                        appName &&
-                        !(app.name === appName && app.source === appSource)
-                    ) {
-                        return downloadAllReleaseNotes(...rest);
-                    }
-                    return mainApps
-                        .downloadReleaseNotes(app)
-                        .then(
-                            releaseNote =>
-                                releaseNote &&
-                                dispatch(
-                                    setAppReleaseNoteAction(
-                                        app.source,
-                                        app.name,
-                                        releaseNote
-                                    )
-                                )
+                            setAppReleaseNoteAction(
+                                app.source,
+                                app.name,
+                                releaseNote
+                            )
                         )
-                        .then(() => downloadAllReleaseNotes(...rest));
-                };
-                downloadAllReleaseNotes(...apps);
-            })
-            .catch(error => {
-                dispatch(loadOfficialAppsError());
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to load apps: ${error.message}`
-                    )
-                );
-            });
+                )
+                .then(() => downloadAllReleaseNotes(...rest));
+        };
+        downloadAllReleaseNotes(...apps);
+
+        if (appsWithErrors.length > 0) {
+            handleAppsWithErrors(dispatch, appsWithErrors);
+        }
     };
 }
+
+const handleAppsWithErrors = (dispatch, apps) => {
+    dispatch(loadOfficialAppsError());
+    apps.forEach(app => {
+        dispatch(
+            sendLauncherUsageData(
+                EventAction.REPORT_INSTALLATION_ERROR,
+                `${app.source} - ${app.name}`
+            )
+        );
+    });
+
+    const recover = invalidPaths => () => {
+        invalidPaths.forEach(p => fs.remove(p));
+        remote.getCurrentWindow().reload();
+    };
+
+    dispatch(
+        ErrorDialogActions.showDialog(buildErrorMessage(apps), {
+            Recover: recover(apps.map(app => app.path)),
+            Close: () => dispatch(ErrorDialogActions.hideDialog()),
+        })
+    );
+};
+
+const buildErrorMessage = apps => {
+    const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');
+    const paths = apps.map(app => `* *${app.path}*\n\n`).join('');
+    return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
+};
 
 export function installOfficialApp(name, source) {
     return dispatch => {
@@ -447,27 +480,18 @@ export function launch(app) {
 
 export function checkEngineAndLaunch(app) {
     return dispatch => {
-        if (!app.engineVersion) {
-            dispatch(
-                showConfirmLaunchDialogAction(
-                    'The app does not specify ' +
-                        'which nRF Connect version(s) it supports. Ask the app ' +
-                        'author to add an engines.nrfconnect definition to package.json, ' +
-                        'ref. the documentation.',
-                    app
-                )
-            );
-        } else if (!app.isSupportedEngine) {
-            dispatch(
-                showConfirmLaunchDialogAction(
-                    'The app only supports ' +
-                        `nRF Connect ${app.engineVersion} while your installed version ` +
-                        `is ${config.getVersion()}. It might not work as expected.`,
-                    app
-                )
-            );
-        } else {
-            dispatch(launch(app));
-        }
+        const appCompatibility = checkAppCompatibility(app);
+        const launchAppWithoutWarning =
+            appCompatibility.isCompatible ||
+            config.isRunningLauncherFromSource();
+
+        dispatch(
+            launchAppWithoutWarning
+                ? launch(app)
+                : showConfirmLaunchDialogAction(
+                      appCompatibility.longWarning,
+                      app
+                  )
+        );
     };
 }

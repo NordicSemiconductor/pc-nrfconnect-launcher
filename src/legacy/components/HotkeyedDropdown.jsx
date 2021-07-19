@@ -35,10 +35,10 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import Mousetrap from 'mousetrap';
 import Dropdown from 'react-bootstrap/Dropdown';
+import ReactDOM from 'react-dom';
+import Mousetrap from 'mousetrap';
+import { arrayOf, bool, func, node, oneOfType, string } from 'prop-types';
 
 // Like react-bootstrap's `Dropdown`, but can receive an extra `hotkey` prop:
 // a key combination handled by `mousetrap` that will toggle the open state
@@ -69,9 +69,9 @@ export default class HotkeyedDropdown extends React.Component {
         if (open) {
             // Focus the drop-down
             // eslint-disable-next-line react/no-find-dom-node
-            const node = ReactDOM.findDOMNode(this);
-            if (node) {
-                const button = node.querySelector('button');
+            const thisNode = ReactDOM.findDOMNode(this);
+            if (thisNode) {
+                const button = thisNode.querySelector('button');
                 if (button) {
                     button.focus();
                 }
@@ -102,14 +102,11 @@ export default class HotkeyedDropdown extends React.Component {
 }
 
 HotkeyedDropdown.propTypes = {
-    title: PropTypes.string.isRequired,
-    hotkey: PropTypes.string,
-    onToggle: PropTypes.func,
-    disabled: PropTypes.bool,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
+    title: string.isRequired,
+    hotkey: string,
+    onToggle: func,
+    disabled: bool,
+    children: oneOfType([arrayOf(node), node]),
 };
 
 HotkeyedDropdown.defaultProps = {

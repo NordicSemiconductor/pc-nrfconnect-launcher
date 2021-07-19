@@ -35,16 +35,18 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import NavBar from './NavBar';
-import SidePanelContainer from '../containers/SidePanelContainer';
-import LogViewerContainer from '../containers/LogViewerContainer';
-import MainViewContainer from '../containers/MainViewContainer';
-import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import { ErrorBoundary } from 'pc-nrfconnect-shared';
+import { func } from 'prop-types';
+
+import { decorate } from '../../decoration';
 import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
 import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
-import { decorate } from '../../decoration';
+import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import LogViewerContainer from '../containers/LogViewerContainer';
+import MainViewContainer from '../containers/MainViewContainer';
+import SidePanelContainer from '../containers/SidePanelContainer';
+import NavBar from './NavBar';
 
 const DecoratedNavBar = decorate(NavBar, 'NavBar');
 
@@ -91,37 +93,39 @@ function onMouseDownVertical(event) {
 
 const Root = ({ resizeLogContainer }) => (
     <div className="core-main-area">
-        <DecoratedNavBar />
-        <div className="core-main-layout">
-            <div>
-                <MainViewContainer />
-                <div
-                    tabIndex={-1}
-                    role="button"
-                    className="core-splitter horizontal"
-                    onMouseDown={event =>
-                        onMouseDownHorizontal(event, resizeLogContainer)
-                    }
-                />
-                <LogViewerContainer />
-                <div
-                    tabIndex={-1}
-                    role="button"
-                    className="core-splitter vertical"
-                    onMouseDown={onMouseDownVertical}
-                />
+        <ErrorBoundary>
+            <DecoratedNavBar />
+            <div className="core-main-layout">
+                <div>
+                    <MainViewContainer />
+                    <div
+                        tabIndex={-1}
+                        role="button"
+                        className="core-splitter horizontal"
+                        onMouseDown={event =>
+                            onMouseDownHorizontal(event, resizeLogContainer)
+                        }
+                    />
+                    <LogViewerContainer />
+                    <div
+                        tabIndex={-1}
+                        role="button"
+                        className="core-splitter vertical"
+                        onMouseDown={onMouseDownVertical}
+                    />
+                </div>
+                <SidePanelContainer />
             </div>
-            <SidePanelContainer />
-        </div>
-        <FirmwareDialogContainer />
-        <AppReloadDialogContainer />
-        <DeviceSetupContainer />
-        <ErrorDialogContainer />
+            <FirmwareDialogContainer />
+            <AppReloadDialogContainer />
+            <DeviceSetupContainer />
+            <ErrorDialogContainer />
+        </ErrorBoundary>
     </div>
 );
 
 Root.propTypes = {
-    resizeLogContainer: PropTypes.func.isRequired,
+    resizeLogContainer: func.isRequired,
 };
 
 export default Root;

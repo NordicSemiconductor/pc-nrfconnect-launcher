@@ -35,18 +35,16 @@
  */
 
 import React from 'react';
-
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-
-import { clipboard } from 'electron';
 import formatDate from 'date-fns/format';
+import { clipboard } from 'electron';
+import { bool, func, instanceOf, shape } from 'prop-types';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';
@@ -61,12 +59,10 @@ function cancel(event) {
 class SettingsView extends React.Component {
     constructor() {
         super();
-        this.onCheckUpdatesAtStartupChanged = this.onCheckUpdatesAtStartupChanged.bind(
-            this
-        );
-        this.onTriggerUpdateCheckClicked = this.onTriggerUpdateCheckClicked.bind(
-            this
-        );
+        this.onCheckUpdatesAtStartupChanged =
+            this.onCheckUpdatesAtStartupChanged.bind(this);
+        this.onTriggerUpdateCheckClicked =
+            this.onTriggerUpdateCheckClicked.bind(this);
     }
 
     componentDidMount() {
@@ -276,26 +272,26 @@ class SettingsView extends React.Component {
 }
 
 SettingsView.propTypes = {
-    onMount: PropTypes.func,
-    shouldCheckForUpdatesAtStartup: PropTypes.bool.isRequired,
-    isCheckingForUpdates: PropTypes.bool.isRequired,
-    onCheckUpdatesAtStartupChanged: PropTypes.func.isRequired,
-    onTriggerUpdateCheck: PropTypes.func.isRequired,
-    lastUpdateCheckDate: PropTypes.instanceOf(Date),
-    isUpdateCheckCompleteDialogVisible: PropTypes.bool,
-    onHideUpdateCheckCompleteDialog: PropTypes.func.isRequired,
-    isAppUpdateAvailable: PropTypes.bool,
-    sources: PropTypes.shape({
-        toJS: PropTypes.func.isRequired,
+    onMount: func,
+    shouldCheckForUpdatesAtStartup: bool.isRequired,
+    isCheckingForUpdates: bool.isRequired,
+    onCheckUpdatesAtStartupChanged: func.isRequired,
+    onTriggerUpdateCheck: func.isRequired,
+    lastUpdateCheckDate: instanceOf(Date),
+    isUpdateCheckCompleteDialogVisible: bool,
+    onHideUpdateCheckCompleteDialog: func.isRequired,
+    isAppUpdateAvailable: bool,
+    sources: shape({
+        toJS: func.isRequired,
     }).isRequired,
-    addSource: PropTypes.func.isRequired,
-    onShowRemoveSourceDialog: PropTypes.func.isRequired,
-    isAddSourceDialogVisible: PropTypes.bool,
-    onShowAddSourceDialog: PropTypes.func.isRequired,
-    onHideAddSourceDialog: PropTypes.func.isRequired,
-    isSendingUsageData: PropTypes.bool.isRequired,
-    toggleSendingUsageData: PropTypes.func.isRequired,
-    showUsageDataDialog: PropTypes.func.isRequired,
+    addSource: func.isRequired,
+    onShowRemoveSourceDialog: func.isRequired,
+    isAddSourceDialogVisible: bool,
+    onShowAddSourceDialog: func.isRequired,
+    onHideAddSourceDialog: func.isRequired,
+    isSendingUsageData: bool.isRequired,
+    toggleSendingUsageData: func.isRequired,
+    showUsageDataDialog: func.isRequired,
 };
 
 SettingsView.defaultProps = {

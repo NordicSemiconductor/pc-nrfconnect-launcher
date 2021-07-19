@@ -35,9 +35,10 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import { Iterable } from 'immutable';
+import { bool, func, instanceOf, oneOfType, string } from 'prop-types';
+
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 
 /**
@@ -63,14 +64,8 @@ export default class DeviceSetupDialog extends React.Component {
     }
 
     render() {
-        const {
-            isVisible,
-            isInProgress,
-            text,
-            choices,
-            onOk,
-            onCancel,
-        } = this.props;
+        const { isVisible, isInProgress, text, choices, onOk, onCancel } =
+            this.props;
         const { selectedChoice } = this.state;
 
         if (choices && (choices.length > 0 || choices.size > 0)) {
@@ -113,15 +108,12 @@ export default class DeviceSetupDialog extends React.Component {
 }
 
 DeviceSetupDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    isInProgress: PropTypes.bool.isRequired,
-    text: PropTypes.string,
-    choices: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    onOk: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    isInProgress: bool.isRequired,
+    text: string,
+    choices: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    onOk: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 DeviceSetupDialog.defaultProps = {

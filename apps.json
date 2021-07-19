@@ -35,6 +35,11 @@
         "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-tracecollector",
         "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector"
     },
+    "pc-nrfconnect-tracecollector-preview": {
+        "displayName": "Trace Collector V2 preview",
+        "description": "EXPERIMENTAL: Capture and convert nRF91 modem traces",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector-preview"
+    },
     "pc-nrfconnect-gettingstarted": {
         "displayName": "Getting Started Assistant",
         "description": "Guide to set up the nRF Connect SDK",

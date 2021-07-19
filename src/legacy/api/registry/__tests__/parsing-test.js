@@ -35,12 +35,12 @@
  */
 
 import {
-    parseVariableLine,
-    parseResult,
-    parseResults,
+    parseJlinkId,
     parseMatchingKeys,
     parseParentIdPrefix,
-    parseJlinkId,
+    parseResult,
+    parseResults,
+    parseVariableLine,
 } from '../parsing';
 
 const REGISTRY_USB_PATH =

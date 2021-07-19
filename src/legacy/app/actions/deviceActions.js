@@ -37,6 +37,7 @@
 import DeviceLister from 'nrf-device-lister';
 import { setupDevice } from 'nrf-device-setup';
 import { logger } from 'pc-nrfconnect-shared';
+
 import { getAppConfig } from '../../decoration';
 import * as AppReloadDialogActions from './appReloadDialogActions';
 

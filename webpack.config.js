@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
@@ -49,9 +50,6 @@ module.exports = {
                                 './node_modules/pc-nrfconnect-shared/config/babel.config.js',
                         },
                     },
-                    {
-                        loader: require.resolve('eslint-loader'),
-                    },
                 ],
                 exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
             },
@@ -91,6 +89,7 @@ module.exports = {
                 name === 'app' ? 'legacy.css' : '[name].css',
             chunkFilename: '[id].css',
         }),
+        new ESLintPlugin(),
     ],
     externals: createExternals(),
     target: 'electron-renderer',

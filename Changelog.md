@@ -1,3 +1,32 @@
+## Unreleased
+### Updates
+- Display app version for uninstalled apps.
+
+## Version 3.7.0
+### Updates
+- Added recovery assistance for when the application encounters an error
+- Added `Restore Default` button in the `About` pane in the apps which have the `About` pane
+- Added app version in title bar (previously only the version of the launcher was shown) #515
+- Added links to product page for Power Profiler Kit 2 and updated links for nRF5340 Development Kit
+- Updated styles in the `About` pane
+- Created shortcut in `~/.local/share/applications` for Ubuntu #545
+
+### Bugfixes
+- Prevented crash when incomplete regular expression is entered in search box
+- Fixed that the launcher does not show any apps when the files of an app are corrupted (e.g. by a partial sync of a file sync tool)
+  Now the launcher offers an additional recovery mechanism.
+- Fixed when clicking on URLs in log entries the web site was not opened on macOS
+- Fixed issue where undefined serialport attribute causes crash #521
+- Fixed the error message from #403 for an apps.json that is not found for a
+  source on the server did not show up correctly. #531
+
+## Version 3.6.1
+### Updates
+- Updated to pc-nrfjprog-js v1.7.6, including bundled nrfjprog v10.12.1 and JLink 6.88a
+- Small visual enhancements to apps using the new design
+### Bugfixes
+- After updating an app, the other apps showed no release notes anymore #502
+
 ## Version 3.6.0
 ### Updates
 - Upgraded Electron to version 8

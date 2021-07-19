@@ -38,7 +38,6 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const semver = require('semver');
 const { dialog } = require('electron');
 const Store = require('electron-store');
 
@@ -47,6 +46,7 @@ const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
+const requiredVersionOfShared = require('./requiredVersionOfShared');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
@@ -120,6 +120,7 @@ function downloadAppsJsonFile(url, name) {
             );
             wrappedError.statusCode = error.statusCode;
             wrappedError.cause = { name, url };
+            wrappedError.sourceNotFound = net.isResourceNotFound(error);
             throw wrappedError;
         })
         .then(appsJson => {
@@ -323,40 +324,9 @@ function initAppsDirectory() {
 }
 
 /**
- * Get the engines.nrfconnect value from the given package.json object.
- * This is a semver range that indicates which core version(s) the app
- * supports. Returns null if no value is specified.
- *
- * @param {Object} packageJson the package.json object.
- * @returns {string|null} semver range indicating supported core version(s)
- */
-function getEngineVersion(packageJson) {
-    return packageJson.engines ? packageJson.engines.nrfconnect : null;
-}
-
-/**
- * Checks if the given core engine version is compatible with the
- * engines.nrfconnect definition in the given package.json object.
- *
- * @param {string} coreEngineVersion core engine version.
- * @param {Object} packageJson package.json object to check.
- * @returns {boolean} true if version is compatible, false if not
- */
-function isSupportedEngine(coreEngineVersion, packageJson) {
-    // The semver.satisfies() check will return false if receiving a pre-release
-    // (e.g. 2.0.0-alpha.0), so stripping away the pre-release part.
-    const currentEngine = [
-        semver.major(coreEngineVersion),
-        semver.minor(coreEngineVersion),
-        semver.patch(coreEngineVersion),
-    ].join('.');
-    return semver.satisfies(currentEngine, getEngineVersion(packageJson));
-}
-
-/**
  * Read app info from the given app directory. The returned object can
  * have name, displayName, currentVersion, description, path, isOfficial,
- * engineVersion, isSupportedEngine, and iconPath. The iconPath is only
+ * engineVersion, and iconPath. The iconPath is only
  * returned if the app has an 'icon.png' in the app directory.
  *
  * @param {string} appPath path to the app directory.
@@ -397,13 +367,10 @@ function readAppInfo(appPath) {
                 ? shortcutIconPath
                 : null,
             isOfficial,
-            engineVersion: getEngineVersion(packageJson),
-            isSupportedEngine: isSupportedEngine(
-                config.getVersion(),
-                packageJson
-            ),
+            sharedVersion: requiredVersionOfShared(packageJson),
+            engineVersion: packageJson.engines?.nrfconnect,
             source,
-            repositoryUrl: packageJson.repository && packageJson.repository.url,
+            repositoryUrl: packageJson.repository?.url,
         };
     });
 }
@@ -486,14 +453,13 @@ function getOfficialAppsFromSource(source) {
     ]).then(([officialApps, availableUpdates]) => {
         const { ...cleanedApps } = officialApps;
         const officialAppsArray = officialAppsObjToArray(cleanedApps, source);
-        const promises = officialAppsArray.map(officialApp =>
-            fs
-                .exists(
-                    path.join(
-                        config.getNodeModulesDir(source),
-                        officialApp.name
-                    )
-                )
+        const promises = officialAppsArray.map(officialApp => {
+            const filePath = path.join(
+                config.getNodeModulesDir(source),
+                officialApp.name
+            );
+            return fs
+                .pathExists(filePath)
                 .then(isInstalled => {
                     if (isInstalled) {
                         return decorateWithInstalledAppInfo(
@@ -503,22 +469,61 @@ function getOfficialAppsFromSource(source) {
                             decorateWithLatestVersion(app, availableUpdates)
                         );
                     }
-                    return Promise.resolve(officialApp);
+                    return registryApi
+                        .getLatestPackageVersions([officialApp.name], source)
+                        .then(latestVersions =>
+                            decorateWithLatestVersion(
+                                officialApp,
+                                latestVersions
+                            )
+                        )
+                        .catch(err =>
+                            Promise.resolve({ status: 'invalid', reason: err })
+                        );
                 })
-        );
-        return Promise.all(promises);
+                .catch(err =>
+                    Promise.resolve({
+                        status: 'rejected',
+                        reason: err,
+                        path: filePath,
+                        name: officialApp.name,
+                        source,
+                    })
+                );
+        });
+        return Promise.allSettled(promises);
     });
 }
 
 function getOfficialApps() {
     const sources = settings.getSources();
-    return Promise.all(
+    return Promise.allSettled(
         Object.keys(sources).map(source => getOfficialAppsFromSource(source))
     ).then(arrayOfArrays =>
-        arrayOfArrays.reduce(
-            (accumulator, currentValue) => [...accumulator, ...currentValue],
-            []
-        )
+        arrayOfArrays.reduce((acc, currentValue) => {
+            const fulfilled = acc.fulfilled ? [...acc.fulfilled] : [];
+            const rejected = acc.rejected ? [...acc.rejected] : [];
+            currentValue.value.forEach(result => {
+                if (result.value.status === 'invalid') {
+                    // this can happen if for example the apps.json for a source
+                    // is not properly updated so that there is a mismatch
+                    // between what is claims is there and what is actually there.
+                    // In this case we want to hide the error to the user as they
+                    // cannot do anything to prevent this besides removing the source.
+                    console.debug(result.value.reason);
+                } else if (result.value.status === 'rejected') {
+                    rejected.push({ ...result.value });
+                } else if (result.status === 'rejected') {
+                    throw new Error(result.value);
+                } else {
+                    fulfilled.push(result.value);
+                }
+            });
+            return {
+                fulfilled,
+                rejected,
+            };
+        }, {})
     );
 }
 

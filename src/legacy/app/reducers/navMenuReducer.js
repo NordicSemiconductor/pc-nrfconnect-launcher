@@ -35,6 +35,7 @@
  */
 
 import { Record } from 'immutable';
+
 import * as NavMenuActions from '../actions/navMenuActions';
 
 const InitialState = Record({

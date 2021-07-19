@@ -34,11 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import rimraf from 'rimraf';
-import setupTestApp from '../setupTestApp';
+
 import { checkAppListContains } from '../assertions';
+import setupTestApp from '../setupTestApp';
 
 describe('app installation', () => {
     describe('online from the server', () => {

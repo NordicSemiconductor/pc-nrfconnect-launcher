@@ -34,20 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import setupTestApp from '../setupTestApp';
-import launchFirstApp from '../launchFirstApp';
-
 import {
     checkAppListContains,
+    checkHasInstallButton,
+    checkHasNoInstallButton,
     checkHasNoLaunchButton,
     checkHasNoRemoveButton,
     checkHasRemoveButton,
     checkShowsAppUpdate,
-    checkHasInstallButton,
-    checkHasNoInstallButton,
     checkShowsNoAppUpdate,
     checkTitleOfSecondWindow,
 } from '../assertions';
+import launchFirstApp from '../launchFirstApp';
+import setupTestApp from '../setupTestApp';
 
 describe('the list of all apps', () => {
     describe('has an official app that is available', () => {

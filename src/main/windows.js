@@ -102,7 +102,7 @@ function openAppWindow(app) {
     const appWindow = browser.createWindow({
         title: `nRF Connect v${config.getVersion()} - ${
             app.displayName || app.name
-        }`,
+        } v${app.currentVersion}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
             app.path
         }`,
@@ -147,7 +147,7 @@ function openAppWindow(app) {
 }
 
 function openOfficialAppWindow(appName, sourceName) {
-    return apps.getOfficialApps().then(appList => {
+    return apps.getOfficialApps().then(({ fulfilled: appList }) => {
         const officialApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );

@@ -35,12 +35,11 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Modal from 'react-bootstrap/Modal';
+import { bool, func, string } from 'prop-types';
 
 class ProxyLoginDialog extends React.Component {
     constructor() {
@@ -134,12 +133,12 @@ class ProxyLoginDialog extends React.Component {
 }
 
 ProxyLoginDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    message: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    onUsernameChanged: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    isVisible: bool.isRequired,
+    message: string.isRequired,
+    username: string.isRequired,
+    onUsernameChanged: func.isRequired,
+    onCancel: func.isRequired,
+    onSubmit: func.isRequired,
 };
 
 export default ProxyLoginDialog;

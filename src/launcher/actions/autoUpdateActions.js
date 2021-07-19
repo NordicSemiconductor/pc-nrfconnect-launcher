@@ -52,7 +52,6 @@ export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
 export const AUTO_UPDATE_ERROR = 'AUTO_UPDATE_ERROR';
 
 const mainApps = remote.require('../main/apps');
-const net = remote.require('../main/net');
 const { autoUpdater, CancellationToken } = remote.require('../main/autoUpdate');
 
 const isWindows = process.platform === 'win32';
@@ -218,7 +217,7 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
                 dispatch(AppsActions.downloadLatestAppInfoErrorAction());
                 if (options.rejectIfError) {
                     throw error;
-                } else if (net.isResourceNotFound(error)) {
+                } else if (error.sourceNotFound) {
                     dispatch(
                         ErrorDialogActions.showDialog(
                             `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +

@@ -41,16 +41,16 @@ import React from 'react';
 import { render } from 'react-dom';
 import { remote } from 'electron';
 import isDev from 'electron-is-dev';
-import { createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import RootContainer from './containers/RootContainer';
-import rootReducer from './reducers';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
 import * as UsageDataActions from './actions/usageDataActions';
+import RootContainer from './containers/RootContainer';
+import rootReducer from './reducers';
 
 import '../../resources/css/launcher.scss';
 

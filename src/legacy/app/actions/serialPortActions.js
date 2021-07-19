@@ -34,9 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import SerialPort from 'serialport';
 import { logger } from 'pc-nrfconnect-shared';
-import { isPortAvailable, decorateWithSerialNumber } from '../../api/jlink';
+import SerialPort from 'serialport';
+
+import { decorateWithSerialNumber, isPortAvailable } from '../../api/jlink';
 import portPath from '../../portPath';
 
 /**

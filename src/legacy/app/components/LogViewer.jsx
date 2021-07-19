@@ -34,12 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 import { Iterable } from 'immutable';
+import { bool, func, instanceOf, oneOfType, string } from 'prop-types';
+
+import { decorate } from '../../decoration';
 import LogHeaderContainer from '../containers/LogHeaderContainer';
 import LogEntry from './LogEntry';
-import { decorate } from '../../decoration';
 
 const DecoratedLogEntry = decorate(LogEntry, 'LogEntry');
 
@@ -66,13 +67,10 @@ const LogViewer = ({ logEntries, autoScroll, onMount, cssClass }) => {
 };
 
 LogViewer.propTypes = {
-    onMount: PropTypes.func,
-    logEntries: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Iterable),
-    ]).isRequired,
-    autoScroll: PropTypes.bool.isRequired,
-    cssClass: PropTypes.string,
+    onMount: func,
+    logEntries: oneOfType([instanceOf(Array), instanceOf(Iterable)]).isRequired,
+    autoScroll: bool.isRequired,
+    cssClass: string,
 };
 
 LogViewer.defaultProps = {

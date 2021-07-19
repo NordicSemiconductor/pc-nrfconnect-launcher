@@ -39,6 +39,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Immutable from 'immutable';
+
 import NavMenu from '../NavMenu';
 
 const menuItems = Immutable.List([

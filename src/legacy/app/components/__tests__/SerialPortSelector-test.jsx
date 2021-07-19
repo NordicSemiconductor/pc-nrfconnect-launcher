@@ -51,6 +51,7 @@ jest.mock('../../../decoration', () => ({
 
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 import SerialPortSelector from '../SerialPortSelector';
 
 const SEGGER_VENDOR_ID = '0x1366';

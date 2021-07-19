@@ -35,7 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, func, string } from 'prop-types';
+
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 
 const AppReloadDialog = ({
@@ -55,10 +56,10 @@ const AppReloadDialog = ({
 );
 
 AppReloadDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    onConfirmReload: PropTypes.func.isRequired,
-    onCancelReload: PropTypes.func.isRequired,
-    message: PropTypes.string.isRequired,
+    isVisible: bool.isRequired,
+    onConfirmReload: func.isRequired,
+    onCancelReload: func.isRequired,
+    message: string.isRequired,
 };
 
 export default AppReloadDialog;

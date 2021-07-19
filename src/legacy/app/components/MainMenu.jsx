@@ -35,9 +35,9 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import Immutable from 'immutable';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Immutable from 'immutable';
+import { instanceOf, oneOfType, string } from 'prop-types';
 
 import MenuItem from '../../components/HotkeyedMenuItem';
 
@@ -75,14 +75,12 @@ const MainMenu = ({
 );
 
 MainMenu.propTypes = {
-    menuItems: PropTypes.oneOfType([
-        PropTypes.instanceOf(Array),
-        PropTypes.instanceOf(Immutable.Iterable),
-    ]).isRequired,
-    iconName: PropTypes.string,
-    cssClass: PropTypes.string,
-    dropdownCssClass: PropTypes.string,
-    dropdownMenuCssClass: PropTypes.string,
+    menuItems: oneOfType([instanceOf(Array), instanceOf(Immutable.Iterable)])
+        .isRequired,
+    iconName: string,
+    cssClass: string,
+    dropdownCssClass: string,
+    dropdownMenuCssClass: string,
 };
 
 MainMenu.defaultProps = {

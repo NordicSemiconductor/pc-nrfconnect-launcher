@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
+import { List, Record } from 'immutable';
+
 import * as AppsActions from '../actions/appsActions';
 import getImmutableApp from '../models';
 
@@ -69,6 +70,20 @@ function setOfficialApps(state, apps) {
     return state
         .set('isLoadingOfficialApps', false)
         .set('officialApps', List(immutableApps));
+}
+
+function setOfficialApp(state, loadedApps, appToUpdate) {
+    const findAppToUpdate = app =>
+        app.source === appToUpdate.source && app.name === appToUpdate.name;
+
+    return state
+        .set('isLoadingOfficialApps', false)
+        .update('officialApps', existingApps =>
+            existingApps.set(
+                existingApps.findKey(findAppToUpdate),
+                getImmutableApp(loadedApps.find(findAppToUpdate))
+            )
+        );
 }
 
 function showConfirmLaunchDialog(state, text, app) {
@@ -118,7 +133,9 @@ const reducer = (state = initialState, action) => {
         case AppsActions.LOAD_LOCAL_APPS_SUCCESS:
             return setLocalApps(state, action.apps);
         case AppsActions.LOAD_OFFICIAL_APPS_SUCCESS:
-            return setOfficialApps(state, action.apps);
+            return action.appToUpdate
+                ? setOfficialApp(state, action.apps, action.appToUpdate)
+                : setOfficialApps(state, action.apps);
         case AppsActions.LOAD_LOCAL_APPS_ERROR:
             return state.set('isLoadingLocalApps', false);
         case AppsActions.LOAD_OFFICIAL_APPS_ERROR:

@@ -34,9 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
-import { getImmutableSerialPort } from '../models';
+import { List, Record } from 'immutable';
+
 import * as SerialPortActions from '../actions/serialPortActions';
+import { getImmutableSerialPort } from '../models';
 
 const SEGGER_SERIAL_PREFIX = 'SEGGER_J-Link_';
 

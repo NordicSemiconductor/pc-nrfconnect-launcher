@@ -41,6 +41,7 @@ jest.mock('../../../components/ConfirmationDialog', () => 'ConfirmationDialog');
 
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 import FirmwareDialog from '../FirmwareDialog';
 
 describe('FirmwareDialog', () => {

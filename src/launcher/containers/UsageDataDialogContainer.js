@@ -35,8 +35,9 @@
  */
 
 import { connect } from 'react-redux';
-import UsageDataDialog from '../components/UsageDataDialog';
+
 import * as UsageDataActions from '../actions/usageDataActions';
+import UsageDataDialog from '../components/UsageDataDialog';
 
 function mapStateToProps(state) {
     return {
@@ -47,7 +48,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onConfirm: () => {
-            dispatch(UsageDataActions.confrimSendingUsageData());
+            dispatch(UsageDataActions.confirmSendingUsageData());
         },
         onCancel: () => {
             dispatch(UsageDataActions.cancelSendingUsageData());

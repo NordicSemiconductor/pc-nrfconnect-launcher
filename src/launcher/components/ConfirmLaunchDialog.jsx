@@ -35,8 +35,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import { bool, func, shape, string } from 'prop-types';
 
 const ConfirmLaunchDialog = ({ isVisible, text, app, onConfirm, onCancel }) => (
     <ConfirmationDialog
@@ -51,13 +51,13 @@ const ConfirmLaunchDialog = ({ isVisible, text, app, onConfirm, onCancel }) => (
 );
 
 ConfirmLaunchDialog.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired,
-    app: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+    isVisible: bool.isRequired,
+    text: string.isRequired,
+    app: shape({
+        name: string.isRequired,
     }),
-    onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    onConfirm: func.isRequired,
+    onCancel: func.isRequired,
 };
 
 ConfirmLaunchDialog.defaultProps = {

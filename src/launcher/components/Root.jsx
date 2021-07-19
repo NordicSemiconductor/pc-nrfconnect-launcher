@@ -34,10 +34,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
+import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
@@ -47,9 +47,10 @@ import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
+import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
 
 export default () => (
-    <>
+    <ErrorBoundaryLauncher>
         <Tab.Container id="launcher" defaultActiveKey="apps">
             <Nav>
                 {/* eslint-disable-next-line jsx-a11y/no-access-key */}
@@ -78,5 +79,5 @@ export default () => (
         <ConfirmLaunchContainer />
         <ProxyLoginContainer />
         <ProxyErrorContainer />
-    </>
+    </ErrorBoundaryLauncher>
 );

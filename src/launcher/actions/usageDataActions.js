@@ -45,8 +45,6 @@ export const USAGE_DATA_SEND_ON = 'USAGE_DATA_SEND_ON';
 export const USAGE_DATA_SEND_OFF = 'USAGE_DATA_SEND_OFF';
 export const USAGE_DATA_SEND_RESET = 'USAGE_DATA_SEND_RESET';
 
-export const EventCategory = pkgJson.name || 'Launcher';
-
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
     INSTALL_APP: 'Install app',
@@ -55,6 +53,7 @@ export const EventAction = {
     UPGRADE_APP: 'Upgrade app',
     REPORT_OS_INFO: 'Report OS info',
     REPORT_LAUNCHER_INFO: 'Report launcher info',
+    REPORT_INSTALLATION_ERROR: 'Report installation error',
 };
 
 const EventLabel = {
@@ -98,7 +97,7 @@ export function isUsageDataOn() {
     return usageData.isEnabled();
 }
 
-export function confrimSendingUsageData() {
+export function confirmSendingUsageData() {
     return dispatch => {
         usageData.enable();
         dispatch(setUsageDataOn());
@@ -129,12 +128,12 @@ export function toggleSendingUsageData() {
 }
 
 function initUsageData(label) {
-    usageData.sendEvent(EventCategory, EventAction.LAUNCH_LAUNCHER, label);
+    usageData.sendUsageData(EventAction.LAUNCH_LAUNCHER, label);
 }
 
 export function checkUsageDataSetting() {
     return async dispatch => {
-        await usageData.init(EventCategory);
+        await usageData.init(pkgJson);
         const isSendingUsageData = usageData.isEnabled();
         if (typeof isSendingUsageData !== 'boolean') {
             dispatch(showUsageDataDialog());
@@ -155,7 +154,7 @@ export function sendLauncherUsageData(eventAction, eventLabel) {
         if (!isSendingUsageData) {
             return;
         }
-        usageData.sendEvent(EventCategory, eventAction, eventLabel);
+        usageData.sendUsageData(eventAction, eventLabel);
     };
 }
 
@@ -168,7 +167,7 @@ export function sendAppUsageData(
         const updatedEventAction = appName
             ? `${eventAction} ${appName}`
             : eventAction;
-        usageData.sendEvent(EventCategory, updatedEventAction, eventLabel);
+        usageData.sendUsageData(updatedEventAction, eventLabel);
     };
 }
 
