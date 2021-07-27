@@ -4,6 +4,7 @@
   [user data directory](https://www.electronjs.org/docs/api/app#appgetpathname)
   through command line switch `--user-data-dir` or environment variable
   `NRF_USER_DATA_DIR`.
+- Display app version for uninstalled apps.
 
 ## 3.7.0 - 2021-06-23
 ### Added
