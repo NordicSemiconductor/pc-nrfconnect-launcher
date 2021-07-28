@@ -72,6 +72,11 @@ let isRunningLauncherFromSource;
  * Supported command line arguments:
  * --apps-root-dir       The directory where app data is stored.
  *                       Default: "<homeDir>/.nrfconnect-apps"
+ * --user-data-dir       Path to the user data dir. If this is not
+ *                       set, the environment variable NRF_USER_DATA_DIR
+ *                       is also used.
+ *                       See also https://www.electronjs.org/docs/api/app#appgetpathname
+ *                       Default: The appData directory appended with 'nrfconnect'.
  * --settings-json-path  Path to the user's settings file.
  *                       Default: "<userDataDir>/settings.json"
  * --skip-update-apps    Do not download info/updates about apps.
