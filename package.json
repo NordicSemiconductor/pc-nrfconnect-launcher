@@ -124,7 +124,7 @@
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.27.3",
         "spectron": "7.0.0",
-        "tar": "6.0.2",
+        "tar": "6.1.2",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
