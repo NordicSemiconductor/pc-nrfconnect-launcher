@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import DeviceLister from 'nrf-device-lister';
+import nrfDeviceLib from '@nordicsemiconductor/nrf-device-lib-js';
+import camelcaseKeys from 'camelcase-keys';
 import { setupDevice } from 'nrf-device-setup';
 import { logger } from 'pc-nrfconnect-shared';
 
 import { getAppConfig } from '../../decoration';
-import * as AppReloadDialogActions from './appReloadDialogActions';
 
 /**
  * Indicates that a device has been selected.
@@ -107,7 +107,8 @@ export const DEVICE_SETUP_INPUT_RECEIVED = 'DEVICE_SETUP_INPUT_RECEIVED';
  */
 export const DEVICES_DETECTED = 'DEVICES_DETECTED';
 
-let deviceLister;
+export const deviceLibContext = nrfDeviceLib.createContext();
+let hotplugTaskId;
 
 // Defined when user input is required during device setup. When input is
 // received from the user, this callback is invoked with the confirmation
@@ -158,60 +159,8 @@ function deviceSetupInputReceivedAction(input) {
     };
 }
 
-const NORDIC_VENDOR_ID = 0x1915;
-const NORDIC_BOOTLOADER_PRODUCT_ID = 0x521f;
-
-function logDeviceListerError(error) {
-    return dispatch => {
-        if (error.usb) {
-            // On win32 platforms, a USB device with no interfaces bound
-            // to a libusb-compatible-driver will fail to enumerate and trigger a
-            // LIBUSB_* error. This is the case of a nRF52840 in DFU mode.
-            // We don't want to show an error to the user in this particular case.
-            if (
-                error.errorCode ===
-                    DeviceLister.ErrorCodes.LIBUSB_ERROR_NOT_FOUND &&
-                error.usb.deviceDescriptor
-            ) {
-                const { idProduct, idVendor } = error.usb.deviceDescriptor;
-                if (
-                    idVendor === NORDIC_VENDOR_ID &&
-                    idProduct === NORDIC_BOOTLOADER_PRODUCT_ID
-                ) {
-                    return;
-                }
-            }
-
-            const usbAddr = `${error.usb.busNumber}.${error.usb.deviceAddress}`;
-
-            let message = `Error while probing usb device at bus.address ${usbAddr}: ${error.message}. `;
-            if (process.platform === 'linux') {
-                message +=
-                    'Please check your udev rules concerning permissions for USB devices, see ' +
-                    'https://github.com/NordicSemiconductor/nrf-udev';
-            } else if (process.platform === 'win32') {
-                message +=
-                    'Please check that a libusb-compatible kernel driver is bound to this device, see https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/master/doc/win32-usb-troubleshoot.md';
-            }
-
-            dispatch(
-                AppReloadDialogActions.showDialog(
-                    'LIBUSB error is detected. Reloading app could resolve the issue. Would you like to reload now?'
-                )
-            );
-            logger.error(message);
-        } else if (
-            error.serialport &&
-            error.errorCode ===
-                DeviceLister.ErrorCodes.COULD_NOT_FETCH_SNO_FOR_PORT
-        ) {
-            // Explicitly hide errors about serial ports without serial numbers
-            logger.verbose(error.message);
-        } else {
-            logger.error(`Error while probing devices: ${error.message}`);
-        }
-    };
-}
+// const NORDIC_VENDOR_ID = 0x1915;
+// const NORDIC_BOOTLOADER_PRODUCT_ID = 0x521f;
 
 /**
  * Deselects the currently selected device.
@@ -224,6 +173,18 @@ export function deselectDevice() {
     };
 }
 
+export const wrapDevices = devices => {
+    let updatedDevices = camelcaseKeys(devices, { deep: true });
+    updatedDevices = updatedDevices.map(device => {
+        delete Object.assign(device, {
+            serialNumber: device.serialnumber,
+            boardVersion: device.jlink ? device.jlink.boardVersion : undefined,
+        }).serialnumber;
+        return device;
+    });
+    return updatedDevices;
+};
+
 /**
  * Starts watching for devices with the given traits. See the nrf-device-lister
  * library for available traits. Whenever devices are attached/detached, this
@@ -231,45 +192,48 @@ export function deselectDevice() {
  *
  * @returns {function(*)} Function that can be passed to redux dispatch.
  */
-export function startWatchingDevices() {
-    const config = getAppConfig();
+export const startWatchingDevices = () => async (dispatch, getState) => {
+    const updateDeviceList = async () => {
+        let devices = await nrfDeviceLib.enumerate(deviceLibContext, {});
+        devices = wrapDevices(devices);
 
-    return (dispatch, getState) => {
-        if (!deviceLister) {
-            deviceLister = new DeviceLister(config.selectorTraits);
+        const { selectedSerialNumber } = getState().device;
+        if (
+            selectedSerialNumber !== null &&
+            !devices.find(d => d.serialNumber === selectedSerialNumber)
+        ) {
+            dispatch(deselectDevice());
         }
-        deviceLister.removeAllListeners('conflated');
-        deviceLister.removeAllListeners('error');
-        deviceLister.on('conflated', devices => {
-            const state = getState();
-            if (
-                state.core.device.selectedSerialNumber !== null &&
-                !devices.has(state.core.device.selectedSerialNumber)
-            ) {
-                dispatch(deselectDevice());
-            }
 
-            dispatch(devicesDetectedAction(Array.from(devices.values())));
-        });
-        deviceLister.on('error', error =>
-            dispatch(logDeviceListerError(error))
-        );
-        deviceLister.start();
+        dispatch(devicesDetectedAction(devices));
     };
-}
 
+    try {
+        await updateDeviceList();
+        hotplugTaskId = nrfDeviceLib.startHotplugEvents(
+            deviceLibContext,
+            () => {},
+            updateDeviceList
+        );
+    } catch (error) {
+        logger.error(`Error while probing devices: ${error.message}`);
+    }
+};
 /**
  * Stops watching for devices.
  *
  * @returns {function(*)} Function that can be passed to redux dispatch.
  */
-export function stopWatchingDevices() {
-    return () => {
-        deviceLister.removeAllListeners('conflated');
-        deviceLister.removeAllListeners('error');
-        deviceLister.stop();
-    };
-}
+export const stopWatchingDevices = () => {
+    // Start here
+    if (deviceLibContext) {
+        try {
+            nrfDeviceLib.stopHotplugEvents(hotplugTaskId);
+        } catch (error) {
+            logger.error(`Error while stop watching devices: ${error.message}`);
+        }
+    }
+};
 
 /**
  * Asks the user to provide input during device setup. If a list of choices are
