@@ -77,6 +77,7 @@ global.appsRootDir = config.getAppsRootDir();
 
 const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 
+electronApp.allowRendererProcessReuse = false;
 electronApp.on('ready', () => {
     handleDevtoolsRequest();
 
