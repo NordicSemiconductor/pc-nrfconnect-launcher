@@ -123,6 +123,7 @@
         "electron-devtools-installer": "3.1.1",
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
+        "immutable": "^4.0.0-rc.14",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.28.2",
@@ -153,6 +154,7 @@
         "react-markdown": "4.3.1",
         "react-redux": "7.2.0",
         "roboto-fontface": "0.10.0",
+        "serialport": "^9.2.0",
         "shasum": "1.0.2",
         "targz": "1.0.1",
         "uuid": "8.1.0",
@@ -168,7 +170,7 @@
             "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js",
             "^electron$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.js",
             "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js",
-            "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
+            "pc-nrfjprog-js|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.[jt]sx?$": [
