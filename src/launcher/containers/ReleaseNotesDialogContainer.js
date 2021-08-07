@@ -55,6 +55,7 @@ function mapStateToProps({
             releaseNote: app.releaseNote,
             canUpdate: app.currentVersion !== app.latestVersion,
             latestVersion: app.latestVersion,
+            isInstalled: app.currentVersion != null,
         };
     }
 

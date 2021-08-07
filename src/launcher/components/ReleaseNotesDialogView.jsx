@@ -49,6 +49,7 @@ const view = ({
     source,
     onUpgrade,
     onHideReleaseNotes,
+    isInstalled,
 }) => (
     <Modal
         show={!!name}
@@ -72,7 +73,7 @@ const view = ({
                         onHideReleaseNotes();
                     }}
                 >
-                    Update to latest version
+                    {isInstalled ? 'Update to latest version' : 'Install'}
                 </Button>
             )}
             <Button variant="outline-primary" onClick={onHideReleaseNotes}>
@@ -91,6 +92,7 @@ view.propTypes = {
     name: string,
     onUpgrade: func.isRequired,
     onHideReleaseNotes: func.isRequired,
+    isInstalled: bool,
 };
 
 view.defaultProps = {
