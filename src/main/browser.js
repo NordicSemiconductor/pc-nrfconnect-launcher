@@ -38,6 +38,7 @@
 
 const electron = require('electron');
 const config = require('./config');
+const path = require('path');
 
 function createSplashScreen() {
     let splashScreen = new electron.BrowserWindow({
@@ -68,7 +69,8 @@ function createWindow(options) {
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false,
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js'),
             enableRemoteModule: true,
         },
         ...options,

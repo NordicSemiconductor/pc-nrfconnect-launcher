@@ -39,7 +39,6 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { remote } from 'electron';
 import isDev from 'electron-is-dev';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -54,24 +53,20 @@ import rootReducer from './reducers';
 
 import '../../resources/css/launcher.scss';
 
-const config = remote.require('../main/config');
-const settings = remote.require('../main/settings');
-const net = remote.require('../main/net');
-
 const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
 );
 const rootElement = React.createElement(RootContainer, { store });
 
-const shouldCheckForUpdatesAtStartup = settings.get(
+const shouldCheckForUpdatesAtStartup = window.electron.settingsGet(
     'shouldCheckForUpdatesAtStartup'
 );
 
 function downloadLatestAppInfo() {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateApps()
+        window.electron.isSkipUpdateApps()
     ) {
         return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
     }
@@ -81,7 +76,7 @@ function downloadLatestAppInfo() {
 function checkForCoreUpdates() {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateCore() &&
+        window.electron.isSkipUpdateCore() &&
         !isDev
     ) {
         return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
@@ -89,7 +84,7 @@ function checkForCoreUpdates() {
     return Promise.resolve();
 }
 
-net.registerProxyLoginHandler((authInfo, callback) => {
+window.electron.netRegisterProxyLoginHandler((authInfo, callback) => {
     store.dispatch(ProxyActions.authenticate(authInfo)).then(credentials => {
         const { username, password } = credentials;
         return callback(username, password);

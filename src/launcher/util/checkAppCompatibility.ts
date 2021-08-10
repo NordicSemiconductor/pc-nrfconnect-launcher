@@ -34,14 +34,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { remote } from 'electron';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';
 import { App } from '../../main/apps';
 import requiredVersionOfShared from '../../main/requiredVersionOfShared';
-
-const config = remote.require('../main/config');
 
 const isValidVersionNumber = (maybeVersionNumber?: string) =>
     semver.valid(maybeVersionNumber) != null;
@@ -186,7 +183,8 @@ const getProvidedVersionOfShared = () => {
 export default (
     app: App,
     launcherCompatibilityConfig = {
-        providedVersionOfEngine: config.getVersion(),
+        // providedVersionOfEngine: window.electron.getVersion(),
+        providedVersionOfEngine: null,
         providedVersionOfShared: getProvidedVersionOfShared(),
     }
 ): Compatible | Incompatible => {

@@ -35,13 +35,10 @@
  */
 
 import { connect } from 'react-redux';
-import { remote } from 'electron';
 import { openUrl } from 'pc-nrfconnect-shared';
 
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
-
-const config = remote.require('../main/config');
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;
@@ -54,7 +51,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onClickReleaseNotes: () => openUrl(config.getReleaseNotesUrl()),
+        onClickReleaseNotes: () =>
+            openUrl(window.electron.getReleaseNotesUrl()),
         onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
         onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
     };

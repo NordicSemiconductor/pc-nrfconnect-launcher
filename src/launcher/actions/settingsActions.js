@@ -34,13 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { remote } from 'electron';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
-
-const settings = remote.require('../main/settings');
-const mainApps = remote.require('../main/apps');
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';
@@ -93,13 +89,13 @@ export function loadSettings() {
     return dispatch => {
         dispatch(loadSettingsAction());
         try {
-            let shouldCheckForUpdatesAtStartup = settings.get(
+            let shouldCheckForUpdatesAtStartup = window.electron.settingsGet(
                 'shouldCheckForUpdatesAtStartup'
             );
             if (shouldCheckForUpdatesAtStartup === null) {
                 shouldCheckForUpdatesAtStartup = true;
             }
-            const sources = settings.getSources();
+            const sources = window.electron.getSources();
             dispatch(
                 loadSettingsSuccessAction({
                     shouldCheckForUpdatesAtStartup,
@@ -121,7 +117,10 @@ export function checkUpdatesAtStartupChanged(isEnabled) {
     return dispatch => {
         dispatch(checkUpdatesAtStartupChangedAction(isEnabled));
         try {
-            settings.set('shouldCheckForUpdatesAtStartup', isEnabled);
+            window.electron.settingsSet(
+                'shouldCheckForUpdatesAtStartup',
+                isEnabled
+            );
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
@@ -154,12 +153,14 @@ function addSourceAction(name, url) {
 
 export function addSource(url) {
     return (dispatch, getState) => {
-        mainApps
+        window.electron
             .downloadAppsJsonFile(url)
             .then(source => dispatch(addSourceAction(source, url)))
             .then(() => {
                 try {
-                    settings.setSources(getState().settings.sources.toJS());
+                    window.electron.setSources(
+                        getState().settings.sources.toJS()
+                    );
                 } catch (error) {
                     dispatch(
                         ErrorDialogActions.showDialog(
@@ -184,12 +185,14 @@ function sourceRemovedAction(name) {
 
 export function removeSource(name) {
     return (dispatch, getState) => {
-        mainApps
+        window.electron
             .removeSourceDirectory(name)
             .then(() => dispatch(sourceRemovedAction(name)))
             .then(() => {
                 try {
-                    settings.setSources(getState().settings.sources.toJS());
+                    window.electron.setSources(
+                        getState().settings.sources.toJS()
+                    );
                 } catch (error) {
                     dispatch(
                         ErrorDialogActions.showDialog(

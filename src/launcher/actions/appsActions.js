@@ -45,13 +45,6 @@ import {
     sendLauncherUsageData,
 } from './usageDataActions';
 
-const net = remote.require('../main/net');
-const fs = remote.require('fs-extra');
-
-const mainApps = remote.require('../main/apps');
-const config = remote.require('../main/config');
-const settings = remote.require('../main/settings');
-
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
 export const LOAD_LOCAL_APPS_ERROR = 'LOAD_LOCAL_APPS_ERROR';
@@ -240,10 +233,10 @@ export function setAppManagementShow(show = {}) {
     const newState = {
         installed: true,
         available: true,
-        ...settings.get('app-management.show', {}),
+        ...window.electron.settingsGet('app-management.show', {}),
         ...show,
     };
-    settings.set('app-management.show', newState);
+    window.electron.settingsSet('app-management.show', newState);
     return {
         type: SET_APP_MANAGEMENT_SHOW,
         show: newState,
@@ -253,9 +246,9 @@ export function setAppManagementShow(show = {}) {
 export function setAppManagementFilter(filter) {
     const newState =
         filter === undefined
-            ? settings.get('app-management.filter', '')
+            ? window.electron.settingsGet('app-management.filter', '')
             : filter;
-    settings.set('app-management.filter', newState);
+    window.electron.settingSet('app-management.filter', newState);
     return {
         type: SET_APP_MANAGEMENT_FILTER,
         filter: newState,
@@ -263,7 +256,9 @@ export function setAppManagementFilter(filter) {
 }
 
 export function setAppManagementSource(source, show) {
-    const sources = { ...settings.get('app-management.sources', {}) };
+    const sources = {
+        ...window.electron.settingsGet('app-management.sources', {}),
+    };
     if (source) {
         if (show !== undefined) {
             sources[source] = show;
@@ -271,7 +266,7 @@ export function setAppManagementSource(source, show) {
             delete sources[source];
         }
     }
-    settings.set('app-management.sources', sources);
+    window.electron.settingsSet('app-management.sources', sources);
     return {
         type: SET_APP_MANAGEMENT_SOURCE,
         sources,
@@ -291,10 +286,11 @@ export function setAppManagementSource(source, show) {
 function downloadAppIcon(source, name, iconPath, iconUrl) {
     return dispatch => {
         // If there is a cached version, use it even before downloading.
-        if (fs.existsSync(iconPath)) {
+        if (window.electron.existsSync(iconPath)) {
             dispatch(setAppIconPath(source, name, iconPath));
         }
-        net.downloadToFile(iconUrl, iconPath, false)
+        window.electron
+            .downloadToFile(iconUrl, iconPath, false)
             .then(() => dispatch(setAppIconPath(source, name, iconPath)))
             .catch(() => {
                 /* Ignore 404 not found. */
@@ -305,7 +301,7 @@ function downloadAppIcon(source, name, iconPath, iconUrl) {
 export function loadLocalApps() {
     return dispatch => {
         dispatch(loadLocalAppsAction());
-        return mainApps
+        return window.electron
             .getLocalApps()
             .then(apps => dispatch(loadLocalAppsSuccess(apps)))
             .catch(error => {
@@ -319,7 +315,7 @@ export function loadOfficialApps(appName, appSource) {
     return async dispatch => {
         dispatch(loadOfficialAppsAction());
         const { fulfilled: apps, rejected: appsWithErrors } =
-            await mainApps.getOfficialApps();
+            await window.electron.getOfficialApps();
 
         dispatch(
             loadOfficialAppsSuccess(
@@ -329,7 +325,7 @@ export function loadOfficialApps(appName, appSource) {
         );
         apps.filter(({ path }) => !path).forEach(({ source, name, url }) => {
             const iconPath = join(
-                `${config.getAppsRootDir(source)}`,
+                `${window.electron.getAppsRootDir(source)}`,
                 `${name}.svg`
             );
             const iconUrl = `${url}.svg`;
@@ -345,7 +341,7 @@ export function loadOfficialApps(appName, appSource) {
             ) {
                 return downloadAllReleaseNotes(...rest);
             }
-            return mainApps
+            return window.electron
                 .downloadReleaseNotes(app)
                 .then(
                     releaseNote =>
@@ -380,7 +376,7 @@ const handleAppsWithErrors = (dispatch, apps) => {
     });
 
     const recover = invalidPaths => () => {
-        invalidPaths.forEach(p => fs.remove(p));
+        invalidPaths.forEach(p => window.electron.remove(p));
         remote.getCurrentWindow().reload();
     };
 
@@ -402,7 +398,7 @@ export function installOfficialApp(name, source) {
     return dispatch => {
         dispatch(sendAppUsageData(EventAction.INSTALL_APP, source, name));
         dispatch(installOfficialAppAction(name, source));
-        mainApps
+        window.electron
             .installOfficialApp(name, 'latest', source)
             .then(() => {
                 dispatch(installOfficialAppSuccessAction(name, source));
@@ -423,7 +419,7 @@ export function removeOfficialApp(name, source) {
     return dispatch => {
         dispatch(sendAppUsageData(EventAction.REMOVE_APP, source, name));
         dispatch(removeOfficialAppAction(name, source));
-        mainApps
+        window.electron
             .removeOfficialApp(name, source)
             .then(() => {
                 dispatch(removeOfficialAppSuccessAction(name, source));
@@ -444,7 +440,7 @@ export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
         dispatch(sendAppUsageData(EventAction.UPGRADE_APP, source, name));
         dispatch(upgradeOfficialAppAction(name, version, source));
-        return mainApps
+        return window.electron
             .installOfficialApp(name, version, source)
             .then(() => {
                 dispatch(
@@ -483,7 +479,7 @@ export function checkEngineAndLaunch(app) {
         const appCompatibility = checkAppCompatibility(app);
         const launchAppWithoutWarning =
             appCompatibility.isCompatible ||
-            config.isRunningLauncherFromSource();
+            window.electron.isRunningLauncherFromSource();
 
         dispatch(
             launchAppWithoutWarning

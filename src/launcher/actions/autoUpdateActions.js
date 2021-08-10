@@ -34,7 +34,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { remote } from 'electron';
 import log from 'electron-log';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
@@ -51,9 +50,6 @@ export const AUTO_UPDATE_DOWNLOAD_CANCELLED = 'AUTO_UPDATE_DOWNLOAD_CANCELLED';
 export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
 export const AUTO_UPDATE_ERROR = 'AUTO_UPDATE_ERROR';
 
-const mainApps = remote.require('../main/apps');
-const { autoUpdater, CancellationToken } = remote.require('../main/autoUpdate');
-
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 
@@ -61,6 +57,7 @@ const isMac = process.platform === 'darwin';
 // application update. Will only exist while a download is in progress, and
 // allows cancelling the download by calling cancellationToken.cancel().
 let cancellationToken;
+const { autoUpdater, CancellationToken } = window.electron;
 
 function checkAction() {
     return {
@@ -206,9 +203,9 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
     return dispatch => {
         dispatch(AppsActions.downloadLatestAppInfoAction());
 
-        return mainApps
+        return window.electron
             .downloadAppsJsonFiles()
-            .then(() => mainApps.generateUpdatesJsonFiles())
+            .then(() => window.electron.generateUpdatesJsonFiles())
             .then(() =>
                 dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
             )

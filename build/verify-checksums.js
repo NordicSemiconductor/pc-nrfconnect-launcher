@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+console.log('VERIFY-CHECKSUM')
 
 const crypto = require('crypto');
 const axios = require('axios');

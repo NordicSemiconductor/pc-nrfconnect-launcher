@@ -36,6 +36,8 @@
 
 'use strict';
 
+console.log('get-nrfjprog')
+
 const axios = require('axios');
 const tar = require('tar');
 const fs = require('fs');

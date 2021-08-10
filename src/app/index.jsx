@@ -79,6 +79,7 @@ const renderer = (App, container, onLoaded) => {
 };
 
 const render = app => {
+    console.log('RENDERING');
     const doRender = isLegacy(app) ? legacyRenderer : renderer;
 
     doRender(app, document.getElementById('webapp'), removeLoaderElement);

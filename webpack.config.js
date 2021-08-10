@@ -14,7 +14,6 @@ function createExternals() {
         'pc-nrfjprog-js',
         'serialport',
         'usb',
-        'nrf-device-setup',
         'osx-temperature-sensor',
         '@nordicsemiconductor/nrf-device-lib-js',
     ];

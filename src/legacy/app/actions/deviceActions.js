@@ -36,7 +36,7 @@
 
 import nrfDeviceLib from '@nordicsemiconductor/nrf-device-lib-js';
 import camelcaseKeys from 'camelcase-keys';
-import { setupDevice } from 'nrf-device-setup';
+// import { setupDevice } from 'nrf-device-setup';
 import { logger } from 'pc-nrfconnect-shared';
 
 import { getAppConfig } from '../../decoration';

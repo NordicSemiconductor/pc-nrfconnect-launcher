@@ -40,15 +40,12 @@
 
 'use strict';
 
-import { remote, shell } from 'electron';
+import { shell } from 'electron';
 import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { v4 } from 'uuid';
-
-const config = remote.require('../main/config');
-const fileUtil = remote.require('../main/fileUtil');
 
 const mode =
     fs.constants.S_IRWXU |
@@ -102,10 +99,13 @@ function getArgs(app) {
 function createShortcutForWindows(app) {
     return dispatch => {
         const fileName = getFileName(app);
-        const filePath = path.join(config.getDesktopDir(), `${fileName}.lnk`);
+        const filePath = path.join(
+            window.electron.getDesktopDir(),
+            `${fileName}.lnk`
+        );
         if (app.shortcutIconPath) {
             const shortcutStatus = shell.writeShortcutLink(filePath, {
-                target: config.getElectronExePath(),
+                target: window.electron.getElectronExePath(),
                 // In Windows, use double quote surrounding arguments
                 args: getArgs(app),
                 icon: app.shortcutIconPath,
@@ -143,7 +143,7 @@ function generateShortcutContent(app) {
     shortcutContent += `Version=${app.currentVersion}\n`;
     shortcutContent += `Name=${fileName}\n`;
     // In Linux, use single quote surrounding arguments
-    shortcutContent += `Exec=${config.getElectronExePath()} ${args}\n`;
+    shortcutContent += `Exec=${window.electron.getElectronExePath()} ${args}\n`;
     shortcutContent += 'Terminal=false\n';
     const { iconPath, shortcutIconPath } = app;
     shortcutContent += `Icon=${shortcutIconPath || iconPath}\n`;
@@ -164,11 +164,11 @@ function createShortcutForLinux(app) {
     return dispatch => {
         const fileName = getFileName(app);
         const desktopFilePath = path.join(
-            config.getDesktopDir(),
+            window.electron.getDesktopDir(),
             `${fileName}.desktop`
         );
         const applicationsFilePath = path.join(
-            config.getUbuntuDesktopDir(),
+            window.electron.getUbuntuDesktopDir(),
             `${fileName}.desktop`
         );
         const shortcutContent = generateShortcutContent(app);
@@ -212,14 +212,17 @@ function createShortcutForLinux(app) {
 function createShortcutForMacOS(app) {
     return async dispatch => {
         const fileName = getFileName(app);
-        let filePath = path.join(config.getDesktopDir(), `${fileName}.app`);
+        let filePath = path.join(
+            window.electron.getDesktopDir(),
+            `${fileName}.app`
+        );
         const templateName = `template-${v4()}.app`;
         const appTemplateTarPath = path.join(
-            config.getElectronRootPath(),
+            window.electron.getElectronRootPath(),
             '/resources/mac/template.tar.gz'
         );
         const tmpAppPath = path.join(
-            config.getTmpDir(),
+            window.electron.getTmpDir(),
             '/com.nordicsemi.nrfconnect'
         );
         const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
@@ -234,8 +237,12 @@ function createShortcutForMacOS(app) {
 
         try {
             // Untar template
-            await fileUtil.untar(appTemplateTarPath, tmpAppTemplatePath, 1);
-            await fileUtil.chmodDir(tmpAppTemplatePath, mode);
+            await window.electron.untar(
+                appTemplateTarPath,
+                tmpAppTemplatePath,
+                1
+            );
+            await window.electron.chmodDir(tmpAppTemplatePath, mode);
 
             // Create Info.plist
             const infoTmpPath = path.join(
@@ -262,7 +269,7 @@ function createShortcutForMacOS(app) {
                 '/Contents/document.wflow'
             );
             // In MacOS spaces should be replaced
-            const shortcutCMD = `${config
+            const shortcutCMD = `${window.electron
                 .getElectronExePath()
                 .replace(/ /g, '\\ ')} ${getArgs(app)}`;
             const wflowContentSource = fs.readFileSync(wflowTmpPath, 'UTF-8');
@@ -275,22 +282,22 @@ function createShortcutForMacOS(app) {
                 wflowContentData
             );
 
-            await fileUtil.createTextFile(infoTmpPath, infoContent);
-            await fileUtil.createTextFile(wflowTmpPath, wflowContent);
-            await fileUtil.copy(app.shortcutIconPath, icnsPath);
+            await window.electron.createTextFile(infoTmpPath, infoContent);
+            await window.electron.createTextFile(wflowTmpPath, wflowContent);
+            await window.electron.copy(app.shortcutIconPath, icnsPath);
 
             // Copy to Desktop
-            await fileUtil.copy(tmpAppTemplatePath, filePath);
+            await window.electron.copy(tmpAppTemplatePath, filePath);
 
             // Copy to Applications
             filePath = path.join(
-                config.getHomeDir(),
+                window.electron.getHomeDir(),
                 `/Applications/${fileName}.app/`
             );
-            await fileUtil.copy(tmpAppTemplatePath, filePath);
+            await window.electron.copy(tmpAppTemplatePath, filePath);
 
             // Change mode
-            await fileUtil.chmodDir(appExecPath, mode);
+            await window.electron.chmodDir(appExecPath, mode);
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
