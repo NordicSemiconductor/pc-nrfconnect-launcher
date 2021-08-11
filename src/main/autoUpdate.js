@@ -36,12 +36,12 @@
 
 'use strict';
 
-const { autoUpdater, CancellationToken } = require('electron-updater');
-const log = require('electron-log');
+// const { autoUpdater, CancellationToken } = require('electron-updater');
+// const log = require('electron-log');
 
-autoUpdater.autoDownload = false;
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
+// autoUpdater.autoDownload = false;
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
 
-module.exports.autoUpdater = autoUpdater;
-module.exports.CancellationToken = CancellationToken;
+// module.exports.autoUpdater = autoUpdater;
+// module.exports.CancellationToken = CancellationToken;

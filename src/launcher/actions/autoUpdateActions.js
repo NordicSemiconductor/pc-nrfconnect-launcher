@@ -57,7 +57,7 @@ const isMac = process.platform === 'darwin';
 // application update. Will only exist while a download is in progress, and
 // allows cancelling the download by calling cancellationToken.cancel().
 let cancellationToken;
-const { autoUpdater, CancellationToken } = window.electron;
+// const { autoUpdater, CancellationToken } = window.electron;
 
 function checkAction() {
     return {
@@ -114,150 +114,154 @@ export function postponeUpdate() {
 
 export function checkForCoreUpdates() {
     return dispatch => {
-        dispatch(checkAction());
+        return null;
+        // dispatch(checkAction());
 
-        const checkForUpdatesPromise = autoUpdater.checkForUpdates();
-        if (!checkForUpdatesPromise) {
-            log.warn(
-                'Not checking for nRF Connect updates. Auto update is not ' +
-                    'yet supported for this platform.'
-            );
-            return Promise.resolve();
-        }
+        // const checkForUpdatesPromise = autoUpdater.checkForUpdates();
+        // if (!checkForUpdatesPromise) {
+        //     log.warn(
+        //         'Not checking for nRF Connect updates. Auto update is not ' +
+        //             'yet supported for this platform.'
+        //     );
+        //     return Promise.resolve();
+        // }
 
-        // checkForUpdatesPromise will resolve with result whether or not update
-        // is available, but the result will contain a cancellationToken and a
-        // downloadPromise only if there is an update
-        return checkForUpdatesPromise
-            .then(result => {
-                if (result.cancellationToken) {
-                    dispatch(updateAvailableAction(result.updateInfo.version));
-                }
-            })
-            .catch(error => {
-                dispatch(updateErrorAction(error));
-            });
+        // // checkForUpdatesPromise will resolve with result whether or not update
+        // // is available, but the result will contain a cancellationToken and a
+        // // downloadPromise only if there is an update
+        // return checkForUpdatesPromise
+        //     .then(result => {
+        //         if (result.cancellationToken) {
+        //             dispatch(updateAvailableAction(result.updateInfo.version));
+        //         }
+        //     })
+        //     .catch(error => {
+        //         dispatch(updateErrorAction(error));
+        //     });
     };
 }
 
 export function startDownload() {
     return dispatch => {
-        if (cancellationToken) {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    'Download was requested ' +
-                        'but another download operation is already in progress.'
-                )
-            );
-            return;
-        }
+        return null;
+        // if (cancellationToken) {
+        //     dispatch(
+        //         ErrorDialogActions.showDialog(
+        //             'Download was requested ' +
+        //                 'but another download operation is already in progress.'
+        //         )
+        //     );
+        //     return;
+        // }
 
-        dispatch(startDownloadAction());
+        // dispatch(startDownloadAction());
 
-        autoUpdater.on('download-progress', progressObj => {
-            dispatch(updateDownloadingAction(progressObj.percent));
-        });
+        // autoUpdater.on('download-progress', progressObj => {
+        //     dispatch(updateDownloadingAction(progressObj.percent));
+        // });
 
-        autoUpdater.on('update-downloaded', async () => {
-            if (!UsageDataActions.isUsageDataOn()) {
-                dispatch(UsageDataActions.resetUsageData());
-            }
+        // autoUpdater.on('update-downloaded', async () => {
+        //     if (!UsageDataActions.isUsageDataOn()) {
+        //         dispatch(UsageDataActions.resetUsageData());
+        //     }
 
-            cancellationToken = null;
-            autoUpdater.removeAllListeners();
-            autoUpdater.quitAndInstall();
-        });
+        //     cancellationToken = null;
+        //     autoUpdater.removeAllListeners();
+        //     autoUpdater.quitAndInstall();
+        // });
 
-        autoUpdater.on('error', error => {
-            cancellationToken = null;
-            autoUpdater.removeAllListeners();
-            if (error.message === 'Cancelled') {
-                dispatch(downloadCancelledAction());
-            } else {
-                dispatch(updateErrorAction(error));
-                dispatch(ErrorDialogActions.showDialog(error.message));
-            }
-        });
+        // autoUpdater.on('error', error => {
+        //     cancellationToken = null;
+        //     autoUpdater.removeAllListeners();
+        //     if (error.message === 'Cancelled') {
+        //         dispatch(downloadCancelledAction());
+        //     } else {
+        //         dispatch(updateErrorAction(error));
+        //         dispatch(ErrorDialogActions.showDialog(error.message));
+        //     }
+        // });
 
-        cancellationToken = new CancellationToken();
-        autoUpdater.downloadUpdate(cancellationToken);
+        // cancellationToken = new CancellationToken();
+        // autoUpdater.downloadUpdate(cancellationToken);
     };
 }
 
 export function cancelDownload() {
     return dispatch => {
-        if (cancellationToken) {
-            cancellationToken.cancel();
-            dispatch(cancelDownloadAction());
-        } else {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    'Unable to cancel. No download is in progress.'
-                )
-            );
-        }
+        return null;
+        // if (cancellationToken) {
+        //     cancellationToken.cancel();
+        //     dispatch(cancelDownloadAction());
+        // } else {
+        //     dispatch(
+        //         ErrorDialogActions.showDialog(
+        //             'Unable to cancel. No download is in progress.'
+        //         )
+        //     );
+        // }
     };
 }
 
 export function downloadLatestAppInfo(options = { rejectIfError: false }) {
     return dispatch => {
-        dispatch(AppsActions.downloadLatestAppInfoAction());
+        return null;
+        // dispatch(AppsActions.downloadLatestAppInfoAction());
 
-        return window.electron
-            .downloadAppsJsonFiles()
-            .then(() => window.electron.generateUpdatesJsonFiles())
-            .then(() =>
-                dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
-            )
-            .then(() => dispatch(AppsActions.loadOfficialApps()))
-            .catch(error => {
-                dispatch(AppsActions.downloadLatestAppInfoErrorAction());
-                if (options.rejectIfError) {
-                    throw error;
-                } else if (error.sourceNotFound) {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +
-                                'This is usually caused by outdated app sources in the settings, ' +
-                                'where the sources files was removed from the server.',
-                            {
-                                'Remove source': () => {
-                                    dispatch(
-                                        SettingsActions.removeSource(
-                                            error.cause.name
-                                        )
-                                    );
-                                    dispatch(ErrorDialogActions.hideDialog());
-                                },
-                                Cancel: () => {
-                                    dispatch(ErrorDialogActions.hideDialog());
-                                },
-                            }
-                        )
-                    );
-                } else {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to download latest app info: ${error.message}`
-                        )
-                    );
-                }
-            });
+        // return window.electron
+        //     .downloadAppsJsonFiles()
+        //     .then(() => window.electron.generateUpdatesJsonFiles())
+        //     .then(() =>
+        //         dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
+        //     )
+        //     .then(() => dispatch(AppsActions.loadOfficialApps()))
+        //     .catch(error => {
+        //         dispatch(AppsActions.downloadLatestAppInfoErrorAction());
+        //         if (options.rejectIfError) {
+        //             throw error;
+        //         } else if (error.sourceNotFound) {
+        //             dispatch(
+        //                 ErrorDialogActions.showDialog(
+        //                     `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +
+        //                         'This is usually caused by outdated app sources in the settings, ' +
+        //                         'where the sources files was removed from the server.',
+        //                     {
+        //                         'Remove source': () => {
+        //                             dispatch(
+        //                                 SettingsActions.removeSource(
+        //                                     error.cause.name
+        //                                 )
+        //                             );
+        //                             dispatch(ErrorDialogActions.hideDialog());
+        //                         },
+        //                         Cancel: () => {
+        //                             dispatch(ErrorDialogActions.hideDialog());
+        //                         },
+        //                     }
+        //                 )
+        //             );
+        //         } else {
+        //             dispatch(
+        //                 ErrorDialogActions.showDialog(
+        //                     `Unable to download latest app info: ${error.message}`
+        //                 )
+        //             );
+        //         }
+        //     });
     };
 }
 
 export function checkForUpdatesManually() {
-    return dispatch =>
-        dispatch(downloadLatestAppInfo({ rejectIfError: true }))
-            .then(() => {
-                dispatch(checkForCoreUpdates());
-                dispatch(SettingsActions.showUpdateCheckCompleteDialog());
-            })
-            .catch(error =>
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to check for updates: ${error.message}`
-                    )
-                )
-            );
+    return dispatch => null;
+    // dispatch(downloadLatestAppInfo({ rejectIfError: true }))
+    //     .then(() => {
+    //         dispatch(checkForCoreUpdates());
+    //         dispatch(SettingsActions.showUpdateCheckCompleteDialog());
+    //     })
+    //     .catch(error =>
+    //         dispatch(
+    //             ErrorDialogActions.showDialog(
+    //                 `Unable to check for updates: ${error.message}`
+    //             )
+    //         )
+    // );
 }

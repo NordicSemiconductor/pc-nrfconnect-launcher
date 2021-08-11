@@ -64,24 +64,26 @@ const shouldCheckForUpdatesAtStartup = window.electron.settingsGet(
 );
 
 function downloadLatestAppInfo() {
-    if (
-        shouldCheckForUpdatesAtStartup !== false &&
-        window.electron.isSkipUpdateApps()
-    ) {
-        return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
-    }
     return Promise.resolve();
+    // if (
+    //     shouldCheckForUpdatesAtStartup !== false &&
+    //     window.electron.isSkipUpdateApps()
+    // ) {
+    //     return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
+    // }
+    // return Promise.resolve();
 }
 
 function checkForCoreUpdates() {
-    if (
-        shouldCheckForUpdatesAtStartup !== false &&
-        window.electron.isSkipUpdateCore() &&
-        !isDev
-    ) {
-        return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
-    }
     return Promise.resolve();
+    // if (
+    //     shouldCheckForUpdatesAtStartup !== false &&
+    //     window.electron.isSkipUpdateCore() &&
+    //     !isDev
+    // ) {
+    //     store.dispatch(AutoUpdateActions.checkForCoreUpdates());
+    // }
+    // return Promise.resolve();
 }
 
 window.electron.netRegisterProxyLoginHandler((authInfo, callback) => {

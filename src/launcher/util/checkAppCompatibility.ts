@@ -183,8 +183,7 @@ const getProvidedVersionOfShared = () => {
 export default (
     app: App,
     launcherCompatibilityConfig = {
-        // providedVersionOfEngine: window.electron.getVersion(),
-        providedVersionOfEngine: null,
+        providedVersionOfEngine: window.electron.getVersion(),
         providedVersionOfShared: getProvidedVersionOfShared(),
     }
 ): Compatible | Incompatible => {
