@@ -68,6 +68,8 @@ function createWindow(options) {
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
         },
         ...options,
     };

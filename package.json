@@ -115,7 +115,7 @@
         "@types/node": "12.20.6",
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
-        "electron": "8.2.5",
+        "electron": "^13.1.7",
         "electron-builder": "22.7.0",
         "electron-devtools-installer": "3.1.1",
         "electron-is-dev": "1.2.0",
@@ -129,6 +129,7 @@
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.11",
         "axios": "0.19.2",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
