@@ -39,28 +39,6 @@
 // Run this as soon as possible, so that the user data folder is not already initialised by Electron
 require('./setUserDataDir');
 
-const { existsSync } = require('fs');
-const { resolve } = require('path');
-
-const { execPath } = process;
-
-// In order to correctly set the library search path of pc-nrfjprog-js module
-// we need to set the environment variable before the module is loaded.
-const nRFjprogSearchPath = [
-    resolve(execPath, '../nrfjprog'),
-    resolve(execPath, '../../Frameworks/nrfjprog'),
-    resolve(process.cwd(), 'nrfjprog'),
-    resolve(process.cwd(), 'node_modules/pc-nrfjprog-js/nrfjprog'),
-].find(existsSync);
-
-if (nRFjprogSearchPath) {
-    process.env.NRFJPROG_LIBRARY_PATH = nRFjprogSearchPath;
-    const original = process.env.LD_LIBRARY_PATH
-        ? `:${process.env.LD_LIBRARY_PATH}`
-        : '';
-    process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
-}
-
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
 

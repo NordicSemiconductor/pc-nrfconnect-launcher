@@ -11,10 +11,8 @@ function createExternals() {
     // by webpack. Adding them as externals so that they are not bundled.
     const libs = [
         'pc-ble-driver-js',
-        'pc-nrfjprog-js',
         'serialport',
         '@nordicsemiconductor/nrf-device-lib-js',
-        'usb',
         'osx-temperature-sensor',
     ];
     return libs.reduce(
