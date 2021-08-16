@@ -121,20 +121,20 @@ function deviceSelectedAction(device) {
     };
 }
 
-function deviceSetupErrorAction(device, error) {
-    return {
-        type: DEVICE_SETUP_ERROR,
-        device,
-        error,
-    };
-}
+// function deviceSetupErrorAction(device, error) {
+//     return {
+//         type: DEVICE_SETUP_ERROR,
+//         device,
+//         error,
+//     };
+// }
 
-function deviceSetupCompleteAction(device) {
-    return {
-        type: DEVICE_SETUP_COMPLETE,
-        device,
-    };
-}
+// function deviceSetupCompleteAction(device) {
+//     return {
+//         type: DEVICE_SETUP_COMPLETE,
+//         device,
+//     };
+// }
 
 function devicesDetectedAction(devices) {
     return {
@@ -143,13 +143,13 @@ function devicesDetectedAction(devices) {
     };
 }
 
-function deviceSetupInputRequiredAction(message, choices) {
-    return {
-        type: DEVICE_SETUP_INPUT_REQUIRED,
-        message,
-        choices,
-    };
-}
+// function deviceSetupInputRequiredAction(message, choices) {
+//     return {
+//         type: DEVICE_SETUP_INPUT_REQUIRED,
+//         message,
+//         choices,
+//     };
+// }
 
 function deviceSetupInputReceivedAction(input) {
     return {
@@ -242,20 +242,20 @@ export const stopWatchingDevices = () => {
  * @param {Array<String>} [choices] The choices to display to the user (optional).
  * @returns {Promise<String>} Promise that resolves with the user input.
  */
-const getDeviceSetupUserInput = dispatch => (message, choices) =>
-    new Promise((resolve, reject) => {
-        deviceSetupCallback = choice => {
-            if (!choices) {
-                // for confirmation resolve with boolean
-                resolve(!!choice);
-            } else if (choice) {
-                resolve(choice);
-            } else {
-                reject(new Error('Cancelled by user.'));
-            }
-        };
-        dispatch(deviceSetupInputRequiredAction(message, choices));
-    });
+// const getDeviceSetupUserInput = dispatch => (message, choices) =>
+//     new Promise((resolve, reject) => {
+//         deviceSetupCallback = choice => {
+//             if (!choices) {
+//                 // for confirmation resolve with boolean
+//                 resolve(!!choice);
+//             } else if (choice) {
+//                 resolve(choice);
+//             } else {
+//                 reject(new Error('Cancelled by user.'));
+//             }
+//         };
+//         dispatch(deviceSetupInputRequiredAction(message, choices));
+//     });
 
 /**
  * Selects a device and sets it up for use according to the `config.deviceSetup`
@@ -281,27 +281,27 @@ export function selectAndSetupDevice(device) {
                 await config.releaseCurrentDevice();
             }
 
-            const deviceSetupConfig = {
-                promiseConfirm: getDeviceSetupUserInput(dispatch),
-                promiseChoice: getDeviceSetupUserInput(dispatch),
-                allowCustomDevice: false,
-                ...config.deviceSetup,
-            };
-            setupDevice(device, deviceSetupConfig)
-                .then(preparedDevice => {
-                    dispatch(startWatchingDevices());
-                    dispatch(deviceSetupCompleteAction(preparedDevice));
-                })
-                .catch(error => {
-                    dispatch(deviceSetupErrorAction(device, error));
-                    if (!deviceSetupConfig.allowCustomDevice) {
-                        logger.error(
-                            `Error while setting up device ${device.serialNumber}: ${error.message}`
-                        );
-                        dispatch(deselectDevice());
-                    }
-                    dispatch(startWatchingDevices());
-                });
+            // const deviceSetupConfig = {
+            //     promiseConfirm: getDeviceSetupUserInput(dispatch),
+            //     promiseChoice: getDeviceSetupUserInput(dispatch),
+            //     allowCustomDevice: false,
+            //     ...config.deviceSetup,
+            // };
+            // setupDevice(device, deviceSetupConfig)
+            //     .then(preparedDevice => {
+            //         dispatch(startWatchingDevices());
+            //         dispatch(deviceSetupCompleteAction(preparedDevice));
+            //     })
+            //     .catch(error => {
+            //         dispatch(deviceSetupErrorAction(device, error));
+            //         if (!deviceSetupConfig.allowCustomDevice) {
+            //             logger.error(
+            //                 `Error while setting up device ${device.serialNumber}: ${error.message}`
+            //             );
+            //             dispatch(deselectDevice());
+            //         }
+            //         dispatch(startWatchingDevices());
+            //     });
         }
     };
 }
