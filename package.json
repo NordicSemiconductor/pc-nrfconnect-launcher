@@ -22,7 +22,7 @@
         "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
-        "get-jlink": "get-jlink -o build",
+        "get-jlink": "node getJlink.js -o build",
         "pack": "npm run build && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
@@ -30,12 +30,6 @@
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
-    "binary": {
-        "module_name": "pc-nrfjprog-js",
-        "module_path": "./build/Release",
-        "host": "https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/",
-        "remote_path": "v{version}"
-    },
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect",
@@ -47,7 +41,6 @@
             "dist/",
             "src/main/",
             "node_modules/",
-            "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
@@ -63,13 +56,6 @@
                 "tar.gz"
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.so"
-                }
-            ],
             "category": "Development"
         },
         "afterSign": "build/notarize.js",
@@ -79,14 +65,7 @@
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist",
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "Frameworks/nrfjprog",
-                    "filter": "*.dylib*"
-                }
-            ]
+            "entitlementsInherit": "build/entitlements.mac.plist"
         },
         "dmg": {
             "artifactName": "${name}-${version}.${ext}",
@@ -95,13 +74,6 @@
         "win": {
             "target": [
                 "nsis"
-            ],
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.dll"
-                }
             ],
             "publisherName": "Nordic Semiconductor ASA"
         },
@@ -124,6 +96,7 @@
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.27.3",
         "spectron": "7.0.0",
+        "sudo-prompt": "^9.2.1",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
     },
@@ -148,6 +121,7 @@
         "react-dom": "16.13.1",
         "react-markdown": "4.3.1",
         "react-redux": "7.2.0",
+        "regedit": "^4.0.0",
         "roboto-fontface": "0.10.0",
         "serialport": "^9.2.0",
         "shasum": "1.0.2",
