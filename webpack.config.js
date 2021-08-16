@@ -13,8 +13,8 @@ function createExternals() {
         'pc-ble-driver-js',
         'pc-nrfjprog-js',
         'serialport',
+        '@nordicsemiconductor/nrf-device-lib-js',
         'usb',
-        'nrf-device-setup',
         'osx-temperature-sensor',
     ];
     return libs.reduce(
