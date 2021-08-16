@@ -81,7 +81,9 @@ SerialPort.list = () =>
 hostedModules['serialport'] = SerialPort;
 
 hostedModules['electron'] = require('electron');
-hostedModules['nrf-device-setup'] = require('nrf-device-setup');
+hostedModules[
+    '@nordicsemiconductor/nrf-device-lib-js'
+] = require('@nordicsemiconductor/nrf-device-lib-js');
 hostedModules['nrfconnect/core'] = require('../legacy/api').core;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
 hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
