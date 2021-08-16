@@ -86,13 +86,11 @@ hostedModules[
 ] = require('@nordicsemiconductor/nrf-device-lib-js');
 hostedModules['nrfconnect/core'] = require('../legacy/api').core;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
-hostedModules['pc-nrfjprog-js'] = require('pc-nrfjprog-js');
 hostedModules['react-dom'] = require('react-dom');
 hostedModules['react-redux'] = require('react-redux');
 hostedModules['react'] = require('react');
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
-hostedModules['usb'] = require('usb');
 
 const bleDriverJs = require('pc-ble-driver-js');
 

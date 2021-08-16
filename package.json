@@ -19,7 +19,6 @@
         "test-watch": "jest --watch src/",
         "test-e2e": "xvfb-maybe jest --runInBand --moduleNameMapper '{}' --testTimeout=15000 --forceExit test-e2e/",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
-        "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
         "get-jlink": "node getJlink.js -o build",
@@ -138,8 +137,7 @@
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",
             "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js",
             "^electron$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.js",
-            "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js",
-            "pc-nrfjprog-js": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
+            "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js"
         },
         "transform": {
             "^.+\\.[jt]sx?$": [

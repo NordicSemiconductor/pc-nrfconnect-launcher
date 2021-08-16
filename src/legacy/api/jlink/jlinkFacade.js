@@ -35,7 +35,6 @@
  */
 
 import EventEmitter from 'events';
-import nrfjprogjs from 'pc-nrfjprog-js';
 
 import registry from '../registry';
 
@@ -61,7 +60,6 @@ export default class JlinkFacade extends EventEmitter {
 
         // These may be monkey patched by unit tests.
         this.registry = registry;
-        this.nrfjprogjs = nrfjprogjs;
     }
 
     emitWarning(message) {
