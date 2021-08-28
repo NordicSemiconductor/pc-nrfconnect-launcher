@@ -36,7 +36,11 @@
 
 import nrfDeviceLib from '@nordicsemiconductor/nrf-device-lib-js';
 import camelcaseKeys from 'camelcase-keys';
-import { logger } from 'pc-nrfconnect-shared';
+import {
+    getDeviceLibContext,
+    logger,
+    prepareDevice,
+} from 'pc-nrfconnect-shared';
 
 import { getAppConfig } from '../../decoration';
 
@@ -106,7 +110,7 @@ export const DEVICE_SETUP_INPUT_RECEIVED = 'DEVICE_SETUP_INPUT_RECEIVED';
  */
 export const DEVICES_DETECTED = 'DEVICES_DETECTED';
 
-export const deviceLibContext = nrfDeviceLib.createContext();
+const deviceLibContext = getDeviceLibContext();
 let hotplugTaskId;
 
 // Defined when user input is required during device setup. When input is
@@ -121,20 +125,20 @@ function deviceSelectedAction(device) {
     };
 }
 
-// function deviceSetupErrorAction(device, error) {
-//     return {
-//         type: DEVICE_SETUP_ERROR,
-//         device,
-//         error,
-//     };
-// }
+function deviceSetupErrorAction(device, error) {
+    return {
+        type: DEVICE_SETUP_ERROR,
+        device,
+        error,
+    };
+}
 
-// function deviceSetupCompleteAction(device) {
-//     return {
-//         type: DEVICE_SETUP_COMPLETE,
-//         device,
-//     };
-// }
+function deviceSetupCompleteAction(device) {
+    return {
+        type: DEVICE_SETUP_COMPLETE,
+        device,
+    };
+}
 
 function devicesDetectedAction(devices) {
     return {
@@ -143,13 +147,13 @@ function devicesDetectedAction(devices) {
     };
 }
 
-// function deviceSetupInputRequiredAction(message, choices) {
-//     return {
-//         type: DEVICE_SETUP_INPUT_REQUIRED,
-//         message,
-//         choices,
-//     };
-// }
+function deviceSetupInputRequiredAction(message, choices) {
+    return {
+        type: DEVICE_SETUP_INPUT_REQUIRED,
+        message,
+        choices,
+    };
+}
 
 function deviceSetupInputReceivedAction(input) {
     return {
@@ -169,17 +173,21 @@ export function deselectDevice() {
     };
 }
 
-export const wrapDevices = devices => {
-    let updatedDevices = camelcaseKeys(devices, { deep: true });
-    updatedDevices = updatedDevices.map(device => {
-        delete Object.assign(device, {
-            serialNumber: device.serialnumber,
-            boardVersion: device.jlink ? device.jlink.boardVersion : undefined,
-        }).serialnumber;
-        return device;
-    });
-    return updatedDevices;
+export const wrapDevice = device => {
+    const outputDevice = camelcaseKeys(device, { deep: true });
+    const serialport = outputDevice.serialPorts
+        ? outputDevice.serialPorts[0]
+        : undefined;
+    return {
+        ...outputDevice,
+        boardVersion: outputDevice.jlink
+            ? outputDevice.jlink.boardVersion
+            : undefined,
+        serialport,
+    };
 };
+
+export const wrapDevices = devices => devices.map(wrapDevice);
 
 /**
  * Starts watching for devices with the given traits. See the nrf-device-lister
@@ -190,13 +198,18 @@ export const wrapDevices = devices => {
  */
 export const startWatchingDevices = () => async (dispatch, getState) => {
     const updateDeviceList = async () => {
-        let devices = await nrfDeviceLib.enumerate(deviceLibContext, {});
-        devices = wrapDevices(devices);
+        const devices = wrapDevices(
+            await nrfDeviceLib.enumerate(
+                deviceLibContext,
+                getAppConfig().selectorTraits
+            )
+        );
+        const { device } = getState();
 
-        const { selectedSerialNumber } = getState().device;
         if (
-            selectedSerialNumber !== null &&
-            !devices.find(d => d.serialNumber === selectedSerialNumber)
+            device &&
+            device.selectedSerialNumber !== null &&
+            !devices.find(d => d.serialNumber === device.selectedSerialNumber)
         ) {
             dispatch(deselectDevice());
         }
@@ -242,20 +255,20 @@ export const stopWatchingDevices = () => {
  * @param {Array<String>} [choices] The choices to display to the user (optional).
  * @returns {Promise<String>} Promise that resolves with the user input.
  */
-// const getDeviceSetupUserInput = dispatch => (message, choices) =>
-//     new Promise((resolve, reject) => {
-//         deviceSetupCallback = choice => {
-//             if (!choices) {
-//                 // for confirmation resolve with boolean
-//                 resolve(!!choice);
-//             } else if (choice) {
-//                 resolve(choice);
-//             } else {
-//                 reject(new Error('Cancelled by user.'));
-//             }
-//         };
-//         dispatch(deviceSetupInputRequiredAction(message, choices));
-//     });
+const getDeviceSetupUserInput = dispatch => (message, choices) =>
+    new Promise((resolve, reject) => {
+        deviceSetupCallback = choice => {
+            if (!choices) {
+                // for confirmation resolve with boolean
+                resolve(!!choice);
+            } else if (choice) {
+                resolve(choice);
+            } else {
+                reject(new Error('Cancelled by user.'));
+            }
+        };
+        dispatch(deviceSetupInputRequiredAction(message, choices));
+    });
 
 /**
  * Selects a device and sets it up for use according to the `config.deviceSetup`
@@ -281,27 +294,29 @@ export function selectAndSetupDevice(device) {
                 await config.releaseCurrentDevice();
             }
 
-            // const deviceSetupConfig = {
-            //     promiseConfirm: getDeviceSetupUserInput(dispatch),
-            //     promiseChoice: getDeviceSetupUserInput(dispatch),
-            //     allowCustomDevice: false,
-            //     ...config.deviceSetup,
-            // };
-            // setupDevice(device, deviceSetupConfig)
-            //     .then(preparedDevice => {
-            //         dispatch(startWatchingDevices());
-            //         dispatch(deviceSetupCompleteAction(preparedDevice));
-            //     })
-            //     .catch(error => {
-            //         dispatch(deviceSetupErrorAction(device, error));
-            //         if (!deviceSetupConfig.allowCustomDevice) {
-            //             logger.error(
-            //                 `Error while setting up device ${device.serialNumber}: ${error.message}`
-            //             );
-            //             dispatch(deselectDevice());
-            //         }
-            //         dispatch(startWatchingDevices());
-            //     });
+            const deviceSetupConfig = {
+                promiseConfirm: getDeviceSetupUserInput(dispatch),
+                promiseChoice: getDeviceSetupUserInput(dispatch),
+                allowCustomDevice: false,
+                ...config.deviceSetup,
+            };
+            try {
+                const preparedDevice = await prepareDevice(
+                    device,
+                    deviceSetupConfig
+                );
+                dispatch(startWatchingDevices());
+                dispatch(deviceSetupCompleteAction(preparedDevice));
+            } catch (error) {
+                dispatch(deviceSetupErrorAction(device, error));
+                if (!deviceSetupConfig.allowCustomDevice) {
+                    logger.error(
+                        `Error while setting up device ${device.serialNumber}: ${error.message}`
+                    );
+                    dispatch(deselectDevice());
+                }
+                dispatch(startWatchingDevices());
+            }
         }
     };
 }
