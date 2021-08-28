@@ -40,7 +40,10 @@ import { Iterable } from 'immutable';
 import { bool, func, instanceOf, number, oneOfType, string } from 'prop-types';
 
 import HotkeyedDropdown from '../../components/HotkeyedDropdown';
-import portPath from '../../portPath';
+
+const getTraits = traits => {
+    return Object.keys(traits).filter(key => traits[key]);
+};
 
 // Stateless, templating-only component. Used only from ../containers/DeviceSelectorContainer
 export default class DeviceSelector extends React.Component {
@@ -52,11 +55,9 @@ export default class DeviceSelector extends React.Component {
      * @returns {*} Array of 'serialport: ...' JSX item
      */
     static mapSerialPortsToListItems(device) {
-        return Object.keys(device)
-            .filter(key => key.startsWith('serialport'))
-            .map(key => (
-                <li key={key}>Serial port: {portPath(device[key])}</li>
-            ));
+        return device.serialPorts.map(({ comName: port }) => (
+            <li key={port}>Serial port: {port}</li>
+        ));
     }
 
     componentDidMount() {
@@ -101,10 +102,9 @@ export default class DeviceSelector extends React.Component {
     getItemFromDevice(device) {
         const { onSelect, menuItemCssClass, menuItemDetailsCssClass } =
             this.props;
-
         const menuItemCssClassWithTraits = [
             menuItemCssClass,
-            ...device.traits,
+            ...getTraits(device.traits),
         ].join(' ');
         return (
             <Dropdown.Item
