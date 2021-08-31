@@ -149,11 +149,7 @@ export function checkUsageDataSetting() {
 }
 
 export function sendLauncherUsageData(eventAction, eventLabel) {
-    return (_, getState) => {
-        const { isSendingUsageData } = getState().settings;
-        if (!isSendingUsageData) {
-            return;
-        }
+    return () => {
         usageData.sendUsageData(eventAction, eventLabel);
     };
 }
