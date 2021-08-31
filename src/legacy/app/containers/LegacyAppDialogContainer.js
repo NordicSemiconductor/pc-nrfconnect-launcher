@@ -34,24 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import { connect } from '../../decoration';
+import { hideLegacyAppDialog } from '../actions/legacyAppDialogActions';
+import LegacyAppDialog from '../components/LegacyAppDialog';
+import { addToDoNotShowLegacyAppDialogAgain } from '../legacyAppWarning';
 
-import errorDialog from '../../reducers/errorDialogReducer';
-import appReloadDialog from './appReloadDialogReducer';
-import device from './deviceReducer';
-import firmwareDialog from './firmwareDialogReducer';
-import legacyAppDialog from './legacyAppDialogReducer';
-import log from './logReducer';
-import navMenu from './navMenuReducer';
-import serialPort from './serialPortReducer';
-
-export default combineReducers({
-    navMenu,
-    log,
-    serialPort,
-    device,
-    firmwareDialog,
-    appReloadDialog,
-    errorDialog,
-    legacyAppDialog,
+const mapStateToProps = state => ({
+    isVisible: state.core.legacyAppDialog,
 });
+
+const mapDispatchToProps = dispatch => ({
+    close: () => dispatch(hideLegacyAppDialog()),
+    closeAndRemember: () => {
+        addToDoNotShowLegacyAppDialogAgain();
+        dispatch(hideLegacyAppDialog());
+    },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    LegacyAppDialog,
+    'LegacyAppDialog'
+);

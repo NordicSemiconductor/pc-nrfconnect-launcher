@@ -34,24 +34,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import {
+    LEGACY_APP_DIALOG_HIDE,
+    LEGACY_APP_DIALOG_SHOW_MAYBE,
+    LegacyAppAction,
+} from '../actions/legacyAppDialogActions';
+import { showWarningForCurrentApp } from '../legacyAppWarning';
 
-import errorDialog from '../../reducers/errorDialogReducer';
-import appReloadDialog from './appReloadDialogReducer';
-import device from './deviceReducer';
-import firmwareDialog from './firmwareDialogReducer';
-import legacyAppDialog from './legacyAppDialogReducer';
-import log from './logReducer';
-import navMenu from './navMenuReducer';
-import serialPort from './serialPortReducer';
+const reducer = (state = false, action: LegacyAppAction) => {
+    switch (action.type) {
+        case LEGACY_APP_DIALOG_SHOW_MAYBE:
+            return showWarningForCurrentApp();
+        case LEGACY_APP_DIALOG_HIDE:
+            return false;
+        default:
+            return state;
+    }
+};
 
-export default combineReducers({
-    navMenu,
-    log,
-    serialPort,
-    device,
-    firmwareDialog,
-    appReloadDialog,
-    errorDialog,
-    legacyAppDialog,
-});
+export default reducer;

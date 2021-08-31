@@ -34,24 +34,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import Store from 'electron-store';
+import path from 'path';
 
-import errorDialog from '../../reducers/errorDialogReducer';
-import appReloadDialog from './appReloadDialogReducer';
-import device from './deviceReducer';
-import firmwareDialog from './firmwareDialogReducer';
-import legacyAppDialog from './legacyAppDialogReducer';
-import log from './logReducer';
-import navMenu from './navMenuReducer';
-import serialPort from './serialPortReducer';
+const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
-export default combineReducers({
-    navMenu,
-    log,
-    serialPort,
-    device,
-    firmwareDialog,
-    appReloadDialog,
-    errorDialog,
-    legacyAppDialog,
-});
+const currentAppName = () => {
+    const params = new URL(window.location.toString()).searchParams;
+    const appPath = params.get('appPath') ?? 'unknown app';
+
+    return path.basename(appPath);
+};
+
+const appsWithoutWarningPermanently = [
+    'pc-nrfconnect-ble',
+    'pc-nrfconnect-gettingstarted',
+    'pc-nrfconnect-programmer',
+    'pc-nrfconnect-linkmonitor',
+    'pc-nrfconnect-tracecollector',
+    'pc-nrfconnect-dtm',
+];
+
+const appsWithoutWarningLocally = () =>
+    store.get('doNotShowLegacyAppDialogAgain', []);
+
+const appsWithoutWarning = appsWithoutWarningPermanently.concat(
+    appsWithoutWarningLocally()
+);
+
+export const showWarningForCurrentApp = () =>
+    !appsWithoutWarning.includes(currentAppName());
+
+export const addToDoNotShowLegacyAppDialogAgain = () => {
+    const previousApps = store.get('doNotShowLegacyAppDialogAgain', []);
+    store.set('doNotShowLegacyAppDialogAgain', [
+        ...previousApps,
+        currentAppName(),
+    ]);
+};

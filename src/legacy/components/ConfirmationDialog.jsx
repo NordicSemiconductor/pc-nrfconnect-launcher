@@ -70,11 +70,12 @@ const ConfirmationDialog = ({
     okButtonText,
     cancelButtonText,
     isOkButtonEnabled,
+    dimBackground,
 }) => (
     <Modal
         show={isVisible}
         onHide={onCancel}
-        backdrop={isInProgress ? 'static' : false}
+        backdrop={isInProgress || dimBackground ? 'static' : false}
     >
         <Modal.Header closeButton={!isInProgress}>
             <Modal.Title>{title}</Modal.Title>
@@ -115,6 +116,7 @@ ConfirmationDialog.propTypes = {
     cancelButtonText: string,
     isInProgress: bool,
     isOkButtonEnabled: bool,
+    dimBackground: bool,
 };
 
 ConfirmationDialog.defaultProps = {
@@ -126,6 +128,7 @@ ConfirmationDialog.defaultProps = {
     onCancel: null,
     okButtonText: 'OK',
     cancelButtonText: 'Cancel',
+    dimBackground: false,
 };
 
 export default ConfirmationDialog;
