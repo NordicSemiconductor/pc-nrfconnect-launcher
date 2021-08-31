@@ -1,5 +1,6 @@
 ## Unreleased
 ### Added
+- Display a warning for outdated apps, still using the old app architecture.
 - Set
   [user data directory](https://www.electronjs.org/docs/api/app#appgetpathname)
   through command line switch `--user-data-dir` or environment variable
