@@ -39,12 +39,20 @@ import {
     LEGACY_APP_DIALOG_SHOW_MAYBE,
     LegacyAppAction,
 } from '../actions/legacyAppDialogActions';
-import { showWarningForCurrentApp } from '../legacyAppWarning';
+import {
+    sendUsageDataForLegacyApp,
+    showWarningForCurrentApp,
+} from '../legacyAppWarning';
 
 const reducer = (state = false, action: LegacyAppAction) => {
     switch (action.type) {
-        case LEGACY_APP_DIALOG_SHOW_MAYBE:
-            return showWarningForCurrentApp();
+        case LEGACY_APP_DIALOG_SHOW_MAYBE: {
+            const showDialog = showWarningForCurrentApp();
+            if (showDialog) {
+                sendUsageDataForLegacyApp();
+            }
+            return showDialog;
+        }
         case LEGACY_APP_DIALOG_HIDE:
             return false;
         default:

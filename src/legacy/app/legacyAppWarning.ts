@@ -37,6 +37,10 @@
 import Store from 'electron-store';
 import path from 'path';
 
+const {
+    sendLauncherUsageData,
+} = require('../../launcher/actions/usageDataActions');
+
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
 const currentAppName = () => {
@@ -71,4 +75,8 @@ export const addToDoNotShowLegacyAppDialogAgain = () => {
         ...previousApps,
         currentAppName(),
     ]);
+};
+
+export const sendUsageDataForLegacyApp = () => {
+    sendLauncherUsageData('Display legacy app warning', currentAppName());
 };
