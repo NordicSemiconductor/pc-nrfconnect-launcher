@@ -47,6 +47,7 @@ import SettingsContainer from '../containers/SettingsContainer';
 import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UpdateProgressContainer from '../containers/UpdateProgressContainer';
 import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
+import AboutView from './AboutView';
 import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
 
 export default () => (
@@ -61,6 +62,10 @@ export default () => (
                 <Nav.Link accessKey="2" eventKey="settings">
                     settings
                 </Nav.Link>
+                {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+                <Nav.Link accessKey="3" eventKey="about">
+                    about
+                </Nav.Link>
                 <Logo />
             </Nav>
             <Tab.Content>
@@ -69,6 +74,9 @@ export default () => (
                 </Tab.Pane>
                 <Tab.Pane eventKey="settings">
                     <SettingsContainer />
+                </Tab.Pane>
+                <Tab.Pane eventKey="about">
+                    <AboutView />
                 </Tab.Pane>
             </Tab.Content>
         </Tab.Container>
