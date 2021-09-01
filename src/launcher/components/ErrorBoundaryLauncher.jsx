@@ -57,7 +57,7 @@ const ErrorBoundaryLauncher = ({ children }) => {
     const sendUsageData = error => {
         const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
         const errorLabel = `${process.platform}; ${process.arch}; v${launcherInfo}; ${error}`;
-        dispatch(sendLauncherUsageData('Report error', errorLabel));
+        sendLauncherUsageData('Report error', errorLabel);
     };
 
     return (
