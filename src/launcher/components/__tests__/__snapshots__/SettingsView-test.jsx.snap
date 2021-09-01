@@ -37,7 +37,6 @@ exports[`SettingsView should render check for updates completed, with everything
       2017-02-03 13:41:36
     </p>
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={false}
       label="Check for updates at startup"
@@ -92,7 +91,6 @@ exports[`SettingsView should render check for updates completed, with everything
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -191,7 +189,6 @@ exports[`SettingsView should render check for updates completed, with updates av
       2017-02-03 13:41:36
     </p>
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={false}
       label="Check for updates at startup"
@@ -246,7 +243,6 @@ exports[`SettingsView should render check for updates completed, with updates av
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -341,7 +337,6 @@ exports[`SettingsView should render empty div while loading 1`] = `
       className="small text-muted"
     />
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={true}
       label="Check for updates at startup"
@@ -396,7 +391,6 @@ exports[`SettingsView should render empty div while loading 1`] = `
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -491,7 +485,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
       className="small text-muted"
     />
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={false}
       label="Check for updates at startup"
@@ -546,7 +539,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -641,7 +633,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       className="small text-muted"
     />
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={false}
       label="Check for updates at startup"
@@ -696,7 +687,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -791,7 +781,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       className="small text-muted"
     />
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={true}
       label="Check for updates at startup"
@@ -846,7 +835,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
@@ -945,7 +933,6 @@ exports[`SettingsView should render with last update check date 1`] = `
       2017-02-03 13:41:36
     </p>
     <Toggle
-      className="toggle-settings"
       id="checkForUpdates"
       isToggled={false}
       label="Check for updates at startup"
@@ -1000,7 +987,6 @@ exports[`SettingsView should render with last update check date 1`] = `
     >
       <Col>
         <Toggle
-          className="toggle-settings"
           id="checkForShare"
           isToggled={false}
           label="Collect anonymous usage data"
