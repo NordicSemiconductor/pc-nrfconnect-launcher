@@ -144,7 +144,6 @@ class SettingsView extends React.Component {
                         )}
                     </p>
                     <Toggle
-                        className="toggle-settings"
                         id="checkForUpdates"
                         label="Check for updates at startup"
                         onToggle={() => this.onCheckUpdatesAtStartupChanged()}
@@ -220,7 +219,6 @@ class SettingsView extends React.Component {
                     <Row>
                         <Col>
                             <Toggle
-                                className="toggle-settings"
                                 id="checkForShare"
                                 label="Collect anonymous usage data"
                                 onToggle={() => toggleSendingUsageData()}
