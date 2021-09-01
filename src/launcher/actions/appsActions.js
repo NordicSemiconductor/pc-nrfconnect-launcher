@@ -371,11 +371,9 @@ export function loadOfficialApps(appName, appSource) {
 const handleAppsWithErrors = (dispatch, apps) => {
     dispatch(loadOfficialAppsError());
     apps.forEach(app => {
-        dispatch(
-            sendLauncherUsageData(
-                EventAction.REPORT_INSTALLATION_ERROR,
-                `${app.source} - ${app.name}`
-            )
+        sendLauncherUsageData(
+            EventAction.REPORT_INSTALLATION_ERROR,
+            `${app.source} - ${app.name}`
         );
     });
 
@@ -400,7 +398,7 @@ const buildErrorMessage = apps => {
 
 export function installOfficialApp(name, source) {
     return dispatch => {
-        dispatch(sendAppUsageData(EventAction.INSTALL_APP, source, name));
+        sendAppUsageData(EventAction.INSTALL_APP, source, name);
         dispatch(installOfficialAppAction(name, source));
         mainApps
             .installOfficialApp(name, 'latest', source)
@@ -421,7 +419,7 @@ export function installOfficialApp(name, source) {
 
 export function removeOfficialApp(name, source) {
     return dispatch => {
-        dispatch(sendAppUsageData(EventAction.REMOVE_APP, source, name));
+        sendAppUsageData(EventAction.REMOVE_APP, source, name);
         dispatch(removeOfficialAppAction(name, source));
         mainApps
             .removeOfficialApp(name, source)
@@ -442,7 +440,7 @@ export function removeOfficialApp(name, source) {
 
 export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
-        dispatch(sendAppUsageData(EventAction.UPGRADE_APP, source, name));
+        sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeOfficialAppAction(name, version, source));
         return mainApps
             .installOfficialApp(name, version, source)
@@ -464,18 +462,14 @@ export function upgradeOfficialApp(name, version, source) {
 }
 
 export function launch(app) {
-    return dispatch => {
-        // The apps in state are Immutable Maps which cannot be sent over IPC.
-        // Converting to plain JS object before sending to the main process.
-        const appObj = app.toJS();
-        const sharedData =
-            `App version: ${appObj.currentVersion};` +
-            ` Engine version: ${appObj.engineVersion};`;
-        dispatch(
-            sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name)
-        );
-        ipcRenderer.send('open-app', appObj);
-    };
+    // The apps in state are Immutable Maps which cannot be sent over IPC.
+    // Converting to plain JS object before sending to the main process.
+    const appObj = app.toJS();
+    const sharedData =
+        `App version: ${appObj.currentVersion};` +
+        ` Engine version: ${appObj.engineVersion};`;
+    sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name);
+    ipcRenderer.send('open-app', appObj);
 }
 
 export function checkEngineAndLaunch(app) {
@@ -485,13 +479,12 @@ export function checkEngineAndLaunch(app) {
             appCompatibility.isCompatible ||
             config.isRunningLauncherFromSource();
 
-        dispatch(
-            launchAppWithoutWarning
-                ? launch(app)
-                : showConfirmLaunchDialogAction(
-                      appCompatibility.longWarning,
-                      app
-                  )
-        );
+        if (launchAppWithoutWarning) {
+            launch(app);
+        } else {
+            dispatch(
+                showConfirmLaunchDialogAction(appCompatibility.longWarning, app)
+            );
+        }
     };
 }

@@ -149,9 +149,7 @@ export function checkUsageDataSetting() {
 }
 
 export function sendLauncherUsageData(eventAction, eventLabel) {
-    return () => {
-        usageData.sendUsageData(eventAction, eventLabel);
-    };
+    usageData.sendUsageData(eventAction, eventLabel);
 }
 
 export function sendAppUsageData(
@@ -159,25 +157,16 @@ export function sendAppUsageData(
     eventLabel = null,
     appName = null
 ) {
-    return () => {
-        const updatedEventAction = appName
-            ? `${eventAction} ${appName}`
-            : eventAction;
-        usageData.sendUsageData(updatedEventAction, eventLabel);
-    };
+    const updatedEventAction = appName
+        ? `${eventAction} ${appName}`
+        : eventAction;
+    usageData.sendUsageData(updatedEventAction, eventLabel);
 }
 
-export function sendEnvInfo() {
-    return async dispatch => {
-        const [{ platform, arch }] = await Promise.all([si.osInfo()]);
-        const osInfo = `${platform}; ${arch}`;
-        dispatch(sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo));
-        const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
-        dispatch(
-            sendLauncherUsageData(
-                EventAction.REPORT_LAUNCHER_INFO,
-                launcherInfo
-            )
-        );
-    };
+export async function sendEnvInfo() {
+    const [{ platform, arch }] = await Promise.all([si.osInfo()]);
+    const osInfo = `${platform}; ${arch}`;
+    sendLauncherUsageData(EventAction.REPORT_OS_INFO, osInfo);
+    const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
+    sendLauncherUsageData(EventAction.REPORT_LAUNCHER_INFO, launcherInfo);
 }

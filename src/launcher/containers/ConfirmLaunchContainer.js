@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onConfirm: app => {
             dispatch(AppsActions.hideConfirmLaunchDialogAction());
-            dispatch(AppsActions.launch(app));
+            AppsActions.launch(app);
         },
         onCancel: () => dispatch(AppsActions.hideConfirmLaunchDialogAction()),
     };
