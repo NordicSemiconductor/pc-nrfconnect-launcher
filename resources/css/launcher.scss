@@ -33,7 +33,6 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-@import "~pc-nrfconnect-shared/styles";
 @import "~@mdi/font/css/materialdesignicons.min.css";
 
 $roboto-font-path: "~roboto-fontface/fonts" !default;
@@ -45,7 +44,7 @@ $theme-colors: (
 );
 $enable-transitions: false;
 $enable-rounded: false;
-$body-bg: $gray-100;
+$body-bg: #cfd8dc;
 @import "~bootstrap/scss/bootstrap";
 
 @import "./pretty-scrollbar";
