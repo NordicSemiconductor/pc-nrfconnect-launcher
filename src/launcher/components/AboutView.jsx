@@ -35,6 +35,7 @@
  */
 
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -49,8 +50,9 @@ const AboutView = () => (
                     <Card.Title>License</Card.Title>
                 </Col>
             </Row>
-            <p>Copyright (c) 2015 - 2017, Nordic Semiconductor ASA</p>
+            <p>Copyright (c) 2015 Nordic Semiconductor ASA</p>
             <p>All rights reserved.</p>
+            <p>SPDX-License-Identifier: Nordic-4-Clause</p>
             <p>
                 Use in source and binary forms, redistribution in binary form
                 only, with or without modification, are permitted provided that
@@ -60,8 +62,8 @@ const AboutView = () => (
                 <li>
                     <p>
                         Redistributions in binary form, except as embedded into
-                        a Nordic * Semiconductor ASA integrated circuit in a
-                        product or a software update for * such product, must
+                        a Nordic Semiconductor ASA integrated circuit in a
+                        product or a software update for such product, must
                         reproduce the above copyright notice, this list of
                         conditions and the following disclaimer in the
                         documentation and/or other materials provided with the
@@ -116,7 +118,7 @@ const AboutView = () => (
                     <Card.Title>Version</Card.Title>
                 </Col>
             </Row>
-            <p>nRF Connect {appVersion}</p>
+            <p>nRF Connect for Desktop v{appVersion}</p>
         </Card>
         <Card body>
             <Row>
@@ -124,11 +126,13 @@ const AboutView = () => (
                     <Card.Title>Documentation</Card.Title>
                 </Col>
             </Row>
-            <p>
-                <a href="https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/nrf-connect-for-visual-studio-code-preview">
-                    Link to Infocenter
-                </a>
-            </p>
+            <Button
+                href="https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/nrf-connect-for-visual-studio-code-preview"
+                target="_blank"
+                variant="outline-primary"
+            >
+                Open documentation
+            </Button>
         </Card>
     </>
 );
