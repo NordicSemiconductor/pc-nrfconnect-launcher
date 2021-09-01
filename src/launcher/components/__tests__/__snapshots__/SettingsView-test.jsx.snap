@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SettingsView should render check for updates completed, with everything up to date 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -34,18 +36,13 @@ exports[`SettingsView should render check for updates completed, with everything
        
       2017-02-03 13:41:36
     </p>
-    <FormCheck
-      checked={false}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={false}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -94,18 +91,13 @@ exports[`SettingsView should render check for updates completed, with everything
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -159,11 +151,13 @@ exports[`SettingsView should render check for updates completed, with everything
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render check for updates completed, with updates available 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -196,18 +190,13 @@ exports[`SettingsView should render check for updates completed, with updates av
        
       2017-02-03 13:41:36
     </p>
-    <FormCheck
-      checked={false}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={false}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -256,18 +245,13 @@ exports[`SettingsView should render check for updates completed, with updates av
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -321,11 +305,13 @@ exports[`SettingsView should render check for updates completed, with updates av
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render empty div while loading 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -354,18 +340,13 @@ exports[`SettingsView should render empty div while loading 1`] = `
     <p
       className="small text-muted"
     />
-    <FormCheck
-      checked={true}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={true}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -414,18 +395,13 @@ exports[`SettingsView should render empty div while loading 1`] = `
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -479,11 +455,13 @@ exports[`SettingsView should render empty div while loading 1`] = `
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render when checking for updates 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -512,18 +490,13 @@ exports[`SettingsView should render when checking for updates 1`] = `
     <p
       className="small text-muted"
     />
-    <FormCheck
-      checked={false}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={false}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -572,18 +545,13 @@ exports[`SettingsView should render when checking for updates 1`] = `
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -637,11 +605,13 @@ exports[`SettingsView should render when checking for updates 1`] = `
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render with check for updates disabled 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -670,18 +640,13 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     <p
       className="small text-muted"
     />
-    <FormCheck
-      checked={false}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={false}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -730,18 +695,13 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -795,11 +755,13 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render with check for updates enabled 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -828,18 +790,13 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     <p
       className="small text-muted"
     />
-    <FormCheck
-      checked={true}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={true}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -888,18 +845,13 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -953,11 +905,13 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
 
 exports[`SettingsView should render with last update check date 1`] = `
-<Fragment>
+<div
+  className="settings-pane-container"
+>
   <Card
     body={true}
   >
@@ -990,18 +944,13 @@ exports[`SettingsView should render with last update check date 1`] = `
        
       2017-02-03 13:41:36
     </p>
-    <FormCheck
-      checked={false}
-      custom={true}
-      disabled={false}
+    <Toggle
+      className="toggle-settings"
       id="checkForUpdates"
-      inline={false}
-      isInvalid={false}
-      isValid={false}
+      isToggled={false}
       label="Check for updates at startup"
-      onChange={[Function]}
-      title=""
-      type="checkbox"
+      onToggle={[Function]}
+      variant="primary"
     />
   </Card>
   <Card
@@ -1050,18 +999,13 @@ exports[`SettingsView should render with last update check date 1`] = `
       noGutters={false}
     >
       <Col>
-        <FormCheck
-          checked={false}
-          custom={true}
-          disabled={false}
+        <Toggle
+          className="toggle-settings"
           id="checkForShare"
-          inline={false}
-          isInvalid={false}
-          isValid={false}
+          isToggled={false}
           label="Collect anonymous usage data"
-          onChange={[Function]}
-          title=""
-          type="checkbox"
+          onToggle={[Function]}
+          variant="primary"
         />
       </Col>
       <Col
@@ -1115,5 +1059,5 @@ exports[`SettingsView should render with last update check date 1`] = `
     title="Add source"
   />
   <div />
-</Fragment>
+</div>
 `;
