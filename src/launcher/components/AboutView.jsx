@@ -47,6 +47,28 @@ const AboutView = () => (
         <Card body>
             <Row>
                 <Col>
+                    <Card.Title>Version</Card.Title>
+                </Col>
+            </Row>
+            <p>nRF Connect for Desktop v{appVersion}</p>
+        </Card>
+        <Card body>
+            <Row>
+                <Col>
+                    <Card.Title>Documentation</Card.Title>
+                </Col>
+            </Row>
+            <Button
+                href="https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/nrf-connect-for-visual-studio-code-preview"
+                target="_blank"
+                variant="outline-primary"
+            >
+                Open documentation
+            </Button>
+        </Card>
+        <Card body>
+            <Row>
+                <Col>
                     <Card.Title>License</Card.Title>
                 </Col>
             </Row>
@@ -111,28 +133,6 @@ const AboutView = () => (
                 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
                 THE POSSIBILITY OF SUCH DAMAGE.
             </p>
-        </Card>
-        <Card body>
-            <Row>
-                <Col>
-                    <Card.Title>Version</Card.Title>
-                </Col>
-            </Row>
-            <p>nRF Connect for Desktop v{appVersion}</p>
-        </Card>
-        <Card body>
-            <Row>
-                <Col>
-                    <Card.Title>Documentation</Card.Title>
-                </Col>
-            </Row>
-            <Button
-                href="https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/nrf-connect-for-visual-studio-code-preview"
-                target="_blank"
-                variant="outline-primary"
-            >
-                Open documentation
-            </Button>
         </Card>
     </>
 );
