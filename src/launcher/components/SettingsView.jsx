@@ -44,10 +44,13 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
+import { colors, Toggle } from 'pc-nrfconnect-shared';
 import { bool, func, instanceOf, shape } from 'prop-types';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';
+
+const { white, gray700, nordicBlue } = colors;
 
 function cancel(event) {
     event.preventDefault();
@@ -70,9 +73,12 @@ class SettingsView extends React.Component {
         onMount();
     }
 
-    onCheckUpdatesAtStartupChanged(event) {
-        const { onCheckUpdatesAtStartupChanged } = this.props;
-        onCheckUpdatesAtStartupChanged(event.target.checked);
+    onCheckUpdatesAtStartupChanged() {
+        const {
+            onCheckUpdatesAtStartupChanged,
+            shouldCheckForUpdatesAtStartup,
+        } = this.props;
+        onCheckUpdatesAtStartupChanged(!shouldCheckForUpdatesAtStartup);
     }
 
     onTriggerUpdateCheckClicked() {
@@ -109,7 +115,7 @@ class SettingsView extends React.Component {
         const sourcesJS = sources.toJS();
 
         return (
-            <>
+            <div className="settings-pane-container">
                 <Card body>
                     <Row>
                         <Col>
@@ -138,12 +144,16 @@ class SettingsView extends React.Component {
                             </>
                         )}
                     </p>
-                    <Form.Check
-                        custom
+                    <Toggle
+                        className="toggle-settings"
                         id="checkForUpdates"
                         label="Check for updates at startup"
-                        checked={shouldCheckForUpdatesAtStartup}
-                        onChange={this.onCheckUpdatesAtStartupChanged}
+                        onToggle={() => this.onCheckUpdatesAtStartupChanged()}
+                        isToggled={shouldCheckForUpdatesAtStartup}
+                        variant="primary"
+                        handleColor={white}
+                        barColor={gray700}
+                        barColorToggled={nordicBlue}
                     />
                 </Card>
                 <Card
@@ -210,12 +220,16 @@ class SettingsView extends React.Component {
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Check
-                                custom
+                            <Toggle
+                                className="toggle-settings"
                                 id="checkForShare"
                                 label="Collect anonymous usage data"
-                                checked={isSendingUsageData}
-                                onChange={toggleSendingUsageData}
+                                onToggle={() => toggleSendingUsageData()}
+                                isToggled={isSendingUsageData}
+                                variant="primary"
+                                handleColor={white}
+                                barColor={gray700}
+                                barColorToggled={nordicBlue}
                             />
                         </Col>
                         <Col xs="auto">
@@ -266,7 +280,7 @@ class SettingsView extends React.Component {
                     onCancel={onHideAddSourceDialog}
                 />
                 <ConfirmRemoveSourceDialog />
-            </>
+            </div>
         );
     }
 }

@@ -258,3 +258,13 @@ body {
     position: relative;
     top: 2px;
 }
+
+.settings-pane-container {
+    .toggle label {
+        justify-content: flex-start;
+    }
+
+    .toggle-label {
+        font-size: 1rem;
+    }
+}
