@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
+import { showMaybeLegacyAppDialog } from './app/actions/legacyAppDialogActions';
 import RootContainer from './app/containers/RootContainer';
 import rootReducer from './app/reducers';
 import { invokeAppFn, setApp } from './decoration';
@@ -13,6 +14,7 @@ export default (app, container, onLoaded) => {
     invokeAppFn('onInit', store.dispatch, store.getState);
     render(<RootContainer store={store} />, container, () => {
         onLoaded();
+        store.dispatch(showMaybeLegacyAppDialog());
         invokeAppFn('onReady', store.dispatch, store.getState);
     });
 };

@@ -43,6 +43,7 @@ import AppReloadDialogContainer from '../containers/AppReloadDialogContainer';
 import DeviceSetupContainer from '../containers/DeviceSetupContainer';
 import ErrorDialogContainer from '../containers/ErrorDialogContainer';
 import FirmwareDialogContainer from '../containers/FirmwareDialogContainer';
+import LegacyAppDialogContainer from '../containers/LegacyAppDialogContainer';
 import LogViewerContainer from '../containers/LogViewerContainer';
 import MainViewContainer from '../containers/MainViewContainer';
 import SidePanelContainer from '../containers/SidePanelContainer';
@@ -120,6 +121,7 @@ const Root = ({ resizeLogContainer }) => (
             <AppReloadDialogContainer />
             <DeviceSetupContainer />
             <ErrorDialogContainer />
+            <LegacyAppDialogContainer />
         </ErrorBoundary>
     </div>
 );
