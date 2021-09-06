@@ -1,6 +1,7 @@
-## Unreleased
+## 3.7.1 - 2021-09-08
 ### Added
-- Display a warning for outdated apps, still using the old app architecture.
+- Warning when launching outdated apps which are still using the old app
+  architecture.
 - Set
   [user data directory](https://www.electronjs.org/docs/api/app#appgetpathname)
   through command line switch `--user-data-dir` or environment variable
