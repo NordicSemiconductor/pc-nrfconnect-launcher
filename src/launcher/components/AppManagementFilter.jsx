@@ -43,6 +43,8 @@ import Row from 'react-bootstrap/Row';
 import { Iterable } from 'immutable';
 import { bool, func, instanceOf, shape, string } from 'prop-types';
 
+const { AdapterFactory } = require('pc-ble-driver-js');
+
 export const sortedSources = sources => {
     const all = Object.entries(sources);
     const officialsAndLocal = [
@@ -182,11 +184,27 @@ const AppManagementFilter = ({
         {upgradeableApps.size > 0 && (
             <Button
                 variant="outline-secondary"
-                onClick={() =>
-                    upgradeableApps.forEach(({ name, latestVersion, source }) =>
-                        onUpgrade(name, latestVersion, source)
-                    )
-                }
+                onClick={() => {
+                    try {
+                        const factory = AdapterFactory.getInstance(null, {
+                            enablePolling: false,
+                        });
+                        const adapter = factory.createAdapter(
+                            'v5',
+                            'COM10',
+                            'COM10'
+                        );
+                        console.log('created adapter');
+                        console.log(adapter);
+                    } catch (err) {
+                        console.log('got error while creating adapter');
+                        console.log(err);
+                    }
+
+                    // upgradeableApps.forEach(({ name, latestVersion, source }) =>
+                    //     onUpgrade(name, latestVersion, source)
+                    // );
+                }}
             >
                 Update all apps
             </Button>
