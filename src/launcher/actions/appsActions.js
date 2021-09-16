@@ -370,6 +370,8 @@ export function installOfficialApp(name, source) {
     return dispatch => {
         sendAppUsageData(EventAction.INSTALL_APP, source, name);
         dispatch(installOfficialAppAction(name, source));
+
+        ipcRenderer.send('download-start', name);
         mainApps
             .installOfficialApp(name, 'latest', source)
             .then(() => {

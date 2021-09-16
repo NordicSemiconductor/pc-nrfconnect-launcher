@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import Row from 'react-bootstrap/Row';
 import { bool, func, shape, string } from 'prop-types';
 
@@ -50,6 +51,7 @@ const AppItem = ({
                             <>, v{app.latestVersion}</>
                         )}
                     </div>
+                    {app?.progress && <ProgressBar now={app.progress} />}
                 </Col>
                 <Col
                     xs="auto ml-auto"

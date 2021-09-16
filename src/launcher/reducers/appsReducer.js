@@ -172,6 +172,14 @@ const reducer = (state = initialState, action) => {
             return state.set('filter', action.filter);
         case AppsActions.SET_APP_MANAGEMENT_SOURCE:
             return state.set('sources', action.sources);
+
+        case 'DOWNLOAD_PROGRESS_UPDATE':
+            return state.update('officialApps', s =>
+                s.update(
+                    s.findKey(x => x.name === action.progressName),
+                    x => x.set('progress', action.progressFraction)
+                )
+            );
         default:
             return state;
     }

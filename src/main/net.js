@@ -7,7 +7,7 @@
 'use strict';
 
 const fs = require('fs');
-const { net, session } = require('electron');
+const { net, session, ipcMain } = require('electron');
 
 // Using the same session name as electron-updater, so that proxy credentials
 // (if required) only have to be sent once.
@@ -28,7 +28,12 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-function downloadToBuffer(url, enableProxyLogin, headers = {}) {
+let ipcRenderer;
+ipcMain.on('download-start', event => {
+    ipcRenderer = event.sender;
+});
+
+function downloadToBuffer(url, enableProxyLogin, headers = {}, progressName) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
@@ -59,7 +64,20 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}) {
             const addToBuffer = data => {
                 buffer.push(data);
             };
-            response.on('data', data => addToBuffer(data));
+            const downloadSize = response.headers['content-length'];
+            let progress = 0;
+            response.on('data', data => {
+                addToBuffer(data);
+                progress += data.length;
+                if (progressName) {
+                    ipcRenderer?.send('progress-update', {
+                        progressName,
+                        progressFraction: Math.floor(
+                            (progress / downloadSize) * 100
+                        ),
+                    });
+                }
+            });
             response.on('end', () =>
                 resolve({
                     buffer: Buffer.concat(buffer),
@@ -126,11 +144,12 @@ function downloadToJson(url, enableProxyLogin) {
  * @param {string} url the URL to download.
  * @param {string} filePath where to store the downloaded file.
  * @param {boolean} enableProxyLogin should the request handle login event.
+ * @param {string} progressName name identification of application to install
  * @returns {Promise} promise that resolves when file has been downloaded.
  */
-function downloadToFile(url, filePath, enableProxyLogin) {
+function downloadToFile(url, filePath, enableProxyLogin, progressName) {
     return new Promise((resolve, reject) => {
-        downloadToBuffer(url, enableProxyLogin)
+        downloadToBuffer(url, enableProxyLogin, undefined, progressName)
             .then(({ buffer }) => {
                 fs.writeFile(filePath, buffer, err => {
                     if (err) {
