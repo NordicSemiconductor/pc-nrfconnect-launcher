@@ -34,54 +34,68 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const { app, BrowserWindow } = require('electron');
-
-let devToolsInstaller;
-try {
-    devToolsInstaller = require('electron-devtools-installer'); // eslint-disable-line global-require
-} catch {
-    // Ignore missing devtools dependency here, check later for it when needed
-}
+const { app, session } = require('electron');
+const { exit } = require('process');
+const path = require('path');
+const fs = require('fs');
+const {
+    default: installExtension,
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS,
+} = require('electron-devtools-installer');
 
 const installDevtools = async () => {
     try {
-        const downloadAndInstall = devToolsInstaller.default;
-        const devToolsExtensions = [
-            devToolsInstaller.REACT_DEVELOPER_TOOLS,
-            devToolsInstaller.REDUX_DEVTOOLS,
-        ];
-        const forceReinstall = true;
-
-        await downloadAndInstall(devToolsExtensions, forceReinstall);
+        await installExtension(REDUX_DEVTOOLS);
+        await installExtension(REACT_DEVELOPER_TOOLS);
         console.log('Added devtool extensions');
         app.quit();
     } catch (err) {
         console.log('An error occurred while adding the devtools: ', err);
+        exit(1);
     }
 };
 
+// Look for installed extensions and remove them
 const removeDevtools = () => {
-    const devToolsExtensions = Object.keys(
-        BrowserWindow.getDevToolsExtensions()
-    );
-    console.log('Removing devtool extensions:', devToolsExtensions);
+    [REDUX_DEVTOOLS.id, REACT_DEVELOPER_TOOLS.id].forEach(id => {
+        const extensionPath = path.join(
+            session.defaultSession.getStoragePath(),
+            'extensions',
+            id
+        );
 
-    devToolsExtensions.forEach(BrowserWindow.removeDevToolsExtension);
+        if (fs.existsSync(extensionPath)) {
+            fs.rmdirSync(extensionPath, { recursive: true });
+        }
+    });
+    exit(0);
+};
 
-    // Sometimes if we quit too fast we get a crash message here, so let us just wait a moment.
-    setTimeout(app.quit, 1000);
+// Look for installed extensions and load them
+const loadInstalledDevtools = () => {
+    const storagePath = session.defaultSession.getStoragePath();
+    [REDUX_DEVTOOLS.id, REACT_DEVELOPER_TOOLS.id].forEach(id => {
+        const extensionPath = path.join(storagePath, 'extensions', id);
+
+        if (fs.existsSync(extensionPath)) {
+            session.defaultSession.loadExtension(extensionPath, {
+                allowFileAccess: true,
+            });
+        }
+    });
 };
 
 module.exports = () => {
-    if (devToolsInstaller == null) {
-        return;
-    }
-
     if (process.argv.includes('--install-devtools')) {
         installDevtools();
+        return;
     }
 
     if (process.argv.includes('--remove-devtools')) {
         removeDevtools();
+        return;
     }
+
+    loadInstalledDevtools();
 };
