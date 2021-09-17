@@ -46,7 +46,7 @@ const config = require('./config');
 const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
-const handleDevtoolsRequest = require('./devtools');
+const loadDevtools = require('./devtools');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -61,7 +61,7 @@ const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 electronApp.allowRendererProcessReuse = false;
 
 electronApp.on('ready', () => {
-    handleDevtoolsRequest();
+    loadDevtools();
 
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
