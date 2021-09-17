@@ -83,7 +83,7 @@
         }
     },
     "devDependencies": {
-        "@types/node": "12.20.6",
+        "@types/node": "14.17.17",
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
         "electron": "13.1.7",

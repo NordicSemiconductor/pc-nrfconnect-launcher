@@ -77,7 +77,9 @@ if (commander.output) {
     let isDirectory = false;
     try {
         isDirectory = fs.statSync(commander.output).isDirectory();
-    } catch (err) {}
+    } catch (error) {
+        console.error(error);
+    }
     destinationFile = isDirectory
         ? path.join(commander.output, filename)
         : commander.output;
@@ -105,7 +107,7 @@ async function downloadChecksum() {
     const { status, data } = await axios.get(`${fileUrl}.md5`);
     if (status !== 200) {
         throw new Error(
-            `Unable to download ${fileUrl}.md5. ` + `Got status code ${status}`
+            `Unable to download ${fileUrl}.md5. Got status code ${status}`
         );
     }
     return data.split(' ').shift();
@@ -120,7 +122,7 @@ async function downloadFile() {
     });
     if (status !== 200) {
         throw new Error(
-            `Unable to download ${fileUrl}. ` + `Got status code ${status}`
+            `Unable to download ${fileUrl}. Got status code ${status}`
         );
     }
     console.log('Saving', destinationFile);
@@ -147,7 +149,7 @@ async function downloadFile() {
 function installJLink() {
     return new Promise(resolve => {
         const options = { name: 'JLink installer' };
-        return sudo.exec(destinationFile, options, (error, stdout, stderr) => {
+        return sudo.exec(destinationFile, options, (error, stdout) => {
             if (error) throw error;
             console.log(stdout);
             resolve();
