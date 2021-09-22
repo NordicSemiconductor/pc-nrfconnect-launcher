@@ -138,7 +138,8 @@
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.js",
             "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js",
             "^electron$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.js",
-            "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js"
+            "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js",
+            "serialport": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.[jt]sx?$": [

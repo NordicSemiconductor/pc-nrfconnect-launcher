@@ -44,12 +44,14 @@ describe('DeviceSelector', () => {
                     devices={[
                         {
                             serialNumber: '123456789',
-                            serialport: {
-                                path: '/dev/ttyACM0',
-                            },
-                            'serialport.1': {
-                                path: '/dev/ttyACM1',
-                            },
+                            serialPorts: [
+                                {
+                                    path: '/dev/ttyACM0',
+                                },
+                                {
+                                    path: '/dev/ttyACM1',
+                                },
+                            ],
                             usb: {
                                 manufacturer: 'Nordic Semiconductor',
                                 product: 'nRF52 USB',
