@@ -57,6 +57,7 @@ if (devToolsInstaller) {
 }
 
 const installDevtools = async () => {
+    if (!devToolsInstaller) return;
     try {
         await installExtension(REDUX_DEVTOOLS);
         await installExtension(REACT_DEVELOPER_TOOLS);
@@ -70,6 +71,7 @@ const installDevtools = async () => {
 
 // Look for installed extensions and remove them
 const removeDevtools = () => {
+    if (!devToolsInstaller) return;
     try {
         [REDUX_DEVTOOLS.id, REACT_DEVELOPER_TOOLS.id].forEach(id => {
             const extensionPath = path.join(
@@ -91,6 +93,7 @@ const removeDevtools = () => {
 
 // Look for installed extensions and load them
 const loadInstalledDevtools = () => {
+    if (!devToolsInstaller) return;
     try {
         const storagePath = session.defaultSession.getStoragePath();
         [REDUX_DEVTOOLS.id, REACT_DEVELOPER_TOOLS.id].forEach(id => {
