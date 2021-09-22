@@ -79,7 +79,7 @@
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}-${env.ARCH}.${ext}"
+            "artifactName": "${name}-setup-${version}-${arch}.${ext}"
         }
     },
     "devDependencies": {
@@ -87,7 +87,7 @@
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
         "electron": "13.1.9",
-        "electron-builder": "22.7.0",
+        "electron-builder": "^22.7.0",
         "electron-devtools-installer": "3.2.0",
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
@@ -102,7 +102,7 @@
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
-        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.13",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.14",
         "axios": "0.19.2",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
