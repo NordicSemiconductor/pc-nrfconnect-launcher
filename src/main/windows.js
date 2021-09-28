@@ -29,7 +29,7 @@ function openLauncherWindow() {
         launcherWindow.show();
     } else {
         launcherWindow = browser.createWindow({
-            title: `nRF Connect v${config.getVersion()}`,
+            title: `nRF Connect v${config.getVersion()} for Desktop`,
             url: `file://${config.getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
@@ -70,7 +70,7 @@ function openAppWindow(app) {
     }
 
     const appWindow = browser.createWindow({
-        title: `nRF Connect v${config.getVersion()} - ${
+        title: `nRF Connect v${config.getVersion()} for Desktop - ${
             app.displayName || app.name
         } v${app.currentVersion}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
