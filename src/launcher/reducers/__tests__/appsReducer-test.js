@@ -33,6 +33,7 @@ const app1 = {
     url: null,
     releaseNote: null,
     repositoryUrl: null,
+    progress: null,
 };
 const app2 = {
     name: 'pc-nrfconnect-bar',
@@ -52,6 +53,7 @@ const app2 = {
     url: null,
     releaseNote: null,
     repositoryUrl: null,
+    progress: null,
 };
 
 describe('appsReducer', () => {
