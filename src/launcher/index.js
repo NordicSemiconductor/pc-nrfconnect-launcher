@@ -34,7 +34,7 @@ const store = createStore(
 );
 
 ipcRenderer.on('progress-update', (event, message) => {
-    store.dispatch({ type: 'DOWNLOAD_PROGRESS_UPDATE', ...message });
+    store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...message });
 });
 
 const rootElement = React.createElement(RootContainer, { store });

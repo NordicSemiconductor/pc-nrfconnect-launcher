@@ -33,7 +33,14 @@ ipcMain.on('download-start', event => {
     ipcRenderer = event.sender;
 });
 
-function downloadToBuffer(url, enableProxyLogin, headers = {}, progressName) {
+function reportInstallProgress(progressId, progress, totalInstallSize) {
+    ipcRenderer?.send('progress-update', {
+        progressId,
+        progressFraction: Math.floor((progress / totalInstallSize) * 100),
+    });
+}
+
+function downloadToBuffer(url, enableProxyLogin, headers = {}, progressId) {
     return new Promise((resolve, reject) => {
         const request = net.request({
             url,
@@ -69,14 +76,8 @@ function downloadToBuffer(url, enableProxyLogin, headers = {}, progressName) {
             response.on('data', data => {
                 addToBuffer(data);
                 progress += data.length;
-                if (progressName) {
-                    ipcRenderer?.send('progress-update', {
-                        progressName,
-                        progressFraction: Math.floor(
-                            (progress / downloadSize) * 100
-                        ),
-                    });
-                }
+                if (progressId)
+                    reportInstallProgress(progressId, progress, downloadSize);
             });
             response.on('end', () =>
                 resolve({
@@ -144,12 +145,12 @@ function downloadToJson(url, enableProxyLogin) {
  * @param {string} url the URL to download.
  * @param {string} filePath where to store the downloaded file.
  * @param {boolean} enableProxyLogin should the request handle login event.
- * @param {string} progressName name identification of application to install
+ * @param {string} progressId name identification of application to install
  * @returns {Promise} promise that resolves when file has been downloaded.
  */
-function downloadToFile(url, filePath, enableProxyLogin, progressName) {
+function downloadToFile(url, filePath, enableProxyLogin, progressId) {
     return new Promise((resolve, reject) => {
-        downloadToBuffer(url, enableProxyLogin, undefined, progressName)
+        downloadToBuffer(url, enableProxyLogin, undefined, progressId)
             .then(({ buffer }) => {
                 fs.writeFile(filePath, buffer, err => {
                     if (err) {
