@@ -1,7 +1,7 @@
 {
     "name": "nrfconnect",
     "version": "3.8.0",
-    "description": "nRF Connect for PC",
+    "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
         "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
@@ -31,7 +31,7 @@
     "license": "Proprietary",
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
-        "productName": "nRF Connect",
+        "productName": "nRF Connect for Desktop",
         "npmRebuild": false,
         "publish": [
             "github"
