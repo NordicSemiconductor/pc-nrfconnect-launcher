@@ -175,7 +175,11 @@ const reducer = (state = initialState, action) => {
         case AppsActions.UPDATE_DOWNLOAD_PROGRESS:
             return state.update('officialApps', appStates =>
                 appStates.update(
-                    appStates.findKey(app => app.name === action.progressId),
+                    appStates.findKey(
+                        app =>
+                            app.name === action.name &&
+                            app.source === action.source
+                    ),
                     app => app.set('progress', action.progressFraction)
                 )
             );

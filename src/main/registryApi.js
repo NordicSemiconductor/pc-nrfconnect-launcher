@@ -105,7 +105,7 @@ function downloadTarball(name, version, destinationDir, source) {
         const fileName = path.basename(parsedUrl.pathname);
         const destinationFile = path.join(destinationDir, fileName);
         return net
-            .downloadToFile(tarballUrl, destinationFile, true, name)
+            .downloadToFile(tarballUrl, destinationFile, true, { name, source })
             .then(() => verifyShasum(destinationFile, distInfo.shasum))
             .then(() => destinationFile);
     });
