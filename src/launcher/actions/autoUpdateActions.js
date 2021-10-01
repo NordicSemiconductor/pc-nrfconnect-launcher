@@ -131,7 +131,7 @@ export function startDownload() {
             dispatch(updateDownloadingAction(progressObj.percent));
         });
 
-        autoUpdater.on('update-downloaded', async () => {
+        autoUpdater.on('update-downloaded', () => {
             if (!UsageDataActions.isUsageDataOn()) {
                 dispatch(UsageDataActions.resetUsageData());
             }
