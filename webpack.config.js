@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -11,10 +17,8 @@ function createExternals() {
     // by webpack. Adding them as externals so that they are not bundled.
     const libs = [
         'pc-ble-driver-js',
-        'pc-nrfjprog-js',
         'serialport',
-        'usb',
-        'nrf-device-setup',
+        '@nordicsemiconductor/nrf-device-lib-js',
         'osx-temperature-sensor',
     ];
     return libs.reduce(

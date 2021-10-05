@@ -1,7 +1,7 @@
 {
     "name": "nrfconnect",
-    "version": "3.7.1",
-    "description": "nRF Connect for PC",
+    "version": "3.8.0-pre1",
+    "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
         "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
@@ -19,10 +19,9 @@
         "test-watch": "jest --watch src/",
         "test-e2e": "xvfb-maybe jest --runInBand --moduleNameMapper '{}' --testTimeout=15000 --forceExit test-e2e/",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
-        "clean-build": "rimraf dist && rimraf build/nrfjprog",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
-        "get-jlink": "get-jlink -o build",
+        "get-jlink": "node getJlink.js -o build",
         "pack": "npm run build && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
@@ -30,15 +29,9 @@
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
-    "binary": {
-        "module_name": "pc-nrfjprog-js",
-        "module_path": "./build/Release",
-        "host": "https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/",
-        "remote_path": "v{version}"
-    },
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
-        "productName": "nRF Connect",
+        "productName": "nRF Connect for Desktop",
         "npmRebuild": false,
         "publish": [
             "github"
@@ -47,7 +40,6 @@
             "dist/",
             "src/main/",
             "node_modules/",
-            "!node_modules/pc-nrfjprog-js/nrfjprog",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",
@@ -63,13 +55,6 @@
                 "tar.gz"
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.so"
-                }
-            ],
             "category": "Development"
         },
         "afterSign": "build/notarize.js",
@@ -79,14 +64,7 @@
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist",
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "Frameworks/nrfjprog",
-                    "filter": "*.dylib*"
-                }
-            ]
+            "entitlementsInherit": "build/entitlements.mac.plist"
         },
         "dmg": {
             "artifactName": "${name}-${version}.${ext}",
@@ -96,39 +74,35 @@
             "target": [
                 "nsis"
             ],
-            "extraFiles": [
-                {
-                    "from": "node_modules/pc-nrfjprog-js/nrfjprog",
-                    "to": "nrfjprog",
-                    "filter": "*.dll"
-                }
-            ],
             "publisherName": "Nordic Semiconductor ASA"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}-${env.ARCH}.${ext}"
+            "artifactName": "${name}-setup-${version}-${arch}.${ext}"
         }
     },
     "devDependencies": {
-        "@types/node": "12.20.6",
+        "@types/node": "14.17.17",
         "asar": "3.0.3",
         "bootstrap": "4.3.1",
-        "electron": "8.2.5",
-        "electron-builder": "22.7.0",
-        "electron-devtools-installer": "3.1.1",
+        "electron": "^13.5.1",
+        "electron-builder": "^22.7.0",
+        "electron-devtools-installer": "3.2.0",
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-build": "git+https://github.com/NordicPlayground/pc-nrfconnect-build.git#semver:0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.27.3",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.2.0",
+        "sander": "^0.6.0",
         "spectron": "7.0.0",
+        "sudo-prompt": "^9.2.1",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.14",
         "axios": "0.19.2",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",
@@ -141,15 +115,15 @@
         "jquery": "3.5.1",
         "mousetrap": "1.6.5",
         "mustache": "4.0.1",
-        "nrf-device-setup": "^0.6.8",
-        "pc-ble-driver-js": "2.7.2",
-        "pc-nrfjprog-js": "^1.7.6",
+        "pc-ble-driver-js": "^2.8.2",
         "popper.js": "1.16.1",
         "react": "16.13.1",
         "react-dom": "16.13.1",
         "react-markdown": "4.3.1",
         "react-redux": "7.2.0",
+        "regedit": "^4.0.0",
         "roboto-fontface": "0.10.0",
+        "serialport": "8.0.8",
         "shasum": "1.0.2",
         "targz": "1.0.1",
         "uuid": "8.1.0",
@@ -165,7 +139,7 @@
             "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js",
             "^electron$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.js",
             "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.js",
-            "pc-nrfjprog-js|nrf-device-lister|nrf-device-setup": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
+            "serialport": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.js"
         },
         "transform": {
             "^.+\\.[jt]sx?$": [

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
 require('dotenv').config();
 const { notarize } = require('electron-notarize');
 const pkgJson = require('../package.json');

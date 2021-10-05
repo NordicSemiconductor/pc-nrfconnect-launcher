@@ -26,14 +26,6 @@
 <body>
     <div id='webapp'></div>
     <div id='app-loader'></div>
-
-<script>
-    const { NRFJPROG_LIBRARY_PATH } = require('electron').remote.process.env;
-
-    if (NRFJPROG_LIBRARY_PATH) {
-        process.env.NRFJPROG_LIBRARY_PATH = NRFJPROG_LIBRARY_PATH;
-    }
-</script>
 <script src="../dist/app-bundle.js"></script>
 </body>
 </html>
