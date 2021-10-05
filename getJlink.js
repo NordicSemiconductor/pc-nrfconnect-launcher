@@ -29,10 +29,6 @@ commander
         '-l, --list',
         'only list the installed versions and the required version'
     )
-    .option(
-        '-o, --output <path>',
-        'output path, defaults to cwd, if directory it must exist'
-    )
     .option('-s, --save-as <filename>', '')
     .option('-i, --install', 'execute the installer')
     .parse(process.argv);
@@ -41,19 +37,8 @@ const minVersion = 'V688a';
 const filename = `JLink_Windows_${minVersion}.exe`;
 const fileUrl = `https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/nrfjprog/${filename}`;
 
-let destinationFile = path.join(process.cwd(), filename);
-
-if (commander.output) {
-    let isDirectory = false;
-    try {
-        isDirectory = fs.statSync(commander.output).isDirectory();
-    } catch (error) {
-        console.error(error);
-    }
-    destinationFile = isDirectory
-        ? path.join(commander.output, filename)
-        : commander.output;
-}
+const outputDirectory = 'build';
+const destinationFile = path.join(outputDirectory, filename);
 
 function getCurrentJLinkVersion() {
     return new Promise(resolve => {

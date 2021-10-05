@@ -9,7 +9,7 @@
     "main": "src/main",
     "scripts": {
         "start": "echo 'please run `npm run dev` in one tab and then `npm run app` in another one'",
-        "postinstall": "npm run get-jlink",
+        "postinstall": "node getJlink.js",
         "app": "electron .",
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
@@ -21,7 +21,6 @@
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
-        "get-jlink": "node getJlink.js -o build",
         "pack": "npm run build && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
