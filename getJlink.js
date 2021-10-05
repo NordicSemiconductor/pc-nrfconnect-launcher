@@ -13,64 +13,18 @@ if (process.platform !== 'win32') {
     process.exit();
 }
 
-const commander = require('commander');
 const axios = require('axios');
 const fs = require('fs');
 const sander = require('sander');
 const path = require('path');
-const sudo = require('sudo-prompt');
-const regedit = require('regedit');
 const crypto = require('crypto');
-
-commander
-    .version('1.7.4')
-    .usage('Utility to download and/or execute the J-Link installer.')
-    .option(
-        '-l, --list',
-        'only list the installed versions and the required version'
-    )
-    .option(
-        '-o, --output <path>',
-        'output path, defaults to cwd, if directory it must exist'
-    )
-    .option('-s, --save-as <filename>', '')
-    .option('-i, --install', 'execute the installer')
-    .parse(process.argv);
 
 const minVersion = 'V688a';
 const filename = `JLink_Windows_${minVersion}.exe`;
 const fileUrl = `https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/nrfjprog/${filename}`;
 
-let destinationFile = path.join(process.cwd(), filename);
-
-if (commander.output) {
-    let isDirectory = false;
-    try {
-        isDirectory = fs.statSync(commander.output).isDirectory();
-    } catch (error) {
-        console.error(error);
-    }
-    destinationFile = isDirectory
-        ? path.join(commander.output, filename)
-        : commander.output;
-}
-
-function getCurrentJLinkVersion() {
-    return new Promise(resolve => {
-        const reg = 'HKCU\\Software\\SEGGER\\J-Link';
-        regedit.list(reg, (err, result) => {
-            if (err) {
-                return resolve();
-            }
-            const versions = (result[reg].keys || []).sort();
-            console.log(
-                'Currently installed J-Link versions:',
-                versions.join(' ')
-            );
-            return resolve(versions.pop());
-        });
-    });
-}
+const outputDirectory = 'build';
+const destinationFile = path.join(outputDirectory, filename);
 
 async function downloadChecksum() {
     console.log('Downloading', `${fileUrl}.md5`);
@@ -116,31 +70,7 @@ async function downloadFile() {
     });
 }
 
-function installJLink() {
-    return new Promise(resolve => {
-        const options = { name: 'JLink installer' };
-        return sudo.exec(destinationFile, options, (error, stdout) => {
-            if (error) throw error;
-            console.log(stdout);
-            resolve();
-        });
-    });
-}
-
-Promise.resolve()
-    .then(() => getCurrentJLinkVersion())
-    .then(currentVersion => {
-        console.log('Minimum version required:', minVersion);
-        if (commander.list) {
-            process.exit();
-        }
-        if (currentVersion >= minVersion && commander.install) {
-            console.log('Installation will be skipped');
-            commander.install = false;
-        }
-    })
-    .then(() => downloadFile(fileUrl))
-    .then(() => commander.install && installJLink())
+downloadFile(fileUrl)
     .catch(error => {
         console.error('\n!!! EXCEPTION', error.message);
         process.exit(-1);
