@@ -177,8 +177,7 @@ export const startWatchingDevices = () => async (dispatch, getState) => {
         const { device } = getState();
 
         if (
-            device &&
-            device.selectedSerialNumber !== null &&
+            device?.selectedSerialNumber != null &&
             !devices.find(d => d.serialNumber === device.selectedSerialNumber)
         ) {
             dispatch(deselectDevice());
