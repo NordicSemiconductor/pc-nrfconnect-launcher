@@ -95,7 +95,6 @@
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.2.0",
         "sander": "^0.6.0",
         "spectron": "7.0.0",
-        "sudo-prompt": "^9.2.1",
         "tar": "6.0.2",
         "xvfb-maybe": "0.2.1"
     },
@@ -120,7 +119,6 @@
         "react-dom": "16.13.1",
         "react-markdown": "4.3.1",
         "react-redux": "7.2.0",
-        "regedit": "^4.0.0",
         "roboto-fontface": "0.10.0",
         "serialport": "8.0.8",
         "shasum": "1.0.2",
