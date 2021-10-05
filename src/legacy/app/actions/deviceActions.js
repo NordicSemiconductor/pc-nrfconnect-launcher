@@ -157,7 +157,7 @@ export const wrapDevice = device => {
     };
 };
 
-export const wrapDevices = devices => devices.map(wrapDevice);
+const wrapDevices = devices => devices.map(wrapDevice);
 
 /**
  * Starts watching for devices with the given traits. See the nrf-device-lister
