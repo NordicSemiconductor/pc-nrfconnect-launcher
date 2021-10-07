@@ -24,7 +24,7 @@ jobs:
         NODE_ARCH: '32'
       win64:
         IMAGE_NAME: 'windows-2019'
-        ARCH: 'ia64'
+        ARCH: 'x64'
         NODE_ARCH: '64'
 
   pool:
@@ -38,6 +38,7 @@ jobs:
       versionSpec: $(NODE_VERSION)
     condition: ne(variables['NODE_ARCH'], '32')
     displayName: 'Install Node.js $(NODE_VERSION)'
+
   - bash: |
       set -o errexit -o pipefail
       choco install -y nvm
@@ -52,6 +53,7 @@ jobs:
     }
     condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
     displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
+
   - bash: |
       set -o errexit -o pipefail
       sudo apt-get update
@@ -59,6 +61,7 @@ jobs:
       sudo sysctl kernel.unprivileged_userns_clone=1
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
+
   - bash: |
       set -o errexit -o pipefail
       export ENABLE_DRAFT_TEST=true
@@ -72,6 +75,7 @@ jobs:
       # npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Build with internal release [Linux]'
+
   - bash: |
       set -o errexit -o pipefail
       export ENABLE_DRAFT_TEST=true
@@ -85,50 +89,29 @@ jobs:
       # npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Build with internal release [macOS]'
+
   - script: |
       type .npmrc-internal >> .npmrc
     condition: and(
       eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
+      contains(variables['image_name'], 'win'))
     displayName: 'Copy npmrc on windows'
-  - script: |
-      type .npmrc-internal >> .npmrc
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Copy npmrc on windows x64'
+  
   - script: |
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
     condition: and(
       eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Copy npmrc on windows'
-  - script: |
-      npm i -g node-gyp@6.0.1
-      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Copy npmrc on windows x64'
+      contains(variables['image_name'], 'win'))
+    displayName: 'Install and set node-gyp'
+  
   - script: |
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
     condition: and(
       eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Copy npmrc on windows'
-  - script: |
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Copy npmrc on windows x64'
+      contains(variables['image_name'], 'win'))
+    displayName: 'Set npm auth token for windows'
+
   - script: |
       npm ci
       npm run lint
@@ -141,25 +124,10 @@ jobs:
     }
     condition: and(
       eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
+      contains(variables['image_name'], 'win'))
     displayName: 'Build with internal release [Windows]'
-  - script: |
-      npm ci
-      npm run lint
-      npm run build
-      npm test
-      # npm run test-e2e
-    env: {
-      ENABLE_DRAFT_TEST: true,
-      NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
-    }
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Build with internal release [Windows x64]'
   # Internal procedure end
+
   - bash: |
       set -o errexit -o pipefail
       npm ci
@@ -169,6 +137,7 @@ jobs:
       # npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Build on not windows'
+
   - bash: |
       set -o errexit -o pipefail
       npm i -g node-gyp@6.0.1
@@ -180,6 +149,7 @@ jobs:
       # npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
+
   - bash: |
       sudo apt-get install icnsutils
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
@@ -188,52 +158,50 @@ jobs:
       npx electron-builder -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Release on Linux'
+
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
+  
   - script: |
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       npx electron-builder -p never
-      tar czvf release/nrfconnect-win-ia32.tar.gz release/win-ia32-unpacked
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
-  - script: |
-      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
-      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never
-      tar czvf release/nrfconnect-win-ia64.tar.gz release/win-ia64-unpacked
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Release on Windows x64'
+  
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-ia32-unpacked'
+      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-$(ARCH)-unpacked'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia32-$(Build.BuildNumber).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(ARCH)-$(Build.BuildNumber).zip'
     condition: and(
       ne(variables['Build.Reason'], 'PullRequest'),
       contains(variables['IMAGE_NAME'], 'win'),
       eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Pack on Windows'
+    displayName: 'Pack on Windows x86'
+  
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-ia64-unpacked'
+      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-unpacked'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-ia64-$(Build.BuildNumber).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(Build.BuildNumber).zip'
     condition: and(
       ne(variables['Build.Reason'], 'PullRequest'),
       contains(variables['IMAGE_NAME'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
+      ne(variables['NODE_ARCH'], '32'))
     displayName: 'Pack on Windows x64'
+
   - task: DownloadSecureFile@1
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Donwload certificate on macOS'
+
   - bash: |
       set -o errexit -o pipefail
       export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
@@ -245,6 +213,7 @@ jobs:
       npx electron-builder -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Release on macOS'
+
   - bash: |
       set -o errexit -o pipefail
       cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
@@ -255,6 +224,7 @@ jobs:
       cp release/latest* "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Copy artifacts'
+
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
