@@ -142,7 +142,9 @@ const AppItem = ({
                         </ButtonToolbar>
                     </Col>
                 </Row>
-                {app?.progress && <ProgressBar now={app.progress} />}
+                {(app?.progress || app?.progress === 0) && (
+                    <ProgressBar now={app.progress} />
+                )}
             </ListGroup.Item>
         </>
     );
