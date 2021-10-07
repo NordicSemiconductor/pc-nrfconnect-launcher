@@ -4,21 +4,22 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-@import "~@mdi/font/css/materialdesignicons.min.css";
+@import '~@mdi/font/css/materialdesignicons.min.css';
 
-$roboto-font-path: "~roboto-fontface/fonts" !default;
-@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
+$roboto-font-path: '~roboto-fontface/fonts' !default;
+@import '~roboto-fontface/css/roboto/sass/roboto-fontface';
 
 $font-family-sans-serif: Roboto;
 $theme-colors: (
-    "primary": #00A9CE, // Nordic primary blue
+    'primary': #00a9ce,
+    // Nordic primary blue
 );
 $enable-transitions: false;
 $enable-rounded: false;
 $body-bg: #cfd8dc;
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
-@import "./pretty-scrollbar";
+@import './pretty-scrollbar';
 
 body {
     -webkit-user-select: none;
@@ -32,7 +33,7 @@ body {
     height: 100vh;
 
     .nav {
-        background-color: theme-color("primary");
+        background-color: theme-color('primary');
         padding: 0.5rem 2rem;
         align-items: center;
 
@@ -64,14 +65,24 @@ body {
         #launcher-tabpane-apps {
             margin-top: -1rem;
         }
+
+        .progress {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            border-radius: 0;
+            background-color: transparent;
+        }
     }
 }
 
 .core-app-icon {
     position: relative;
 
-
-    img,.icon-replacement {
+    img,
+    .icon-replacement {
         height: 48px;
         width: 48px;
     }
@@ -98,7 +109,7 @@ body {
     }
 
     .mdi-information {
-        color: theme-color("primary");
+        color: theme-color('primary');
     }
 
     .alert-icon-bg {
@@ -149,7 +160,8 @@ body {
     font-size: 120%;
 }
 
-.h4, .h5 {
+.h4,
+.h5 {
     font-weight: 400;
 }
 
@@ -167,9 +179,8 @@ body {
 
 .text-muted-more {
     @extend .text-muted;
-    color: lighten($color: $text-muted, $amount: 30%)!important;
+    color: lighten($color: $text-muted, $amount: 30%) !important;
 }
-
 
 .dropdown-menu:empty {
     @extend .text-muted-more;
@@ -190,7 +201,6 @@ body {
         font-size: 1rem;
     }
 }
-
 
 .filterbox {
     > * {

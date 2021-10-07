@@ -9,7 +9,7 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { remote } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import isDev from 'electron-is-dev';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -32,6 +32,11 @@ const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
 );
+
+ipcRenderer.on('progress-update', (event, message) => {
+    store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...message });
+});
+
 const rootElement = React.createElement(RootContainer, { store });
 
 const shouldCheckForUpdatesAtStartup = settings.get(

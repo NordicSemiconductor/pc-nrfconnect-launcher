@@ -24,6 +24,7 @@ const ImmutableApp = Record({
     releaseNote: null,
     upgradeAvailable: null,
     repositoryUrl: null,
+    progress: null,
 });
 
 function getImmutableApp(app) {
@@ -45,6 +46,7 @@ function getImmutableApp(app) {
         releaseNote: app.releaseNote,
         upgradeAvailable: app.upgradeAvailable,
         repositoryUrl: app.repositoryUrl,
+        progress: app.progress,
     });
 }
 

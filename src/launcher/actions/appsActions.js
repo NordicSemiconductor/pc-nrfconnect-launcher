@@ -48,6 +48,7 @@ export const SET_APP_RELEASE_NOTE = 'SET_APP_RELEASE_NOTE';
 export const SET_APP_MANAGEMENT_SHOW = 'SET_APP_MANAGEMENT_SHOW';
 export const SET_APP_MANAGEMENT_FILTER = 'SET_APP_MANAGEMENT_FILTER';
 export const SET_APP_MANAGEMENT_SOURCE = 'SET_APP_MANAGEMENT_SOURCE';
+export const UPDATE_DOWNLOAD_PROGRESS = 'UPDATE_DOWNLOAD_PROGRESS';
 
 function loadLocalAppsAction() {
     return {
@@ -107,6 +108,13 @@ function installOfficialAppSuccessAction(name, source) {
 function installOfficialAppErrorAction() {
     return {
         type: INSTALL_OFFICIAL_APP_ERROR,
+    };
+}
+
+function updateInstallProgressAction(message) {
+    return {
+        type: UPDATE_DOWNLOAD_PROGRESS,
+        ...message,
     };
 }
 
@@ -370,6 +378,8 @@ export function installOfficialApp(name, source) {
     return dispatch => {
         sendAppUsageData(EventAction.INSTALL_APP, source, name);
         dispatch(installOfficialAppAction(name, source));
+
+        ipcRenderer.send('download-start', name);
         mainApps
             .installOfficialApp(name, 'latest', source)
             .then(() => {
@@ -384,6 +394,12 @@ export function installOfficialApp(name, source) {
                     )
                 );
             });
+    };
+}
+
+export function updateInstallProgress(message) {
+    return dispatch => {
+        dispatch(updateInstallProgressAction(...message));
     };
 }
 
