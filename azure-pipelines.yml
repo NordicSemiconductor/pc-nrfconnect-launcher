@@ -23,7 +23,7 @@ jobs:
         ARCH: 'ia32'
         NODE_ARCH: '32'
       win64:
-        IMAGE_NAME: 'windows-x64'
+        IMAGE_NAME: 'windows-2019'
         ARCH: 'ia64'
         NODE_ARCH: '64'
 
@@ -59,40 +59,8 @@ jobs:
       sudo sysctl kernel.unprivileged_userns_clone=1
     condition: contains(variables['IMAGE_NAME'], 'ubuntu')
     displayName: 'Setup build environment for Linux'
-  - task: DownloadSecureFile@1
-    name: nrfjprogLinux
-    inputs:
-      secureFile: "nrfjprog-10.12.1-linux_x64.tar.gz" # Would be nice to make version as a variable
-    condition: eq(variables['INTERNAL'], 'true')
-    displayName: 'Donwload internal nrfjprog for release'
-  # Internal procedure start
-  - task: DownloadSecureFile@1
-    name: nrfjprogMac
-    inputs:
-      secureFile: "nrfjprog-10.12.1-darwin_x64.tar.gz" # Would be nice to make version as a variable
-    condition: eq(variables['INTERNAL'], 'true')
-    displayName: 'Donwload internal nrfjprog for release'
-  - task: DownloadSecureFile@1
-    name: nrfjprogWin32
-    inputs:
-      secureFile: "nrfjprog-10.12.1-win32_ia32.tar.gz" # Would be nice to make version as a variable
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Donwload internal nrfjprog for release'
-  - task: DownloadSecureFile@1
-    name: nrfjprogWin64
-    inputs:
-      secureFile: "nrfjprog-10.12.1-win32_x64.tar.gz" # Would be nice to make version as a variable
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'),
-      eq(variables['NODE_ARCH'], '64'))
-    displayName: 'Donwload internal nrfjprog for release'
   - bash: |
       set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogLinux.secureFilePath)
       export ENABLE_DRAFT_TEST=true
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
       cat .npmrc-internal >> .npmrc
@@ -106,7 +74,6 @@ jobs:
     displayName: 'Build with internal release [Linux]'
   - bash: |
       set -o errexit -o pipefail
-      export LOCAL_NRFJPROG_PATH=$(nrfjprogMac.secureFilePath)
       export ENABLE_DRAFT_TEST=true
       export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
       cat .npmrc-internal >> .npmrc
@@ -169,7 +136,6 @@ jobs:
       npm test
       # npm run test-e2e
     env: {
-      LOCAL_NRFJPROG_PATH: $(nrfjprogWin32.secureFilePath),
       ENABLE_DRAFT_TEST: true,
       NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
     }
@@ -185,7 +151,6 @@ jobs:
       npm test
       # npm run test-e2e
     env: {
-      LOCAL_NRFJPROG_PATH: $(nrfjprogWin64.secureFilePath),
       ENABLE_DRAFT_TEST: true,
       NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
     }
