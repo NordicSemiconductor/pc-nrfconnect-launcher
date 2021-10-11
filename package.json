@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.8.0-pre4",
+    "version": "3.8.0-pre5",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -91,7 +91,7 @@
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.4.0",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.4.2",
         "sander": "^0.6.0",
         "spectron": "7.0.0",
         "xvfb-maybe": "0.2.1"
