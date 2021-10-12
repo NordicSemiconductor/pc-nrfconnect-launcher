@@ -13,7 +13,7 @@ import SettingsView from '../components/SettingsView';
 
 function isAppUpdateAvailable(officialApps) {
     return !!officialApps.find(
-        app => app.latestVersion && app.currentVersion !== app.latestVersion
+        app => app.currentVersion && app.currentVersion !== app.latestVersion
     );
 }
 
