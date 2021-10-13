@@ -73,8 +73,9 @@ function createWindow(options) {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
         }
-        const title = options.title || 'nRF Connect';
-        browserWindow.setTitle(title);
+    });
+
+    browserWindow.webContents.once('ready-to-show', () => {
         browserWindow.show();
     });
 
