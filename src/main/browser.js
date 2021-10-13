@@ -50,7 +50,11 @@ function createWindow(options) {
         splashScreen = createSplashScreen();
     }
 
-    browserWindow.loadURL(options.url);
+    if (options.filePath) {
+        browserWindow.loadFile(options.filePath);
+    } else {
+        browserWindow.loadURL(options.url);
+    }
 
     // Never navigate away from the given url, e.g. when the
     // user drags and drops a file into the browser window.
