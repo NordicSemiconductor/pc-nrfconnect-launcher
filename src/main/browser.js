@@ -69,13 +69,10 @@ function createWindow(options) {
         event.preventDefault();
     });
 
-    browserWindow.webContents.on('did-finish-load', () => {
+    browserWindow.webContents.once('ready-to-show', () => {
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
         }
-    });
-
-    browserWindow.webContents.once('ready-to-show', () => {
         browserWindow.show();
     });
 
