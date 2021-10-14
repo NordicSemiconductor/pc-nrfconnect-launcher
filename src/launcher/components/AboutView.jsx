@@ -29,7 +29,7 @@ const AboutView = () => (
                 </Col>
             </Row>
             <Button
-                href="https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/nrf-connect-for-visual-studio-code-preview"
+                href="https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-desktop"
                 target="_blank"
                 variant="outline-primary"
             >

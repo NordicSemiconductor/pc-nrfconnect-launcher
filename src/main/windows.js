@@ -30,10 +30,7 @@ function openLauncherWindow() {
     } else {
         launcherWindow = browser.createWindow({
             title: `nRF Connect for Desktop v${config.getVersion()}`,
-            filePath: path.join(
-                config.getElectronResourcesDir(),
-                'launcher.html'
-            ),
+            url: `file://${config.getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
             height: 500,
