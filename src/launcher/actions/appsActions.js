@@ -428,6 +428,8 @@ export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeOfficialAppAction(name, version, source));
+
+        ipcRenderer.send('download-start', name);
         return mainApps
             .installOfficialApp(name, version, source)
             .then(() => {
