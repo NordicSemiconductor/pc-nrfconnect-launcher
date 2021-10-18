@@ -9,7 +9,7 @@
 const electron = require('electron');
 const config = require('./config');
 
-function createSplashScreen() {
+function createSplashScreen(icon) {
     let splashScreen = new electron.BrowserWindow({
         width: 400,
         height: 223,
@@ -19,6 +19,7 @@ function createSplashScreen() {
         resizable: false,
         show: false,
         transparent: true,
+        icon,
     });
     splashScreen.loadURL(
         `file://${config.getElectronResourcesDir()}/splashscreen.html`
@@ -47,7 +48,7 @@ function createWindow(options) {
 
     let splashScreen;
     if (options.splashScreen) {
-        splashScreen = createSplashScreen();
+        splashScreen = createSplashScreen(options.icon);
     }
 
     browserWindow.loadURL(options.url);
