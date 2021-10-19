@@ -13,9 +13,9 @@
 
   ; Install drivers for DFU trigger and CDC ACM
   ; Put the files to the output directory.
-  File "${BUILD_RESOURCES_DIR}\drivers\nrfconnect-driver-installer.exe"
+  File "${BUILD_RESOURCES_DIR}\drivers\nrf-device-lib-driver-installer.exe"
 
-  ExecShell 'runas' '"$INSTDIR\nrfconnect-driver-installer.exe"'
+  ExecShell 'runas' '"$INSTDIR\nrf-device-lib-driver-installer.exe"'
 
   ; ===============================================================
   ; Installation of VC 2015 redistributable
