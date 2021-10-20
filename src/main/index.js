@@ -41,6 +41,8 @@ require('./setUserDataDir');
 
 const { existsSync } = require('fs');
 const { resolve } = require('path');
+const semver = require('semver');
+const os = require('os');
 
 const { execPath } = process;
 
@@ -54,11 +56,17 @@ const nRFjprogSearchPath = [
 ].find(existsSync);
 
 if (nRFjprogSearchPath) {
+    const onMonterey =
+        os.platform() === 'darwin' && semver(os.release()).major >= 21;
+    const envVariableForLibPath = onMonterey
+        ? 'DYLD_LIBRARY_PATH'
+        : 'LD_LIBRARY_PATH';
+
     process.env.NRFJPROG_LIBRARY_PATH = nRFjprogSearchPath;
-    const original = process.env.LD_LIBRARY_PATH
-        ? `:${process.env.LD_LIBRARY_PATH}`
+    const original = process.env[envVariableForLibPath]
+        ? `:${process.env[envVariableForLibPath]}`
         : '';
-    process.env.LD_LIBRARY_PATH = `${nRFjprogSearchPath}${original}`;
+    process.env[envVariableForLibPath] = `${nRFjprogSearchPath}${original}`;
 }
 
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');

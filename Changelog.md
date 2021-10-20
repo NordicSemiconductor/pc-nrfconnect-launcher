@@ -1,3 +1,8 @@
+## 3.7.2 - 2021-10-21
+This version is released only for macOS.
+### Fixed
+- Crash on macOS Monterey.
+
 ## 3.7.1 - 2021-09-08
 ### Added
 - Warning when launching outdated apps which are still using the old app
