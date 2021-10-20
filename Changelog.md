@@ -1,4 +1,5 @@
-## 3.7.2
+## 3.7.2 - 2021-10-21
+This version is released only for macOS.
 ### Fixed
 - Crash on macOS Monterey.
 
