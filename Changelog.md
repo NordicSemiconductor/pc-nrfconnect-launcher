@@ -1,3 +1,7 @@
+## 3.7.2
+### Fixed
+- Crash on macOS Monterey.
+
 ## 3.7.1 - 2021-09-08
 ### Added
 - Warning when launching outdated apps which are still using the old app
