@@ -1,6 +1,12 @@
-## Unreleased
+## 3.8.0 - 2021-11-01
 ### Added
-- Show progressbar during installing of apps.
+- Progress indicators for app install/upgrade
+- Enables the apps to show an additional documentation card in their About pane
+- Windows x64 support
+### Updated
+- Replaced underlying communication with devices by integrating nrf-device-lib, to enhance reliability
+### Fixed
+- The hibernation crash issue on Windows
 
 ## 3.7.2 - 2021-10-21
 This version is released only for macOS.
