@@ -5,6 +5,18 @@ in [Changelog.md](./Changelog.md).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 3.8.0 - 2021-11-01
+### Added
+- Integration of nrf-device-lib-js
+### Updated
+- Electron 13
+- Legacy architecture will no longer be supported from the next release
+### Removed
+- nrf-device-lister-js
+- nrf-device-setup-js
+- pc-nrf-dfu-js
+- pc-nrfjprog-js
+
 ## 3.7.0 - 2021-06-23
 ### Changed
 - Updated to pc-nrfconnect-shared 4.27.3.
