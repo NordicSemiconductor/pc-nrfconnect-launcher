@@ -2,11 +2,11 @@
 ### Added
 - Progress indicators for app install/upgrade
 - Enables the apps to show an additional documentation card in their About pane
+- About pane with version, documentation and license information
 - Windows x64 support
-### Updated
-- Replaced underlying communication with devices by integrating nrf-device-lib, to enhance reliability
+- Show version numbers for uninstalled apps
 ### Fixed
-- The hibernation crash issue on Windows
+- Hibernation crash issue on Windows
 
 ## 3.7.2 - 2021-10-21
 This version is released only for macOS.
