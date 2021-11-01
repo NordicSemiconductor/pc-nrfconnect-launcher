@@ -1,4 +1,7 @@
 ## 3.8.0 - 2021-11-01
+### Updated
+- Replaced underlying low-level libraries by integrating nrf-device-lib,
+  to make communication with devices much more reliable.
 ### Added
 - Windows x64 support.
 - In some apps link to documentation in About pane (e.g. in Programmer).
