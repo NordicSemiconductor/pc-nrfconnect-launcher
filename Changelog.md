@@ -1,10 +1,11 @@
 ## 3.8.0 - 2021-11-01
 ### Added
-- Progress indicators for app install/upgrade
 - Enables the apps to show an additional documentation card in their About pane
-- About pane with version, documentation and license information
 - Windows x64 support
-- Show version numbers for uninstalled apps
+- App launcher:
+    - Progress indicators for app install/upgrade
+    - About pane with version, documentation and license information
+    - Show version numbers for uninstalled apps
 ### Fixed
 - Hibernation crash issue on Windows
 
