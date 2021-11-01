@@ -9,8 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Integration of nrf-device-lib-js
 ### Updated
-- Electron 13
-- Legacy architecture will no longer be supported from the next release
+- Electron version to 13.5.1
+- USB drivers
+- pc-ble-driver
+### Deprecated
+- Support for apps using the legacy architecture. Support will be removed in
+  the next version, so they need to be upgraded until then:
+  https://nordicsemiconductor.github.io/pc-nrfconnect-docs/migrating_apps
 ### Removed
 - nrf-device-lister-js
 - nrf-device-setup-js

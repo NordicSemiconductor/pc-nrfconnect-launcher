@@ -1,12 +1,16 @@
 ## 3.8.0 - 2021-11-01
-### Added
-- Progress indicators for app install/upgrade
-- Enables the apps to show an additional documentation card in their About pane
-- Windows x64 support
 ### Updated
-- Replaced underlying communication with devices by integrating nrf-device-lib, to enhance reliability
+- Replaced underlying low-level libraries by integrating nrf-device-lib and
+  updated pc-ble-driver to make communication with devices much more reliable.
+### Added
+- Windows x64 binaries.
+- In some apps link to documentation in About pane (e.g. in Programmer).
+- App launcher:
+    - Progress indicators for app installation and upgrade.
+    - Show version numbers of uninstalled apps.
+    - About pane with version, documentation and license information.
 ### Fixed
-- The hibernation crash issue on Windows
+- Hibernation crash on Windows.
 
 ## 3.7.2 - 2021-10-21
 This version is released only for macOS.
@@ -21,7 +25,6 @@ This version is released only for macOS.
   [user data directory](https://www.electronjs.org/docs/api/app#appgetpathname)
   through command line switch `--user-data-dir` or environment variable
   `NRF_USER_DATA_DIR`.
-- Display app version for uninstalled apps.
 
 ## 3.7.0 - 2021-06-23
 ### Added
