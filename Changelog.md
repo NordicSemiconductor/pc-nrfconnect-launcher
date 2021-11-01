@@ -3,7 +3,7 @@
 - Replaced underlying low-level libraries by integrating nrf-device-lib and
   updated pc-ble-driver to make communication with devices much more reliable.
 ### Added
-- Windows x64 support.
+- Windows x64 binaries.
 - In some apps link to documentation in About pane (e.g. in Programmer).
 - App launcher:
     - Progress indicators for app installation and upgrade.
