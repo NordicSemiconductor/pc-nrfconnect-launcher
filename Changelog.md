@@ -1,13 +1,13 @@
 ## 3.8.0 - 2021-11-01
 ### Added
-- Enables the apps to show an additional documentation card in their About pane
-- Windows x64 support
+- Windows x64 support.
+- In some apps link to documentation in About pane (e.g. in Programmer).
 - App launcher:
-    - Progress indicators for app install/upgrade
-    - About pane with version, documentation and license information
-    - Show version numbers for uninstalled apps
+    - Progress indicators for app installation and upgrade.
+    - Show version numbers of uninstalled apps.
+    - About pane with version, documentation and license information.
 ### Fixed
-- Hibernation crash issue on Windows
+- Hibernation crash on Windows.
 
 ## 3.7.2 - 2021-10-21
 This version is released only for macOS.
