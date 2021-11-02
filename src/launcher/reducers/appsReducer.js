@@ -131,7 +131,18 @@ const reducer = (state = initialState, action) => {
                 initialState.installingAppName
             );
         case AppsActions.REMOVE_OFFICIAL_APP_SUCCESS:
-            return state.set('removingAppName', initialState.removingAppName);
+            return state
+                .update('officialApps', officialApps =>
+                    officialApps.update(
+                        officialApps.findKey(
+                            app =>
+                                app.source === action.source &&
+                                app.name === action.name
+                        ),
+                        app => app.set('currentVersion', null)
+                    )
+                )
+                .set('removingAppName', initialState.removingAppName);
         case AppsActions.UPGRADE_OFFICIAL_APP_SUCCESS:
             return state.set('upgradingAppName', initialState.upgradingAppName);
         case AppsActions.INSTALL_OFFICIAL_APP_ERROR:
