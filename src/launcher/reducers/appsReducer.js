@@ -139,7 +139,7 @@ const reducer = (state = initialState, action) => {
                                 app.source === action.source &&
                                 app.name === action.name
                         ),
-                        app => app.set('currentVersion', null)
+                        app => app?.set('currentVersion', null)
                     )
                 )
                 .set('removingAppName', initialState.removingAppName);
