@@ -411,7 +411,6 @@ export function removeOfficialApp(name, source) {
             .removeOfficialApp(name, source)
             .then(() => {
                 dispatch(removeOfficialAppSuccessAction(name, source));
-                dispatch(loadOfficialApps(name, source));
             })
             .catch(error => {
                 dispatch(removeOfficialAppErrorAction());
