@@ -1,3 +1,11 @@
+## Unreleased
+### Changed
+- While starting the launcher, all apps used to be shortly shown until a
+  previously set filter was applied. Now the filter is applied immediately.
+### Fixed
+- While offline, uninstalling apps would make it look like they are still
+  installed until the next start of the launcher.
+
 ## 3.8.0 - 2021-11-01
 ### Updated
 - Replaced underlying low-level libraries by integrating nrf-device-lib and
