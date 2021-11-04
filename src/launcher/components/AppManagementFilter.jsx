@@ -158,7 +158,7 @@ const AppManagementFilter = ({
         addSearchFieldShortcuts();
     }, []);
     return (
-        <div className="filterbox mb-3 w-100 d-inline-flex">
+        <div className="filterbox w-100 d-inline-flex">
             <FilterDropdown
                 sources={sources}
                 show={show}
