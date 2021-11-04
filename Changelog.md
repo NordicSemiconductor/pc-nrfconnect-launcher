@@ -1,6 +1,7 @@
 ## Unreleased
 ### Added
 - Search and filter header is now sticky when scrolling
+- Keyboard shortcuts to focus search field: `ctrl + e`, `ctrl + f`, `ctrl + l`.
 ### Changed
 - While starting the launcher, all apps used to be shortly shown until a
   previously set filter was applied. Now the filter is applied immediately.

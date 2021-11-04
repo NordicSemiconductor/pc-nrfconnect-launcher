@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -25,6 +25,25 @@ export const sortedSources = sources => {
 
     return [...officialsAndLocal, ...rest];
 };
+
+function addSearchFieldShortcuts() {
+    const searchField = document.querySelector('.filterbox input');
+
+    if (searchField) {
+        document.addEventListener(
+            'keydown',
+            event => {
+                const keyName = event.key;
+                if (event.ctrlKey) {
+                    if (keyName === 'e' || keyName === 'f' || keyName === 'l') {
+                        searchField.focus();
+                    }
+                }
+            },
+            false
+        );
+    }
+}
 
 const SourceFilter = ({ sources, setAppManagementSource }) => (
     <Col className="pl-4 pr-0">
@@ -134,35 +153,41 @@ const AppManagementFilter = ({
     setAppManagementShow,
     setAppManagementFilter,
     setAppManagementSource,
-}) => (
-    <div className="filterbox mb-3 w-100 d-inline-flex">
-        <FilterDropdown
-            sources={sources}
-            show={show}
-            setAppManagementShow={setAppManagementShow}
-            setAppManagementSource={setAppManagementSource}
-        />
-        <Form.Control
-            type="text"
-            placeholder="Search..."
-            value={filter}
-            onChange={({ target }) => setAppManagementFilter(target.value)}
-        />
-        <div className="flex-fill" />
-        {upgradeableApps.size > 0 && (
-            <Button
-                variant="outline-secondary"
-                onClick={() =>
-                    upgradeableApps.forEach(({ name, latestVersion, source }) =>
-                        onUpgrade(name, latestVersion, source)
-                    )
-                }
-            >
-                Update all apps
-            </Button>
-        )}
-    </div>
-);
+}) => {
+    useEffect(() => {
+        addSearchFieldShortcuts();
+    }, []);
+    return (
+        <div className="filterbox mb-3 w-100 d-inline-flex">
+            <FilterDropdown
+                sources={sources}
+                show={show}
+                setAppManagementShow={setAppManagementShow}
+                setAppManagementSource={setAppManagementSource}
+            />
+            <Form.Control
+                type="text"
+                placeholder="Search..."
+                value={filter}
+                onChange={({ target }) => setAppManagementFilter(target.value)}
+            />
+            <div className="flex-fill" />
+            {upgradeableApps.size > 0 && (
+                <Button
+                    variant="outline-secondary"
+                    onClick={() =>
+                        upgradeableApps.forEach(
+                            ({ name, latestVersion, source }) =>
+                                onUpgrade(name, latestVersion, source)
+                        )
+                    }
+                >
+                    Update all apps
+                </Button>
+            )}
+        </div>
+    );
+};
 
 AppManagementFilter.propTypes = {
     upgradeableApps: instanceOf(Iterable).isRequired,
