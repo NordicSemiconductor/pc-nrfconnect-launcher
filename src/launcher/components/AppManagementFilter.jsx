@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Iterable } from 'immutable';
+import { useHotKey } from 'pc-nrfconnect-shared';
 import { bool, func, instanceOf, shape, string } from 'prop-types';
 
 export const sortedSources = sources => {
@@ -25,25 +26,6 @@ export const sortedSources = sources => {
 
     return [...officialsAndLocal, ...rest];
 };
-
-function addSearchFieldShortcuts() {
-    const searchField = document.querySelector('.filterbox input');
-
-    if (searchField) {
-        document.addEventListener(
-            'keydown',
-            event => {
-                const keyName = event.key;
-                if (event.ctrlKey) {
-                    if (keyName === 'e' || keyName === 'f' || keyName === 'l') {
-                        searchField.focus();
-                    }
-                }
-            },
-            false
-        );
-    }
-}
 
 const SourceFilter = ({ sources, setAppManagementSource }) => (
     <Col className="pl-4 pr-0">
@@ -154,9 +136,12 @@ const AppManagementFilter = ({
     setAppManagementFilter,
     setAppManagementSource,
 }) => {
-    useEffect(() => {
-        addSearchFieldShortcuts();
-    }, []);
+    useHotKey(
+        ['command+e', 'ctrl+e', 'command+f', 'ctrl+f', 'command+l', 'ctrl+l'],
+        () => {
+            document.querySelector('.filterbox input').focus();
+        }
+    );
     return (
         <div className="filterbox w-100 d-inline-flex">
             <FilterDropdown
