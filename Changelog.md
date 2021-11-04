@@ -5,6 +5,7 @@
 - Search and filter header is now sticky when scrolling.
 - While starting the launcher, all apps used to be shortly shown until a
   previously set filter was applied. Now the filter is applied immediately.
+- Icons
 ### Fixed
 - While offline, uninstalling apps would make it look like they are still
   installed until the next start of the launcher.
