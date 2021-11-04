@@ -60,7 +60,7 @@ body {
 
     .tab-content {
         @extend %pretty-scrollbar;
-        padding: 2rem;
+        padding: 0 32px 4px;
 
         #launcher-tabpane-apps {
             margin-top: -1rem;
@@ -203,6 +203,13 @@ body {
 }
 
 .filterbox {
+    z-index: 1;
+    top: 0;
+    height: 48px;
+    position: sticky;
+    background-color: $body-bg;
+    align-items: center;
+
     > * {
         margin-left: 0.75em;
     }

@@ -1,4 +1,6 @@
 ## Unreleased
+### Added
+- Search and filter header is now sticky when scrolling
 ### Changed
 - While starting the launcher, all apps used to be shortly shown until a
   previously set filter was applied. Now the filter is applied immediately.
