@@ -62,10 +62,6 @@ body {
         @extend %pretty-scrollbar;
         padding: 0 32px 4px;
 
-        #launcher-tabpane-apps {
-            margin-top: -1rem;
-        }
-
         .progress {
             position: absolute;
             width: 100%;
