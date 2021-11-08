@@ -1,14 +1,17 @@
-## Unreleased
+## 3.9.0 - 2021-11-08
 ### Added
 - Keyboard shortcuts to focus search field: `ctrl + e` or `cmd + e`.
 ### Changed
 - Search and filter header is now sticky when scrolling.
 - While starting the launcher, all apps used to be shortly shown until a
   previously set filter was applied. Now the filter is applied immediately.
-- Icons
+- nRF Connect for Desktop icon on Windows and Linux.
 ### Fixed
 - While offline, uninstalling apps would make it look like they are still
   installed until the next start of the launcher.
+- Make enumeration more robust in `nrf-device-lib-js`, which should reduce 
+  the frequency in which `EnumerateWorker json error` errors happen.
+- Increase timeout for the rare occasion when enumeration takes a long time.
 
 ## 3.8.0 - 2021-11-01
 ### Updated
