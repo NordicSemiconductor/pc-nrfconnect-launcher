@@ -1,6 +1,9 @@
 # Unreleased
 ### Fixed
-- Keyboard shortcuts to focus search field persists after selecting filter.
+- Keyboard shortcuts to focus search field were not working after clicking on
+  filter.
+- On macOS: When switching to another app while the splashscreen was displayed,
+  "APPS" was focussed.
 
 ## 3.9.0 - 2021-11-08
 ### Added
@@ -13,7 +16,7 @@
 ### Fixed
 - While offline, uninstalling apps would make it look like they are still
   installed until the next start of the launcher.
-- Make enumeration more robust in `nrf-device-lib-js`, which should reduce 
+- Make enumeration more robust in `nrf-device-lib-js`, which should reduce
   the frequency in which `EnumerateWorker json error` errors happen.
 - Increase timeout for the rare occasion when enumeration takes a long time.
 
