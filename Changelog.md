@@ -1,3 +1,7 @@
+# Unreleased
+### Fixed
+- Keyboard shortcuts to focus search field persists after selecting filter.
+
 ## 3.9.0 - 2021-11-08
 ### Added
 - Keyboard shortcuts to focus search field: `ctrl + e` or `cmd + e`.
