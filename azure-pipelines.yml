@@ -207,7 +207,7 @@ jobs:
       export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
       export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
       export APPLEID=$(WAYLAND_APPLE_ID)
-      export APPLEIDPASS=$(WAYLAND_APPLE_ID_PASS)
+      export APPLEIDPASS=$(WAYLAND_APPLE_APP_SPECIFIC)
       rm -f node_modules/pc-nrfjprog-js/nrfjprog/._*
       rm -f node_modules/pc-nrfjprog-js/build/Release/._*
       npx electron-builder -p never
