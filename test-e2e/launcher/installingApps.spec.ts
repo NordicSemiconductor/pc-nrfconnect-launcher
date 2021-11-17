@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { expect, test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
@@ -11,16 +12,16 @@ import rimraf from 'rimraf';
 import { checkAppListContains } from '../assertions';
 import setupTestApp from '../setupTestApp';
 
-describe('app installation', () => {
-    describe('online from the server', () => {
+test.describe('app installation', () => {
+    test.describe('online from the server', () => {
         const app = setupTestApp({
             appsRootDir: 'launcher/fixtures/app-installation/.nrfconnect-apps',
             removeAppsRootDirAfterwards: true,
             skipUpdateApps: false,
         });
 
-        it('installs and removes an online available app', () =>
-            app.client
+        test('installs and removes an online available app', () =>
+            app
                 .waitForVisible('button[title*="Install"]')
                 .click('button[title*="Install"]')
                 .click('.list-group-item button[aria-haspopup="true"]')
@@ -29,7 +30,7 @@ describe('app installation', () => {
                 .waitForVisible('button[title*="Install"]'));
     });
 
-    describe('offline from an app archive file', () => {
+    test.describe('offline from an app archive file', () => {
         const fixtureDir = 'fixtures/one-local-app-to-be-extracted';
         const localDir = path.join(
             __dirname,
@@ -56,11 +57,11 @@ describe('app installation', () => {
             additionalAfterEach: removeAppDirFromLocal,
         });
 
-        it('shows the app name in the launcher app list', () =>
+        test('shows the app name in the launcher app list', () =>
             checkAppListContains(app, 'Foo App'));
 
-        it('removes the archive file', async () => {
-            await app.client.waitForVisible('.list-group-item');
+        test('removes the archive file', async () => {
+            await app.waitForVisible('.list-group-item');
 
             const exists = fs.existsSync(path.join(localDir, appArchiveFile));
             expect(exists).toEqual(false);
