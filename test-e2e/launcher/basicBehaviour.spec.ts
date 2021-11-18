@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, test } from '@playwright/test';
+import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
@@ -41,12 +41,15 @@ test.describe('automatic update check', () => {
         const settingsJsonPath =
             'launcher/fixtures/check-for-updates-at-startup-enabled/settings.json';
         let app: ElectronApplication;
+        let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
                 settingsJsonPath,
                 skipUpdateApps: false,
             });
+
+            page = await app.firstWindow();
         });
 
         test.afterAll(async () => {
@@ -58,7 +61,6 @@ test.describe('automatic update check', () => {
         });
 
         test('populates apps.json in .nrfconnect-apps', async () => {
-            const page = await app.firstWindow();
             await page.waitForSelector('.list-group-item');
 
             const appsJsonFile = path.join(
@@ -81,12 +83,15 @@ test.describe('automatic update check', () => {
             'launcher/fixtures/check-for-updates-at-startup-disabled/settings.json';
 
         let app: ElectronApplication;
+        let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
                 settingsJsonPath,
                 skipUpdateApps: false,
             });
+
+            page = await app.firstWindow();
         });
 
         test.afterAll(async () => {
@@ -98,8 +103,7 @@ test.describe('automatic update check', () => {
         });
 
         test('populates not apps.json in .nrfconnect-apps', async () => {
-            const page = await app.firstWindow();
-            await page.waitForSelector('#launcher-tabpane-apps');
+            await page.waitForSelector('.list-group-item');
 
             const appsJsonFile = path.join(
                 __dirname,
@@ -116,12 +120,15 @@ test.describe('automatic update check', () => {
 
 test.describe('showing apps available on the server', () => {
     let app: ElectronApplication;
+    let page: Page;
     const appsRootDir = 'launcher/fixtures/app-installation/.nrfconnect-apps';
     test.beforeAll(async () => {
         app = await setup({
             appsRootDir,
             skipUpdateApps: false,
         });
+
+        page = await app.firstWindow();
     });
 
     test.afterAll(async () => {
@@ -129,7 +136,6 @@ test.describe('showing apps available on the server', () => {
     });
 
     test('shows apps available on the server', async () => {
-        const page = await app.firstWindow();
-        await page.waitForSelector('button[title*="Install"]');
+        await page.waitForSelector('.list-group-item');
     });
 });
