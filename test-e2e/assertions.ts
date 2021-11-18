@@ -20,7 +20,8 @@ export const checkTitleOfWindow = async (
     titleString: string
 ) => {
     const window = await app.firstWindow();
-    expect(getTitleOfWindow(app, window)).resolves.toContain(titleString);
+    const title = await getTitleOfWindow(app, window);
+    expect(title).toContain(titleString);
 };
 
 export const checkTitleOfSecondWindow = async (
