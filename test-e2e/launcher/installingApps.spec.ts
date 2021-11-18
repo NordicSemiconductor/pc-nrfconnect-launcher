@@ -4,30 +4,45 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { expect, test } from '@playwright/test';
+import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
 
 import { checkAppListContains } from '../assertions';
-import setupTestApp from '../setupTestApp';
+import { setup, teardown } from '../setupTestApp';
 
 test.describe('app installation', () => {
     test.describe('online from the server', () => {
-        const app = setupTestApp({
-            appsRootDir: 'launcher/fixtures/app-installation/.nrfconnect-apps',
-            removeAppsRootDirAfterwards: true,
-            skipUpdateApps: false,
+        const appsRootDir =
+            'launcher/fixtures/app-installation/.nrfconnect-apps';
+        let app: ElectronApplication;
+        let page: Page;
+        test.beforeAll(async () => {
+            app = await setup({
+                appsRootDir,
+                skipUpdateApps: false,
+            });
+
+            page = await app.firstWindow();
         });
 
-        test('installs and removes an online available app', () =>
-            app
-                .waitForVisible('button[title*="Install"]')
-                .click('button[title*="Install"]')
-                .click('.list-group-item button[aria-haspopup="true"]')
-                .waitForVisible('a[title*="Remove"]')
-                .click('a[title*="Remove"]')
-                .waitForVisible('button[title*="Install"]'));
+        test.afterAll(async () => {
+            await teardown({
+                app,
+                appsRootDir,
+                removeAppsRootDirAfterwards: true,
+            });
+        });
+
+        test('installs and removes an online available app', async () => {
+            await page.waitForSelector('button[title*="Install"]');
+            await page.click('button[title*="Install"]');
+            await page.click('.list-group-item button[aria-haspopup="true"]');
+            await page.waitForSelector('a[title*="Remove"]');
+            await page.click('a[title*="Remove"]');
+            await page.waitForSelector('button[title*="Install"]');
+        });
     });
 
     test.describe('offline from an app archive file', () => {
@@ -51,17 +66,35 @@ test.describe('app installation', () => {
             fs.copyFileSync(sourceFile, destFile);
         };
 
-        const app = setupTestApp({
-            appsRootDir: path.join('launcher', fixtureDir, '.nrfconnect-apps'),
-            additionalBeforeEach: copyArchiveToLocal,
-            additionalAfterEach: removeAppDirFromLocal,
+        const appsRootDir = path.join(
+            'launcher',
+            fixtureDir,
+            '.nrfconnect-apps'
+        );
+        let app: ElectronApplication;
+        let page: Page;
+        test.beforeAll(async () => {
+            app = await setup({
+                appsRootDir,
+                additionalBeforeEach: copyArchiveToLocal,
+            });
+
+            page = await app.firstWindow();
+        });
+
+        test.afterAll(async () => {
+            await teardown({
+                app,
+                appsRootDir,
+                additionalAfterEach: removeAppDirFromLocal,
+            });
         });
 
         test('shows the app name in the launcher app list', () =>
-            checkAppListContains(app, 'Foo App'));
+            checkAppListContains(page, 'Foo App'));
 
         test('removes the archive file', async () => {
-            await app.waitForVisible('.list-group-item');
+            await page.waitForSelector('.list-group-item');
 
             const exists = fs.existsSync(path.join(localDir, appArchiveFile));
             expect(exists).toEqual(false);
