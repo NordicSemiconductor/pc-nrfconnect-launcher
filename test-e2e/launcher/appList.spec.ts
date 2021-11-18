@@ -28,10 +28,7 @@ test.describe('the list of all apps', () => {
         let app: ElectronApplication;
         let page: Page;
         test.beforeAll(async () => {
-            app = await setup({
-                appsRootDir,
-                skipUpdateApps: false,
-            });
+            app = await setup({ appsRootDir });
             page = await app.firstWindow();
         });
 

@@ -1,7 +1,8 @@
 {
-    "pc-nrfconnect-test": {
-        "displayName": "Test App",
-        "description": "App used for testing",
-        "homepage": "https://example.com/test"
+    "pc-nrfconnect-ble": {
+        "displayName": "Bluetooth Low Energy",
+        "description": "General tool for development and testing with Bluetooth Low Energy",
+        "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-ble",
+        "url": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble"
     }
 }
