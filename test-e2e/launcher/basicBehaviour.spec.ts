@@ -5,11 +5,14 @@
  */
 
 import { ElectronApplication, expect, test } from '@playwright/test';
+import fs from 'fs';
 import path from 'path';
 
-import { version } from '../../package.json';
+import * as pack from '../../package.json';
 import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
+
+const { version } = pack;
 
 test.describe('basic behaviour of the launcher', () => {
     const appsRootDir = 'launcher/fixtures/one-local-app/.nrfconnect-apps';
@@ -60,13 +63,11 @@ test.describe('automatic update check', () => {
 
             const appsJsonFile = path.join(
                 __dirname,
-                '.',
-                appsRootDir,
-                'apps.json'
+                'fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps/apps.json'
             );
 
             // eslint-disable-next-line import/no-dynamic-require, global-require
-            const appsJson = require(appsJsonFile);
+            const appsJson = JSON.parse(fs.readFileSync(appsJsonFile));
             const appNames = Object.keys(appsJson);
 
             expect(appNames.length).toBeGreaterThan(0);
@@ -102,12 +103,11 @@ test.describe('automatic update check', () => {
 
             const appsJsonFile = path.join(
                 __dirname,
-                '.',
-                appsRootDir,
-                'apps.json'
+                'fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps/apps.json'
             );
+
             // eslint-disable-next-line import/no-dynamic-require, global-require
-            const appsJson = require(appsJsonFile);
+            const appsJson = JSON.parse(fs.readFileSync(appsJsonFile));
 
             expect(appsJson).toEqual({});
         });
