@@ -1,9 +1,11 @@
-# Unreleased
+## 3.9.1 - 2021-11-18
 ### Fixed
 - Keyboard shortcuts to focus search field were not working after clicking on
   filter.
 - On macOS: When switching to another app while the splashscreen was displayed,
-  "APPS" was focussed.
+  "APPS" was focused.
+- Updated nrf-device-lib to v0.3.19, changes and fixes in this release can be found 
+  [here](https://github.com/NordicPlayground/nrf-device-lib-js/blob/master/Changelog.md).
 
 ## 3.9.0 - 2021-11-08
 ### Added
