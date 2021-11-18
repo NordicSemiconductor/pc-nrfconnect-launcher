@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { expect, test } from '@playwright/test';
+import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import path from 'path';
 import { _electron as electron } from 'playwright';
 
 import { checkTitleOfWindow } from '../assertions';
-import setupTestApp from '../setupTestApp';
+import { setup, teardown } from '../setupTestApp';
 
 const startApp = async (extraArgs: string[]) => {
     const projectPath = path.resolve(__dirname, '../../');
@@ -33,55 +33,55 @@ const startApp = async (extraArgs: string[]) => {
     return app;
 };
 
-const sleep = (millis: number) =>
-    new Promise(resolve => setTimeout(resolve, millis));
 test.describe('launching apps directly', () => {
     test.describe('an official app', () => {
-        let app;
-        /*
-        const app = setupTestApp({
-            appsRootDir:
-                'launcher/fixtures/one-official-app-installed/.nrfconnect-apps',
-            openOfficialApp: 'pc-nrfconnect-test',
-        });*/
+        const appsRootDir =
+            'launcher/fixtures/one-official-app-installed/.nrfconnect-apps';
+        let app: ElectronApplication;
+        let page: Page;
+        test.beforeAll(async () => {
+            app = await setup({
+                appsRootDir,
+                openOfficialApp: 'pc-nrfconnect-test',
+            });
 
-        test.beforeEach(async () => {
-            const absoluteAppsRootDir = path.resolve(
-                __dirname,
-                'fixtures/one-official-app-installed/.nrfconnect-apps'
-            );
-
-            const electronArgs = [
-                `--apps-root-dir=${absoluteAppsRootDir}`,
-                `--open-official-app=pc-nrfconnect-test`,
-            ];
-
-            app = await startApp(electronArgs);
-
-            expect(app).not.toBe(undefined);
+            page = await app.firstWindow();
         });
 
-        test.afterEach(async () => {
-            await app.close();
+        test.afterAll(async () => {
+            await teardown({
+                app,
+                appsRootDir,
+            });
         });
 
         test('can be launched directly', async () => {
-            const page = await app.firstWindow();
-
             await checkTitleOfWindow(app, 'Test App');
         });
     });
 
-    /* test.describe('a local app', () => {
-        const app = setupTestApp({
-            appsRootDir: 'launcher/fixtures/one-local-app/.nrfconnect-apps',
-            openLocalApp: 'pc-nrfconnect-test',
+    test.describe('a local app', () => {
+        const appsRootDir = 'launcher/fixtures/one-local-app/.nrfconnect-apps';
+        let app: ElectronApplication;
+        let page: Page;
+        test.beforeAll(async () => {
+            app = await setup({
+                appsRootDir,
+                openLocalApp: 'pc-nrfconnect-test',
+            });
+
+            page = await app.firstWindow();
+        });
+
+        test.afterAll(async () => {
+            await teardown({
+                app,
+                appsRootDir,
+            });
         });
 
         test('can be launched directly', async () => {
-            await app.firstWindow();
-
             await checkTitleOfWindow(app, 'Test App');
         });
-    });*/
+    });
 });
