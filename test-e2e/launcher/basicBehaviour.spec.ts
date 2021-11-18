@@ -137,5 +137,9 @@ test.describe('showing apps available on the server', () => {
 
     test('shows apps available on the server', async () => {
         await page.waitForSelector('.list-group-item');
+
+        await expect(
+            page.$('button[title*="Install"]')
+        ).resolves.not.toBeNull();
     });
 });
