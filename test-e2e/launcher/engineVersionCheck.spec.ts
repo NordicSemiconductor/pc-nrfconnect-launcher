@@ -4,69 +4,114 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { expect, test } from '@playwright/test';
+import { ElectronApplication, expect, Page, test } from '@playwright/test';
 
 import launchFirstApp from '../launchFirstApp';
-import setupTestApp from '../setupTestApp';
+import { setup, teardown } from '../setupTestApp';
 
 test.describe(
     'checks the version of the engine against what the app declares',
     () => {
         test.describe('an official app that is only available', () => {
-            const app = setupTestApp({
-                appsRootDir:
-                    'launcher/fixtures/one-official-app-not-installed/.nrfconnect-apps',
+            const appsRootDir =
+                'launcher/fixtures/one-official-app-not-installed/.nrfconnect-apps';
+            let app: ElectronApplication;
+            let page: Page;
+            test.beforeAll(async () => {
+                app = await setup({
+                    appsRootDir,
+                });
+
+                page = await app.firstWindow();
+            });
+
+            test.afterAll(async () => {
+                await teardown({
+                    app,
+                    appsRootDir,
+                });
             });
 
             test('shows no warning in the app list', async () => {
-                await app.waitForVisible('.list-group-item');
+                await page.waitForSelector('.list-group-item');
 
                 await expect(
-                    app.isVisible(
-                        'span[title="The app does not specify which nRF Connect version(s) it supports'
+                    page.$(
+                        '[title*="The app does not specify which nRF Connect version(s) it supports"]'
                     )
-                ).resolves.toBe(false);
+                ).resolves.toBeNull();
                 await expect(
-                    app.isVisible(
-                        'span[title*="The app only supports nRF Connect'
-                    )
-                ).resolves.toBe(false);
+                    page.$('[title*="The app only supports nRF Connect"]')
+                ).resolves.toBeNull();
             });
         });
 
         test.describe('local app with unsupported engine', () => {
-            const app = setupTestApp({
-                appsRootDir:
-                    'launcher/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps',
+            const appsRootDir =
+                'launcher/fixtures/one-local-app-unsupported-engine/.nrfconnect-apps';
+            let app: ElectronApplication;
+            let page: Page;
+            test.beforeAll(async () => {
+                app = await setup({
+                    appsRootDir,
+                });
+
+                page = await app.firstWindow();
             });
 
-            test('shows a warning in the app list', () =>
-                app.waitForVisible(
-                    'span[title*="The app only supports nRF Connect 1.x'
-                ));
+            test.afterAll(async () => {
+                await teardown({
+                    app,
+                    appsRootDir,
+                });
+            });
+
+            test('shows a warning in the app list', async () => {
+                await page.waitForSelector('.list-group-item');
+                expect(
+                    page.$('[title*="The app only supports nRF Connect 1.x"]')
+                ).not.toBeNull();
+            });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
-
-                await app.waitForVisible('.modal-dialog');
+                await launchFirstApp(app);
+                await expect(page.$('.modal-content')).resolves.not.toBeNull();
             });
         });
 
         test.describe('one local app without engine definition', () => {
-            const app = setupTestApp({
-                appsRootDir:
-                    'launcher/fixtures/one-local-app-without-engine/.nrfconnect-apps',
+            const appsRootDir =
+                'launcher/fixtures/one-local-app-without-engine/.nrfconnect-apps';
+            let app: ElectronApplication;
+            let page: Page;
+            test.beforeAll(async () => {
+                app = await setup({
+                    appsRootDir,
+                });
+
+                page = await app.firstWindow();
             });
 
-            test('shows a warning in the app list', () =>
-                app.waitForVisible(
-                    'span[title="The app does not specify which nRF Connect version(s) it supports'
-                ));
+            test.afterAll(async () => {
+                await teardown({
+                    app,
+                    appsRootDir,
+                });
+            });
+
+            test('shows a warning in the app list', async () => {
+                await page.waitForSelector('.list-group-item');
+
+                await expect(
+                    page.$(
+                        'span[title*="The app does not specify which nRF Connect version(s) it supports"]'
+                    )
+                ).resolves.not.toBeNull();
+            });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
-
-                await app.waitForVisible('.modal-dialog');
+                await launchFirstApp(app);
+                await expect(page.$('.modal-content')).resolves.not.toBeNull();
             });
         });
     }
