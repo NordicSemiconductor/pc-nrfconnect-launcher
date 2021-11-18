@@ -7,13 +7,13 @@
 import { expect, Page } from '@playwright/test';
 import { ElectronApplication } from 'playwright';
 
-const getTitleOfWindow = (app: ElectronApplication, page: Page) => {
-    const value = app
-        .browserWindow(page)
-        .then(browserWindow => browserWindow.getProperty('title'))
-        .then(property => property.jsonValue());
-    return value;
-};
+const getTitleOfWindow = (app: ElectronApplication, page: Page) =>
+    new Promise(resolve =>
+        app
+            .browserWindow(page)
+            .then(browserWindow => browserWindow.getProperty('title'))
+            .then(property => resolve(property.jsonValue()))
+    );
 
 export const checkTitleOfWindow = async (
     app: ElectronApplication,
