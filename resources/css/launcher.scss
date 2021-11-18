@@ -59,9 +59,9 @@ body {
     }
 
     .tab-content {
-        @extend %pretty-scrollbar;
-        padding: 0 32px 4px;
-
+        // Padding right reduced to half to compensate for scrollbar specific margin-right (= .with-scrollbar)
+        padding: 0 0 4px 32px;
+        overflow: hidden;
         .progress {
             position: absolute;
             width: 100%;
@@ -71,6 +71,17 @@ body {
             border-radius: 0;
             background-color: transparent;
         }
+    }
+
+    .content-container {
+        padding-right: 16px;
+    }
+
+    .with-scrollbar {
+        // Height: subtract navigation header (64px) and filterbox (48px) and give some space at the bottom
+        height: calc(100vh - 112px - 8px);
+        margin-right: 16px;
+        @extend %pretty-scrollbar;
     }
 }
 
@@ -254,4 +265,8 @@ body {
 
 .mt_32px {
     margin-top: 32px;
+}
+
+.me_32px {
+    margin-right: 32px;
 }
