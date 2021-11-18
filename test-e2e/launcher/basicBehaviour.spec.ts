@@ -53,7 +53,7 @@ test.describe('automatic update check', () => {
             await teardown({
                 app,
                 appsRootDir,
-                removeAppsRootDirAfterwards: false,
+                removeAppsRootDirAfterwards: true,
             });
         });
 
