@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -95,27 +95,30 @@ const FilterDropdown = ({
     show,
     setAppManagementShow,
     setAppManagementSource,
-}) => (
-    <Dropdown>
-        <Dropdown.Toggle variant="outline-secondary">
-            <span className="mdi mdi-tune" />
-            Filter
-        </Dropdown.Toggle>
+}) => {
+    const [active, toggleActive] = useState(false);
 
-        <Dropdown.Menu>
-            <Row className="flex-nowrap">
-                <SourceFilter
-                    sources={sources}
-                    setAppManagementSource={setAppManagementSource}
-                />
-                <StateFilter
-                    show={show}
-                    setAppManagementShow={setAppManagementShow}
-                />
-            </Row>
-        </Dropdown.Menu>
-    </Dropdown>
-);
+    return (
+        <Dropdown onToggle={() => toggleActive(!active)}>
+            <Dropdown.Toggle variant="outline-secondary" active={active}>
+                <span className="mdi mdi-tune" />
+                Filter
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+                <Row className="flex-nowrap">
+                    <SourceFilter
+                        sources={sources}
+                        setAppManagementSource={setAppManagementSource}
+                    />
+                    <StateFilter
+                        show={show}
+                        setAppManagementShow={setAppManagementShow}
+                    />
+                </Row>
+            </Dropdown.Menu>
+        </Dropdown>
+    );
+};
 FilterDropdown.propTypes = {
     sources: instanceOf(Object).isRequired,
     show: shape({
