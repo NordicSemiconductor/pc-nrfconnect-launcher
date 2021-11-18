@@ -29,14 +29,14 @@ export const checkTitleOfSecondWindow = async (
     titleString: string
 ) => {
     const windows = await app.windows();
-    expect(
+    await expect(
         getTitleOfWindow(app, windows[windows.length - 1])
     ).resolves.toContain(titleString);
 };
 
 export const checkAppListContains = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
-    expect(
+    await expect(
         page.$$eval('.list-group-item .h8', apps =>
             apps.map(app => app.textContent)
         )
@@ -45,17 +45,19 @@ export const checkAppListContains = async (page: Page, appName: string) => {
 
 export const checkHasInstallButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
-    expect(page.$(`[title="Install ${appName}"]`)).resolves.not.toBeNull();
+    await expect(
+        page.$(`[title="Install ${appName}"]`)
+    ).resolves.not.toBeNull();
 };
 
 export const checkHasNoInstallButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
-    expect(page.$(`[title="Install ${appName}"]`)).resolves.toBeNull();
+    await expect(page.$(`[title="Install ${appName}"]`)).resolves.toBeNull();
 };
 
 export const checkHasNoLaunchButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
-    expect(page.$(`[title="Open ${appName}"]`)).resolves.toBeNull();
+    await expect(page.$(`[title="Open ${appName}"]`)).resolves.toBeNull();
 };
 
 export const checkShowsAppUpdate = async (
@@ -71,8 +73,8 @@ export const checkShowsAppUpdate = async (
 
 export const checkShowsNoAppUpdate = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
-    expect(page.$(`[title="Update ${appName}"]`)).resolves.toBeNull();
-    expect(
+    await expect(page.$(`[title="Update ${appName}"]`)).resolves.toBeNull();
+    await expect(
         page.$(`.list-group-item:has-text("available")`)
     ).resolves.toBeNull();
 };
@@ -80,11 +82,11 @@ export const checkShowsNoAppUpdate = async (page: Page, appName: string) => {
 export const checkHasRemoveButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
     await page.click('.list-group-item button[aria-haspopup="true"]');
-    expect(page.$(`[title="Remove ${appName}"]`)).resolves.not.toBeNull();
+    await expect(page.$(`[title="Remove ${appName}"]`)).resolves.not.toBeNull();
 };
 
 export const checkHasNoRemoveButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
     await page.click('.list-group-item button[aria-haspopup="true"]');
-    expect(page.$(`[title="Remove ${appName}"]`)).resolves.toBeNull();
+    await expect(page.$(`[title="Remove ${appName}"]`)).resolves.toBeNull();
 };
