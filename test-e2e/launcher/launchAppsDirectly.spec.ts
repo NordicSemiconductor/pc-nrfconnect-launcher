@@ -4,34 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, Page, test } from '@playwright/test';
-import path from 'path';
-import { _electron as electron } from 'playwright';
+import { ElectronApplication, Page, test } from '@playwright/test';
 
 import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
-
-const startApp = async (extraArgs: string[]) => {
-    const projectPath = path.resolve(__dirname, '../../');
-    const electronArgs = [
-        projectPath,
-        '--skip-update-core',
-        '--skip-splash-screen',
-        ...extraArgs,
-    ];
-
-    if (process.env.LOG_ELECTRON_ARGS) {
-        console.log(
-            `Electron is run with these args: ${electronArgs.join(' ')}`
-        );
-    }
-
-    const app = await electron.launch({
-        args: ['.', ...electronArgs],
-    });
-
-    return app;
-};
 
 test.describe('launching apps directly', () => {
     test.describe('an official app', () => {
