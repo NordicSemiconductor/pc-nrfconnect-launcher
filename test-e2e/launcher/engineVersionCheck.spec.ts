@@ -5,9 +5,14 @@
  */
 
 import { ElectronApplication, expect, Page, test } from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
 
 import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
+
+const oldPath = path.join(__dirname, '../../', 'README.md');
+const newPath = path.join(__dirname, '../../', 'README.md.not');
 
 test.describe(
     'checks the version of the engine against what the app declares',
@@ -52,6 +57,7 @@ test.describe(
             let app: ElectronApplication;
             let page: Page;
             test.beforeAll(async () => {
+                fs.renameSync(oldPath, newPath);
                 app = await setup({
                     appsRootDir,
                 });
@@ -64,6 +70,7 @@ test.describe(
                     app,
                     appsRootDir,
                 });
+                fs.renameSync(newPath, oldPath);
             });
 
             test('shows a warning in the app list', async () => {
@@ -85,6 +92,7 @@ test.describe(
             let app: ElectronApplication;
             let page: Page;
             test.beforeAll(async () => {
+                fs.renameSync(oldPath, newPath);
                 app = await setup({
                     appsRootDir,
                 });
@@ -97,6 +105,7 @@ test.describe(
                     app,
                     appsRootDir,
                 });
+                fs.renameSync(newPath, oldPath);
             });
 
             test('shows a warning in the app list', async () => {
