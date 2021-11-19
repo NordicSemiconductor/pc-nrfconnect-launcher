@@ -5,6 +5,8 @@
  */
 
 import { ElectronApplication, Page, test } from '@playwright/test';
+import path from 'path';
+import rimraf from 'rimraf';
 
 import {
     checkAppListContains,
@@ -37,6 +39,12 @@ test.describe('the list of all apps', () => {
                 app,
                 appsRootDir,
             });
+            rimraf.sync(
+                path.resolve(
+                    __dirname,
+                    'fixtures/one-official-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg'
+                )
+            );
         });
 
         test('is in the launcher app list', () =>
