@@ -81,7 +81,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app);
+                await launchFirstApp(app, false);
                 await expect(page.$('.modal-content')).resolves.not.toBeNull();
             });
         });
@@ -119,7 +119,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app);
+                await launchFirstApp(app, false);
                 await expect(page.$('.modal-content')).resolves.not.toBeNull();
             });
         });
