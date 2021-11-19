@@ -75,9 +75,9 @@ test.describe(
 
             test('shows a warning in the app list', async () => {
                 await page.waitForSelector('.list-group-item');
-                expect(
+                await expect(
                     page.$('[title*="The app only supports nRF Connect 1.x"]')
-                ).not.toBeNull();
+                ).resolves.not.toBeNull();
             });
 
             test('shows a warning dialog when launching the app', async () => {
