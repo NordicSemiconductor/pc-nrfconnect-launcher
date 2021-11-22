@@ -17,7 +17,7 @@ import {
     checkHasRemoveButton,
     checkShowsAppUpdate,
     checkShowsNoAppUpdate,
-    checkTitleOfSecondWindow,
+    checkTitleOfLastWindow,
 } from '../assertions';
 import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
@@ -94,7 +94,7 @@ test.describe('the list of all apps', () => {
 
         test('launches the app', async () => {
             await launchFirstApp(app);
-            await checkTitleOfSecondWindow(app, 'Test App');
+            await checkTitleOfLastWindow(app, 'Test App');
         });
 
         test('has a remove button', async () => {
@@ -136,7 +136,7 @@ test.describe('the list of all apps', () => {
 
         test('launches the app', async () => {
             await launchFirstApp(app);
-            await checkTitleOfSecondWindow(app, 'Test App');
+            await checkTitleOfLastWindow(app, 'Test App');
         });
 
         test('has a remove button', async () => {
@@ -173,7 +173,7 @@ test.describe('the list of all apps', () => {
 
         test('launches the app', async () => {
             await launchFirstApp(app);
-            await checkTitleOfSecondWindow(app, 'Test App');
+            await checkTitleOfLastWindow(app, 'Test App');
         });
 
         test('has no install button', async () => {

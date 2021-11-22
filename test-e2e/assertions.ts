@@ -24,7 +24,7 @@ export const checkTitleOfWindow = async (
     expect(title).toContain(titleString);
 };
 
-export const checkTitleOfSecondWindow = async (
+export const checkTitleOfLastWindow = async (
     app: ElectronApplication,
     titleString: string
 ) => {
