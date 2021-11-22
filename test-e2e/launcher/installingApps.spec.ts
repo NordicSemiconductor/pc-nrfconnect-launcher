@@ -90,8 +90,9 @@ test.describe('app installation', () => {
             });
         });
 
-        test('shows the app name in the launcher app list', () =>
-            checkAppListContains(page, 'Foo App'));
+        test('shows the app name in the launcher app list', async () => {
+            await checkAppListContains(page, 'Foo App');
+        });
 
         test('removes the archive file', async () => {
             await page.waitForSelector('.list-group-item');

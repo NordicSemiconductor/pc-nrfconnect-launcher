@@ -30,8 +30,9 @@ test.describe('basic behaviour of the launcher', () => {
         });
     });
 
-    test('shows package.json version in launcher window title', () =>
-        checkTitleOfWindow(app, version));
+    test('shows package.json version in launcher window title', async () => {
+        await checkTitleOfWindow(app, version);
+    });
 });
 
 test.describe('automatic update check', () => {

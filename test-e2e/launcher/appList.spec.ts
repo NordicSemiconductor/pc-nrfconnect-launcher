@@ -29,6 +29,7 @@ test.describe('the list of all apps', () => {
 
         let app: ElectronApplication;
         let page: Page;
+
         test.beforeAll(async () => {
             app = await setup({ appsRootDir });
             page = await app.firstWindow();
@@ -47,20 +48,21 @@ test.describe('the list of all apps', () => {
             );
         });
 
-        test('is in the launcher app list', () =>
-            checkAppListContains(page, 'Bluetooth Low Energy'));
-
-        test('has no launch button', () =>
-            checkHasNoLaunchButton(page, 'Bluetooth Low Energy'));
-
-        test('has install button', () =>
-            checkHasInstallButton(page, 'Bluetooth Low Energy'));
-
-        test('has no remove button', () =>
-            checkHasNoRemoveButton(page, 'Bluetooth Low Energy'));
-
-        test('shows no available upgrade', () =>
-            checkShowsNoAppUpdate(page, 'Bluetooth Low Energy'));
+        test('is in the launcher app list', async () => {
+            await checkAppListContains(page, 'Bluetooth Low Energy');
+        });
+        test('has no launch button', async () => {
+            await checkHasNoLaunchButton(page, 'Bluetooth Low Energy');
+        });
+        test('has install button', async () => {
+            await checkHasInstallButton(page, 'Bluetooth Low Energy');
+        });
+        test('has no remove button', async () => {
+            await checkHasNoRemoveButton(page, 'Bluetooth Low Energy');
+        });
+        test('shows no available upgrade', async () => {
+            await checkShowsNoAppUpdate(page, 'Bluetooth Low Energy');
+        });
     });
 
     test.describe('has an official apps that is installed', () => {
@@ -82,22 +84,26 @@ test.describe('the list of all apps', () => {
                 appsRootDir,
             });
         });
-        test('is in the launcher app list', () =>
-            checkAppListContains(page, 'Test App'));
+        test('is in the launcher app list', async () => {
+            await checkAppListContains(page, 'Test App');
+        });
 
-        test('has no install button', () =>
-            checkHasNoInstallButton(page, 'Test App'));
+        test('has no install button', async () => {
+            await checkHasNoInstallButton(page, 'Test App');
+        });
 
         test('launches the app', async () => {
             await launchFirstApp(app);
-            checkTitleOfSecondWindow(app, 'Test App');
+            await checkTitleOfSecondWindow(app, 'Test App');
         });
 
-        test('has a remove button', () =>
-            checkHasRemoveButton(page, 'Test App'));
+        test('has a remove button', async () => {
+            await checkHasRemoveButton(page, 'Test App');
+        });
 
-        test('shows no available upgrade', () =>
-            checkShowsNoAppUpdate(page, 'Test App'));
+        test('shows no available upgrade', async () => {
+            await checkShowsNoAppUpdate(page, 'Test App');
+        });
     });
 
     test.describe('has an official apps that is upgradable', () => {
@@ -120,22 +126,26 @@ test.describe('the list of all apps', () => {
                 appsRootDir,
             });
         });
-        test('is in the launcher app list', () =>
-            checkAppListContains(page, 'Test App'));
+        test('is in the launcher app list', async () => {
+            await checkAppListContains(page, 'Test App');
+        });
 
-        test('has no install button', () =>
-            checkHasNoInstallButton(page, 'Test App'));
+        test('has no install button', async () => {
+            await checkHasNoInstallButton(page, 'Test App');
+        });
 
         test('launches the app', async () => {
             await launchFirstApp(app);
             await checkTitleOfSecondWindow(app, 'Test App');
         });
 
-        test('has a remove button', () =>
-            checkHasRemoveButton(page, 'Test App'));
+        test('has a remove button', async () => {
+            await checkHasRemoveButton(page, 'Test App');
+        });
 
-        test('shows an available upgrade', () =>
-            checkShowsAppUpdate(page, 'Test App', 'v1.2.4'));
+        test('shows an available upgrade', async () => {
+            await checkShowsAppUpdate(page, 'Test App', 'v1.2.4');
+        });
     });
 
     test.describe('has a local app', () => {
@@ -157,21 +167,25 @@ test.describe('the list of all apps', () => {
                 appsRootDir,
             });
         });
-        test('is in the launcher app list', () =>
-            checkAppListContains(page, 'Test App'));
+        test('is in the launcher app list', async () => {
+            await checkAppListContains(page, 'Test App');
+        });
 
         test('launches the app', async () => {
             await launchFirstApp(app);
             await checkTitleOfSecondWindow(app, 'Test App');
         });
 
-        test('has no install button', () =>
-            checkHasNoInstallButton(page, 'Test App'));
+        test('has no install button', async () => {
+            await checkHasNoInstallButton(page, 'Test App');
+        });
 
-        test('has no remove button', () =>
-            checkHasNoRemoveButton(page, 'Test App'));
+        test('has no remove button', async () => {
+            await checkHasNoRemoveButton(page, 'Test App');
+        });
 
-        test('shows no available upgrade', () =>
-            checkShowsNoAppUpdate(page, 'Test App'));
+        test('shows no available upgrade', async () => {
+            await checkShowsNoAppUpdate(page, 'Test App');
+        });
     });
 });
