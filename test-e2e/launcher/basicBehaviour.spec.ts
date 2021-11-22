@@ -8,11 +8,11 @@ import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-import * as pack from '../../package.json';
+import packageJson from '../../package.json';
 import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
 
-const { version } = pack;
+const { version } = packageJson;
 
 test.describe('basic behaviour of the launcher', () => {
     const appsRootDir = 'launcher/fixtures/one-local-app/.nrfconnect-apps';
