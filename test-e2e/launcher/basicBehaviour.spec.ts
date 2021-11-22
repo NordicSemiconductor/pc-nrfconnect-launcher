@@ -69,8 +69,9 @@ test.describe('automatic update check', () => {
                 'fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps/apps.json'
             );
 
-            // eslint-disable-next-line import/no-dynamic-require, global-require
-            const appsJson = JSON.parse(fs.readFileSync(appsJsonFile));
+            const appsJson = JSON.parse(
+                fs.readFileSync(appsJsonFile).toString()
+            );
             const appNames = Object.keys(appsJson);
 
             expect(appNames.length).toBeGreaterThan(0);
@@ -112,8 +113,9 @@ test.describe('automatic update check', () => {
                 'fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps/apps.json'
             );
 
-            // eslint-disable-next-line import/no-dynamic-require, global-require
-            const appsJson = JSON.parse(fs.readFileSync(appsJsonFile));
+            const appsJson = JSON.parse(
+                fs.readFileSync(appsJsonFile).toString()
+            );
 
             expect(appsJson).toEqual({});
         });
