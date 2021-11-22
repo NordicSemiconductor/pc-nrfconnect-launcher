@@ -34,10 +34,8 @@ const startApp = async (extraArgs: string[]) => {
 interface setupConfig {
     appsRootDir: string;
     additionalBeforeEach?: () => void;
-    additionalAfterEach?: () => void;
     openLocalApp?: string;
     openOfficialApp?: string;
-    removeAppsRootDirAfterwards?: boolean;
     settingsJsonPath?: string;
     skipUpdateApps?: boolean;
 }
