@@ -14,14 +14,11 @@ test.describe('launching apps directly', () => {
         const appsRootDir =
             'launcher/fixtures/one-official-app-installed/.nrfconnect-apps';
         let app: ElectronApplication;
-        let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
                 openOfficialApp: 'pc-nrfconnect-test',
             });
-
-            page = await app.firstWindow();
         });
 
         test.afterAll(async () => {
@@ -39,14 +36,11 @@ test.describe('launching apps directly', () => {
     test.describe('a local app', () => {
         const appsRootDir = 'launcher/fixtures/one-local-app/.nrfconnect-apps';
         let app: ElectronApplication;
-        let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
                 openLocalApp: 'pc-nrfconnect-test',
             });
-
-            page = await app.firstWindow();
         });
 
         test.afterAll(async () => {
