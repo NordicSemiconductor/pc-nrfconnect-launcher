@@ -9,7 +9,7 @@ import { ElectronApplication } from 'playwright';
 const sleep = (millis: number) =>
     new Promise(resolve => setTimeout(resolve, millis));
 
-export const waitForSecondWindow = async (
+const waitForSecondWindow = async (
     app: ElectronApplication,
     currentCount: number
 ) => {

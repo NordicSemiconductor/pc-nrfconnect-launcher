@@ -8,7 +8,7 @@ import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-import launchFirstApp, { waitForSecondWindow } from '../launchFirstApp';
+import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 
 const oldPath = path.join(__dirname, '../../', 'README.md');
