@@ -82,23 +82,24 @@ test.describe(
 
             test('shows a warning dialog when launching the app', async () => {
                 await launchFirstApp(app, false);
-                await expect(page.$('.modal-content')).resolves.not.toBeNull();
+                await expect(
+                    page.$('button:has-text("Launch anyway")')
+                ).resolves.not.toBeNull();
             });
 
             test('does not launch the app when selecting "Cancel"', async () => {
                 await page.click('button:has-text("Cancel")');
-                await page.waitForSelector('button:has-text("Cance")', {
+                await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
                 });
-                await expect(page.$('.modal-content')).resolves.toBeNull();
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                const windows = await app.windows();
                 await launchFirstApp(app, false);
                 await page.click('button:has-text("Launch anyway")');
-                await waitForSecondWindow(app, windows.length);
-                await expect(page.$('.modal-content')).resolves.toBeNull();
+                await page.waitForSelector('button:has-text("Cancel")', {
+                    state: 'detached',
+                });
             });
         });
 
@@ -136,22 +137,22 @@ test.describe(
 
             test('shows a warning dialog when launching the app', async () => {
                 await launchFirstApp(app, false);
-                await expect(page.$('.modal-content')).resolves.not.toBeNull();
+                await expect(
+                    page.$('button:has-text("Launch anyway")')
+                ).resolves.not.toBeNull();
             });
 
             test('does not launch the app when selecting "Cancel"', async () => {
                 await page.click('button:has-text("Cancel")');
-                await page.waitForSelector('.modal-content', {
+                await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
                 });
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                const windows = await app.windows();
                 await launchFirstApp(app, false);
                 await page.click('button:has-text("Launch anyway")');
-                await waitForSecondWindow(app, windows.length);
-                await page.waitForSelector('.modal-content', {
+                await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
                 });
             });

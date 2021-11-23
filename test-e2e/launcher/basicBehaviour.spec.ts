@@ -106,7 +106,9 @@ test.describe('automatic update check', () => {
 
         test('populates not apps.json in .nrfconnect-apps', async () => {
             await page.waitForSelector('#launcher-tabpane-apps');
-            await expect(page.$('.list-group-item')).resolves.toBeNull();
+            await expect(
+                page.$('button[title*="Install"]')
+            ).resolves.toBeNull();
 
             const appsJsonFile = path.join(
                 __dirname,
