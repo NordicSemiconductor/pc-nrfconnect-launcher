@@ -17,7 +17,7 @@
         "lint": "nrfconnect-scripts lint src test-e2e *.js",
         "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
         "test-watch": "jest --watch src/",
-        "test-e2e": "npx playwright test test-e2e/",
+        "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
