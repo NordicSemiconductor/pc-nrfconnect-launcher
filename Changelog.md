@@ -1,3 +1,14 @@
+## 3.9.1 - 2021-11-25
+### Fixed
+- Keyboard shortcuts to focus search field were not working after clicking on
+  filter.
+- On macOS: When switching to another app while the splashscreen was displayed,
+  "APPS" was focused.
+- Updated nrf-device-lib to v0.3.20, changes and fixes are as follows:
+  - Fixed issue where ongoing JLink OB firmware upgrade would break enumeration.
+  - Upgrade nrfjprog to 10.15.1.
+  - Support mcuboot and modem trait on devices with external SEGGER JLink.
+
 ## 3.9.0 - 2021-11-08
 ### Added
 - Keyboard shortcuts to focus search field: `ctrl + e` or `cmd + e`.
@@ -9,7 +20,7 @@
 ### Fixed
 - While offline, uninstalling apps would make it look like they are still
   installed until the next start of the launcher.
-- Make enumeration more robust in `nrf-device-lib-js`, which should reduce 
+- Make enumeration more robust in `nrf-device-lib-js`, which should reduce
   the frequency in which `EnumerateWorker json error` errors happen.
 - Increase timeout for the rare occasion when enumeration takes a long time.
 

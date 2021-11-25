@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -136,10 +136,12 @@ const AppManagementFilter = ({
     setAppManagementFilter,
     setAppManagementSource,
 }) => {
+    const searchFieldRef = useRef(null);
+
     useHotKey(
         ['command+e', 'ctrl+e', 'command+f', 'ctrl+f', 'command+l', 'ctrl+l'],
         () => {
-            document.querySelector('.filterbox input').focus();
+            searchFieldRef.current.focus();
         }
     );
     return (
@@ -154,6 +156,7 @@ const AppManagementFilter = ({
                 type="text"
                 placeholder="Search..."
                 value={filter}
+                ref={searchFieldRef}
                 onChange={({ target }) => setAppManagementFilter(target.value)}
             />
             <div className="flex-fill" />
