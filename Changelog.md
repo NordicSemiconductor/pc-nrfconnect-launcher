@@ -1,13 +1,15 @@
-## 3.9.1 - 2021-11-18
+## 3.9.1 - 2021-11-25
 ### Fixed
 - Keyboard shortcuts to focus search field were not working after clicking on
   filter.
 - On macOS: When switching to another app while the splashscreen was displayed,
   "APPS" was focused.
-- Updated nrf-device-lib to v0.3.19, changes and fixes in this release can be found 
-  [here](https://github.com/NordicPlayground/nrf-device-lib-js/blob/master/Changelog.md).
 - Scrollbar is retained to the same height as the apps within the window.
 - Filter button is active while the menu is visible.
+- Updated nrf-device-lib to v0.3.20, changes and fixes are as follows:
+  - Fixed issue where ongoing JLink OB firmware upgrade would break enumeration.
+  - Upgrade nrfjprog to 10.15.1.
+  - Support mcuboot and modem trait on devices with external SEGGER JLink.
 
 ## 3.9.0 - 2021-11-08
 ### Added
