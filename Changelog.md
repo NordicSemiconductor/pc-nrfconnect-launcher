@@ -6,6 +6,8 @@
   "APPS" was focused.
 - Updated nrf-device-lib to v0.3.19, changes and fixes in this release can be found 
   [here](https://github.com/NordicPlayground/nrf-device-lib-js/blob/master/Changelog.md).
+- Scrollbar is retained to the same height as the apps within the window.
+- Filter button is active while the menu is visible.
 
 ## 3.9.0 - 2021-11-08
 ### Added
