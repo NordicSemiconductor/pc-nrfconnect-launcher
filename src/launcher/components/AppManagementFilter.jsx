@@ -172,6 +172,7 @@ const AppManagementFilter = ({
                                 onUpgrade(name, latestVersion, source)
                         )
                     }
+                    className="me_32px"
                 >
                     Update all apps
                 </Button>
