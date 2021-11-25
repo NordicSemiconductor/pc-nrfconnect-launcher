@@ -4,7 +4,7 @@
   filter.
 - On macOS: When switching to another app while the splashscreen was displayed,
   "APPS" was focused.
-- Scrollbar is retained to the same height as the apps within the window.
+- Scrollbar is now retained to the same height as the apps within the window.
 - Filter button is active while the menu is visible.
 - Updated nrf-device-lib to v0.3.20, changes and fixes are as follows:
   - Fixed issue where ongoing JLink OB firmware upgrade would break enumeration.
