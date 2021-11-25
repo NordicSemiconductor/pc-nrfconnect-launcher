@@ -93,7 +93,7 @@ ipcMain.on('show-about-dialog', () => {
                 detail,
                 icon: app.iconPath
                     ? app.iconPath
-                    : `${config.getElectronResourcesDir()}/nrfconnect.png`,
+                    : `${config.getElectronResourcesDir()}/icon.png`,
                 buttons: ['OK'],
             },
             () => {}

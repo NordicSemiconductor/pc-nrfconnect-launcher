@@ -19,9 +19,9 @@ const appWindows = [];
 function getDefaultIconPath() {
     const electronResourcesDir = config.getElectronResourcesDir();
     if (process.platform === 'win32') {
-        return path.join(electronResourcesDir, 'nrfconnect.ico');
+        return path.join(electronResourcesDir, 'icon.ico');
     }
-    return path.join(electronResourcesDir, 'nrfconnect.png');
+    return path.join(electronResourcesDir, 'icon.png');
 }
 
 function openLauncherWindow() {

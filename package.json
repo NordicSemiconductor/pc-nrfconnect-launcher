@@ -54,7 +54,8 @@
                 "tar.gz"
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
-            "category": "Development"
+            "category": "Development",
+            "icon": "resources/icon.icns"
         },
         "afterSign": "build/notarize.js",
         "mac": {
@@ -63,7 +64,8 @@
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist"
+            "entitlementsInherit": "build/entitlements.mac.plist",
+            "icon": "resources/icon.icns"
         },
         "dmg": {
             "artifactName": "${name}-${version}.${ext}",
@@ -73,7 +75,8 @@
             "target": [
                 "nsis"
             ],
-            "publisherName": "Nordic Semiconductor ASA"
+            "publisherName": "Nordic Semiconductor ASA",
+            "icon": "resources/icon.ico"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
