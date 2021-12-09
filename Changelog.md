@@ -1,3 +1,8 @@
+## 3.9.2 - 2021-12-09
+### Fixed
+- Switching focus after selecting the `About` pane caused incorrect or missing
+  defails in `Application` card.
+
 ## 3.9.1 - 2021-11-25
 ### Fixed
 - Keyboard shortcuts to focus search field were not working after clicking on
