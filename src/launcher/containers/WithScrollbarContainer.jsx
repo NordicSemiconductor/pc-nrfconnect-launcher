@@ -7,19 +7,15 @@
 import React from 'react';
 import { bool, node } from 'prop-types';
 
-const WithScrollbarContainer = ({ children, hasFilter = false }) => {
-    if (hasFilter)
-        return (
-            <div className="with-scrollbar filter-adjusted-height">
-                <div className="content-container">{children}</div>
-            </div>
-        );
-    return (
-        <div className="with-scrollbar">
-            <div className="content-container">{children}</div>
-        </div>
-    );
-};
+const WithScrollbarContainer = ({ children, hasFilter = false }) => (
+    <div
+        className={`with-scrollbar ${
+            hasFilter ? 'filter-adjusted-height' : ''
+        }`}
+    >
+        <div className="content-container">{children}</div>
+    </div>
+);
 
 WithScrollbarContainer.propTypes = {
     hasFilter: bool,

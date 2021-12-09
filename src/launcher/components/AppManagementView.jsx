@@ -10,7 +10,7 @@ import { bool, func, instanceOf, string } from 'prop-types';
 
 import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
-import ContainerWithScrollbar from '../containers/WithScrollbarContainer';
+import WithScrollbarContainer from '../containers/WithScrollbarContainer';
 import AppItem from './AppItem';
 
 const AppManagementView = ({
@@ -29,7 +29,7 @@ const AppManagementView = ({
 }) => (
     <>
         <AppManagementFilter apps={apps} sources={sources} />
-        <ContainerWithScrollbar hasFilter>
+        <WithScrollbarContainer hasFilter>
             {apps.map(app => (
                 <AppItem
                     key={`${app.name}-${app.source}`}
@@ -50,7 +50,7 @@ const AppManagementView = ({
                     onShowReleaseNotes={() => onShowReleaseNotes(app)}
                 />
             ))}
-        </ContainerWithScrollbar>
+        </WithScrollbarContainer>
         <ReleaseNotesDialog />
     </>
 );
