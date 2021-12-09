@@ -10,6 +10,7 @@ import { bool, func, instanceOf, string } from 'prop-types';
 
 import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
+import ContainerWithScrollbar from '../containers/WithScrollbarContainer';
 import AppItem from './AppItem';
 
 const AppManagementView = ({
@@ -28,32 +29,28 @@ const AppManagementView = ({
 }) => (
     <>
         <AppManagementFilter apps={apps} sources={sources} />
-        <div className="with-scrollbar">
-            <div className="content-container">
-                {apps.map(app => (
-                    <AppItem
-                        key={`${app.name}-${app.source}`}
-                        app={app}
-                        isDisabled={isProcessing}
-                        isInstalling={
-                            installingAppName === `${app.source}/${app.name}`
-                        }
-                        isUpgrading={
-                            upgradingAppName === `${app.source}/${app.name}`
-                        }
-                        isRemoving={
-                            removingAppName === `${app.source}/${app.name}`
-                        }
-                        onRemove={() => onRemove(app.name, app.source)}
-                        onInstall={() => onInstall(app.name, app.source)}
-                        onReadMore={() => onReadMore(app.homepage)}
-                        onAppSelected={() => onAppSelected(app)}
-                        onCreateShortcut={() => onCreateShortcut(app)}
-                        onShowReleaseNotes={() => onShowReleaseNotes(app)}
-                    />
-                ))}
-            </div>
-        </div>
+        <ContainerWithScrollbar hasFilter>
+            {apps.map(app => (
+                <AppItem
+                    key={`${app.name}-${app.source}`}
+                    app={app}
+                    isDisabled={isProcessing}
+                    isInstalling={
+                        installingAppName === `${app.source}/${app.name}`
+                    }
+                    isUpgrading={
+                        upgradingAppName === `${app.source}/${app.name}`
+                    }
+                    isRemoving={removingAppName === `${app.source}/${app.name}`}
+                    onRemove={() => onRemove(app.name, app.source)}
+                    onInstall={() => onInstall(app.name, app.source)}
+                    onReadMore={() => onReadMore(app.homepage)}
+                    onAppSelected={() => onAppSelected(app)}
+                    onCreateShortcut={() => onCreateShortcut(app)}
+                    onShowReleaseNotes={() => onShowReleaseNotes(app)}
+                />
+            ))}
+        </ContainerWithScrollbar>
         <ReleaseNotesDialog />
     </>
 );
