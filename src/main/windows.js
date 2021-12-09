@@ -143,8 +143,8 @@ function openLocalAppWindow(appName) {
     });
 }
 
-function getFocusedAppWindow() {
-    const parentWindow = electron.BrowserWindow.getFocusedWindow();
+function getAppWindow(sender) {
+    const parentWindow = electron.BrowserWindow.fromWebContents(sender);
     return appWindows.find(appWin => appWin.browserWindow === parentWindow);
 }
 
@@ -154,5 +154,5 @@ module.exports = {
     openOfficialAppWindow,
     openLocalAppWindow,
     hideLauncherWindow,
-    getFocusedAppWindow,
+    getAppWindow,
 };
