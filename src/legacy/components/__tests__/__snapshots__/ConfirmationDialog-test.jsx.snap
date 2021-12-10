@@ -1,9 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConfirmationDialog should not render cancel button if onCancel function is not provided 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
   backdrop={false}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={null}
+  restoreFocus={true}
   show={true}
 >
   <ModalHeader
@@ -26,19 +38,30 @@ exports[`ConfirmationDialog should not render cancel button if onCancel function
       className="core-btn"
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       OK
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
 
 exports[`ConfirmationDialog should render invisible dialog 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
   backdrop={false}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={false}
 >
   <ModalHeader
@@ -61,7 +84,6 @@ exports[`ConfirmationDialog should render invisible dialog 1`] = `
       className="core-btn"
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       OK
@@ -71,19 +93,30 @@ exports[`ConfirmationDialog should render invisible dialog 1`] = `
       className="core-btn"
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
   backdrop={false}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={true}
 >
   <ModalHeader
@@ -106,7 +139,6 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
       className="core-btn"
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       OK
@@ -116,19 +148,30 @@ exports[`ConfirmationDialog should render visible dialog with text 1`] = `
       className="core-btn"
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
 
 exports[`ConfirmationDialog should render visible dialog with text and operation in progress 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
   backdrop="static"
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={true}
 >
   <ModalHeader
@@ -155,7 +198,6 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
       className="core-btn"
       disabled={true}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       OK
@@ -165,11 +207,10 @@ exports[`ConfirmationDialog should render visible dialog with text and operation
       className="core-btn"
       disabled={true}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Cancel
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;

@@ -22,7 +22,6 @@ exports[`SettingsView should render check for updates completed, with everything
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -66,7 +65,6 @@ exports[`SettingsView should render check for updates completed, with everything
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -105,7 +103,6 @@ exports[`SettingsView should render check for updates completed, with everything
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -113,8 +110,21 @@ exports[`SettingsView should render check for updates completed, with everything
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={true}
   >
     <ModalHeader
@@ -133,13 +143,12 @@ exports[`SettingsView should render check for updates completed, with everything
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -174,7 +183,6 @@ exports[`SettingsView should render check for updates completed, with updates av
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -218,7 +226,6 @@ exports[`SettingsView should render check for updates completed, with updates av
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -257,7 +264,6 @@ exports[`SettingsView should render check for updates completed, with updates av
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -265,8 +271,21 @@ exports[`SettingsView should render check for updates completed, with updates av
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={true}
   >
     <ModalHeader
@@ -285,13 +304,12 @@ exports[`SettingsView should render check for updates completed, with updates av
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -326,7 +344,6 @@ exports[`SettingsView should render empty div while loading 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -366,7 +383,6 @@ exports[`SettingsView should render empty div while loading 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -405,7 +421,6 @@ exports[`SettingsView should render empty div while loading 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -413,8 +428,21 @@ exports[`SettingsView should render empty div while loading 1`] = `
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={false}
   >
     <ModalHeader
@@ -433,13 +461,12 @@ exports[`SettingsView should render empty div while loading 1`] = `
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -474,7 +501,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
           active={false}
           disabled={true}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Checking...
@@ -514,7 +540,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -553,7 +578,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -561,8 +585,21 @@ exports[`SettingsView should render when checking for updates 1`] = `
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={false}
   >
     <ModalHeader
@@ -581,13 +618,12 @@ exports[`SettingsView should render when checking for updates 1`] = `
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -622,7 +658,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -662,7 +697,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -701,7 +735,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -709,8 +742,21 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={false}
   >
     <ModalHeader
@@ -729,13 +775,12 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -770,7 +815,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -810,7 +854,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -849,7 +892,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -857,8 +899,21 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={false}
   >
     <ModalHeader
@@ -877,13 +932,12 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}
@@ -918,7 +972,6 @@ exports[`SettingsView should render with last update check date 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Check for updates
@@ -962,7 +1015,6 @@ exports[`SettingsView should render with last update check date 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Add source
@@ -1001,7 +1053,6 @@ exports[`SettingsView should render with last update check date 1`] = `
           active={false}
           disabled={false}
           onClick={[Function]}
-          type="button"
           variant="outline-primary"
         >
           Show agreement
@@ -1009,8 +1060,21 @@ exports[`SettingsView should render with last update check date 1`] = `
       </Col>
     </Row>
   </Card>
-  <Bootstrap(Modal)
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
     onHide={[Function]}
+    restoreFocus={true}
     show={false}
   >
     <ModalHeader
@@ -1029,13 +1093,12 @@ exports[`SettingsView should render with last update check date 1`] = `
         active={false}
         disabled={false}
         onClick={[Function]}
-        type="button"
         variant="outline-primary"
       >
         Got it
       </Button>
     </ModalFooter>
-  </Bootstrap(Modal)>
+  </Modal>
   <InputLineDialog
     isVisible={false}
     onCancel={[Function]}

@@ -6,7 +6,6 @@ Array [
     className="core-padded-row core-device-selector dropdown"
     disabled={true}
     id="device-selector"
-    onKeyDown={[Function]}
   >
     <button
       aria-expanded={false}
@@ -32,7 +31,6 @@ Array [
     className="core-padded-row core-device-selector dropdown"
     disabled={false}
     id="device-selector"
-    onKeyDown={[Function]}
   >
     <button
       aria-expanded={false}
