@@ -91,7 +91,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -216,7 +215,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -341,7 +339,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -495,7 +492,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -568,7 +564,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -641,7 +636,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -795,7 +789,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -879,7 +872,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}
@@ -963,7 +955,6 @@ Array [
               </button>
               <div
                 className="dropdown"
-                onKeyDown={[Function]}
               >
                 <button
                   aria-expanded={false}

@@ -32,7 +32,7 @@ module.exports = {
     devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
     entry: {
         app: './src/app',
-        shared: './node_modules/pc-nrfconnect-shared/src/index.js',
+        shared: './node_modules/pc-nrfconnect-shared/src/index.ts',
         launcher: './src/launcher',
     },
     output: {

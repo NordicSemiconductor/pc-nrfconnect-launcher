@@ -1,8 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ErrorDialog should render hidden dialog 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
+  backdrop={true}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={false}
 >
   <ModalHeader
@@ -19,18 +32,30 @@ exports[`ErrorDialog should render hidden dialog 1`] = `
       active={false}
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
 
 exports[`ErrorDialog should render visible dialog with one message 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
+  backdrop={true}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={true}
 >
   <ModalHeader
@@ -54,18 +79,30 @@ exports[`ErrorDialog should render visible dialog with one message 1`] = `
       active={false}
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
 
 exports[`ErrorDialog should render visible dialog with two messages 1`] = `
-<Bootstrap(Modal)
+<Modal
+  animation={true}
+  autoFocus={true}
+  backdrop={true}
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "ModalDialog",
+      "render": [Function],
+    }
+  }
+  enforceFocus={true}
+  keyboard={true}
   onHide={[Function]}
+  restoreFocus={true}
   show={true}
 >
   <ModalHeader
@@ -95,11 +132,10 @@ exports[`ErrorDialog should render visible dialog with two messages 1`] = `
       active={false}
       disabled={false}
       onClick={[Function]}
-      type="button"
       variant="primary"
     >
       Close
     </Button>
   </ModalFooter>
-</Bootstrap(Modal)>
+</Modal>
 `;
