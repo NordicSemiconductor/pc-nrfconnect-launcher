@@ -96,7 +96,7 @@ jobs:
       eq(variables['INTERNAL'], 'true'),
       contains(variables['image_name'], 'win'))
     displayName: 'Copy npmrc on windows'
-  
+
   - script: |
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
@@ -104,7 +104,7 @@ jobs:
       eq(variables['INTERNAL'], 'true'),
       contains(variables['image_name'], 'win'))
     displayName: 'Install and set node-gyp'
-  
+
   - script: |
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
     condition: and(
@@ -164,14 +164,14 @@ jobs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Donwload certificate on Windows'
-  
+
   - script: |
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       npx electron-builder -p never
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
-  
+
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-$(ARCH)-unpacked'
@@ -183,7 +183,7 @@ jobs:
       contains(variables['IMAGE_NAME'], 'win'),
       eq(variables['NODE_ARCH'], '32'))
     displayName: 'Pack on Windows x86'
-  
+
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-unpacked'
