@@ -30,7 +30,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"
@@ -143,7 +143,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"
@@ -267,7 +267,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"
@@ -431,7 +431,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"
@@ -728,7 +728,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"
@@ -984,7 +984,7 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="with-scrollbar"
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
       className="content-container"

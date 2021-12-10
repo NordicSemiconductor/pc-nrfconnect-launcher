@@ -17,6 +17,7 @@ import { colors, Toggle } from 'pc-nrfconnect-shared';
 import { bool, func, instanceOf, shape } from 'prop-types';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
+import WithScrollbarContainer from '../containers/WithScrollbarContainer';
 import InputLineDialog from './InputLineDialog';
 
 const { white, gray700, nordicBlue } = colors;
@@ -84,170 +85,176 @@ class SettingsView extends React.Component {
         const sourcesJS = sources.toJS();
 
         return (
-            <div className="settings-pane-container">
-                <Card body>
-                    <Row>
-                        <Col>
-                            <Card.Title>Updates</Card.Title>
-                        </Col>
-                        <Col xs="auto">
+            <WithScrollbarContainer>
+                <div className="settings-pane-container">
+                    <Card body>
+                        <Row>
+                            <Col>
+                                <Card.Title>Updates</Card.Title>
+                            </Col>
+                            <Col xs="auto">
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={this.onTriggerUpdateCheckClicked}
+                                    disabled={isCheckingForUpdates}
+                                >
+                                    {isCheckingForUpdates
+                                        ? 'Checking...'
+                                        : 'Check for updates'}
+                                </Button>
+                            </Col>
+                        </Row>
+                        <p className="small text-muted">
+                            {lastUpdateCheckDate && (
+                                <>
+                                    Last update check performed:{' '}
+                                    {formatDate(
+                                        lastUpdateCheckDate,
+                                        'yyyy-MM-dd HH:mm:ss'
+                                    )}
+                                </>
+                            )}
+                        </p>
+                        <Toggle
+                            id="checkForUpdates"
+                            label="Check for updates at startup"
+                            onToggle={() =>
+                                this.onCheckUpdatesAtStartupChanged()
+                            }
+                            isToggled={shouldCheckForUpdatesAtStartup}
+                            variant="primary"
+                            handleColor={white}
+                            barColor={gray700}
+                            barColorToggled={nordicBlue}
+                        />
+                    </Card>
+                    <Card
+                        body
+                        onDrop={event => this.onDropUrl(event)}
+                        onDragOver={cancel}
+                        onDragEnter={cancel}
+                        id="app-sources"
+                    >
+                        <Row>
+                            <Col>
+                                <Card.Title>App sources</Card.Title>
+                            </Col>
+                            <Col xs="auto">
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={onShowAddSourceDialog}
+                                >
+                                    Add source
+                                </Button>
+                            </Col>
+                        </Row>
+                        {Object.keys(sourcesJS)
+                            .filter(name => name !== 'official')
+                            .map(name => (
+                                <Row key={name}>
+                                    <Col className="item-name text-capitalize">
+                                        {name}
+                                    </Col>
+                                    <Col xs="auto">
+                                        <ButtonToolbar>
+                                            <Button
+                                                variant="outline-secondary"
+                                                size="sm"
+                                                onClick={() =>
+                                                    clipboard.writeText(
+                                                        sourcesJS[name]
+                                                    )
+                                                }
+                                                title="Copy URL to clipboard"
+                                            >
+                                                Copy URL
+                                            </Button>
+                                            <Button
+                                                variant="outline-secondary"
+                                                size="sm"
+                                                onClick={() =>
+                                                    onShowRemoveSourceDialog(
+                                                        name
+                                                    )
+                                                }
+                                                title="Remove source and associated apps"
+                                            >
+                                                Remove
+                                            </Button>
+                                        </ButtonToolbar>
+                                    </Col>
+                                </Row>
+                            ))}
+                    </Card>
+                    <Card body>
+                        <Row>
+                            <Col>
+                                <Card.Title>Usage statistics</Card.Title>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Toggle
+                                    id="checkForShare"
+                                    label="Collect anonymous usage data"
+                                    onToggle={() => toggleSendingUsageData()}
+                                    isToggled={isSendingUsageData}
+                                    variant="primary"
+                                    handleColor={white}
+                                    barColor={gray700}
+                                    barColorToggled={nordicBlue}
+                                />
+                            </Col>
+                            <Col xs="auto">
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={showUsageDataDialog}
+                                >
+                                    Show agreement
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Card>
+                    <Modal
+                        show={isUpdateCheckCompleteDialogVisible}
+                        onHide={onHideUpdateCheckCompleteDialog}
+                    >
+                        <Modal.Header>
+                            <Modal.Title>Update check completed</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            {isAppUpdateAvailable ? (
+                                <>
+                                    One or more updates are available. Go to the
+                                    apps screen to update.
+                                </>
+                            ) : (
+                                <>All apps are up to date.</>
+                            )}
+                        </Modal.Body>
+                        <Modal.Footer>
                             <Button
                                 variant="outline-primary"
-                                onClick={this.onTriggerUpdateCheckClicked}
-                                disabled={isCheckingForUpdates}
+                                onClick={onHideUpdateCheckCompleteDialog}
                             >
-                                {isCheckingForUpdates
-                                    ? 'Checking...'
-                                    : 'Check for updates'}
+                                Got it
                             </Button>
-                        </Col>
-                    </Row>
-                    <p className="small text-muted">
-                        {lastUpdateCheckDate && (
-                            <>
-                                Last update check performed:{' '}
-                                {formatDate(
-                                    lastUpdateCheckDate,
-                                    'yyyy-MM-dd HH:mm:ss'
-                                )}
-                            </>
-                        )}
-                    </p>
-                    <Toggle
-                        id="checkForUpdates"
-                        label="Check for updates at startup"
-                        onToggle={() => this.onCheckUpdatesAtStartupChanged()}
-                        isToggled={shouldCheckForUpdatesAtStartup}
-                        variant="primary"
-                        handleColor={white}
-                        barColor={gray700}
-                        barColorToggled={nordicBlue}
+                        </Modal.Footer>
+                    </Modal>
+                    <InputLineDialog
+                        isVisible={isAddSourceDialogVisible}
+                        title="Add source"
+                        placeholder="https://..."
+                        subtext="The source file must be in .json format"
+                        onOk={url => {
+                            addSource(url);
+                            onHideAddSourceDialog();
+                        }}
+                        onCancel={onHideAddSourceDialog}
                     />
-                </Card>
-                <Card
-                    body
-                    onDrop={event => this.onDropUrl(event)}
-                    onDragOver={cancel}
-                    onDragEnter={cancel}
-                    id="app-sources"
-                >
-                    <Row>
-                        <Col>
-                            <Card.Title>App sources</Card.Title>
-                        </Col>
-                        <Col xs="auto">
-                            <Button
-                                variant="outline-primary"
-                                onClick={onShowAddSourceDialog}
-                            >
-                                Add source
-                            </Button>
-                        </Col>
-                    </Row>
-                    {Object.keys(sourcesJS)
-                        .filter(name => name !== 'official')
-                        .map(name => (
-                            <Row key={name}>
-                                <Col className="item-name text-capitalize">
-                                    {name}
-                                </Col>
-                                <Col xs="auto">
-                                    <ButtonToolbar>
-                                        <Button
-                                            variant="outline-secondary"
-                                            size="sm"
-                                            onClick={() =>
-                                                clipboard.writeText(
-                                                    sourcesJS[name]
-                                                )
-                                            }
-                                            title="Copy URL to clipboard"
-                                        >
-                                            Copy URL
-                                        </Button>
-                                        <Button
-                                            variant="outline-secondary"
-                                            size="sm"
-                                            onClick={() =>
-                                                onShowRemoveSourceDialog(name)
-                                            }
-                                            title="Remove source and associated apps"
-                                        >
-                                            Remove
-                                        </Button>
-                                    </ButtonToolbar>
-                                </Col>
-                            </Row>
-                        ))}
-                </Card>
-                <Card body>
-                    <Row>
-                        <Col>
-                            <Card.Title>Usage statistics</Card.Title>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Toggle
-                                id="checkForShare"
-                                label="Collect anonymous usage data"
-                                onToggle={() => toggleSendingUsageData()}
-                                isToggled={isSendingUsageData}
-                                variant="primary"
-                                handleColor={white}
-                                barColor={gray700}
-                                barColorToggled={nordicBlue}
-                            />
-                        </Col>
-                        <Col xs="auto">
-                            <Button
-                                variant="outline-primary"
-                                onClick={showUsageDataDialog}
-                            >
-                                Show agreement
-                            </Button>
-                        </Col>
-                    </Row>
-                </Card>
-                <Modal
-                    show={isUpdateCheckCompleteDialogVisible}
-                    onHide={onHideUpdateCheckCompleteDialog}
-                >
-                    <Modal.Header>
-                        <Modal.Title>Update check completed</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {isAppUpdateAvailable ? (
-                            <>
-                                One or more updates are available. Go to the
-                                apps screen to update.
-                            </>
-                        ) : (
-                            <>All apps are up to date.</>
-                        )}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            variant="outline-primary"
-                            onClick={onHideUpdateCheckCompleteDialog}
-                        >
-                            Got it
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-                <InputLineDialog
-                    isVisible={isAddSourceDialogVisible}
-                    title="Add source"
-                    placeholder="https://..."
-                    subtext="The source file must be in .json format"
-                    onOk={url => {
-                        addSource(url);
-                        onHideAddSourceDialog();
-                    }}
-                    onCancel={onHideAddSourceDialog}
-                />
-                <ConfirmRemoveSourceDialog />
-            </div>
+                    <ConfirmRemoveSourceDialog />
+                </div>
+            </WithScrollbarContainer>
         );
     }
 }
