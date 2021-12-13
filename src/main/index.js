@@ -73,8 +73,8 @@ ipcMain.on('open-app', (event, app) => {
     windows.openAppWindow(app);
 });
 
-ipcMain.on('show-about-dialog', () => {
-    const appWindow = windows.getFocusedAppWindow();
+ipcMain.on('show-about-dialog', event => {
+    const appWindow = windows.getAppWindow(event.sender);
     if (appWindow) {
         const { app } = appWindow;
         const detail =
@@ -102,7 +102,7 @@ ipcMain.on('show-about-dialog', () => {
 });
 
 ipcMain.on('get-app-details', event => {
-    const appWindow = windows.getFocusedAppWindow();
+    const appWindow = windows.getAppWindow(event.sender);
     if (appWindow) {
         event.sender.send('app-details', {
             coreVersion: config.getVersion(),
