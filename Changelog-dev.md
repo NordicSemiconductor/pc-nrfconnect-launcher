@@ -5,9 +5,25 @@ in [Changelog.md](./Changelog.md).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 3.9.2 - Unreleased
+### Changed
+- Updated nrf-device-lib-js to 0.4.1.
+- Updated pc-nrfconnect-shared to 5.12.1.
+
+## 3.9.1 - 2021-11-25
+### Changed
+- Updated nrf-device-lib-js to 0.3.20.
+- Updated pc-nrfconnect-shared to 5.8.1.
+
+## 3.9.0 - 2021-11-08
+### Changed
+- Updated nrf-device-lib-js to 0.3.18.
+- Updated pc-nrfconnect-shared to 5.7.0.
+
 ## 3.8.0 - 2021-11-01
 ### Changed
 - Replaced usage of pc-nrfjprog-js by nrf-device-lib-js.
+- Updated pc-nrfconnect-shared to 4.6.2
 - Updated Electron to 13.5.1
 - Updated USB drivers
 - Updated pc-ble-driver
