@@ -32,7 +32,7 @@
 - Increase timeout for the rare occasion when enumeration takes a long time.
 
 ## 3.8.0 - 2021-11-01
-### Updated
+### Changed
 - Replaced underlying low-level libraries by integrating nrf-device-lib and
   updated pc-ble-driver to make communication with devices much more reliable.
 ### Added
