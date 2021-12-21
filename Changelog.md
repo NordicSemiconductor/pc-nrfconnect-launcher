@@ -1,7 +1,7 @@
 ## 3.9.2 - 2021-12-09
 ### Fixed
 - Switching focus after selecting the `About` pane caused incorrect or missing
-  defails in `Application` card.
+  details in `Application` card.
 - Some disabled buttons (e.g. in the `About` pane) had no borders and were hard
   to see.
 - Windows: Disconnected devices sometimes still showed up in the list of
