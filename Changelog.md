@@ -2,6 +2,8 @@
 ### Fixed
 - Switching focus after selecting the `About` pane caused incorrect or missing
   defails in `Application` card.
+- Some disabled buttons (e.g. in the `About` pane) had no borders and were hard
+  to see.
 
 ## 3.9.1 - 2021-11-25
 ### Fixed
