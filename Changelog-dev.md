@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## 3.9.2 - Unreleased
 ### Changed
 - Updated nrf-device-lib-js to 0.4.1.
-- Updated pc-nrfconnect-shared to 5.12.1.
+- Updated pc-nrfconnect-shared to 5.12.2.
 
 ## 3.9.1 - 2021-11-25
 ### Changed
