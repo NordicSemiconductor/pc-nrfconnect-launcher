@@ -1,9 +1,16 @@
 ## 3.9.2 - 2021-12-09
 ### Fixed
 - Switching focus after selecting the `About` pane caused incorrect or missing
-  defails in `Application` card.
+  details in `Application` card.
 - Some disabled buttons (e.g. in the `About` pane) had no borders and were hard
   to see.
+- Windows: Disconnected devices sometimes still showed up in the list of
+  devices.
+- Windows 11: Thingy:91 programming was broken by spurious wakeups of the
+  kernel.
+- macOS: Thingy:91 detection broken when a nRF52 firmware version older than
+  1.6.0 is used. In these cases, please upgrade to the latest firmware from the
+  [Thing:91 product page](https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91/Download).
 
 ## 3.9.1 - 2021-11-25
 ### Fixed
