@@ -1,4 +1,4 @@
-## 3.9.2 - 2021-12-09
+## 3.9.2 - 2022-01-03
 ### Fixed
 - Switching focus after selecting the `About` pane caused incorrect or missing
   details in `Application` card.
