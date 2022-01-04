@@ -1,3 +1,8 @@
+## 3.9.3 - 2022-01-04
+### Fixed
+- Selecting device would always prompt firmware upgrade even if the firmware on 
+  the device was the same as the bundled firmware.
+
 ## 3.9.2 - 2022-01-03
 ### Fixed
 - Switching focus after selecting the `About` pane caused incorrect or missing
