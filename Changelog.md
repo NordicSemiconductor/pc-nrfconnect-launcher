@@ -1,7 +1,7 @@
 ## 3.9.3 - 2022-01-04
 ### Fixed
-- Selecting device would always prompt firmware upgrade even if the firmware on 
-  the device was the same as the bundled firmware.
+- Selecting device no longer prompts firmware upgrade when the firmware on the 
+  device is the same as the bundled firmware.
 
 ## 3.9.2 - 2022-01-03
 ### Fixed
@@ -11,7 +11,7 @@
   to see.
 - Windows: Disconnected devices sometimes still showed up in the list of
   devices.
-- Windows 11: Thingy:91 programming was broken by spurious wakeups of the
+- Windows 11: Thingy:91 programming was broken by sporadic wakeups of the
   kernel.
 - macOS: Thingy:91 detection broken when a nRF52 firmware version older than
   1.6.0 is used. In these cases, please upgrade to the latest firmware from the
