@@ -19,7 +19,7 @@ const sander = require('sander');
 const path = require('path');
 const crypto = require('crypto');
 
-const minVersion = 'V688a';
+const minVersion = 'V758e';
 const filename = `JLink_Windows_${minVersion}.exe`;
 const fileUrl = `https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/nrfjprog/${filename}`;
 
