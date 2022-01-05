@@ -144,7 +144,7 @@ export function startDownload() {
         autoUpdater.on('error', error => {
             cancellationToken = null;
             autoUpdater.removeAllListeners();
-            if (error.message === 'Cancelled') {
+            if (error.message === 'cancelled') {
                 dispatch(downloadCancelledAction());
             } else {
                 dispatch(updateErrorAction(error));
