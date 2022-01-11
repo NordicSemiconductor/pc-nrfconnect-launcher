@@ -1,3 +1,7 @@
+## Unreleased
+### Fixed
+- Canceling update of nRF Connect for Desktop no longer freezes.
+
 ## 3.9.3 - 2022-01-04
 ### Fixed
 - Selecting device no longer prompts firmware upgrade when the firmware on the 
