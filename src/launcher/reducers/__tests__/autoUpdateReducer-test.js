@@ -21,7 +21,7 @@ import reducer from '../autoUpdateReducer';
 const initialState = reducer(undefined, {});
 const { CancellationToken } = require('electron-updater');
 
-describe('cancellactionToken', () => {
+describe('cancellationToken', () => {
     it('should have the known message', () => {
         const token = new CancellationToken();
         return token
