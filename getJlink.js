@@ -19,9 +19,9 @@ const sander = require('sander');
 const path = require('path');
 const crypto = require('crypto');
 
-const minVersion = 'V758e';
-const filename = `JLink_Windows_${minVersion}.exe`;
-const fileUrl = `https://github.com/NordicSemiconductor/pc-nrfjprog-js/releases/download/nrfjprog/${filename}`;
+const minVersion = 'V758b';
+const filename = `JLink_Windows_${minVersion}_i386.exe`;
+const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
 
 const outputDirectory = 'build';
 const destinationFile = path.join(outputDirectory, filename);
