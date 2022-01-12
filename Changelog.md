@@ -1,3 +1,8 @@
+## Unreleased
+
+### Changed 
+- Bundle newer version of J-Link (758b).
+
 ## 3.9.3 - 2022-01-04
 ### Fixed
 - Selecting device no longer prompts firmware upgrade when the firmware on the 
