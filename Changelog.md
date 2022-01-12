@@ -1,4 +1,7 @@
 ## Unreleased
+### Changed 
+- Bundle newer version of J-Link (758b).
+
 ### Fixed
 - Canceling update of nRF Connect for Desktop no longer freezes.
 
