@@ -1,4 +1,7 @@
-## Unreleased
+## 3.10.0
+### Added
+- Functionality to turn on extensive logging from the `About` pane to aid in support-cases.
+
 ### Changed 
 - Bundle newer version of J-Link (758b).
 
