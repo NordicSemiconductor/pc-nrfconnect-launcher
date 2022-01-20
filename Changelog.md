@@ -1,16 +1,17 @@
 ## 3.10.0
 ### Added
 - Functionality to turn on extensive logging from the `About` pane to aid in support-cases.
+- Partial readout of device information from readback-protected devices.
 
-### Changed 
+### Changed
 - Bundle newer version of J-Link (758b).
 
 ### Fixed
-- Canceling update of nRF Connect for Desktop no longer freezes.
+- Canceling update of nRF Connect for Desktop no longer freezes the app.
 
 ## 3.9.3 - 2022-01-04
 ### Fixed
-- Selecting device no longer prompts firmware upgrade when the firmware on the 
+- Selecting device no longer prompts firmware upgrade when the firmware on the
   device is the same as the bundled firmware.
 
 ## 3.9.2 - 2022-01-03
