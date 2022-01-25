@@ -18,14 +18,14 @@ const ProxyErrorDialog = ({ isVisible, onOk }) => (
             <p>
                 It appears that you are having problems authenticating with a
                 proxy server. This will prevent you from using certain features
-                of nRF Connect, such as installing apps from the
+                of nRF Connect for Desktop, such as installing apps from the
                 &quot;Add/remove apps&quot; screen.
             </p>
             <p>
                 If you are unable to resolve the issue, then go to Settings and
                 disable &quot;Check for updates at startup&quot;. Then restart
-                nRF Connect and install apps manually by following the
-                instructions at
+                nRF Connect for Desktop and install apps manually by following
+                the instructions at
                 https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.
             </p>
         </Modal.Body>

@@ -81,8 +81,8 @@ ipcMain.on('show-about-dialog', event => {
             `${app.description}\n\n` +
             `Version: ${app.currentVersion}\n` +
             `Official: ${app.isOfficial}\n` +
-            `Supported engines: nRF Connect ${app.engineVersion}\n` +
-            `Current engine: nRF Connect ${config.getVersion()}\n` +
+            `Supported engines: nRF Connect for Desktop ${app.engineVersion}\n` +
+            `Current engine: nRF Connect for Desktop ${config.getVersion()}\n` +
             `App directory: ${app.path}`;
         dialog.showMessageBox(
             appWindow.browserWindow,

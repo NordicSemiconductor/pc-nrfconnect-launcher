@@ -27,7 +27,7 @@ exports[`UpdateProgressDialog should render cancelling 1`] = `
   </ModalHeader>
   <ModalBody>
     <p>
-      Downloading nRF Connect 
+      Downloading nRF Connect for Desktop 
       1.2.3
       ...
     </p>
@@ -85,7 +85,7 @@ exports[`UpdateProgressDialog should render invisible 1`] = `
   </ModalHeader>
   <ModalBody>
     <p>
-      Downloading nRF Connect 
+      Downloading nRF Connect for Desktop 
       ...
     </p>
     <p>
@@ -125,7 +125,7 @@ exports[`UpdateProgressDialog should render with cancel disabled when 100 percen
   </ModalHeader>
   <ModalBody>
     <p>
-      Downloading nRF Connect 
+      Downloading nRF Connect for Desktop 
       1.2.3
       ...
     </p>
@@ -183,7 +183,7 @@ exports[`UpdateProgressDialog should render with version, percent downloaded, an
   </ModalHeader>
   <ModalBody>
     <p>
-      Downloading nRF Connect 
+      Downloading nRF Connect for Desktop 
       1.2.3
       ...
     </p>
@@ -241,7 +241,7 @@ exports[`UpdateProgressDialog should render with version, without progress, and 
   </ModalHeader>
   <ModalBody>
     <p>
-      Downloading nRF Connect 
+      Downloading nRF Connect for Desktop 
       1.2.3
       ...
     </p>

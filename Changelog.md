@@ -198,7 +198,7 @@ This version is released only for macOS.
 ### Changed
 - Updated to React Bootstrap 4 #306
 React Bootstrap is a fundamental dependency for nRF Connect for Desktop, used for UI components and layout. The update is a breaking change, requiring all apps to be updated.
-There are no changes to nRF Connect features, except for some minor visual differences.
+There are no changes to nRF Connect for Desktop features, except for some minor visual differences.
 - Updated to pc-nrfjprog-js v1.5.4, including bundled nrfjprog v10.2.1 #319
 ### Fixed
 - Fixed auto update issue #317
@@ -322,7 +322,7 @@ Pre-release with handling of edge cases in J-Link serial number lookup (#145).
 Pre-release with improved support for proxies, ref. #104.
 
 ## 2.0.0
-While nRF Connect v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect framework, and can be installed and launched through the nRF Connect UI.
+While nRF Connect for Desktop v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect for Desktop framework, and can be installed and launched through the nRF Connect for Desktop UI.
 ### Changed
 - Allows users to easily install, update, and launch apps
 - Allows developers to [create new apps](https://nordicsemiconductor.github.io/pc-nrfconnect-docs/create_new_app)
