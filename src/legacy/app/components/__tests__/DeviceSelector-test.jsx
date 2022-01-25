@@ -46,9 +46,11 @@ describe('DeviceSelector', () => {
                             serialNumber: '123456789',
                             serialPorts: [
                                 {
+                                    comName: '/dev/ttyACM0',
                                     path: '/dev/ttyACM0',
                                 },
                                 {
+                                    comName: '/dev/ttyACM1',
                                     path: '/dev/ttyACM1',
                                 },
                             ],

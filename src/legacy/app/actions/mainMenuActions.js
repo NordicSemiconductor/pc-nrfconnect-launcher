@@ -8,7 +8,7 @@ import { ipcRenderer } from 'electron';
 import { systemReport } from 'pc-nrfconnect-shared';
 
 /**
- * Indicates that opening the nRF Connect app launcher has been requested.
+ * Indicates that opening the nRF Connect for Desktop app launcher has been requested.
  *
  * @deprecated
  */

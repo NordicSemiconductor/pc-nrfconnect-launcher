@@ -31,7 +31,7 @@ Logo.propTypes = {
 
 Logo.defaultProps = {
     src: logo,
-    alt: 'nRF Connect',
+    alt: 'nRF Connect for Desktop',
     cssClass: 'core-logo',
     containerCssClass: 'core-logo-container',
     onClick: () => openUrl('http://www.nordicsemi.com/nRFConnect'),

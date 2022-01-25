@@ -19,12 +19,12 @@ describe('checks the version of the engine against what the app declares', () =>
 
             await expect(
                 app.client.isVisible(
-                    'span[title="The app does not specify which nRF Connect version(s) it supports'
+                    'span[title="The app does not specify which nRF Connect for Desktop version(s) it supports'
                 )
             ).resolves.toBe(false);
             await expect(
                 app.client.isVisible(
-                    'span[title*="The app only supports nRF Connect'
+                    'span[title*="The app only supports nRF Connect for Desktop'
                 )
             ).resolves.toBe(false);
         });
@@ -38,7 +38,7 @@ describe('checks the version of the engine against what the app declares', () =>
 
         it('shows a warning in the app list', () =>
             app.client.waitForVisible(
-                'span[title*="The app only supports nRF Connect 1.x'
+                'span[title*="The app only supports nRF Connect for Desktop 1.x'
             ));
 
         it('shows a warning dialog when launching the app', async () => {
@@ -56,7 +56,7 @@ describe('checks the version of the engine against what the app declares', () =>
 
         it('shows a warning in the app list', () =>
             app.client.waitForVisible(
-                'span[title="The app does not specify which nRF Connect version(s) it supports'
+                'span[title="The app does not specify which nRF Connect for Desktop version(s) it supports'
             ));
 
         it('shows a warning dialog when launching the app', async () => {
