@@ -171,7 +171,7 @@ Array [
                 />
                 <span
                   className="mdi mdi-alert"
-                  title="The app does not specify which nRF Connect version(s) it supports"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
                 />
               </div>
             </div>
@@ -295,7 +295,7 @@ Array [
                 />
                 <span
                   className="mdi mdi-alert"
-                  title="The app does not specify which nRF Connect version(s) it supports"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
                 />
               </div>
             </div>
@@ -828,7 +828,7 @@ Array [
                 />
                 <span
                   className="mdi mdi-alert"
-                  title="The app does not specify which nRF Connect version(s) it supports"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
                 />
               </div>
             </div>
@@ -911,7 +911,7 @@ Array [
                 />
                 <span
                   className="mdi mdi-alert"
-                  title="The app does not specify which nRF Connect version(s) it supports"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
                 />
               </div>
             </div>
