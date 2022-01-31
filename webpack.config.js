@@ -29,7 +29,7 @@ function createExternals() {
 
 module.exports = {
     mode: nodeEnv,
-    devtool: isProd ? 'hidden-source-map' : 'inline-eval-cheap-source-map',
+    devtool: isProd ? 'source-map' : 'inline-eval-cheap-source-map',
     entry: {
         app: './src/app',
         shared: './node_modules/pc-nrfconnect-shared/src/index.ts',
