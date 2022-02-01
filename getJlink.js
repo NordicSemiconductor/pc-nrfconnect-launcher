@@ -6,6 +6,8 @@
 
 'use strict';
 
+const config = require('./src/main/config');
+
 if (process.platform !== 'win32') {
     console.log(
         `Unsupported platform: '${process.platform}', you need to visit https://www.segger.com/downloads/jlink`
@@ -19,7 +21,9 @@ const sander = require('sander');
 const path = require('path');
 const crypto = require('crypto');
 
-const minVersion = 'V758b';
+const formatJlinkVersion = ({ version }) => `V${version.major}${version.minor}`;
+const minVersion = formatJlinkVersion(config.bundledJlinkVersion);
+
 const filename = `JLink_Windows_${minVersion}_i386.exe`;
 const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
 
