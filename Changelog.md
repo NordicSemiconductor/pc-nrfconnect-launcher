@@ -1,4 +1,4 @@
-## 3.10.0
+## 3.10.0 - 2022-02-02
 ### Added
 - Functionality to turn on extensive logging from the `About` pane to aid in support-cases.
 - Partial readout of device information from readback-protected devices.
