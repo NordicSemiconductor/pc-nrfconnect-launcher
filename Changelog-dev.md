@@ -5,6 +5,12 @@ in [Changelog.md](./Changelog.md).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## 3.10.0
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.10.0/package.json).
+
+## 3.9.3
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.9.3/package.json).
+
 ## 3.9.2
 Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.9.2/package.json).
 
@@ -30,6 +36,12 @@ Dependency updates as found in [package.json](https://github.com/NordicSemicondu
 - nrf-device-setup-js
 - pc-nrf-dfu-js
 - pc-nrfjprog-js
+
+## 3.7.2
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.7.2/package.json).
+
+## 3.7.1
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.7.1/package.json).
 
 ## 3.7.0
 Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.7.0/package.json).
