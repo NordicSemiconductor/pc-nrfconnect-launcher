@@ -6,25 +6,19 @@ in [Changelog.md](./Changelog.md).
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## 3.9.2
-### Changed
-- Updated nrf-device-lib-js to 0.4.1.
-- Updated pc-nrfconnect-shared to 5.12.2.
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.9.2/package.json).
 
 ## 3.9.1
-### Changed
-- Updated nrf-device-lib-js to 0.3.20.
-- Updated pc-nrfconnect-shared to 5.8.1.
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.9.1/package.json).
 
 ## 3.9.0
-### Changed
-- Updated nrf-device-lib-js to 0.3.18.
-- Updated pc-nrfconnect-shared to 5.7.0.
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.9.0/package.json).
 
 ## 3.8.0
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.8.0/package.json) and also:
 ### Changed
 - Replaced usage of pc-nrfjprog-js by nrf-device-lib-js.
-- Updated pc-nrfconnect-shared to 4.6.2
-- Updated Electron to 13.5.1
+- Updated Electron to 13
 - Updated USB drivers
 - Updated pc-ble-driver
 ### Deprecated
@@ -38,10 +32,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - pc-nrfjprog-js
 
 ## 3.7.0
-### Changed
-- Updated to pc-nrfconnect-shared 4.27.3.
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.7.0/package.json).
+
+## 3.6.1
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.6.1/package.json).
 
 ## 3.6.0
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.6.0/package.json) and also:
 ### Fixed
 - Added workaround to prevent errors when proxy authentication is required.
 - Error message was object instead of string.
@@ -50,10 +47,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   requiring 3.6+ engine.
 
 ## 3.5.0
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.5.0/package.json) and also:
 ### Added
 - Portable executable for Windows.
 
 ## 3.4.0
+Dependency updates as found in [package.json](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/v3.4.0/package.json) and also:
 ### Added
 - Enabled use of Redux DevTools and ease installation of React and Redux
   DevTools.
