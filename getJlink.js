@@ -21,7 +21,7 @@ const sander = require('sander');
 const path = require('path');
 const crypto = require('crypto');
 
-const formatJlinkVersion = ({ version }) => `V${version.major}${version.minor}`;
+const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion);
 
 const filename = `JLink_Windows_${minVersion}_i386.exe`;

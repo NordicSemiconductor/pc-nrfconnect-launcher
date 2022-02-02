@@ -35,13 +35,7 @@ let officialAppName;
 let localAppName;
 let sourceName;
 let isRunningLauncherFromSource;
-const bundledJlinkVersion = {
-    versionFormat: 'semantic',
-    version: {
-        major: '7',
-        minor: '58b',
-    },
-};
+const bundledJlinkVersion = 'V7.58b';
 
 /**
  * Init the config values based on the given command line arguments.
