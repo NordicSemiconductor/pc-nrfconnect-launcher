@@ -22,7 +22,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const formatJlinkVersion = version => version.replace('.', '');
-const minVersion = formatJlinkVersion(config.bundledJlinkVersion);
+const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
 const filename = `JLink_Windows_${minVersion}_i386.exe`;
 const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
