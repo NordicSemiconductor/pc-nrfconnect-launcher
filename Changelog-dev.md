@@ -5,22 +5,22 @@ in [Changelog.md](./Changelog.md).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 3.9.2 - Unreleased
+## 3.9.2
 ### Changed
 - Updated nrf-device-lib-js to 0.4.1.
 - Updated pc-nrfconnect-shared to 5.12.2.
 
-## 3.9.1 - 2021-11-25
+## 3.9.1
 ### Changed
 - Updated nrf-device-lib-js to 0.3.20.
 - Updated pc-nrfconnect-shared to 5.8.1.
 
-## 3.9.0 - 2021-11-08
+## 3.9.0
 ### Changed
 - Updated nrf-device-lib-js to 0.3.18.
 - Updated pc-nrfconnect-shared to 5.7.0.
 
-## 3.8.0 - 2021-11-01
+## 3.8.0
 ### Changed
 - Replaced usage of pc-nrfjprog-js by nrf-device-lib-js.
 - Updated pc-nrfconnect-shared to 4.6.2
@@ -37,11 +37,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - pc-nrf-dfu-js
 - pc-nrfjprog-js
 
-## 3.7.0 - 2021-06-23
+## 3.7.0
 ### Changed
 - Updated to pc-nrfconnect-shared 4.27.3.
 
-## 3.6.0 - 2020-10-15
+## 3.6.0
 ### Fixed
 - Added workaround to prevent errors when proxy authentication is required.
 - Error message was object instead of string.
@@ -49,11 +49,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added temporary fix to hide electron dialog api change for apps not yet
   requiring 3.6+ engine.
 
-## 3.5.0 - 2020-09-02
+## 3.5.0
 ### Added
 - Portable executable for Windows.
 
-## 3.4.0 - 2020-06-08
+## 3.4.0
 ### Added
 - Enabled use of Redux DevTools and ease installation of React and Redux
   DevTools.
