@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
+('use strict');
 
 // Run this as soon as possible, so that the user data folder is not already initialised by Electron
 require('./setUserDataDir');
 
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
+const { verifySerialPortAvailable } = require('./serialport');
 
 const config = require('./config');
 const windows = require('./windows');
@@ -112,4 +113,12 @@ ipcMain.on('get-app-details', event => {
             ...appWindow.app,
         });
     }
+});
+
+ipcMain.on('verify-serialport-available', (event, { device, options }) => {
+    verifySerialPortAvailable(device, options)
+        .then(() => event.sender.send('serialport-available'))
+        .catch(err => {
+            event.sender.send('serialport-not-available', err);
+        });
 });
