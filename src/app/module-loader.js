@@ -23,42 +23,14 @@ Module._load = function load(modulePath) {
     return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
 };
 
-const SerialPort = require('serialport');
-
-let hasShownDeprecatedPropertyWarning = false;
-const mayShowWarningAboutDeprecatedProperty = () => {
-    if (!hasShownDeprecatedPropertyWarning) {
-        console.warn(
-            'Using the property "comName" has been deprecated. You should now use "path". The property will be removed in the next major release.'
-        );
-    }
-    hasShownDeprecatedPropertyWarning = true;
-};
-const ducktapeComName = port => ({
-    ...port,
-    get comName() {
-        mayShowWarningAboutDeprecatedProperty();
-        return port.path;
-    },
-});
-
-const originalSerialPortList = SerialPort.list;
-SerialPort.list = () =>
-    originalSerialPortList().then(ports => ports.map(ducktapeComName));
-
-/* eslint-disable dot-notation */
-// Disable dot-notation in this file, to keep the syntax below more consistent
-hostedModules['serialport'] = SerialPort;
-
-hostedModules['electron'] = require('electron');
+hostedModules.electron = require('electron');
 hostedModules[
     '@nordicsemiconductor/nrf-device-lib-js'
 ] = require('@nordicsemiconductor/nrf-device-lib-js');
-hostedModules['nrfconnect/core'] = require('../legacy/api').core;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
 hostedModules['react-dom'] = require('react-dom');
 hostedModules['react-redux'] = require('react-redux');
-hostedModules['react'] = require('react');
+hostedModules.react = require('react');
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
 

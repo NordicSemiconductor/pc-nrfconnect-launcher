@@ -12,7 +12,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { remote } from 'electron';
 
-import legacyRenderer from '../legacy/legacyRenderer';
 import initApp from './initApp';
 
 const params = new URL(window.location).searchParams;
@@ -28,8 +27,6 @@ const removeLoaderElement = () => {
         }, 500);
     }
 };
-
-const isLegacy = app => typeof app === 'object';
 
 const renderer = (App, container, onLoaded) => {
     // The next line is only needed as long as we still need to support legacy apps.
@@ -49,9 +46,7 @@ const renderer = (App, container, onLoaded) => {
 };
 
 const render = app => {
-    const doRender = isLegacy(app) ? legacyRenderer : renderer;
-
-    doRender(app, document.getElementById('webapp'), removeLoaderElement);
+    renderer(app, document.getElementById('webapp'), removeLoaderElement);
 };
 
 const showLoadingError = error => {
