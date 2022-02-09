@@ -6,8 +6,8 @@
 
 import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
+import { removeSync } from 'fs-extra';
 import path from 'path';
-import rimraf from 'rimraf';
 
 import { checkAppListContains } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
@@ -57,7 +57,7 @@ test.describe('app installation', () => {
         const appArchiveFile = `${appName}-1.2.3.tgz`;
 
         const removeAppDirFromLocal = () => {
-            rimraf.sync(path.join(localDir, appName));
+            removeSync(path.join(localDir, appName));
         };
 
         const copyArchiveToLocal = () => {

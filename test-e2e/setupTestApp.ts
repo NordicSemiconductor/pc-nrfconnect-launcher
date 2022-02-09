@@ -5,9 +5,9 @@
  */
 
 import { ElectronApplication, expect } from '@playwright/test';
+import { removeSync } from 'fs-extra';
 import path from 'path';
 import { _electron as electron } from 'playwright';
-import rimraf from 'rimraf';
 
 const startApp = async (extraArgs: string[]) => {
     const projectPath = path.resolve(__dirname, '../');
@@ -85,7 +85,7 @@ export const teardown = async ({
 
     await app.close();
     if (removeAppsRootDirAfterwards) {
-        rimraf.sync(absoluteAppsRootDir);
+        removeSync(absoluteAppsRootDir);
     }
     additionalAfterEach();
 };
