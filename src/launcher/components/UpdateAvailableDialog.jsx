@@ -9,7 +9,7 @@ import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 import { bool, func, string } from 'prop-types';
 
 /**
- * Dialog that is shown if an nRF Connect core update is available. The user
+ * Dialog that is shown if an nRF Connect for Desktop launcher update is available. The user
  * can either upgrade or cancel.
  *
  * @param {boolean} isVisible Show the dialog or not.
@@ -30,7 +30,7 @@ const UpdateAvailableDialog = ({
         isVisible={isVisible}
         title="Update available"
         text={
-            `A new version (${version}) of nRF Connect is available. ` +
+            `A new version (${version}) of nRF Connect for Desktop is available. ` +
             'Would you like to upgrade now?'
         }
         okButtonText="Yes"
@@ -39,8 +39,8 @@ const UpdateAvailableDialog = ({
         onCancel={onCancel}
     >
         <p>
-            A new version ({version}) of nRF Connect is available. Would you
-            like to upgrade now?
+            A new version ({version}) of nRF Connect for Desktop is available.
+            Would you like to upgrade now?
         </p>
         <button
             className="btn btn-link core-btn-link"

@@ -35,6 +35,7 @@ let officialAppName;
 let localAppName;
 let sourceName;
 let isRunningLauncherFromSource;
+const bundledJlinkVersion = 'V7.58b';
 
 /**
  * Init the config values based on the given command line arguments.
@@ -51,7 +52,7 @@ let isRunningLauncherFromSource;
  *                       Default: "<userDataDir>/settings.json"
  * --skip-update-apps    Do not download info/updates about apps.
  *                       Default: false
- * --skip-update-core    Skip checking for updates for nRF Connect.
+ * --skip-update-core    Skip checking for updates for nRF Connect for Desktop.
  *                       Default: false
  * --skip-splash-screen  Skip the splash screen at startup.
  *                       Default: false
@@ -132,4 +133,5 @@ module.exports = {
     getLocalAppName: () => localAppName,
     getSourceName: () => sourceName,
     isRunningLauncherFromSource: () => isRunningLauncherFromSource,
+    bundledJlinkVersion: () => bundledJlinkVersion,
 };

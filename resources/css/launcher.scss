@@ -59,9 +59,8 @@ body {
     }
 
     .tab-content {
-        @extend %pretty-scrollbar;
-        padding: 0 32px 4px;
-
+        padding: 0 0 16px 32px;
+        overflow: hidden;
         .progress {
             position: absolute;
             width: 100%;
@@ -71,6 +70,22 @@ body {
             border-radius: 0;
             background-color: transparent;
         }
+    }
+
+    .content-container {
+        padding-right: 16px;
+    }
+
+    .with-scrollbar {
+        // Height: subtract navigation header (64px), the 16px margin at top and 16 px spacing bottom
+        height: calc(100vh - 64px - 16px - 16px);
+        margin: 16px 16px 0 0;
+        @extend %pretty-scrollbar;
+    }
+    .filter-adjusted-height {
+        // Height: subtract navigation header (64px) and filterbox (48px) and 16px spacing bottom
+        height: calc(100vh - 64px - 48px - 16px);
+        margin-top: 0;
     }
 }
 
@@ -252,6 +267,6 @@ body {
     }
 }
 
-.mt_32px {
-    margin-top: 32px;
+.me_32px {
+    margin-right: 32px;
 }

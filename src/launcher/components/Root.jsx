@@ -68,10 +68,10 @@ export default () => {
                     <Tab.Pane eventKey="apps">
                         <AppManagementContainer />
                     </Tab.Pane>
-                    <Tab.Pane eventKey="settings" className="mt_32px">
+                    <Tab.Pane eventKey="settings" className="me_32px">
                         <SettingsContainer />
                     </Tab.Pane>
-                    <Tab.Pane eventKey="about" className="mt_32px">
+                    <Tab.Pane eventKey="about">
                         <AboutView />
                     </Tab.Pane>
                 </Tab.Content>

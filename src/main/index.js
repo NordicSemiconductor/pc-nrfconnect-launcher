@@ -73,16 +73,16 @@ ipcMain.on('open-app', (event, app) => {
     windows.openAppWindow(app);
 });
 
-ipcMain.on('show-about-dialog', () => {
-    const appWindow = windows.getFocusedAppWindow();
+ipcMain.on('show-about-dialog', event => {
+    const appWindow = windows.getAppWindow(event.sender);
     if (appWindow) {
         const { app } = appWindow;
         const detail =
             `${app.description}\n\n` +
             `Version: ${app.currentVersion}\n` +
             `Official: ${app.isOfficial}\n` +
-            `Supported engines: nRF Connect ${app.engineVersion}\n` +
-            `Current engine: nRF Connect ${config.getVersion()}\n` +
+            `Supported engines: nRF Connect for Desktop ${app.engineVersion}\n` +
+            `Current engine: nRF Connect for Desktop ${config.getVersion()}\n` +
             `App directory: ${app.path}`;
         dialog.showMessageBox(
             appWindow.browserWindow,
@@ -93,7 +93,7 @@ ipcMain.on('show-about-dialog', () => {
                 detail,
                 icon: app.iconPath
                     ? app.iconPath
-                    : `${config.getElectronResourcesDir()}/nrfconnect.png`,
+                    : `${config.getElectronResourcesDir()}/icon.png`,
                 buttons: ['OK'],
             },
             () => {}
@@ -102,13 +102,14 @@ ipcMain.on('show-about-dialog', () => {
 });
 
 ipcMain.on('get-app-details', event => {
-    const appWindow = windows.getFocusedAppWindow();
+    const appWindow = windows.getAppWindow(event.sender);
     if (appWindow) {
         event.sender.send('app-details', {
             coreVersion: config.getVersion(),
             corePath: config.getElectronRootPath(),
             homeDir: config.getHomeDir(),
             tmpDir: config.getTmpDir(),
+            bundledJlink: config.bundledJlinkVersion(),
             ...appWindow.app,
         });
     }

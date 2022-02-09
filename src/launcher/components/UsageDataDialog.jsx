@@ -32,7 +32,7 @@ const UsageDataPolicy = (
         <h5>How do we use this information?</h5>
         <p>
             The information is used to analyze user interaction with nRF Connect
-            for desktop and determine areas of improvement.
+            for Desktop and determine areas of improvement.
         </p>
 
         <h5>How is this information processed and shared?</h5>

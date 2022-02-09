@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.9.1",
+    "version": "3.10.0",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -51,7 +51,8 @@
                 "tar.gz"
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
-            "category": "Development"
+            "category": "Development",
+            "icon": "resources/icon.icns"
         },
         "afterSign": "build/notarize.js",
         "mac": {
@@ -60,7 +61,8 @@
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist"
+            "entitlementsInherit": "build/entitlements.mac.plist",
+            "icon": "resources/icon.icns"
         },
         "dmg": {
             "artifactName": "${name}-${version}.${ext}",
@@ -70,7 +72,8 @@
             "target": [
                 "nsis"
             ],
-            "publisherName": "Nordic Semiconductor ASA"
+            "publisherName": "Nordic Semiconductor ASA",
+            "icon": "resources/icon.ico"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
@@ -90,14 +93,14 @@
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.8.1",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.16.3",
         "playwright": "^1.16.3",
         "sander": "0.6.0",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
         "@mdi/font": "3.7.95",
-        "@nordicsemiconductor/nrf-device-lib-js": "0.3.19",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.4.3",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "create-react-class": "15.6.3",

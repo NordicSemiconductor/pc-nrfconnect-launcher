@@ -10,10 +10,12 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+
 const appVersion = require('electron').remote.app.getVersion();
 
 const AboutView = () => (
-    <>
+    <WithScrollbarContainer>
         <Card body>
             <Row>
                 <Col>
@@ -104,7 +106,7 @@ const AboutView = () => (
                 THE POSSIBILITY OF SUCH DAMAGE.
             </p>
         </Card>
-    </>
+    </WithScrollbarContainer>
 );
 
 export default AboutView;

@@ -19,9 +19,9 @@ const appWindows = [];
 function getDefaultIconPath() {
     const electronResourcesDir = config.getElectronResourcesDir();
     if (process.platform === 'win32') {
-        return path.join(electronResourcesDir, 'nrfconnect.ico');
+        return path.join(electronResourcesDir, 'icon.ico');
     }
-    return path.join(electronResourcesDir, 'nrfconnect.png');
+    return path.join(electronResourcesDir, 'icon.png');
 }
 
 function openLauncherWindow() {
@@ -143,8 +143,8 @@ function openLocalAppWindow(appName) {
     });
 }
 
-function getFocusedAppWindow() {
-    const parentWindow = electron.BrowserWindow.getFocusedWindow();
+function getAppWindow(sender) {
+    const parentWindow = electron.BrowserWindow.fromWebContents(sender);
     return appWindows.find(appWin => appWin.browserWindow === parentWindow);
 }
 
@@ -154,5 +154,5 @@ module.exports = {
     openOfficialAppWindow,
     openLocalAppWindow,
     hideLauncherWindow,
-    getFocusedAppWindow,
+    getAppWindow,
 };

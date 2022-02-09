@@ -25,7 +25,6 @@ exports[`MainMenu should render menu with no items 1`] = `
         <div
           className="show dropdown"
           id="main-menu"
-          onKeyDown={[Function]}
         >
           <DropdownToggle
             className="core-main-menu core-btn btn-primary"
@@ -37,7 +36,6 @@ exports[`MainMenu should render menu with no items 1`] = `
               className="core-main-menu core-btn btn-primary dropdown-toggle"
               disabled={false}
               onClick={[Function]}
-              type="button"
               variant="primary"
             >
               <button
@@ -55,6 +53,7 @@ exports[`MainMenu should render menu with no items 1`] = `
             </Button>
           </DropdownToggle>
           <DropdownMenu
+            align="left"
             alignRight={false}
             className="core-dropdown-menu"
             flip={true}
@@ -123,7 +122,6 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
         <div
           className="show dropdown"
           id="main-menu"
-          onKeyDown={[Function]}
         >
           <DropdownToggle
             className="core-main-menu core-btn btn-primary"
@@ -135,7 +133,6 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
               className="core-main-menu core-btn btn-primary dropdown-toggle"
               disabled={false}
               onClick={[Function]}
-              type="button"
               variant="primary"
             >
               <button
@@ -153,6 +150,7 @@ exports[`MainMenu should render menu with two items separated by divider 1`] = `
             </Button>
           </DropdownToggle>
           <DropdownMenu
+            align="left"
             alignRight={false}
             className="core-dropdown-menu"
             flip={true}

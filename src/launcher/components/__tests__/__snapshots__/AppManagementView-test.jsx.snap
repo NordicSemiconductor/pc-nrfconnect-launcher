@@ -30,73 +30,80 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
-      className="py-1 row no-gutters"
+      className="content-container"
     >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          Foo app
-        </div>
-        <div
-          className="small text-muted"
-        >
-          Foo description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          bar
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-outline-secondary"
-            disabled={true}
-            onClick={[Function]}
-            title="Install Foo app"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Installing...
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-secondary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              Foo app
+            </div>
+            <div
+              className="small text-muted"
+            >
+              Foo description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              bar
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-outline-secondary"
+                disabled={true}
+                onClick={[Function]}
+                title="Install Foo app"
+                type="button"
+              >
+                Installing...
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -136,84 +143,91 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
-      className="py-1 row no-gutters"
+      className="content-container"
     >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-          <div>
-            <span
-              className="alert-icon-bg"
-            />
-            <span
-              className="mdi mdi-alert"
-              title="The app does not specify which nRF Connect version(s) it supports"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          Foo app
-        </div>
-        <div
-          className="small text-muted"
-        >
-          Foo description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          bar
-          , v
-          1.2.3
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-primary"
-            disabled={true}
-            onClick={[Function]}
-            title="Open Foo app"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Open
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+              <div>
+                <span
+                  className="alert-icon-bg"
+                />
+                <span
+                  className="mdi mdi-alert"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              Foo app
+            </div>
+            <div
+              className="small text-muted"
+            >
+              Foo description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              bar
+              , v
+              1.2.3
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={true}
+                onClick={[Function]}
+                title="Open Foo app"
+                type="button"
+              >
+                Open
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -253,84 +267,91 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
-      className="py-1 row no-gutters"
+      className="content-container"
     >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-          <div>
-            <span
-              className="alert-icon-bg"
-            />
-            <span
-              className="mdi mdi-alert"
-              title="The app does not specify which nRF Connect version(s) it supports"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          Foo app
-        </div>
-        <div
-          className="small text-muted"
-        >
-          Foo description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          bar
-          , v
-          1.2.3
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-primary"
-            disabled={true}
-            onClick={[Function]}
-            title="Open Foo app"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Open
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+              <div>
+                <span
+                  className="alert-icon-bg"
+                />
+                <span
+                  className="mdi mdi-alert"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              Foo app
+            </div>
+            <div
+              className="small text-muted"
+            >
+              Foo description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              bar
+              , v
+              1.2.3
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={true}
+                onClick={[Function]}
+                title="Open Foo app"
+                type="button"
+              >
+                Open
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -410,219 +431,224 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
-      className="py-1 row no-gutters"
+      className="content-container"
     >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App A
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appA description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-outline-secondary"
-            disabled={false}
-            onClick={[Function]}
-            title="Install App A"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Install
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-secondary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              App A
+            </div>
+            <div
+              className="small text-muted"
+            >
+              appA description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-outline-secondary"
+                disabled={false}
+                onClick={[Function]}
+                title="Install App A"
+                type="button"
+              >
+                Install
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>,
-  <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
-  >
-    <div
-      className="py-1 row no-gutters"
-    >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App B
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appB description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-outline-secondary"
-            disabled={false}
-            onClick={[Function]}
-            title="Install App B"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Install
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-secondary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              App B
+            </div>
+            <div
+              className="small text-muted"
+            >
+              appB description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-outline-secondary"
+                disabled={false}
+                onClick={[Function]}
+                title="Install App B"
+                type="button"
+              >
+                Install
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>,
-  <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
-  >
-    <div
-      className="py-1 row no-gutters"
-    >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App C
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appC description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-outline-secondary"
-            disabled={false}
-            onClick={[Function]}
-            title="Install App C"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Install
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-secondary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              App C
+            </div>
+            <div
+              className="small text-muted"
+            >
+              appC description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-outline-secondary"
+                disabled={false}
+                onClick={[Function]}
+                title="Install App C"
+                type="button"
+              >
+                Install
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -702,241 +728,246 @@ Array [
     sources={Object {}}
   />,
   <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
+    className="with-scrollbar filter-adjusted-height"
   >
     <div
-      className="py-1 row no-gutters"
+      className="content-container"
     >
       <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
       >
         <div
-          className="core-app-icon"
+          className="py-1 row no-gutters"
         >
           <div
-            className="icon-replacement"
-          />
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App B
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appB description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-outline-secondary"
-            disabled={false}
-            onClick={[Function]}
-            title="Install App B"
-            type="button"
+            className="d-flex align-items-start col-auto my-2 mr-3"
           >
-            Install
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-secondary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="core-app-icon"
             >
-              
-            </button>
+              <div
+                className="icon-replacement"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>,
-  <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
-  >
-    <div
-      className="py-1 row no-gutters"
-    >
-      <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
-      >
-        <div
-          className="core-app-icon"
-        >
           <div
-            className="icon-replacement"
-          />
-          <div>
-            <span
-              className="alert-icon-bg"
-            />
-            <span
-              className="mdi mdi-alert"
-              title="The app does not specify which nRF Connect version(s) it supports"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App C
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appC description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-          , v
-          1.2.3
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-primary"
-            disabled={false}
-            onClick={[Function]}
-            title="Open App C"
-            type="button"
+            className="col"
           >
-            Open
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+            <div
+              className="h8"
             >
-              
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>,
-  <div
-    className="list-group-item"
-    disabled={false}
-    onClick={[Function]}
-  >
-    <div
-      className="py-1 row no-gutters"
-    >
-      <div
-        className="d-flex align-items-start col-auto my-2 mr-3"
-      >
-        <div
-          className="core-app-icon"
-        >
-          <div
-            className="icon-replacement"
-          />
-          <div>
-            <span
-              className="alert-icon-bg"
-            />
-            <span
-              className="mdi mdi-alert"
-              title="The app does not specify which nRF Connect version(s) it supports"
-            />
-          </div>
-        </div>
-      </div>
-      <div
-        className="col"
-      >
-        <div
-          className="h8"
-        >
-          App A
-        </div>
-        <div
-          className="small text-muted"
-        >
-          appA description
-        </div>
-        <div
-          className="small text-muted-more"
-        >
-          local
-          , v
-          1.2.3
-        </div>
-      </div>
-      <div
-        className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
-      >
-        <div
-          className="wide-btns btn-toolbar"
-          role="toolbar"
-        >
-          <button
-            className="btn btn-primary"
-            disabled={false}
-            onClick={[Function]}
-            title="Open App A"
-            type="button"
-          >
-            Open
-          </button>
-          <div
-            className="dropdown"
-            onKeyDown={[Function]}
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-outline-primary"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
+              App B
+            </div>
+            <div
+              className="small text-muted"
             >
-              
-            </button>
+              appB description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-outline-secondary"
+                disabled={false}
+                onClick={[Function]}
+                title="Install App B"
+                type="button"
+              >
+                Install
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <div
+          className="py-1 row no-gutters"
+        >
+          <div
+            className="d-flex align-items-start col-auto my-2 mr-3"
+          >
+            <div
+              className="core-app-icon"
+            >
+              <div
+                className="icon-replacement"
+              />
+              <div>
+                <span
+                  className="alert-icon-bg"
+                />
+                <span
+                  className="mdi mdi-alert"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              App C
+            </div>
+            <div
+              className="small text-muted"
+            >
+              appC description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+              , v
+              1.2.3
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                title="Open App C"
+                type="button"
+              >
+                Open
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="list-group-item"
+        disabled={false}
+        onClick={[Function]}
+      >
+        <div
+          className="py-1 row no-gutters"
+        >
+          <div
+            className="d-flex align-items-start col-auto my-2 mr-3"
+          >
+            <div
+              className="core-app-icon"
+            >
+              <div
+                className="icon-replacement"
+              />
+              <div>
+                <span
+                  className="alert-icon-bg"
+                />
+                <span
+                  className="mdi mdi-alert"
+                  title="The app does not specify which nRF Connect for Desktop versions it supports"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="col"
+          >
+            <div
+              className="h8"
+            >
+              App A
+            </div>
+            <div
+              className="small text-muted"
+            >
+              appA description
+            </div>
+            <div
+              className="small text-muted-more"
+            >
+              local
+              , v
+              1.2.3
+            </div>
+          </div>
+          <div
+            className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+          >
+            <div
+              className="wide-btns btn-toolbar"
+              role="toolbar"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                title="Open App A"
+                type="button"
+              >
+                Open
+              </button>
+              <div
+                className="dropdown"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-outline-primary"
+                  disabled={false}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -952,6 +983,13 @@ Array [
     apps={Immutable.List []}
     sources={Object {}}
   />,
+  <div
+    className="with-scrollbar filter-adjusted-height"
+  >
+    <div
+      className="content-container"
+    />
+  </div>,
   <div />,
 ]
 `;

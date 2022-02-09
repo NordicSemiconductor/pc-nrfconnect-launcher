@@ -1,11 +1,45 @@
-## 3.9.1 - 2021-11-18
+## 3.10.0 - 2022-02-02
+### Added
+- Functionality to turn on extensive logging from the `About` pane to aid in support-cases.
+- Partial readout of device information from readback-protected devices.
+
+### Changed
+- Bundle newer version of J-Link (758b).
+
+### Fixed
+- Canceling update of nRF Connect for Desktop no longer freezes the app.
+
+## 3.9.3 - 2022-01-04
+### Fixed
+- Selecting device no longer prompts firmware upgrade when the firmware on the
+  device is the same as the bundled firmware.
+
+## 3.9.2 - 2022-01-03
+### Fixed
+- Switching focus after selecting the `About` pane caused incorrect or missing
+  details in `Application` card.
+- Some disabled buttons (e.g. in the `About` pane) had no borders and were hard
+  to see.
+- Windows: Disconnected devices sometimes still showed up in the list of
+  devices.
+- Windows 11: Thingy:91 programming was broken by sporadic wakeups of the
+  kernel.
+- macOS: Thingy:91 detection broken when a nRF52 firmware version older than
+  1.6.0 is used. In these cases, please upgrade to the latest firmware from the
+  [Thingy:91 product page](https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91/Download).
+
+## 3.9.1 - 2021-11-25
 ### Fixed
 - Keyboard shortcuts to focus search field were not working after clicking on
   filter.
 - On macOS: When switching to another app while the splashscreen was displayed,
   "APPS" was focused.
-- Updated nrf-device-lib to v0.3.19, changes and fixes in this release can be found 
-  [here](https://github.com/NordicPlayground/nrf-device-lib-js/blob/master/Changelog.md).
+- Scrollbar is now retained to the same height as the apps within the window.
+- Filter button is now active while the menu is visible.
+- Updated nrf-device-lib to v0.3.20, changes and fixes are as follows:
+  - Fixed issue where ongoing JLink OB firmware upgrade would break enumeration.
+  - Upgrade nrfjprog to 10.15.1.
+  - Support mcuboot and modem trait on devices with external SEGGER JLink.
 
 ## 3.9.0 - 2021-11-08
 ### Added
@@ -23,7 +57,7 @@
 - Increase timeout for the rare occasion when enumeration takes a long time.
 
 ## 3.8.0 - 2021-11-01
-### Updated
+### Changed
 - Replaced underlying low-level libraries by integrating nrf-device-lib and
   updated pc-ble-driver to make communication with devices much more reliable.
 ### Added
@@ -164,7 +198,7 @@ This version is released only for macOS.
 ### Changed
 - Updated to React Bootstrap 4 #306
 React Bootstrap is a fundamental dependency for nRF Connect for Desktop, used for UI components and layout. The update is a breaking change, requiring all apps to be updated.
-There are no changes to nRF Connect features, except for some minor visual differences.
+There are no changes to nRF Connect for Desktop features, except for some minor visual differences.
 - Updated to pc-nrfjprog-js v1.5.4, including bundled nrfjprog v10.2.1 #319
 ### Fixed
 - Fixed auto update issue #317
@@ -288,7 +322,7 @@ Pre-release with handling of edge cases in J-Link serial number lookup (#145).
 Pre-release with improved support for proxies, ref. #104.
 
 ## 2.0.0
-While nRF Connect v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect framework, and can be installed and launched through the nRF Connect UI.
+While nRF Connect for Desktop v1 was a dedicated Bluetooth low energy tool, v2 is a framework that can launch multiple desktop apps. The Bluetooth low energy tool has been [rewritten as an app](https://github.com/NordicSemiconductor/pc-nrfconnect-ble) for the nRF Connect for Desktop framework, and can be installed and launched through the nRF Connect for Desktop UI.
 ### Changed
 - Allows users to easily install, update, and launch apps
 - Allows developers to [create new apps](https://nordicsemiconductor.github.io/pc-nrfconnect-docs/create_new_app)

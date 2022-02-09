@@ -1,7 +1,7 @@
 # Troubleshooting "serial timeout" errors
 
-Several nRF Connect Desktop applications use serial ports to communicate with
-development kits and dongles. nRF Connect Desktop also uses serial ports to
+Several nRF Connect for Desktop applications use serial ports to communicate with
+development kits and dongles. nRF Connect for Desktop also uses serial ports to
 perform DFU (Device Firmware Update) when a devkit/dongle is running a
 [DFU bootloader](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v15.0.0/sdk_app_serial_dfu_bootloader.html?cp=4_0_0_4_3_4).
 
@@ -27,7 +27,7 @@ errors.
 ## DevKit/dongle not running bootloader
 
 When using a nRF52840 devkit/dongle and performing a DFU operation with
-nRF Connect Desktop, a `Timeout while reading from serial transport.` error shows up.
+nRF Connect for Desktop, a `Timeout while reading from serial transport.` error shows up.
 
 When using a nRF52840 devkit/dongle and performing a DFU operation with
 [nrfutil](https://github.com/NordicSemiconductor/pc-nrfutil/), an error like
@@ -35,7 +35,7 @@ When using a nRF52840 devkit/dongle and performing a DFU operation with
 shows up.
 
 When performing a DFU operation, nrfutil *assumes* that the serial port
-specified is a devkit/dongle already in bootloader mode. nRF Connect Desktop (and
+specified is a devkit/dongle already in bootloader mode. nRF Connect for Desktop (and
 the underlying [`nrf-device-setup-js`](https://github.com/NordicSemiconductor/nrf-device-setup-js) library)
 will try to perform a [DFU trigger](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.sdk5.v15.0.0/lib_dfu_trigger_usb.html)
 first, but the DFU trigger might fail due to other reasons.
@@ -54,7 +54,7 @@ Ensure that the devkit/dongle is in bootloader mode.
 - For nRF52840 development kits:
     - Unplug the devkit's USB connector marked "nRF USB".
     - Connect a USB cable to the USB connector for the [Interface MCU](http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.nrf52/dita/nrf52/development/nrf52840_pdk/if_mcu.html).
-    - Use nRF Connect Desktop Programmer to program it with bootloader firmware known to work.
+    - Use nRF Connect for Desktop Programmer to program it with bootloader firmware known to work.
     - Reconnect the cable to the USB connector marked "nRF USB".
     - Perform the DFU operation again.
 
@@ -63,12 +63,12 @@ Ensure that the devkit/dongle is in bootloader mode.
 Windows 8/10, macOS and all major Linux flavours include kernel drivers for USB CDC ACM.
 Windows 7 (and previous), however, does not.
 
-The normal case is that the Win7 drivers provided with the nRF Connect Desktop
+The normal case is that the Win7 drivers provided with the nRF Connect for Desktop
 installer will work without any further user interaction. However, it is possible
 that the Windows 7 drivers have a conflict with already-installed drivers.
 This leads to problems such as:
 
-- Applications for nRF Connect Desktop fail to detect a serial port in a nRF Device.
+- Applications for nRF Connect for Desktop fail to detect a serial port in a nRF Device.
 - Timeouts when opening/closing a serial port.
 - The serial port closes after *one* call to read/write data from/to the port is made.
 
@@ -78,7 +78,7 @@ operating system.
 
 #### Workaround
 
-[Download the latest installer for the nRF Connect Desktop](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases)
+[Download the latest installer for the nRF Connect for Desktop](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases)
 and run it. The installer includes the needed USB CDC ACM drivers.
 
 If that fails, [remove any nRF USB CDC ACM drivers](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/using-device-manager-to-uninstall-devices-and-driver-packages),

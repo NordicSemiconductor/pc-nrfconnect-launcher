@@ -42,11 +42,13 @@ test.describe(
 
                 await expect(
                     page.$(
-                        '[title*="The app does not specify which nRF Connect version(s) it supports"]'
+                        '[title*="The app does not specify which nRF Connect for Desktop versions it supports"]'
                     )
                 ).resolves.toBeNull();
                 await expect(
-                    page.$('[title*="The app only supports nRF Connect"]')
+                    page.$(
+                        '[title*="The app only supports nRF Connect for Desktop"]'
+                    )
                 ).resolves.toBeNull();
             });
         });
@@ -76,7 +78,9 @@ test.describe(
             test('shows a warning in the app list', async () => {
                 await page.waitForSelector('.list-group-item');
                 await expect(
-                    page.$('[title*="The app only supports nRF Connect 1.x"]')
+                    page.$(
+                        '[title*="The app only supports nRF Connect for Desktop 1.x"]'
+                    )
                 ).resolves.not.toBeNull();
             });
 
@@ -130,7 +134,7 @@ test.describe(
 
                 await expect(
                     page.$(
-                        'span[title*="The app does not specify which nRF Connect version(s) it supports"]'
+                        'span[title*="The app does not specify which nRF Connect for Desktop versions it supports"]'
                     )
                 ).resolves.not.toBeNull();
             });

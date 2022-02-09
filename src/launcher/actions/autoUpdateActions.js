@@ -92,8 +92,8 @@ export function checkForCoreUpdates() {
         const checkForUpdatesPromise = autoUpdater.checkForUpdates();
         if (!checkForUpdatesPromise) {
             log.warn(
-                'Not checking for nRF Connect updates. Auto update is not ' +
-                    'yet supported for this platform.'
+                'Not checking for nRF Connect for Desktop updates. ' +
+                    'Auto update is not yet supported for this platform.'
             );
             return Promise.resolve();
         }
@@ -144,7 +144,7 @@ export function startDownload() {
         autoUpdater.on('error', error => {
             cancellationToken = null;
             autoUpdater.removeAllListeners();
-            if (error.message === 'Cancelled') {
+            if (error.message === 'cancelled') {
                 dispatch(downloadCancelledAction());
             } else {
                 dispatch(updateErrorAction(error));

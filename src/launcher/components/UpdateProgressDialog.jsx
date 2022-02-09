@@ -25,7 +25,7 @@ const UpdateProgressDialog = ({
             <Modal.Title>Downloading update</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <p>Downloading nRF Connect {version}...</p>
+            <p>Downloading nRF Connect for Desktop {version}...</p>
             {isProgressSupported && (
                 <ProgressBar
                     label={`${percentDownloaded}%`}
