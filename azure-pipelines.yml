@@ -1,63 +1,232 @@
 trigger:
-    - master
-    - release/*
+- master
+- release/*
 
 jobs:
-    - job: Build
-      variables:
-          - group: wayland
-          - name: TZ
-            value: 'Europe/Oslo'
-          - name: WIN_TZ
-            value: 'W. Europe Standard Time'
-          - name: NODE_VERSION
-            value: 14.18.0
-      strategy:
-          matrix:
-              linux:
-                  IMAGE_NAME: 'ubuntu-18.04'
-      pool:
-          vmImage: $(IMAGE_NAME)
-      steps:
-          - script: tzutil /s "$(WIN_TZ)"
-            condition: contains(variables['IMAGE_NAME'], 'win')
-            displayName: 'Fix Windows timezone'
-          - task: NodeTool@0
-            inputs:
-                versionSpec: $(NODE_VERSION)
-            condition: ne(variables['NODE_ARCH'], '32')
-            displayName: 'Install Node.js $(NODE_VERSION)'
+- job: Build
+  variables:
+  - group: wayland
+  - name: TZ
+    value: 'Europe/Oslo'
+  - name: WIN_TZ
+    value: 'W. Europe Standard Time'
+  - name: NODE_VERSION
+    value: 14.18.0
+  strategy:
+    matrix:
+      linux:
+        IMAGE_NAME: 'ubuntu-18.04'
+      macOS:
+        IMAGE_NAME: 'macos-10.15'
+      win32:
+        IMAGE_NAME: 'windows-2019'
+        ARCH: 'ia32'
+        NODE_ARCH: '32'
+      win64:
+        IMAGE_NAME: 'windows-2019'
+        ARCH: 'x64'
+        NODE_ARCH: '64'
 
-          - bash: |
-                set -o errexit -o pipefail
-                choco install -y nvm
-                export PATH=$NVM_HOME:$PATH
-                nvm install $(NODE_VERSION) $(NODE_ARCH)
-                nvm use $(NODE_VERSION) $(NODE_ARCH)
-                ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
-            env:
-                {
-                    NVM_HOME: '/C/ProgramData/nvm',
-                    NVM_SYMLINK: '/C/ProgramData/nvm/v$(NODE_VERSION)',
-                    NODE_SYMLINK: '/C/Program Files/nodejs',
-                }
-            condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
-            displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
+  pool:
+    vmImage: $(IMAGE_NAME)
+  steps:
+  - script: tzutil /s "$(WIN_TZ)"
+    condition: contains(variables['IMAGE_NAME'], 'win')
+    displayName: 'Fix Windows timezone'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(NODE_VERSION)
+    condition: ne(variables['NODE_ARCH'], '32')
+    displayName: 'Install Node.js $(NODE_VERSION)'
 
-          - bash: |
-                set -o errexit -o pipefail
-                sudo apt-get update
-                sudo apt-get install libudev-dev
-                sudo sysctl kernel.unprivileged_userns_clone=1
-            condition: contains(variables['IMAGE_NAME'], 'ubuntu')
-            displayName: 'Setup build environment for Linux'
+  - bash: |
+      set -o errexit -o pipefail
+      choco install -y nvm
+      export PATH=$NVM_HOME:$PATH
+      nvm install $(NODE_VERSION) $(NODE_ARCH)
+      nvm use $(NODE_VERSION) $(NODE_ARCH)
+      ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
+    env: {
+      NVM_HOME: "/C/ProgramData/nvm",
+      NVM_SYMLINK: "/C/ProgramData/nvm/v$(NODE_VERSION)",
+      NODE_SYMLINK: "/C/Program Files/nodejs",
+    }
+    condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
 
-          - bash: |
-                set -o errexit -o pipefail
-                npm ci
-                npm run lint
-                npm run build
-                npx playwright install 
-                npm run test-e2e
-            condition: contains(variables['IMAGE_NAME'], 'ubuntu')
-            displayName: 'Run e2e tests [Linux]'
+  - bash: |
+      set -o errexit -o pipefail
+      sudo apt-get update
+      sudo apt-get install libudev-dev
+      sudo sysctl kernel.unprivileged_userns_clone=1
+    condition: contains(variables['IMAGE_NAME'], 'ubuntu')
+    displayName: 'Setup build environment for Linux'
+
+  - bash: |
+      set -o errexit -o pipefail
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      cat .npmrc-internal >> .npmrc
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm ci
+      npm run lint
+      npm run build
+      npm test
+      # npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Build with internal release [Linux]'
+
+  - bash: |
+      set -o errexit -o pipefail
+      export ENABLE_DRAFT_TEST=true
+      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
+      cat .npmrc-internal >> .npmrc
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+      npm ci
+      npm run lint
+      npm run build
+      npm test
+      # npm run test-e2e
+    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Build with internal release [macOS]'
+
+  - script: |
+      type .npmrc-internal >> .npmrc
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'))
+    displayName: 'Copy npmrc on windows'
+  
+  - script: |
+      npm i -g node-gyp@6.0.1
+      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'))
+    displayName: 'Install and set node-gyp'
+  
+  - script: |
+      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'))
+    displayName: 'Set npm auth token for windows'
+
+  - script: |
+      npm ci
+      npm run lint
+      npm run build
+      npm test
+      # npm run test-e2e
+    env: {
+      ENABLE_DRAFT_TEST: true,
+      NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
+    }
+    condition: and(
+      eq(variables['INTERNAL'], 'true'),
+      contains(variables['image_name'], 'win'))
+    displayName: 'Build with internal release [Windows]'
+  # Internal procedure end
+
+  - bash: |
+      set -o errexit -o pipefail
+      npm ci
+      npm run lint
+      npm run build
+      npm test
+      # npm run test-e2e
+    condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
+    displayName: 'Build on not windows'
+
+  - bash: |
+      set -o errexit -o pipefail
+      npm i -g node-gyp@6.0.1
+      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
+      npm ci
+      npm run lint
+      npm run build
+      npm test
+      # npm run test-e2e
+    condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Build on windows'
+
+  - bash: |
+      sudo apt-get install icnsutils
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Setup release environment for Linux'
+  - bash: |
+      npx electron-builder -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
+    displayName: 'Release on Linux'
+
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Donwload certificate on Windows'
+  
+  - script: |
+      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
+      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
+      npx electron-builder -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Release on Windows'
+  
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-$(ARCH)-unpacked'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(ARCH)-$(Build.BuildNumber).zip'
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Pack on Windows x86'
+  
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-unpacked'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(Build.BuildNumber).zip'
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      ne(variables['NODE_ARCH'], '32'))
+    displayName: 'Pack on Windows x64'
+
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Donwload certificate on macOS'
+
+  - bash: |
+      set -o errexit -o pipefail
+      export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
+      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
+      export APPLEID=$(WAYLAND_APPLE_ID)
+      export APPLEIDPASS=$(WAYLAND_APPLE_APP_SPECIFIC)
+      rm -f node_modules/pc-nrfjprog-js/nrfjprog/._*
+      rm -f node_modules/pc-nrfjprog-js/build/Release/._*
+      npx electron-builder -p never
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
+    displayName: 'Release on macOS'
+
+  - bash: |
+      set -o errexit -o pipefail
+      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || :
+      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
+      cp release/latest* "$(Build.ArtifactStagingDirectory)"
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    displayName: 'Copy artifacts'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      publishLocation: 'pipeline'
+    displayName: 'Publishing artifacts to artifact storage'
