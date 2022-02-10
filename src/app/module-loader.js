@@ -51,6 +51,7 @@ SerialPort.list = () =>
 hostedModules['serialport'] = SerialPort;
 
 hostedModules['electron'] = require('electron');
+hostedModules['@electron/remote'] = require('@electron/remote');
 hostedModules[
     '@nordicsemiconductor/nrf-device-lib-js'
 ] = require('@nordicsemiconductor/nrf-device-lib-js');
