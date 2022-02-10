@@ -18,6 +18,8 @@ const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
 
+require('@electron/remote/main').initialize();
+
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
 
