@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import remote from '@electron/remote';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';

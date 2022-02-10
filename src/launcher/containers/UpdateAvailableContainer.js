@@ -5,7 +5,7 @@
  */
 
 import { connect } from 'react-redux';
-import { remote } from 'electron';
+import remote from '@electron/remote';
 import { openUrl } from 'pc-nrfconnect-shared';
 
 import * as AutoUpdateActions from '../actions/autoUpdateActions';

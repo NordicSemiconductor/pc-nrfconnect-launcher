@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import remote from '@electron/remote';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle

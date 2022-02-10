@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { remote } from 'electron';
+import { getCurrentWindow } from '@electron/remote';
 import { ErrorBoundary } from 'pc-nrfconnect-shared';
 import { node } from 'prop-types';
 
@@ -21,7 +21,7 @@ const ErrorBoundaryLauncher = ({ children }) => {
         dispatch(AppsActions.setAppManagementFilter(''));
         dispatch(AppsActions.setAppManagementShow({}));
         dispatch(AppsActions.setAppManagementSource({}));
-        remote.getCurrentWindow().reload();
+        getCurrentWindow().reload();
     };
 
     const sendUsageData = error => {

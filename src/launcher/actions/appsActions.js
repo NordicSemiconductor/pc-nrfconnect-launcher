@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcRenderer, remote } from 'electron';
+import remote from '@electron/remote';
+import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 

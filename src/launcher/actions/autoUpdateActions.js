@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import remote from '@electron/remote';
 import log from 'electron-log';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 

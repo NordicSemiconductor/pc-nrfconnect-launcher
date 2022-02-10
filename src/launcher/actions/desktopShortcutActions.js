@@ -10,7 +10,8 @@
 
 'use strict';
 
-import { remote, shell } from 'electron';
+import remote from '@electron/remote';
+import { shell } from 'electron';
 import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';

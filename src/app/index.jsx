@@ -10,7 +10,7 @@ import './module-loader';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { remote } from 'electron';
+import { dialog } from '@electron/remote';
 
 import legacyRenderer from '../legacy/legacyRenderer';
 import initApp from './initApp';
@@ -56,7 +56,7 @@ const render = app => {
 
 const showLoadingError = error => {
     console.error(error);
-    remote.dialog.showMessageBox({
+    dialog.showMessageBox({
         type: 'error',
         message: error.message,
     });
