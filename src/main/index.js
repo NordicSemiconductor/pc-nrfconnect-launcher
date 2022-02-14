@@ -9,6 +9,8 @@
 // Run this as soon as possible, so that the user data folder is not already initialised by Electron
 require('./setUserDataDir');
 
+require('@electron/remote/main').initialize();
+
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
 
@@ -17,8 +19,6 @@ const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
-
-require('@electron/remote/main').initialize();
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
