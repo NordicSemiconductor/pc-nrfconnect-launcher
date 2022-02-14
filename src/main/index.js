@@ -18,6 +18,15 @@ const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
+const {
+    initializeDfu,
+    addDfuListener,
+    removeDfuListener,
+    abortDfu,
+    getDfuManifest,
+    performDfu,
+    getDeviceSetup,
+} = require('./pc-ble-driver-js');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -122,3 +131,28 @@ ipcMain.on('verify-serialport-available', (event, { device, options }) => {
             event.sender.send('serialport-not-available', err);
         });
 });
+
+ipcMain.on('initialize-dfu', (event, { name, options }) => {
+    initializeDfu(event, {
+        name,
+        options,
+    });
+});
+
+ipcMain.on('dfu-add-listener', (_, { name, callback }) =>
+    addDfuListener({ name, callback })
+);
+
+ipcMain.on('dfu-remove-listener', (_, name) => removeDfuListener(name));
+
+ipcMain.on('dfu-abort', () => abortDfu());
+
+ipcMain.on('dfu-get-manifest', (_, { filePath, callback }) =>
+    getDfuManifest({ filePath, callback })
+);
+
+ipcMain.on('perform-dfu', (_, { filePath, callback }) => {
+    performDfu(filePath, callback);
+});
+
+ipcMain.handle('ble-get-device-setup', () => getDeviceSetup());
