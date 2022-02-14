@@ -7,7 +7,7 @@
 import { require as remoteRequire } from '@electron/remote';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
+import * as AppsActions from './appsActions';
 
 const settings = remoteRequire('../main/settings');
 const mainApps = remoteRequire('../main/apps');
