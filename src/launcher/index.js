@@ -9,7 +9,7 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import remote from '@electron/remote';
+import { require as remoteRequire } from '@electron/remote';
 import { ipcRenderer } from 'electron';
 import isDev from 'electron-is-dev';
 import { applyMiddleware, createStore } from 'redux';
@@ -25,9 +25,9 @@ import rootReducer from './reducers';
 
 import '../../resources/css/launcher.scss';
 
-const config = remote.require('../main/config');
-const settings = remote.require('../main/settings');
-const net = remote.require('../main/net');
+const config = remoteRequire('../main/config');
+const settings = remoteRequire('../main/settings');
+const net = remoteRequire('../main/net');
 
 const store = createStore(
     rootReducer,

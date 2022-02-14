@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import remote from '@electron/remote';
+import { require as remoteRequire } from '@electron/remote';
 import semver from 'semver';
 
 import launcherPackageJson from '../../../package.json';
 import { App } from '../../main/apps';
 import requiredVersionOfShared from '../../main/requiredVersionOfShared';
 
-const config = remote.require('../main/config');
+const config = remoteRequire('../main/config');
 
 const isValidVersionNumber = (maybeVersionNumber?: string) =>
     semver.valid(maybeVersionNumber) != null;
