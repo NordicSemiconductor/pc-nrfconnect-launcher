@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
-
 import { findJlinkIds, findParentIdPrefixes } from '../jlink';
 import * as reg from '../reg';
 

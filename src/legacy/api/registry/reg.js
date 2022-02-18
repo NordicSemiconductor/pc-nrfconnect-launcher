@@ -53,5 +53,4 @@ function query(keyPath, queryString) {
     return regCmd(args);
 }
 
-/* eslint-disable import/prefer-default-export */
 export { query };
