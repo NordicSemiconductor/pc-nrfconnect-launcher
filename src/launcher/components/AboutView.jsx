@@ -12,7 +12,7 @@ import Row from 'react-bootstrap/Row';
 
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
 
-const appVersion = require('electron').remote.app.getVersion();
+const appVersion = require('@electron/remote').app.getVersion();
 
 const AboutView = () => (
     <WithScrollbarContainer>

@@ -105,8 +105,9 @@ describe('decorate', () => {
         setApp({
             decorateFoo:
                 () =>
+                // eslint-disable-next-line react/prop-types
                 ({ bar }) =>
-                    <p id={bar} />, // eslint-disable-line react/prop-types
+                    <p id={bar} />,
         });
         const DecoratedFoo = decorate(FooComponent, 'Foo');
         const rendered = renderer.create(<DecoratedFoo bar="baz" />).toJSON();

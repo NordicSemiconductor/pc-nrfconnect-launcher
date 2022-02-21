@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import { require as remoteRequire } from '@electron/remote';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import * as AppsActions from './appsActions'; // eslint-disable-line import/no-cycle
+import * as AppsActions from './appsActions';
 
-const settings = remote.require('../main/settings');
-const mainApps = remote.require('../main/apps');
+const settings = remoteRequire('../main/settings');
+const mainApps = remoteRequire('../main/apps');
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';

@@ -94,12 +94,13 @@
         "electron-is-dev": "1.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.16.3",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.17.0",
         "sander": "0.6.0",
         "spectron": "7.0.0",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
+        "@electron/remote": "^2.0.4",
         "@mdi/font": "3.7.95",
         "@nordicsemiconductor/nrf-device-lib-js": "^0.4.3",
         "axios": "0.22.0",

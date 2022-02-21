@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import { require as remoteRequire } from '@electron/remote';
 import log from 'electron-log';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
@@ -21,8 +21,8 @@ export const AUTO_UPDATE_DOWNLOAD_CANCELLED = 'AUTO_UPDATE_DOWNLOAD_CANCELLED';
 export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
 export const AUTO_UPDATE_ERROR = 'AUTO_UPDATE_ERROR';
 
-const mainApps = remote.require('../main/apps');
-const { autoUpdater, CancellationToken } = remote.require('../main/autoUpdate');
+const mainApps = remoteRequire('../main/apps');
+const { autoUpdater, CancellationToken } = remoteRequire('../main/autoUpdate');
 
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';

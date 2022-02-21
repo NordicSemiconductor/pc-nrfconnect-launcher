@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcRenderer, remote } from 'electron';
+import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
+import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
@@ -15,12 +16,12 @@ import {
     sendLauncherUsageData,
 } from './usageDataActions';
 
-const net = remote.require('../main/net');
-const fs = remote.require('fs-extra');
+const net = remoteRequire('../main/net');
+const fs = remoteRequire('fs-extra');
 
-const mainApps = remote.require('../main/apps');
-const config = remote.require('../main/config');
-const settings = remote.require('../main/settings');
+const mainApps = remoteRequire('../main/apps');
+const config = remoteRequire('../main/config');
+const settings = remoteRequire('../main/settings');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
@@ -357,7 +358,7 @@ const handleAppsWithErrors = (dispatch, apps) => {
 
     const recover = invalidPaths => () => {
         invalidPaths.forEach(p => fs.remove(p));
-        remote.getCurrentWindow().reload();
+        getCurrentWindow().reload();
     };
 
     dispatch(
