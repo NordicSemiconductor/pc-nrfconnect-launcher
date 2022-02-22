@@ -35,6 +35,7 @@ let officialAppName;
 let localAppName;
 let sourceName;
 let isRunningLauncherFromSource;
+const bundledJlinkVersion = 'V7.58b';
 
 /**
  * Init the config values based on the given command line arguments.
@@ -132,4 +133,5 @@ module.exports = {
     getLocalAppName: () => localAppName,
     getSourceName: () => sourceName,
     isRunningLauncherFromSource: () => isRunningLauncherFromSource,
+    bundledJlinkVersion: () => bundledJlinkVersion,
 };

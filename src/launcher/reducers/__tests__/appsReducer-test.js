@@ -6,8 +6,8 @@
 
 /* eslint-disable import/first */
 
-jest.mock('electron', () => ({
-    remote: { require: () => {} },
+jest.mock('@electron/remote', () => ({
+    require: () => {},
 }));
 
 import * as AppsActions from '../../actions/appsActions';

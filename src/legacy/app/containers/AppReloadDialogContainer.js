@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { remote } from 'electron';
+import { getCurrentWindow } from 'electron';
 
 import { connect } from '../../decoration';
 import * as AppReloadDialogActions from '../actions/appReloadDialogActions';
@@ -21,7 +21,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onConfirmReload: () => dispatch(remote.getCurrentWindow().reload()),
+        onConfirmReload: () => dispatch(getCurrentWindow().reload()),
         onCancelReload: () => {
             dispatch(AppReloadDialogActions.hideDialog());
         },

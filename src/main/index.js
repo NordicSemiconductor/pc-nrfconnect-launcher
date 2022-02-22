@@ -9,6 +9,8 @@
 // Run this as soon as possible, so that the user data folder is not already initialised by Electron
 require('./setUserDataDir');
 
+require('@electron/remote/main').initialize();
+
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
 
@@ -109,6 +111,7 @@ ipcMain.on('get-app-details', event => {
             corePath: config.getElectronRootPath(),
             homeDir: config.getHomeDir(),
             tmpDir: config.getTmpDir(),
+            bundledJlink: config.bundledJlinkVersion(),
             ...appWindow.app,
         });
     }

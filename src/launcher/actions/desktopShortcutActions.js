@@ -8,15 +8,16 @@
 
 'use strict';
 
-import { remote, shell } from 'electron';
+import { require as remoteRequire } from '@electron/remote';
+import { shell } from 'electron';
 import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { v4 } from 'uuid';
 
-const config = remote.require('../main/config');
-const fileUtil = remote.require('../main/fileUtil');
+const config = remoteRequire('../main/config');
+const fileUtil = remoteRequire('../main/fileUtil');
 
 const mode =
     fs.constants.S_IRWXU |
