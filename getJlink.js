@@ -17,7 +17,7 @@ if (process.platform !== 'win32') {
 
 const axios = require('axios');
 const fs = require('fs');
-const sander = require('sander');
+const { mkdir } = require('fs/promises');
 const path = require('path');
 const crypto = require('crypto');
 
@@ -54,7 +54,7 @@ async function downloadFile() {
         );
     }
     console.log('Saving', destinationFile);
-    await sander.mkdir(path.dirname(destinationFile));
+    await mkdir(path.dirname(destinationFile), { recursive: true });
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(destinationFile);
         stream.pipe(file);
