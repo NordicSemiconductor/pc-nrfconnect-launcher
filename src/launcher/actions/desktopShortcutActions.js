@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable no-tabs */
 /* eslint-disable no-bitwise */
-/* eslint-disable import/prefer-default-export */
 
 'use strict';
 

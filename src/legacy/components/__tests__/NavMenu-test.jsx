@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
-
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Immutable from 'immutable';

@@ -42,7 +42,7 @@ describe('automatic update check', () => {
                 appsRootDir,
                 'apps.json'
             );
-            // eslint-disable-next-line import/no-dynamic-require, global-require
+            // eslint-disable-next-line global-require
             const appsJson = require(appsJsonFile);
             const appNames = Object.keys(appsJson);
 
@@ -72,7 +72,7 @@ describe('automatic update check', () => {
                 appsRootDir,
                 'apps.json'
             );
-            // eslint-disable-next-line import/no-dynamic-require, global-require
+            // eslint-disable-next-line global-require
             const appsJson = require(appsJsonFile);
 
             expect(appsJson).toEqual({});

@@ -4,9 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-bitwise */
-
 'use strict';
 
 const fs = require('fs');
