@@ -12,6 +12,7 @@ jest.mock('../../../decoration', () => ({
 }));
 
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import Immutable from 'immutable';
 
@@ -32,11 +33,18 @@ const menuItems = Immutable.List([
     },
 ]);
 
+const waitForComponent = async component => {
+    await act(async () => {
+        await new Promise(resolve => setTimeout(resolve, 0));
+        component.update();
+    });
+};
+
 describe('MainMenu', () => {
     it('should render menu with no items', () => {
-        expect(
-            mount(<MainMenu menuItems={[]} defaultShow />)
-        ).toMatchSnapshot();
+        const component = mount(<MainMenu menuItems={[]} defaultShow />);
+        waitForComponent(component);
+        expect(component).toMatchSnapshot();
     });
 
     it('should render menu with two items separated by divider', () => {

@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-@import './variables.scss';
+@import '~pc-nrfconnect-shared/src/variables.scss';
+@import './brand.scss';
 
 body {
     -webkit-user-select: none;

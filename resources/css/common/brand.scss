@@ -32,3 +32,24 @@ $theme-colors: (
     "light":     #f8f9fa,
     "dark":      #343a40
 );
+
+// Colors from old duplicate of variables.scss
+
+$brand-primary-dark: darken(
+    $brand-primary,
+    5%
+); // #006e9e //used by button border
+$brand-primary-darker: darken(
+    $brand-primary,
+    10%
+); // #005c84 //used by focus and active
+$brand-primary-darkest: darken(
+    $brand-primary,
+    17%
+); // #005c84 //used whe both focus and active at the same time
+
+$background-color: #f2f2f2;
+$gray-base: #000;
+$gray: lighten($gray-base, 33.5%); // #555
+$gray-light: lighten($gray-base, 46.7%); // #777
+$gray-medium-lighter: lighten($gray-base, 70%);
