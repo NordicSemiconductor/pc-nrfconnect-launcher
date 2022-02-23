@@ -14,10 +14,9 @@
         "dev": "nrfconnect-scripts build-watch",
         "webpack": "nrfconnect-scripts build-dev",
         "build": "nrfconnect-scripts build-prod",
-        "lint": "nrfconnect-scripts lint src test-e2e *.js",
+        "lint": "nrfconnect-scripts lint src *.js",
         "test": "jest --testResultsProcessor jest-bamboo-formatter src/",
         "test-watch": "jest --watch src/",
-        "test-e2e": "xvfb-maybe jest --runInBand --moduleNameMapper '{}' --testTimeout=15000 --forceExit test-e2e/",
         "clean": "npm install rimraf && npm run clean-build && npm run clean-release && npm run clean-modules",
         "clean-release": "rimraf release",
         "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\"",
@@ -96,7 +95,6 @@
         "mini-css-extract-plugin": "0.9.0",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v5.17.0",
         "sander": "0.6.0",
-        "spectron": "7.0.0",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
