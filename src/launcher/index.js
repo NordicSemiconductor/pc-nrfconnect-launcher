@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import 'core-js/es7';
 import 'regenerator-runtime/runtime';
 
 import React from 'react';
