@@ -24,11 +24,16 @@ const crypto = require('crypto');
 const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
-const filename = `JLink_Windows_${minVersion}_i386.exe`;
+const DESTINATION_FILENAME = `JLink_Windows_${minVersion}.exe`;
+
+const filename =
+    process.arch === 'x64'
+        ? `JLink_Windows_${minVersion}_x86_64.exe`
+        : `JLink_Windows_${minVersion}_i386.exe`;
 const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
 
 const outputDirectory = 'build';
-const destinationFile = path.join(outputDirectory, filename);
+const destinationFile = path.join(outputDirectory, DESTINATION_FILENAME);
 
 async function downloadChecksum() {
     console.log('Downloading', `${fileUrl}.md5`);
