@@ -69,23 +69,18 @@
             "sign": false
         },
         "win": {
-            "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "x64",
-                        "ia32"
-                    ]
-                }
-            ],
+            "target": "nsis",
+            "arch": [
+                "x64",
+                "ia32"
+            ],      
             "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}.${ext}",
-            "args": ["--x64", "--ia32"]
+            "artifactName": "${name}-setup-${version}.${ext}"
         }
     },
     "devDependencies": {
