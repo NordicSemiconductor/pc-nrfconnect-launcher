@@ -4,7 +4,17 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
+/* eslint-disable max-classes-per-file */
+
+import * as AutoUpdateActions from '../../actions/autoUpdateActions';
+import reducer from '../autoUpdateReducer';
+
+jest.mock('@electron/remote', () => ({
+    require: () => ({
+        autoUpdater: {},
+        CancellationToken: class CancellationToken {},
+    }),
+}));
 
 jest.mock('electron', () => ({
     remote: {
@@ -14,9 +24,6 @@ jest.mock('electron', () => ({
         }),
     },
 }));
-
-import * as AutoUpdateActions from '../../actions/autoUpdateActions';
-import reducer from '../autoUpdateReducer';
 
 const initialState = reducer(undefined, {});
 const { CancellationToken } = require('electron-updater');

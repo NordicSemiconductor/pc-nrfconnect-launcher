@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import 'core-js/es7';
 import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { ipcRenderer, remote } from 'electron';
+import { require as remoteRequire } from '@electron/remote';
+import { ipcRenderer } from 'electron';
 import isDev from 'electron-is-dev';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -24,9 +24,9 @@ import rootReducer from './reducers';
 
 import '../../resources/css/launcher.scss';
 
-const config = remote.require('../main/config');
-const settings = remote.require('../main/settings');
-const net = remote.require('../main/net');
+const config = remoteRequire('../main/config');
+const settings = remoteRequire('../main/settings');
+const net = remoteRequire('../main/net');
 
 const store = createStore(
     rootReducer,

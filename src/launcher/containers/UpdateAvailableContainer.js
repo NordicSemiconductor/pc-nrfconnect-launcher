@@ -5,13 +5,13 @@
  */
 
 import { connect } from 'react-redux';
-import { remote } from 'electron';
+import { require as remoteRequire } from '@electron/remote';
 import { openUrl } from 'pc-nrfconnect-shared';
 
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
 
-const config = remote.require('../main/config');
+const config = remoteRequire('../main/config');
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;

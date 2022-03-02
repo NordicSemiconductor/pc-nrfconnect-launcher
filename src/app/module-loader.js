@@ -51,10 +51,10 @@ SerialPort.list = () =>
 hostedModules['serialport'] = SerialPort;
 
 hostedModules['electron'] = require('electron');
+hostedModules['@electron/remote'] = require('@electron/remote');
 hostedModules[
     '@nordicsemiconductor/nrf-device-lib-js'
 ] = require('@nordicsemiconductor/nrf-device-lib-js');
-hostedModules['nrfconnect/core'] = require('../legacy/api').core;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
 hostedModules['react-dom'] = require('react-dom');
 hostedModules['react-redux'] = require('react-redux');

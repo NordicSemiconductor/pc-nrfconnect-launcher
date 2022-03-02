@@ -74,7 +74,6 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Build with internal release [Linux]'
 
@@ -88,7 +87,6 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Build with internal release [macOS]'
 
@@ -119,7 +117,6 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
     env: {
       ENABLE_DRAFT_TEST: true,
       NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
@@ -136,7 +133,6 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Build on not windows'
 
@@ -148,7 +144,6 @@ jobs:
       npm run lint
       npm run build
       npm test
-      # npm run test-e2e
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
 

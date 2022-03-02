@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-module.exports = {};
+module.exports = () => 'The app content';
