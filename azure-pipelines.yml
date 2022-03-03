@@ -166,6 +166,9 @@ jobs:
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
       npx electron-builder -p never
+      export old_file_path=$(find ./ -iname "*-setup_*.exe")
+      export new_file_path="${old_file_name:0: -4}-${ARCH}.exe"
+      mv ${old_file_path} ${new_file_path}
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Release on Windows'
 
