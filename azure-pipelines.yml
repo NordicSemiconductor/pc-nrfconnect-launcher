@@ -12,6 +12,8 @@ jobs:
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
     value: 14.18.0
+  - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+    value: 1 # Because we use Electron, playwright needs no installed browsers https://playwright.dev/docs/api/class-electron
   strategy:
     matrix:
       linux:

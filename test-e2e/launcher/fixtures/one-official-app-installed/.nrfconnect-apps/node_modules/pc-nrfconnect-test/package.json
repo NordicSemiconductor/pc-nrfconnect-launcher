@@ -1,0 +1,8 @@
+{
+    "name": "pc-nrfconnect-test",
+    "version": "1.2.3",
+    "displayName": "Test App",
+    "engines": {
+        "nrfconnect": "*"
+    }
+}

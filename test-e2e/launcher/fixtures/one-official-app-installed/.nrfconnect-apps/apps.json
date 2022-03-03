@@ -1,0 +1,7 @@
+{
+    "pc-nrfconnect-test": {
+        "displayName": "Test App",
+        "description": "App used for testing",
+        "homepage": "https://example.com/test"
+    }
+}
