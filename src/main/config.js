@@ -80,7 +80,7 @@ function init(argv) {
     sourcesJsonPath =
         argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl =
-        'https://raw.githubusercontent.com/NordicSemiconductor/pc-nrfconnect-launcher/master/apps.json';
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
     registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
     releaseNotesUrl =
         'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';

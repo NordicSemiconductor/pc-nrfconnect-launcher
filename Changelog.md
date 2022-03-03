@@ -1,3 +1,9 @@
+## Unreleased
+### Changed
+- Better reliability in China. The app list is not loaded from GitHub any
+  longer but from developer.nordicsemi.com, which should be easier to reach
+  from China.
+
 ## 3.10.0 - 2022-02-02
 ### Added
 - Functionality to turn on extensive logging from the `About` pane to aid in support-cases.
