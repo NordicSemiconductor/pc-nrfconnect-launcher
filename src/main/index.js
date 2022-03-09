@@ -13,12 +13,14 @@ require('@electron/remote/main').initialize();
 
 const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
 const { argv } = require('yargs');
+const { join } = require('path');
 
 const config = require('./config');
 const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
+const { createTextFile } = require('./fileUtil');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -116,3 +118,15 @@ ipcMain.on('get-app-details', event => {
         });
     }
 });
+
+/**
+ * Let's store the full path to the executable if nRFConnect was started from a built package.
+ * This execPath is stored in a known location, so e.g. VS Code extension can launch it even on
+ * Linux where there's no standard installation location.
+ */
+if (electronApp.isPackaged) {
+    createTextFile(
+        join(global.userDataDir, 'execPath'),
+        process.execPath
+    ).catch(err => console.log(err.message));
+}
