@@ -127,6 +127,8 @@ ipcMain.on('get-app-details', event => {
 if (electronApp.isPackaged) {
     createTextFile(
         join(global.userDataDir, 'execPath'),
-        process.execPath
+        process.platform === 'linux' && process.env.APPIMAGE
+            ? process.env.APPIMAGE
+            : process.execPath
     ).catch(err => console.log(err.message));
 }
