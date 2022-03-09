@@ -89,7 +89,7 @@ function openAppWindow(app) {
         backgroundColor: '#fff',
         webPreferences: {
             additionalArguments,
-        }
+        },
     });
 
     appWindows.push({
