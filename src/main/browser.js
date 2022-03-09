@@ -37,12 +37,13 @@ function createWindow(options) {
         minHeight: 499,
         show: false,
         autoHideMenuBar: true,
+        ...options,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
+            ...options.webPreferences,
         },
-        ...options,
     };
     const browserWindow = new electron.BrowserWindow(mergedOptions);
 
