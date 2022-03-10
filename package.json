@@ -19,8 +19,6 @@
         "test-watch": "jest --watch src/",
         "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
         "pack": "npm run build && electron-builder -p never",
-        "nsisx64": "electron-builder -p never --x64",
-        "nsisx86": "electron-builder -p never --ia32",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools"
