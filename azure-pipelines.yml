@@ -160,14 +160,28 @@ jobs:
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Donwload certificate on Windows'
+    displayName: 'Download certificate on Windows'
 
   - script: |
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Release on Windows'
+      npx electron-builder -p never --windows nsis:ia32
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      eq(variables['NODE_ARCH'], '32'))
+    displayName: 'Build electron installer on Windows x86'
+
+
+  - script: |
+      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
+      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
+      npx electron-builder -p never --windows nsis:x64
+    condition: and(
+      ne(variables['Build.Reason'], 'PullRequest'),
+      contains(variables['IMAGE_NAME'], 'win'),
+      ne(variables['NODE_ARCH'], '32'))
+    displayName: 'Build electron installer on Windows x64'
 
   - task: ArchiveFiles@2
     inputs:
@@ -197,7 +211,7 @@ jobs:
     inputs:
       secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
-    displayName: 'Donwload certificate on macOS'
+    displayName: 'Download certificate on macOS'
 
   - bash: |
       set -o errexit -o pipefail

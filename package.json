@@ -19,6 +19,8 @@
         "test-watch": "jest --watch src/",
         "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
         "pack": "npm run build && electron-builder -p never",
+        "nsisx64": "electron-builder -p never --x64",
+        "nsisx86": "electron-builder -p never --ia32",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools"
@@ -69,23 +71,14 @@
             "sign": false
         },
         "win": {
-            "target": [
-                {
-                    "target": "nsis",
-                    "arch": [
-                        "x64",
-                        "ia32"
-                    ]
-
-                }
-            ],
+            "target": "nsis",
             "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico"
         },
         "nsis": {
-            "menuCategory": "Nordic Semiconductor", 
+            "menuCategory": "Nordic Semiconductor",
             "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}.${ext}"
+            "artifactName": "${name}-setup-${version}-${arch}.${ext}"
         }
     },
     "devDependencies": {
@@ -94,7 +87,7 @@
         "asar": "3.0.3",
         "bootstrap": "4.6.1",
         "electron": "13.5.1",
-        "electron-builder": "22.7.0",
+        "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",

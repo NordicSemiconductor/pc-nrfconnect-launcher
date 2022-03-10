@@ -24,17 +24,22 @@ const crypto = require('crypto');
 const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
-const DESTINATION_FILENAME_x64 = `JLink_Windows_${minVersion}_x64.exe`;
-const DESTINATION_FILENAME_x86 = `JLink_Windows_${minVersion}_x86.exe`;
+const FILENAME = `JLink_Windows_${minVersion}.exe`;
 
-const filename_x64 = `JLink_Windows_${minVersion}_x86_64.exe`;
-const filename_x86 = `JLink_Windows_${minVersion}_i386.exe`;
-const fileUrlx64 = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename_x64}`;
-const fileUrlx86 = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename_x86}`;
+const FILENAME_x86 = `JLink_Windows_${minVersion}_i386.exe`;
+const FILENAME_x64 = `JLink_Windows_${minVersion}_x86_64.exe`;
+
+let target_file_name;
+if (process.arch === 'ia32') {
+    target_file_name = FILENAME_x86;
+} else {
+    target_file_name = FILENAME_x64;
+}
+
+const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${target_file_name}`;
 
 const outputDirectory = 'build';
-const destinationFilex64 = path.join(outputDirectory, DESTINATION_FILENAME_x64);
-const destinationFilex86 = path.join(outputDirectory, DESTINATION_FILENAME_x86);
+const DESTINATION_FILE_PATH = path.join(outputDirectory, FILENAME);
 
 async function downloadChecksum(fileUrl) {
     console.log('Downloading', `${fileUrl}.md5`);
@@ -80,14 +85,7 @@ async function downloadFile(fileUrl, destinationFile) {
     });
 }
 
-downloadFile(fileUrlx64, destinationFilex64)
-    .catch(error => {
-        console.error('\n!!! EXCEPTION', error.message);
-        process.exit(-1);
-    })
-    .then(process.exit);
-
-downloadFile(fileUrlx86, destinationFilex86)
+downloadFile(FILE_URL, DESTINATION_FILE_PATH)
     .catch(error => {
         console.error('\n!!! EXCEPTION', error.message);
         process.exit(-1);
