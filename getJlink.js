@@ -24,18 +24,19 @@ const crypto = require('crypto');
 const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
-const DESTINATION_FILENAME = `JLink_Windows_${minVersion}.exe`;
+const DESTINATION_FILENAME_x64 = `JLink_Windows_${minVersion}_x64.exe`;
+const DESTINATION_FILENAME_x86 = `JLink_Windows_${minVersion}_x86.exe`;
 
-const filename =
-    process.arch === 'x64'
-        ? `JLink_Windows_${minVersion}_x86_64.exe`
-        : `JLink_Windows_${minVersion}_i386.exe`;
-const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
+const filename_x64 = `JLink_Windows_${minVersion}_x86_64.exe`;
+const filename_x86 = `JLink_Windows_${minVersion}_i386.exe`;
+const fileUrlx64 = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename_x64}`;
+const fileUrlx86 = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename_x86}`;
 
 const outputDirectory = 'build';
-const destinationFile = path.join(outputDirectory, DESTINATION_FILENAME);
+const destinationFilex64 = path.join(outputDirectory, DESTINATION_FILENAME_x64);
+const destinationFilex86 = path.join(outputDirectory, DESTINATION_FILENAME_x86);
 
-async function downloadChecksum() {
+async function downloadChecksum(fileUrl) {
     console.log('Downloading', `${fileUrl}.md5`);
     const { status, data } = await axios.get(`${fileUrl}.md5`);
     if (status !== 200) {
@@ -46,9 +47,9 @@ async function downloadChecksum() {
     return data.split(' ').shift();
 }
 
-async function downloadFile() {
+async function downloadFile(fileUrl, destinationFile) {
     const hash = crypto.createHash('md5');
-    const expectedChecksum = await downloadChecksum();
+    const expectedChecksum = await downloadChecksum(fileUrl);
     console.log('Downloading', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
@@ -79,7 +80,14 @@ async function downloadFile() {
     });
 }
 
-downloadFile(fileUrl)
+downloadFile(fileUrlx64, destinationFilex64)
+    .catch(error => {
+        console.error('\n!!! EXCEPTION', error.message);
+        process.exit(-1);
+    })
+    .then(process.exit);
+
+downloadFile(fileUrlx86, destinationFilex86)
     .catch(error => {
         console.error('\n!!! EXCEPTION', error.message);
         process.exit(-1);

@@ -4,6 +4,8 @@
 ; For ExecShellWaitEx:
 !include 'StdUtils.nsh'
 
+!include 'x64.nsh'
+
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
 !macro customInstall
@@ -33,12 +35,22 @@
 
   ; J-Link installer (downloaded by 'npm run get-jlink')
   !define BundledJLinkVersion "V758b"
-  !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
-  !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
+  
+  ; Set appropriate architecture
+  ${If} ${IsNativeAMD64}
+    StrCpy $0 "x64"
+  ${ElseIf} ${IsNativeARM64}
+    StrCpy $0 "x64"
+  ${Else}
+    StrCpy $0 "x86"
+  ${EndIf}
 
+  !define Architecture $0
+  !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}_"
+  !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
   File ${JlinkInstallerResPath}
 
-  ; Checking J-Link versions
+;   Checking J-Link versions
   Var /GLOBAL LAST_JLINK_VERSION
   StrCpy $LAST_JLINK_VERSION ""
   StrCpy $0 0
