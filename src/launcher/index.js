@@ -10,7 +10,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { require as remoteRequire } from '@electron/remote';
 import { ipcRenderer } from 'electron';
-import isDev from 'electron-is-dev';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
@@ -57,7 +56,7 @@ function checkForCoreUpdates() {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
         !config.isSkipUpdateCore() &&
-        !isDev
+        process.env.NODE_ENV !== 'development'
     ) {
         return store.dispatch(AutoUpdateActions.checkForCoreUpdates());
     }
