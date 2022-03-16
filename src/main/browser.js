@@ -32,18 +32,22 @@ function createSplashScreen(icon) {
 }
 
 function createWindow(options) {
+    const appArgumentsIndex = process.argv.indexOf('--');
+    const additionalArguments =
+        appArgumentsIndex === -1 ? [] : process.argv.slice(appArgumentsIndex);
+
     const mergedOptions = {
         minWidth: 308,
         minHeight: 499,
         show: false,
         autoHideMenuBar: true,
-        ...options,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
-            ...options.webPreferences,
+            additionalArguments,
         },
+        ...options,
     };
     const browserWindow = new electron.BrowserWindow(mergedOptions);
 
