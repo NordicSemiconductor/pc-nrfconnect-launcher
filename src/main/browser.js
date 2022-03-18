@@ -32,6 +32,10 @@ function createSplashScreen(icon) {
 }
 
 function createWindow(options) {
+    const appArgumentsIndex = process.argv.indexOf('--');
+    const additionalArguments =
+        appArgumentsIndex === -1 ? [] : process.argv.slice(appArgumentsIndex);
+
     const mergedOptions = {
         minWidth: 308,
         minHeight: 499,
@@ -41,6 +45,7 @@ function createWindow(options) {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
+            additionalArguments,
         },
         ...options,
     };

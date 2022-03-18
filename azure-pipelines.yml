@@ -43,7 +43,7 @@ jobs:
 
   - bash: |
       set -o errexit -o pipefail
-      choco install -y nvm
+      choco install -y --version 1.1.7 nvm.portable
       export PATH=$NVM_HOME:$PATH
       nvm install $(NODE_VERSION) $(NODE_ARCH)
       nvm use $(NODE_VERSION) $(NODE_ARCH)
