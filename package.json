@@ -123,33 +123,5 @@
     "eslintConfig": {
         "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
     },
-    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
-    "jest": {
-        "testEnvironment": "jsdom",
-        "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/fileMock.ts",
-            "\\.(css|scss)$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.ts",
-            "^electron$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronMock.ts",
-            "^electron-store$": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/electronStoreMock.ts",
-            "serialport": "<rootDir>/node_modules/pc-nrfconnect-shared/mocks/emptyMock.ts"
-        },
-        "transform": {
-            "^.+\\.[jt]sx?$": [
-                "babel-jest",
-                {
-                    "configFile": "./node_modules/pc-nrfconnect-shared/config/babel.config.js"
-                }
-            ]
-        },
-        "transformIgnorePatterns": [
-            "node_modules/(?!(pc-nrfconnect-shared)/)"
-        ],
-        "setupFilesAfterEnv": [
-            "<rootDir>/node_modules/pc-nrfconnect-shared/test/setupTests.ts",
-            "<rootDir>/src/setupMocks.js"
-        ],
-        "snapshotSerializers": [
-            "enzyme-to-json/serializer"
-        ]
-    }
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
 }
