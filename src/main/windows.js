@@ -69,12 +69,6 @@ function openAppWindow(app) {
         }
     }
 
-    let additionalArguments = [];
-    const appArgumentsIndex = process.argv.findIndex(arg => arg === '--');
-    if (appArgumentsIndex !== -1) {
-        additionalArguments = process.argv.slice(appArgumentsIndex);
-    }
-
     const appWindow = browser.createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
         url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
@@ -87,9 +81,6 @@ function openAppWindow(app) {
         height,
         show: true,
         backgroundColor: '#fff',
-        webPreferences: {
-            additionalArguments,
-        },
     });
 
     appWindows.push({
