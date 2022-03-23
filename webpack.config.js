@@ -42,7 +42,8 @@ module.exports = (_, argv) => {
                             loader: require.resolve('babel-loader'),
                             options: {
                                 cacheDirectory: true,
-                                configFile: './babel.config.js',
+                                configFile:
+                                    './node_modules/pc-nrfconnect-shared/config/babel.config.js',
                             },
                         },
                     ],
