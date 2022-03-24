@@ -24,13 +24,24 @@ const crypto = require('crypto');
 const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
-const filename = `JLink_Windows_${minVersion}_i386.exe`;
-const fileUrl = `https://developer.nordicsemi.com/.pc-tools/jlink/${filename}`;
+const FILENAME = `JLink_Windows_${minVersion}.exe`;
+
+const FILENAME_x86 = `JLink_Windows_${minVersion}_i386.exe`;
+const FILENAME_x64 = `JLink_Windows_${minVersion}_x86_64.exe`;
+
+let target_file_name;
+if (process.arch === 'ia32') {
+    target_file_name = FILENAME_x86;
+} else {
+    target_file_name = FILENAME_x64;
+}
+
+const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${target_file_name}`;
 
 const outputDirectory = 'build';
-const destinationFile = path.join(outputDirectory, filename);
+const DESTINATION_FILE_PATH = path.join(outputDirectory, FILENAME);
 
-async function downloadChecksum() {
+async function downloadChecksum(fileUrl) {
     console.log('Downloading', `${fileUrl}.md5`);
     const { status, data } = await axios.get(`${fileUrl}.md5`);
     if (status !== 200) {
@@ -41,9 +52,9 @@ async function downloadChecksum() {
     return data.split(' ').shift();
 }
 
-async function downloadFile() {
+async function downloadFile(fileUrl, destinationFile) {
     const hash = crypto.createHash('md5');
-    const expectedChecksum = await downloadChecksum();
+    const expectedChecksum = await downloadChecksum(fileUrl);
     console.log('Downloading', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
@@ -74,7 +85,7 @@ async function downloadFile() {
     });
 }
 
-downloadFile(fileUrl)
+downloadFile(FILE_URL, DESTINATION_FILE_PATH)
     .catch(error => {
         console.error('\n!!! EXCEPTION', error.message);
         process.exit(-1);

@@ -69,9 +69,7 @@
             "sign": false
         },
         "win": {
-            "target": [
-                "nsis"
-            ],
+            "target": "nsis",
             "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico"
         },
@@ -87,7 +85,7 @@
         "asar": "3.0.3",
         "bootstrap": "4.6.1",
         "electron": "13.5.1",
-        "electron-builder": "22.7.0",
+        "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
