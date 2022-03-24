@@ -165,23 +165,9 @@ jobs:
   - script: |
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never --windows nsis:ia32
-    condition: and(
-      ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Build electron installer on Windows x86'
-
-
-  - script: |
-      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
-      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never --windows nsis:x64
-    condition: and(
-      ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'),
-      ne(variables['NODE_ARCH'], '32'))
-    displayName: 'Build electron installer on Windows x64'
+      npx electron-builder -p never --windows nsis:$(ARCH)
+condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
+    displayName: 'Build electron installer on Windows'
 
   - task: ArchiveFiles@2
     inputs:
