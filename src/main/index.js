@@ -39,6 +39,21 @@ electronApp.on('ready', () => {
 
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
+        .then(() => apps.getOfficialApps())
+        .then(applications => {
+            const existingBleApp = applications.fulfilled.find(
+                app => app.name === 'pc-nrfconnect-ble'
+            );
+
+            if (!existingBleApp || existingBleApp.currentVersion !== '3.0.1') {
+                return apps.installOfficialApp(
+                    'pc-nrfconnect-ble',
+                    '3.0.1',
+                    'official'
+                );
+            }
+            return Promise.resolve();
+        })
         .then(() => {
             return windows.openOfficialAppWindow(
                 'pc-nrfconnect-ble',
