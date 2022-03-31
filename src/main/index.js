@@ -11,7 +11,13 @@ require('./setUserDataDir');
 
 require('@electron/remote/main').initialize();
 
-const { Menu, ipcMain, dialog, app: electronApp } = require('electron');
+const {
+    Menu,
+    ipcMain,
+    dialog,
+    app: electronApp,
+    powerSaveBlocker,
+} = require('electron');
 const { argv } = require('yargs');
 const { join } = require('path');
 
@@ -118,6 +124,14 @@ ipcMain.on('get-app-details', event => {
         });
     }
 });
+
+ipcMain.handle('prevent-sleep-start', () =>
+    powerSaveBlocker.start('prevent-app-suspension')
+);
+
+ipcMain.on('preventing-sleep-end', (_, id) =>
+    powerSaveBlocker.stop(Number(id))
+);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.
