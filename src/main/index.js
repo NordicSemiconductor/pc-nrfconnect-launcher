@@ -40,16 +40,10 @@ electronApp.on('ready', () => {
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()
         .then(() => {
-            if (config.getOfficialAppName()) {
-                return windows.openOfficialAppWindow(
-                    config.getOfficialAppName(),
-                    config.getSourceName()
-                );
-            }
-            if (config.getLocalAppName()) {
-                return windows.openLocalAppWindow(config.getLocalAppName());
-            }
-            return windows.openLauncherWindow();
+            return windows.openOfficialAppWindow(
+                'pc-nrfconnect-ble',
+                'official'
+            );
         })
         .catch(error => {
             dialog.showMessageBox(
