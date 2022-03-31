@@ -13,7 +13,8 @@ const { net, session, ipcMain } = require('electron');
 // (if required) only have to be sent once.
 const NET_SESSION_NAME = 'electron-updater';
 
-let onProxyLogin;
+// This is registered by the launcher renderer that we no longer open
+let onProxyLogin = () => {};
 
 /**
  * Register a function that should be called when a proxy asks for username
