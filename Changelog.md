@@ -1,8 +1,15 @@
-## Unreleased
+## 3.11.0
+### Added
+- Enable preselecting a device by serial number when launching from the
+  command line.
 ### Changed
 - Better reliability in China. The app list is not loaded from GitHub any
   longer but from developer.nordicsemi.com, which should be easier to reach
   from China.
+- Notify users if their installed JLink version is different to the JLink
+  version bundled with nRF Connect for Desktop.
+### Removed
+- Support for running apps with the old look & feel.
 
 ## 3.10.0 - 2022-02-02
 ### Added
