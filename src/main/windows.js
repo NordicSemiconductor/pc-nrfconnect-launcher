@@ -79,6 +79,8 @@ function openAppWindow(app) {
         y,
         width,
         height,
+        minHeight: 500,
+        minWidth: 760,
         show: true,
         backgroundColor: '#fff',
     });
