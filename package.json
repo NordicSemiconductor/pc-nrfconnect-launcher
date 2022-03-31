@@ -1,5 +1,5 @@
 {
-    "name": "nrfconnect",
+    "name": "nrfconnect-ble",
     "version": "3.10.1-pre2",
     "description": "nRF Connect for Desktop",
     "repository": {
