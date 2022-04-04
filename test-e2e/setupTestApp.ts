@@ -45,7 +45,7 @@ export const setup = async ({
     additionalBeforeEach = () => {},
     openLocalApp,
     openOfficialApp,
-    settingsJsonPath,
+    settingsJsonPath = 'launcher/fixtures/default/settings.json',
     skipUpdateApps = true,
 }: setupConfig) => {
     const absoluteAppsRootDir = path.resolve(__dirname, appsRootDir);
