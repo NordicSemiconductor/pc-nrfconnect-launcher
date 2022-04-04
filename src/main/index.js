@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+// eslint-disable-next-line strict,lines-around-directive -- because we are not inside a module, using strict is helpful here
 'use strict';
 
 // Run this as soon as possible, so that the user data folder is not already initialised by Electron

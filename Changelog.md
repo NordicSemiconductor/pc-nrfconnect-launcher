@@ -1,11 +1,12 @@
 ## Unreleased
 
 ### Added
-- Spinner for loading apps (removed during 3.11).
+
+-   Spinner for loading apps (removed during 3.11).
+
 ### Changed
-- Increased default height to show 5 apps on startup.
-- Reduced icon size.
-- Scrollbar design is now slimmer. 
+
+-   Layout in the launcher: Reduced app icon sizes and by default show 5 apps.
 
 ## 3.11.0
 

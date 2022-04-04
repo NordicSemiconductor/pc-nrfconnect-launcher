@@ -4,8 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+// eslint-disable-next-line strict,lines-around-directive -- because we are not inside a module, using strict is helpful here
 'use strict';
 
+const axios = require('axios');
+const fs = require('fs');
+const { mkdir } = require('fs/promises');
+const path = require('path');
+const crypto = require('crypto');
 const config = require('./src/main/config');
 
 if (process.platform !== 'win32') {
@@ -15,28 +21,22 @@ if (process.platform !== 'win32') {
     process.exit();
 }
 
-const axios = require('axios');
-const fs = require('fs');
-const { mkdir } = require('fs/promises');
-const path = require('path');
-const crypto = require('crypto');
-
 const formatJlinkVersion = version => version.replace('.', '');
 const minVersion = formatJlinkVersion(config.bundledJlinkVersion());
 
 const FILENAME = `JLink_Windows_${minVersion}.exe`;
 
-const FILENAME_x86 = `JLink_Windows_${minVersion}_i386.exe`;
-const FILENAME_x64 = `JLink_Windows_${minVersion}_x86_64.exe`;
+const FILENAME_X86 = `JLink_Windows_${minVersion}_i386.exe`;
+const FILENAME_X64 = `JLink_Windows_${minVersion}_x86_64.exe`;
 
-let target_file_name;
+let targetFileName;
 if (process.arch === 'ia32') {
-    target_file_name = FILENAME_x86;
+    targetFileName = FILENAME_X86;
 } else {
-    target_file_name = FILENAME_x64;
+    targetFileName = FILENAME_X64;
 }
 
-const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${target_file_name}`;
+const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${targetFileName}`;
 
 const outputDirectory = 'build';
 const DESTINATION_FILE_PATH = path.join(outputDirectory, FILENAME);

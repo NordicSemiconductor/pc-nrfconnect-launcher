@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const electronApp = require('electron').app;
 const path = require('path');
 const fs = require('fs');

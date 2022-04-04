@@ -17,7 +17,7 @@ jobs:
   strategy:
     matrix:
       linux:
-        IMAGE_NAME: 'ubuntu-18.04'
+        IMAGE_NAME: 'ubuntu-latest'
       macOS:
         IMAGE_NAME: 'macos-11'
       win32:
@@ -71,7 +71,7 @@ jobs:
       cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm ci
-      npm run lint
+      npm run check
       npm run build
       npm test
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
@@ -84,7 +84,7 @@ jobs:
       cat .npmrc-internal >> .npmrc
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm ci
-      npm run lint
+      npm run check
       npm run build
       npm test
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
@@ -114,7 +114,7 @@ jobs:
 
   - script: |
       npm ci
-      npm run lint
+      npm run check
       npm run build
       npm test
     env: {
@@ -130,7 +130,7 @@ jobs:
   - bash: |
       set -o errexit -o pipefail
       npm ci
-      npm run lint
+      npm run check
       npm run build
       npm test
     condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
@@ -141,7 +141,7 @@ jobs:
       npm i -g node-gyp@6.0.1
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm ci
-      npm run lint
+      npm run check
       npm run build
       npm test
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
