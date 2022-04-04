@@ -115,6 +115,7 @@
         "roboto-fontface": "0.10.0",
         "serialport": "8.0.8",
         "shasum": "1.0.2",
+        "sudo-prompt": "^9.2.1",
         "targz": "1.0.1",
         "uuid": "8.1.0",
         "yargs": "15.3.1"
