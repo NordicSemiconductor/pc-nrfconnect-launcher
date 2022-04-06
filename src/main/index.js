@@ -21,6 +21,7 @@ const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
 const { createTextFile } = require('./fileUtil');
+const fs = require('fs');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -30,48 +31,44 @@ global.homeDir = config.getHomeDir();
 global.userDataDir = config.getUserDataDir();
 global.appsRootDir = config.getAppsRootDir();
 
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-
 electronApp.allowRendererProcessReuse = false;
 
-electronApp.on('ready', () => {
+electronApp.on('ready', async () => {
     loadDevtools();
 
-    Menu.setApplicationMenu(applicationMenu);
-    apps.initAppsDirectory()
-        .then(() => apps.getOfficialApps())
-        .then(applications => {
-            const existingBleApp = applications.fulfilled.find(
-                app => app.name === 'pc-nrfconnect-ble'
-            );
 
-            if (!existingBleApp || existingBleApp.currentVersion !== '3.0.1') {
-                return apps.installOfficialApp(
-                    'pc-nrfconnect-ble',
-                    '3.0.1',
-                    'official'
-                );
-            }
-            return Promise.resolve();
-        })
-        .then(() => {
-            return windows.openOfficialAppWindow(
+    try {
+        const bundlePath = `${config.getElectronResourcesDir()}/bundle/`;
+        const appToLaunch = await apps.readAppInfo(bundlePath);
+        if (await fs.existsSync(bundlePath)) {
+            return windows.openAppWindow(appToLaunch);
+        }
+        const applications = await apps.getOfficialApps();
+        const existingBleApp = applications.fulfilled.find(
+            app => app.name === 'pc-nrfconnect-ble'
+        );
+
+        if (!existingBleApp || existingBleApp.currentVersion !== '3.0.1') {
+            await apps.installOfficialApp(
                 'pc-nrfconnect-ble',
+                '3.0.1',
                 'official'
             );
-        })
-        .catch(error => {
-            dialog.showMessageBox(
-                {
-                    type: 'error',
-                    title: 'Initialization error',
-                    message: 'Error when starting application',
-                    detail: error.message,
-                    buttons: ['OK'],
-                },
-                () => electronApp.quit()
-            );
-        });
+        }
+
+        await windows.openOfficialAppWindow('pc-nrfconnect-ble', 'official');
+    } catch (error) {
+        dialog.showMessageBox(
+            {
+                type: 'error',
+                title: 'Initialization error',
+                message: 'Error when starting application',
+                detail: error.message,
+                buttons: ['OK'],
+            },
+            () => electronApp.quit()
+        );
+    }
 });
 
 electronApp.on('window-all-closed', () => {

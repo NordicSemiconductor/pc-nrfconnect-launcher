@@ -1,5 +1,5 @@
 {
-    "name": "nrfconnect-ble",
+    "name": "nrfconnect-bluetooth-le",
     "version": "3.10.1-pre2",
     "description": "nRF Connect for Desktop",
     "repository": {
@@ -36,11 +36,7 @@
             "dist/",
             "src/main/",
             "node_modules/",
-            "resources/*.html",
-            "resources/*.png",
-            "resources/*.ico",
-            "resources/*.svg",
-            "resources/mac/"
+            "resources/**/*"
         ],
         "directories": {
             "output": "release"
@@ -98,6 +94,7 @@
         "@mdi/font": "3.7.95",
         "@nordicsemiconductor/nrf-device-lib-js": "^0.4.4",
         "axios": "0.22.0",
+        "bluetooth-numbers-database": "github:NordicSemiconductor/bluetooth-numbers-database#75bb6a8079",
         "chmodr": "1.2.0",
         "electron-log": "4.2.0",
         "electron-store": "8.0.1",

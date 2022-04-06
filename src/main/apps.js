@@ -648,4 +648,5 @@ module.exports = {
     removeOfficialApp,
     removeSourceDirectory,
     downloadReleaseNotes,
+    readAppInfo,
 };

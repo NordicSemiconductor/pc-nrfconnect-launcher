@@ -81,7 +81,7 @@ function init(argv) {
         argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
     appsJsonUrl =
         'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
-    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
+    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-bluetooth-le-apps/';
     releaseNotesUrl =
         'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
     skipUpdateApps = argv['skip-update-apps'] || false;
