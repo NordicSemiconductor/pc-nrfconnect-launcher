@@ -1,4 +1,4 @@
-## 3.11.0
+## 3.11.0 - 2022-04-07
 ### Added
 - Enable preselecting a device by serial number when launching from the
   command line.
