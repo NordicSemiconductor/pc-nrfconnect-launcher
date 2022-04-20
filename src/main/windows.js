@@ -33,7 +33,7 @@ function openLauncherWindow() {
             url: `file://${config.getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
-            height: 500,
+            height: 600,
             center: true,
             splashScreen: !config.isSkipSplashScreen(),
         });
