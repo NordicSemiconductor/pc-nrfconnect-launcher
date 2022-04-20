@@ -1,3 +1,8 @@
+## Unreleased
+
+### Added
+- Spinner for loading apps (removed during 3.11).
+
 ## 3.11.0
 ### Added
 - Enable preselecting a device by serial number when launching from the
