@@ -4,27 +4,25 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+@import '~pc-nrfconnect-shared/styles';
+
 %pretty-scrollbar {
     overflow: overlay;
 
-    &::-webkit-scrollbar {
-        width: 16px;
-    }
-
+    &::-webkit-scrollbar,
     &::-webkit-scrollbar-corner {
-        background-color: rgba(0,0,0,0);
+        width: 14px;
+        height: 14px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: rgba(0,0,0,0.3);
-        border-radius: 10px;
-        border: 5px solid transparent;
-        background-clip: padding-box;
+        background: $gray-500; // #607d8b;
+        border-radius: 14px;
+        border: 5px solid $gray-100; //#cfd8dc;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(0,0,0,0.6);
-        border-width: 4px;
+        background-color: $gray-700; //#455a64;
     }
 }
 

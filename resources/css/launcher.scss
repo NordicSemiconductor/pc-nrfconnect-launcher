@@ -73,13 +73,13 @@ body {
     }
 
     .content-container {
-        padding-right: 16px;
+        padding-right: 14px;
     }
 
     .with-scrollbar {
         // Height: subtract navigation header (64px), the 16px margin at top and 16 px spacing bottom
         height: calc(100vh - 64px - 16px - 16px);
-        margin: 16px 16px 0 0;
+        margin: 14px 14px 0 0;
         @extend %pretty-scrollbar;
     }
     .filter-adjusted-height {
