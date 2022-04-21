@@ -2,6 +2,8 @@
 
 ### Added
 - Spinner for loading apps (removed during 3.11).
+### Changed
+- Increased default height to show 5 apps on startup.
 
 ## 3.11.0
 ### Added
