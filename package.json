@@ -99,7 +99,6 @@
         "@nordicsemiconductor/nrf-device-lib-js": "0.4.5",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
-        "electron-log": "4.2.0",
         "electron-store": "8.0.1",
         "electron-updater": "4.3.1",
         "eslint-config-airbnb": "18.1.0",
