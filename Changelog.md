@@ -6,6 +6,8 @@
 - Increased default height to show 5 apps on startup.
 - Reduced icon size.
 - Scrollbar design is now slimmer. 
+### Fixed
+- Issues relating to programming and erasing some devices.
 
 ## 3.11.0
 ### Added
