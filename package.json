@@ -14,7 +14,7 @@
         "webpack": "webpack build --mode development",
         "build": "webpack build",
         "test": "jest src/",
-        "check": "run-p --silent --continue-on-error --print-label 'check:*'",
+        "check": "run-p --silent --continue-on-error --print-label check:*",
         "check:lint": "eslint --color .",
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
@@ -90,7 +90,7 @@
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v6.0.2",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v6.0.5",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
