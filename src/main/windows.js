@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const electron = require('electron');
 const path = require('path');
 const browser = require('./browser');

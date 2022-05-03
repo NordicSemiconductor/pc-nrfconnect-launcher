@@ -33,7 +33,9 @@ const loadApp = appDir => {
 
     // Using window.require instead of require, so that webpack
     // ignores it when bundling core
-    return window.require(appDir);
+    const app = window.require(appDir);
+
+    return app.default ?? app;
 };
 
 const ensureDirExists = async dir => {
