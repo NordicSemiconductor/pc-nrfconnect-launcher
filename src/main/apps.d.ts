@@ -16,7 +16,6 @@ export interface App {
     iconPath?: string;
     shortcutIconPath?: string;
     isOfficial?: string;
-    sharedVersion?: string;
     source?: string;
     url?: string;
     releaseNote?: string;
