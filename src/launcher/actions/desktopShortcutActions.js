@@ -6,8 +6,6 @@
 
 /* eslint-disable no-bitwise */
 
-'use strict';
-
 import { require as remoteRequire } from '@electron/remote';
 import { shell } from 'electron';
 import fs from 'fs';

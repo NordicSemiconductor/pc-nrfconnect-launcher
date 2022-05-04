@@ -5,8 +5,7 @@
  */
 
 import { require as remoteRequire } from '@electron/remote';
-import log from 'electron-log';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
 import * as AppsActions from './appsActions';
 import * as SettingsActions from './settingsActions';
@@ -91,7 +90,7 @@ export function checkForCoreUpdates() {
 
         const checkForUpdatesPromise = autoUpdater.checkForUpdates();
         if (!checkForUpdatesPromise) {
-            log.warn(
+            logger.warn(
                 'Not checking for nRF Connect for Desktop updates. ' +
                     'Auto update is not yet supported for this platform.'
             );

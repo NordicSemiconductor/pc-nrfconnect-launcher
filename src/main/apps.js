@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const path = require('path');
 const fs = require('fs-extra');
 const { dialog } = require('electron');

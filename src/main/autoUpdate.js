@@ -4,14 +4,25 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
+const { createLogger, transports } = require('winston');
+const path = require('path');
 const { autoUpdater, CancellationToken } = require('electron-updater');
-const log = require('electron-log');
+
+const config = require('./config');
+
+const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
+const logger = createLogger({
+    transports: [
+        new transports.File({
+            dirname: nrfConnectPath,
+            filename: 'autoUpdate.log',
+            level: 'info',
+        }),
+    ],
+});
 
 autoUpdater.autoDownload = false;
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
+autoUpdater.logger = logger;
 
 module.exports.autoUpdater = autoUpdater;
 module.exports.CancellationToken = CancellationToken;

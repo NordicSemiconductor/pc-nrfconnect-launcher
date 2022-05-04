@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const electron = require('electron');
 const path = require('path');
 const browser = require('./browser');
@@ -33,7 +31,7 @@ function openLauncherWindow() {
             url: `file://${config.getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
-            height: 500,
+            height: 600,
             center: true,
             splashScreen: !config.isSkipSplashScreen(),
         });

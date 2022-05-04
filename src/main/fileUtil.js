@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const fs = require('fs');
 const fse = require('fs-extra');
 const path = require('path');

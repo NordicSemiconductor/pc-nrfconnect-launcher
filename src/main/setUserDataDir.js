@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-'use strict';
-
 const { argv } = require('yargs');
 const { ensureDirSync } = require('fs-extra');
 const { app } = require('electron');
