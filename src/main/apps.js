@@ -14,7 +14,6 @@ const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
 const settings = require('./settings');
-const requiredVersionOfShared = require('./requiredVersionOfShared');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
 
@@ -335,7 +334,6 @@ function readAppInfo(appPath) {
                 ? shortcutIconPath
                 : null,
             isOfficial,
-            sharedVersion: requiredVersionOfShared(packageJson),
             engineVersion: packageJson.engines?.nrfconnect,
             source,
             repositoryUrl: packageJson.repository?.url,
