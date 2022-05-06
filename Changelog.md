@@ -7,6 +7,7 @@
 
 ### Changed
 
+-   Speed up app launches.
 -   Layout in the launcher: Reduced app icon sizes and by default show 5 apps.
 
 ### Fixed
