@@ -36,6 +36,7 @@ function setLoginRequestSent(state, username) {
     return hideLoginDialog(state).set('username', username);
 }
 
+// eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ProxyActions.PROXY_LOGIN_REQUESTED_BY_SERVER:

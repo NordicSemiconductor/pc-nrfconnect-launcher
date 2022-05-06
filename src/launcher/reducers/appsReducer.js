@@ -94,6 +94,7 @@ function setAppReleaseNote(state, source, name, releaseNote) {
     );
 }
 
+// eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case AppsActions.LOAD_LOCAL_APPS:
