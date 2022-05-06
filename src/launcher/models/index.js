@@ -48,4 +48,4 @@ function getImmutableApp(app) {
     });
 }
 
-export { getImmutableApp as default };
+export default getImmutableApp;
