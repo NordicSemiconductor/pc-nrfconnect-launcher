@@ -3,14 +3,15 @@
 ### Added
 
 -   Support the nRF5340 Audio DK (PCA10121).
--   Spinner for loading apps (removed during 3.11).
 
 ### Changed
 
+-   Speed up app launches.
 -   Layout in the launcher: Reduced app icon sizes and by default show 5 apps.
 
 ### Fixed
 
+-   Returned spinner while loading apps (removed during 3.11.0).
 -   Some issues when programming and erasing devices in the Programmer app.
 
 ## 3.11.0

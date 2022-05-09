@@ -43,7 +43,7 @@ function downloadToBuffer(
     url,
     enableProxyLogin,
     headers = {},
-    progressIdentifiers
+    progressIdentifiers = undefined
 ) {
     return new Promise((resolve, reject) => {
         const request = net.request({

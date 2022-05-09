@@ -14,6 +14,7 @@ const InitialState = Record({
 });
 const initialState = new InitialState();
 
+// eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 export default (state = initialState, action) => {
     switch (action.type) {
         case Actions.HIDE_RELEASE_NOTES:

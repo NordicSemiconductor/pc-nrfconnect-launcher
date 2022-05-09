@@ -45,6 +45,7 @@ function removeSource(state, name) {
     return state.set('sources', newSources);
 }
 
+// eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SettingsActions.SETTINGS_LOAD:

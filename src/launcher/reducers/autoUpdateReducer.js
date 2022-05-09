@@ -37,6 +37,7 @@ function setPercentDownloadedAsInteger(state, percentDownloaded) {
     return state.set('percentDownloaded', parseInt(percentDownloaded, 10));
 }
 
+// eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case AutoUpdateActions.AUTO_UPDATE_AVAILABLE:
