@@ -6,12 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import {
-    getAppLogDir,
-    getUserDataDir,
-    logger,
-    setAppDirs,
-} from 'pc-nrfconnect-shared';
+import { getUserDataDir, setAppDirs } from 'pc-nrfconnect-shared';
 
 import { mkdirIfNotExists } from '../main/mkdir';
 
@@ -68,6 +63,5 @@ export default async appDir => {
     await ensureDirExists(appDataDir);
     await ensureDirExists(appLogDir);
 
-    logger.addFileTransport(getAppLogDir());
     return loadApp(appDir);
 };
