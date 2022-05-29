@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "3.11.1-pre5",
+    "version": "3.11.1",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
