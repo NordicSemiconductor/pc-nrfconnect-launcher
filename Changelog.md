@@ -1,4 +1,4 @@
-## Unreleased
+## 3.11.1 - 2022-05-30
 
 ### Added
 
@@ -14,7 +14,7 @@
 -   Returned spinner while loading apps (removed during 3.11.0).
 -   Some issues when programming and erasing devices in the Programmer app.
 
-## 3.11.0
+## 3.11.0 - 2022-04-26
 
 ### Added
 
