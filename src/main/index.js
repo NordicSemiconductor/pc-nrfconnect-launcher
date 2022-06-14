@@ -112,17 +112,28 @@ ipcMain.on('show-about-dialog', event => {
     }
 });
 
+const getAppDetails = appWindow => ({
+    coreVersion: config.getVersion(),
+    corePath: config.getElectronRootPath(),
+    homeDir: config.getHomeDir(),
+    tmpDir: config.getTmpDir(),
+    bundledJlink: config.bundledJlinkVersion(),
+    ...appWindow.app,
+});
+
+ipcMain.handle('get-app-details', event => {
+    const appWindow = windows.getAppWindow(event.sender);
+    if (appWindow) {
+        return getAppDetails(appWindow);
+    }
+    throw new Error('App window not found');
+});
+
+// This can be removed once shared is updated in all apps to use invoke
 ipcMain.on('get-app-details', event => {
     const appWindow = windows.getAppWindow(event.sender);
     if (appWindow) {
-        event.sender.send('app-details', {
-            coreVersion: config.getVersion(),
-            corePath: config.getElectronRootPath(),
-            homeDir: config.getHomeDir(),
-            tmpDir: config.getTmpDir(),
-            bundledJlink: config.bundledJlinkVersion(),
-            ...appWindow.app,
-        });
+        event.sender.send('app-details', getAppDetails(appWindow));
     }
 });
 
