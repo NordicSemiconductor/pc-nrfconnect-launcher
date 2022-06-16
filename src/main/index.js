@@ -33,6 +33,9 @@ const { createTextFile } = require('./fileUtil');
 process.chdir(electronApp.getPath('temp'));
 
 config.init(argv);
+// Has to be required after config.init
+const { logger } = require('./log');
+
 global.homeDir = config.getHomeDir();
 global.userDataDir = config.getUserDataDir();
 global.appsRootDir = config.getAppsRootDir();
@@ -70,6 +73,14 @@ electronApp.on('ready', () => {
                 () => electronApp.quit()
             );
         });
+});
+
+electronApp.on('render-process-gone', (event, wc, details) => {
+    logger.error(`Renderer crashed ${wc.browserWindowOptions.title}`, details);
+});
+
+electronApp.on('child-process-gone', (event, details) => {
+    logger.error(`Child process crashed `, details);
 });
 
 electronApp.on('window-all-closed', () => {

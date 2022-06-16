@@ -1,3 +1,9 @@
+## Unreleased
+
+### Added
+
+-   Log window crashes to file.
+
 ## 3.11.1 - 2022-05-30
 
 ### Added
