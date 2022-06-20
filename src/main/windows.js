@@ -10,6 +10,7 @@ const browser = require('./browser');
 const config = require('./config');
 const settings = require('./settings');
 const apps = require('./apps');
+const { registerLauncherWindow } = require('./net');
 
 let launcherWindow;
 const appWindows = [];
@@ -35,6 +36,8 @@ function openLauncherWindow() {
             center: true,
             splashScreen: !config.isSkipSplashScreen(),
         });
+
+        registerLauncherWindow(launcherWindow);
 
         launcherWindow.on('close', event => {
             if (appWindows.length > 0) {

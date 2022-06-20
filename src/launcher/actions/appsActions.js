@@ -380,7 +380,6 @@ export function installOfficialApp(name, source) {
         sendAppUsageData(EventAction.INSTALL_APP, source, name);
         dispatch(installOfficialAppAction(name, source));
 
-        ipcRenderer.send('download-start', name);
         mainApps
             .installOfficialApp(name, 'latest', source)
             .then(() => {
@@ -429,7 +428,6 @@ export function upgradeOfficialApp(name, version, source) {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeOfficialAppAction(name, version, source));
 
-        ipcRenderer.send('download-start', name);
         return mainApps
             .installOfficialApp(name, version, source)
             .then(() => {

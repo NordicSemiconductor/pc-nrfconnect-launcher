@@ -32,7 +32,7 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(thunk))
 );
 
-ipcRenderer.on('progress-update', (event, message) => {
+ipcRenderer.on('progress-update', (_, message) => {
     store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...message });
 });
 
