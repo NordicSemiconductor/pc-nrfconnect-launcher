@@ -10,7 +10,9 @@ const browser = require('./browser');
 const config = require('./config');
 const settings = require('./settings');
 const apps = require('./apps');
-const { registerLauncherWindow } = require('./net');
+const {
+    registerLauncherWindowfromMain: registerLauncherWindow,
+} = require('../ipc/sendToLauncherWindow');
 
 let launcherWindow;
 const appWindows = [];

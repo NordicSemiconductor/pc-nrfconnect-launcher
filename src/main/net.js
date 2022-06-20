@@ -6,6 +6,9 @@
 
 const fs = require('fs');
 const { net, session } = require('electron');
+const {
+    sendFromMain: sendDownloadProgress,
+} = require('../ipc/downloadProgress');
 
 // Using the same session name as electron-updater, so that proxy credentials
 // (if required) only have to be sent once.
@@ -26,14 +29,8 @@ function registerProxyLoginHandler(onLoginRequested) {
     onProxyLogin = onLoginRequested;
 }
 
-let launcherWindow;
-
-function registerLauncherWindow(newLauncherWindow) {
-    launcherWindow = newLauncherWindow;
-}
-
 function reportInstallProgress({ name, source }, progress, totalInstallSize) {
-    launcherWindow.webContents.send('progress-update', {
+    sendDownloadProgress({
         name,
         source,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
@@ -187,5 +184,4 @@ module.exports = {
     downloadToJson,
     isResourceNotFound,
     registerProxyLoginHandler,
-    registerLauncherWindow,
 };

@@ -9,11 +9,11 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
 import { require as remoteRequire } from '@electron/remote';
-import { ipcRenderer } from 'electron';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
+import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
@@ -32,8 +32,8 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(thunk))
 );
 
-ipcRenderer.on('progress-update', (_, message) => {
-    store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...message });
+registerDownloadProgressHandler(progress => {
+    store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...progress });
 });
 
 const rootElement = React.createElement(RootContainer, { store });
