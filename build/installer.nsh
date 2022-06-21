@@ -17,6 +17,8 @@
   ; Put the files to the output directory.
   File "${BUILD_RESOURCES_DIR}\drivers\nrf-device-lib-driver-installer.exe"
 
+  BringToFront
+
   ExecShell 'runas' '"$INSTDIR\nrf-device-lib-driver-installer.exe"'
 
   ; ===============================================================
@@ -39,7 +41,7 @@
   !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
   !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
   !define JLinkRegistryRoot "SOFTWARE\Segger\J-Link"
-  
+
   File ${JlinkInstallerResPath}
 
   ; Check if the version exist in the registry
