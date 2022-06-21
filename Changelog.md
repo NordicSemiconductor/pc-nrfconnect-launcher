@@ -4,6 +4,11 @@
 
 -   Log window crashes to file.
 
+### Fixed
+
+-   macOS: Froze a few seconds after launch for a few seconds (happened when
+    usage data was enabled).
+
 ## 3.11.1 - 2022-05-30
 
 ### Added
