@@ -9,6 +9,7 @@ import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
 import { getAppsRootDir } from '../../main/config';
 import checkAppCompatibility from '../util/checkAppCompatibility';
 import mainConfig from '../util/mainConfig';
@@ -18,7 +19,6 @@ import {
     sendLauncherUsageData,
 } from './usageDataActions';
 
-const net = remoteRequire('../main/net');
 const fs = remoteRequire('fs-extra');
 
 const mainApps = remoteRequire('../main/apps');
@@ -274,7 +274,7 @@ function downloadAppIcon(source, name, iconPath, iconUrl) {
         if (fs.existsSync(iconPath)) {
             dispatch(setAppIconPath(source, name, iconPath));
         }
-        net.downloadToFile(iconUrl, iconPath, false)
+        downloadToFile(iconUrl, iconPath)
             .then(() => dispatch(setAppIconPath(source, name, iconPath)))
             .catch(() => {
                 /* Ignore 404 not found. */

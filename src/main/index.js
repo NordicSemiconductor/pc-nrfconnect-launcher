@@ -28,6 +28,10 @@ const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
 const { createTextFile } = require('./fileUtil');
+const { downloadToFile } = require('./net');
+const {
+    registerHandlerFromMain: registerDownloadToFileHandler,
+} = require('../ipc/downloadToFile');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -144,6 +148,8 @@ ipcMain.handle('prevent-sleep-start', () =>
 ipcMain.on('preventing-sleep-end', (_, id) =>
     powerSaveBlocker.stop(Number(id))
 );
+
+registerDownloadToFileHandler(downloadToFile);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.
