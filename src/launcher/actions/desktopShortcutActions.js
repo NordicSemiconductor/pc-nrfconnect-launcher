@@ -14,7 +14,8 @@ import path from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { v4 } from 'uuid';
 
-const config = remoteRequire('../main/config');
+import mainConfig from '../util/mainConfig';
+
 const fileUtil = remoteRequire('../main/fileUtil');
 
 const mode =
@@ -69,10 +70,12 @@ function getArgs(app) {
 function createShortcutForWindows(app) {
     return dispatch => {
         const fileName = getFileName(app);
-        const filePath = path.join(config.getDesktopDir(), `${fileName}.lnk`);
+        const { desktopDir, electronExePath } = mainConfig();
+
+        const filePath = path.join(desktopDir, `${fileName}.lnk`);
         if (app.shortcutIconPath) {
             const shortcutStatus = shell.writeShortcutLink(filePath, {
-                target: config.getElectronExePath(),
+                target: electronExePath,
                 // In Windows, use double quote surrounding arguments
                 args: getArgs(app),
                 icon: app.shortcutIconPath,
@@ -110,7 +113,7 @@ function generateShortcutContent(app) {
     shortcutContent += `Version=${app.currentVersion}\n`;
     shortcutContent += `Name=${fileName}\n`;
     // In Linux, use single quote surrounding arguments
-    shortcutContent += `Exec=${config.getElectronExePath()} ${args}\n`;
+    shortcutContent += `Exec=${mainConfig().electronExePath} ${args}\n`;
     shortcutContent += 'Terminal=false\n';
     const { iconPath, shortcutIconPath } = app;
     shortcutContent += `Icon=${shortcutIconPath || iconPath}\n`;
@@ -130,12 +133,11 @@ function generateShortcutContent(app) {
 function createShortcutForLinux(app) {
     return dispatch => {
         const fileName = getFileName(app);
-        const desktopFilePath = path.join(
-            config.getDesktopDir(),
-            `${fileName}.desktop`
-        );
+        const { desktopDir, ubuntuDesktopDir } = mainConfig();
+
+        const desktopFilePath = path.join(desktopDir, `${fileName}.desktop`);
         const applicationsFilePath = path.join(
-            config.getUbuntuDesktopDir(),
+            ubuntuDesktopDir,
             `${fileName}.desktop`
         );
         const shortcutContent = generateShortcutContent(app);
@@ -179,16 +181,21 @@ function createShortcutForLinux(app) {
 function createShortcutForMacOS(app) {
     return async dispatch => {
         const fileName = getFileName(app);
-        let filePath = path.join(config.getDesktopDir(), `${fileName}.app`);
+        const {
+            desktopDir,
+            electronExePath,
+            electronRootPath,
+            homeDir,
+            tmpDir,
+        } = mainConfig();
+
+        let filePath = path.join(desktopDir, `${fileName}.app`);
         const templateName = `template-${v4()}.app`;
         const appTemplateTarPath = path.join(
-            config.getElectronRootPath(),
+            electronRootPath,
             '/resources/mac/template.tar.gz'
         );
-        const tmpAppPath = path.join(
-            config.getTmpDir(),
-            '/com.nordicsemi.nrfconnect'
-        );
+        const tmpAppPath = path.join(tmpDir, '/com.nordicsemi.nrfconnect');
         const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
         const appExecPath = path.join(
             filePath,
@@ -229,9 +236,10 @@ function createShortcutForMacOS(app) {
                 '/Contents/document.wflow'
             );
             // In MacOS spaces should be replaced
-            const shortcutCMD = `${config
-                .getElectronExePath()
-                .replace(/ /g, '\\ ')} ${getArgs(app)}`;
+            const shortcutCMD = `${electronExePath.replace(
+                / /g,
+                '\\ '
+            )} ${getArgs(app)}`;
             const wflowContentSource = fs.readFileSync(wflowTmpPath, 'UTF-8');
             Mustache.parse(wflowContentSource);
             const wflowContentData = {
@@ -250,10 +258,7 @@ function createShortcutForMacOS(app) {
             await fileUtil.copy(tmpAppTemplatePath, filePath);
 
             // Copy to Applications
-            filePath = path.join(
-                config.getHomeDir(),
-                `/Applications/${fileName}.app/`
-            );
+            filePath = path.join(homeDir, `/Applications/${fileName}.app/`);
             await fileUtil.copy(tmpAppTemplatePath, filePath);
 
             // Change mode

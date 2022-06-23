@@ -20,10 +20,10 @@ import * as ProxyActions from './actions/proxyActions';
 import * as UsageDataActions from './actions/usageDataActions';
 import RootContainer from './containers/RootContainer';
 import rootReducer from './reducers';
+import mainConfig from './util/mainConfig';
 
 import '../../resources/css/launcher.scss';
 
-const config = remoteRequire('../main/config');
 const settings = remoteRequire('../main/settings');
 const net = remoteRequire('../main/net');
 
@@ -45,7 +45,7 @@ const shouldCheckForUpdatesAtStartup = settings.get(
 function downloadLatestAppInfo() {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateApps()
+        !mainConfig().isSkipUpdateApps
     ) {
         return store.dispatch(AutoUpdateActions.downloadLatestAppInfo());
     }
@@ -55,7 +55,7 @@ function downloadLatestAppInfo() {
 function checkForCoreUpdates() {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
-        !config.isSkipUpdateCore() &&
+        !mainConfig.isSkipUpdateCore &&
         process.env.NODE_ENV !== 'development'
     ) {
         return store.dispatch(AutoUpdateActions.checkForCoreUpdates());

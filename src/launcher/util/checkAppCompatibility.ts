@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { require as remoteRequire } from '@electron/remote';
 import semver from 'semver';
 
 import { App } from '../../main/apps';
-
-const config = remoteRequire('../main/config');
+import mainConfig from './mainConfig';
 
 const undecided = { isDecided: false } as const;
 const compatible = { isDecided: true, isCompatible: true } as const;
@@ -64,7 +62,7 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
 
 export default (
     app: App,
-    providedVersionOfEngine = config.getVersion() as string
+    providedVersionOfEngine = mainConfig().version
 ): Compatible | Incompatible => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [checkEngineVersionIsSet, checkEngineIsSupported]) {

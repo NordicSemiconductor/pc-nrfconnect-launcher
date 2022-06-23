@@ -9,7 +9,9 @@ import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import { getAppsRootDir } from '../../main/config';
 import checkAppCompatibility from '../util/checkAppCompatibility';
+import mainConfig from '../util/mainConfig';
 import {
     EventAction,
     sendAppUsageData,
@@ -20,7 +22,6 @@ const net = remoteRequire('../main/net');
 const fs = remoteRequire('fs-extra');
 
 const mainApps = remoteRequire('../main/apps');
-const config = remoteRequire('../main/config');
 const settings = remoteRequire('../main/settings');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
@@ -308,7 +309,7 @@ export function loadOfficialApps(appName, appSource) {
         );
         apps.filter(({ path }) => !path).forEach(({ source, name, url }) => {
             const iconPath = join(
-                `${config.getAppsRootDir(source)}`,
+                `${getAppsRootDir(source, mainConfig())}`,
                 `${name}.svg`
             );
             const iconUrl = `${url}.svg`;
@@ -463,7 +464,7 @@ export function checkEngineAndLaunch(app) {
         const appCompatibility = checkAppCompatibility(app);
         const launchAppWithoutWarning =
             appCompatibility.isCompatible ||
-            config.isRunningLauncherFromSource();
+            mainConfig().isRunningLauncherFromSource;
 
         if (launchAppWithoutWarning) {
             launch(app);

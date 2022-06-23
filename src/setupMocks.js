@@ -4,12 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+jest.mock('electron', () => ({
+    ipcRenderer: {
+        sendSync: channel =>
+            channel === 'get-config'
+                ? {
+                      mocked: 'in tests',
+                  }
+                : 'Unknown channel used in tests',
+    },
+}));
+
 jest.mock('@electron/remote', () => ({
     require: module => {
-        if (module === '../main/config')
-            return {
-                getVersion: () => '1.2.3-running_in_unit_test',
-            };
         if (module === '../main/autoUpdate')
             return {
                 autoUpdater: {},
@@ -18,11 +25,6 @@ jest.mock('@electron/remote', () => ({
         return undefined;
     },
     getCurrentWindow: () => ({
-        reload: jest.fn(),
-
         getTitle: () => 'Not launcher',
     }),
-    app: {
-        getAppPath: () => process.cwd(),
-    },
 }));

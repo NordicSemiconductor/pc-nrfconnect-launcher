@@ -11,7 +11,7 @@ const config = require('./config');
 const settings = require('./settings');
 const apps = require('./apps');
 const {
-    registerLauncherWindowfromMain: registerLauncherWindow,
+    registerLauncherWindowFromMain: registerLauncherWindow,
 } = require('../ipc/sendToLauncherWindow');
 
 let launcherWindow;
