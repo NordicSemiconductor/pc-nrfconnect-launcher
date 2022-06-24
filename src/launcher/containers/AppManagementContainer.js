@@ -87,10 +87,6 @@ function mapDispatchToProps(dispatch) {
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
         onUpgrade: (name, version, source) =>
             dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
-        setAppManagementShow: show =>
-            dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter =>
-            dispatch(AppsActions.setAppManagementFilter(filter)),
     };
 }
 

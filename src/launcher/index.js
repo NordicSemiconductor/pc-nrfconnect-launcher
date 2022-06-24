@@ -16,6 +16,7 @@ import thunk from 'redux-thunk';
 
 import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
 import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/errorDialog';
+import { invokeGetFromRenderer as getSetting } from '../ipc/settings';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
@@ -26,7 +27,6 @@ import mainConfig from './util/mainConfig';
 
 import '../../resources/css/launcher.scss';
 
-const settings = remoteRequire('../main/settings');
 const net = remoteRequire('../main/net');
 
 const store = createStore(
@@ -44,11 +44,7 @@ registerShowErrorDialogHandler(errorMessage => {
 
 const rootElement = React.createElement(RootContainer, { store });
 
-const shouldCheckForUpdatesAtStartup = settings.get(
-    'shouldCheckForUpdatesAtStartup'
-);
-
-function downloadLatestAppInfo() {
+function downloadLatestAppInfo(shouldCheckForUpdatesAtStartup) {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
         !mainConfig().isSkipUpdateApps
@@ -58,7 +54,7 @@ function downloadLatestAppInfo() {
     return Promise.resolve();
 }
 
-function checkForCoreUpdates() {
+function checkForCoreUpdates(shouldCheckForUpdatesAtStartup) {
     if (
         shouldCheckForUpdatesAtStartup !== false &&
         !mainConfig.isSkipUpdateCore &&
@@ -78,12 +74,16 @@ net.registerProxyLoginHandler((authInfo, callback) => {
 
 render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(UsageDataActions.checkUsageDataSetting());
-    await store.dispatch(AppsActions.setAppManagementFilter());
+    store.dispatch(await AppsActions.setAppManagementFilter());
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadOfficialApps());
-    await store.dispatch(AppsActions.setAppManagementShow());
-    await store.dispatch(AppsActions.setAppManagementSource());
-    await downloadLatestAppInfo();
-    await checkForCoreUpdates();
+    store.dispatch(await AppsActions.setAppManagementShow());
+    store.dispatch(await AppsActions.setAppManagementSource());
+
+    const shouldCheckForUpdatesAtStartup = await getSetting(
+        'shouldCheckForUpdatesAtStartup'
+    );
+    await downloadLatestAppInfo(shouldCheckForUpdatesAtStartup);
+    await checkForCoreUpdates(shouldCheckForUpdatesAtStartup);
     UsageDataActions.sendEnvInfo();
 });

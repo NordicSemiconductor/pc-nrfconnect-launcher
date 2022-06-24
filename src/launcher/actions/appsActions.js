@@ -10,6 +10,10 @@ import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
+import {
+    invokeGetFromRenderer as getSetting,
+    sendSetFromRenderer as setSetting,
+} from '../../ipc/settings';
 import { getAppsRootDir } from '../../main/config';
 import checkAppCompatibility from '../util/checkAppCompatibility';
 import mainConfig from '../util/mainConfig';
@@ -22,7 +26,6 @@ import {
 const fs = remoteRequire('fs-extra');
 
 const mainApps = remoteRequire('../main/apps');
-const settings = remoteRequire('../main/settings');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
@@ -216,34 +219,36 @@ export function setAppReleaseNoteAction(source, name, releaseNote) {
     };
 }
 
-export function setAppManagementShow(show = {}) {
+export async function setAppManagementShow(show = {}) {
+    const previousSetting = await getSetting('app-management.show', {});
+
     const newState = {
         installed: true,
         available: true,
-        ...settings.get('app-management.show', {}),
+        ...previousSetting,
         ...show,
     };
-    settings.set('app-management.show', newState);
+    setSetting('app-management.show', newState);
     return {
         type: SET_APP_MANAGEMENT_SHOW,
         show: newState,
     };
 }
 
-export function setAppManagementFilter(filter) {
+export async function setAppManagementFilter(filter) {
     const newState =
         filter === undefined
-            ? settings.get('app-management.filter', '')
+            ? await getSetting('app-management.filter', '')
             : filter;
-    settings.set('app-management.filter', newState);
+    setSetting('app-management.filter', newState);
     return {
         type: SET_APP_MANAGEMENT_FILTER,
         filter: newState,
     };
 }
 
-export function setAppManagementSource(source, show) {
-    const sources = { ...settings.get('app-management.sources', {}) };
+export async function setAppManagementSource(source, show) {
+    const sources = await getSetting('app-management.sources', {});
     if (source) {
         if (show !== undefined) {
             sources[source] = show;
@@ -251,7 +256,7 @@ export function setAppManagementSource(source, show) {
             delete sources[source];
         }
     }
-    settings.set('app-management.sources', sources);
+    setSetting('app-management.sources', sources);
     return {
         type: SET_APP_MANAGEMENT_SOURCE,
         sources,

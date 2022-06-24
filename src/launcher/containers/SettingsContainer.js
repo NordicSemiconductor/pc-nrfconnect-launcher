@@ -37,7 +37,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onMount: () => dispatch(SettingsActions.loadSettings()),
+        onMount: () => SettingsActions.loadSettings(dispatch),
         onCheckUpdatesAtStartupChanged: isEnabled =>
             dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled)),
         onTriggerUpdateCheck: () =>
