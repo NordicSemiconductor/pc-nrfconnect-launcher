@@ -9,11 +9,13 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
 import { require as remoteRequire } from '@electron/remote';
+import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
+import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/errorDialog';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
@@ -34,6 +36,10 @@ const store = createStore(
 
 registerDownloadProgressHandler(progress => {
     store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...progress });
+});
+
+registerShowErrorDialogHandler(errorMessage => {
+    store.dispatch(ErrorDialogActions.showDialog(errorMessage));
 });
 
 const rootElement = React.createElement(RootContainer, { store });
