@@ -19,7 +19,7 @@ $enable-rounded: false;
 $body-bg: #cfd8dc;
 @import '~bootstrap/scss/bootstrap';
 
-@import './pretty-scrollbar';
+@import '~pc-nrfconnect-shared/styles';
 
 body {
     -webkit-user-select: none;
@@ -80,7 +80,8 @@ body {
         // Height: subtract navigation header (64px), the 16px margin at top and 16 px spacing bottom
         height: calc(100vh - 64px - 16px - 16px);
         margin: 14px 14px 0 0;
-        @extend %pretty-scrollbar;
+        overflow-y: overlay;
+        @include scrollbars($gray-100);
     }
     .filter-adjusted-height {
         // Height: subtract navigation header (64px) and filterbox (48px) and 16px spacing bottom
@@ -205,7 +206,8 @@ body {
 }
 
 .release-notes {
-    @extend %pretty-scrollbar;
+    overflow-y: overlay;
+    @include scrollbars($white);
     h2 {
         font-size: 1.25rem;
     }
