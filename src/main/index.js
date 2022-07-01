@@ -29,6 +29,16 @@ const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
 const { createTextFile } = require('./fileUtil');
 
+const nrfdlBinaries = join(
+    `${electronApp.getAppPath()}.unpacked`,
+    'node_modules',
+    '@nordicsemiconductor',
+    'nrf-device-lib-js',
+    'Release'
+);
+
+process.env.path = `${process.env.path};${nrfdlBinaries}`;
+
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
 
