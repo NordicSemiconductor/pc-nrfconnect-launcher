@@ -8,7 +8,6 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { require as remoteRequire } from '@electron/remote';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -16,6 +15,7 @@ import thunk from 'redux-thunk';
 
 import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
 import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/errorDialog';
+import { registerHandlerFromRenderer as registerProxyLoginHandler } from '../ipc/proxyLogin';
 import { invokeGetFromRenderer as getSetting } from '../ipc/settings';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
@@ -26,8 +26,6 @@ import rootReducer from './reducers';
 import mainConfig from './util/mainConfig';
 
 import '../../resources/css/launcher.scss';
-
-const net = remoteRequire('../main/net');
 
 const store = createStore(
     rootReducer,
@@ -40,6 +38,10 @@ registerDownloadProgressHandler(progress => {
 
 registerShowErrorDialogHandler(errorMessage => {
     store.dispatch(ErrorDialogActions.showDialog(errorMessage));
+});
+
+registerProxyLoginHandler((requestId, authInfo) => {
+    store.dispatch(ProxyActions.authenticate(requestId, authInfo));
 });
 
 const rootElement = React.createElement(RootContainer, { store });
@@ -64,13 +66,6 @@ function checkForCoreUpdates(shouldCheckForUpdatesAtStartup) {
     }
     return Promise.resolve();
 }
-
-net.registerProxyLoginHandler((authInfo, callback) => {
-    store.dispatch(ProxyActions.authenticate(authInfo)).then(credentials => {
-        const { username, password } = credentials;
-        return callback(username, password);
-    });
-});
 
 render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(UsageDataActions.checkUsageDataSetting());

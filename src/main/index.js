@@ -43,6 +43,10 @@ const {
     registerSetHandlerFromMain: registerSetSettingHandler,
     registerSetSourcesHandlerFromMain: registerSetSourcesSettingHandler,
 } = require('../ipc/settings');
+const {
+    registerHandlerFromMain: registerProxyLoginCredentialsHandler,
+} = require('../ipc/proxyLogin');
+const { callRegisteredCallback } = require('./proxyLogins');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -166,6 +170,7 @@ registerGetSettingHandler(settings.get);
 registerGetSourcesSettingHandler(settings.getSources);
 registerSetSettingHandler(settings.set);
 registerSetSourcesSettingHandler(settings.setSources);
+registerProxyLoginCredentialsHandler(callRegisteredCallback);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.
