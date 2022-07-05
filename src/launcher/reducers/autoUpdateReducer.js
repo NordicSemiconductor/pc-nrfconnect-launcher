@@ -42,8 +42,6 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case AutoUpdateActions.AUTO_UPDATE_AVAILABLE:
             return setUpdateAvailable(state, action.version);
-        case AutoUpdateActions.AUTO_UPDATE_POSTPONE:
-            return state.set('isUpdateAvailableDialogVisible', false);
         case AutoUpdateActions.AUTO_UPDATE_START_DOWNLOAD:
             return setDownloading(state, action);
         case AutoUpdateActions.AUTO_UPDATE_DOWNLOADING:
@@ -53,9 +51,7 @@ const reducer = (state = initialState, action) => {
             );
         case AutoUpdateActions.AUTO_UPDATE_CANCEL_DOWNLOAD:
             return state.set('isCancelling', true);
-        case AutoUpdateActions.AUTO_UPDATE_DOWNLOAD_CANCELLED:
-            return initialState;
-        case AutoUpdateActions.AUTO_UPDATE_ERROR:
+        case AutoUpdateActions.AUTO_UPDATE_RESET:
             return initialState;
         default:
             return state;

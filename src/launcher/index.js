@@ -8,13 +8,18 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { ErrorDialogActions, usageData } from 'pc-nrfconnect-shared';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
 import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/errorDialog';
+import {
+    registerUpdateFinishedHandlerFromRenderer as registerUpdateFinishedHandler,
+    registerUpdateProgressHandlerFromRenderer as registerUpdateProgressHandler,
+    registerUpdateStartedHandlerFromRenderer as registerUpdateStartedHandler,
+} from '../ipc/launcherUpdateProgress';
 import { registerHandlerFromRenderer as registerProxyLoginHandler } from '../ipc/proxyLogin';
 import { invokeGetFromRenderer as getSetting } from '../ipc/settings';
 import * as AppsActions from './actions/appsActions';
@@ -42,6 +47,19 @@ registerShowErrorDialogHandler(errorMessage => {
 
 registerProxyLoginHandler((requestId, authInfo) => {
     store.dispatch(ProxyActions.authenticate(requestId, authInfo));
+});
+
+registerUpdateStartedHandler(() => {
+    store.dispatch(AutoUpdateActions.startDownloadAction());
+});
+registerUpdateProgressHandler(percentage => {
+    store.dispatch(AutoUpdateActions.updateDownloadingAction(percentage));
+});
+registerUpdateFinishedHandler(isSuccessful => {
+    if (isSuccessful) {
+        usageData.reset();
+    }
+    store.dispatch(AutoUpdateActions.resetAction());
 });
 
 const rootElement = React.createElement(RootContainer, { store });

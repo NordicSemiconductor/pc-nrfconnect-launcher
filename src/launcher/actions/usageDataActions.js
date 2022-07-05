@@ -13,7 +13,6 @@ export const USAGE_DATA_DIALOG_SHOW = 'USAGE_DATA_DIALOG_SHOW';
 export const USAGE_DATA_DIALOG_HIDE = 'USAGE_DATA_DIALOG_HIDE';
 export const USAGE_DATA_SEND_ON = 'USAGE_DATA_SEND_ON';
 export const USAGE_DATA_SEND_OFF = 'USAGE_DATA_SEND_OFF';
-export const USAGE_DATA_SEND_RESET = 'USAGE_DATA_SEND_RESET';
 
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
@@ -53,13 +52,6 @@ export function setUsageDataOn() {
 export function setUsageDataOff() {
     return {
         type: USAGE_DATA_SEND_OFF,
-    };
-}
-
-export function resetUsageData() {
-    usageData.reset();
-    return {
-        type: USAGE_DATA_SEND_RESET,
     };
 }
 
