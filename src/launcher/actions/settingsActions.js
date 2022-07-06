@@ -4,9 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { require as remoteRequire } from '@electron/remote';
+// @ts-check
+
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import {
+    invokeDownloadAppsJsonFileFromRenderer as downloadAppsJsonFile,
+    invokeRemoveSourceDirectoryFromRenderer as removeSourceDirectory,
+} from '../../ipc/apps';
 import {
     invokeGetFromRenderer as getSetting,
     invokeGetSourcesFromRenderer as getSourcesSetting,
@@ -14,8 +19,6 @@ import {
     sendSetSourcesFromRenderer as setSourcesSetting,
 } from '../../ipc/settings';
 import * as AppsActions from './appsActions';
-
-const mainApps = remoteRequire('../main/apps');
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';
@@ -116,8 +119,7 @@ function addSourceAction(name, url) {
 
 export function addSource(url) {
     return (dispatch, getState) => {
-        mainApps
-            .downloadAppsJsonFile(url)
+        downloadAppsJsonFile(url)
             .then(source => dispatch(addSourceAction(source, url)))
             .then(() => {
                 setSourcesSetting(getState().settings.sources.toJS());
@@ -138,8 +140,7 @@ function sourceRemovedAction(name) {
 
 export function removeSource(name) {
     return (dispatch, getState) => {
-        mainApps
-            .removeSourceDirectory(name)
+        removeSourceDirectory(name)
             .then(() => dispatch(sourceRemovedAction(name)))
             .then(() => {
                 setSourcesSetting(getState().settings.sources.toJS());

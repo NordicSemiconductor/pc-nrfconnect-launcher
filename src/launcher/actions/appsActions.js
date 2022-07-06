@@ -9,6 +9,13 @@ import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import {
+    invokeDownloadReleaseNotesFromRenderer as downloadReleaseNotes,
+    invokeGetLocalAppsFromRenderer as getLocalApps,
+    invokeGetOfficialAppsFromRenderer as getOfficialApps,
+    invokeInstallOfficialAppFromRenderer as installOfficialAppInMain,
+    invokeRemoveOfficialAppFromRenderer as removeOfficialAppInMain,
+} from '../../ipc/apps';
 import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
 import {
     invokeGetFromRenderer as getSetting,
@@ -24,8 +31,6 @@ import {
 } from './usageDataActions';
 
 const fs = remoteRequire('fs-extra');
-
-const mainApps = remoteRequire('../main/apps');
 
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
@@ -290,8 +295,8 @@ function downloadAppIcon(source, name, iconPath, iconUrl) {
 export function loadLocalApps() {
     return dispatch => {
         dispatch(loadLocalAppsAction());
-        return mainApps
-            .getLocalApps()
+
+        return getLocalApps()
             .then(apps => dispatch(loadLocalAppsSuccess(apps)))
             .catch(error => {
                 dispatch(loadLocalAppsError());
@@ -300,11 +305,34 @@ export function loadLocalApps() {
     };
 }
 
+async function downloadAllReleaseNotesInBackground(
+    dispatch,
+    apps,
+    appName,
+    appSource
+) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const app of apps) {
+        if (appName && !(app.name === appName && app.source === appSource)) {
+            // eslint-disable-next-line no-continue
+            continue;
+        }
+
+        // eslint-disable-next-line no-await-in-loop
+        const releaseNote = await downloadReleaseNotes(app);
+        if (releaseNote != null) {
+            dispatch(
+                setAppReleaseNoteAction(app.source, app.name, releaseNote)
+            );
+        }
+    }
+}
+
 export function loadOfficialApps(appName, appSource) {
     return async dispatch => {
         dispatch(loadOfficialAppsAction());
         const { fulfilled: apps, rejected: appsWithErrors } =
-            await mainApps.getOfficialApps();
+            await getOfficialApps();
 
         dispatch(
             loadOfficialAppsSuccess(
@@ -320,32 +348,8 @@ export function loadOfficialApps(appName, appSource) {
             const iconUrl = `${url}.svg`;
             dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
         });
-        const downloadAllReleaseNotes = (app, ...rest) => {
-            if (!app) {
-                return Promise.resolve();
-            }
-            if (
-                appName &&
-                !(app.name === appName && app.source === appSource)
-            ) {
-                return downloadAllReleaseNotes(...rest);
-            }
-            return mainApps
-                .downloadReleaseNotes(app)
-                .then(
-                    releaseNote =>
-                        releaseNote &&
-                        dispatch(
-                            setAppReleaseNoteAction(
-                                app.source,
-                                app.name,
-                                releaseNote
-                            )
-                        )
-                )
-                .then(() => downloadAllReleaseNotes(...rest));
-        };
-        downloadAllReleaseNotes(...apps);
+
+        downloadAllReleaseNotesInBackground(dispatch, apps, appName, appSource);
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
@@ -386,8 +390,7 @@ export function installOfficialApp(name, source) {
         sendAppUsageData(EventAction.INSTALL_APP, source, name);
         dispatch(installOfficialAppAction(name, source));
 
-        mainApps
-            .installOfficialApp(name, 'latest', source)
+        installOfficialAppInMain(name, 'latest', source)
             .then(() => {
                 dispatch(installOfficialAppSuccessAction(name, source));
                 dispatch(loadOfficialApps(name, source));
@@ -413,8 +416,7 @@ export function removeOfficialApp(name, source) {
     return dispatch => {
         sendAppUsageData(EventAction.REMOVE_APP, source, name);
         dispatch(removeOfficialAppAction(name, source));
-        mainApps
-            .removeOfficialApp(name, source)
+        removeOfficialAppInMain(name, source)
             .then(() => {
                 dispatch(removeOfficialAppSuccessAction(name, source));
             })
@@ -434,8 +436,7 @@ export function upgradeOfficialApp(name, version, source) {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeOfficialAppAction(name, version, source));
 
-        return mainApps
-            .installOfficialApp(name, version, source)
+        return installOfficialAppInMain(name, version, source)
             .then(() => {
                 dispatch(
                     upgradeOfficialAppSuccessAction(name, version, source)

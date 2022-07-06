@@ -57,6 +57,21 @@ const {
     registerCancelUpdateHandlerFromMain: registerCancelUpdateHandler,
 } = require('../ipc/launcherUpdate');
 const { checkForUpdate, startUpdate, cancelUpdate } = require('./autoUpdate');
+const {
+    registerDownloadAppsJsonFileHandlerFromMain:
+        registerDownloadAppsJsonFileHandler,
+    registerRemoveSourceDirectoryHandlerFromMain:
+        registerRemoveSourceDirectoryHandler,
+    registerDownloadAllAppsJsonFilesHandlerFromMain:
+        registerDownloadAllAppsJsonFilesHandler,
+    registerGetLocalAppsHandlerFromMain: registerGetLocalAppsHandler,
+    registerGetOfficialAppsHandlerFromMain: registerGetOfficialAppsHandler,
+    registerDownloadReleaseNotesHandlerFromMain:
+        registerDownloadReleaseNotesHandler,
+    registerInstallOfficialAppHandlerFromMain:
+        registerInstallOfficialAppHandler,
+    registerRemoveOfficialAppHandlerFromMain: registerRemoveOfficialAppHandler,
+} = require('../ipc/apps');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -174,14 +189,26 @@ ipcMain.on('preventing-sleep-end', (_, id) =>
 
 registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
+
 registerGetSettingHandler(settings.get);
 registerGetSourcesSettingHandler(settings.getSources);
 registerSetSettingHandler(settings.set);
 registerSetSourcesSettingHandler(settings.setSources);
+
 registerProxyLoginCredentialsHandler(callRegisteredCallback);
+
 registerCheckForUpdateHandler(checkForUpdate);
 registerStartUpdateHandler(startUpdate);
 registerCancelUpdateHandler(cancelUpdate);
+
+registerDownloadAppsJsonFileHandler(apps.downloadAppsJsonFile);
+registerRemoveSourceDirectoryHandler(apps.removeSourceDirectory);
+registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
+registerGetLocalAppsHandler(apps.getLocalApps);
+registerGetOfficialAppsHandler(apps.getOfficialApps);
+registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
+registerInstallOfficialAppHandler(apps.installOfficialApp);
+registerRemoveOfficialAppHandler(apps.removeOfficialApp);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.

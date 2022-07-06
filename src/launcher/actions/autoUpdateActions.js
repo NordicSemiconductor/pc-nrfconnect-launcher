@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { require as remoteRequire } from '@electron/remote';
 import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
+import { invokeDownloadAllAppsJsonFilesFromRenderer as downloadAllAppsJsonFiles } from '../../ipc/apps';
 import {
     invokeCheckForUpdateFromRenderer as checkForLauncherUpdate,
     sendCancelUpdateFromRender as cancelLauncherUpdate,
@@ -19,8 +19,6 @@ export const AUTO_UPDATE_START_DOWNLOAD = 'AUTO_UPDATE_START_DOWNLOAD';
 export const AUTO_UPDATE_CANCEL_DOWNLOAD = 'AUTO_UPDATE_CANCEL_DOWNLOAD';
 export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
 export const AUTO_UPDATE_RESET = 'AUTO_UPDATE_RESET';
-
-const mainApps = remoteRequire('../main/apps');
 
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
@@ -88,9 +86,7 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
     return dispatch => {
         dispatch(AppsActions.downloadLatestAppInfoAction());
 
-        return mainApps
-            .downloadAppsJsonFiles()
-            .then(() => mainApps.generateUpdatesJsonFiles())
+        return downloadAllAppsJsonFiles()
             .then(() =>
                 dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
             )
