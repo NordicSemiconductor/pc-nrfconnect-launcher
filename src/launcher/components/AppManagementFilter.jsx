@@ -141,12 +141,13 @@ const AppManagementFilter = ({
 }) => {
     const searchFieldRef = useRef(null);
 
-    useHotKey(
-        ['command+e', 'ctrl+e', 'command+f', 'ctrl+f', 'command+l', 'ctrl+l'],
-        () => {
-            searchFieldRef.current.focus();
-        }
-    );
+    useHotKey({
+        hotKey: ['mod+e', 'mod+f', 'mod+l'],
+        title: 'Focus search field',
+        isGlobal: false,
+        action: () => searchFieldRef.current.focus(),
+    });
+
     return (
         <div className="filterbox w-100 d-inline-flex">
             <FilterDropdown
