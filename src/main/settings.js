@@ -8,7 +8,6 @@ const fs = require('fs');
 const config = require('./config');
 
 let data = null;
-let sourcesData = null;
 
 function parseJsonFile(filePath) {
     if (!fs.existsSync(filePath)) {
@@ -17,7 +16,7 @@ function parseJsonFile(filePath) {
     try {
         return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     } catch (err) {
-        console.log('Could not load settings. Reason: ', err);
+        console.error('Could not load settings. Reason: ', err);
     }
     return {};
 }
@@ -26,7 +25,6 @@ function load() {
     if (data !== null) {
         return;
     }
-    console.log(`Load settings from ${config.getSettingsJsonPath()}`);
     const settings = parseJsonFile(config.getSettingsJsonPath());
     if (settings && typeof settings === 'object') {
         data = settings;
@@ -37,24 +35,6 @@ function load() {
 
 function save() {
     fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
-}
-
-function loadSources() {
-    if (sourcesData !== null) {
-        return;
-    }
-    let sources = parseJsonFile(config.getSourcesJsonPath());
-    if (!sources || typeof sources !== 'object') {
-        sources = {};
-    }
-    sourcesData = {
-        ...sources,
-        official: config.getAppsJsonUrl(),
-    };
-}
-
-function saveSources() {
-    fs.writeFileSync(config.getSourcesJsonPath(), JSON.stringify(sourcesData));
 }
 
 exports.set = (key, value) => {
@@ -72,17 +52,6 @@ exports.get = (key, defaultValue = null) => {
     }
 
     return value;
-};
-
-exports.setSources = sources => {
-    loadSources();
-    sourcesData = sources;
-    saveSources();
-};
-
-exports.getSources = () => {
-    loadSources();
-    return sourcesData;
 };
 
 exports.unset = key => {

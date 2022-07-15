@@ -13,60 +13,14 @@ const config = require('./config');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
-const settings = require('./settings');
+const {
+    initialiseAllSources,
+    initialise,
+    getAllSources,
+    getAllSourceNames,
+} = require('./sources');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
-
-/**
- * Create sources.json if it does not exist.
- *
- * @returns {Promise} promise that resolves if successful.
- */
-function createSourcesJsonIfNotExists() {
-    const sources = settings.getSources();
-    settings.setSources(sources);
-    return Promise.resolve(sources);
-}
-
-/**
- * Create apps.json if it does not exist.
- *
- * @param {string} source name of external source.
- * @returns {Promise} promise that resolves if successful.
- */
-function createAppsJsonIfNotExists(source) {
-    return fileUtil.createJsonFileIfNotExists(
-        config.getAppsJsonPath(source),
-        {}
-    );
-}
-
-/**
- * Create updates.json if it does not exist.
- *
- * @param {string} source name of external source
- * @returns {Promise} promise that resolves if successful.
- */
-function createUpdatesJsonIfNotExists(source) {
-    return fileUtil.createJsonFileIfNotExists(
-        config.getUpdatesJsonPath(source),
-        {}
-    );
-}
-
-/**
- * Initialize directory structure of a source under external apps.
- *
- * @param {string} source name of external source.
- * @returns {Promise} promise that resolves is successful.
- */
-function initSourceDirectory(source) {
-    return fileUtil
-        .mkdirIfNotExists(config.getAppsRootDir(source))
-        .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir(source)))
-        .then(() => createAppsJsonIfNotExists(source))
-        .then(() => createUpdatesJsonIfNotExists(source));
-}
 
 /**
  * Download the apps.json file containing a list of official apps. The file
@@ -97,7 +51,7 @@ function downloadAppsJsonFile(url, name) {
             if (!source && url !== config.getAppsJsonUrl()) {
                 throw new Error('JSON does not contain expected `_source` tag');
             }
-            return initSourceDirectory(source)
+            return initialise(source)
                 .then(() =>
                     fileUtil.createJsonFile(
                         config.getAppsJsonPath(source),
@@ -116,7 +70,7 @@ function downloadAppsJsonFile(url, name) {
  * @returns {Promise} promise that resolves if successful.
  */
 function downloadAppsJsonFiles() {
-    const sources = settings.getSources();
+    const sources = getAllSources();
     const sequence = (source, ...rest) =>
         source
             ? downloadAppsJsonFile(sources[source], source).then(() =>
@@ -173,10 +127,7 @@ function generateUpdatesJsonFile(source) {
  * @returns {Promise} promise that resolves if successful.
  */
 function generateUpdatesJsonFiles() {
-    const sources = settings.getSources();
-    return Promise.all(
-        Object.keys(sources).map(source => generateUpdatesJsonFile(source))
-    );
+    return Promise.all(getAllSourceNames().map(generateUpdatesJsonFile));
 }
 
 function downloadAllAppsJsonFiles() {
@@ -285,13 +236,8 @@ function initAppsDirectory() {
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsLocalDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsExternalDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
-        .then(() => createSourcesJsonIfNotExists())
-        .then(sources =>
-            Promise.all(
-                Object.keys(sources).map(source => initSourceDirectory(source))
-            )
-        )
-        .then(() => installLocalAppArchives());
+        .then(initialiseAllSources)
+        .then(installLocalAppArchives);
 }
 
 /**
@@ -467,9 +413,8 @@ function getOfficialAppsFromSource(source) {
 }
 
 function getOfficialApps() {
-    const sources = settings.getSources();
     return Promise.allSettled(
-        Object.keys(sources).map(source => getOfficialAppsFromSource(source))
+        getAllSourceNames().map(getOfficialAppsFromSource)
     ).then(arrayOfArrays =>
         arrayOfArrays.reduce((acc, currentValue) => {
             const fulfilled = acc.fulfilled ? [...acc.fulfilled] : [];
@@ -638,7 +583,6 @@ async function downloadReleaseNotes({ url, homepage }) {
 
 module.exports = {
     initAppsDirectory,
-    initSourceDirectory,
     downloadAppsJsonFile,
     downloadAllAppsJsonFiles,
     getOfficialApps,

@@ -8,28 +8,17 @@ const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const shasum = require('shasum');
-const config = require('./config');
-const settings = require('./settings');
+const { getSourceUrl } = require('./sources');
 const net = require('./net');
-
-function getPackageUrl(name, regUrl) {
-    return url.resolve(regUrl, name);
-}
-
-function getRegistryUrl(source) {
-    if (source === 'official') {
-        return config.getRegistryUrl();
-    }
-    const sources = settings.getSources();
-    return url.resolve(sources[source], '.');
-}
 
 function getLatestFromPackageInfo(packageInfo) {
     return packageInfo['dist-tags'].latest;
 }
 
-function getPackageInfo(name, regUrl) {
-    return net.downloadToJson(getPackageUrl(name, regUrl), true);
+function getPackageInfo(name, sourceUrl) {
+    const packageUrl = new URL(name, sourceUrl).href;
+
+    return net.downloadToJson(packageUrl, true);
 }
 
 /**
@@ -40,11 +29,11 @@ function getPackageInfo(name, regUrl) {
  *
  * @param {string} name the package name.
  * @param {string} version either a semver version or 'latest'.
- * @param {string} regUrl the url of the registry to get the package from
+ * @param {string} sourceUrl the url of the source to get the package from
  * @returns {Promise} promise that resolves with the dist object.
  */
-function getDistInfo(name, version, regUrl) {
-    return getPackageInfo(name, regUrl).then(packageInfo => {
+function getDistInfo(name, version, sourceUrl) {
+    return getPackageInfo(name, sourceUrl).then(packageInfo => {
         let versionToInstall;
         if (version === 'latest') {
             versionToInstall = getLatestFromPackageInfo(packageInfo);
@@ -93,8 +82,8 @@ function verifyShasum(filePath, expectedShasum) {
  * @returns {Promise} promise that resolves with path to the downloaded file.
  */
 function downloadTarball(name, version, destinationDir, source) {
-    const regUrl = getRegistryUrl(source);
-    return getDistInfo(name, version, regUrl).then(distInfo => {
+    const sourceUrl = getSourceUrl(source);
+    return getDistInfo(name, version, sourceUrl).then(distInfo => {
         if (!distInfo.tarball) {
             return Promise.reject(
                 new Error(`No tarball found for ${name}@${version}`)
@@ -111,8 +100,8 @@ function downloadTarball(name, version, destinationDir, source) {
     });
 }
 
-function getLatestPackageVersion(name, regUrl) {
-    return getPackageInfo(name, regUrl).then(packageInfo =>
+function getLatestPackageVersion(name, sourceUrl) {
+    return getPackageInfo(name, sourceUrl).then(packageInfo =>
         getLatestFromPackageInfo(packageInfo)
     );
 }
@@ -128,7 +117,7 @@ function getLatestPackageVersion(name, regUrl) {
  */
 function getLatestPackageVersions(names, source) {
     const promises = names.map(name =>
-        getLatestPackageVersion(name, getRegistryUrl(source)).then(
+        getLatestPackageVersion(name, getSourceUrl(source)).then(
             latestVersion => ({
                 [name]: latestVersion,
             })

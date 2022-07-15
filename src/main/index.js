@@ -35,6 +35,7 @@ const { createTextFile } = require('./fileUtil');
 const { downloadToFile } = require('./net');
 const { createDesktopShortcut } = require('./createDesktopShortcut');
 const settings = require('./settings');
+const sources = require('./sources');
 const {
     registerHandlerFromMain: registerDownloadToFileHandler,
 } = require('../ipc/downloadToFile');
@@ -191,9 +192,9 @@ registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
 
 registerGetSettingHandler(settings.get);
-registerGetSourcesSettingHandler(settings.getSources);
+registerGetSourcesSettingHandler(sources.getAllSources);
 registerSetSettingHandler(settings.set);
-registerSetSourcesSettingHandler(settings.setSources);
+registerSetSourcesSettingHandler(sources.setAllSources);
 
 registerProxyLoginCredentialsHandler(callRegisteredCallback);
 

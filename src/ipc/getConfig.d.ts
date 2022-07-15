@@ -21,7 +21,6 @@ interface Configuration {
     isSkipUpdateCore: boolean;
     localAppName: string | null;
     officialAppName: string | null;
-    registryUrl: string;
     releaseNotesUrl: string;
     settingsJsonPath: string;
     sourceName: string;
