@@ -9,15 +9,14 @@
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
-    invokeDownloadAppsJsonFileFromRenderer as downloadAppsJsonFile,
-    invokeRemoveSourceDirectoryFromRenderer as removeSourceDirectory,
-} from '../../ipc/apps';
-import {
     invokeGetFromRenderer as getSetting,
-    invokeGetSourcesFromRenderer as getSourcesSetting,
     sendSetFromRenderer as setSetting,
-    sendSetSourcesFromRenderer as setSourcesSetting,
 } from '../../ipc/settings';
+import {
+    invokeAddFromRenderer as addSourceInMain,
+    invokeGetFromRenderer as getSources,
+    invokeRemoveFromRenderer as removeSourceInMain,
+} from '../../ipc/sources';
 import * as AppsActions from './appsActions';
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
@@ -72,7 +71,7 @@ export async function loadSettings(dispatch) {
     try {
         const shouldCheckForUpdatesAtStartup =
             (await getSetting('shouldCheckForUpdatesAtStartup')) ?? true;
-        const sources = await getSourcesSetting();
+        const sources = await getSources();
 
         dispatch(
             loadSettingsSuccessAction({
@@ -118,12 +117,9 @@ function addSourceAction(name, url) {
 }
 
 export function addSource(url) {
-    return (dispatch, getState) => {
-        downloadAppsJsonFile(url)
+    return dispatch => {
+        addSourceInMain(url)
             .then(source => dispatch(addSourceAction(source, url)))
-            .then(() => {
-                setSourcesSetting(getState().settings.sources.toJS());
-            })
             .catch(error =>
                 dispatch(ErrorDialogActions.showDialog(error.message))
             )
@@ -139,12 +135,9 @@ function sourceRemovedAction(name) {
 }
 
 export function removeSource(name) {
-    return (dispatch, getState) => {
-        removeSourceDirectory(name)
+    return dispatch => {
+        removeSourceInMain(name)
             .then(() => dispatch(sourceRemovedAction(name)))
-            .then(() => {
-                setSourcesSetting(getState().settings.sources.toJS());
-            })
             .then(() => dispatch(AppsActions.loadOfficialApps()))
             .then(async () =>
                 dispatch(await AppsActions.setAppManagementSource(name))
