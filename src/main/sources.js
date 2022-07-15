@@ -48,11 +48,6 @@ const getAllSources = () => {
 
 const getAllSourceNames = () => Object.keys(getAllSources());
 
-const setAllSources = sources => {
-    sourcesData = sources;
-    saveAllSources(sources);
-};
-
 const initialiseAllSources = () =>
     Promise.all(getAllSourceNames().map(initialise));
 
@@ -112,6 +107,8 @@ const addSource = async url => {
 
     sourcesData[name] = url;
     saveAllSources(sourcesData);
+
+    return name;
 };
 
 const assertNotOfficial = sourceName => {
@@ -136,13 +133,10 @@ const removeSource = async sourceName => {
 module.exports = {
     addSource,
     downloadAllAppsJson,
-    downloadAppsJson,
     getAllSourceNames,
     getAllSources,
     getSourceUrl,
     initialise,
     initialiseAllSources,
     removeSource,
-    removeSourceDirectory,
-    setAllSources,
 };

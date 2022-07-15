@@ -44,9 +44,7 @@ const {
 } = require('../ipc/createDesktopShortcut');
 const {
     registerGetHandlerFromMain: registerGetSettingHandler,
-    registerGetSourcesHandlerFromMain: registerGetSourcesSettingHandler,
     registerSetHandlerFromMain: registerSetSettingHandler,
-    registerSetSourcesHandlerFromMain: registerSetSourcesSettingHandler,
 } = require('../ipc/settings');
 const {
     registerHandlerFromMain: registerProxyLoginCredentialsHandler,
@@ -59,10 +57,6 @@ const {
 } = require('../ipc/launcherUpdate');
 const { checkForUpdate, startUpdate, cancelUpdate } = require('./autoUpdate');
 const {
-    registerDownloadAppsJsonFileHandlerFromMain:
-        registerDownloadAppsJsonFileHandler,
-    registerRemoveSourceDirectoryHandlerFromMain:
-        registerRemoveSourceDirectoryHandler,
     registerDownloadAllAppsJsonFilesHandlerFromMain:
         registerDownloadAllAppsJsonFilesHandler,
     registerGetLocalAppsHandlerFromMain: registerGetLocalAppsHandler,
@@ -197,9 +191,7 @@ registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
 
 registerGetSettingHandler(settings.get);
-registerGetSourcesSettingHandler(sources.getAllSources);
 registerSetSettingHandler(settings.set);
-registerSetSourcesSettingHandler(sources.setAllSources);
 
 registerProxyLoginCredentialsHandler(callRegisteredCallback);
 
@@ -207,8 +199,6 @@ registerCheckForUpdateHandler(checkForUpdate);
 registerStartUpdateHandler(startUpdate);
 registerCancelUpdateHandler(cancelUpdate);
 
-registerDownloadAppsJsonFileHandler(sources.downloadAppsJson);
-registerRemoveSourceDirectoryHandler(sources.removeSourceDirectory);
 registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
 registerGetLocalAppsHandler(apps.getLocalApps);
 registerGetOfficialAppsHandler(apps.getOfficialApps);
