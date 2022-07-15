@@ -73,6 +73,11 @@ const {
         registerInstallOfficialAppHandler,
     registerRemoveOfficialAppHandlerFromMain: registerRemoveOfficialAppHandler,
 } = require('../ipc/apps');
+const {
+    registerGetHandlerFromMain: registerGetSourcesHandler,
+    registerAddHandlerFromMain: registerAddSourceHandler,
+    registerRemoveHandlerFromMain: registerRemoveSourceHandler,
+} = require('../ipc/sources');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -202,14 +207,18 @@ registerCheckForUpdateHandler(checkForUpdate);
 registerStartUpdateHandler(startUpdate);
 registerCancelUpdateHandler(cancelUpdate);
 
-registerDownloadAppsJsonFileHandler(apps.downloadAppsJsonFile);
-registerRemoveSourceDirectoryHandler(apps.removeSourceDirectory);
+registerDownloadAppsJsonFileHandler(sources.downloadAppsJson);
+registerRemoveSourceDirectoryHandler(sources.removeSourceDirectory);
 registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
 registerGetLocalAppsHandler(apps.getLocalApps);
 registerGetOfficialAppsHandler(apps.getOfficialApps);
 registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
 registerInstallOfficialAppHandler(apps.installOfficialApp);
 registerRemoveOfficialAppHandler(apps.removeOfficialApp);
+
+registerGetSourcesHandler(sources.getAllSources);
+registerAddSourceHandler(sources.addSource);
+registerRemoveSourceHandler(sources.removeSource);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.
