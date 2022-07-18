@@ -8,6 +8,7 @@
 
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import { cleanIpcErrorMessage } from '../../ipc/error';
 import {
     invokeGetFromRenderer as getSetting,
     sendSetFromRenderer as setSetting,
@@ -121,7 +122,14 @@ export function addSource(url) {
         addSourceInMain(url)
             .then(source => dispatch(addSourceAction(source, url)))
             .catch(error =>
-                dispatch(ErrorDialogActions.showDialog(error.message))
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        cleanIpcErrorMessage(
+                            error.message,
+                            'Error while trying to add a source: '
+                        )
+                    )
+                )
             )
             .then(() => dispatch(AppsActions.loadOfficialApps()));
     };
@@ -141,6 +149,16 @@ export function removeSource(name) {
             .then(() => dispatch(AppsActions.loadOfficialApps()))
             .then(async () =>
                 dispatch(await AppsActions.setAppManagementSource(name))
+            )
+            .catch(error =>
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        cleanIpcErrorMessage(
+                            error.message,
+                            `Error while trying to remove the source '${name}': `
+                        )
+                    )
+                )
             );
     };
 }
