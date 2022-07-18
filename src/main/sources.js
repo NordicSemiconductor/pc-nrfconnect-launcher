@@ -105,6 +105,10 @@ const downloadAllAppsJson = () => {
 const addSource = async url => {
     const name = await downloadAppsJson(url);
 
+    if (name == null) {
+        throw new Error('The official source cannot be added.');
+    }
+
     sourcesData[name] = url;
     saveAllSources(sourcesData);
 
