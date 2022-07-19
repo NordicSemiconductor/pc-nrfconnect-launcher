@@ -72,7 +72,7 @@ jobs:
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm ci
       npm run check
-      npm run build
+      npm run build:prod
       npm test
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
     displayName: 'Build with internal release [Linux]'
@@ -85,7 +85,7 @@ jobs:
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
       npm ci
       npm run check
-      npm run build
+      npm run build:prod
       npm test
     condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
     displayName: 'Build with internal release [macOS]'
@@ -115,7 +115,7 @@ jobs:
   - script: |
       npm ci
       npm run check
-      npm run build
+      npm run build:prod
       npm test
     env: {
       ENABLE_DRAFT_TEST: true,
@@ -131,7 +131,7 @@ jobs:
       set -o errexit -o pipefail
       npm ci
       npm run check
-      npm run build
+      npm run build:prod
       npm test
     condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
     displayName: 'Build on not windows'
@@ -142,7 +142,7 @@ jobs:
       npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm ci
       npm run check
-      npm run build
+      npm run build:prod
       npm test
     condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build on windows'
