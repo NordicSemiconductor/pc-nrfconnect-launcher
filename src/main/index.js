@@ -7,16 +7,10 @@
 // eslint-disable-next-line strict,lines-around-directive -- because we are not inside a module, using strict is helpful here
 'use strict';
 
-// Run this as soon as possible, so that the user data folder is not already initialised by Electron
-require('./setUserDataDir');
+// Run this as soon as possible, so it is set up for the other modules to be loaded afterwards
+require('./init');
 
 require('@electron/remote/main').initialize();
-
-const { argv } = require('yargs');
-// eslint-disable-next-line import/order -- The config needs to be loaded and initialised early, because it is used in other modules, sometimes while loading them
-const config = require('./config');
-
-config.init(argv);
 
 const {
     Menu,
@@ -27,6 +21,7 @@ const {
 } = require('electron');
 const { join } = require('path');
 
+const config = require('./config');
 const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
