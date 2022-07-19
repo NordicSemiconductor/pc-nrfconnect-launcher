@@ -13,7 +13,7 @@
     },
     "scripts": {
         "postinstall": "node getJlink.js",
-        "app": "electron .",
+        "app": "NODE_OPTIONS=--enable-source-maps electron .",
         "watch": "run-p $npm_package_config_run_p_args watch:*",
         "watch:main": "esbuild --watch $npm_package_config_esbuild_args",
         "watch:renderer": "webpack watch --mode development --color",
