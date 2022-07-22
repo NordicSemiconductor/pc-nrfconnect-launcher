@@ -492,8 +492,7 @@ async function downloadReleaseNotes({ url, homepage }) {
             : undefined;
         const { response, etag } = await net.downloadToStringIfChanged(
             `${url}-Changelog.md`,
-            previousEtag,
-            false
+            previousEtag
         );
         if (response != null) {
             const changelog = replacePrLinks(homepage, response);
