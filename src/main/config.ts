@@ -17,6 +17,10 @@ import bundledJlinkVersion from './bundledJlinkVersion';
 
 let config: Configuration;
 
+export interface Argv {
+    [x: string]: string;
+}
+
 /*
  * Init the config values based on the given command line arguments.
  *
@@ -37,7 +41,7 @@ let config: Configuration;
  * --skip-splash-screen  Skip the splash screen at startup.
  *                       Default: false
  */
-export function init(argv: { [x: string]: string }) {
+export function init(argv: Argv) {
     const { version: pkgVer } = packageJson;
     const version = pkgVer;
     const electronRootPath = electronApp.getAppPath();
