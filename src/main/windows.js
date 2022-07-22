@@ -54,8 +54,14 @@ function hideLauncherWindow() {
     launcherWindow.hide();
 }
 
+const defaultWindowSize = {
+    width: 1024,
+    height: 800,
+    maximized: false,
+};
+
 function openAppWindow(app) {
-    const lastWindowState = settings.loadLastWindow();
+    const lastWindowState = settings.get('lastWindowState', defaultWindowSize);
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
@@ -100,7 +106,14 @@ function openAppWindow(app) {
     });
 
     appWindow.on('close', () => {
-        settings.storeLastWindow(appWindow);
+        const bounds = appWindow.getBounds();
+        settings.set('lastWindowState', {
+            x: bounds.x,
+            y: bounds.y,
+            width: bounds.width,
+            height: bounds.height,
+            maximized: appWindow.isMaximized(),
+        });
     });
 
     appWindow.on('closed', () => {
