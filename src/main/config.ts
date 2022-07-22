@@ -4,18 +4,20 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const electronApp = require('electron').app;
-const path = require('path');
-const fs = require('fs');
-const packageJson = require('../../package.json');
-const {
-    registerHandlerFromMain: registerConfigHandler,
-} = require('../ipc/getConfig');
+import { app as electronApp } from 'electron';
+import fs from 'fs';
+import path from 'path';
 
-let config;
-const bundledJlinkVersion = 'V7.66a';
+import packageJson from '../../package.json';
+import {
+    Configuration,
+    registerHandlerFromMain as registerConfigHandler,
+} from '../ipc/getConfig';
+import bundledJlinkVersion from './bundledJlinkVersion';
 
-/**
+let config: Configuration;
+
+/*
  * Init the config values based on the given command line arguments.
  *
  * Supported command line arguments:
@@ -34,11 +36,8 @@ const bundledJlinkVersion = 'V7.66a';
  *                       Default: false
  * --skip-splash-screen  Skip the splash screen at startup.
  *                       Default: false
- *
- * @param {Object} argv command line arguments.
- * @returns {void}
  */
-function init(argv) {
+export function init(argv: { [x: string]: string }) {
     const { version: pkgVer } = packageJson;
     const version = pkgVer;
     const electronRootPath = electronApp.getAppPath();
@@ -66,9 +65,9 @@ function init(argv) {
         'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
     const releaseNotesUrl =
         'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
-    const skipUpdateApps = argv['skip-update-apps'] || false;
-    const skipUpdateCore = argv['skip-update-core'] || false;
-    const skipSplashScreen = argv['skip-splash-screen'] || false;
+    const isSkipUpdateApps = !!argv['skip-update-apps'] || false;
+    const isSkipUpdateCore = !!argv['skip-update-core'] || false;
+    const isSkipSplashScreen = !!argv['skip-splash-screen'] || false;
     const officialAppName = argv['open-official-app'] || null;
     const localAppName = argv['open-local-app'] || null;
     const sourceName = argv.source || 'official';
@@ -88,9 +87,9 @@ function init(argv) {
         electronRootPath,
         homeDir,
         isRunningLauncherFromSource,
-        isSkipSplashScreen: skipSplashScreen,
-        isSkipUpdateApps: skipUpdateApps,
-        isSkipUpdateCore: skipUpdateCore,
+        isSkipSplashScreen,
+        isSkipUpdateApps,
+        isSkipUpdateCore,
         localAppName,
         officialAppName,
         releaseNotesUrl,
@@ -106,42 +105,40 @@ function init(argv) {
     registerConfigHandler(config);
 }
 
-function getAppsRootDir(source = 'official', effectiveConfig = config) {
+export function getAppsRootDir(source = 'official', effectiveConfig = config) {
     if (source === 'official') {
         return effectiveConfig.appsRootDir;
     }
     return path.join(effectiveConfig.appsExternalDir, source);
 }
 
-module.exports = {
-    init,
-    getVersion: () => config.version,
-    getElectronRootPath: () => config.electronRootPath,
-    getElectronResourcesDir: () => config.electronResourcesDir,
-    getElectronExePath: () => config.electronExePath,
-    getHomeDir: () => config.homeDir,
-    getUserDataDir: () => config.userDataDir,
-    getDesktopDir: () => config.desktopDir,
-    getUbuntuDesktopDir: () => config.ubuntuDesktopDir,
-    getTmpDir: () => config.tmpDir,
-    getAppsRootDir,
-    getAppsLocalDir: () => config.appsLocalDir,
-    getAppsExternalDir: () => config.appsExternalDir,
-    getNodeModulesDir: source =>
-        path.join(getAppsRootDir(source), 'node_modules'),
-    getUpdatesJsonPath: source =>
-        path.join(getAppsRootDir(source), 'updates.json'),
-    getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
-    getSettingsJsonPath: () => config.settingsJsonPath,
-    getSourcesJsonPath: () => config.sourcesJsonPath,
-    getAppsJsonUrl: () => config.appsJsonUrl,
-    getReleaseNotesUrl: () => config.releaseNotesUrl,
-    isSkipUpdateApps: () => config.skipUpdateApps,
-    isSkipUpdateCore: () => config.skipUpdateCore,
-    isSkipSplashScreen: () => config.skipSplashScreen,
-    getOfficialAppName: () => config.officialAppName,
-    getLocalAppName: () => config.localAppName,
-    getSourceName: () => config.sourceName,
-    isRunningLauncherFromSource: () => config.isRunningLauncherFromSource,
-    bundledJlinkVersion: () => bundledJlinkVersion,
-};
+export const getVersion = () => config.version;
+export const getElectronRootPath = () => config.electronRootPath;
+export const getElectronResourcesDir = () => config.electronResourcesDir;
+export const getElectronExePath = () => config.electronExePath;
+export const getHomeDir = () => config.homeDir;
+export const getUserDataDir = () => config.userDataDir;
+export const getDesktopDir = () => config.desktopDir;
+export const getUbuntuDesktopDir = () => config.ubuntuDesktopDir;
+export const getTmpDir = () => config.tmpDir;
+export const getAppsLocalDir = () => config.appsLocalDir;
+export const getAppsExternalDir = () => config.appsExternalDir;
+export const getNodeModulesDir = (source: string) =>
+    path.join(getAppsRootDir(source), 'node_modules');
+export const getUpdatesJsonPath = (source: string) =>
+    path.join(getAppsRootDir(source), 'updates.json');
+export const getAppsJsonPath = (source: string) =>
+    path.join(getAppsRootDir(source), 'apps.json');
+export const getSettingsJsonPath = () => config.settingsJsonPath;
+export const getSourcesJsonPath = () => config.sourcesJsonPath;
+export const getAppsJsonUrl = () => config.appsJsonUrl;
+export const getReleaseNotesUrl = () => config.releaseNotesUrl;
+export const isSkipUpdateApps = () => config.isSkipUpdateApps;
+export const isSkipUpdateCore = () => config.isSkipUpdateCore;
+export const isSkipSplashScreen = () => config.isSkipSplashScreen;
+export const getOfficialAppName = () => config.officialAppName;
+export const getLocalAppName = () => config.localAppName;
+export const getSourceName = () => config.sourceName;
+export const isRunningLauncherFromSource = () =>
+    config.isRunningLauncherFromSource;
+export const getBundledJlinkVersion = () => config.bundledJlinkVersion;

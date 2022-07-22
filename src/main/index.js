@@ -168,7 +168,7 @@ ipcMain.on('get-app-details', event => {
             corePath: config.getElectronRootPath(),
             homeDir: config.getHomeDir(),
             tmpDir: config.getTmpDir(),
-            bundledJlink: config.bundledJlinkVersion(),
+            bundledJlink: config.getBundledJlinkVersion(),
             ...appWindow.app,
         });
     }
