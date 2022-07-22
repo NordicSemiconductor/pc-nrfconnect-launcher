@@ -54,7 +54,7 @@ function generateUpdatesJsonFile(source) {
     const fileName = config.getUpdatesJsonPath(source);
     return getInstalledAppNames(source)
         .then(installedApps =>
-            registryApi.getLatestPackageVersions(installedApps, source)
+            registryApi.getLatestAppVersions(installedApps, source)
         )
         .then(latestVersions =>
             fileUtil.createJsonFile(fileName, latestVersions)
@@ -328,7 +328,7 @@ function getOfficialAppsFromSource(source) {
                         );
                     }
                     return registryApi
-                        .getLatestPackageVersions([officialApp.name], source)
+                        .getLatestAppVersions([officialApp.name], source)
                         .then(latestVersions =>
                             decorateWithLatestVersion(
                                 officialApp,
