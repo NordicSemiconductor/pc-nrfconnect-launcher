@@ -4,11 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const electron = require('electron');
-const config = require('./config');
+import {
+    BrowserWindow,
+    BrowserWindowConstructorOptions,
+    shell,
+} from 'electron';
 
-function createSplashScreen(icon) {
-    let splashScreen = new electron.BrowserWindow({
+import * as config from './config';
+
+type BrowserWindowOptions = BrowserWindowConstructorOptions & {
+    splashScreen?: boolean;
+    url: string;
+};
+
+const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
+    let splashScreen: BrowserWindow | null = new BrowserWindow({
         width: 400,
         height: 223,
         frame: false,
@@ -27,9 +37,9 @@ function createSplashScreen(icon) {
     });
     splashScreen.show();
     return splashScreen;
-}
+};
 
-function createWindow(options) {
+export const createWindow = (options: BrowserWindowOptions) => {
     const appArgumentsIndex = process.argv.indexOf('--');
     const additionalArguments =
         appArgumentsIndex === -1 ? [] : process.argv.slice(appArgumentsIndex);
@@ -47,9 +57,9 @@ function createWindow(options) {
         },
         ...options,
     };
-    const browserWindow = new electron.BrowserWindow(mergedOptions);
+    const browserWindow = new BrowserWindow(mergedOptions);
 
-    let splashScreen;
+    let splashScreen: BrowserWindow | null;
     if (options.splashScreen) {
         splashScreen = createSplashScreen(options.icon);
     }
@@ -65,11 +75,11 @@ function createWindow(options) {
     // Open target=_blank link in default browser instead of a
     // new electron window.
     browserWindow.webContents.on('new-window', (event, url) => {
-        electron.shell.openExternal(url);
+        shell.openExternal(url);
         event.preventDefault();
     });
 
-    browserWindow.webContents.once('ready-to-show', () => {
+    browserWindow.once('ready-to-show', () => {
         browserWindow.show();
         if (splashScreen && !splashScreen.isDestroyed()) {
             splashScreen.close();
@@ -77,8 +87,4 @@ function createWindow(options) {
     });
 
     return browserWindow;
-}
-
-module.exports = {
-    createWindow,
 };
