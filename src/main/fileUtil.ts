@@ -21,9 +21,9 @@ const readFile = async (filePath: string) => {
     }
 };
 
-export const readJsonFile = async (filePath: string) => {
+export const readJsonFile = async <T>(filePath: string) => {
     try {
-        return JSON.parse(await readFile(filePath));
+        return <T>JSON.parse(await readFile(filePath));
     } catch (error) {
         throw new Error(`Unable to parse ${filePath}: ${describeError(error)}`);
     }

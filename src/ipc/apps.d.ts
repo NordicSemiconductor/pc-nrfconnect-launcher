@@ -4,6 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+export interface AppInAppsJson {
+    displayName: string;
+    description: string;
+    url: string;
+    homepage?: string;
+}
+
 interface BaseApp {
     name: string;
     displayName: string;
@@ -13,8 +20,8 @@ interface BaseApp {
 interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
-    iconPath: string;
-    shortcutIconPath: string;
+    iconPath?: string;
+    shortcutIconPath?: string;
     engineVersion?: string;
     repositoryUrl?: string;
 }
@@ -24,10 +31,13 @@ export interface LocalApp extends InstalledApp {
     isOfficial: false;
 }
 
-interface DownloadableApp extends BaseApp {
+export interface UnversionedDownloadableApp extends BaseApp {
     source: string;
-    homepage: string;
+    homepage?: string;
     url: string;
+}
+
+interface DownloadableApp extends UnversionedDownloadableApp {
     latestVersion: string;
 }
 

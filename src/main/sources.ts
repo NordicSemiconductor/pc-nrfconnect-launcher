@@ -6,6 +6,7 @@
 
 import fs from 'fs-extra';
 
+import { AppInAppsJson } from '../ipc/apps';
 import * as config from './config';
 import describeError from './describeError';
 import * as fileUtil from './fileUtil';
@@ -93,14 +94,13 @@ class FailedToFetchAppsJsonError extends Error {
     }
 }
 
-interface AppsJson {
+export interface UpdatesJson {
+    [app: string]: string;
+}
+
+export interface AppsJson {
     _source?: string;
-    [app: `pc-nrfconnect-${string}`]: {
-        displayName: string;
-        description: string;
-        url: string;
-        homepage?: string;
-    };
+    [app: `pc-nrfconnect-${string}`]: AppInAppsJson;
 }
 
 const downloadAppsJson = async (url: string, name?: string) => {

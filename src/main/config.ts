@@ -109,11 +109,14 @@ export function init(argv: Argv) {
     registerConfigHandler(config);
 }
 
-export function getAppsRootDir(source = 'official', effectiveConfig = config) {
-    if (source === 'official') {
+export function getAppsRootDir(
+    sourceName = 'official',
+    effectiveConfig = config
+) {
+    if (sourceName === 'official') {
         return effectiveConfig.appsRootDir;
     }
-    return path.join(effectiveConfig.appsExternalDir, source);
+    return path.join(effectiveConfig.appsExternalDir, sourceName);
 }
 
 export const getVersion = () => config.version;
@@ -127,12 +130,12 @@ export const getUbuntuDesktopDir = () => config.ubuntuDesktopDir;
 export const getTmpDir = () => config.tmpDir;
 export const getAppsLocalDir = () => config.appsLocalDir;
 export const getAppsExternalDir = () => config.appsExternalDir;
-export const getNodeModulesDir = (source?: string) =>
-    path.join(getAppsRootDir(source), 'node_modules');
-export const getUpdatesJsonPath = (source?: string) =>
-    path.join(getAppsRootDir(source), 'updates.json');
-export const getAppsJsonPath = (source?: string) =>
-    path.join(getAppsRootDir(source), 'apps.json');
+export const getNodeModulesDir = (sourceName?: string) =>
+    path.join(getAppsRootDir(sourceName), 'node_modules');
+export const getUpdatesJsonPath = (sourceName?: string) =>
+    path.join(getAppsRootDir(sourceName), 'updates.json');
+export const getAppsJsonPath = (sourceName?: string) =>
+    path.join(getAppsRootDir(sourceName), 'apps.json');
 export const getSettingsJsonPath = () => config.settingsJsonPath;
 export const getSourcesJsonPath = () => config.sourcesJsonPath;
 export const getAppsJsonUrl = () => config.appsJsonUrl;
