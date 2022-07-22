@@ -127,11 +127,11 @@ export const getUbuntuDesktopDir = () => config.ubuntuDesktopDir;
 export const getTmpDir = () => config.tmpDir;
 export const getAppsLocalDir = () => config.appsLocalDir;
 export const getAppsExternalDir = () => config.appsExternalDir;
-export const getNodeModulesDir = (source: string) =>
+export const getNodeModulesDir = (source?: string) =>
     path.join(getAppsRootDir(source), 'node_modules');
-export const getUpdatesJsonPath = (source: string) =>
+export const getUpdatesJsonPath = (source?: string) =>
     path.join(getAppsRootDir(source), 'updates.json');
-export const getAppsJsonPath = (source: string) =>
+export const getAppsJsonPath = (source?: string) =>
     path.join(getAppsRootDir(source), 'apps.json');
 export const getSettingsJsonPath = () => config.settingsJsonPath;
 export const getSourcesJsonPath = () => config.sourcesJsonPath;

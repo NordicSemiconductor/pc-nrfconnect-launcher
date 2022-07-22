@@ -98,14 +98,14 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
                 } else if (error.sourceNotFound) {
                     dispatch(
                         ErrorDialogActions.showDialog(
-                            `Unable to retrieve the source “${error.cause.name}” from ${error.cause.url}. \n\n` +
+                            `Unable to retrieve the source “${error.source.name}” from ${error.source.url}. \n\n` +
                                 'This is usually caused by outdated app sources in the settings, ' +
                                 'where the sources files was removed from the server.',
                             {
                                 'Remove source': () => {
                                     dispatch(
                                         SettingsActions.removeSource(
-                                            error.cause.name
+                                            error.source.name
                                         )
                                     );
                                     dispatch(ErrorDialogActions.hideDialog());

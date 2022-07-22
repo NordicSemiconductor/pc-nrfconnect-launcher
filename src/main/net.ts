@@ -32,7 +32,7 @@ const reportInstallProgress = (
     });
 };
 
-type ErrorWithStatusCode = Error & { statusCode?: number };
+export type NetError = Error & { statusCode?: number };
 
 interface DownloadResult {
     buffer: Buffer;
@@ -59,7 +59,7 @@ const downloadToBuffer = (
         request.on('response', response => {
             const { statusCode } = response;
             if (statusCode >= 400) {
-                const error: ErrorWithStatusCode = new Error(
+                const error: NetError = new Error(
                     `Unable to download ${url}. Got status code ${statusCode}`
                 );
                 error.statusCode = statusCode;
@@ -138,12 +138,12 @@ export const downloadToStringIfChanged = async (
     };
 };
 
-export const downloadToJson = async (
+export const downloadToJson = async <T>(
     url: string,
     enableProxyLogin: boolean
 ) => {
     const { buffer } = await downloadToBuffer(url, enableProxyLogin);
-    return JSON.parse(buffer.toString());
+    return <T>JSON.parse(buffer.toString());
 };
 
 export const downloadToFile = async (
@@ -164,5 +164,4 @@ export const downloadToFile = async (
 /*
  * Does this error mean, that a resource was not found on the server?
  */
-export const isResourceNotFound = (error: { statusCode?: number }) =>
-    error.statusCode === 404;
+export const isResourceNotFound = (error: NetError) => error.statusCode === 404;
