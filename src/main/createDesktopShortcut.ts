@@ -6,16 +6,16 @@
 
 /* eslint-disable no-bitwise */
 
-const { shell } = require('electron');
-const fs = require('fs');
-const Mustache = require('mustache');
-const path = require('path');
-const { v4 } = require('uuid');
+import { shell } from 'electron';
+import fs from 'fs';
+import Mustache from 'mustache';
+import path from 'path';
+import { uuid } from 'short-uuid';
 
-const config = require('./config');
-const fileUtil = require('./fileUtil');
-
-const { sendFromMain: showErrorDialog } = require('../ipc/errorDialog');
+import { LaunchableApp } from '../ipc/apps';
+import { sendFromMain as showErrorDialog } from '../ipc/errorDialog';
+import * as config from './config';
+import * as fileUtil from './fileUtil';
 
 const mode =
     fs.constants.S_IRWXU |
@@ -24,55 +24,35 @@ const mode =
     fs.constants.S_IROTH |
     fs.constants.S_IXOTH;
 
-/**
- * Get file name according to app
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {String} file name from app.
- */
-function getFileName(app) {
-    const appName = `${app.displayName || app.name}`;
-    let sourceName = ' (Local)';
+const sourceName = (app: LaunchableApp) => {
     if (app.isOfficial) {
-        sourceName = app.source === 'official' ? '' : ` (${app.source})`;
+        if (app.source === 'official') {
+            return '';
+        }
+        return ` (${app.source})`;
     }
-    return `${appName}${sourceName}`;
-}
 
-/**
- * Get arguments according to app
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {String} arguments from app.
- */
-function getArgs(app) {
-    const args = ['--args'];
-    if (app.isOfficial) {
-        args.push(
-            '--open-official-app',
-            app.name,
-            '--source',
-            `"${app.source}"`
-        );
-    } else {
-        args.push('--open-local-app', app.name);
-    }
-    return args.join(' ');
-}
+    return ' (Local)';
+};
 
-/**
- * Create desktop shortcut on Windows
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {void}
- */
-function createShortcutForWindows(app) {
+const getFileName = (app: LaunchableApp) =>
+    `${app.displayName || app.name}${sourceName(app)}`;
+
+const getArgs = (app: LaunchableApp) =>
+    [
+        '--args',
+        app.isOfficial ? '--open-official-app' : '--open-local-app',
+        app.name,
+        '--source',
+        `"${app.source}"`,
+    ].join(' ');
+
+const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
     const filePath = path.join(config.getDesktopDir(), `${fileName}.lnk`);
     if (app.shortcutIconPath) {
         const shortcutStatus = shell.writeShortcutLink(filePath, {
             target: config.getElectronExePath(),
-            // In Windows, use double quote surrounding arguments
             args: getArgs(app),
             icon: app.shortcutIconPath,
             // iconIndex has to be set to change icon
@@ -84,40 +64,9 @@ function createShortcutForWindows(app) {
     } else {
         showErrorDialog('Fail to create desktop since app.iconPath is not set');
     }
-}
+};
 
-/**
- * Generate shortcut content on Linux
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {string} shortcut content for Linux.
- */
-function generateShortcutContent(app) {
-    const fileName = getFileName(app);
-    const args = getArgs(app);
-    let shortcutContent = '[Desktop Entry]\n';
-    shortcutContent += 'Encoding=UTF-8\n';
-    shortcutContent += `Version=${app.currentVersion}\n`;
-    shortcutContent += `Name=${fileName}\n`;
-    // In Linux, use single quote surrounding arguments
-    shortcutContent += `Exec=${config.getElectronExePath()} ${args}\n`;
-    shortcutContent += 'Terminal=false\n';
-    const { iconPath, shortcutIconPath } = app;
-    shortcutContent += `Icon=${shortcutIconPath || iconPath}\n`;
-    shortcutContent += 'Type=Application\n';
-    if (!fileName || !args) {
-        return null;
-    }
-    return shortcutContent;
-}
-
-/**
- * Create desktop shortcut on Linux
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {void}
- */
-function createShortcutForLinux(app) {
+const createShortcutForLinux = (app: LaunchableApp) => {
     const fileName = getFileName(app);
     const desktopFilePath = path.join(
         config.getDesktopDir(),
@@ -127,13 +76,21 @@ function createShortcutForLinux(app) {
         config.getUbuntuDesktopDir(),
         `${fileName}.desktop`
     );
-    const shortcutContent = generateShortcutContent(app);
-    if (!shortcutContent) {
-        showErrorDialog(
-            'Fail to create desktop shortcut since the shortcut content is empty'
-        );
-        return;
-    }
+
+    const args = getArgs(app);
+    const { iconPath, shortcutIconPath } = app;
+
+    const shortcutContent = [
+        '[Desktop Entry]',
+        'Encoding=UTF-8',
+        `Version=${app.currentVersion}`,
+        `Name=${fileName}`,
+        `Exec=${config.getElectronExePath()} ${args}`,
+        'Terminal=false',
+        `Icon=${shortcutIconPath || iconPath}`,
+        'Type=Application',
+        '',
+    ].join('\n');
 
     try {
         fs.writeFileSync(desktopFilePath, shortcutContent);
@@ -145,9 +102,9 @@ function createShortcutForLinux(app) {
             `Fail to create desktop shortcut on Linux with error: ${err}`
         );
     }
-}
+};
 
-/**
+/*
  * Create desktop shortcut on MacOS
  * Template is located at /resources/mac/template.app.
  * Copy this template to a tmp folder first.
@@ -156,14 +113,11 @@ function createShortcutForLinux(app) {
  * Change the mode of binary file to executable.
  *
  * Copying template to a tmp folder first is to avoid icon cache on MacOS.
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {void}
  */
-async function createShortcutForMacOS(app) {
+const createShortcutForMacOS = async (app: LaunchableApp) => {
     const fileName = getFileName(app);
     let filePath = path.join(config.getDesktopDir(), `${fileName}.app`);
-    const templateName = `template-${v4()}.app`;
+    const templateName = `template-${uuid()}.app`;
     const appTemplateTarPath = path.join(
         config.getElectronRootPath(),
         '/resources/mac/template.tar.gz'
@@ -192,7 +146,7 @@ async function createShortcutForMacOS(app) {
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
             app.isOfficial ? '' : '-local'
         }`;
-        const infoContentSource = fs.readFileSync(infoTmpPath, 'UTF-8');
+        const infoContentSource = fs.readFileSync(infoTmpPath, 'utf-8');
         Mustache.parse(infoContentSource);
         const infoContentData = {
             identifier,
@@ -209,7 +163,7 @@ async function createShortcutForMacOS(app) {
         const shortcutCMD = `${config
             .getElectronExePath()
             .replace(/ /g, '\\ ')} ${getArgs(app)}`;
-        const wflowContentSource = fs.readFileSync(wflowTmpPath, 'UTF-8');
+        const wflowContentSource = fs.readFileSync(wflowTmpPath, 'utf-8');
         Mustache.parse(wflowContentSource);
         const wflowContentData = {
             shortcutCMD,
@@ -240,15 +194,9 @@ async function createShortcutForMacOS(app) {
             `Error occured while creating desktop shortcut on MacOS with error: ${error}`
         );
     }
-}
+};
 
-/**
- * Create desktop shortcut
- *
- * @param {Object} app, create desktop shortcut for which app.
- * @returns {Function} dispatch, dispatch action in Redux.
- */
-function createDesktopShortcut(app) {
+export default (app: LaunchableApp) => {
     switch (process.platform) {
         case 'win32':
             createShortcutForWindows(app);
@@ -264,6 +212,4 @@ function createDesktopShortcut(app) {
                 'Your operating system is neither Windows, Linux, nor macOS'
             );
     }
-}
-
-module.exports = { createDesktopShortcut };
+};

@@ -28,7 +28,7 @@ const { createMenu } = require('./menu');
 const { default: loadDevtools } = require('./devtools');
 const { createTextFile } = require('./fileUtil');
 const { downloadToFile } = require('./net');
-const { createDesktopShortcut } = require('./createDesktopShortcut');
+const { default: createDesktopShortcut } = require('./createDesktopShortcut');
 const settings = require('./settings');
 const sources = require('./sources');
 const {

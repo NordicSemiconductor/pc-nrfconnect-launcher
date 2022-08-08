@@ -20,8 +20,8 @@ interface BaseApp {
 interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
-    iconPath?: string;
-    shortcutIconPath?: string;
+    iconPath: string;
+    shortcutIconPath: string;
     engineVersion?: string;
     repositoryUrl?: string;
 }
@@ -49,6 +49,8 @@ export interface InstalledDownloadableApp
     isOfficial: boolean;
     upgradeAvailable?: boolean;
 }
+
+export type LaunchableApp = LocalApp | InstalledDownloadableApp;
 
 export type App =
     | LocalApp
