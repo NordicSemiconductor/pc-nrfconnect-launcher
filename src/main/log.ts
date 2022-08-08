@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const { createLogger, transports, format } = require('winston');
-const path = require('path');
-const config = require('./config');
+import path from 'path';
+import { createLogger, format, transports } from 'winston';
+
+import * as config from './config';
 
 const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
 
@@ -20,7 +21,7 @@ const logFormat = format.combine(
     )
 );
 
-const logger = createLogger({
+export const logger = createLogger({
     transports: [
         new transports.File({
             format: logFormat,
@@ -30,5 +31,3 @@ const logger = createLogger({
         }),
     ],
 });
-
-module.exports = { logger };
