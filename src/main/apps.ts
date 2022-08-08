@@ -13,6 +13,7 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 import {
     AppInAppsJson,
     InstalledDownloadableApp,
+    LocalApp,
     UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
@@ -354,7 +355,7 @@ export const getLocalApps = () => {
         .listDirectories(appsLocalDir)
         .map(name => infoFromInstalledApp(appsLocalDir, name));
 
-    return Promise.all(localAppPromises);
+    return Promise.all(localAppPromises as Promise<LocalApp>[]);
 };
 
 export const removeDownloadableApp = async (name: string, source: string) => {

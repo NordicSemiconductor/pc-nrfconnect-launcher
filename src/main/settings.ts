@@ -49,8 +49,8 @@ export const set = (key: string, value: unknown) => {
     save();
 };
 
-export const get = (key: string, defaultValue = null) => {
+export const get = <T>(key: string, defaultValue: T | null = null) => {
     const loadedData = load();
 
-    return key in loadedData ? loadedData[key] : defaultValue;
+    return key in loadedData ? (loadedData[key] as T) : defaultValue;
 };

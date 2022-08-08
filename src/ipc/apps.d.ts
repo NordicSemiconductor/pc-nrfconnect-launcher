@@ -27,7 +27,7 @@ interface InstalledApp extends BaseApp {
 }
 
 export interface LocalApp extends InstalledApp {
-    source: null;
+    source: null | undefined;
     isOfficial: false;
 }
 

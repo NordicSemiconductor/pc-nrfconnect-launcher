@@ -4,28 +4,35 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const electron = require('electron');
-const path = require('path');
-const browser = require('./browser');
-const config = require('./config');
-const settings = require('./settings');
-const apps = require('./apps');
-const {
-    registerLauncherWindowFromMain: registerLauncherWindow,
-} = require('../ipc/sendToLauncherWindow');
+import {
+    app as electronApp,
+    BrowserWindow,
+    Rectangle,
+    screen,
+    WebContents,
+} from 'electron';
+import path from 'path';
 
-let launcherWindow;
-const appWindows = [];
+import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
+import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/sendToLauncherWindow';
+import * as apps from './apps';
+import * as browser from './browser';
+import * as config from './config';
+import * as settings from './settings';
 
-function getDefaultIconPath() {
-    const electronResourcesDir = config.getElectronResourcesDir();
-    if (process.platform === 'win32') {
-        return path.join(electronResourcesDir, 'icon.ico');
-    }
-    return path.join(electronResourcesDir, 'icon.png');
-}
+let launcherWindow: BrowserWindow | undefined;
+const appWindows: {
+    browserWindow: BrowserWindow;
+    app: LaunchableApp;
+}[] = [];
 
-function openLauncherWindow() {
+const getDefaultIconPath = () =>
+    path.join(
+        config.getElectronResourcesDir(),
+        process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+    );
+
+export const openLauncherWindow = () => {
     if (launcherWindow) {
         launcherWindow.show();
     } else {
@@ -44,15 +51,15 @@ function openLauncherWindow() {
         launcherWindow.on('close', event => {
             if (appWindows.length > 0) {
                 event.preventDefault();
-                launcherWindow.hide();
+                launcherWindow?.hide();
             }
         });
     }
-}
+};
 
-function hideLauncherWindow() {
-    launcherWindow.hide();
-}
+export const hideLauncherWindow = () => {
+    launcherWindow?.hide();
+};
 
 const defaultWindowSize = {
     width: 1024,
@@ -60,13 +67,27 @@ const defaultWindowSize = {
     maximized: false,
 };
 
-function openAppWindow(app) {
-    const lastWindowState = settings.get('lastWindowState', defaultWindowSize);
+interface WindowState {
+    x?: number;
+    y?: number;
+    width: number;
+    height: number;
+    maximized: boolean;
+}
+
+export const openAppWindow = (app: LaunchableApp) => {
+    const lastWindowState = settings.get(
+        'lastWindowState',
+        defaultWindowSize
+    ) as WindowState;
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
+
     if (x && y) {
-        const { bounds } = electron.screen.getDisplayMatching(lastWindowState);
+        const { bounds } = screen.getDisplayMatching(
+            lastWindowState as Rectangle
+        );
         const left = Math.max(x, bounds.x);
         const top = Math.max(y, bounds.y);
         const right = Math.min(x + width, bounds.x + bounds.width);
@@ -127,29 +148,30 @@ function openAppWindow(app) {
             appWindows.length === 0 &&
             !(launcherWindow && launcherWindow.isVisible())
         ) {
-            electron.app.quit();
+            electronApp.quit();
         }
     });
-}
+};
 
-function openOfficialAppWindow(appName, sourceName) {
-    return apps.getDownloadableApps().then(({ apps: appList }) => {
+export const openOfficialAppWindow = (appName: string, sourceName: string) =>
+    apps.getDownloadableApps().then(({ apps: appList }) => {
         const officialApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );
-        const isInstalled = officialApp && officialApp.path;
+        const isInstalled =
+            officialApp && (officialApp as InstalledDownloadableApp).path;
+
         if (isInstalled) {
-            openAppWindow(officialApp);
+            openAppWindow(officialApp as InstalledDownloadableApp);
         } else {
             throw new Error(
                 `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
             );
         }
     });
-}
 
-function openLocalAppWindow(appName) {
-    return apps.getLocalApps().then(appList => {
+export const openLocalAppWindow = (appName: string) =>
+    apps.getLocalApps().then(appList => {
         const localApp = appList.find(app => app.name === appName);
         if (localApp) {
             openAppWindow(localApp);
@@ -159,18 +181,8 @@ function openLocalAppWindow(appName) {
             );
         }
     });
-}
 
-function getAppWindow(sender) {
-    const parentWindow = electron.BrowserWindow.fromWebContents(sender);
+export const getAppWindow = (sender: WebContents) => {
+    const parentWindow = BrowserWindow.fromWebContents(sender);
     return appWindows.find(appWin => appWin.browserWindow === parentWindow);
-}
-
-module.exports = {
-    openLauncherWindow,
-    openAppWindow,
-    openOfficialAppWindow,
-    openLocalAppWindow,
-    hideLauncherWindow,
-    getAppWindow,
 };
