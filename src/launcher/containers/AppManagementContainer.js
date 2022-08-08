@@ -77,9 +77,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onInstall: (name, source) =>
-            dispatch(AppsActions.installOfficialApp(name, source)),
+            dispatch(AppsActions.installDownloadableApp(name, source)),
         onRemove: (name, source) =>
-            dispatch(AppsActions.removeOfficialApp(name, source)),
+            dispatch(AppsActions.removeDownloadableApp(name, source)),
         onReadMore: homepage => openUrl(homepage),
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),

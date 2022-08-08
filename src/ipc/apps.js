@@ -9,10 +9,10 @@ const { ipcMain, ipcRenderer } = require('electron');
 const channel = {
     downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',
     getLocalApps: 'apps:get-local-apps',
-    getOfficialApps: 'apps:get-official-apps',
+    getDownloadableApps: 'apps:get-downloadable-apps',
     downloadReleaseNotes: 'apps:download-release-notes',
-    installOfficialApp: 'apps:install-official-app',
-    removeOfficialApp: 'apps:remove-official-app',
+    installDownloadableApp: 'apps:install-downloadable-app',
+    removeDownloadableApp: 'apps:remove-downloadable-app',
 };
 
 // downloadAllAppsJsonFiles
@@ -35,13 +35,13 @@ const registerGetLocalAppsHandlerFromMain = onGetLocalApps =>
 const invokeGetLocalAppsFromRenderer = () =>
     ipcRenderer.invoke(channel.getLocalApps);
 
-// getOfficialApps
+// getDownloadableApps
 
-const registerGetOfficialAppsHandlerFromMain = onGetOfficialApps =>
-    ipcMain.handle(channel.getOfficialApps, onGetOfficialApps);
+const registerGetDownloadableAppsHandlerFromMain = onGetDownloadableApps =>
+    ipcMain.handle(channel.getDownloadableApps, onGetDownloadableApps);
 
-const invokeGetOfficialAppsFromRenderer = () =>
-    ipcRenderer.invoke(channel.getOfficialApps);
+const invokeGetDownloadableAppsFromRenderer = () =>
+    ipcRenderer.invoke(channel.getDownloadableApps);
 
 // downloadReleaseNotes
 
@@ -53,39 +53,40 @@ const registerDownloadReleaseNotesHandlerFromMain = onDownloadReleaseNotes =>
 const invokeDownloadReleaseNotesFromRenderer = app =>
     ipcRenderer.invoke(channel.downloadReleaseNotes, app);
 
-// installOfficialApp
+// installDownloadableApp
 
-const registerInstallOfficialAppHandlerFromMain = onInstallOfficialApp =>
-    ipcMain.handle(
-        channel.installOfficialApp,
-        (_event, name, version, source) =>
-            onInstallOfficialApp(name, version, source)
+const registerInstallDownloadableAppHandlerFromMain =
+    onInstallDownloadableApp =>
+        ipcMain.handle(
+            channel.installDownloadableApp,
+            (_event, name, version, source) =>
+                onInstallDownloadableApp(name, version, source)
+        );
+
+const invokeInstallDownloadableAppFromRenderer = (name, version, source) =>
+    ipcRenderer.invoke(channel.installDownloadableApp, name, version, source);
+
+// removeDownloadableApp
+
+const registerRemoveDownloadableAppHandlerFromMain = onRemoveDownloadableApp =>
+    ipcMain.handle(channel.removeDownloadableApp, (_event, name, source) =>
+        onRemoveDownloadableApp(name, source)
     );
 
-const invokeInstallOfficialAppFromRenderer = (name, version, source) =>
-    ipcRenderer.invoke(channel.installOfficialApp, name, version, source);
-
-// removeOfficialApp
-
-const registerRemoveOfficialAppHandlerFromMain = onRemoveOfficialApp =>
-    ipcMain.handle(channel.removeOfficialApp, (_event, name, source) =>
-        onRemoveOfficialApp(name, source)
-    );
-
-const invokeRemoveOfficialAppFromRenderer = (name, source) =>
-    ipcRenderer.invoke(channel.removeOfficialApp, name, source);
+const invokeRemoveDownloadableAppFromRenderer = (name, source) =>
+    ipcRenderer.invoke(channel.removeDownloadableApp, name, source);
 
 module.exports = {
     registerDownloadAllAppsJsonFilesHandlerFromMain,
     invokeDownloadAllAppsJsonFilesFromRenderer,
     registerGetLocalAppsHandlerFromMain,
     invokeGetLocalAppsFromRenderer,
-    registerGetOfficialAppsHandlerFromMain,
-    invokeGetOfficialAppsFromRenderer,
+    registerGetDownloadableAppsHandlerFromMain,
+    invokeGetDownloadableAppsFromRenderer,
     registerDownloadReleaseNotesHandlerFromMain,
     invokeDownloadReleaseNotesFromRenderer,
-    registerInstallOfficialAppHandlerFromMain,
-    invokeInstallOfficialAppFromRenderer,
-    registerRemoveOfficialAppHandlerFromMain,
-    invokeRemoveOfficialAppFromRenderer,
+    registerInstallDownloadableAppHandlerFromMain,
+    invokeInstallDownloadableAppFromRenderer,
+    registerRemoveDownloadableAppHandlerFromMain,
+    invokeRemoveDownloadableAppFromRenderer,
 };

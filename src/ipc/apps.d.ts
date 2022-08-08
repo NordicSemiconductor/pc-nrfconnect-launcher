@@ -71,16 +71,16 @@ export const registerGetLocalAppsHandlerFromMain: (
 
 export const invokeGetLocalAppsFromRenderer: () => Promise<LocalApp[]>;
 
-// getOfficialApps
+// getDownloadableApps
 
-export const registerGetOfficialAppsHandlerFromMain: (
-    onGetOfficialApps: () => Promise<{
+export const registerGetDownloadableAppsHandlerFromMain: (
+    onGetDownloadableApps: () => Promise<{
         fulfilled: DownloadableApp[];
         rejected: DownloadableApp[];
     }>
 ) => void;
 
-export const invokeGetOfficialAppsFromRenderer: () => Promise<{
+export const invokeGetDownloadableAppsFromRenderer: () => Promise<{
     fulfilled: DownloadableApp[];
     rejected: DownloadableApp[];
 }>;
@@ -97,29 +97,29 @@ export const invokeDownloadReleaseNotesFromRenderer: (
     app: DownloadableApp
 ) => Promise<string | undefined>;
 
-// installOfficialApp
+// installDownloadableApp
 
-export const registerInstallOfficialAppHandlerFromMain: (
-    onInstallOfficialApp: (
+export const registerInstallDownloadableAppHandlerFromMain: (
+    onInstallDownloadableApp: (
         name: string,
         version: string,
         source: string
     ) => Promise<void>
 ) => void;
 
-export const invokeInstallOfficialAppFromRenderer: (
+export const invokeInstallDownloadableAppFromRenderer: (
     name: string,
     version: string,
     source: string
 ) => Promise<void>;
 
-// removeOfficialApp
+// removeDownloadableApp
 
-export const registerRemoveOfficialAppHandlerFromMain: (
-    onRemoveOfficialApp: (name: string, source: string) => Promise<void>
+export const registerRemoveDownloadableAppHandlerFromMain: (
+    onRemoveDownloadableApp: (name: string, source: string) => Promise<void>
 ) => void;
 
-export const invokeRemoveOfficialAppFromRenderer: (
+export const invokeRemoveDownloadableAppFromRenderer: (
     name: string,
     source: string
 ) => Promise<void>;

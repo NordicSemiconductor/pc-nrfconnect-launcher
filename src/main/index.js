@@ -55,12 +55,14 @@ const {
     registerDownloadAllAppsJsonFilesHandlerFromMain:
         registerDownloadAllAppsJsonFilesHandler,
     registerGetLocalAppsHandlerFromMain: registerGetLocalAppsHandler,
-    registerGetOfficialAppsHandlerFromMain: registerGetOfficialAppsHandler,
+    registerGetDownloadableAppsHandlerFromMain:
+        registerGetDownloadableAppsHandler,
     registerDownloadReleaseNotesHandlerFromMain:
         registerDownloadReleaseNotesHandler,
-    registerInstallOfficialAppHandlerFromMain:
-        registerInstallOfficialAppHandler,
-    registerRemoveOfficialAppHandlerFromMain: registerRemoveOfficialAppHandler,
+    registerInstallDownloadableAppHandlerFromMain:
+        registerInstallDownloadableAppHandler,
+    registerRemoveDownloadableAppHandlerFromMain:
+        registerRemoveDownloadableAppHandler,
 } = require('../ipc/apps');
 const {
     registerGetHandlerFromMain: registerGetSourcesHandler,
@@ -196,10 +198,10 @@ registerCancelUpdateHandler(cancelUpdate);
 
 registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
 registerGetLocalAppsHandler(apps.getLocalApps);
-registerGetOfficialAppsHandler(apps.getOfficialApps);
+registerGetDownloadableAppsHandler(apps.getDownloadableApps);
 registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
-registerInstallOfficialAppHandler(apps.installOfficialApp);
-registerRemoveOfficialAppHandler(apps.removeOfficialApp);
+registerInstallDownloadableAppHandler(apps.installDownloadableApp);
+registerRemoveDownloadableAppHandler(apps.removeDownloadableApp);
 
 registerGetSourcesHandler(sources.getAllSources);
 registerAddSourceHandler(sources.addSource);

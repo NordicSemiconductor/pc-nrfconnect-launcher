@@ -320,8 +320,7 @@ const getDownloadableAppsFromSource = async (source: string) => {
     );
 };
 
-// TODO: Rename this to getDownloadableApps
-export const getOfficialApps = async () => {
+export const getDownloadableApps = async () => {
     const appResults = (
         await Promise.all(
             getAllSourceNames().map(getDownloadableAppsFromSource)
@@ -357,8 +356,7 @@ export const getLocalApps = () => {
     return Promise.all(localAppPromises);
 };
 
-// TODO: Rename this to removeDownloadableApp
-export const removeOfficialApp = async (name: string, source: string) => {
+export const removeDownloadableApp = async (name: string, source: string) => {
     const appPath = path.join(config.getNodeModulesDir(source), name);
     if (!appPath.includes('node_modules')) {
         throw new Error(
@@ -373,8 +371,7 @@ export const removeOfficialApp = async (name: string, source: string) => {
     return fs.remove(tmpDir);
 };
 
-// TODO: Rename this to installDownloadableApp
-export const installOfficialApp = async (
+export const installDownloadableApp = async (
     name: string,
     version: string,
     source: string
@@ -390,7 +387,7 @@ export const installOfficialApp = async (
     const appPath = path.join(config.getNodeModulesDir(source), name);
     const isInstalled = await fs.pathExists(appPath);
     if (isInstalled) {
-        await removeOfficialApp(name, source);
+        await removeDownloadableApp(name, source);
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
     await fileUtil.deleteFile(tgzFilePath);
