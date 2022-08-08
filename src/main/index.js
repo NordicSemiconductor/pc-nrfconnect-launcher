@@ -25,7 +25,7 @@ const config = require('./config');
 const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
-const loadDevtools = require('./devtools');
+const { default: loadDevtools } = require('./devtools');
 const { createTextFile } = require('./fileUtil');
 const { downloadToFile } = require('./net');
 const { createDesktopShortcut } = require('./createDesktopShortcut');
@@ -83,8 +83,8 @@ const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
 
 electronApp.allowRendererProcessReuse = false;
 
-electronApp.on('ready', () => {
-    loadDevtools();
+electronApp.on('ready', async () => {
+    await loadDevtools();
 
     Menu.setApplicationMenu(applicationMenu);
     apps.initAppsDirectory()

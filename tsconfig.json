@@ -1,3 +1,6 @@
 {
-    "extends": "./node_modules/pc-nrfconnect-shared/config/tsconfig.json"
+    "extends": "./node_modules/pc-nrfconnect-shared/config/tsconfig.json",
+    "compilerOptions": {
+        "module": "CommonJS"
+    }
 }
