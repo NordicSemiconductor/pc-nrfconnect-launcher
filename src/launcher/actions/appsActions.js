@@ -331,8 +331,7 @@ async function downloadAllReleaseNotesInBackground(
 export function loadOfficialApps(appName, appSource) {
     return async dispatch => {
         dispatch(loadOfficialAppsAction());
-        const { fulfilled: apps, rejected: appsWithErrors } =
-            await getDownloadableApps();
+        const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(
             loadOfficialAppsSuccess(

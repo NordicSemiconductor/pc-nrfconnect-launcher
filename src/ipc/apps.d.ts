@@ -55,6 +55,13 @@ export type App =
     | UninstalledDownloadableApp
     | InstalledDownloadableApp;
 
+interface AppWithError {
+    reason: unknown;
+    path: string;
+    name: string;
+    source: string;
+}
+
 // downloadAllAppsJsonFiles
 
 export const registerDownloadAllAppsJsonFilesHandlerFromMain: (
@@ -75,14 +82,14 @@ export const invokeGetLocalAppsFromRenderer: () => Promise<LocalApp[]>;
 
 export const registerGetDownloadableAppsHandlerFromMain: (
     onGetDownloadableApps: () => Promise<{
-        fulfilled: DownloadableApp[];
-        rejected: DownloadableApp[];
+        apps: DownloadableApp[];
+        appsWithErrors: AppWithError[];
     }>
 ) => void;
 
 export const invokeGetDownloadableAppsFromRenderer: () => Promise<{
-    fulfilled: DownloadableApp[];
-    rejected: DownloadableApp[];
+    apps: DownloadableApp[];
+    appsWithErrors: AppWithError[];
 }>;
 
 // downloadReleaseNotes

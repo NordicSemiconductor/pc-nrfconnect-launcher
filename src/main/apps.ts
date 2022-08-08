@@ -277,7 +277,7 @@ const uninstalledAppInfo = async (
 };
 
 interface ErroneousAppResult {
-    status: 'rejected'; // TODO: Change this status string
+    status: 'erroneous';
     reason: unknown;
     path: string;
     name: string;
@@ -309,7 +309,7 @@ const getDownloadableAppsFromSource = async (source: string) => {
                 return uninstalledAppInfo(app, source);
             } catch (error) {
                 return {
-                    status: 'rejected',
+                    status: 'erroneous',
                     reason: error,
                     path: filePath,
                     name: app.name,
@@ -339,11 +339,12 @@ export const getDownloadableApps = async () => {
     });
 
     return {
-        // TODO: Change `fulfilled` and `rejected` to `apps` and `errors`
-        fulfilled: appResults
+        apps: appResults
             .filter(result => result.status === 'success')
             .map(result => (result as SuccessfulAppResult).value),
-        rejected: appResults.filter(result => result.status === 'rejected'),
+        appsWithErrors: appResults.filter(
+            result => result.status === 'erroneous'
+        ),
     };
 };
 

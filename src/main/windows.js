@@ -133,7 +133,7 @@ function openAppWindow(app) {
 }
 
 function openOfficialAppWindow(appName, sourceName) {
-    return apps.getDownloadableApps().then(({ fulfilled: appList }) => {
+    return apps.getDownloadableApps().then(({ apps: appList }) => {
         const officialApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );
