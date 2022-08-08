@@ -4,23 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// @ts-check
+import { autoUpdater, CancellationToken } from 'electron-updater';
+import path from 'path';
+import { createLogger, transports } from 'winston';
 
-const { createLogger, transports } = require('winston');
-const path = require('path');
-const { autoUpdater, CancellationToken } = require('electron-updater');
-const { sendFromMain: showErrorDialog } = require('../ipc/errorDialog');
-const { LauncherUpdateCheckResult } = require('../ipc/launcherUpdate'); // eslint-disable-line @typescript-eslint/no-unused-vars
-const {
-    sendUpdateStartedFromMain: updateStarted,
-    sendUpdateProgressFromMain: updateProgress,
-    sendUpdateFinishedFromMain: updateFinished,
-} = require('../ipc/launcherUpdateProgress');
+import { sendFromMain as showErrorDialog } from '../ipc/errorDialog';
+import {
+    sendUpdateFinishedFromMain as updateFinished,
+    sendUpdateProgressFromMain as updateProgress,
+    sendUpdateStartedFromMain as updateStarted,
+} from '../ipc/launcherUpdateProgress';
+import * as config from './config';
 
-const config = require('./config');
-
-/** @type {CancellationToken | undefined} */
-let installCancellationToken;
+let installCancellationToken: CancellationToken | undefined;
 
 const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
 const logger = createLogger({
@@ -36,10 +32,7 @@ const logger = createLogger({
 autoUpdater.autoDownload = false;
 autoUpdater.logger = logger;
 
-/**
- * @returns {Promise<LauncherUpdateCheckResult>} Check result
- */
-const checkForUpdate = async () => {
+export const checkForUpdate = async () => {
     const updateCheckResult = autoUpdater.checkForUpdates();
     if (!updateCheckResult) {
         logger.warn(
@@ -59,7 +52,7 @@ const checkForUpdate = async () => {
     };
 };
 
-const startUpdate = () => {
+export const startUpdate = () => {
     if (installCancellationToken != null) {
         showErrorDialog(
             'Download was requested but another download operation is ' +
@@ -94,16 +87,10 @@ const startUpdate = () => {
     autoUpdater.downloadUpdate(installCancellationToken);
 };
 
-const cancelUpdate = () => {
+export const cancelUpdate = () => {
     if (installCancellationToken != null) {
         installCancellationToken.cancel();
     } else {
         showErrorDialog('Unable to cancel. No download is in progress.');
     }
-};
-
-module.exports = {
-    checkForUpdate,
-    startUpdate,
-    cancelUpdate,
 };
