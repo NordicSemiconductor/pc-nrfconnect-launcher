@@ -79,6 +79,9 @@ export function init(argv: Argv) {
         path.join(electronRootPath, 'README.md')
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Must be set because it is expected in global.userDataDir at shared/src/utils/appDirs.ts
+    (<any>global).userDataDir = userDataDir;
+
     config = {
         appsExternalDir,
         appsJsonUrl,

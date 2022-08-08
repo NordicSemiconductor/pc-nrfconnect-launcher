@@ -149,8 +149,8 @@ export const downloadToJson = async <T>(
 export const downloadToFile = async (
     url: string,
     filePath: string,
-    enableProxyLogin: boolean,
-    progressIdentifiers: ProgressIdentifiers | undefined
+    enableProxyLogin: boolean | undefined = false,
+    progressIdentifiers: ProgressIdentifiers | undefined = undefined
 ) => {
     const { buffer } = await downloadToBuffer(
         url,

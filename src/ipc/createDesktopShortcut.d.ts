@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { App } from './apps';
+import { LaunchableApp } from './apps';
 
 export const registerHandlerFromMain: (
-    onCreateDesktopShortcut: (app: App) => void
+    onCreateDesktopShortcut: (app: LaunchableApp) => void
 ) => void;
 
-export const sendFromRenderer: (app: App) => void;
+export const sendFromRenderer: (app: LaunchableApp) => void;

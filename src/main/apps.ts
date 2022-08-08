@@ -12,9 +12,9 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     AppInAppsJson,
-    InstalledDownloadableApp,
+    AppWithError,
+    DownloadableApp,
     LocalApp,
-    UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
 import * as config from './config';
@@ -219,7 +219,7 @@ const downloadableAppsInAppsJson = async (source: string) => {
 
 interface InstalledAppResult {
     status: 'success';
-    value: InstalledDownloadableApp;
+    value: DownloadableApp;
 }
 
 const installedAppInfo = async (
@@ -246,7 +246,7 @@ const installedAppInfo = async (
 
 interface UninstalledAppResult {
     status: 'success';
-    value: UninstalledDownloadableApp;
+    value: DownloadableApp;
 }
 interface InvalidAppResult {
     status: 'invalid';
@@ -345,7 +345,7 @@ export const getDownloadableApps = async () => {
             .map(result => (result as SuccessfulAppResult).value),
         appsWithErrors: appResults.filter(
             result => result.status === 'erroneous'
-        ),
+        ) as AppWithError[],
     };
 };
 
@@ -402,11 +402,13 @@ const migrateStoreIfNeeded = () => {
     }
 };
 
-const replacePrLinks = (homepage: string, changelog: string) =>
-    changelog.replace(
-        /#(\d+)/g,
-        (match, pr) => `[${match}](${homepage}/pull/${pr})`
-    );
+const replacePrLinks = (changelog: string, homepage?: string) =>
+    homepage == null
+        ? changelog
+        : changelog.replace(
+              /#(\d+)/g,
+              (match, pr) => `[${match}](${homepage}/pull/${pr})`
+          );
 
 interface AppData {
     changelog?: string;
@@ -424,7 +426,7 @@ export const downloadReleaseNotes = async ({
     homepage,
 }: {
     url: string;
-    homepage: string;
+    homepage?: string;
 }) => {
     migrateStoreIfNeeded();
 
@@ -440,7 +442,7 @@ export const downloadReleaseNotes = async ({
             previousEtag
         );
         if (response != null) {
-            const changelog = replacePrLinks(homepage, response);
+            const changelog = replacePrLinks(response, homepage);
             store.set(appDataPath, { etag, changelog });
         }
     } catch (e) {

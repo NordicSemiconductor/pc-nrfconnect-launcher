@@ -8,7 +8,7 @@ require('esbuild')
     .build({
         bundle: true,
         color: true,
-        entryPoints: ['src/main/index.js'],
+        entryPoints: ['src/main/index.ts'],
         external: ['electron', './node_modules/*'],
         logLevel: 'info',
         outfile: 'dist/main.js',
