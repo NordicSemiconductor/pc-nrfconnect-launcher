@@ -29,7 +29,7 @@
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
         "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
-        "pack": "npm run build && electron-builder -p never",
+        "pack": "npm run build:prod && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools"
