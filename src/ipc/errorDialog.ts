@@ -4,20 +4,18 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const { ipcRenderer } = require('electron');
-const { sendToLauncherWindowFromMain } = require('./sendToLauncherWindow');
+import { ipcRenderer } from 'electron';
+
+import { sendToLauncherWindowFromMain } from './sendToLauncherWindow';
 
 const channel = 'show-error-dialog';
 
-const registerHandlerFromRenderer = onShowErrorDialog =>
+export const registerHandlerFromRenderer = (
+    onShowErrorDialog: typeof sendFromMain
+) =>
     ipcRenderer.on(channel, (_event, errorMessage) =>
         onShowErrorDialog(errorMessage)
     );
 
-const sendFromMain = errorMessage =>
+export const sendFromMain = (errorMessage: string) =>
     sendToLauncherWindowFromMain(channel, errorMessage);
-
-module.exports = {
-    sendFromMain,
-    registerHandlerFromRenderer,
-};

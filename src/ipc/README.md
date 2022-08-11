@@ -15,7 +15,3 @@ The code here should neither reference any code in `src/main/` nor in
 `src/launcher/`. If we see the need for it (e.g. because the messages are meant
 to be also called from apps), then it should be possible to move the code from
 here to `shared`.
-
-As soon as the code for the main process is processed with esbuild, we can
-update the export/import syntax here and also merge the JavaScript with the
-.d.ts files.

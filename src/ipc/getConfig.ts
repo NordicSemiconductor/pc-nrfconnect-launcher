@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-interface Configuration {
+import { ipcMain, ipcRenderer } from 'electron';
+
+export interface Configuration {
     appsExternalDir: string;
     appsJsonUrl: string;
     appsLocalDir: string;
@@ -30,6 +32,12 @@ interface Configuration {
     userDataDir: string;
     version: string;
 }
+const channel = 'get-config';
 
-export const registerHandlerFromMain: (config: Configuration) => void;
-export const getConfigSyncFromRenderer: () => Configuration;
+export const registerHandlerFromMain = (config: Configuration) =>
+    ipcMain.on(channel, event => {
+        event.returnValue = config;
+    });
+
+export const getConfigSyncFromRenderer = (): Configuration =>
+    ipcRenderer.sendSync(channel);
