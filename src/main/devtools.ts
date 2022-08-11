@@ -14,17 +14,20 @@ import { exit } from 'process';
 type ExtensionReference = typeof REDUX_DEVTOOLS;
 type InstallExtension = typeof installExtension;
 
+type Extensions = Record<string, ExtensionReference>;
+
 const installDevtools = async (
-    extensions: ExtensionReference[],
+    extensions: Extensions,
     installExtension: InstallExtension
 ) => {
     try {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const extension of extensions) {
+        // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const extensionName in extensions) {
             // eslint-disable-next-line no-await-in-loop
-            await installExtension(extension);
+            await installExtension(extensions[extensionName]);
+            console.log(`Added extension ${extensionName}`);
         }
-        console.log('Added devtool extensions');
+        console.log('Devtool extensions should exist now');
         app.quit();
     } catch (err) {
         console.log('An error occurred while adding the devtools: ', err);
@@ -40,13 +43,15 @@ const extensionPath = (extension: ExtensionReference) =>
         extension.id
     );
 
-const removeDevtools = (extensions: ExtensionReference[]) => {
+const removeDevtools = (extensions: Extensions) => {
     try {
-        extensions.forEach(extension => {
+        Object.entries(extensions).forEach(([name, extension]) => {
             if (fs.existsSync(extensionPath(extension))) {
                 fs.rmdirSync(extensionPath(extension), { recursive: true });
+                console.log(`Removed extension ${name}`);
             }
         });
+        console.log('Devtool extensions should be removed now');
         exit(0);
     } catch (err) {
         console.log('An error occurred while removing devtools: ', err);
@@ -54,9 +59,9 @@ const removeDevtools = (extensions: ExtensionReference[]) => {
     }
 };
 
-const loadInstalledDevtools = (extensions: ExtensionReference[]) => {
+const loadInstalledDevtools = (extensions: Extensions) => {
     try {
-        extensions.forEach(extension => {
+        Object.values(extensions).forEach(extension => {
             if (fs.existsSync(extensionPath(extension))) {
                 session.defaultSession.loadExtension(extensionPath(extension), {
                     allowFileAccess: true,
@@ -90,7 +95,7 @@ export default async () => {
         default: { default: installExtension },
     } = devToolsInstaller;
 
-    const extensions = [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];
+    const extensions = { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS };
 
     if (process.argv.includes('--install-devtools')) {
         await installDevtools(extensions, installExtension);
