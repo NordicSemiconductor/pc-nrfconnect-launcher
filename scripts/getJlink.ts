@@ -11,7 +11,7 @@ import { mkdir } from 'fs/promises';
 import path from 'path';
 import { Stream } from 'stream';
 
-import bundledJlinkVersion from './src/main/bundledJlinkVersion';
+import bundledJlinkVersion from '../src/main/bundledJlinkVersion';
 
 if (process.platform !== 'win32') {
     console.log(
