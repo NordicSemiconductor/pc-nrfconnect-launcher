@@ -8,21 +8,20 @@
     },
     "main": "dist/main.js",
     "config": {
-        "run_p_args": "--silent --continue-on-error --print-label",
-        "esbuild_args": "src/main/index.js --bundle --outfile=dist/main.js --platform=node --external:electron --external:./node_modules/* --sourcemap --color"
+        "run_p_args": "--silent --continue-on-error --print-label"
     },
     "scripts": {
         "postinstall": "node getJlink.js",
         "app": "NODE_OPTIONS=--enable-source-maps electron .",
         "watch": "run-p $npm_package_config_run_p_args watch:*",
-        "watch:main": "esbuild --watch $npm_package_config_esbuild_args",
+        "watch:main": "node esbuild.js --watch",
         "watch:renderer": "webpack watch --mode development --color",
         "build:dev": "run-p $npm_package_config_run_p_args build:dev:*",
         "build:dev:renderer": "webpack build --mode development --color",
-        "build:dev:main": "esbuild $npm_package_config_esbuild_args",
+        "build:dev:main": "node esbuild.js",
         "build:prod": "run-p $npm_package_config_run_p_args build:prod:*",
         "build:prod:renderer": "webpack build --color",
-        "build:prod:main": "esbuild --minify $npm_package_config_esbuild_args",
+        "build:prod:main": "node esbuild.js --prod",
         "test": "jest src/",
         "check": "run-p $npm_package_config_run_p_args check:*",
         "check:lint": "eslint --color .",
