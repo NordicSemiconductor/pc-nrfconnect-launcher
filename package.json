@@ -7,23 +7,20 @@
         "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
     },
     "main": "dist/main.js",
-    "config": {
-        "run_p_args": "--silent --continue-on-error --print-label"
-    },
     "scripts": {
         "postinstall": "node getJlink.js",
         "app": "NODE_OPTIONS=--enable-source-maps electron .",
-        "watch": "run-p $npm_package_config_run_p_args watch:*",
+        "watch": "run-p --silent --continue-on-error --print-label watch:*",
         "watch:main": "node esbuild.js --watch",
         "watch:renderer": "webpack watch --mode development --color",
-        "build:dev": "run-p $npm_package_config_run_p_args build:dev:*",
+        "build:dev": "run-p --silent --continue-on-error --print-label build:dev:*",
         "build:dev:renderer": "webpack build --mode development --color",
         "build:dev:main": "node esbuild.js",
-        "build:prod": "run-p $npm_package_config_run_p_args build:prod:*",
+        "build:prod": "run-p --silent --continue-on-error --print-label build:prod:*",
         "build:prod:renderer": "webpack build --color",
         "build:prod:main": "node esbuild.js --prod",
         "test": "jest src/",
-        "check": "run-p $npm_package_config_run_p_args check:*",
+        "check": "run-p --silent --continue-on-error --print-label check:*",
         "check:lint": "eslint --color .",
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
