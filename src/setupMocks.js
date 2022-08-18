@@ -5,10 +5,24 @@
  */
 
 jest.mock('@electron/remote', () => ({
-    require: module =>
-        module === '../main/config'
-            ? {
-                  getVersion: () => '1.2.3-running_in_unit_test',
-              }
-            : undefined,
+    require: module => {
+        if (module === '../main/config')
+            return {
+                getVersion: () => '1.2.3-running_in_unit_test',
+            };
+        if (module === '../main/autoUpdate')
+            return {
+                autoUpdater: {},
+                CancellationToken: class CancellationToken {},
+            };
+        return undefined;
+    },
+    getCurrentWindow: () => ({
+        reload: jest.fn(),
+
+        getTitle: () => 'Not launcher',
+    }),
+    app: {
+        getAppPath: () => process.cwd(),
+    },
 }));
