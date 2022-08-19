@@ -89,7 +89,7 @@
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
         "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.5.4",
+        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.5.5",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
