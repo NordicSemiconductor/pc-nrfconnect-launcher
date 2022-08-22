@@ -3,6 +3,7 @@
 ### Added
 
 -   Log window crashes to file.
+-   M1 support
 
 ### Fixed
 

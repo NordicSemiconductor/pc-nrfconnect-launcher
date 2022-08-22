@@ -33,7 +33,7 @@ let officialAppName;
 let localAppName;
 let sourceName;
 let isRunningLauncherFromSource;
-const bundledJlinkVersion = 'V7.58b';
+const bundledJlinkVersion = 'V7.66a';
 
 /**
  * Init the config values based on the given command line arguments.
