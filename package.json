@@ -10,7 +10,7 @@
     "scripts": {
         "prepare": "husky install",
         "postinstall": "ts-node scripts/getJlink",
-        "app": "NODE_OPTIONS=--enable-source-maps electron .",
+        "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
         "watch": "run-p --silent --continue-on-error --print-label watch:*",
         "watch:main": "node scripts/esbuild --watch",
         "watch:renderer": "webpack watch --mode development --color",
@@ -93,6 +93,7 @@
         "@types/node": "14.17.17",
         "@types/targz": "1.0.1",
         "asar": "3.0.3",
+        "cross-env": "7.0.3",
         "electron": "13.5.1",
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
