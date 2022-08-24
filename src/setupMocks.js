@@ -14,17 +14,3 @@ jest.mock('electron', () => ({
                 : 'Unknown channel used in tests',
     },
 }));
-
-jest.mock('@electron/remote', () => ({
-    require: module => {
-        if (module === '../main/autoUpdate')
-            return {
-                autoUpdater: {},
-                CancellationToken: class CancellationToken {},
-            };
-        return undefined;
-    },
-    getCurrentWindow: () => ({
-        getTitle: () => 'Not launcher',
-    }),
-}));
