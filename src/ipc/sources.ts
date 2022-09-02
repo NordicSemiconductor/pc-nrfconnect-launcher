@@ -13,25 +13,28 @@ const channel = {
 };
 
 // Get
-export const registerGetHandlerFromMain = (
-    onGetSources: () => Record<string, string>
-) => ipcMain.handle(channel.get, onGetSources);
-
 export const invokeGetFromRenderer = (): Promise<Record<string, string>> =>
     ipcRenderer.invoke(channel.get);
 
+type Handler = (
+    ...args: Parameters<typeof invokeGetFromRenderer>
+) => Awaited<ReturnType<typeof invokeGetFromRenderer>>;
+
+export const registerGetHandlerFromMain = (onGetSources: Handler) =>
+    ipcMain.handle(channel.get, onGetSources);
+
 // Add
+export const invokeAddFromRenderer = (url: string): Promise<string> =>
+    ipcRenderer.invoke(channel.add, url);
+
 export const registerAddHandlerFromMain = (
     onAddSource: typeof invokeAddFromRenderer
 ) => ipcMain.handle(channel.add, (_event, url) => onAddSource(url));
 
-export const invokeAddFromRenderer = (url: string): Promise<string> =>
-    ipcRenderer.invoke(channel.add, url);
-
 // Remove
+export const invokeRemoveFromRenderer = (name: string): Promise<void> =>
+    ipcRenderer.invoke(channel.remove, name);
+
 export const registerRemoveHandlerFromMain = (
     onRemoveSource: typeof invokeRemoveFromRenderer
 ) => ipcMain.handle(channel.remove, (_event, name) => onRemoveSource(name));
-
-export const invokeRemoveFromRenderer = (name: string): Promise<void> =>
-    ipcRenderer.invoke(channel.remove, name);

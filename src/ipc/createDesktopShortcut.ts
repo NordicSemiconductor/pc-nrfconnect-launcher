@@ -10,9 +10,9 @@ import { LaunchableApp } from './apps';
 
 const channel = 'create-desktop-shortcut';
 
+export const sendFromRenderer = (app: LaunchableApp) =>
+    ipcRenderer.send(channel, app);
+
 export const registerHandlerFromMain = (
     onCreateDesktopShortcut: typeof sendFromRenderer
 ) => ipcMain.on(channel, (_event, app) => onCreateDesktopShortcut(app));
-
-export const sendFromRenderer = (app: LaunchableApp) =>
-    ipcRenderer.send(channel, app);

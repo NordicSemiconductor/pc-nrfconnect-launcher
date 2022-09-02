@@ -16,10 +16,10 @@ interface Progress {
 
 const channel = 'download-progress';
 
+export const sendFromMain = (progress: Progress) =>
+    sendToLauncherWindowFromMain(channel, progress);
+
 export const registerHandlerFromRenderer = (
     onDownloadProgress: typeof sendFromMain
 ) =>
     ipcRenderer.on(channel, (_event, progress) => onDownloadProgress(progress));
-
-export const sendFromMain = (progress: Progress) =>
-    sendToLauncherWindowFromMain(channel, progress);

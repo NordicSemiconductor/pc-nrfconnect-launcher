@@ -18,29 +18,26 @@ const channel = {
 };
 
 // Check
+export const invokeCheckForUpdateFromRenderer =
+    (): Promise<LauncherUpdateCheckResult> =>
+        ipcRenderer.invoke(channel.checkForUpdate);
 
 export const registerCheckForUpdateHandlerFromMain = (
     onCheckForUpdate: typeof invokeCheckForUpdateFromRenderer
 ) => ipcMain.handle(channel.checkForUpdate, onCheckForUpdate);
 
-export const invokeCheckForUpdateFromRenderer =
-    (): Promise<LauncherUpdateCheckResult> =>
-        ipcRenderer.invoke(channel.checkForUpdate);
-
 // Start
+export const sendStartUpdateFromRender = () =>
+    ipcRenderer.send(channel.startUpdate);
 
 export const registerStartUpdateHandlerFromMain = (
     onStartUpdate: typeof sendStartUpdateFromRender
 ) => ipcMain.on(channel.startUpdate, onStartUpdate);
 
-export const sendStartUpdateFromRender = () =>
-    ipcRenderer.send(channel.startUpdate);
-
 // Cancel
+export const sendCancelUpdateFromRender = () =>
+    ipcRenderer.send(channel.cancelUpdate);
 
 export const registerCancelUpdateHandlerFromMain = (
     onCancelUpdate: typeof sendCancelUpdateFromRender
 ) => ipcMain.on(channel.cancelUpdate, onCancelUpdate);
-
-export const sendCancelUpdateFromRender = () =>
-    ipcRenderer.send(channel.cancelUpdate);

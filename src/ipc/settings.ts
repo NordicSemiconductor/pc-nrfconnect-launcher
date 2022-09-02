@@ -12,6 +12,11 @@ const channel = {
 };
 
 // Get
+export const invokeGetFromRenderer = <T = unknown>(
+    settingKey: string,
+    defaultValue?: T
+): Promise<T> => ipcRenderer.invoke(channel.get, settingKey, defaultValue);
+
 export const registerGetHandlerFromMain = (
     onGetSetting: (settingKey: string, defaultValue?: unknown) => unknown
 ) =>
@@ -19,15 +24,10 @@ export const registerGetHandlerFromMain = (
         onGetSetting(settingKey, defaultValue)
     );
 
-export const invokeGetFromRenderer = <T = unknown>(
-    settingKey: string,
-    defaultValue?: T
-): Promise<T> => ipcRenderer.invoke(channel.get, settingKey, defaultValue);
-
 // Set
+export const sendSetFromRenderer = (key: string, value: unknown) =>
+    ipcRenderer.send(channel.set, key, value);
+
 export const registerSetHandlerFromMain = (
     onSetSetting: typeof sendSetFromRenderer
 ) => ipcMain.on(channel.set, (_event, key, value) => onSetSetting(key, value));
-
-export const sendSetFromRenderer = (key: string, value: unknown) =>
-    ipcRenderer.send(channel.set, key, value);

@@ -14,6 +14,8 @@ const channel = {
 };
 
 // Request Proxy Login
+export const sendFromMain = (requestId: string, authInfo: AuthInfo) =>
+    sendToLauncherWindowFromMain(channel.request, requestId, authInfo);
 
 export const registerHandlerFromRenderer = (
     onProxyLogin: typeof sendFromMain
@@ -22,10 +24,12 @@ export const registerHandlerFromRenderer = (
         onProxyLogin(requestId, authInfo)
     );
 
-export const sendFromMain = (requestId: string, authInfo: AuthInfo) =>
-    sendToLauncherWindowFromMain(channel.request, requestId, authInfo);
-
 // Respond to Proxy Login Request
+export const sendFromRenderer = (
+    requestId: string,
+    username?: string,
+    password?: string
+) => ipcRenderer.send(channel.response, requestId, username, password);
 
 export const registerHandlerFromMain = (
     onProxyLoginCredentials: typeof sendFromRenderer
@@ -33,9 +37,3 @@ export const registerHandlerFromMain = (
     ipcMain.on(channel.response, (_event, requestId, username, password) =>
         onProxyLoginCredentials(requestId, username, password)
     );
-
-export const sendFromRenderer = (
-    requestId: string,
-    username?: string,
-    password?: string
-) => ipcRenderer.send(channel.response, requestId, username, password);

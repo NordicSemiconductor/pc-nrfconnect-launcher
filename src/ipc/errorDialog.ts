@@ -10,12 +10,12 @@ import { sendToLauncherWindowFromMain } from './sendToLauncherWindow';
 
 const channel = 'show-error-dialog';
 
+export const sendFromMain = (errorMessage: string) =>
+    sendToLauncherWindowFromMain(channel, errorMessage);
+
 export const registerHandlerFromRenderer = (
     onShowErrorDialog: typeof sendFromMain
 ) =>
     ipcRenderer.on(channel, (_event, errorMessage) =>
         onShowErrorDialog(errorMessage)
     );
-
-export const sendFromMain = (errorMessage: string) =>
-    sendToLauncherWindowFromMain(channel, errorMessage);

@@ -8,11 +8,11 @@ import { BrowserWindow } from 'electron';
 
 let launcherWindow: BrowserWindow;
 
-export const registerLauncherWindowFromMain = (window: BrowserWindow) => {
-    launcherWindow = window;
-};
-
 export const sendToLauncherWindowFromMain = (
     channel: string,
     ...args: unknown[]
 ) => launcherWindow.webContents.send(channel, ...args);
+
+export const registerLauncherWindowFromMain = (window: BrowserWindow) => {
+    launcherWindow = window;
+};

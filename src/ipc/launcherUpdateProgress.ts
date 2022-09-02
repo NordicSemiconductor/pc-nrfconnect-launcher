@@ -15,14 +15,17 @@ const channel = {
 };
 
 // Start update
+export const sendUpdateStartedFromMain = () =>
+    sendToLauncherWindowFromMain(channel.started);
+
 export const registerUpdateStartedHandlerFromRenderer = (
     onLauncherUpdateStarted: typeof sendUpdateStartedFromMain
 ) => ipcRenderer.on(channel.started, onLauncherUpdateStarted);
 
-export const sendUpdateStartedFromMain = () =>
-    sendToLauncherWindowFromMain(channel.started);
-
 // Progress
+export const sendUpdateProgressFromMain = (percentage: number) =>
+    sendToLauncherWindowFromMain(channel.progress, percentage);
+
 export const registerUpdateProgressHandlerFromRenderer = (
     onLauncherUpdateProgress: typeof sendUpdateProgressFromMain
 ) =>
@@ -30,16 +33,13 @@ export const registerUpdateProgressHandlerFromRenderer = (
         onLauncherUpdateProgress(percentage)
     );
 
-export const sendUpdateProgressFromMain = (percentage: number) =>
-    sendToLauncherWindowFromMain(channel.progress, percentage);
-
 // Update finished
+export const sendUpdateFinishedFromMain = (isSuccessful: boolean) =>
+    sendToLauncherWindowFromMain(channel.finished, isSuccessful);
+
 export const registerUpdateFinishedHandlerFromRenderer = (
     onLauncherUpdateFinished: typeof sendUpdateFinishedFromMain
 ) =>
     ipcRenderer.on(channel.finished, (_event, isSuccessful) =>
         onLauncherUpdateFinished(isSuccessful)
     );
-
-export const sendUpdateFinishedFromMain = (isSuccessful: boolean) =>
-    sendToLauncherWindowFromMain(channel.finished, isSuccessful);

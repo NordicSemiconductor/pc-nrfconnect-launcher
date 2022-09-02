@@ -34,10 +34,10 @@ export interface Configuration {
 }
 const channel = 'get-config';
 
+export const getConfigSyncFromRenderer = (): Configuration =>
+    ipcRenderer.sendSync(channel);
+
 export const registerHandlerFromMain = (config: Configuration) =>
     ipcMain.on(channel, event => {
         event.returnValue = config;
     });
-
-export const getConfigSyncFromRenderer = (): Configuration =>
-    ipcRenderer.sendSync(channel);

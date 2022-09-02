@@ -8,18 +8,20 @@ import { ipcMain, ipcRenderer } from 'electron';
 
 const channel = 'download-to-file';
 
-export const registerHandlerFromMain = (
-    onDownloadToFile: (
-        url: string,
-        filePath: string,
-        enableProxyLogin?: boolean
-    ) => Promise<void>
-) =>
-    ipcMain.handle(channel, (_event, url, filePath) =>
-        onDownloadToFile(url, filePath, false)
-    );
-
 export const invokeFromRenderer = (
     url: string,
     filePath: string
 ): Promise<void> => ipcRenderer.invoke(channel, url, filePath);
+
+type HandlerParameters = [
+    ...Parameters<typeof invokeFromRenderer>,
+    boolean | undefined
+];
+type Handler = (
+    ...args: HandlerParameters
+) => ReturnType<typeof invokeFromRenderer>;
+
+export const registerHandlerFromMain = (onDownloadToFile: Handler) =>
+    ipcMain.handle(channel, (_event, url, filePath) =>
+        onDownloadToFile(url, filePath, false)
+    );
