@@ -20,8 +20,10 @@ export const invokeGetFromRenderer = <T = unknown>(
 export const registerGetHandlerFromMain = (
     onGetSetting: (settingKey: string, defaultValue?: unknown) => unknown
 ) =>
-    ipcMain.handle(channel.get, (_event, settingKey, defaultValue) =>
-        onGetSetting(settingKey, defaultValue)
+    ipcMain.handle(
+        channel.get,
+        (_event, ...args: Parameters<typeof invokeGetFromRenderer>) =>
+            onGetSetting(...args)
     );
 
 // Set
@@ -30,4 +32,9 @@ export const sendSetFromRenderer = (key: string, value: unknown) =>
 
 export const registerSetHandlerFromMain = (
     onSetSetting: typeof sendSetFromRenderer
-) => ipcMain.on(channel.set, (_event, key, value) => onSetSetting(key, value));
+) =>
+    ipcMain.on(
+        channel.set,
+        (_event, ...args: Parameters<typeof sendSetFromRenderer>) =>
+            onSetSetting(...args)
+    );

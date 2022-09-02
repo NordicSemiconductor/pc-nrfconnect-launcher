@@ -15,4 +15,9 @@ export const sendFromRenderer = (app: LaunchableApp) =>
 
 export const registerHandlerFromMain = (
     onCreateDesktopShortcut: typeof sendFromRenderer
-) => ipcMain.on(channel, (_event, app) => onCreateDesktopShortcut(app));
+) =>
+    ipcMain.on(
+        channel,
+        (_event, ...args: Parameters<typeof sendFromRenderer>) =>
+            onCreateDesktopShortcut(...args)
+    );

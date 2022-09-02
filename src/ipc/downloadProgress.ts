@@ -22,4 +22,8 @@ export const sendFromMain = (progress: Progress) =>
 export const registerHandlerFromRenderer = (
     onDownloadProgress: typeof sendFromMain
 ) =>
-    ipcRenderer.on(channel, (_event, progress) => onDownloadProgress(progress));
+    ipcRenderer.on(
+        channel,
+        (_event, ...args: Parameters<typeof sendFromMain>) =>
+            onDownloadProgress(...args)
+    );

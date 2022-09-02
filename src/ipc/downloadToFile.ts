@@ -22,6 +22,8 @@ type Handler = (
 ) => ReturnType<typeof invokeFromRenderer>;
 
 export const registerHandlerFromMain = (onDownloadToFile: Handler) =>
-    ipcMain.handle(channel, (_event, url, filePath) =>
-        onDownloadToFile(url, filePath, false)
+    ipcMain.handle(
+        channel,
+        (_event, ...args: Parameters<typeof invokeFromRenderer>) =>
+            onDownloadToFile(...args, false)
     );

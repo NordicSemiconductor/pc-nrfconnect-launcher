@@ -118,8 +118,12 @@ export const invokeDownloadReleaseNotesFromRenderer = (
 export const registerDownloadReleaseNotesHandlerFromMain = (
     onDownloadReleaseNotes: typeof invokeDownloadReleaseNotesFromRenderer
 ) =>
-    ipcMain.handle(channel.downloadReleaseNotes, (_event, app) =>
-        onDownloadReleaseNotes(app)
+    ipcMain.handle(
+        channel.downloadReleaseNotes,
+        (
+            _event,
+            ...args: Parameters<typeof invokeDownloadReleaseNotesFromRenderer>
+        ) => onDownloadReleaseNotes(...args)
     );
 
 // installDownloadableApp
@@ -136,8 +140,10 @@ export const registerInstallDownloadableAppHandlerFromMain = (
 ) =>
     ipcMain.handle(
         channel.installDownloadableApp,
-        (_event, name, version, source) =>
-            onInstallDownloadableApp(name, version, source)
+        (
+            _event,
+            ...args: Parameters<typeof invokeInstallDownloadableAppFromRenderer>
+        ) => onInstallDownloadableApp(...args)
     );
 
 // removeDownloadableApp
@@ -151,6 +157,10 @@ export const invokeRemoveDownloadableAppFromRenderer = (
 export const registerRemoveDownloadableAppHandlerFromMain = (
     onRemoveDownloadableApp: typeof invokeRemoveDownloadableAppFromRenderer
 ) =>
-    ipcMain.handle(channel.removeDownloadableApp, (_event, name, source) =>
-        onRemoveDownloadableApp(name, source)
+    ipcMain.handle(
+        channel.removeDownloadableApp,
+        (
+            _event,
+            ...args: Parameters<typeof invokeRemoveDownloadableAppFromRenderer>
+        ) => onRemoveDownloadableApp(...args)
     );

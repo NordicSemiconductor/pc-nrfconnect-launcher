@@ -16,6 +16,8 @@ export const sendFromMain = (errorMessage: string) =>
 export const registerHandlerFromRenderer = (
     onShowErrorDialog: typeof sendFromMain
 ) =>
-    ipcRenderer.on(channel, (_event, errorMessage) =>
-        onShowErrorDialog(errorMessage)
+    ipcRenderer.on(
+        channel,
+        (_event, ...args: Parameters<typeof sendFromMain>) =>
+            onShowErrorDialog(...args)
     );

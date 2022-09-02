@@ -20,8 +20,10 @@ export const sendFromMain = (requestId: string, authInfo: AuthInfo) =>
 export const registerHandlerFromRenderer = (
     onProxyLogin: typeof sendFromMain
 ) =>
-    ipcRenderer.on(channel.request, (_event, requestId, authInfo) =>
-        onProxyLogin(requestId, authInfo)
+    ipcRenderer.on(
+        channel.request,
+        (_event, ...args: Parameters<typeof sendFromMain>) =>
+            onProxyLogin(...args)
     );
 
 // Respond to Proxy Login Request
@@ -34,6 +36,8 @@ export const sendFromRenderer = (
 export const registerHandlerFromMain = (
     onProxyLoginCredentials: typeof sendFromRenderer
 ) =>
-    ipcMain.on(channel.response, (_event, requestId, username, password) =>
-        onProxyLoginCredentials(requestId, username, password)
+    ipcMain.on(
+        channel.response,
+        (_event, ...args: Parameters<typeof sendFromRenderer>) =>
+            onProxyLoginCredentials(...args)
     );

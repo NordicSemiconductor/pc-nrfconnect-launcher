@@ -29,8 +29,10 @@ export const sendUpdateProgressFromMain = (percentage: number) =>
 export const registerUpdateProgressHandlerFromRenderer = (
     onLauncherUpdateProgress: typeof sendUpdateProgressFromMain
 ) =>
-    ipcRenderer.on(channel.progress, (_event, percentage) =>
-        onLauncherUpdateProgress(percentage)
+    ipcRenderer.on(
+        channel.progress,
+        (_event, ...args: Parameters<typeof sendUpdateProgressFromMain>) =>
+            onLauncherUpdateProgress(...args)
     );
 
 // Update finished
@@ -40,6 +42,8 @@ export const sendUpdateFinishedFromMain = (isSuccessful: boolean) =>
 export const registerUpdateFinishedHandlerFromRenderer = (
     onLauncherUpdateFinished: typeof sendUpdateFinishedFromMain
 ) =>
-    ipcRenderer.on(channel.finished, (_event, isSuccessful) =>
-        onLauncherUpdateFinished(isSuccessful)
+    ipcRenderer.on(
+        channel.finished,
+        (_event, ...args: Parameters<typeof sendUpdateFinishedFromMain>) =>
+            onLauncherUpdateFinished(...args)
     );

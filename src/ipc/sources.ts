@@ -29,7 +29,12 @@ export const invokeAddFromRenderer = (url: string): Promise<string> =>
 
 export const registerAddHandlerFromMain = (
     onAddSource: typeof invokeAddFromRenderer
-) => ipcMain.handle(channel.add, (_event, url) => onAddSource(url));
+) =>
+    ipcMain.handle(
+        channel.add,
+        (_event, ...args: Parameters<typeof invokeAddFromRenderer>) =>
+            onAddSource(...args)
+    );
 
 // Remove
 export const invokeRemoveFromRenderer = (name: string): Promise<void> =>
@@ -37,4 +42,9 @@ export const invokeRemoveFromRenderer = (name: string): Promise<void> =>
 
 export const registerRemoveHandlerFromMain = (
     onRemoveSource: typeof invokeRemoveFromRenderer
-) => ipcMain.handle(channel.remove, (_event, name) => onRemoveSource(name));
+) =>
+    ipcMain.handle(
+        channel.remove,
+        (_event, ...args: Parameters<typeof invokeRemoveFromRenderer>) =>
+            onRemoveSource(...args)
+    );
