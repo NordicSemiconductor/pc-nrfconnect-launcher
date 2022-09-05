@@ -1,9 +1,9 @@
-## Unreleased
+## 3.12.0 - 2022-09-05
 
 ### Added
 
 -   Log window crashes to file.
--   M1 support
+-   macOS: Apple Silicon support.
 
 ### Fixed
 
