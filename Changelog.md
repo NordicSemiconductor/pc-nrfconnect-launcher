@@ -2,13 +2,12 @@
 
 ### Added
 
--   Log window crashes to file.
--   macOS: Apple Silicon support.
+-   Save crash logs to file.
+-   macOS: Support for using Universal JLink (Intel and Apple Silicon).
 
 ### Fixed
 
--   macOS: Froze a few seconds after launch for a few seconds (happened when
-    usage data was enabled).
+-   macOS: Froze a few seconds after launch when usage statistics was enabled.
 
 ## 3.11.1 - 2022-05-30
 
