@@ -5,34 +5,19 @@
  */
 
 const fs = require('fs');
-const { net, session, ipcMain } = require('electron');
+const { net, session } = require('electron');
+const {
+    sendFromMain: sendDownloadProgress,
+} = require('../ipc/downloadProgress');
+const { sendFromMain: requestProxyLogin } = require('../ipc/proxyLogin');
+const { storeProxyLoginRequest } = require('./proxyLogins');
 
 // Using the same session name as electron-updater, so that proxy credentials
 // (if required) only have to be sent once.
 const NET_SESSION_NAME = 'electron-updater';
 
-let onProxyLogin;
-
-/**
- * Register a function that should be called when a proxy asks for username
- * and password. The function receives an authInfo object and a callback function.
- * The callback function must be invoked with username and password. More info:
- * https://github.com/electron/electron/blob/master/docs/api/client-request.md
- *
- * @param {Function} onLoginRequested Signature: (authInfo, callback) => {}.
- * @returns {void}
- */
-function registerProxyLoginHandler(onLoginRequested) {
-    onProxyLogin = onLoginRequested;
-}
-
-let ipcRenderer;
-ipcMain.on('download-start', event => {
-    ipcRenderer = event.sender;
-});
-
 function reportInstallProgress({ name, source }, progress, totalInstallSize) {
-    ipcRenderer?.send('progress-update', {
+    sendDownloadProgress({
         name,
         source,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
@@ -99,7 +84,10 @@ function downloadToBuffer(
             );
         });
         if (enableProxyLogin) {
-            request.on('login', onProxyLogin);
+            request.on('login', (authInfo, callback) => {
+                const requestId = storeProxyLoginRequest(callback);
+                requestProxyLogin(requestId, authInfo);
+            });
         }
         request.on('error', error =>
             reject(new Error(`Unable to download ${url}: ${error.message}`))
@@ -185,5 +173,4 @@ module.exports = {
     downloadToStringIfChanged,
     downloadToJson,
     isResourceNotFound,
-    registerProxyLoginHandler,
 };

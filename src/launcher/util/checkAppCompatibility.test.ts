@@ -6,13 +6,22 @@
 
 import { inspect } from 'util';
 
+import { InstalledApp } from '../../ipc/apps';
 import checkAppCompatibility, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,
 } from './checkAppCompatibility';
 
-const requiringEngine = (engineVersion?: string) => ({
+const requiringEngine = (engineVersion?: string): InstalledApp => ({
     engineVersion,
+
+    name: 'test name',
+    displayName: 'test display name',
+    description: 'test description',
+    currentVersion: 'test current version',
+    path: 'test path',
+    iconPath: 'test icon path',
+    shortcutIconPath: 'test shortcut icon path',
 });
 
 const failingCheck = {
@@ -97,7 +106,7 @@ describe('check compatibility of an app with the launcher', () => {
                     app: [engineVersion],
                     engine: [providedVersionOfEngine],
                 }) => {
-                    const appSpec = { engineVersion };
+                    const appSpec = requiringEngine(engineVersion);
                     const engineSpec = providedVersionOfEngine;
 
                     it(`${description}, with app spec ${inspect(
@@ -132,7 +141,7 @@ describe('check compatibility of an app with the launcher', () => {
                     app: [engineVersion],
                     engine: [providedVersionOfEngine],
                 }) => {
-                    const appSpec = { engineVersion };
+                    const appSpec = requiringEngine(engineVersion);
                     const engineSpec = providedVersionOfEngine;
                     it(`${description}, with app spec ${inspect(
                         appSpec

@@ -5,13 +5,12 @@
  */
 
 import { connect } from 'react-redux';
-import { require as remoteRequire } from '@electron/remote';
 import { openUrl } from 'pc-nrfconnect-shared';
 
+import { sendStartUpdateFromRender as startLauncherUpdate } from '../../ipc/launcherUpdate';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
-
-const config = remoteRequire('../main/config');
+import mainConfig from '../util/mainConfig';
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;
@@ -24,9 +23,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onClickReleaseNotes: () => openUrl(config.getReleaseNotesUrl()),
-        onConfirm: () => dispatch(AutoUpdateActions.startDownload()),
-        onCancel: () => dispatch(AutoUpdateActions.postponeUpdate()),
+        onClickReleaseNotes: () => openUrl(mainConfig().releaseNotesUrl),
+        onConfirm: startLauncherUpdate,
+        onCancel: () => dispatch(AutoUpdateActions.resetAction()),
     };
 }
 

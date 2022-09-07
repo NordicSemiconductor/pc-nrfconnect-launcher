@@ -35,9 +35,9 @@ class ProxyLoginDialog extends React.Component {
     }
 
     onSubmitClicked() {
-        const { onSubmit, username } = this.props;
+        const { onSubmit, requestId, username } = this.props;
         const { password } = this.state;
-        onSubmit(username, password);
+        onSubmit(requestId, username, password);
         this.setState({
             password: '',
         });
@@ -56,7 +56,8 @@ class ProxyLoginDialog extends React.Component {
     }
 
     render() {
-        const { isVisible, message, onCancel, username } = this.props;
+        const { isVisible, requestId, message, onCancel, username } =
+            this.props;
         const { password } = this.state;
         return (
             <Modal show={isVisible} backdrop>
@@ -89,7 +90,7 @@ class ProxyLoginDialog extends React.Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button onClick={() => onCancel(requestId)}>Cancel</Button>
                     <Button
                         onClick={this.onSubmitClicked}
                         disabled={!this.isValidInput()}
@@ -104,6 +105,7 @@ class ProxyLoginDialog extends React.Component {
 
 ProxyLoginDialog.propTypes = {
     isVisible: bool.isRequired,
+    requestId: string.isRequired,
     message: string.isRequired,
     username: string.isRequired,
     onUsernameChanged: func.isRequired,

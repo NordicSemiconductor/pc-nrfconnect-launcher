@@ -4,13 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { require as remoteRequire } from '@electron/remote';
+// @ts-check
+
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import {
+    invokeDownloadAppsJsonFileFromRenderer as downloadAppsJsonFile,
+    invokeRemoveSourceDirectoryFromRenderer as removeSourceDirectory,
+} from '../../ipc/apps';
+import {
+    invokeGetFromRenderer as getSetting,
+    invokeGetSourcesFromRenderer as getSourcesSetting,
+    sendSetFromRenderer as setSetting,
+    sendSetSourcesFromRenderer as setSourcesSetting,
+} from '../../ipc/settings';
 import * as AppsActions from './appsActions';
-
-const settings = remoteRequire('../main/settings');
-const mainApps = remoteRequire('../main/apps');
 
 export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';
@@ -59,46 +67,33 @@ function checkUpdatesAtStartupChangedAction(isEnabled) {
     };
 }
 
-export function loadSettings() {
-    return dispatch => {
-        dispatch(loadSettingsAction());
-        try {
-            let shouldCheckForUpdatesAtStartup = settings.get(
-                'shouldCheckForUpdatesAtStartup'
-            );
-            if (shouldCheckForUpdatesAtStartup === null) {
-                shouldCheckForUpdatesAtStartup = true;
-            }
-            const sources = settings.getSources();
-            dispatch(
-                loadSettingsSuccessAction({
-                    shouldCheckForUpdatesAtStartup,
-                    sources,
-                })
-            );
-        } catch (error) {
-            dispatch(loadSettingsErrorAction(error));
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Unable to load settings: ${error.message}`
-                )
-            );
-        }
-    };
+export async function loadSettings(dispatch) {
+    dispatch(loadSettingsAction());
+    try {
+        const shouldCheckForUpdatesAtStartup =
+            (await getSetting('shouldCheckForUpdatesAtStartup')) ?? true;
+        const sources = await getSourcesSetting();
+
+        dispatch(
+            loadSettingsSuccessAction({
+                shouldCheckForUpdatesAtStartup,
+                sources,
+            })
+        );
+    } catch (error) {
+        dispatch(loadSettingsErrorAction(error));
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to load settings: ${error.message}`
+            )
+        );
+    }
 }
 
 export function checkUpdatesAtStartupChanged(isEnabled) {
     return dispatch => {
         dispatch(checkUpdatesAtStartupChangedAction(isEnabled));
-        try {
-            settings.set('shouldCheckForUpdatesAtStartup', isEnabled);
-        } catch (error) {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Unable to save settings: ${error.message}`
-                )
-            );
-        }
+        setSetting('shouldCheckForUpdatesAtStartup', isEnabled);
     };
 }
 
@@ -124,19 +119,10 @@ function addSourceAction(name, url) {
 
 export function addSource(url) {
     return (dispatch, getState) => {
-        mainApps
-            .downloadAppsJsonFile(url)
+        downloadAppsJsonFile(url)
             .then(source => dispatch(addSourceAction(source, url)))
             .then(() => {
-                try {
-                    settings.setSources(getState().settings.sources.toJS());
-                } catch (error) {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to save settings: ${error.message}`
-                        )
-                    );
-                }
+                setSourcesSetting(getState().settings.sources.toJS());
             })
             .catch(error =>
                 dispatch(ErrorDialogActions.showDialog(error.message))
@@ -154,22 +140,15 @@ function sourceRemovedAction(name) {
 
 export function removeSource(name) {
     return (dispatch, getState) => {
-        mainApps
-            .removeSourceDirectory(name)
+        removeSourceDirectory(name)
             .then(() => dispatch(sourceRemovedAction(name)))
             .then(() => {
-                try {
-                    settings.setSources(getState().settings.sources.toJS());
-                } catch (error) {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to save settings: ${error.message}`
-                        )
-                    );
-                }
+                setSourcesSetting(getState().settings.sources.toJS());
             })
             .then(() => dispatch(AppsActions.loadOfficialApps()))
-            .then(() => dispatch(AppsActions.setAppManagementSource(name)));
+            .then(async () =>
+                dispatch(await AppsActions.setAppManagementSource(name))
+            );
     };
 }
 

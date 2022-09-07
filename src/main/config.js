@@ -8,31 +8,11 @@ const electronApp = require('electron').app;
 const path = require('path');
 const fs = require('fs');
 const packageJson = require('../../package.json');
+const {
+    registerHandlerFromMain: registerConfigHandler,
+} = require('../ipc/getConfig');
 
-let version;
-let electronRootPath;
-let electronResourcesDir;
-let electronExePath;
-let homeDir;
-let userDataDir;
-let desktopDir;
-let ubuntuDesktopDir;
-let tmpDir;
-let appsRootDir;
-let appsLocalDir;
-let appsExternalDir;
-let appsJsonUrl;
-let settingsJsonPath;
-let sourcesJsonPath;
-let registryUrl;
-let releaseNotesUrl;
-let skipUpdateApps;
-let skipUpdateCore;
-let skipSplashScreen;
-let officialAppName;
-let localAppName;
-let sourceName;
-let isRunningLauncherFromSource;
+let config;
 const bundledJlinkVersion = 'V7.66a';
 
 /**
@@ -60,76 +40,112 @@ const bundledJlinkVersion = 'V7.66a';
  */
 function init(argv) {
     const { version: pkgVer } = packageJson;
-    version = pkgVer;
-    electronRootPath = electronApp.getAppPath();
-    electronResourcesDir = path.join(electronRootPath, 'resources');
-    electronExePath = process.env.APPIMAGE || electronApp.getPath('exe');
-    homeDir = electronApp.getPath('home');
-    userDataDir = electronApp.getPath('userData');
-    desktopDir = electronApp.getPath('desktop');
-    ubuntuDesktopDir = path.join(homeDir, '.local', 'share', 'applications');
-    tmpDir = electronApp.getPath('temp');
-    appsRootDir =
+    const version = pkgVer;
+    const electronRootPath = electronApp.getAppPath();
+    const electronResourcesDir = path.join(electronRootPath, 'resources');
+    const electronExePath = process.env.APPIMAGE || electronApp.getPath('exe');
+    const homeDir = electronApp.getPath('home');
+    const userDataDir = electronApp.getPath('userData');
+    const desktopDir = electronApp.getPath('desktop');
+    const ubuntuDesktopDir = path.join(
+        homeDir,
+        '.local',
+        'share',
+        'applications'
+    );
+    const tmpDir = electronApp.getPath('temp');
+    const appsRootDir =
         argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
-    appsLocalDir = path.join(appsRootDir, 'local');
-    appsExternalDir = path.join(appsRootDir, 'external');
-    settingsJsonPath =
+    const appsLocalDir = path.join(appsRootDir, 'local');
+    const appsExternalDir = path.join(appsRootDir, 'external');
+    const settingsJsonPath =
         argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
-    sourcesJsonPath =
+    const sourcesJsonPath =
         argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
-    appsJsonUrl =
+    const appsJsonUrl =
         'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
-    registryUrl = 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
-    releaseNotesUrl =
+    const registryUrl =
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/';
+    const releaseNotesUrl =
         'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
-    skipUpdateApps = argv['skip-update-apps'] || false;
-    skipUpdateCore = argv['skip-update-core'] || false;
-    skipSplashScreen = argv['skip-splash-screen'] || false;
-    officialAppName = argv['open-official-app'] || null;
-    localAppName = argv['open-local-app'] || null;
-    sourceName = argv.source || 'official';
-    isRunningLauncherFromSource = fs.existsSync(
+    const skipUpdateApps = argv['skip-update-apps'] || false;
+    const skipUpdateCore = argv['skip-update-core'] || false;
+    const skipSplashScreen = argv['skip-splash-screen'] || false;
+    const officialAppName = argv['open-official-app'] || null;
+    const localAppName = argv['open-local-app'] || null;
+    const sourceName = argv.source || 'official';
+    const isRunningLauncherFromSource = fs.existsSync(
         path.join(electronRootPath, 'README.md')
     );
+
+    config = {
+        appsExternalDir,
+        appsJsonUrl,
+        appsLocalDir,
+        appsRootDir,
+        bundledJlinkVersion,
+        desktopDir,
+        electronExePath,
+        electronResourcesDir,
+        electronRootPath,
+        homeDir,
+        isRunningLauncherFromSource,
+        isSkipSplashScreen: skipSplashScreen,
+        isSkipUpdateApps: skipUpdateApps,
+        isSkipUpdateCore: skipUpdateCore,
+        localAppName,
+        officialAppName,
+        registryUrl,
+        releaseNotesUrl,
+        settingsJsonPath,
+        sourceName,
+        sourcesJsonPath,
+        tmpDir,
+        ubuntuDesktopDir,
+        userDataDir,
+        version,
+    };
+
+    registerConfigHandler(config);
 }
 
-function getAppsRootDir(source = 'official') {
+function getAppsRootDir(source = 'official', effectiveConfig = config) {
     if (source === 'official') {
-        return appsRootDir;
+        return effectiveConfig.appsRootDir;
     }
-    return path.join(appsExternalDir, source);
+    return path.join(effectiveConfig.appsExternalDir, source);
 }
 
 module.exports = {
     init,
-    getVersion: () => version,
-    getElectronRootPath: () => electronRootPath,
-    getElectronResourcesDir: () => electronResourcesDir,
-    getElectronExePath: () => electronExePath,
-    getHomeDir: () => homeDir,
-    getUserDataDir: () => userDataDir,
-    getDesktopDir: () => desktopDir,
-    getUbuntuDesktopDir: () => ubuntuDesktopDir,
-    getTmpDir: () => tmpDir,
+    getVersion: () => config.version,
+    getElectronRootPath: () => config.electronRootPath,
+    getElectronResourcesDir: () => config.electronResourcesDir,
+    getElectronExePath: () => config.electronExePath,
+    getHomeDir: () => config.homeDir,
+    getUserDataDir: () => config.userDataDir,
+    getDesktopDir: () => config.desktopDir,
+    getUbuntuDesktopDir: () => config.ubuntuDesktopDir,
+    getTmpDir: () => config.tmpDir,
     getAppsRootDir,
-    getAppsLocalDir: () => appsLocalDir,
-    getAppsExternalDir: () => appsExternalDir,
+    getAppsLocalDir: () => config.appsLocalDir,
+    getAppsExternalDir: () => config.appsExternalDir,
     getNodeModulesDir: source =>
         path.join(getAppsRootDir(source), 'node_modules'),
     getUpdatesJsonPath: source =>
         path.join(getAppsRootDir(source), 'updates.json'),
     getAppsJsonPath: source => path.join(getAppsRootDir(source), 'apps.json'),
-    getSettingsJsonPath: () => settingsJsonPath,
-    getSourcesJsonPath: () => sourcesJsonPath,
-    getAppsJsonUrl: () => appsJsonUrl,
-    getRegistryUrl: () => registryUrl,
-    getReleaseNotesUrl: () => releaseNotesUrl,
-    isSkipUpdateApps: () => skipUpdateApps,
-    isSkipUpdateCore: () => skipUpdateCore,
-    isSkipSplashScreen: () => skipSplashScreen,
-    getOfficialAppName: () => officialAppName,
-    getLocalAppName: () => localAppName,
-    getSourceName: () => sourceName,
-    isRunningLauncherFromSource: () => isRunningLauncherFromSource,
+    getSettingsJsonPath: () => config.settingsJsonPath,
+    getSourcesJsonPath: () => config.sourcesJsonPath,
+    getAppsJsonUrl: () => config.appsJsonUrl,
+    getRegistryUrl: () => config.registryUrl,
+    getReleaseNotesUrl: () => config.releaseNotesUrl,
+    isSkipUpdateApps: () => config.skipUpdateApps,
+    isSkipUpdateCore: () => config.skipUpdateCore,
+    isSkipSplashScreen: () => config.skipSplashScreen,
+    getOfficialAppName: () => config.officialAppName,
+    getLocalAppName: () => config.localAppName,
+    getSourceName: () => config.sourceName,
+    isRunningLauncherFromSource: () => config.isRunningLauncherFromSource,
     bundledJlinkVersion: () => bundledJlinkVersion,
 };

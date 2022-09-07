@@ -17,10 +17,10 @@ import { sendLauncherUsageData } from '../actions/usageDataActions';
 const ErrorBoundaryLauncher = ({ children }) => {
     const dispatch = useDispatch();
 
-    const restoreDefaults = () => {
-        dispatch(AppsActions.setAppManagementFilter(''));
-        dispatch(AppsActions.setAppManagementShow({}));
-        dispatch(AppsActions.setAppManagementSource({}));
+    const restoreDefaults = async () => {
+        dispatch(await AppsActions.setAppManagementFilter(''));
+        dispatch(await AppsActions.setAppManagementShow({}));
+        dispatch(await AppsActions.setAppManagementSource({}));
         getCurrentWindow().reload();
     };
 

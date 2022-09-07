@@ -13,17 +13,20 @@ const InitialState = Record({
     isLoginDialogVisible: false,
     isErrorDialogVisible: false,
     loginDialogMessage: '',
+    requestId: '',
 });
 const initialState = new InitialState();
 
-function showLoginDialog(state, message) {
+function showLoginDialog(state, requestId, message) {
     return state
+        .set('requestId', requestId)
         .set('loginDialogMessage', message)
         .set('isLoginDialogVisible', true);
 }
 
 function hideLoginDialog(state) {
     return state
+        .set('requestId', initialState.requestId)
         .set('loginDialogMessage', initialState.loginDialogMessage)
         .set('isLoginDialogVisible', false);
 }
@@ -40,7 +43,7 @@ function setLoginRequestSent(state, username) {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case ProxyActions.PROXY_LOGIN_REQUESTED_BY_SERVER:
-            return showLoginDialog(state, action.message);
+            return showLoginDialog(state, action.requestId, action.message);
         case ProxyActions.PROXY_LOGIN_CANCELLED_BY_USER:
             return cancelLoginDialog(state);
         case ProxyActions.PROXY_LOGIN_ERROR_DIALOG_CLOSED:

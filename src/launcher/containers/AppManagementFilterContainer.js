@@ -18,11 +18,11 @@ export default connect(
     dispatch => ({
         onUpgrade: (name, version, source) =>
             dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
-        setAppManagementShow: show =>
-            dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter =>
-            dispatch(AppsActions.setAppManagementFilter(filter)),
-        setAppManagementSource: (source, show) =>
-            dispatch(AppsActions.setAppManagementSource(source, show)),
+        setAppManagementShow: async show =>
+            dispatch(await AppsActions.setAppManagementShow(show)),
+        setAppManagementFilter: async filter =>
+            dispatch(await AppsActions.setAppManagementFilter(filter)),
+        setAppManagementSource: async (source, show) =>
+            dispatch(await AppsActions.setAppManagementSource(source, show)),
     })
 )(AppManagementFilter);

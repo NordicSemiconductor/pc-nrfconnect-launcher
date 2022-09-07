@@ -7,8 +7,8 @@
 import { connect } from 'react-redux';
 import { openUrl } from 'pc-nrfconnect-shared';
 
+import { sendFromRenderer as createDesktopShortcut } from '../../ipc/createDesktopShortcut';
 import * as AppsActions from '../actions/appsActions';
-import * as DesktopShortcutActions from '../actions/desktopShortcutActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 import AppManagementView from '../components/AppManagementView';
 
@@ -83,15 +83,10 @@ function mapDispatchToProps(dispatch) {
         onReadMore: homepage => openUrl(homepage),
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
-        onCreateShortcut: app =>
-            dispatch(DesktopShortcutActions.createShortcut(app)),
+        onCreateShortcut: app => createDesktopShortcut(app.toJS()),
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
         onUpgrade: (name, version, source) =>
             dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
-        setAppManagementShow: show =>
-            dispatch(AppsActions.setAppManagementShow(show)),
-        setAppManagementFilter: filter =>
-            dispatch(AppsActions.setAppManagementFilter(filter)),
     };
 }
 

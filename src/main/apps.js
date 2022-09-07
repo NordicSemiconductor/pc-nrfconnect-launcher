@@ -179,6 +179,10 @@ function generateUpdatesJsonFiles() {
     );
 }
 
+function downloadAllAppsJsonFiles() {
+    return downloadAppsJsonFiles().then(generateUpdatesJsonFiles);
+}
+
 /**
  * Show confirmation dialog about existing app directory to be removed.
  *
@@ -636,8 +640,7 @@ module.exports = {
     initAppsDirectory,
     initSourceDirectory,
     downloadAppsJsonFile,
-    downloadAppsJsonFiles,
-    generateUpdatesJsonFiles,
+    downloadAllAppsJsonFiles,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,

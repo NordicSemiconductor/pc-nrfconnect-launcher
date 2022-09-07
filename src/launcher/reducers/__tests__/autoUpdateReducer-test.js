@@ -46,16 +46,6 @@ describe('autoUpdateReducer', () => {
         expect(state.latestVersion).toEqual('1.2.3');
     });
 
-    it('should hide the update available dialog when AUTO_UPDATE_POSTPONE has been dispatched', () => {
-        const firstState = reducer(initialState, {
-            type: AutoUpdateActions.AUTO_UPDATE_AVAILABLE,
-        });
-        const secondState = reducer(firstState, {
-            type: AutoUpdateActions.AUTO_UPDATE_POSTPONE,
-        });
-        expect(secondState.isUpdateAvailableDialogVisible).toEqual(false);
-    });
-
     it('should hide the update available dialog when AUTO_UPDATE_START_DOWNLOAD has been dispatched', () => {
         const firstState = reducer(initialState, {
             type: AutoUpdateActions.AUTO_UPDATE_AVAILABLE,
@@ -120,16 +110,9 @@ describe('autoUpdateReducer', () => {
         expect(state.isCancelling).toEqual(true);
     });
 
-    it('should return initial state when AUTO_UPDATE_DOWNLOAD_CANCELLED has been dispatched', () => {
+    it('should return initial state when AUTO_UPDATE_RESET has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AutoUpdateActions.AUTO_UPDATE_DOWNLOAD_CANCELLED,
-        });
-        expect(state).toEqual(initialState);
-    });
-
-    it('should return initial state when AUTO_UPDATE_ERROR has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: AutoUpdateActions.AUTO_UPDATE_ERROR,
+            type: AutoUpdateActions.AUTO_UPDATE_RESET,
         });
         expect(state).toEqual(initialState);
     });

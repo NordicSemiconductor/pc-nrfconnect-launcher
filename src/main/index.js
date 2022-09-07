@@ -12,6 +12,12 @@ require('./setUserDataDir');
 
 require('@electron/remote/main').initialize();
 
+const { argv } = require('yargs');
+// eslint-disable-next-line import/order -- The config needs to be loaded and initialised early, because it is used in other modules, sometimes while loading them
+const config = require('./config');
+
+config.init(argv);
+
 const {
     Menu,
     ipcMain,
@@ -19,21 +25,57 @@ const {
     app: electronApp,
     powerSaveBlocker,
 } = require('electron');
-const { argv } = require('yargs');
 const { join } = require('path');
 
-const config = require('./config');
 const windows = require('./windows');
 const apps = require('./apps');
 const { createMenu } = require('./menu');
 const loadDevtools = require('./devtools');
 const { createTextFile } = require('./fileUtil');
+const { downloadToFile } = require('./net');
+const { createDesktopShortcut } = require('./createDesktopShortcut');
+const settings = require('./settings');
+const {
+    registerHandlerFromMain: registerDownloadToFileHandler,
+} = require('../ipc/downloadToFile');
+const {
+    registerHandlerFromMain: registerCreateDesktopShortcutHandler,
+} = require('../ipc/createDesktopShortcut');
+const {
+    registerGetHandlerFromMain: registerGetSettingHandler,
+    registerGetSourcesHandlerFromMain: registerGetSourcesSettingHandler,
+    registerSetHandlerFromMain: registerSetSettingHandler,
+    registerSetSourcesHandlerFromMain: registerSetSourcesSettingHandler,
+} = require('../ipc/settings');
+const {
+    registerHandlerFromMain: registerProxyLoginCredentialsHandler,
+} = require('../ipc/proxyLogin');
+const { callRegisteredCallback } = require('./proxyLogins');
+const {
+    registerCheckForUpdateHandlerFromMain: registerCheckForUpdateHandler,
+    registerStartUpdateHandlerFromMain: registerStartUpdateHandler,
+    registerCancelUpdateHandlerFromMain: registerCancelUpdateHandler,
+} = require('../ipc/launcherUpdate');
+const { checkForUpdate, startUpdate, cancelUpdate } = require('./autoUpdate');
+const {
+    registerDownloadAppsJsonFileHandlerFromMain:
+        registerDownloadAppsJsonFileHandler,
+    registerRemoveSourceDirectoryHandlerFromMain:
+        registerRemoveSourceDirectoryHandler,
+    registerDownloadAllAppsJsonFilesHandlerFromMain:
+        registerDownloadAllAppsJsonFilesHandler,
+    registerGetLocalAppsHandlerFromMain: registerGetLocalAppsHandler,
+    registerGetOfficialAppsHandlerFromMain: registerGetOfficialAppsHandler,
+    registerDownloadReleaseNotesHandlerFromMain:
+        registerDownloadReleaseNotesHandler,
+    registerInstallOfficialAppHandlerFromMain:
+        registerInstallOfficialAppHandler,
+    registerRemoveOfficialAppHandlerFromMain: registerRemoveOfficialAppHandler,
+} = require('../ipc/apps');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
 
-config.init(argv);
-// Has to be required after config.init
 const { logger } = require('./log');
 
 global.homeDir = config.getHomeDir();
@@ -144,6 +186,29 @@ ipcMain.handle('prevent-sleep-start', () =>
 ipcMain.on('preventing-sleep-end', (_, id) =>
     powerSaveBlocker.stop(Number(id))
 );
+
+registerDownloadToFileHandler(downloadToFile);
+registerCreateDesktopShortcutHandler(createDesktopShortcut);
+
+registerGetSettingHandler(settings.get);
+registerGetSourcesSettingHandler(settings.getSources);
+registerSetSettingHandler(settings.set);
+registerSetSourcesSettingHandler(settings.setSources);
+
+registerProxyLoginCredentialsHandler(callRegisteredCallback);
+
+registerCheckForUpdateHandler(checkForUpdate);
+registerStartUpdateHandler(startUpdate);
+registerCancelUpdateHandler(cancelUpdate);
+
+registerDownloadAppsJsonFileHandler(apps.downloadAppsJsonFile);
+registerRemoveSourceDirectoryHandler(apps.removeSourceDirectory);
+registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
+registerGetLocalAppsHandler(apps.getLocalApps);
+registerGetOfficialAppsHandler(apps.getOfficialApps);
+registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
+registerInstallOfficialAppHandler(apps.installOfficialApp);
+registerRemoveOfficialAppHandler(apps.removeOfficialApp);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.

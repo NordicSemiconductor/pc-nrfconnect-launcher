@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { sendFromRenderer as respondToProxyLoginRequest } from '../../ipc/proxyLogin';
 
 export const PROXY_LOGIN_REQUESTED_BY_SERVER =
     'PROXY_LOGIN_REQUESTED_BY_SERVER';
@@ -14,13 +14,11 @@ export const PROXY_LOGIN_ERROR_DIALOG_CLOSED =
 export const PROXY_LOGIN_DIALOG_USERNAME_CHANGED =
     'PROXY_LOGIN_DIALOG_USERNAME_CHANGED';
 export const PROXY_LOGIN_REQUEST_SENT = 'PROXY_LOGIN_REQUEST_SENT';
-export const PROXY_LOGIN_REQUEST_ERROR = 'PROXY_LOGIN_REQUEST_ERROR';
 
-let proxyLoginCallback;
-
-function loginRequestedByServerAction(message) {
+function loginRequestedByServerAction(requestId, message) {
     return {
         type: PROXY_LOGIN_REQUESTED_BY_SERVER,
+        requestId,
         message,
     };
 }
@@ -38,12 +36,6 @@ function loginRequestSentAction(username) {
     };
 }
 
-function loginRequestErrorAction() {
-    return {
-        type: PROXY_LOGIN_REQUEST_ERROR,
-    };
-}
-
 export function changeUserName(username) {
     return {
         type: PROXY_LOGIN_DIALOG_USERNAME_CHANGED,
@@ -57,54 +49,32 @@ export function loginErrorDialogClosedAction() {
     };
 }
 
-export function loginRequestedByServer(message, loginCallback) {
-    proxyLoginCallback = loginCallback;
+export function authenticate(requestId, authInfo) {
     return dispatch => {
-        dispatch(loginRequestedByServerAction(message));
+        let proxyString = `${authInfo.host}`;
+        if (authInfo.realm) {
+            proxyString += ` (realm: ${authInfo.realm})`;
+        }
+        dispatch(
+            loginRequestedByServerAction(
+                requestId,
+                `The proxy server ${proxyString} requires authentication. ` +
+                    'Please enter username and password'
+            )
+        );
     };
 }
 
-export function authenticate(authInfo) {
-    return dispatch =>
-        new Promise(resolve => {
-            const onSubmit = (username, password) => {
-                resolve({ username, password });
-            };
-            let proxyString = `${authInfo.host}`;
-            if (authInfo.realm) {
-                proxyString += ` (realm: ${authInfo.realm})`;
-            }
-            dispatch(
-                loginRequestedByServer(
-                    `The proxy server ${proxyString} ` +
-                        'requires authentication. Please enter username and password',
-                    onSubmit
-                )
-            );
-        });
-}
-
-export function loginCancelledByUser() {
-    proxyLoginCallback = null;
+export function loginCancelledByUser(requestId) {
     return dispatch => {
+        respondToProxyLoginRequest(requestId);
         dispatch(loginCancelledByUserAction());
     };
 }
 
-export function sendLoginRequest(username, password) {
+export function sendLoginRequest(requestId, username, password) {
     return dispatch => {
-        if (proxyLoginCallback) {
-            proxyLoginCallback(username, password);
-            proxyLoginCallback = null;
-            dispatch(loginRequestSentAction(username));
-        } else {
-            dispatch(loginRequestErrorAction());
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    'No login callback found ' +
-                        'when authenticating with proxy.'
-                )
-            );
-        }
+        respondToProxyLoginRequest(requestId, username, password);
+        dispatch(loginRequestSentAction(username));
     };
 }

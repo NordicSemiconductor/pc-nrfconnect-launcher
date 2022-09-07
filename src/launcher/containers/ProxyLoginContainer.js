@@ -13,6 +13,7 @@ function mapStateToProps(state) {
     const { proxy } = state;
 
     return {
+        requestId: proxy.requestId,
         message: proxy.loginDialogMessage,
         username: proxy.username,
         isVisible: proxy.isLoginDialogVisible,
@@ -23,9 +24,12 @@ function mapDispatchToProps(dispatch) {
     return {
         onUsernameChanged: username =>
             dispatch(ProxyActions.changeUserName(username)),
-        onCancel: () => dispatch(ProxyActions.loginCancelledByUser()),
-        onSubmit: (username, password) =>
-            dispatch(ProxyActions.sendLoginRequest(username, password)),
+        onCancel: requestId =>
+            dispatch(ProxyActions.loginCancelledByUser(requestId)),
+        onSubmit: (requestId, username, password) =>
+            dispatch(
+                ProxyActions.sendLoginRequest(requestId, username, password)
+            ),
     };
 }
 

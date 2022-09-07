@@ -4,38 +4,24 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { require as remoteRequire } from '@electron/remote';
 import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
+import { invokeDownloadAllAppsJsonFilesFromRenderer as downloadAllAppsJsonFiles } from '../../ipc/apps';
+import {
+    invokeCheckForUpdateFromRenderer as checkForLauncherUpdate,
+    sendCancelUpdateFromRender as cancelLauncherUpdate,
+} from '../../ipc/launcherUpdate';
 import * as AppsActions from './appsActions';
 import * as SettingsActions from './settingsActions';
-import * as UsageDataActions from './usageDataActions';
 
-export const AUTO_UPDATE_CHECK = 'AUTO_UPDATE_CHECK';
 export const AUTO_UPDATE_AVAILABLE = 'AUTO_UPDATE_AVAILABLE';
-export const AUTO_UPDATE_POSTPONE = 'AUTO_UPDATE_POSTPONE';
 export const AUTO_UPDATE_START_DOWNLOAD = 'AUTO_UPDATE_START_DOWNLOAD';
 export const AUTO_UPDATE_CANCEL_DOWNLOAD = 'AUTO_UPDATE_CANCEL_DOWNLOAD';
-export const AUTO_UPDATE_DOWNLOAD_CANCELLED = 'AUTO_UPDATE_DOWNLOAD_CANCELLED';
 export const AUTO_UPDATE_DOWNLOADING = 'AUTO_UPDATE_DOWNLOADING';
-export const AUTO_UPDATE_ERROR = 'AUTO_UPDATE_ERROR';
-
-const mainApps = remoteRequire('../main/apps');
-const { autoUpdater, CancellationToken } = remoteRequire('../main/autoUpdate');
+export const AUTO_UPDATE_RESET = 'AUTO_UPDATE_RESET';
 
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
-
-// This is set and given to electron-updater when starting to download an
-// application update. Will only exist while a download is in progress, and
-// allows cancelling the download by calling cancellationToken.cancel().
-let cancellationToken;
-
-function checkAction() {
-    return {
-        type: AUTO_UPDATE_CHECK,
-    };
-}
 
 function updateAvailableAction(version) {
     return {
@@ -44,7 +30,7 @@ function updateAvailableAction(version) {
     };
 }
 
-function startDownloadAction() {
+export function startDownloadAction() {
     return {
         type: AUTO_UPDATE_START_DOWNLOAD,
         isProgressSupported: isWindows || isMac,
@@ -58,116 +44,41 @@ function cancelDownloadAction() {
     };
 }
 
-function downloadCancelledAction() {
-    return {
-        type: AUTO_UPDATE_DOWNLOAD_CANCELLED,
-    };
-}
-
-function updateDownloadingAction(percentDownloaded) {
+export function updateDownloadingAction(percentDownloaded) {
     return {
         type: AUTO_UPDATE_DOWNLOADING,
         percentDownloaded,
     };
 }
 
-function updateErrorAction(error) {
+export function resetAction(error) {
     return {
-        type: AUTO_UPDATE_ERROR,
+        type: AUTO_UPDATE_RESET,
         error,
     };
 }
 
-export function postponeUpdate() {
-    return {
-        type: AUTO_UPDATE_POSTPONE,
-    };
-}
-
 export function checkForCoreUpdates() {
-    return dispatch => {
-        dispatch(checkAction());
+    return async dispatch => {
+        try {
+            const { isUpdateAvailable, newVersion } =
+                await checkForLauncherUpdate();
 
-        const checkForUpdatesPromise = autoUpdater.checkForUpdates();
-        if (!checkForUpdatesPromise) {
-            logger.warn(
-                'Not checking for nRF Connect for Desktop updates. ' +
-                    'Auto update is not yet supported for this platform.'
-            );
-            return Promise.resolve();
-        }
-
-        // checkForUpdatesPromise will resolve with result whether or not update
-        // is available, but the result will contain a cancellationToken and a
-        // downloadPromise only if there is an update
-        return checkForUpdatesPromise
-            .then(result => {
-                if (result.cancellationToken) {
-                    dispatch(updateAvailableAction(result.updateInfo.version));
-                }
-            })
-            .catch(error => {
-                dispatch(updateErrorAction(error));
-            });
-    };
-}
-
-export function startDownload() {
-    return dispatch => {
-        if (cancellationToken) {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    'Download was requested ' +
-                        'but another download operation is already in progress.'
-                )
-            );
-            return;
-        }
-
-        dispatch(startDownloadAction());
-
-        autoUpdater.on('download-progress', progressObj => {
-            dispatch(updateDownloadingAction(progressObj.percent));
-        });
-
-        autoUpdater.on('update-downloaded', () => {
-            if (!UsageDataActions.isUsageDataOn()) {
-                dispatch(UsageDataActions.resetUsageData());
-            }
-
-            cancellationToken = null;
-            autoUpdater.removeAllListeners();
-            autoUpdater.quitAndInstall();
-        });
-
-        autoUpdater.on('error', error => {
-            cancellationToken = null;
-            autoUpdater.removeAllListeners();
-            if (error.message === 'cancelled') {
-                dispatch(downloadCancelledAction());
+            if (isUpdateAvailable) {
+                dispatch(updateAvailableAction(newVersion));
             } else {
-                dispatch(updateErrorAction(error));
-                dispatch(ErrorDialogActions.showDialog(error.message));
+                dispatch(resetAction());
             }
-        });
-
-        cancellationToken = new CancellationToken();
-        autoUpdater.downloadUpdate(cancellationToken);
+        } catch (error) {
+            logger.warn(error);
+        }
     };
 }
 
 export function cancelDownload() {
     return dispatch => {
-        if (cancellationToken) {
-            cancellationToken.cancel();
-            dispatch(cancelDownloadAction());
-        } else {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    'Unable to cancel. No download is in progress.'
-                )
-            );
-        }
+        cancelLauncherUpdate();
+        dispatch(cancelDownloadAction());
     };
 }
 
@@ -175,9 +86,7 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
     return dispatch => {
         dispatch(AppsActions.downloadLatestAppInfoAction());
 
-        return mainApps
-            .downloadAppsJsonFiles()
-            .then(() => mainApps.generateUpdatesJsonFiles())
+        return downloadAllAppsJsonFiles()
             .then(() =>
                 dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
             )
