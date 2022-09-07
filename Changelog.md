@@ -1,3 +1,10 @@
+## Unreleased
+
+### Removed
+
+-   Removed pc-ble-driver as the Bluetooth Low Energy app now contains it
+    itself.
+
 ## 3.12.0 - 2022-09-05
 
 ### Added

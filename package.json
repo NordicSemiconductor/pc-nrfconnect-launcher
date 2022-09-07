@@ -115,7 +115,6 @@
         "electron-updater": "4.3.1",
         "fs-extra": "9.0.0",
         "mustache": "4.0.1",
-        "pc-ble-driver-js": "2.8.2",
         "serialport": "8.0.8",
         "shasum": "1.0.2",
         "short-uuid": "4.2.0",
