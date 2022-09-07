@@ -4,11 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { getGlobal } from '@electron/remote';
 import fs from 'fs';
 import path from 'path';
-import { getUserDataDir, setAppDirs } from 'pc-nrfconnect-shared';
 
 import { mkdirIfNotExists } from '../main/mkdir';
+
+const getUserDataDir = () => getGlobal('userDataDir');
+
+function setAppDirs(newAppDir, newAppDataDir, newAppLogDir) {
+    window.appDir = newAppDir;
+    window.appDataDir = newAppDataDir;
+    window.appLogDir = newAppLogDir;
+}
 
 /**
  * Load an app from the given directory dynamically.
