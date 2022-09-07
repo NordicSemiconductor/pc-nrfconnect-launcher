@@ -25,7 +25,6 @@ module.exports = (_, argv) => {
         devtool: isProd ? 'source-map' : 'cheap-eval-source-map',
         entry: {
             app: './src/app',
-            shared: './node_modules/pc-nrfconnect-shared/src/index.ts',
             launcher: './src/launcher',
         },
         output: {
