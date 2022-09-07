@@ -9,7 +9,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const externals = Object.fromEntries(
     [
-        'pc-ble-driver-js',
         'serialport',
         '@nordicsemiconductor/nrf-device-lib-js',
         'osx-temperature-sensor',
