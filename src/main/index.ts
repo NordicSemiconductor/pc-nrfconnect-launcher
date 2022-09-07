@@ -8,13 +8,7 @@
 import './init';
 
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
-import {
-    app as electronApp,
-    dialog,
-    ipcMain,
-    Menu,
-    powerSaveBlocker,
-} from 'electron';
+import { app as electronApp, dialog, ipcMain, Menu } from 'electron';
 import { join } from 'path';
 
 import {
@@ -32,6 +26,10 @@ import {
     registerCheckForUpdateHandlerFromMain as registerCheckForUpdateHandler,
     registerStartUpdateHandlerFromMain as registerStartUpdateHandler,
 } from '../ipc/launcherUpdate';
+import {
+    registerEndHandlerFromMain as registerEndPreventSleepHandler,
+    registerStartHandlerFromMain as registerStartPreventSleepHandler,
+} from '../ipc/preventSleep';
 import { registerHandlerFromMain as registerProxyLoginCredentialsHandler } from '../ipc/proxyLogin';
 import {
     registerGetHandlerFromMain as registerGetSettingHandler,
@@ -130,19 +128,14 @@ ipcMain.on('get-app-details', event => {
     }
 });
 
-ipcMain.handle('prevent-sleep-start', () =>
-    powerSaveBlocker.start('prevent-app-suspension')
-);
-
-ipcMain.on('preventing-sleep-end', (_, id) =>
-    powerSaveBlocker.stop(Number(id))
-);
-
 registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
 
 registerGetSettingHandler(settings.get);
 registerSetSettingHandler(settings.set);
+
+registerEndPreventSleepHandler();
+registerStartPreventSleepHandler();
 
 registerProxyLoginCredentialsHandler(callRegisteredCallback);
 
