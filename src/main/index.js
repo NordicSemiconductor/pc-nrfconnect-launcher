@@ -35,6 +35,7 @@ const { createTextFile } = require('./fileUtil');
 const { downloadToFile } = require('./net');
 const { createDesktopShortcut } = require('./createDesktopShortcut');
 const settings = require('./settings');
+const sources = require('./sources');
 const {
     registerHandlerFromMain: registerDownloadToFileHandler,
 } = require('../ipc/downloadToFile');
@@ -43,9 +44,7 @@ const {
 } = require('../ipc/createDesktopShortcut');
 const {
     registerGetHandlerFromMain: registerGetSettingHandler,
-    registerGetSourcesHandlerFromMain: registerGetSourcesSettingHandler,
     registerSetHandlerFromMain: registerSetSettingHandler,
-    registerSetSourcesHandlerFromMain: registerSetSourcesSettingHandler,
 } = require('../ipc/settings');
 const {
     registerHandlerFromMain: registerProxyLoginCredentialsHandler,
@@ -58,10 +57,6 @@ const {
 } = require('../ipc/launcherUpdate');
 const { checkForUpdate, startUpdate, cancelUpdate } = require('./autoUpdate');
 const {
-    registerDownloadAppsJsonFileHandlerFromMain:
-        registerDownloadAppsJsonFileHandler,
-    registerRemoveSourceDirectoryHandlerFromMain:
-        registerRemoveSourceDirectoryHandler,
     registerDownloadAllAppsJsonFilesHandlerFromMain:
         registerDownloadAllAppsJsonFilesHandler,
     registerGetLocalAppsHandlerFromMain: registerGetLocalAppsHandler,
@@ -72,6 +67,11 @@ const {
         registerInstallOfficialAppHandler,
     registerRemoveOfficialAppHandlerFromMain: registerRemoveOfficialAppHandler,
 } = require('../ipc/apps');
+const {
+    registerGetHandlerFromMain: registerGetSourcesHandler,
+    registerAddHandlerFromMain: registerAddSourceHandler,
+    registerRemoveHandlerFromMain: registerRemoveSourceHandler,
+} = require('../ipc/sources');
 
 // Ensure that nRFConnect runs in a directory where it has permission to write
 process.chdir(electronApp.getPath('temp'));
@@ -191,9 +191,7 @@ registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
 
 registerGetSettingHandler(settings.get);
-registerGetSourcesSettingHandler(settings.getSources);
 registerSetSettingHandler(settings.set);
-registerSetSourcesSettingHandler(settings.setSources);
 
 registerProxyLoginCredentialsHandler(callRegisteredCallback);
 
@@ -201,14 +199,16 @@ registerCheckForUpdateHandler(checkForUpdate);
 registerStartUpdateHandler(startUpdate);
 registerCancelUpdateHandler(cancelUpdate);
 
-registerDownloadAppsJsonFileHandler(apps.downloadAppsJsonFile);
-registerRemoveSourceDirectoryHandler(apps.removeSourceDirectory);
 registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
 registerGetLocalAppsHandler(apps.getLocalApps);
 registerGetOfficialAppsHandler(apps.getOfficialApps);
 registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
 registerInstallOfficialAppHandler(apps.installOfficialApp);
 registerRemoveOfficialAppHandler(apps.removeOfficialApp);
+
+registerGetSourcesHandler(sources.getAllSources);
+registerAddSourceHandler(sources.addSource);
+registerRemoveSourceHandler(sources.removeSource);
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.

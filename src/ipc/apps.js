@@ -7,8 +7,6 @@
 const { ipcMain, ipcRenderer } = require('electron');
 
 const channel = {
-    downloadAppsJsonFile: 'apps:download-apps-json-file',
-    removeSourceDirectory: 'apps:remove-source-directory',
     downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',
     getLocalApps: 'apps:get-local-apps',
     getOfficialApps: 'apps:get-official-apps',
@@ -16,26 +14,6 @@ const channel = {
     installOfficialApp: 'apps:install-official-app',
     removeOfficialApp: 'apps:remove-official-app',
 };
-
-// downloadAppsJsonFile
-
-const registerDownloadAppsJsonFileHandlerFromMain = onDownloadAppsJsonFile =>
-    ipcMain.handle(channel.downloadAppsJsonFile, (_event, url) =>
-        onDownloadAppsJsonFile(url)
-    );
-
-const invokeDownloadAppsJsonFileFromRenderer = url =>
-    ipcRenderer.invoke(channel.downloadAppsJsonFile, url);
-
-// removeSourceDirectory
-
-const registerRemoveSourceDirectoryHandlerFromMain = onRemoveSourceDirectory =>
-    ipcMain.handle(channel.removeSourceDirectory, (_event, source) =>
-        onRemoveSourceDirectory(source)
-    );
-
-const invokeRemoveSourceDirectoryFromRenderer = source =>
-    ipcRenderer.invoke(channel.removeSourceDirectory, source);
 
 // downloadAllAppsJsonFiles
 
@@ -98,10 +76,6 @@ const invokeRemoveOfficialAppFromRenderer = (name, source) =>
     ipcRenderer.invoke(channel.removeOfficialApp, name, source);
 
 module.exports = {
-    registerDownloadAppsJsonFileHandlerFromMain,
-    invokeDownloadAppsJsonFileFromRenderer,
-    registerRemoveSourceDirectoryHandlerFromMain,
-    invokeRemoveSourceDirectoryFromRenderer,
     registerDownloadAllAppsJsonFilesHandlerFromMain,
     invokeDownloadAllAppsJsonFilesFromRenderer,
     registerGetLocalAppsHandlerFromMain,

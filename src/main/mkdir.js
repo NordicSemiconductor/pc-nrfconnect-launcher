@@ -35,4 +35,5 @@ function mkdirIfNotExists(dirPath) {
 module.exports = {
     mkdir,
     mkdirIfNotExists,
+    ensureDirExists: mkdirIfNotExists,
 };

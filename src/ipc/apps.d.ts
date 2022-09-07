@@ -45,26 +45,6 @@ export type App =
     | UninstalledDownloadableApp
     | InstalledDownloadableApp;
 
-// downloadAppsJsonFile
-
-export const registerDownloadAppsJsonFileHandlerFromMain: (
-    onDownloadAppsJsonFile: (url: string) => Promise<string>
-) => void;
-
-export const invokeDownloadAppsJsonFileFromRenderer: (
-    url: string
-) => Promise<string>;
-
-// removeSourceDirectory
-
-export const registerRemoveSourceDirectoryHandlerFromMain: (
-    onRemoveSourceDirectory: (source: string) => Promise<void>
-) => void;
-
-export const invokeRemoveSourceDirectoryFromRenderer: (
-    source: string
-) => Promise<void>;
-
 // downloadAllAppsJsonFiles
 
 export const registerDownloadAllAppsJsonFilesHandlerFromMain: (

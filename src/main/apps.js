@@ -13,118 +13,13 @@ const config = require('./config');
 const registryApi = require('./registryApi');
 const fileUtil = require('./fileUtil');
 const net = require('./net');
-const settings = require('./settings');
+const {
+    downloadAllAppsJson,
+    initialiseAllSources,
+    getAllSourceNames,
+} = require('./sources');
 
 const store = new Store({ name: 'pc-nrfconnect-launcher' });
-
-/**
- * Create sources.json if it does not exist.
- *
- * @returns {Promise} promise that resolves if successful.
- */
-function createSourcesJsonIfNotExists() {
-    const sources = settings.getSources();
-    settings.setSources(sources);
-    return Promise.resolve(sources);
-}
-
-/**
- * Create apps.json if it does not exist.
- *
- * @param {string} source name of external source.
- * @returns {Promise} promise that resolves if successful.
- */
-function createAppsJsonIfNotExists(source) {
-    return fileUtil.createJsonFileIfNotExists(
-        config.getAppsJsonPath(source),
-        {}
-    );
-}
-
-/**
- * Create updates.json if it does not exist.
- *
- * @param {string} source name of external source
- * @returns {Promise} promise that resolves if successful.
- */
-function createUpdatesJsonIfNotExists(source) {
-    return fileUtil.createJsonFileIfNotExists(
-        config.getUpdatesJsonPath(source),
-        {}
-    );
-}
-
-/**
- * Initialize directory structure of a source under external apps.
- *
- * @param {string} source name of external source.
- * @returns {Promise} promise that resolves is successful.
- */
-function initSourceDirectory(source) {
-    return fileUtil
-        .mkdirIfNotExists(config.getAppsRootDir(source))
-        .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir(source)))
-        .then(() => createAppsJsonIfNotExists(source))
-        .then(() => createUpdatesJsonIfNotExists(source));
-}
-
-/**
- * Download the apps.json file containing a list of official apps. The file
- * is downloaded from the configured url and written to the apps root dir.
- *
- * @param {string} url URL of apps.json of external source
- * @param {string?} name optional name of the external source
- * @returns {Promise} promise that resolves if successful.
- */
-function downloadAppsJsonFile(url, name) {
-    return net
-        .downloadToJson(url, true)
-        .catch(error => {
-            const wrappedError = new Error(
-                `Unable to download apps list: ${error.message}. If you ` +
-                    'are using a proxy server, you may need to configure it as described on ' +
-                    'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher'
-            );
-            wrappedError.statusCode = error.statusCode;
-            wrappedError.cause = { name, url };
-            wrappedError.sourceNotFound = net.isResourceNotFound(error);
-            throw wrappedError;
-        })
-        .then(appsJson => {
-            // underscore is intentially used in JSON as a meta information
-            // eslint-disable-next-line no-underscore-dangle
-            const source = appsJson._source;
-            if (!source && url !== config.getAppsJsonUrl()) {
-                throw new Error('JSON does not contain expected `_source` tag');
-            }
-            return initSourceDirectory(source)
-                .then(() =>
-                    fileUtil.createJsonFile(
-                        config.getAppsJsonPath(source),
-                        appsJson
-                    )
-                )
-                .then(() => source);
-        });
-}
-
-/**
- * Download the apps.json file containing a list of official apps. The file
- * is downloaded from the configured url and written to the apps root dir.
- *
- * @param {string} source name of external source
- * @returns {Promise} promise that resolves if successful.
- */
-function downloadAppsJsonFiles() {
-    const sources = settings.getSources();
-    const sequence = (source, ...rest) =>
-        source
-            ? downloadAppsJsonFile(sources[source], source).then(() =>
-                  sequence(...rest)
-              )
-            : Promise.resolve();
-    return sequence(...Object.keys(sources));
-}
 
 /**
  * Get the names of all apps that are installed for a specific source.
@@ -173,14 +68,11 @@ function generateUpdatesJsonFile(source) {
  * @returns {Promise} promise that resolves if successful.
  */
 function generateUpdatesJsonFiles() {
-    const sources = settings.getSources();
-    return Promise.all(
-        Object.keys(sources).map(source => generateUpdatesJsonFile(source))
-    );
+    return Promise.all(getAllSourceNames().map(generateUpdatesJsonFile));
 }
 
 function downloadAllAppsJsonFiles() {
-    return downloadAppsJsonFiles().then(generateUpdatesJsonFiles);
+    return downloadAllAppsJson().then(generateUpdatesJsonFiles);
 }
 
 /**
@@ -285,13 +177,8 @@ function initAppsDirectory() {
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsLocalDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getAppsExternalDir()))
         .then(() => fileUtil.mkdirIfNotExists(config.getNodeModulesDir()))
-        .then(() => createSourcesJsonIfNotExists())
-        .then(sources =>
-            Promise.all(
-                Object.keys(sources).map(source => initSourceDirectory(source))
-            )
-        )
-        .then(() => installLocalAppArchives());
+        .then(initialiseAllSources)
+        .then(installLocalAppArchives);
 }
 
 /**
@@ -467,9 +354,8 @@ function getOfficialAppsFromSource(source) {
 }
 
 function getOfficialApps() {
-    const sources = settings.getSources();
     return Promise.allSettled(
-        Object.keys(sources).map(source => getOfficialAppsFromSource(source))
+        getAllSourceNames().map(getOfficialAppsFromSource)
     ).then(arrayOfArrays =>
         arrayOfArrays.reduce((acc, currentValue) => {
             const fulfilled = acc.fulfilled ? [...acc.fulfilled] : [];
@@ -572,22 +458,6 @@ function installOfficialApp(name, version, source) {
         });
 }
 
-/**
- * Remove source directory structure
- *
- * @param {string} source name of source
- * @returns {Promise} promise that resolves is successful.
- */
-function removeSourceDirectory(source) {
-    if (!source || source === 'official') {
-        // Sanity check, this cannot happen anyway
-        return Promise.reject(
-            new Error('The official source shall not be removed.')
-        );
-    }
-    return fs.remove(config.getAppsRootDir(source));
-}
-
 const migrateStoreIfNeeded = () => {
     const oldStore = new Store({ name: 'pc-nrfconnect-core' });
     if (oldStore.size > 0 && store.size === 0) {
@@ -638,13 +508,10 @@ async function downloadReleaseNotes({ url, homepage }) {
 
 module.exports = {
     initAppsDirectory,
-    initSourceDirectory,
-    downloadAppsJsonFile,
     downloadAllAppsJsonFiles,
     getOfficialApps,
     getLocalApps,
     installOfficialApp,
     removeOfficialApp,
-    removeSourceDirectory,
     downloadReleaseNotes,
 };
