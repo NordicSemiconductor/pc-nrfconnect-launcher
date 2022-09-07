@@ -11,10 +11,10 @@ import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
     invokeDownloadReleaseNotesFromRenderer as downloadReleaseNotes,
+    invokeGetDownloadableAppsFromRenderer as getDownloadableApps,
     invokeGetLocalAppsFromRenderer as getLocalApps,
-    invokeGetOfficialAppsFromRenderer as getOfficialApps,
-    invokeInstallOfficialAppFromRenderer as installOfficialAppInMain,
-    invokeRemoveOfficialAppFromRenderer as removeOfficialAppInMain,
+    invokeInstallDownloadableAppFromRenderer as installDownloadableAppInMain,
+    invokeRemoveDownloadableAppFromRenderer as removeDownloadableAppInMain,
 } from '../../ipc/apps';
 import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
 import {
@@ -99,7 +99,7 @@ function loadOfficialAppsError() {
     };
 }
 
-function installOfficialAppAction(name, source) {
+function installDownloadableAppAction(name, source) {
     return {
         type: INSTALL_OFFICIAL_APP,
         name,
@@ -107,7 +107,7 @@ function installOfficialAppAction(name, source) {
     };
 }
 
-function installOfficialAppSuccessAction(name, source) {
+function installDownloadableAppSuccessAction(name, source) {
     return {
         type: INSTALL_OFFICIAL_APP_SUCCESS,
         name,
@@ -115,7 +115,7 @@ function installOfficialAppSuccessAction(name, source) {
     };
 }
 
-function installOfficialAppErrorAction() {
+function installDownloadableAppErrorAction() {
     return {
         type: INSTALL_OFFICIAL_APP_ERROR,
     };
@@ -128,7 +128,7 @@ function updateInstallProgressAction(message) {
     };
 }
 
-function removeOfficialAppAction(name, source) {
+function removeDownloadableAppAction(name, source) {
     return {
         type: REMOVE_OFFICIAL_APP,
         name,
@@ -136,7 +136,7 @@ function removeOfficialAppAction(name, source) {
     };
 }
 
-function removeOfficialAppSuccessAction(name, source) {
+function removeDownloadableAppSuccessAction(name, source) {
     return {
         type: REMOVE_OFFICIAL_APP_SUCCESS,
         name,
@@ -144,7 +144,7 @@ function removeOfficialAppSuccessAction(name, source) {
     };
 }
 
-function removeOfficialAppErrorAction() {
+function removeDownloadableAppErrorAction() {
     return {
         type: REMOVE_OFFICIAL_APP_ERROR,
     };
@@ -331,8 +331,7 @@ async function downloadAllReleaseNotesInBackground(
 export function loadOfficialApps(appName, appSource) {
     return async dispatch => {
         dispatch(loadOfficialAppsAction());
-        const { fulfilled: apps, rejected: appsWithErrors } =
-            await getOfficialApps();
+        const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(
             loadOfficialAppsSuccess(
@@ -385,18 +384,18 @@ const buildErrorMessage = apps => {
     return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
 };
 
-export function installOfficialApp(name, source) {
+export function installDownloadableApp(name, source) {
     return dispatch => {
         sendAppUsageData(EventAction.INSTALL_APP, source, name);
-        dispatch(installOfficialAppAction(name, source));
+        dispatch(installDownloadableAppAction(name, source));
 
-        installOfficialAppInMain(name, 'latest', source)
+        installDownloadableAppInMain(name, 'latest', source)
             .then(() => {
-                dispatch(installOfficialAppSuccessAction(name, source));
+                dispatch(installDownloadableAppSuccessAction(name, source));
                 dispatch(loadOfficialApps(name, source));
             })
             .catch(error => {
-                dispatch(installOfficialAppErrorAction());
+                dispatch(installDownloadableAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to install: ${error.message}`
@@ -412,16 +411,16 @@ export function updateInstallProgress(message) {
     };
 }
 
-export function removeOfficialApp(name, source) {
+export function removeDownloadableApp(name, source) {
     return dispatch => {
         sendAppUsageData(EventAction.REMOVE_APP, source, name);
-        dispatch(removeOfficialAppAction(name, source));
-        removeOfficialAppInMain(name, source)
+        dispatch(removeDownloadableAppAction(name, source));
+        removeDownloadableAppInMain(name, source)
             .then(() => {
-                dispatch(removeOfficialAppSuccessAction(name, source));
+                dispatch(removeDownloadableAppSuccessAction(name, source));
             })
             .catch(error => {
-                dispatch(removeOfficialAppErrorAction());
+                dispatch(removeDownloadableAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to remove: ${error.message}`
@@ -436,7 +435,7 @@ export function upgradeOfficialApp(name, version, source) {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeOfficialAppAction(name, version, source));
 
-        return installOfficialAppInMain(name, version, source)
+        return installDownloadableAppInMain(name, version, source)
             .then(() => {
                 dispatch(
                     upgradeOfficialAppSuccessAction(name, version, source)

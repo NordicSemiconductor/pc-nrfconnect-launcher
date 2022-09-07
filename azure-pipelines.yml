@@ -12,6 +12,8 @@ jobs:
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
     value: 14.18.0
+  - name: NPM_VERSION
+    value: 6.14.15
   - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     value: 1 # Because we use Electron, playwright needs no installed browsers https://playwright.dev/docs/api/class-electron
   strategy:
@@ -47,6 +49,7 @@ jobs:
       export PATH=$NVM_HOME:$PATH
       nvm install $(NODE_VERSION) $(NODE_ARCH)
       nvm use $(NODE_VERSION) $(NODE_ARCH)
+      npm install --global npm@$(NPM_VERSION)
       ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
     env: {
       NVM_HOME: "/C/ProgramData/nvm",
