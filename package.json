@@ -8,6 +8,7 @@
     },
     "main": "dist/main.js",
     "scripts": {
+        "prepare": "husky install",
         "postinstall": "ts-node scripts/getJlink",
         "app": "NODE_OPTIONS=--enable-source-maps electron .",
         "watch": "run-p --silent --continue-on-error --print-label watch:*",
