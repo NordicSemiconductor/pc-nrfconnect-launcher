@@ -4,37 +4,33 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
-
 import { LaunchableApp } from './apps';
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 const channel = {
     app: 'open:app',
-    launcher: 'open:launcher',
+    launcher: 'open-app-launcher', // It would be nice to call this `open:launcher` but we have to stick to the current name, because that is used by supported apps.
 };
 
 // open app
-export const sendOpenAppFromRender = (app: LaunchableApp) =>
-    ipcRenderer.send(channel.app, app);
+type OpenApp = (app: LaunchableApp) => void;
 
-export const registerOpenAppHandlerFromMain = (
-    onOpenApp: typeof sendOpenAppFromRender
-) =>
-    ipcMain.on(
-        channel.app,
-        (_event, ...args: Parameters<typeof sendOpenAppFromRender>) =>
-            onOpenApp(...args)
-    );
+export const sendOpenAppFromRender = rendererToMain.send<OpenApp>(channel.app);
+
+export const registerOpenAppHandlerFromMain =
+    rendererToMain.registerSent<OpenApp>(channel.app);
 
 // open launcher
+
+type OpenLauncher = () => void;
 
 // Currently this functions to send this IPC message is not called from
 // anywhere. We do send messages over the same IPC channel by using the
 // corresponding name from some apps and we want to switch using this function
 // in the future.
-export const sendOpenLauncherFromRender = () =>
-    ipcRenderer.send(channel.launcher);
+export const sendOpenLauncherFromRender = rendererToMain.send<OpenLauncher>(
+    channel.launcher
+);
 
-export const registerOpenLauncherHandlerFromMain = (
-    onOpenLauncher: typeof sendOpenLauncherFromRender
-) => ipcMain.on(channel.launcher, onOpenLauncher);
+export const registerOpenLauncherHandlerFromMain =
+    rendererToMain.registerSent<OpenLauncher>(channel.launcher);

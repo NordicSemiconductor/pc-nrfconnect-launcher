@@ -40,27 +40,6 @@ There are a few special conventions we follow with the code here in `src/ipc/`:
         `registerStartUpdateHandlerFromMain` and
         `registerCancelUpdateHandlerFromMain`.
 
--   Often the type of the function to send a message is equal to the handler for
-    that message. Use that equality by reusing the type. E.g. currently
-    `createDesktopShortcut.ts` looks like this and you can see how the type of
-    `sendFromRenderer` is used again twice:
-
-    ```ts
-    const channel = 'create-desktop-shortcut';
-
-    export const sendFromRenderer = (app: LaunchableApp) =>
-        ipcRenderer.send(channel, app);
-
-    export const registerHandlerFromMain = (
-        onCreateDesktopShortcut: typeof sendFromRenderer
-    ) =>
-        ipcMain.on(
-            channel,
-            (_event, ...args: Parameters<typeof sendFromRenderer>) =>
-                onCreateDesktopShortcut(...args)
-        );
-    ```
-
 -   The code here in `src/ipc/` must neither reference any code in `src/main/`
     nor in `src/launcher/`. If we see the need for it (e.g. because the messages
     are meant to be also called from apps), then it should be possible to move

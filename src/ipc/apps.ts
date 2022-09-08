@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 export interface AppInAppsJson {
     displayName: string;
@@ -77,90 +77,78 @@ const channel = {
 
 // downloadAllAppsJsonFiles
 
-export const invokeDownloadAllAppsJsonFilesFromRenderer = (): Promise<void> =>
-    ipcRenderer.invoke(channel.downloadAllAppsJsonFiles);
+type DownloadAllAppsJsonFiles = () => void;
 
-export const registerDownloadAllAppsJsonFilesHandlerFromMain = (
-    onDownloadAllAppsJsonFiles: typeof invokeDownloadAllAppsJsonFilesFromRenderer
-) =>
-    ipcMain.handle(
-        channel.downloadAllAppsJsonFiles,
-        onDownloadAllAppsJsonFiles
+export const invokeDownloadAllAppsJsonFilesFromRenderer =
+    rendererToMain.invoke<DownloadAllAppsJsonFiles>(
+        channel.downloadAllAppsJsonFiles
+    );
+
+export const registerDownloadAllAppsJsonFilesHandlerFromMain =
+    rendererToMain.registerInvoked<DownloadAllAppsJsonFiles>(
+        channel.downloadAllAppsJsonFiles
     );
 
 // getLocalApps
 
-export const invokeGetLocalAppsFromRenderer = (): Promise<LocalApp[]> =>
-    ipcRenderer.invoke(channel.getLocalApps);
+type GetLocalApps = () => LocalApp[];
 
-export const registerGetLocalAppsHandlerFromMain = (
-    onGetLocalApps: typeof invokeGetLocalAppsFromRenderer
-) => ipcMain.handle(channel.getLocalApps, onGetLocalApps);
+export const invokeGetLocalAppsFromRenderer =
+    rendererToMain.invoke<GetLocalApps>(channel.getLocalApps);
+
+export const registerGetLocalAppsHandlerFromMain =
+    rendererToMain.registerInvoked<GetLocalApps>(channel.getLocalApps);
 
 // getDownloadableApps
 
-export const invokeGetDownloadableAppsFromRenderer: () => Promise<{
+type GetDownloadableApps = () => {
     apps: DownloadableApp[];
     appsWithErrors: AppWithError[];
-}> = () => ipcRenderer.invoke(channel.getDownloadableApps);
+};
 
-export const registerGetDownloadableAppsHandlerFromMain = (
-    onGetDownloadableApps: typeof invokeGetDownloadableAppsFromRenderer
-) => ipcMain.handle(channel.getDownloadableApps, onGetDownloadableApps);
+export const invokeGetDownloadableAppsFromRenderer =
+    rendererToMain.invoke<GetDownloadableApps>(channel.getDownloadableApps);
+
+export const registerGetDownloadableAppsHandlerFromMain =
+    rendererToMain.registerInvoked<GetDownloadableApps>(
+        channel.getDownloadableApps
+    );
 
 // downloadReleaseNotes
+type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
 
-export const invokeDownloadReleaseNotesFromRenderer = (
-    app: DownloadableApp
-): Promise<string | undefined> =>
-    ipcRenderer.invoke(channel.downloadReleaseNotes, app);
+export const invokeDownloadReleaseNotesFromRenderer =
+    rendererToMain.invoke<DownloadReleaseNotes>(channel.downloadReleaseNotes);
 
-export const registerDownloadReleaseNotesHandlerFromMain = (
-    onDownloadReleaseNotes: typeof invokeDownloadReleaseNotesFromRenderer
-) =>
-    ipcMain.handle(
-        channel.downloadReleaseNotes,
-        (
-            _event,
-            ...args: Parameters<typeof invokeDownloadReleaseNotesFromRenderer>
-        ) => onDownloadReleaseNotes(...args)
+export const registerDownloadReleaseNotesHandlerFromMain =
+    rendererToMain.registerInvoked<DownloadReleaseNotes>(
+        channel.downloadReleaseNotes
     );
 
 // installDownloadableApp
-
-export const invokeInstallDownloadableAppFromRenderer = (
+type InstallDownloadableApp = (
     name: string,
     version: string,
     source: string
-): Promise<void> =>
-    ipcRenderer.invoke(channel.installDownloadableApp, name, version, source);
+) => void;
 
-export const registerInstallDownloadableAppHandlerFromMain = (
-    onInstallDownloadableApp: typeof invokeInstallDownloadableAppFromRenderer
-) =>
-    ipcMain.handle(
-        channel.installDownloadableApp,
-        (
-            _event,
-            ...args: Parameters<typeof invokeInstallDownloadableAppFromRenderer>
-        ) => onInstallDownloadableApp(...args)
+export const invokeInstallDownloadableAppFromRenderer =
+    rendererToMain.invoke<InstallDownloadableApp>(
+        channel.installDownloadableApp
+    );
+
+export const registerInstallDownloadableAppHandlerFromMain =
+    rendererToMain.registerInvoked<InstallDownloadableApp>(
+        channel.installDownloadableApp
     );
 
 // removeDownloadableApp
+type RemoveDownloadableApp = (name: string, source: string) => void;
 
-export const invokeRemoveDownloadableAppFromRenderer = (
-    name: string,
-    source: string
-): Promise<void> =>
-    ipcRenderer.invoke(channel.removeDownloadableApp, name, source);
+export const invokeRemoveDownloadableAppFromRenderer =
+    rendererToMain.invoke<RemoveDownloadableApp>(channel.removeDownloadableApp);
 
-export const registerRemoveDownloadableAppHandlerFromMain = (
-    onRemoveDownloadableApp: typeof invokeRemoveDownloadableAppFromRenderer
-) =>
-    ipcMain.handle(
-        channel.removeDownloadableApp,
-        (
-            _event,
-            ...args: Parameters<typeof invokeRemoveDownloadableAppFromRenderer>
-        ) => onRemoveDownloadableApp(...args)
+export const registerRemoveDownloadableAppHandlerFromMain =
+    rendererToMain.registerInvoked<RemoveDownloadableApp>(
+        channel.removeDownloadableApp
     );

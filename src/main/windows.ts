@@ -15,7 +15,7 @@ import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
 import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
-import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/sendToLauncherWindow';
+import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import * as apps from './apps';
 import * as browser from './browser';
 import * as config from './config';

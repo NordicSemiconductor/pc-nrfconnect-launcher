@@ -4,12 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
-
-interface LauncherUpdateCheckResult {
-    isUpdateAvailable: boolean;
-    newVersion: string;
-}
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 const channel = {
     checkForUpdate: 'launcher-update:check',
@@ -18,26 +13,33 @@ const channel = {
 };
 
 // Check
-export const invokeCheckForUpdateFromRenderer =
-    (): Promise<LauncherUpdateCheckResult> =>
-        ipcRenderer.invoke(channel.checkForUpdate);
+type CheckForUpdate = () => {
+    isUpdateAvailable: boolean;
+    newVersion: string;
+};
 
-export const registerCheckForUpdateHandlerFromMain = (
-    onCheckForUpdate: typeof invokeCheckForUpdateFromRenderer
-) => ipcMain.handle(channel.checkForUpdate, onCheckForUpdate);
+export const invokeCheckForUpdateFromRenderer =
+    rendererToMain.invoke<CheckForUpdate>(channel.checkForUpdate);
+
+export const registerCheckForUpdateHandlerFromMain =
+    rendererToMain.registerInvoked<CheckForUpdate>(channel.checkForUpdate);
 
 // Start
-export const sendStartUpdateFromRender = () =>
-    ipcRenderer.send(channel.startUpdate);
+type StartUpdate = () => void;
 
-export const registerStartUpdateHandlerFromMain = (
-    onStartUpdate: typeof sendStartUpdateFromRender
-) => ipcMain.on(channel.startUpdate, onStartUpdate);
+export const sendStartUpdateFromRender = rendererToMain.send<StartUpdate>(
+    channel.startUpdate
+);
+
+export const registerStartUpdateHandlerFromMain =
+    rendererToMain.registerSent<StartUpdate>(channel.startUpdate);
 
 // Cancel
-export const sendCancelUpdateFromRender = () =>
-    ipcRenderer.send(channel.cancelUpdate);
+type CancelUpdate = () => void;
 
-export const registerCancelUpdateHandlerFromMain = (
-    onCancelUpdate: typeof sendCancelUpdateFromRender
-) => ipcMain.on(channel.cancelUpdate, onCancelUpdate);
+export const sendCancelUpdateFromRender = rendererToMain.send<CancelUpdate>(
+    channel.cancelUpdate
+);
+
+export const registerCancelUpdateHandlerFromMain =
+    rendererToMain.registerSent<CancelUpdate>(channel.cancelUpdate);

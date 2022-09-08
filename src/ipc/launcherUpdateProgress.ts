@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcRenderer } from 'electron';
-
-import { sendToLauncherWindowFromMain } from './sendToLauncherWindow';
+import * as mainToRenderer from './infrastructure/mainToRenderer';
 
 const channel = {
     started: 'launcher-update:started',
@@ -14,36 +12,32 @@ const channel = {
     finished: 'launcher-update:finished',
 };
 
-// Start update
-export const sendUpdateStartedFromMain = () =>
-    sendToLauncherWindowFromMain(channel.started);
+// Update started
+type UpdateStarted = () => void;
 
-export const registerUpdateStartedHandlerFromRenderer = (
-    onLauncherUpdateStarted: typeof sendUpdateStartedFromMain
-) => ipcRenderer.on(channel.started, onLauncherUpdateStarted);
+export const sendUpdateStartedFromMain = mainToRenderer.send<UpdateStarted>(
+    channel.started
+);
+
+export const registerUpdateStartedHandlerFromRenderer =
+    mainToRenderer.registerSent<UpdateStarted>(channel.started);
 
 // Progress
-export const sendUpdateProgressFromMain = (percentage: number) =>
-    sendToLauncherWindowFromMain(channel.progress, percentage);
+type UpdateProgress = (percentage: number) => void;
 
-export const registerUpdateProgressHandlerFromRenderer = (
-    onLauncherUpdateProgress: typeof sendUpdateProgressFromMain
-) =>
-    ipcRenderer.on(
-        channel.progress,
-        (_event, ...args: Parameters<typeof sendUpdateProgressFromMain>) =>
-            onLauncherUpdateProgress(...args)
-    );
+export const sendUpdateProgressFromMain = mainToRenderer.send<UpdateProgress>(
+    channel.progress
+);
+
+export const registerUpdateProgressHandlerFromRenderer =
+    mainToRenderer.registerSent<UpdateProgress>(channel.progress);
 
 // Update finished
-export const sendUpdateFinishedFromMain = (isSuccessful: boolean) =>
-    sendToLauncherWindowFromMain(channel.finished, isSuccessful);
+type UpdateFinished = (isSuccessful: boolean) => void;
 
-export const registerUpdateFinishedHandlerFromRenderer = (
-    onLauncherUpdateFinished: typeof sendUpdateFinishedFromMain
-) =>
-    ipcRenderer.on(
-        channel.finished,
-        (_event, ...args: Parameters<typeof sendUpdateFinishedFromMain>) =>
-            onLauncherUpdateFinished(...args)
-    );
+export const sendUpdateFinishedFromMain = mainToRenderer.send<UpdateFinished>(
+    channel.finished
+);
+
+export const registerUpdateFinishedHandlerFromRenderer =
+    mainToRenderer.registerSent<UpdateFinished>(channel.finished);

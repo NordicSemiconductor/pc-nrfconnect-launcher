@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer, powerSaveBlocker } from 'electron';
+import { powerSaveBlocker } from 'electron';
+
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 const channel = {
     start: 'prevent-sleep:start',
@@ -16,17 +18,23 @@ const channel = {
 // running operations. So this might change in the future.
 
 // Start
-export const invokeStartFromRenderer = (): Promise<number> =>
-    ipcRenderer.invoke(channel.start);
+type StartPreventingSleep = () => number;
+
+export const invokeStartFromRenderer =
+    rendererToMain.invoke<StartPreventingSleep>(channel.start);
 
 export const registerStartHandlerFromMain = () =>
-    ipcMain.handle(channel.start, () =>
+    rendererToMain.registerInvoked<StartPreventingSleep>(channel.start)(() =>
         powerSaveBlocker.start('prevent-app-suspension')
     );
 
 // End
-export const sendEndFromRender = (id: number) =>
-    ipcRenderer.send(channel.end, id);
+type EndPreventingSleep = (id: number) => void;
+export const sendEndFromRender = rendererToMain.send<EndPreventingSleep>(
+    channel.end
+);
 
 export const registerEndHandlerFromMain = () =>
-    ipcMain.on(channel.end, (_event, id: number) => powerSaveBlocker.stop(id));
+    rendererToMain.registerSent<EndPreventingSleep>(channel.end)(id =>
+        powerSaveBlocker.stop(id)
+    );

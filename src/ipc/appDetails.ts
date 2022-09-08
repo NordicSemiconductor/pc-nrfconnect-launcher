@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer, WebContents } from 'electron';
+import { ipcMain, WebContents } from 'electron';
 
 import { LaunchableApp } from './apps';
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 const channel = {
     request: 'get-app-details',
@@ -21,14 +22,19 @@ export type AppDetails = LaunchableApp & {
     bundledJlink: string;
 };
 
+type GetAppDetails = () => AppDetails;
+
 // Currently this functions to send this IPC messages is not called from
 // anywhere, but we want to start using it in apps.
-export const invokeFromRenderer = (): Promise<AppDetails> =>
-    ipcRenderer.invoke(channel.request);
+export const invokeFromRenderer = rendererToMain.invoke<GetAppDetails>(
+    channel.request
+);
 
 // This is just a legacy function. Apps still use this IPC channel, even
 // though they do not use this function.
-export const sendFromRenderer = () => ipcRenderer.send(channel.request);
+type GetAppDetailsLegacy = () => void;
+export const sendFromRenderer = () =>
+    rendererToMain.send<GetAppDetailsLegacy>(channel.request);
 
 export const registerHandlerFromMain = (
     getAppDetails: (webContents: WebContents) => AppDetails

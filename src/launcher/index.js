@@ -14,7 +14,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
-import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/errorDialog';
 import {
     registerUpdateFinishedHandlerFromRenderer as registerUpdateFinishedHandler,
     registerUpdateProgressHandlerFromRenderer as registerUpdateProgressHandler,
@@ -22,6 +21,7 @@ import {
 } from '../ipc/launcherUpdateProgress';
 import { registerHandlerFromRenderer as registerProxyLoginHandler } from '../ipc/proxyLogin';
 import { invokeGetFromRenderer as getSetting } from '../ipc/settings';
+import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/showErrorDialog';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
