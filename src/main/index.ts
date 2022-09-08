@@ -11,53 +11,14 @@ import { initialize as initializeElectronRemote } from '@electron/remote/main';
 import { app as electronApp, dialog, Menu } from 'electron';
 import { join } from 'path';
 
-import { registerHandlerFromMain as registerAppDetailsHandler } from '../ipc/appDetails';
-import {
-    registerDownloadAllAppsJsonFilesHandlerFromMain as registerDownloadAllAppsJsonFilesHandler,
-    registerDownloadReleaseNotesHandlerFromMain as registerDownloadReleaseNotesHandler,
-    registerGetDownloadableAppsHandlerFromMain as registerGetDownloadableAppsHandler,
-    registerGetLocalAppsHandlerFromMain as registerGetLocalAppsHandler,
-    registerInstallDownloadableAppHandlerFromMain as registerInstallDownloadableAppHandler,
-    registerRemoveDownloadableAppHandlerFromMain as registerRemoveDownloadableAppHandler,
-} from '../ipc/apps';
-import { registerHandlerFromMain as registerCreateDesktopShortcutHandler } from '../ipc/createDesktopShortcut';
-import { registerHandlerFromMain as registerDownloadToFileHandler } from '../ipc/downloadToFile';
-import {
-    registerCancelUpdateHandlerFromMain as registerCancelUpdateHandler,
-    registerCheckForUpdateHandlerFromMain as registerCheckForUpdateHandler,
-    registerStartUpdateHandlerFromMain as registerStartUpdateHandler,
-} from '../ipc/launcherUpdate';
-import {
-    registerOpenAppHandlerFromMain as registerOpenAppHandler,
-    registerOpenLauncherHandlerFromMain as registerOpenLauncherHandler,
-} from '../ipc/openWindow';
-import {
-    registerEndHandlerFromMain as registerEndPreventSleepHandler,
-    registerStartHandlerFromMain as registerStartPreventSleepHandler,
-} from '../ipc/preventSleep';
-import { registerHandlerFromMain as registerProxyLoginCredentialsHandler } from '../ipc/proxyLogin';
-import {
-    registerGetHandlerFromMain as registerGetSettingHandler,
-    registerSetHandlerFromMain as registerSetSettingHandler,
-} from '../ipc/settings';
-import {
-    registerAddHandlerFromMain as registerAddSourceHandler,
-    registerGetHandlerFromMain as registerGetSourcesHandler,
-    registerRemoveHandlerFromMain as registerRemoveSourceHandler,
-} from '../ipc/sources';
 import * as apps from './apps';
-import { cancelUpdate, checkForUpdate, startUpdate } from './autoUpdate';
 import * as config from './config';
-import createDesktopShortcut from './createDesktopShortcut';
 import describeError from './describeError';
 import loadDevtools from './devtools';
 import { createTextFile } from './fileUtil';
 import { logger } from './log';
 import { createMenu } from './menu';
-import { downloadToFile } from './net';
-import { callRegisteredCallback } from './proxyLogins';
-import * as settings from './settings';
-import * as sources from './sources';
+import registerIpcHandler from './registerIpcHandler';
 import * as windows from './windows';
 
 initializeElectronRemote();
@@ -98,12 +59,12 @@ electronApp.on('ready', async () => {
     }
 });
 
-electronApp.on('render-process-gone', (event, wc, details) => {
+electronApp.on('render-process-gone', (_event, wc, details) => {
     wc.getTitle();
     logger.error(`Renderer crashed ${wc.getTitle()}`, details);
 });
 
-electronApp.on('child-process-gone', (event, details) => {
+electronApp.on('child-process-gone', (_event, details) => {
     logger.error(`Child process crashed `, details);
 });
 
@@ -111,36 +72,7 @@ electronApp.on('window-all-closed', () => {
     electronApp.quit();
 });
 
-registerAppDetailsHandler(windows.getAppDetails);
-
-registerDownloadToFileHandler(downloadToFile);
-registerCreateDesktopShortcutHandler(createDesktopShortcut);
-
-registerGetSettingHandler(settings.get);
-registerSetSettingHandler(settings.set);
-
-registerEndPreventSleepHandler();
-registerStartPreventSleepHandler();
-
-registerProxyLoginCredentialsHandler(callRegisteredCallback);
-
-registerCheckForUpdateHandler(checkForUpdate);
-registerStartUpdateHandler(startUpdate);
-registerCancelUpdateHandler(cancelUpdate);
-
-registerOpenAppHandler(windows.openAppWindow);
-registerOpenLauncherHandler(windows.openLauncherWindow);
-
-registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
-registerGetLocalAppsHandler(apps.getLocalApps);
-registerGetDownloadableAppsHandler(apps.getDownloadableApps);
-registerDownloadReleaseNotesHandler(apps.downloadReleaseNotes);
-registerInstallDownloadableAppHandler(apps.installDownloadableApp);
-registerRemoveDownloadableAppHandler(apps.removeDownloadableApp);
-
-registerGetSourcesHandler(sources.getAllSources);
-registerAddSourceHandler(sources.addSource);
-registerRemoveSourceHandler(sources.removeSource);
+registerIpcHandler();
 
 /**
  * Let's store the full path to the executable if nRFConnect was started from a built package.
