@@ -8,7 +8,7 @@
 import './init';
 
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
-import { app as electronApp, dialog, ipcMain, Menu } from 'electron';
+import { app as electronApp, dialog, Menu } from 'electron';
 import { join } from 'path';
 
 import { registerHandlerFromMain as registerAppDetailsHandler } from '../ipc/appDetails';
@@ -27,6 +27,10 @@ import {
     registerCheckForUpdateHandlerFromMain as registerCheckForUpdateHandler,
     registerStartUpdateHandlerFromMain as registerStartUpdateHandler,
 } from '../ipc/launcherUpdate';
+import {
+    registerOpenAppHandlerFromMain as registerOpenAppHandler,
+    registerOpenLauncherHandlerFromMain as registerOpenLauncherHandler,
+} from '../ipc/openWindow';
 import {
     registerEndHandlerFromMain as registerEndPreventSleepHandler,
     registerStartHandlerFromMain as registerStartPreventSleepHandler,
@@ -107,14 +111,6 @@ electronApp.on('window-all-closed', () => {
     electronApp.quit();
 });
 
-ipcMain.on('open-app-launcher', () => {
-    windows.openLauncherWindow();
-});
-
-ipcMain.on('open-app', (event, app) => {
-    windows.openAppWindow(app);
-});
-
 registerAppDetailsHandler(windows.getAppDetails);
 
 registerDownloadToFileHandler(downloadToFile);
@@ -131,6 +127,9 @@ registerProxyLoginCredentialsHandler(callRegisteredCallback);
 registerCheckForUpdateHandler(checkForUpdate);
 registerStartUpdateHandler(startUpdate);
 registerCancelUpdateHandler(cancelUpdate);
+
+registerOpenAppHandler(windows.openAppWindow);
+registerOpenLauncherHandler(windows.openLauncherWindow);
 
 registerDownloadAllAppsJsonFilesHandler(apps.downloadAllAppsJsonFiles);
 registerGetLocalAppsHandler(apps.getLocalApps);

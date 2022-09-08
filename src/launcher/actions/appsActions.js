@@ -5,7 +5,6 @@
  */
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
-import { ipcRenderer } from 'electron';
 import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
@@ -17,6 +16,7 @@ import {
     invokeRemoveDownloadableAppFromRenderer as removeDownloadableAppInMain,
 } from '../../ipc/apps';
 import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
+import { sendOpenAppFromRender as openApp } from '../../ipc/openWindow';
 import {
     invokeGetFromRenderer as getSetting,
     sendSetFromRenderer as setSetting,
@@ -461,7 +461,7 @@ export function launch(app) {
         `App version: ${appObj.currentVersion};` +
         ` Engine version: ${appObj.engineVersion};`;
     sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name);
-    ipcRenderer.send('open-app', appObj);
+    openApp(appObj);
 }
 
 export function checkEngineAndLaunch(app) {
