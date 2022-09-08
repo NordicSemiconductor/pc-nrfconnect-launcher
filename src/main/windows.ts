@@ -13,6 +13,7 @@ import {
 } from 'electron';
 import path from 'path';
 
+import { AppDetails } from '../ipc/appDetails';
 import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/sendToLauncherWindow';
 import * as apps from './apps';
@@ -182,7 +183,26 @@ export const openLocalAppWindow = (appName: string) =>
         }
     });
 
-export const getAppWindow = (sender: WebContents) => {
+const getAppWindow = (sender: WebContents) => {
     const parentWindow = BrowserWindow.fromWebContents(sender);
     return appWindows.find(appWin => appWin.browserWindow === parentWindow);
+};
+
+export const getAppDetails = (webContents: WebContents): AppDetails => {
+    const appWindow = getAppWindow(webContents);
+
+    if (appWindow == null) {
+        throw new Error(
+            `No app window found for webContents '${webContents.getTitle()}' ${webContents.getURL()}`
+        );
+    }
+
+    return {
+        coreVersion: config.getVersion(),
+        corePath: config.getElectronRootPath(),
+        homeDir: config.getHomeDir(),
+        tmpDir: config.getTmpDir(),
+        bundledJlink: config.getBundledJlinkVersion(),
+        ...appWindow.app,
+    };
 };

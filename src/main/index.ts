@@ -11,6 +11,7 @@ import { initialize as initializeElectronRemote } from '@electron/remote/main';
 import { app as electronApp, dialog, ipcMain, Menu } from 'electron';
 import { join } from 'path';
 
+import { registerHandlerFromMain as registerAppDetailsHandler } from '../ipc/appDetails';
 import {
     registerDownloadAllAppsJsonFilesHandlerFromMain as registerDownloadAllAppsJsonFilesHandler,
     registerDownloadReleaseNotesHandlerFromMain as registerDownloadReleaseNotesHandler,
@@ -114,19 +115,7 @@ ipcMain.on('open-app', (event, app) => {
     windows.openAppWindow(app);
 });
 
-ipcMain.on('get-app-details', event => {
-    const appWindow = windows.getAppWindow(event.sender);
-    if (appWindow) {
-        event.sender.send('app-details', {
-            coreVersion: config.getVersion(),
-            corePath: config.getElectronRootPath(),
-            homeDir: config.getHomeDir(),
-            tmpDir: config.getTmpDir(),
-            bundledJlink: config.getBundledJlinkVersion(),
-            ...appWindow.app,
-        });
-    }
-});
+registerAppDetailsHandler(windows.getAppDetails);
 
 registerDownloadToFileHandler(downloadToFile);
 registerCreateDesktopShortcutHandler(createDesktopShortcut);
