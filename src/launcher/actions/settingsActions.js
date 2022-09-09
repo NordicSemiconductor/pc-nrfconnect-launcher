@@ -9,14 +9,11 @@
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { cleanIpcErrorMessage } from '../../ipc/error';
+import { getSetting, setSetting } from '../../ipc/settings';
 import {
-    invokeGetFromRenderer as getSetting,
-    sendSetFromRenderer as setSetting,
-} from '../../ipc/settings';
-import {
-    invokeAddFromRenderer as addSourceInMain,
-    invokeGetFromRenderer as getSources,
-    invokeRemoveFromRenderer as removeSourceInMain,
+    addSource as addSourceInMain,
+    getSources,
+    removeSource as removeSourceInMain,
 } from '../../ipc/sources';
 import * as AppsActions from './appsActions';
 

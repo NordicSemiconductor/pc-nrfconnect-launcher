@@ -4,26 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcRenderer } from 'electron';
-
-import { sendToLauncherWindowFromMain } from './sendToLauncherWindow';
-
-interface Progress {
-    name: string;
-    source: string;
-    progressFraction: number;
-}
+import { on, send } from './infrastructure/mainToRenderer';
 
 const channel = 'download-progress';
 
-export const sendFromMain = (progress: Progress) =>
-    sendToLauncherWindowFromMain(channel, progress);
+type DownloadProgress = (progress: {
+    name: string;
+    source: string;
+    progressFraction: number;
+}) => void;
 
-export const registerHandlerFromRenderer = (
-    onDownloadProgress: typeof sendFromMain
-) =>
-    ipcRenderer.on(
-        channel,
-        (_event, ...args: Parameters<typeof sendFromMain>) =>
-            onDownloadProgress(...args)
-    );
+export const downloadProgress = send<DownloadProgress>(channel);
+export const registerDownloadProgress = on<DownloadProgress>(channel);

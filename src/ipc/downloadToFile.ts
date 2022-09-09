@@ -4,26 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
+import { handle, invoke } from './infrastructure/rendererToMain';
 
 const channel = 'download-to-file';
 
-export const invokeFromRenderer = (
-    url: string,
-    filePath: string
-): Promise<void> => ipcRenderer.invoke(channel, url, filePath);
+type DownloadToFile = (url: string, filePath: string) => void;
 
-type HandlerParameters = [
-    ...Parameters<typeof invokeFromRenderer>,
-    boolean | undefined
-];
-type Handler = (
-    ...args: HandlerParameters
-) => ReturnType<typeof invokeFromRenderer>;
-
-export const registerHandlerFromMain = (onDownloadToFile: Handler) =>
-    ipcMain.handle(
-        channel,
-        (_event, ...args: Parameters<typeof invokeFromRenderer>) =>
-            onDownloadToFile(...args, false)
-    );
+export const downloadToFile = invoke<DownloadToFile>(channel);
+export const registerDownloadToFile = handle<DownloadToFile>(channel);

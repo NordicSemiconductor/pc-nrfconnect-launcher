@@ -9,57 +9,16 @@ messages are the same.
 
 ## Code conventions
 
-There are a few special conventions we follow with the code here in `src/ipc/`:
+There are a few conventions we follow with the code here in `src/ipc/`:
 
 -   In each file there are pairs of functions: One to send a message over an IPC
-    channel (e.g. `sendStartUpdateFromRender`) and another to register a handler
-    for the messages on that same channel (e.g.
-    `registerStartUpdateHandlerFromMain`).
+    channel (e.g. `checkForUpdate`) and another to register a handler for the
+    messages on that same channel (e.g. `registerCheckForUpdate`).
 
--   The functions follow certain naming conventions:
-
-    -   The function to register a handler is called `register…Handler…`, the
-        function to send a message over the IPC channel is named according to
-        how the message is send. It is named:
-
-        -   `send…` if it sends a one-way message (using
-            `ipc{Renderer,main}.send`).
-        -   `invoke…` if it sends an asynchronous two-way message (using
-            `ipcRenderer.invoke`), returning a `Promise`.
-        -   (should be avoided:) `sendSync…` if it sends a synchronous two-way
-            message (using `ipcRenderer.sendSync`).
-
-    -   To signify from which process a function is meant to be called, their
-        name must have an appropriate postfix `FromRenderer` or `FromMain`.
-
-    -   If in a file only a single channel is defined, then the two functions
-        are simply called e.g. `sendFromRenderer` (for a one-way message) and
-        `registerHandlerFromMain`. If there are multiple channels, the function
-        names are appropriatly longer, e.g. `sendStartUpdateFromRender` and
-        `sendCancelUpdateFromRender` as well as
-        `registerStartUpdateHandlerFromMain` and
-        `registerCancelUpdateHandlerFromMain`.
-
--   Often the type of the function to send a message is equal to the handler for
-    that message. Use that equality by reusing the type. E.g. currently
-    `createDesktopShortcut.ts` looks like this and you can see how the type of
-    `sendFromRenderer` is used again twice:
-
-    ```ts
-    const channel = 'create-desktop-shortcut';
-
-    export const sendFromRenderer = (app: LaunchableApp) =>
-        ipcRenderer.send(channel, app);
-
-    export const registerHandlerFromMain = (
-        onCreateDesktopShortcut: typeof sendFromRenderer
-    ) =>
-        ipcMain.on(
-            channel,
-            (_event, ...args: Parameters<typeof sendFromRenderer>) =>
-                onCreateDesktopShortcut(...args)
-        );
-    ```
+    Usually these two functions utelise a shared signature which is defined in a
+    type above them. Usually the functions are defined by invoking functions
+    from `infrastructure/mainToRenderer.ts` or
+    `infrastructure/rendererToMain.ts` which also use that type.
 
 -   The code here in `src/ipc/` must neither reference any code in `src/main/`
     nor in `src/launcher/`. If we see the need for it (e.g. because the messages

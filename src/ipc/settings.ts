@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
+import { handle, invoke, on, send } from './infrastructure/rendererToMain';
 
 const channel = {
     get: 'setting:get',
@@ -12,29 +12,13 @@ const channel = {
 };
 
 // Get
-export const invokeGetFromRenderer = <T = unknown>(
-    settingKey: string,
-    defaultValue?: T
-): Promise<T> => ipcRenderer.invoke(channel.get, settingKey, defaultValue);
+type GetSetting = (settingKey: string, defaultValue?: unknown) => unknown;
 
-export const registerGetHandlerFromMain = (
-    onGetSetting: (settingKey: string, defaultValue?: unknown) => unknown
-) =>
-    ipcMain.handle(
-        channel.get,
-        (_event, ...args: Parameters<typeof invokeGetFromRenderer>) =>
-            onGetSetting(...args)
-    );
+export const getSetting = invoke<GetSetting>(channel.get);
+export const registerGetSetting = handle<GetSetting>(channel.get);
 
 // Set
-export const sendSetFromRenderer = (key: string, value: unknown) =>
-    ipcRenderer.send(channel.set, key, value);
+type SetSetting = (key: string, value: unknown) => unknown;
 
-export const registerSetHandlerFromMain = (
-    onSetSetting: typeof sendSetFromRenderer
-) =>
-    ipcMain.on(
-        channel.set,
-        (_event, ...args: Parameters<typeof sendSetFromRenderer>) =>
-            onSetSetting(...args)
-    );
+export const setSetting = send<SetSetting>(channel.set);
+export const registerSetSetting = on<SetSetting>(channel.set);

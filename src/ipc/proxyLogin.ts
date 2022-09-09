@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AuthInfo, ipcMain, ipcRenderer } from 'electron';
+import { AuthInfo } from 'electron';
 
-import { sendToLauncherWindowFromMain } from './sendToLauncherWindow';
+import * as mainToRenderer from './infrastructure/mainToRenderer';
+import * as rendererToMain from './infrastructure/rendererToMain';
 
 const channel = {
     request: 'proxy-login:request',
@@ -14,30 +15,24 @@ const channel = {
 };
 
 // Request Proxy Login
-export const sendFromMain = (requestId: string, authInfo: AuthInfo) =>
-    sendToLauncherWindowFromMain(channel.request, requestId, authInfo);
 
-export const registerHandlerFromRenderer = (
-    onProxyLogin: typeof sendFromMain
-) =>
-    ipcRenderer.on(
-        channel.request,
-        (_event, ...args: Parameters<typeof sendFromMain>) =>
-            onProxyLogin(...args)
-    );
+type RequestProxyLogin = (requestId: string, authInfo: AuthInfo) => void;
 
-// Respond to Proxy Login Request
-export const sendFromRenderer = (
+export const requestProxyLogin = mainToRenderer.send<RequestProxyLogin>(
+    channel.request
+);
+export const registerRequestProxyLogin = mainToRenderer.on<RequestProxyLogin>(
+    channel.request
+);
+
+// Answer Proxy Login Request
+type AnswerProxyLoginRequest = (
     requestId: string,
     username?: string,
     password?: string
-) => ipcRenderer.send(channel.response, requestId, username, password);
+) => void;
 
-export const registerHandlerFromMain = (
-    onProxyLoginCredentials: typeof sendFromRenderer
-) =>
-    ipcMain.on(
-        channel.response,
-        (_event, ...args: Parameters<typeof sendFromRenderer>) =>
-            onProxyLoginCredentials(...args)
-    );
+export const answerProxyLoginRequest =
+    rendererToMain.send<AnswerProxyLoginRequest>(channel.response);
+export const registerAnswerProxyLoginRequest =
+    rendererToMain.on<AnswerProxyLoginRequest>(channel.response);

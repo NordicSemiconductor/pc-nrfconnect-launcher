@@ -8,12 +8,12 @@ import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
 
-import { sendFromMain as showErrorDialog } from '../ipc/errorDialog';
 import {
-    sendUpdateFinishedFromMain as updateFinished,
-    sendUpdateProgressFromMain as updateProgress,
-    sendUpdateStartedFromMain as updateStarted,
+    updateFinished,
+    updateProgress,
+    updateStarted,
 } from '../ipc/launcherUpdateProgress';
+import { showErrorDialog } from '../ipc/showErrorDialog';
 import * as config from './config';
 
 let installCancellationToken: CancellationToken | undefined;

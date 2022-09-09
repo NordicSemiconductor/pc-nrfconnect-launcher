@@ -9,10 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
-import {
-    Configuration,
-    registerHandlerFromMain as registerConfigHandler,
-} from '../ipc/getConfig';
+import { Configuration, registerGetConfig } from '../ipc/getConfig';
 import bundledJlinkVersion from './bundledJlinkVersion';
 
 let config: Configuration;
@@ -109,7 +106,7 @@ export function init(argv: Argv) {
         version,
     };
 
-    registerConfigHandler(config);
+    registerGetConfig(config);
 }
 
 export function getAppsRootDir(

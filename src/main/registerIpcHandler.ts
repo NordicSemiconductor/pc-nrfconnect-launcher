@@ -4,39 +4,33 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { registerHandlerFromMain as registerAppDetailsHandler } from '../ipc/appDetails';
+import { registerGetAppDetails } from '../ipc/appDetails';
 import {
-    registerDownloadAllAppsJsonFilesHandlerFromMain as registerDownloadAllAppsJsonFilesHandler,
-    registerDownloadReleaseNotesHandlerFromMain as registerDownloadReleaseNotesHandler,
-    registerGetDownloadableAppsHandlerFromMain as registerGetDownloadableAppsHandler,
-    registerGetLocalAppsHandlerFromMain as registerGetLocalAppsHandler,
-    registerInstallDownloadableAppHandlerFromMain as registerInstallDownloadableAppHandler,
-    registerRemoveDownloadableAppHandlerFromMain as registerRemoveDownloadableAppHandler,
+    registerDownloadAllAppsJsonFiles,
+    registerDownloadReleaseNotes,
+    registerGetDownloadableApps,
+    registerGetLocalApps,
+    registerInstallDownloadableApp,
+    registerRemoveDownloadableApp,
 } from '../ipc/apps';
-import { registerHandlerFromMain as registerCreateDesktopShortcutHandler } from '../ipc/createDesktopShortcut';
-import { registerHandlerFromMain as registerDownloadToFileHandler } from '../ipc/downloadToFile';
+import { registerCreateDesktopShortcut } from '../ipc/createDesktopShortcut';
+import { registerDownloadToFile } from '../ipc/downloadToFile';
 import {
-    registerCancelUpdateHandlerFromMain as registerCancelUpdateHandler,
-    registerCheckForUpdateHandlerFromMain as registerCheckForUpdateHandler,
-    registerStartUpdateHandlerFromMain as registerStartUpdateHandler,
+    registerCancelUpdate,
+    registerCheckForUpdate,
+    registerStartUpdate,
 } from '../ipc/launcherUpdate';
+import { registerOpenApp, registerOpenLauncher } from '../ipc/openWindow';
 import {
-    registerOpenAppHandlerFromMain as registerOpenAppHandler,
-    registerOpenLauncherHandlerFromMain as registerOpenLauncherHandler,
-} from '../ipc/openWindow';
-import {
-    registerEndHandlerFromMain as registerEndPreventSleepHandler,
-    registerStartHandlerFromMain as registerStartPreventSleepHandler,
+    registerEndPreventingSleep,
+    registerStartPreventingSleep,
 } from '../ipc/preventSleep';
-import { registerHandlerFromMain as registerProxyLoginCredentialsHandler } from '../ipc/proxyLogin';
+import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
+import { registerGetSetting, registerSetSetting } from '../ipc/settings';
 import {
-    registerGetHandlerFromMain as registerGetSettingHandler,
-    registerSetHandlerFromMain as registerSetSettingHandler,
-} from '../ipc/settings';
-import {
-    registerAddHandlerFromMain as registerAddSourceHandler,
-    registerGetHandlerFromMain as registerGetSourcesHandler,
-    registerRemoveHandlerFromMain as registerRemoveSourceHandler,
+    registerAddSource,
+    registerGetSources,
+    registerRemoveSource,
 } from '../ipc/sources';
 import {
     downloadAllAppsJsonFiles,
@@ -55,34 +49,35 @@ import { addSource, getAllSources, removeSource } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
 
 export default () => {
-    registerAppDetailsHandler(getAppDetails);
+    registerGetAppDetails(getAppDetails);
 
-    registerDownloadToFileHandler(downloadToFile);
-    registerCreateDesktopShortcutHandler(createDesktopShortcut);
+    registerDownloadToFile(downloadToFile);
 
-    registerGetSettingHandler(getSetting);
-    registerSetSettingHandler(setSetting);
+    registerCreateDesktopShortcut(createDesktopShortcut);
 
-    registerEndPreventSleepHandler();
-    registerStartPreventSleepHandler();
+    registerGetSetting(getSetting);
+    registerSetSetting(setSetting);
 
-    registerProxyLoginCredentialsHandler(callRegisteredCallback);
+    registerEndPreventingSleep();
+    registerStartPreventingSleep();
 
-    registerCheckForUpdateHandler(checkForUpdate);
-    registerStartUpdateHandler(startUpdate);
-    registerCancelUpdateHandler(cancelUpdate);
+    registerAnswerProxyLoginRequest(callRegisteredCallback);
 
-    registerOpenAppHandler(openAppWindow);
-    registerOpenLauncherHandler(openLauncherWindow);
+    registerCheckForUpdate(checkForUpdate);
+    registerStartUpdate(startUpdate);
+    registerCancelUpdate(cancelUpdate);
 
-    registerDownloadAllAppsJsonFilesHandler(downloadAllAppsJsonFiles);
-    registerGetLocalAppsHandler(getLocalApps);
-    registerGetDownloadableAppsHandler(getDownloadableApps);
-    registerDownloadReleaseNotesHandler(downloadReleaseNotes);
-    registerInstallDownloadableAppHandler(installDownloadableApp);
-    registerRemoveDownloadableAppHandler(removeDownloadableApp);
+    registerOpenApp(openAppWindow);
+    registerOpenLauncher(openLauncherWindow);
 
-    registerGetSourcesHandler(getAllSources);
-    registerAddSourceHandler(addSource);
-    registerRemoveSourceHandler(removeSource);
+    registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
+    registerDownloadReleaseNotes(downloadReleaseNotes);
+    registerGetDownloadableApps(getDownloadableApps);
+    registerGetLocalApps(getLocalApps);
+    registerInstallDownloadableApp(installDownloadableApp);
+    registerRemoveDownloadableApp(removeDownloadableApp);
+
+    registerGetSources(getAllSources);
+    registerAddSource(addSource);
+    registerRemoveSource(removeSource);
 };
