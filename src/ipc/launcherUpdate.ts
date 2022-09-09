@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { handle, invoke, on, send } from './infrastructure/rendererToMain';
 
 const channel = {
     checkForUpdate: 'launcher-update:check',
@@ -18,28 +18,30 @@ type CheckForUpdate = () => {
     newVersion: string;
 };
 
-export const invokeCheckForUpdateFromRenderer =
-    rendererToMain.invoke<CheckForUpdate>(channel.checkForUpdate);
+export const invokeCheckForUpdateFromRenderer = invoke<CheckForUpdate>(
+    channel.checkForUpdate
+);
 
-export const registerCheckForUpdateHandlerFromMain =
-    rendererToMain.handle<CheckForUpdate>(channel.checkForUpdate);
+export const registerCheckForUpdateHandlerFromMain = handle<CheckForUpdate>(
+    channel.checkForUpdate
+);
 
 // Start
 type StartUpdate = () => void;
 
-export const sendStartUpdateFromRender = rendererToMain.send<StartUpdate>(
+export const sendStartUpdateFromRender = send<StartUpdate>(channel.startUpdate);
+
+export const registerStartUpdateHandlerFromMain = on<StartUpdate>(
     channel.startUpdate
 );
-
-export const registerStartUpdateHandlerFromMain =
-    rendererToMain.on<StartUpdate>(channel.startUpdate);
 
 // Cancel
 type CancelUpdate = () => void;
 
-export const sendCancelUpdateFromRender = rendererToMain.send<CancelUpdate>(
+export const sendCancelUpdateFromRender = send<CancelUpdate>(
     channel.cancelUpdate
 );
 
-export const registerCancelUpdateHandlerFromMain =
-    rendererToMain.on<CancelUpdate>(channel.cancelUpdate);
+export const registerCancelUpdateHandlerFromMain = on<CancelUpdate>(
+    channel.cancelUpdate
+);

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { handle, invoke, on, send } from './infrastructure/rendererToMain';
 
 const channel = {
     get: 'setting:get',
@@ -14,19 +14,13 @@ const channel = {
 // Get
 type GetSetting = (settingKey: string, defaultValue?: unknown) => unknown;
 
-export const invokeGetFromRenderer = rendererToMain.invoke<GetSetting>(
-    channel.get
-);
+export const invokeGetFromRenderer = invoke<GetSetting>(channel.get);
 
-export const registerGetHandlerFromMain = rendererToMain.handle<GetSetting>(
-    channel.get
-);
+export const registerGetHandlerFromMain = handle<GetSetting>(channel.get);
 
 // Set
 type SetSetting = (key: string, value: unknown) => unknown;
 
-export const sendSetFromRenderer = rendererToMain.send<SetSetting>(channel.set);
+export const sendSetFromRenderer = send<SetSetting>(channel.set);
 
-export const registerSetHandlerFromMain = rendererToMain.on<SetSetting>(
-    channel.set
-);
+export const registerSetHandlerFromMain = on<SetSetting>(channel.set);

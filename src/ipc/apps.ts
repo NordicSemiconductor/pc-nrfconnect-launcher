@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { handle, invoke } from './infrastructure/rendererToMain';
 
 export interface AppInAppsJson {
     displayName: string;
@@ -80,24 +80,22 @@ const channel = {
 type DownloadAllAppsJsonFiles = () => void;
 
 export const invokeDownloadAllAppsJsonFilesFromRenderer =
-    rendererToMain.invoke<DownloadAllAppsJsonFiles>(
-        channel.downloadAllAppsJsonFiles
-    );
+    invoke<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
 
 export const registerDownloadAllAppsJsonFilesHandlerFromMain =
-    rendererToMain.handle<DownloadAllAppsJsonFiles>(
-        channel.downloadAllAppsJsonFiles
-    );
+    handle<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
 
 // getLocalApps
 
 type GetLocalApps = () => LocalApp[];
 
-export const invokeGetLocalAppsFromRenderer =
-    rendererToMain.invoke<GetLocalApps>(channel.getLocalApps);
+export const invokeGetLocalAppsFromRenderer = invoke<GetLocalApps>(
+    channel.getLocalApps
+);
 
-export const registerGetLocalAppsHandlerFromMain =
-    rendererToMain.handle<GetLocalApps>(channel.getLocalApps);
+export const registerGetLocalAppsHandlerFromMain = handle<GetLocalApps>(
+    channel.getLocalApps
+);
 
 // getDownloadableApps
 
@@ -107,19 +105,19 @@ type GetDownloadableApps = () => {
 };
 
 export const invokeGetDownloadableAppsFromRenderer =
-    rendererToMain.invoke<GetDownloadableApps>(channel.getDownloadableApps);
+    invoke<GetDownloadableApps>(channel.getDownloadableApps);
 
 export const registerGetDownloadableAppsHandlerFromMain =
-    rendererToMain.handle<GetDownloadableApps>(channel.getDownloadableApps);
+    handle<GetDownloadableApps>(channel.getDownloadableApps);
 
 // downloadReleaseNotes
 type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
 
 export const invokeDownloadReleaseNotesFromRenderer =
-    rendererToMain.invoke<DownloadReleaseNotes>(channel.downloadReleaseNotes);
+    invoke<DownloadReleaseNotes>(channel.downloadReleaseNotes);
 
 export const registerDownloadReleaseNotesHandlerFromMain =
-    rendererToMain.handle<DownloadReleaseNotes>(channel.downloadReleaseNotes);
+    handle<DownloadReleaseNotes>(channel.downloadReleaseNotes);
 
 // installDownloadableApp
 type InstallDownloadableApp = (
@@ -129,20 +127,16 @@ type InstallDownloadableApp = (
 ) => void;
 
 export const invokeInstallDownloadableAppFromRenderer =
-    rendererToMain.invoke<InstallDownloadableApp>(
-        channel.installDownloadableApp
-    );
+    invoke<InstallDownloadableApp>(channel.installDownloadableApp);
 
 export const registerInstallDownloadableAppHandlerFromMain =
-    rendererToMain.handle<InstallDownloadableApp>(
-        channel.installDownloadableApp
-    );
+    handle<InstallDownloadableApp>(channel.installDownloadableApp);
 
 // removeDownloadableApp
 type RemoveDownloadableApp = (name: string, source: string) => void;
 
 export const invokeRemoveDownloadableAppFromRenderer =
-    rendererToMain.invoke<RemoveDownloadableApp>(channel.removeDownloadableApp);
+    invoke<RemoveDownloadableApp>(channel.removeDownloadableApp);
 
 export const registerRemoveDownloadableAppHandlerFromMain =
-    rendererToMain.handle<RemoveDownloadableApp>(channel.removeDownloadableApp);
+    handle<RemoveDownloadableApp>(channel.removeDownloadableApp);

@@ -5,14 +5,12 @@
  */
 
 import { LaunchableApp } from './apps';
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { on, send } from './infrastructure/rendererToMain';
 
 const channel = 'create-desktop-shortcut';
 
 type CreateDesktopShortcut = (app: LaunchableApp) => void;
 
-export const sendFromRenderer =
-    rendererToMain.send<CreateDesktopShortcut>(channel);
+export const sendFromRenderer = send<CreateDesktopShortcut>(channel);
 
-export const registerHandlerFromMain =
-    rendererToMain.on<CreateDesktopShortcut>(channel);
+export const registerHandlerFromMain = on<CreateDesktopShortcut>(channel);

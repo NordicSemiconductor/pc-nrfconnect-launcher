@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { handle, invoke } from './infrastructure/rendererToMain';
 
 const channel = {
     get: 'sources:get',
@@ -14,29 +14,20 @@ const channel = {
 
 // Get
 type GetSources = () => Record<string, string>;
-export const invokeGetFromRenderer = rendererToMain.invoke<GetSources>(
-    channel.get
-);
+export const invokeGetFromRenderer = invoke<GetSources>(channel.get);
 
-export const registerGetHandlerFromMain = rendererToMain.handle<GetSources>(
-    channel.get
-);
+export const registerGetHandlerFromMain = handle<GetSources>(channel.get);
 
 // Add
 type AddSource = (url: string) => string;
-export const invokeAddFromRenderer = rendererToMain.invoke<AddSource>(
-    channel.add
-);
+export const invokeAddFromRenderer = invoke<AddSource>(channel.add);
 
-export const registerAddHandlerFromMain = rendererToMain.handle<AddSource>(
-    channel.add
-);
+export const registerAddHandlerFromMain = handle<AddSource>(channel.add);
 
 // Remove
 type RemoveSource = (name: string) => void;
-export const invokeRemoveFromRenderer = rendererToMain.invoke<RemoveSource>(
+export const invokeRemoveFromRenderer = invoke<RemoveSource>(channel.remove);
+
+export const registerRemoveHandlerFromMain = handle<RemoveSource>(
     channel.remove
 );
-
-export const registerRemoveHandlerFromMain =
-    rendererToMain.handle<RemoveSource>(channel.remove);

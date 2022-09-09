@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as mainToRenderer from './infrastructure/mainToRenderer';
+import { on, send } from './infrastructure/mainToRenderer';
 
 const channel = {
     started: 'launcher-update:started',
@@ -15,29 +15,30 @@ const channel = {
 // Update started
 type UpdateStarted = () => void;
 
-export const sendUpdateStartedFromMain = mainToRenderer.send<UpdateStarted>(
+export const sendUpdateStartedFromMain = send<UpdateStarted>(channel.started);
+
+export const registerUpdateStartedHandlerFromRenderer = on<UpdateStarted>(
     channel.started
 );
-
-export const registerUpdateStartedHandlerFromRenderer =
-    mainToRenderer.on<UpdateStarted>(channel.started);
 
 // Progress
 type UpdateProgress = (percentage: number) => void;
 
-export const sendUpdateProgressFromMain = mainToRenderer.send<UpdateProgress>(
+export const sendUpdateProgressFromMain = send<UpdateProgress>(
     channel.progress
 );
 
-export const registerUpdateProgressHandlerFromRenderer =
-    mainToRenderer.on<UpdateProgress>(channel.progress);
+export const registerUpdateProgressHandlerFromRenderer = on<UpdateProgress>(
+    channel.progress
+);
 
 // Update finished
 type UpdateFinished = (isSuccessful: boolean) => void;
 
-export const sendUpdateFinishedFromMain = mainToRenderer.send<UpdateFinished>(
+export const sendUpdateFinishedFromMain = send<UpdateFinished>(
     channel.finished
 );
 
-export const registerUpdateFinishedHandlerFromRenderer =
-    mainToRenderer.on<UpdateFinished>(channel.finished);
+export const registerUpdateFinishedHandlerFromRenderer = on<UpdateFinished>(
+    channel.finished
+);

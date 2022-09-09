@@ -5,7 +5,7 @@
  */
 
 import { LaunchableApp } from './apps';
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { on, send } from './infrastructure/rendererToMain';
 
 const channel = {
     app: 'open:app',
@@ -15,11 +15,9 @@ const channel = {
 // open app
 type OpenApp = (app: LaunchableApp) => void;
 
-export const sendOpenAppFromRender = rendererToMain.send<OpenApp>(channel.app);
+export const sendOpenAppFromRender = send<OpenApp>(channel.app);
 
-export const registerOpenAppHandlerFromMain = rendererToMain.on<OpenApp>(
-    channel.app
-);
+export const registerOpenAppHandlerFromMain = on<OpenApp>(channel.app);
 
 // open launcher
 
@@ -29,9 +27,8 @@ type OpenLauncher = () => void;
 // anywhere. We do send messages over the same IPC channel by using the
 // corresponding name from some apps and we want to switch using this function
 // in the future.
-export const sendOpenLauncherFromRender = rendererToMain.send<OpenLauncher>(
+export const sendOpenLauncherFromRender = send<OpenLauncher>(channel.launcher);
+
+export const registerOpenLauncherHandlerFromMain = on<OpenLauncher>(
     channel.launcher
 );
-
-export const registerOpenLauncherHandlerFromMain =
-    rendererToMain.on<OpenLauncher>(channel.launcher);

@@ -7,7 +7,7 @@
 import { ipcMain, WebContents } from 'electron';
 
 import { LaunchableApp } from './apps';
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { invoke, send } from './infrastructure/rendererToMain';
 
 const channel = {
     request: 'get-app-details',
@@ -26,15 +26,13 @@ type GetAppDetails = () => AppDetails;
 
 // Currently this functions to send this IPC messages is not called from
 // anywhere, but we want to start using it in apps.
-export const invokeFromRenderer = rendererToMain.invoke<GetAppDetails>(
-    channel.request
-);
+export const invokeFromRenderer = invoke<GetAppDetails>(channel.request);
 
 // This is just a legacy function. Apps still use this IPC channel, even
 // though they do not use this function.
 type GetAppDetailsLegacy = () => void;
 export const sendFromRenderer = () =>
-    rendererToMain.send<GetAppDetailsLegacy>(channel.request);
+    send<GetAppDetailsLegacy>(channel.request);
 
 export const registerHandlerFromMain = (
     getAppDetails: (webContents: WebContents) => AppDetails

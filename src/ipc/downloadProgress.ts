@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as mainToRenderer from './infrastructure/mainToRenderer';
+import { on, send } from './infrastructure/mainToRenderer';
 
 const channel = 'download-progress';
 
@@ -14,7 +14,6 @@ type DownloadProgress = (progress: {
     progressFraction: number;
 }) => void;
 
-export const sendFromMain = mainToRenderer.send<DownloadProgress>(channel);
+export const sendFromMain = send<DownloadProgress>(channel);
 
-export const registerHandlerFromRenderer =
-    mainToRenderer.on<DownloadProgress>(channel);
+export const registerHandlerFromRenderer = on<DownloadProgress>(channel);

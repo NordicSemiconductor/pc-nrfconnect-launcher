@@ -6,7 +6,7 @@
 
 import { powerSaveBlocker } from 'electron';
 
-import * as rendererToMain from './infrastructure/rendererToMain';
+import { handle, invoke, on, send } from './infrastructure/rendererToMain';
 
 const channel = {
     start: 'prevent-sleep:start',
@@ -20,21 +20,18 @@ const channel = {
 // Start
 type StartPreventingSleep = () => number;
 
-export const invokeStartFromRenderer =
-    rendererToMain.invoke<StartPreventingSleep>(channel.start);
+export const invokeStartFromRenderer = invoke<StartPreventingSleep>(
+    channel.start
+);
 
 export const registerStartHandlerFromMain = () =>
-    rendererToMain.handle<StartPreventingSleep>(channel.start)(() =>
+    handle<StartPreventingSleep>(channel.start)(() =>
         powerSaveBlocker.start('prevent-app-suspension')
     );
 
 // End
 type EndPreventingSleep = (id: number) => void;
-export const sendEndFromRender = rendererToMain.send<EndPreventingSleep>(
-    channel.end
-);
+export const sendEndFromRender = send<EndPreventingSleep>(channel.end);
 
 export const registerEndHandlerFromMain = () =>
-    rendererToMain.on<EndPreventingSleep>(channel.end)(id =>
-        powerSaveBlocker.stop(id)
-    );
+    on<EndPreventingSleep>(channel.end)(id => powerSaveBlocker.stop(id));
