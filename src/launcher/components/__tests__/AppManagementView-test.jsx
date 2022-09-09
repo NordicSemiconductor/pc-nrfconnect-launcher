@@ -20,17 +20,31 @@ jest.mock('../../containers/AppManagementFilterContainer', () => 'div');
 jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
 
 import React from 'react';
+import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
+import { configureStore } from '@reduxjs/toolkit';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
 import getImmutableApp from '../../models';
 import AppManagementView from '../AppManagementView';
 
+const dummyStore = configureStore({
+    reducer: () => ({
+        apps: { isLoadingOfficialApps: false },
+    }),
+});
+
+const mountWithStore = component =>
+    mount(<Provider store={dummyStore}>{component}</Provider>);
+
+const rendererCreateWithStore = component =>
+    renderer.create(<Provider store={dummyStore}>{component}</Provider>);
+
 describe('AppManagementView', () => {
     it('should render without any apps', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List()}
                     isRetrievingApps={false}
@@ -49,7 +63,7 @@ describe('AppManagementView', () => {
 
     it('should render not-installed, installed, and upgradable apps', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List([
                         getImmutableApp({
@@ -87,7 +101,7 @@ describe('AppManagementView', () => {
 
     it('should disable buttons and display "Installing..." button text when installing app', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List([
                         getImmutableApp({
@@ -114,7 +128,7 @@ describe('AppManagementView', () => {
 
     it('should disable buttons and display "Removing..." button text when removing app', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List([
                         getImmutableApp({
@@ -143,7 +157,7 @@ describe('AppManagementView', () => {
 
     it('should disable buttons and display "Upgrading..." button text when upgrading app', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List([
                         getImmutableApp({
@@ -179,7 +193,7 @@ describe('AppManagementView', () => {
             url: 'https://foo.bar/dists/beta',
         });
         const onInstall = jest.fn();
-        const wrapper = mount(
+        const wrapper = mountWithStore(
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
@@ -210,7 +224,7 @@ describe('AppManagementView', () => {
             source: 'beta',
         });
         const onRemove = jest.fn();
-        const wrapper = mount(
+        const wrapper = mountWithStore(
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}
@@ -235,7 +249,7 @@ describe('AppManagementView', () => {
 
     it('should render more info links for correctly defined homepage', () => {
         expect(
-            renderer.create(
+            rendererCreateWithStore(
                 <AppManagementView
                     apps={List([
                         getImmutableApp({
@@ -279,7 +293,7 @@ describe('AppManagementView', () => {
             isOfficial: false,
         });
         const onAppSelected = jest.fn();
-        const wrapper = mount(
+        const wrapper = mountWithStore(
             <AppManagementView
                 apps={List([app])}
                 isRetrievingApps={false}

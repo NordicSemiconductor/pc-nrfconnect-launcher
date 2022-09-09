@@ -29,6 +29,17 @@ Array [
     sources={Object {}}
   />,
   <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
+  <div
     className="with-scrollbar filter-adjusted-height"
   >
     <div
@@ -140,6 +151,17 @@ Array [
     }
     sources={Object {}}
   />,
+  <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -263,6 +285,17 @@ Array [
     }
     sources={Object {}}
   />,
+  <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -424,6 +457,17 @@ Array [
     }
     sources={Object {}}
   />,
+  <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -719,6 +763,17 @@ Array [
     sources={Object {}}
   />,
   <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
+  <div
     className="with-scrollbar filter-adjusted-height"
   >
     <div
@@ -974,6 +1029,17 @@ Array [
     apps={Immutable.List []}
     sources={Object {}}
   />,
+  <div
+    className=""
+  >
+    <img
+      alt="Loading..."
+      height="16"
+      src="test-file-stub"
+      width="16"
+    />
+     Loading infos about downloadable apps …
+  </div>,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
