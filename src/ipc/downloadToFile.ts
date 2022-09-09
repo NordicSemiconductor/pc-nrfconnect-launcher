@@ -14,4 +14,4 @@ export const invokeFromRenderer =
     rendererToMain.invoke<DownloadToFile>(channel);
 
 export const registerHandlerFromMain =
-    rendererToMain.registerInvoked<DownloadToFile>(channel);
+    rendererToMain.handle<DownloadToFile>(channel);

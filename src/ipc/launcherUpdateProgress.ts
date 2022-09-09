@@ -20,7 +20,7 @@ export const sendUpdateStartedFromMain = mainToRenderer.send<UpdateStarted>(
 );
 
 export const registerUpdateStartedHandlerFromRenderer =
-    mainToRenderer.registerSent<UpdateStarted>(channel.started);
+    mainToRenderer.on<UpdateStarted>(channel.started);
 
 // Progress
 type UpdateProgress = (percentage: number) => void;
@@ -30,7 +30,7 @@ export const sendUpdateProgressFromMain = mainToRenderer.send<UpdateProgress>(
 );
 
 export const registerUpdateProgressHandlerFromRenderer =
-    mainToRenderer.registerSent<UpdateProgress>(channel.progress);
+    mainToRenderer.on<UpdateProgress>(channel.progress);
 
 // Update finished
 type UpdateFinished = (isSuccessful: boolean) => void;
@@ -40,4 +40,4 @@ export const sendUpdateFinishedFromMain = mainToRenderer.send<UpdateFinished>(
 );
 
 export const registerUpdateFinishedHandlerFromRenderer =
-    mainToRenderer.registerSent<UpdateFinished>(channel.finished);
+    mainToRenderer.on<UpdateFinished>(channel.finished);

@@ -14,7 +14,7 @@ export const send =
     (...args: Parameters<T>) =>
         ipcRenderer.send(channel, ...args);
 
-export const registerSent =
+export const on =
     <T extends (...args: any[]) => void>( // eslint-disable-line @typescript-eslint/no-explicit-any -- We have to explicitly allow any function here
         channel: string
     ) =>
@@ -31,7 +31,7 @@ export const invoke =
     (...args: Parameters<T>) =>
         ipcRenderer.invoke(channel, ...args) as Promise<ReturnType<T>>;
 
-export const registerInvoked =
+export const handle =
     <T extends (...args: any[]) => any>( // eslint-disable-line @typescript-eslint/no-explicit-any -- We have to explicitly allow any function here
         channel: string
     ) =>

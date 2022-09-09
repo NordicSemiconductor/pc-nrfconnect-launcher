@@ -85,7 +85,7 @@ export const invokeDownloadAllAppsJsonFilesFromRenderer =
     );
 
 export const registerDownloadAllAppsJsonFilesHandlerFromMain =
-    rendererToMain.registerInvoked<DownloadAllAppsJsonFiles>(
+    rendererToMain.handle<DownloadAllAppsJsonFiles>(
         channel.downloadAllAppsJsonFiles
     );
 
@@ -97,7 +97,7 @@ export const invokeGetLocalAppsFromRenderer =
     rendererToMain.invoke<GetLocalApps>(channel.getLocalApps);
 
 export const registerGetLocalAppsHandlerFromMain =
-    rendererToMain.registerInvoked<GetLocalApps>(channel.getLocalApps);
+    rendererToMain.handle<GetLocalApps>(channel.getLocalApps);
 
 // getDownloadableApps
 
@@ -110,9 +110,7 @@ export const invokeGetDownloadableAppsFromRenderer =
     rendererToMain.invoke<GetDownloadableApps>(channel.getDownloadableApps);
 
 export const registerGetDownloadableAppsHandlerFromMain =
-    rendererToMain.registerInvoked<GetDownloadableApps>(
-        channel.getDownloadableApps
-    );
+    rendererToMain.handle<GetDownloadableApps>(channel.getDownloadableApps);
 
 // downloadReleaseNotes
 type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
@@ -121,9 +119,7 @@ export const invokeDownloadReleaseNotesFromRenderer =
     rendererToMain.invoke<DownloadReleaseNotes>(channel.downloadReleaseNotes);
 
 export const registerDownloadReleaseNotesHandlerFromMain =
-    rendererToMain.registerInvoked<DownloadReleaseNotes>(
-        channel.downloadReleaseNotes
-    );
+    rendererToMain.handle<DownloadReleaseNotes>(channel.downloadReleaseNotes);
 
 // installDownloadableApp
 type InstallDownloadableApp = (
@@ -138,7 +134,7 @@ export const invokeInstallDownloadableAppFromRenderer =
     );
 
 export const registerInstallDownloadableAppHandlerFromMain =
-    rendererToMain.registerInvoked<InstallDownloadableApp>(
+    rendererToMain.handle<InstallDownloadableApp>(
         channel.installDownloadableApp
     );
 
@@ -149,6 +145,4 @@ export const invokeRemoveDownloadableAppFromRenderer =
     rendererToMain.invoke<RemoveDownloadableApp>(channel.removeDownloadableApp);
 
 export const registerRemoveDownloadableAppHandlerFromMain =
-    rendererToMain.registerInvoked<RemoveDownloadableApp>(
-        channel.removeDownloadableApp
-    );
+    rendererToMain.handle<RemoveDownloadableApp>(channel.removeDownloadableApp);

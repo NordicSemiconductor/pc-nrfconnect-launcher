@@ -17,4 +17,4 @@ type DownloadProgress = (progress: {
 export const sendFromMain = mainToRenderer.send<DownloadProgress>(channel);
 
 export const registerHandlerFromRenderer =
-    mainToRenderer.registerSent<DownloadProgress>(channel);
+    mainToRenderer.on<DownloadProgress>(channel);

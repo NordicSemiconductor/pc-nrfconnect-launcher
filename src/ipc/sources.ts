@@ -18,8 +18,9 @@ export const invokeGetFromRenderer = rendererToMain.invoke<GetSources>(
     channel.get
 );
 
-export const registerGetHandlerFromMain =
-    rendererToMain.registerInvoked<GetSources>(channel.get);
+export const registerGetHandlerFromMain = rendererToMain.handle<GetSources>(
+    channel.get
+);
 
 // Add
 type AddSource = (url: string) => string;
@@ -27,8 +28,9 @@ export const invokeAddFromRenderer = rendererToMain.invoke<AddSource>(
     channel.add
 );
 
-export const registerAddHandlerFromMain =
-    rendererToMain.registerInvoked<AddSource>(channel.add);
+export const registerAddHandlerFromMain = rendererToMain.handle<AddSource>(
+    channel.add
+);
 
 // Remove
 type RemoveSource = (name: string) => void;
@@ -37,4 +39,4 @@ export const invokeRemoveFromRenderer = rendererToMain.invoke<RemoveSource>(
 );
 
 export const registerRemoveHandlerFromMain =
-    rendererToMain.registerInvoked<RemoveSource>(channel.remove);
+    rendererToMain.handle<RemoveSource>(channel.remove);

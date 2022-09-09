@@ -24,7 +24,7 @@ export const invokeStartFromRenderer =
     rendererToMain.invoke<StartPreventingSleep>(channel.start);
 
 export const registerStartHandlerFromMain = () =>
-    rendererToMain.registerInvoked<StartPreventingSleep>(channel.start)(() =>
+    rendererToMain.handle<StartPreventingSleep>(channel.start)(() =>
         powerSaveBlocker.start('prevent-app-suspension')
     );
 
@@ -35,6 +35,6 @@ export const sendEndFromRender = rendererToMain.send<EndPreventingSleep>(
 );
 
 export const registerEndHandlerFromMain = () =>
-    rendererToMain.registerSent<EndPreventingSleep>(channel.end)(id =>
+    rendererToMain.on<EndPreventingSleep>(channel.end)(id =>
         powerSaveBlocker.stop(id)
     );

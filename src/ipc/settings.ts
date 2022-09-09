@@ -18,13 +18,15 @@ export const invokeGetFromRenderer = rendererToMain.invoke<GetSetting>(
     channel.get
 );
 
-export const registerGetHandlerFromMain =
-    rendererToMain.registerInvoked<GetSetting>(channel.get);
+export const registerGetHandlerFromMain = rendererToMain.handle<GetSetting>(
+    channel.get
+);
 
 // Set
 type SetSetting = (key: string, value: unknown) => unknown;
 
 export const sendSetFromRenderer = rendererToMain.send<SetSetting>(channel.set);
 
-export const registerSetHandlerFromMain =
-    rendererToMain.registerSent<SetSetting>(channel.set);
+export const registerSetHandlerFromMain = rendererToMain.on<SetSetting>(
+    channel.set
+);

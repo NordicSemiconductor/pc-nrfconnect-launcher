@@ -22,7 +22,7 @@ export const invokeCheckForUpdateFromRenderer =
     rendererToMain.invoke<CheckForUpdate>(channel.checkForUpdate);
 
 export const registerCheckForUpdateHandlerFromMain =
-    rendererToMain.registerInvoked<CheckForUpdate>(channel.checkForUpdate);
+    rendererToMain.handle<CheckForUpdate>(channel.checkForUpdate);
 
 // Start
 type StartUpdate = () => void;
@@ -32,7 +32,7 @@ export const sendStartUpdateFromRender = rendererToMain.send<StartUpdate>(
 );
 
 export const registerStartUpdateHandlerFromMain =
-    rendererToMain.registerSent<StartUpdate>(channel.startUpdate);
+    rendererToMain.on<StartUpdate>(channel.startUpdate);
 
 // Cancel
 type CancelUpdate = () => void;
@@ -42,4 +42,4 @@ export const sendCancelUpdateFromRender = rendererToMain.send<CancelUpdate>(
 );
 
 export const registerCancelUpdateHandlerFromMain =
-    rendererToMain.registerSent<CancelUpdate>(channel.cancelUpdate);
+    rendererToMain.on<CancelUpdate>(channel.cancelUpdate);

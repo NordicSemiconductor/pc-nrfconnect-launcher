@@ -13,4 +13,4 @@ type ShowErrorDialog = (errorMessage: string) => void;
 export const sendFromMain = mainToRenderer.send<ShowErrorDialog>(channel);
 
 export const registerHandlerFromRenderer =
-    mainToRenderer.registerSent<ShowErrorDialog>(channel);
+    mainToRenderer.on<ShowErrorDialog>(channel);

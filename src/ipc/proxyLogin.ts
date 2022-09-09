@@ -22,8 +22,9 @@ export const sendFromMain = mainToRenderer.send<RequestProxyLogin>(
     channel.request
 );
 
-export const registerHandlerFromRenderer =
-    mainToRenderer.registerSent<RequestProxyLogin>(channel.request);
+export const registerHandlerFromRenderer = mainToRenderer.on<RequestProxyLogin>(
+    channel.request
+);
 
 // Respond to Proxy Login Request
 type RespondToProxyLoginRequest = (
@@ -37,4 +38,4 @@ export const sendFromRenderer = rendererToMain.send<RespondToProxyLoginRequest>(
 );
 
 export const registerHandlerFromMain =
-    rendererToMain.registerSent<RespondToProxyLoginRequest>(channel.response);
+    rendererToMain.on<RespondToProxyLoginRequest>(channel.response);

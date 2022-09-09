@@ -15,4 +15,4 @@ export const sendFromRenderer =
     rendererToMain.send<CreateDesktopShortcut>(channel);
 
 export const registerHandlerFromMain =
-    rendererToMain.registerSent<CreateDesktopShortcut>(channel);
+    rendererToMain.on<CreateDesktopShortcut>(channel);

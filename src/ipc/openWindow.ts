@@ -17,8 +17,9 @@ type OpenApp = (app: LaunchableApp) => void;
 
 export const sendOpenAppFromRender = rendererToMain.send<OpenApp>(channel.app);
 
-export const registerOpenAppHandlerFromMain =
-    rendererToMain.registerSent<OpenApp>(channel.app);
+export const registerOpenAppHandlerFromMain = rendererToMain.on<OpenApp>(
+    channel.app
+);
 
 // open launcher
 
@@ -33,4 +34,4 @@ export const sendOpenLauncherFromRender = rendererToMain.send<OpenLauncher>(
 );
 
 export const registerOpenLauncherHandlerFromMain =
-    rendererToMain.registerSent<OpenLauncher>(channel.launcher);
+    rendererToMain.on<OpenLauncher>(channel.launcher);

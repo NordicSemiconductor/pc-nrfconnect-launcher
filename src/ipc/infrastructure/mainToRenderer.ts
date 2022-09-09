@@ -19,7 +19,7 @@ export const send =
     (...args: Parameters<T>) =>
         launcherWindow.webContents.send(channel, ...args);
 
-export const registerSent =
+export const on =
     <T extends (...args: any[]) => void>( // eslint-disable-line @typescript-eslint/no-explicit-any -- We have to explicitly allow any function here
         channel: string
     ) =>
