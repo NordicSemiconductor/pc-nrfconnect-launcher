@@ -10,6 +10,5 @@ const channel = 'download-to-file';
 
 type DownloadToFile = (url: string, filePath: string) => void;
 
-export const invokeFromRenderer = invoke<DownloadToFile>(channel);
-
-export const registerHandlerFromMain = handle<DownloadToFile>(channel);
+export const downloadToFile = invoke<DownloadToFile>(channel);
+export const registerDownloadToFile = handle<DownloadToFile>(channel);

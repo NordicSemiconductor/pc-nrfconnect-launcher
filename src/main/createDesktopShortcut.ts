@@ -13,7 +13,7 @@ import path from 'path';
 import { uuid } from 'short-uuid';
 
 import { LaunchableApp } from '../ipc/apps';
-import { sendFromMain as showErrorDialog } from '../ipc/showErrorDialog';
+import { showErrorDialog } from '../ipc/showErrorDialog';
 import * as config from './config';
 import * as fileUtil from './fileUtil';
 

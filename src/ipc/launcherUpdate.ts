@@ -18,30 +18,19 @@ type CheckForUpdate = () => {
     newVersion: string;
 };
 
-export const invokeCheckForUpdateFromRenderer = invoke<CheckForUpdate>(
-    channel.checkForUpdate
-);
-
-export const registerCheckForUpdateHandlerFromMain = handle<CheckForUpdate>(
+export const checkForUpdate = invoke<CheckForUpdate>(channel.checkForUpdate);
+export const registerCheckForUpdate = handle<CheckForUpdate>(
     channel.checkForUpdate
 );
 
 // Start
 type StartUpdate = () => void;
 
-export const sendStartUpdateFromRender = send<StartUpdate>(channel.startUpdate);
-
-export const registerStartUpdateHandlerFromMain = on<StartUpdate>(
-    channel.startUpdate
-);
+export const startUpdate = send<StartUpdate>(channel.startUpdate);
+export const registerStartUpdate = on<StartUpdate>(channel.startUpdate);
 
 // Cancel
 type CancelUpdate = () => void;
 
-export const sendCancelUpdateFromRender = send<CancelUpdate>(
-    channel.cancelUpdate
-);
-
-export const registerCancelUpdateHandlerFromMain = on<CancelUpdate>(
-    channel.cancelUpdate
-);
+export const cancelUpdate = send<CancelUpdate>(channel.cancelUpdate);
+export const registerCancelUpdate = on<CancelUpdate>(channel.cancelUpdate);

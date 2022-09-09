@@ -7,8 +7,8 @@
 import { net, session } from 'electron';
 import fs from 'fs-extra';
 
-import { sendFromMain as sendDownloadProgress } from '../ipc/downloadProgress';
-import { sendFromMain as requestProxyLogin } from '../ipc/proxyLogin';
+import { downloadProgress } from '../ipc/downloadProgress';
+import { requestProxyLogin } from '../ipc/proxyLogin';
 import { storeProxyLoginRequest } from './proxyLogins';
 
 // Using the same session name as electron-updater, so that proxy credentials
@@ -25,7 +25,7 @@ const reportInstallProgress = (
     progress: number,
     totalInstallSize: number
 ) => {
-    sendDownloadProgress({
+    downloadProgress({
         name,
         source,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { sendFromRenderer as respondToProxyLoginRequest } from '../../ipc/proxyLogin';
+import { answerProxyLoginRequest } from '../../ipc/proxyLogin';
 
 export const PROXY_LOGIN_REQUESTED_BY_SERVER =
     'PROXY_LOGIN_REQUESTED_BY_SERVER';
@@ -67,14 +67,14 @@ export function authenticate(requestId, authInfo) {
 
 export function loginCancelledByUser(requestId) {
     return dispatch => {
-        respondToProxyLoginRequest(requestId);
+        answerProxyLoginRequest(requestId);
         dispatch(loginCancelledByUserAction());
     };
 }
 
 export function sendLoginRequest(requestId, username, password) {
     return dispatch => {
-        respondToProxyLoginRequest(requestId, username, password);
+        answerProxyLoginRequest(requestId, username, password);
         dispatch(loginRequestSentAction(username));
     };
 }

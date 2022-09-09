@@ -11,6 +11,5 @@ const channel = 'create-desktop-shortcut';
 
 type CreateDesktopShortcut = (app: LaunchableApp) => void;
 
-export const sendFromRenderer = send<CreateDesktopShortcut>(channel);
-
-export const registerHandlerFromMain = on<CreateDesktopShortcut>(channel);
+export const createDesktopShortcut = send<CreateDesktopShortcut>(channel);
+export const registerCreateDesktopShortcut = on<CreateDesktopShortcut>(channel);

@@ -18,24 +18,21 @@ const channel = {
 
 type RequestProxyLogin = (requestId: string, authInfo: AuthInfo) => void;
 
-export const sendFromMain = mainToRenderer.send<RequestProxyLogin>(
+export const requestProxyLogin = mainToRenderer.send<RequestProxyLogin>(
+    channel.request
+);
+export const registerRequestProxyLogin = mainToRenderer.on<RequestProxyLogin>(
     channel.request
 );
 
-export const registerHandlerFromRenderer = mainToRenderer.on<RequestProxyLogin>(
-    channel.request
-);
-
-// Respond to Proxy Login Request
-type RespondToProxyLoginRequest = (
+// Answer Proxy Login Request
+type AnswerProxyLoginRequest = (
     requestId: string,
     username?: string,
     password?: string
 ) => void;
 
-export const sendFromRenderer = rendererToMain.send<RespondToProxyLoginRequest>(
-    channel.response
-);
-
-export const registerHandlerFromMain =
-    rendererToMain.on<RespondToProxyLoginRequest>(channel.response);
+export const answerProxyLoginRequest =
+    rendererToMain.send<AnswerProxyLoginRequest>(channel.response);
+export const registerAnswerProxyLoginRequest =
+    rendererToMain.on<AnswerProxyLoginRequest>(channel.response);

@@ -13,15 +13,15 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import { registerHandlerFromRenderer as registerDownloadProgressHandler } from '../ipc/downloadProgress';
+import { registerDownloadProgress } from '../ipc/downloadProgress';
 import {
-    registerUpdateFinishedHandlerFromRenderer as registerUpdateFinishedHandler,
-    registerUpdateProgressHandlerFromRenderer as registerUpdateProgressHandler,
-    registerUpdateStartedHandlerFromRenderer as registerUpdateStartedHandler,
+    registerUpdateFinished,
+    registerUpdateProgress,
+    registerUpdateStarted,
 } from '../ipc/launcherUpdateProgress';
-import { registerHandlerFromRenderer as registerProxyLoginHandler } from '../ipc/proxyLogin';
-import { invokeGetFromRenderer as getSetting } from '../ipc/settings';
-import { registerHandlerFromRenderer as registerShowErrorDialogHandler } from '../ipc/showErrorDialog';
+import { registerRequestProxyLogin } from '../ipc/proxyLogin';
+import { getSetting } from '../ipc/settings';
+import { registerShowErrorDialog } from '../ipc/showErrorDialog';
 import * as AppsActions from './actions/appsActions';
 import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as ProxyActions from './actions/proxyActions';
@@ -37,25 +37,25 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(thunk))
 );
 
-registerDownloadProgressHandler(progress => {
+registerDownloadProgress(progress => {
     store.dispatch({ type: AppsActions.UPDATE_DOWNLOAD_PROGRESS, ...progress });
 });
 
-registerShowErrorDialogHandler(errorMessage => {
+registerShowErrorDialog(errorMessage => {
     store.dispatch(ErrorDialogActions.showDialog(errorMessage));
 });
 
-registerProxyLoginHandler((requestId, authInfo) => {
+registerRequestProxyLogin((requestId, authInfo) => {
     store.dispatch(ProxyActions.authenticate(requestId, authInfo));
 });
 
-registerUpdateStartedHandler(() => {
+registerUpdateStarted(() => {
     store.dispatch(AutoUpdateActions.startDownloadAction());
 });
-registerUpdateProgressHandler(percentage => {
+registerUpdateProgress(percentage => {
     store.dispatch(AutoUpdateActions.updateDownloadingAction(percentage));
 });
-registerUpdateFinishedHandler(isSuccessful => {
+registerUpdateFinished(isSuccessful => {
     if (isSuccessful) {
         usageData.reset();
     }

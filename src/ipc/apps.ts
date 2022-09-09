@@ -79,23 +79,18 @@ const channel = {
 
 type DownloadAllAppsJsonFiles = () => void;
 
-export const invokeDownloadAllAppsJsonFilesFromRenderer =
-    invoke<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
-
-export const registerDownloadAllAppsJsonFilesHandlerFromMain =
+export const downloadAllAppsJsonFiles = invoke<DownloadAllAppsJsonFiles>(
+    channel.downloadAllAppsJsonFiles
+);
+export const registerDownloadAllAppsJsonFiles =
     handle<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
 
 // getLocalApps
 
 type GetLocalApps = () => LocalApp[];
 
-export const invokeGetLocalAppsFromRenderer = invoke<GetLocalApps>(
-    channel.getLocalApps
-);
-
-export const registerGetLocalAppsHandlerFromMain = handle<GetLocalApps>(
-    channel.getLocalApps
-);
+export const getLocalApps = invoke<GetLocalApps>(channel.getLocalApps);
+export const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
 
 // getDownloadableApps
 
@@ -104,20 +99,22 @@ type GetDownloadableApps = () => {
     appsWithErrors: AppWithError[];
 };
 
-export const invokeGetDownloadableAppsFromRenderer =
-    invoke<GetDownloadableApps>(channel.getDownloadableApps);
-
-export const registerGetDownloadableAppsHandlerFromMain =
-    handle<GetDownloadableApps>(channel.getDownloadableApps);
+export const getDownloadableApps = invoke<GetDownloadableApps>(
+    channel.getDownloadableApps
+);
+export const registerGetDownloadableApps = handle<GetDownloadableApps>(
+    channel.getDownloadableApps
+);
 
 // downloadReleaseNotes
 type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
 
-export const invokeDownloadReleaseNotesFromRenderer =
-    invoke<DownloadReleaseNotes>(channel.downloadReleaseNotes);
-
-export const registerDownloadReleaseNotesHandlerFromMain =
-    handle<DownloadReleaseNotes>(channel.downloadReleaseNotes);
+export const downloadReleaseNotes = invoke<DownloadReleaseNotes>(
+    channel.downloadReleaseNotes
+);
+export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
+    channel.downloadReleaseNotes
+);
 
 // installDownloadableApp
 type InstallDownloadableApp = (
@@ -126,17 +123,19 @@ type InstallDownloadableApp = (
     source: string
 ) => void;
 
-export const invokeInstallDownloadableAppFromRenderer =
-    invoke<InstallDownloadableApp>(channel.installDownloadableApp);
-
-export const registerInstallDownloadableAppHandlerFromMain =
-    handle<InstallDownloadableApp>(channel.installDownloadableApp);
+export const installDownloadableApp = invoke<InstallDownloadableApp>(
+    channel.installDownloadableApp
+);
+export const registerInstallDownloadableApp = handle<InstallDownloadableApp>(
+    channel.installDownloadableApp
+);
 
 // removeDownloadableApp
 type RemoveDownloadableApp = (name: string, source: string) => void;
 
-export const invokeRemoveDownloadableAppFromRenderer =
-    invoke<RemoveDownloadableApp>(channel.removeDownloadableApp);
-
-export const registerRemoveDownloadableAppHandlerFromMain =
-    handle<RemoveDownloadableApp>(channel.removeDownloadableApp);
+export const removeDownloadableApp = invoke<RemoveDownloadableApp>(
+    channel.removeDownloadableApp
+);
+export const registerRemoveDownloadableApp = handle<RemoveDownloadableApp>(
+    channel.removeDownloadableApp
+);

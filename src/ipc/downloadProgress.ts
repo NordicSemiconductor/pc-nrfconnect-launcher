@@ -14,6 +14,5 @@ type DownloadProgress = (progress: {
     progressFraction: number;
 }) => void;
 
-export const sendFromMain = send<DownloadProgress>(channel);
-
-export const registerHandlerFromRenderer = on<DownloadProgress>(channel);
+export const downloadProgress = send<DownloadProgress>(channel);
+export const registerDownloadProgress = on<DownloadProgress>(channel);

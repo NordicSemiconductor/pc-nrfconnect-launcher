@@ -14,13 +14,11 @@ const channel = {
 // Get
 type GetSetting = (settingKey: string, defaultValue?: unknown) => unknown;
 
-export const invokeGetFromRenderer = invoke<GetSetting>(channel.get);
-
-export const registerGetHandlerFromMain = handle<GetSetting>(channel.get);
+export const getSetting = invoke<GetSetting>(channel.get);
+export const registerGetSetting = handle<GetSetting>(channel.get);
 
 // Set
 type SetSetting = (key: string, value: unknown) => unknown;
 
-export const sendSetFromRenderer = send<SetSetting>(channel.set);
-
-export const registerSetHandlerFromMain = on<SetSetting>(channel.set);
+export const setSetting = send<SetSetting>(channel.set);
+export const registerSetSetting = on<SetSetting>(channel.set);

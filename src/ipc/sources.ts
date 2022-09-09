@@ -14,20 +14,18 @@ const channel = {
 
 // Get
 type GetSources = () => Record<string, string>;
-export const invokeGetFromRenderer = invoke<GetSources>(channel.get);
 
-export const registerGetHandlerFromMain = handle<GetSources>(channel.get);
+export const getSources = invoke<GetSources>(channel.get);
+export const registerGetSources = handle<GetSources>(channel.get);
 
 // Add
 type AddSource = (url: string) => string;
-export const invokeAddFromRenderer = invoke<AddSource>(channel.add);
 
-export const registerAddHandlerFromMain = handle<AddSource>(channel.add);
+export const addSource = invoke<AddSource>(channel.add);
+export const registerAddSource = handle<AddSource>(channel.add);
 
 // Remove
 type RemoveSource = (name: string) => void;
-export const invokeRemoveFromRenderer = invoke<RemoveSource>(channel.remove);
 
-export const registerRemoveHandlerFromMain = handle<RemoveSource>(
-    channel.remove
-);
+export const removeSource = invoke<RemoveSource>(channel.remove);
+export const registerRemoveSource = handle<RemoveSource>(channel.remove);

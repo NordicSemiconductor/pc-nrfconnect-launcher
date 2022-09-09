@@ -9,18 +9,15 @@ import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
-    invokeDownloadReleaseNotesFromRenderer as downloadReleaseNotes,
-    invokeGetDownloadableAppsFromRenderer as getDownloadableApps,
-    invokeGetLocalAppsFromRenderer as getLocalApps,
-    invokeInstallDownloadableAppFromRenderer as installDownloadableAppInMain,
-    invokeRemoveDownloadableAppFromRenderer as removeDownloadableAppInMain,
+    downloadReleaseNotes,
+    getDownloadableApps,
+    getLocalApps,
+    installDownloadableApp as installDownloadableAppInMain,
+    removeDownloadableApp as removeDownloadableAppInMain,
 } from '../../ipc/apps';
-import { invokeFromRenderer as downloadToFile } from '../../ipc/downloadToFile';
-import { sendOpenAppFromRender as openApp } from '../../ipc/openWindow';
-import {
-    invokeGetFromRenderer as getSetting,
-    sendSetFromRenderer as setSetting,
-} from '../../ipc/settings';
+import { downloadToFile } from '../../ipc/downloadToFile';
+import { openApp } from '../../ipc/openWindow';
+import { getSetting, setSetting } from '../../ipc/settings';
 import { getAppsRootDir } from '../../main/config';
 import checkAppCompatibility from '../util/checkAppCompatibility';
 import mainConfig from '../util/mainConfig';

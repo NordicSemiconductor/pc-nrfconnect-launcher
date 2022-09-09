@@ -20,18 +20,15 @@ const channel = {
 // Start
 type StartPreventingSleep = () => number;
 
-export const invokeStartFromRenderer = invoke<StartPreventingSleep>(
-    channel.start
-);
-
-export const registerStartHandlerFromMain = () =>
+export const startPreventingSleep = invoke<StartPreventingSleep>(channel.start);
+export const registerStartPreventingSleep = () =>
     handle<StartPreventingSleep>(channel.start)(() =>
         powerSaveBlocker.start('prevent-app-suspension')
     );
 
 // End
 type EndPreventingSleep = (id: number) => void;
-export const sendEndFromRender = send<EndPreventingSleep>(channel.end);
 
-export const registerEndHandlerFromMain = () =>
+export const endPreventingSleep = send<EndPreventingSleep>(channel.end);
+export const registerEndPreventingSleep = () =>
     on<EndPreventingSleep>(channel.end)(id => powerSaveBlocker.stop(id));

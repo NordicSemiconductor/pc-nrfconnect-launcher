@@ -15,30 +15,17 @@ const channel = {
 // Update started
 type UpdateStarted = () => void;
 
-export const sendUpdateStartedFromMain = send<UpdateStarted>(channel.started);
-
-export const registerUpdateStartedHandlerFromRenderer = on<UpdateStarted>(
-    channel.started
-);
+export const updateStarted = send<UpdateStarted>(channel.started);
+export const registerUpdateStarted = on<UpdateStarted>(channel.started);
 
 // Progress
 type UpdateProgress = (percentage: number) => void;
 
-export const sendUpdateProgressFromMain = send<UpdateProgress>(
-    channel.progress
-);
-
-export const registerUpdateProgressHandlerFromRenderer = on<UpdateProgress>(
-    channel.progress
-);
+export const updateProgress = send<UpdateProgress>(channel.progress);
+export const registerUpdateProgress = on<UpdateProgress>(channel.progress);
 
 // Update finished
 type UpdateFinished = (isSuccessful: boolean) => void;
 
-export const sendUpdateFinishedFromMain = send<UpdateFinished>(
-    channel.finished
-);
-
-export const registerUpdateFinishedHandlerFromRenderer = on<UpdateFinished>(
-    channel.finished
-);
+export const updateFinished = send<UpdateFinished>(channel.finished);
+export const registerUpdateFinished = on<UpdateFinished>(channel.finished);

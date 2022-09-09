@@ -26,25 +26,25 @@ type GetAppDetails = () => AppDetails;
 
 // Currently this functions to send this IPC messages is not called from
 // anywhere, but we want to start using it in apps.
-export const invokeFromRenderer = invoke<GetAppDetails>(channel.request);
+export const getAppDetails = invoke<GetAppDetails>(channel.request);
 
 // This is just a legacy function. Apps still use this IPC channel, even
 // though they do not use this function.
 type GetAppDetailsLegacy = () => void;
-export const sendFromRenderer = () =>
+export const getAppDetailsLegacy = () =>
     send<GetAppDetailsLegacy>(channel.request);
 
-export const registerHandlerFromMain = (
-    getAppDetails: (webContents: WebContents) => AppDetails
+export const registerGetAppDetails = (
+    onGetAppDetails: (webContents: WebContents) => AppDetails
 ) => {
     ipcMain.handle(
         channel.request,
-        (event): AppDetails => getAppDetails(event.sender)
+        (event): AppDetails => onGetAppDetails(event.sender)
     );
 
     // This legacy implementation is still needed, because we currently still
     // send the corresponding message in apps.
     ipcMain.on(channel.request, event => {
-        event.sender.send(channel.response, getAppDetails(event.sender));
+        event.sender.send(channel.response, onGetAppDetails(event.sender));
     });
 };

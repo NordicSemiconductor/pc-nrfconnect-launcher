@@ -6,11 +6,8 @@
 
 import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
-import { invokeDownloadAllAppsJsonFilesFromRenderer as downloadAllAppsJsonFiles } from '../../ipc/apps';
-import {
-    invokeCheckForUpdateFromRenderer as checkForLauncherUpdate,
-    sendCancelUpdateFromRender as cancelLauncherUpdate,
-} from '../../ipc/launcherUpdate';
+import { downloadAllAppsJsonFiles } from '../../ipc/apps';
+import { cancelUpdate, checkForUpdate } from '../../ipc/launcherUpdate';
 import * as AppsActions from './appsActions';
 import * as SettingsActions from './settingsActions';
 
@@ -61,8 +58,7 @@ export function resetAction(error) {
 export function checkForCoreUpdates() {
     return async dispatch => {
         try {
-            const { isUpdateAvailable, newVersion } =
-                await checkForLauncherUpdate();
+            const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
             if (isUpdateAvailable) {
                 dispatch(updateAvailableAction(newVersion));
@@ -77,7 +73,7 @@ export function checkForCoreUpdates() {
 
 export function cancelDownload() {
     return dispatch => {
-        cancelLauncherUpdate();
+        cancelUpdate();
         dispatch(cancelDownloadAction());
     };
 }

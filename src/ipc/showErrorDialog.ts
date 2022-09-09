@@ -10,6 +10,5 @@ const channel = 'show-error-dialog';
 
 type ShowErrorDialog = (errorMessage: string) => void;
 
-export const sendFromMain = send<ShowErrorDialog>(channel);
-
-export const registerHandlerFromRenderer = on<ShowErrorDialog>(channel);
+export const showErrorDialog = send<ShowErrorDialog>(channel);
+export const registerShowErrorDialog = on<ShowErrorDialog>(channel);
