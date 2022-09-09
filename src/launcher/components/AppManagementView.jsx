@@ -12,6 +12,7 @@ import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
 import AppItem from './AppItem';
+import LoadingDownloadableAppsIndicator from './LoadingDownloadableAppsIndicator';
 
 const AppManagementView = ({
     apps,
@@ -29,6 +30,7 @@ const AppManagementView = ({
 }) => (
     <>
         <AppManagementFilter apps={apps} sources={sources} />
+        <LoadingDownloadableAppsIndicator />
         <WithScrollbarContainer hasFilter>
             {apps.map(app => (
                 <AppItem

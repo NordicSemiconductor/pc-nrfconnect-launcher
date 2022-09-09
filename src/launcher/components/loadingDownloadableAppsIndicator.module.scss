@@ -1,0 +1,25 @@
+/*
+ * Copyright (c) 2015 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
+@import '~pc-nrfconnect-shared/styles';
+
+.indicator {
+    margin: 0 29px 0 1px;
+    transition: all 1s;
+    background: $white;
+}
+
+.visible {
+    height: 50px;
+    padding: 0.75rem 5.75rem;
+}
+
+.hidden {
+    transform: scaleY(0);
+    height: 0;
+    padding: 0 5.75rem;
+    opacity: 0;
+}
