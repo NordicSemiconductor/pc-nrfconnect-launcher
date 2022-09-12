@@ -99,17 +99,17 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case AppsActions.LOAD_LOCAL_APPS:
             return state.set('isLoadingLocalApps', true);
-        case AppsActions.LOAD_OFFICIAL_APPS:
+        case AppsActions.LOAD_DOWNLOADABLE_APPS:
             return state.set('isLoadingOfficialApps', true);
         case AppsActions.LOAD_LOCAL_APPS_SUCCESS:
             return setLocalApps(state, action.apps);
-        case AppsActions.LOAD_OFFICIAL_APPS_SUCCESS:
+        case AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS:
             return action.appToUpdate
                 ? setOfficialApp(state, action.apps, action.appToUpdate)
                 : setOfficialApps(state, action.apps);
         case AppsActions.LOAD_LOCAL_APPS_ERROR:
             return state.set('isLoadingLocalApps', false);
-        case AppsActions.LOAD_OFFICIAL_APPS_ERROR:
+        case AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR:
             return state.set('isLoadingOfficialApps', false);
         case AppsActions.INSTALL_OFFICIAL_APP:
             return state.set(

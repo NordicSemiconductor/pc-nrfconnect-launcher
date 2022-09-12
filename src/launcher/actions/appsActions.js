@@ -32,9 +32,9 @@ const fs = remoteRequire('fs-extra');
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
 export const LOAD_LOCAL_APPS_ERROR = 'LOAD_LOCAL_APPS_ERROR';
-export const LOAD_OFFICIAL_APPS = 'LOAD_OFFICIAL_APPS';
-export const LOAD_OFFICIAL_APPS_SUCCESS = 'LOAD_OFFICIAL_APPS_SUCCESS';
-export const LOAD_OFFICIAL_APPS_ERROR = 'LOAD_OFFICIAL_APPS_ERROR';
+export const LOAD_DOWNLOADABLE_APPS = 'LOAD_DOWNLOADABLE_APPS';
+export const LOAD_DOWNLOADABLE_APPS_SUCCESS = 'LOAD_DOWNLOADABLE_APPS_SUCCESS';
+export const LOAD_DOWNLOADABLE_APPS_ERROR = 'LOAD_DOWNLOADABLE_APPS_ERROR';
 export const INSTALL_OFFICIAL_APP = 'INSTALL_OFFICIAL_APP';
 export const INSTALL_OFFICIAL_APP_SUCCESS = 'INSTALL_OFFICIAL_APP_SUCCESS';
 export const INSTALL_OFFICIAL_APP_ERROR = 'INSTALL_OFFICIAL_APP_ERROR';
@@ -76,23 +76,23 @@ function loadLocalAppsError() {
     };
 }
 
-function loadOfficialAppsAction() {
+function loadDownloadableAppsAction() {
     return {
-        type: LOAD_OFFICIAL_APPS,
+        type: LOAD_DOWNLOADABLE_APPS,
     };
 }
 
-function loadOfficialAppsSuccess(apps, appToUpdate) {
+function loadDownloadableAppsSuccess(apps, appToUpdate) {
     return {
-        type: LOAD_OFFICIAL_APPS_SUCCESS,
+        type: LOAD_DOWNLOADABLE_APPS_SUCCESS,
         apps,
         appToUpdate,
     };
 }
 
-function loadOfficialAppsError() {
+function loadDownloadableAppsError() {
     return {
-        type: LOAD_OFFICIAL_APPS_ERROR,
+        type: LOAD_DOWNLOADABLE_APPS_ERROR,
     };
 }
 
@@ -327,11 +327,11 @@ async function downloadAllReleaseNotesInBackground(
 
 export function loadOfficialApps(appName, appSource) {
     return async dispatch => {
-        dispatch(loadOfficialAppsAction());
+        dispatch(loadDownloadableAppsAction());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(
-            loadOfficialAppsSuccess(
+            loadDownloadableAppsSuccess(
                 apps,
                 appName && { name: appName, source: appSource }
             )
@@ -354,7 +354,7 @@ export function loadOfficialApps(appName, appSource) {
 }
 
 const handleAppsWithErrors = (dispatch, apps) => {
-    dispatch(loadOfficialAppsError());
+    dispatch(loadDownloadableAppsError());
     apps.forEach(app => {
         sendLauncherUsageData(
             EventAction.REPORT_INSTALLATION_ERROR,

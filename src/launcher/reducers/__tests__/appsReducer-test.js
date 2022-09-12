@@ -92,35 +92,35 @@ describe('appsReducer', () => {
         expect(stateAfter.isLoadingLocalApps).toEqual(false);
     });
 
-    it('should be loading official apps after LOAD_OFFICIAL_APPS has been dispatched', () => {
+    it('should be loading official apps after LOAD_DOWNLOADABLE_APPS has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.LOAD_OFFICIAL_APPS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS,
         });
         expect(state.isLoadingOfficialApps).toEqual(true);
     });
 
-    it('should have official apps when LOAD_OFFICIAL_APPS_SUCCESS has been dispatched with apps', () => {
+    it('should have official apps when LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched with apps', () => {
         const state = reducer(initialState, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_SUCCESS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS,
             apps: [app1, app2],
         });
         expect(state.officialApps.get(0).toJS()).toEqual(app1);
         expect(state.officialApps.get(1).toJS()).toEqual(app2);
     });
 
-    it('should not be loading official apps after LOAD_OFFICIAL_APPS_SUCCESS has been dispatched', () => {
+    it('should not be loading official apps after LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set('isLoadingOfficialApps', true);
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_SUCCESS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS,
             apps: [],
         });
         expect(stateAfter.isLoadingOfficialApps).toEqual(false);
     });
 
-    it('should not be loading official apps after LOAD_OFFICIAL_APPS_ERROR has been dispatched', () => {
+    it('should not be loading official apps after LOAD_DOWNLOADABLE_APPS_ERROR has been dispatched', () => {
         const stateBefore = initialState.set('isLoadingOfficialApps', true);
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_ERROR,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR,
         });
         expect(stateAfter.isLoadingOfficialApps).toEqual(false);
     });
