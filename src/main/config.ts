@@ -69,7 +69,14 @@ export function init(argv: Argv) {
     const isSkipUpdateApps = !!argv['skip-update-apps'] || false;
     const isSkipUpdateCore = !!argv['skip-update-core'] || false;
     const isSkipSplashScreen = !!argv['skip-splash-screen'] || false;
-    const officialAppName = argv['open-official-app'] || null;
+    if (argv['open-official-app'] != null) {
+        console.warn(
+            'Using the command line switch --open-official-app is deprecated,\n' +
+                'use --open-downloadable-app instead.'
+        );
+    }
+    const officialAppName =
+        argv['open-downloadable-app'] || argv['open-official-app'] || null;
     const localAppName = argv['open-local-app'] || null;
     const sourceName = argv.source || 'official';
     const isRunningLauncherFromSource = fs.existsSync(

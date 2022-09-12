@@ -41,7 +41,7 @@ const getFileName = (app: LaunchableApp) =>
 const getArgs = (app: LaunchableApp) =>
     [
         '--args',
-        app.isOfficial ? '--open-official-app' : '--open-local-app',
+        app.isOfficial ? '--open-downloadable-app' : '--open-local-app',
         app.name,
         '--source',
         `"${app.source}"`,

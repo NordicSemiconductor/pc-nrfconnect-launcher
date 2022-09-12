@@ -58,7 +58,9 @@ export const setup = async ({
             : []),
         ...(skipUpdateApps ? ['--skip-update-apps'] : []),
         ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),
-        ...(openOfficialApp ? [`--open-official-app=${openOfficialApp}`] : []),
+        ...(openOfficialApp
+            ? [`--open-downloadable-app=${openOfficialApp}`]
+            : []),
     ];
 
     const app = await startApp(electronArgs);
