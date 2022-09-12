@@ -6,7 +6,7 @@
 
 import { connect } from 'react-redux';
 
-import { upgradeOfficialApp } from '../actions/appsActions';
+import { upgradeDownloadableApp } from '../actions/appsActions';
 import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 import ReleaseNotesView from '../components/ReleaseNotesDialogView';
 
@@ -35,7 +35,7 @@ function mapStateToProps({
 function mapDispatchToProps(dispatch) {
     return {
         onUpgrade: (name, version, source) =>
-            dispatch(upgradeOfficialApp(name, version, source)),
+            dispatch(upgradeDownloadableApp(name, version, source)),
         onHideReleaseNotes: () => dispatch(ReleaseNotes.hide()),
     };
 }

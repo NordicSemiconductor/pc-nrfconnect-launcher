@@ -17,7 +17,7 @@ export default connect(
     }),
     dispatch => ({
         onUpgrade: (name, version, source) =>
-            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+            dispatch(AppsActions.upgradeDownloadableApp(name, version, source)),
         setAppManagementShow: async show =>
             dispatch(await AppsActions.setAppManagementShow(show)),
         setAppManagementFilter: async filter =>

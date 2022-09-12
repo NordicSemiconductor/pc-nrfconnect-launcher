@@ -88,7 +88,7 @@ function mapDispatchToProps(dispatch) {
         onCreateShortcut: app => createDesktopShortcut(app.toJS()),
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
         onUpgrade: (name, version, source) =>
-            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+            dispatch(AppsActions.upgradeDownloadableApp(name, version, source)),
     };
 }
 

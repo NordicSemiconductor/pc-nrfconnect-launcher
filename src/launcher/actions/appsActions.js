@@ -430,7 +430,7 @@ export function removeDownloadableApp(name, source) {
     };
 }
 
-export function upgradeOfficialApp(name, version, source) {
+export function upgradeDownloadableApp(name, version, source) {
     return dispatch => {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
         dispatch(upgradeDownloadableAppAction(name, version, source));
