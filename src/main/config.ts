@@ -73,7 +73,7 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
  * --skip-splash-screen  Skip the splash screen at startup.
  *                       Default: false
  */
-export function init(argv: Argv) {
+export const init = (argv: Argv) => {
     const appsRootDir =
         argv['apps-root-dir'] ||
         path.join(app.getPath('home'), '.nrfconnect-apps');
@@ -117,17 +117,15 @@ export function init(argv: Argv) {
     };
 
     registerGetConfig(config);
-}
+};
 
-export function getAppsRootDir(
+export const getAppsRootDir = (
     sourceName = 'official',
     effectiveConfig = config
-) {
-    if (sourceName === 'official') {
-        return effectiveConfig.appsRootDir;
-    }
-    return path.join(effectiveConfig.appsExternalDir, sourceName);
-}
+) =>
+    sourceName === 'official'
+        ? effectiveConfig.appsRootDir
+        : path.join(effectiveConfig.appsExternalDir, sourceName);
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');
