@@ -89,7 +89,7 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(UsageDataActions.checkUsageDataSetting());
     store.dispatch(await AppsActions.setAppManagementFilter());
     await store.dispatch(AppsActions.loadLocalApps());
-    await store.dispatch(AppsActions.loadOfficialApps());
+    await store.dispatch(AppsActions.loadDownloadableApps());
     store.dispatch(await AppsActions.setAppManagementShow());
     store.dispatch(await AppsActions.setAppManagementSource());
 

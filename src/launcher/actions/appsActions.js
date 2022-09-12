@@ -325,7 +325,7 @@ async function downloadAllReleaseNotesInBackground(
     }
 }
 
-export function loadOfficialApps(appName, appSource) {
+export function loadDownloadableApps(appName, appSource) {
     return async dispatch => {
         dispatch(loadDownloadableAppsAction());
         const { apps, appsWithErrors } = await getDownloadableApps();
@@ -389,7 +389,7 @@ export function installDownloadableApp(name, source) {
         installDownloadableAppInMain(name, 'latest', source)
             .then(() => {
                 dispatch(installDownloadableAppSuccessAction(name, source));
-                dispatch(loadOfficialApps(name, source));
+                dispatch(loadDownloadableApps(name, source));
             })
             .catch(error => {
                 dispatch(installDownloadableAppErrorAction());
@@ -437,7 +437,7 @@ export function upgradeOfficialApp(name, version, source) {
                 dispatch(
                     upgradeOfficialAppSuccessAction(name, version, source)
                 );
-                dispatch(loadOfficialApps(name, source));
+                dispatch(loadDownloadableApps(name, source));
             })
             .catch(error => {
                 dispatch(upgradeOfficialAppErrorAction());

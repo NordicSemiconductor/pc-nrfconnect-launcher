@@ -128,7 +128,7 @@ export function addSource(url) {
                     )
                 )
             )
-            .then(() => dispatch(AppsActions.loadOfficialApps()));
+            .then(() => dispatch(AppsActions.loadDownloadableApps()));
     };
 }
 
@@ -143,7 +143,7 @@ export function removeSource(name) {
     return dispatch => {
         removeSourceInMain(name)
             .then(() => dispatch(sourceRemovedAction(name)))
-            .then(() => dispatch(AppsActions.loadOfficialApps()))
+            .then(() => dispatch(AppsActions.loadDownloadableApps()))
             .then(async () =>
                 dispatch(await AppsActions.setAppManagementSource(name))
             )
