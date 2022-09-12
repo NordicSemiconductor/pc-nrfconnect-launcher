@@ -35,9 +35,10 @@ export const LOAD_LOCAL_APPS_ERROR = 'LOAD_LOCAL_APPS_ERROR';
 export const LOAD_DOWNLOADABLE_APPS = 'LOAD_DOWNLOADABLE_APPS';
 export const LOAD_DOWNLOADABLE_APPS_SUCCESS = 'LOAD_DOWNLOADABLE_APPS_SUCCESS';
 export const LOAD_DOWNLOADABLE_APPS_ERROR = 'LOAD_DOWNLOADABLE_APPS_ERROR';
-export const INSTALL_OFFICIAL_APP = 'INSTALL_OFFICIAL_APP';
-export const INSTALL_OFFICIAL_APP_SUCCESS = 'INSTALL_OFFICIAL_APP_SUCCESS';
-export const INSTALL_OFFICIAL_APP_ERROR = 'INSTALL_OFFICIAL_APP_ERROR';
+export const INSTALL_DOWNLOADABLE_APP = 'INSTALL_DOWNLOADABLE_APP';
+export const INSTALL_DOWNLOADABLE_APP_SUCCESS =
+    'INSTALL_DOWNLOADABLE_APP_SUCCESS';
+export const INSTALL_DOWNLOADABLE_APP_ERROR = 'INSTALL_DOWNLOADABLE_APP_ERROR';
 export const REMOVE_OFFICIAL_APP = 'REMOVE_OFFICIAL_APP';
 export const REMOVE_OFFICIAL_APP_SUCCESS = 'REMOVE_OFFICIAL_APP_SUCCESS';
 export const REMOVE_OFFICIAL_APP_ERROR = 'REMOVE_OFFICIAL_APP_ERROR';
@@ -98,7 +99,7 @@ function loadDownloadableAppsError() {
 
 function installDownloadableAppAction(name, source) {
     return {
-        type: INSTALL_OFFICIAL_APP,
+        type: INSTALL_DOWNLOADABLE_APP,
         name,
         source,
     };
@@ -106,7 +107,7 @@ function installDownloadableAppAction(name, source) {
 
 function installDownloadableAppSuccessAction(name, source) {
     return {
-        type: INSTALL_OFFICIAL_APP_SUCCESS,
+        type: INSTALL_DOWNLOADABLE_APP_SUCCESS,
         name,
         source,
     };
@@ -114,7 +115,7 @@ function installDownloadableAppSuccessAction(name, source) {
 
 function installDownloadableAppErrorAction() {
     return {
-        type: INSTALL_OFFICIAL_APP_ERROR,
+        type: INSTALL_DOWNLOADABLE_APP_ERROR,
     };
 }
 

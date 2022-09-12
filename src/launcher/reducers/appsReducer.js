@@ -111,7 +111,7 @@ const reducer = (state = initialState, action) => {
             return state.set('isLoadingLocalApps', false);
         case AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR:
             return state.set('isLoadingOfficialApps', false);
-        case AppsActions.INSTALL_OFFICIAL_APP:
+        case AppsActions.INSTALL_DOWNLOADABLE_APP:
             return state.set(
                 'installingAppName',
                 `${action.source}/${action.name}`
@@ -126,7 +126,7 @@ const reducer = (state = initialState, action) => {
                 'upgradingAppName',
                 `${action.source}/${action.name}`
             );
-        case AppsActions.INSTALL_OFFICIAL_APP_SUCCESS:
+        case AppsActions.INSTALL_DOWNLOADABLE_APP_SUCCESS:
             return state.set(
                 'installingAppName',
                 initialState.installingAppName
@@ -146,7 +146,7 @@ const reducer = (state = initialState, action) => {
                 .set('removingAppName', initialState.removingAppName);
         case AppsActions.UPGRADE_OFFICIAL_APP_SUCCESS:
             return state.set('upgradingAppName', initialState.upgradingAppName);
-        case AppsActions.INSTALL_OFFICIAL_APP_ERROR:
+        case AppsActions.INSTALL_DOWNLOADABLE_APP_ERROR:
             return state.set(
                 'installingAppName',
                 initialState.installingAppName
