@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { app as electronApp } from 'electron';
+import { app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
@@ -74,64 +74,46 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
  *                       Default: false
  */
 export function init(argv: Argv) {
-    const { version: pkgVer } = packageJson;
-    const version = pkgVer;
-    const electronRootPath = electronApp.getAppPath();
-    const electronResourcesDir = path.join(electronRootPath, 'resources');
-    const electronExePath = process.env.APPIMAGE || electronApp.getPath('exe');
-    const homeDir = electronApp.getPath('home');
-    const userDataDir = electronApp.getPath('userData');
-    const desktopDir = electronApp.getPath('desktop');
-    const ubuntuDesktopDir = path.join(
-        homeDir,
-        '.local',
-        'share',
-        'applications'
-    );
-    const tmpDir = electronApp.getPath('temp');
     const appsRootDir =
-        argv['apps-root-dir'] || path.join(homeDir, '.nrfconnect-apps');
-    const appsLocalDir = path.join(appsRootDir, 'local');
-    const appsExternalDir = path.join(appsRootDir, 'external');
-    const settingsJsonPath =
-        argv['settings-json-path'] || path.join(userDataDir, 'settings.json');
-    const sourcesJsonPath =
-        argv['sources-json-path'] || path.join(appsExternalDir, 'sources.json');
-    const appsJsonUrl =
-        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
-    const releaseNotesUrl =
-        'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
-    const isSkipUpdateApps = !!argv['skip-update-apps'] || false;
-    const isSkipUpdateCore = !!argv['skip-update-core'] || false;
-    const isSkipSplashScreen = !!argv['skip-splash-screen'] || false;
-    const startupApp = getStartupApp(argv);
-    const isRunningLauncherFromSource = fs.existsSync(
-        path.join(electronRootPath, 'README.md')
-    );
+        argv['apps-root-dir'] ||
+        path.join(app.getPath('home'), '.nrfconnect-apps');
 
     config = {
-        appsExternalDir,
-        appsJsonUrl,
-        appsLocalDir,
+        appsExternalDir: path.join(appsRootDir, 'external'),
+        appsJsonUrl:
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json',
+        appsLocalDir: path.join(appsRootDir, 'local'),
         appsRootDir,
         bundledJlinkVersion,
-        desktopDir,
-        electronExePath,
-        electronResourcesDir,
-        electronRootPath,
-        homeDir,
-        isRunningLauncherFromSource,
-        isSkipSplashScreen,
-        isSkipUpdateApps,
-        isSkipUpdateCore,
-        releaseNotesUrl,
-        settingsJsonPath,
-        sourcesJsonPath,
-        startupApp,
-        tmpDir,
-        ubuntuDesktopDir,
-        userDataDir,
-        version,
+        desktopDir: app.getPath('desktop'),
+        electronExePath: process.env.APPIMAGE || app.getPath('exe'),
+        electronResourcesDir: path.join(app.getAppPath(), 'resources'),
+        electronRootPath: app.getAppPath(),
+        homeDir: app.getPath('home'),
+        isRunningLauncherFromSource: fs.existsSync(
+            path.join(app.getAppPath(), 'README.md')
+        ),
+        isSkipSplashScreen: !!argv['skip-splash-screen'],
+        isSkipUpdateApps: !!argv['skip-update-apps'],
+        isSkipUpdateCore: !!argv['skip-update-core'],
+        releaseNotesUrl:
+            'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases',
+        settingsJsonPath:
+            argv['settings-json-path'] ||
+            path.join(app.getPath('userData'), 'settings.json'),
+        sourcesJsonPath:
+            argv['sources-json-path'] ||
+            path.join(appsRootDir, 'external', 'sources.json'),
+        startupApp: getStartupApp(argv),
+        tmpDir: app.getPath('temp'),
+        ubuntuDesktopDir: path.join(
+            app.getPath('home'),
+            '.local',
+            'share',
+            'applications'
+        ),
+        userDataDir: app.getPath('userData'),
+        version: packageJson.version,
     };
 
     registerGetConfig(config);
