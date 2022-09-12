@@ -30,7 +30,7 @@ export interface InstalledApp extends BaseApp {
 
 export interface LocalApp extends InstalledApp {
     source: null | undefined;
-    isOfficial: false;
+    isDownloadable: false;
 }
 
 export interface UnversionedDownloadableApp extends BaseApp {
@@ -48,7 +48,7 @@ export type UninstalledDownloadableApp = DownloadableApp;
 export interface InstalledDownloadableApp
     extends DownloadableApp,
         InstalledApp {
-    isOfficial: boolean;
+    isDownloadable: true;
     upgradeAvailable?: boolean;
 }
 

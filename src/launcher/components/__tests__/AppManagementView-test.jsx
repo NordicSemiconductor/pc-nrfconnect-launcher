@@ -276,7 +276,7 @@ describe('AppManagementView', () => {
             description: 'Foobar description',
             currentVersion: '1.2.3',
             path: '/path/to/pc-nrfconnect-foobar',
-            isOfficial: false,
+            isDownloadable: false,
         });
         const onAppSelected = jest.fn();
         const wrapper = mount(

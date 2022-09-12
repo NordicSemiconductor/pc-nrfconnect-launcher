@@ -39,9 +39,11 @@ function mapStateToProps(state) {
         .filter(filterByInput(filter))
         .filter(
             app =>
-                ((app.isOfficial === true && app.path && show.installed) ||
-                    (app.isOfficial === null && !app.path && show.available) ||
-                    app.isOfficial === false) &&
+                ((app.isDownloadable === true && app.path && show.installed) ||
+                    (app.isDownloadable === null &&
+                        !app.path &&
+                        show.available) ||
+                    app.isDownloadable === false) &&
                 sources[app.source || 'local'] !== false
         )
         .sort((a, b) => {
