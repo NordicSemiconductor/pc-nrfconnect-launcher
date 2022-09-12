@@ -103,6 +103,7 @@ export function init(argv: Argv) {
         isSkipUpdateCore,
         localAppName,
         downloadableAppName,
+
         releaseNotesUrl,
         settingsJsonPath,
         sourceName,
@@ -126,33 +127,13 @@ export function getAppsRootDir(
     return path.join(effectiveConfig.appsExternalDir, sourceName);
 }
 
-export const getVersion = () => config.version;
-export const getElectronRootPath = () => config.electronRootPath;
-export const getElectronResourcesDir = () => config.electronResourcesDir;
-export const getElectronExePath = () => config.electronExePath;
-export const getHomeDir = () => config.homeDir;
-export const getUserDataDir = () => config.userDataDir;
-export const getDesktopDir = () => config.desktopDir;
-export const getUbuntuDesktopDir = () => config.ubuntuDesktopDir;
-export const getTmpDir = () => config.tmpDir;
-export const getAppsLocalDir = () => config.appsLocalDir;
-export const getAppsExternalDir = () => config.appsExternalDir;
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');
+
 export const getUpdatesJsonPath = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'updates.json');
+
 export const getAppsJsonPath = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'apps.json');
-export const getSettingsJsonPath = () => config.settingsJsonPath;
-export const getSourcesJsonPath = () => config.sourcesJsonPath;
-export const getAppsJsonUrl = () => config.appsJsonUrl;
-export const getReleaseNotesUrl = () => config.releaseNotesUrl;
-export const isSkipUpdateApps = () => config.isSkipUpdateApps;
-export const isSkipUpdateCore = () => config.isSkipUpdateCore;
-export const isSkipSplashScreen = () => config.isSkipSplashScreen;
-export const getDownloadableAppName = () => config.downloadableAppName;
-export const getLocalAppName = () => config.localAppName;
-export const getSourceName = () => config.sourceName;
-export const isRunningLauncherFromSource = () =>
-    config.isRunningLauncherFromSource;
-export const getBundledJlinkVersion = () => config.bundledJlinkVersion;
+
+export const getConfig = () => config;

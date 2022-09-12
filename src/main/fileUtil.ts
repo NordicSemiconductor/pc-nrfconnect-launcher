@@ -10,7 +10,7 @@ import path from 'path';
 import { uuid } from 'short-uuid';
 import targz from 'targz';
 
-import * as config from './config';
+import { getConfig } from './config';
 import describeError from './describeError';
 
 const readFile = async (filePath: string) => {
@@ -122,7 +122,7 @@ export const chmodDir = (src: string, mode: string | number) =>
  * for temporary files.
  */
 export const getTmpFilename = (basename: string) =>
-    path.join(config.getTmpDir(), `${basename}-${uuid()}`);
+    path.join(getConfig().tmpDir, `${basename}-${uuid()}`);
 
 export const extractNpmPackage = async (
     appName: string,

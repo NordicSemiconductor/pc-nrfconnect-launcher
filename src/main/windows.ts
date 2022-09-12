@@ -18,7 +18,7 @@ import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import * as apps from './apps';
 import * as browser from './browser';
-import * as config from './config';
+import { getConfig } from './config';
 import * as settings from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -29,7 +29,7 @@ const appWindows: {
 
 const getDefaultIconPath = () =>
     path.join(
-        config.getElectronResourcesDir(),
+        getConfig().electronResourcesDir,
         process.platform === 'win32' ? 'icon.ico' : 'icon.png'
     );
 
@@ -38,13 +38,13 @@ export const openLauncherWindow = () => {
         launcherWindow.show();
     } else {
         launcherWindow = browser.createWindow({
-            title: `nRF Connect for Desktop v${config.getVersion()}`,
-            url: `file://${config.getElectronResourcesDir()}/launcher.html`,
+            title: `nRF Connect for Desktop v${getConfig().version}`,
+            url: `file://${getConfig().electronResourcesDir}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
             height: 600,
             center: true,
-            splashScreen: !config.isSkipSplashScreen(),
+            splashScreen: !getConfig().isSkipSplashScreen,
         });
 
         registerLauncherWindow(launcherWindow);
@@ -102,7 +102,7 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     const appWindow = browser.createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
-        url: `file://${config.getElectronResourcesDir()}/app.html?appPath=${
+        url: `file://${getConfig().electronResourcesDir}/app.html?appPath=${
             app.path
         }`,
         icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
@@ -201,12 +201,14 @@ export const getAppDetails = (webContents: WebContents): AppDetails => {
         );
     }
 
+    const config = getConfig();
+
     return {
-        coreVersion: config.getVersion(),
-        corePath: config.getElectronRootPath(),
-        homeDir: config.getHomeDir(),
-        tmpDir: config.getTmpDir(),
-        bundledJlink: config.getBundledJlinkVersion(),
+        coreVersion: config.version,
+        corePath: config.electronRootPath,
+        homeDir: config.homeDir,
+        tmpDir: config.tmpDir,
+        bundledJlink: config.bundledJlinkVersion,
         ...appWindow.app,
     };
 };

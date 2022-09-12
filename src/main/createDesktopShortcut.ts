@@ -14,7 +14,7 @@ import { uuid } from 'short-uuid';
 
 import { LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import * as config from './config';
+import { getConfig } from './config';
 import * as fileUtil from './fileUtil';
 
 const mode =
@@ -49,10 +49,10 @@ const getArgs = (app: LaunchableApp) =>
 
 const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
-    const filePath = path.join(config.getDesktopDir(), `${fileName}.lnk`);
+    const filePath = path.join(getConfig().desktopDir, `${fileName}.lnk`);
     if (app.shortcutIconPath) {
         const shortcutStatus = shell.writeShortcutLink(filePath, {
-            target: config.getElectronExePath(),
+            target: getConfig().electronExePath,
             args: getArgs(app),
             icon: app.shortcutIconPath,
             // iconIndex has to be set to change icon
@@ -69,11 +69,11 @@ const createShortcutForWindows = (app: LaunchableApp) => {
 const createShortcutForLinux = (app: LaunchableApp) => {
     const fileName = getFileName(app);
     const desktopFilePath = path.join(
-        config.getDesktopDir(),
+        getConfig().desktopDir,
         `${fileName}.desktop`
     );
     const applicationsFilePath = path.join(
-        config.getUbuntuDesktopDir(),
+        getConfig().ubuntuDesktopDir,
         `${fileName}.desktop`
     );
 
@@ -85,7 +85,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         'Encoding=UTF-8',
         `Version=${app.currentVersion}`,
         `Name=${fileName}`,
-        `Exec=${config.getElectronExePath()} ${args}`,
+        `Exec=${getConfig().electronExePath} ${args}`,
         'Terminal=false',
         `Icon=${shortcutIconPath || iconPath}`,
         'Type=Application',
@@ -116,14 +116,14 @@ const createShortcutForLinux = (app: LaunchableApp) => {
  */
 const createShortcutForMacOS = async (app: LaunchableApp) => {
     const fileName = getFileName(app);
-    let filePath = path.join(config.getDesktopDir(), `${fileName}.app`);
+    let filePath = path.join(getConfig().desktopDir, `${fileName}.app`);
     const templateName = `template-${uuid()}.app`;
     const appTemplateTarPath = path.join(
-        config.getElectronRootPath(),
+        getConfig().electronRootPath,
         '/resources/mac/template.tar.gz'
     );
     const tmpAppPath = path.join(
-        config.getTmpDir(),
+        getConfig().tmpDir,
         '/com.nordicsemi.nrfconnect'
     );
     const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
@@ -160,9 +160,10 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             '/Contents/document.wflow'
         );
         // In MacOS spaces should be replaced
-        const shortcutCMD = `${config
-            .getElectronExePath()
-            .replace(/ /g, '\\ ')} ${getArgs(app)}`;
+        const shortcutCMD = `${getConfig().electronExePath.replace(
+            / /g,
+            '\\ '
+        )} ${getArgs(app)}`;
         const wflowContentSource = fs.readFileSync(wflowTmpPath, 'utf-8');
         Mustache.parse(wflowContentSource);
         const wflowContentData = {
@@ -182,7 +183,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
         // Copy to Applications
         filePath = path.join(
-            config.getHomeDir(),
+            getConfig().homeDir,
             `/Applications/${fileName}.app/`
         );
         await fileUtil.copy(tmpAppTemplatePath, filePath);

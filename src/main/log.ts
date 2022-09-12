@@ -7,9 +7,9 @@
 import path from 'path';
 import { createLogger, format, transports } from 'winston';
 
-import * as config from './config';
+import { getConfig } from './config';
 
-const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
+const nrfConnectPath = path.join(getConfig().userDataDir, 'logs');
 
 const logFormat = format.combine(
     format.timestamp(),

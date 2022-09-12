@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 
-import * as config from './config';
+import { getConfig } from './config';
 
 let data: Record<string, unknown> | undefined;
 
@@ -29,7 +29,7 @@ const load = () => {
     if (data != null) {
         return data;
     }
-    const settings = parseJsonFile(config.getSettingsJsonPath());
+    const settings = parseJsonFile(getConfig().settingsJsonPath);
     if (settings && typeof settings === 'object') {
         data = settings;
     } else {
@@ -40,7 +40,7 @@ const load = () => {
 };
 
 const save = () => {
-    fs.writeFileSync(config.getSettingsJsonPath(), JSON.stringify(data));
+    fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
 };
 
 export const set = (key: string, value: unknown) => {

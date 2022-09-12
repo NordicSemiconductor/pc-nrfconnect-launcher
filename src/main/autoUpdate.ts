@@ -14,11 +14,11 @@ import {
     updateStarted,
 } from '../ipc/launcherUpdateProgress';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import * as config from './config';
+import { getConfig } from './config';
 
 let installCancellationToken: CancellationToken | undefined;
 
-const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
+const nrfConnectPath = path.join(getConfig().userDataDir, 'logs');
 const logger = createLogger({
     transports: [
         new transports.File({

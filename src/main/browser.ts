@@ -10,7 +10,7 @@ import {
     shell,
 } from 'electron';
 
-import * as config from './config';
+import { getConfig } from './config';
 
 type BrowserWindowOptions = BrowserWindowConstructorOptions & {
     splashScreen?: boolean;
@@ -30,7 +30,7 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
         icon,
     });
     splashScreen.loadURL(
-        `file://${config.getElectronResourcesDir()}/splashscreen.html`
+        `file://${getConfig().electronResourcesDir}/splashscreen.html`
     );
     splashScreen.on('closed', () => {
         splashScreen = null;
