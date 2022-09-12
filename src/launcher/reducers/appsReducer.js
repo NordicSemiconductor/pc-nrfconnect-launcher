@@ -16,7 +16,7 @@ const InitialState = Record({
     isLatestAppInfoDownloaded: false,
     lastUpdateCheckDate: null,
     isLoadingLocalApps: true,
-    isLoadingOfficialApps: true,
+    isLoadingDownloadableApps: true,
     installingAppName: '',
     removingAppName: '',
     upgradingAppName: '',
@@ -38,7 +38,7 @@ function setLocalApps(state, apps) {
 function setOfficialApps(state, apps) {
     const immutableApps = apps.map(app => getImmutableApp(app));
     return state
-        .set('isLoadingOfficialApps', false)
+        .set('isLoadingDownloadableApps', false)
         .set('officialApps', List(immutableApps));
 }
 
@@ -47,7 +47,7 @@ function setOfficialApp(state, loadedApps, appToUpdate) {
         app.source === appToUpdate.source && app.name === appToUpdate.name;
 
     return state
-        .set('isLoadingOfficialApps', false)
+        .set('isLoadingDownloadableApps', false)
         .update('officialApps', existingApps =>
             existingApps.set(
                 existingApps.findKey(findAppToUpdate),
@@ -100,7 +100,7 @@ const reducer = (state = initialState, action) => {
         case AppsActions.LOAD_LOCAL_APPS:
             return state.set('isLoadingLocalApps', true);
         case AppsActions.LOAD_DOWNLOADABLE_APPS:
-            return state.set('isLoadingOfficialApps', true);
+            return state.set('isLoadingDownloadableApps', true);
         case AppsActions.LOAD_LOCAL_APPS_SUCCESS:
             return setLocalApps(state, action.apps);
         case AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS:
@@ -110,7 +110,7 @@ const reducer = (state = initialState, action) => {
         case AppsActions.LOAD_LOCAL_APPS_ERROR:
             return state.set('isLoadingLocalApps', false);
         case AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR:
-            return state.set('isLoadingOfficialApps', false);
+            return state.set('isLoadingDownloadableApps', false);
         case AppsActions.INSTALL_DOWNLOADABLE_APP:
             return state.set(
                 'installingAppName',
