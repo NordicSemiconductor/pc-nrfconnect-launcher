@@ -17,9 +17,9 @@ const newPath = path.join(__dirname, '../../', 'README.md.not');
 test.describe(
     'checks the version of the engine against what the app declares',
     () => {
-        test.describe('an official app that is only available', () => {
+        test.describe('a downloadable app that is only available', () => {
             const appsRootDir =
-                'launcher/fixtures/one-official-app-not-installed/.nrfconnect-apps';
+                'launcher/fixtures/one-downloadable-app-not-installed/.nrfconnect-apps';
             let app: ElectronApplication;
             let page: Page;
             test.beforeAll(async () => {

@@ -23,9 +23,9 @@ import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 
 test.describe('the list of all apps', () => {
-    test.describe('has an official app that is available', () => {
+    test.describe('has a downloadable app that is available', () => {
         const appsRootDir =
-            'launcher/fixtures/one-official-app-not-installed/.nrfconnect-apps/';
+            'launcher/fixtures/one-downloadable-app-not-installed/.nrfconnect-apps/';
 
         let app: ElectronApplication;
         let page: Page;
@@ -43,7 +43,7 @@ test.describe('the list of all apps', () => {
             removeSync(
                 path.resolve(
                     __dirname,
-                    'fixtures/one-official-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg'
+                    'fixtures/one-downloadable-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg'
                 )
             );
         });
@@ -65,9 +65,9 @@ test.describe('the list of all apps', () => {
         });
     });
 
-    test.describe('has an official apps that is installed', () => {
+    test.describe('has a downloadable apps that is installed', () => {
         const appsRootDir =
-            'launcher/fixtures/one-official-app-installed/.nrfconnect-apps';
+            'launcher/fixtures/one-downloadable-app-installed/.nrfconnect-apps';
 
         let app: ElectronApplication;
         let page: Page;
@@ -106,9 +106,9 @@ test.describe('the list of all apps', () => {
         });
     });
 
-    test.describe('has an official apps that is upgradable', () => {
+    test.describe('has a downloadable apps that is upgradable', () => {
         const appsRootDir =
-            'launcher/fixtures/one-official-app-upgradable/.nrfconnect-apps';
+            'launcher/fixtures/one-downloadable-app-upgradable/.nrfconnect-apps';
 
         let app: ElectronApplication;
         let page: Page;
