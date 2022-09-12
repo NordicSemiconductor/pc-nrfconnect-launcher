@@ -18,7 +18,7 @@ const app1 = {
     iconPath: './path/to/icon.png',
     engineVersion: null,
     homepage: null,
-    isOfficial: null,
+    isDownloadable: null,
     latestVersion: null,
     shortcutIconPath: null,
     source: null,
@@ -37,7 +37,7 @@ const app2 = {
     iconPath: null,
     engineVersion: null,
     homepage: null,
-    isOfficial: null,
+    isDownloadable: null,
     latestVersion: null,
     shortcutIconPath: null,
     source: null,
@@ -51,12 +51,12 @@ const app2 = {
 describe('appsReducer', () => {
     it('should have no apps in initial state', () => {
         expect(initialState.localApps.size).toEqual(0);
-        expect(initialState.officialApps.size).toEqual(0);
+        expect(initialState.downloadableApps.size).toEqual(0);
     });
 
     it('should be loading apps in initial state', () => {
         expect(initialState.isLoadingLocalApps).toEqual(true);
-        expect(initialState.isLoadingOfficialApps).toEqual(true);
+        expect(initialState.isLoadingDownloadableApps).toEqual(true);
     });
 
     it('should be loading local apps after LOAD_LOCAL_APPS has been dispatched', () => {
@@ -92,55 +92,55 @@ describe('appsReducer', () => {
         expect(stateAfter.isLoadingLocalApps).toEqual(false);
     });
 
-    it('should be loading official apps after LOAD_OFFICIAL_APPS has been dispatched', () => {
+    it('should be loading downloadable apps after LOAD_DOWNLOADABLE_APPS has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.LOAD_OFFICIAL_APPS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS,
         });
-        expect(state.isLoadingOfficialApps).toEqual(true);
+        expect(state.isLoadingDownloadableApps).toEqual(true);
     });
 
-    it('should have official apps when LOAD_OFFICIAL_APPS_SUCCESS has been dispatched with apps', () => {
+    it('should have downloadable apps when LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched with apps', () => {
         const state = reducer(initialState, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_SUCCESS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS,
             apps: [app1, app2],
         });
-        expect(state.officialApps.get(0).toJS()).toEqual(app1);
-        expect(state.officialApps.get(1).toJS()).toEqual(app2);
+        expect(state.downloadableApps.get(0).toJS()).toEqual(app1);
+        expect(state.downloadableApps.get(1).toJS()).toEqual(app2);
     });
 
-    it('should not be loading official apps after LOAD_OFFICIAL_APPS_SUCCESS has been dispatched', () => {
-        const stateBefore = initialState.set('isLoadingOfficialApps', true);
+    it('should not be loading downloadable apps after LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched', () => {
+        const stateBefore = initialState.set('isLoadingDownloadableApps', true);
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_SUCCESS,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS,
             apps: [],
         });
-        expect(stateAfter.isLoadingOfficialApps).toEqual(false);
+        expect(stateAfter.isLoadingDownloadableApps).toEqual(false);
     });
 
-    it('should not be loading official apps after LOAD_OFFICIAL_APPS_ERROR has been dispatched', () => {
-        const stateBefore = initialState.set('isLoadingOfficialApps', true);
+    it('should not be loading downloadable apps after LOAD_DOWNLOADABLE_APPS_ERROR has been dispatched', () => {
+        const stateBefore = initialState.set('isLoadingDownloadableApps', true);
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.LOAD_OFFICIAL_APPS_ERROR,
+            type: AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR,
         });
-        expect(stateAfter.isLoadingOfficialApps).toEqual(false);
+        expect(stateAfter.isLoadingDownloadableApps).toEqual(false);
     });
 
-    it('should be installing app after INSTALL_OFFICIAL_APP has been dispatched', () => {
+    it('should be installing app after INSTALL_DOWNLOADABLE_APP has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.INSTALL_OFFICIAL_APP,
+            type: AppsActions.INSTALL_DOWNLOADABLE_APP,
             name: 'pc-nrfconnect-foo',
             source: 'bar',
         });
         expect(state.installingAppName).toEqual('bar/pc-nrfconnect-foo');
     });
 
-    it('should not be installing app after INSTALL_OFFICIAL_APP_SUCCESS has been dispatched', () => {
+    it('should not be installing app after INSTALL_DOWNLOADABLE_APP_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set(
             'installingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.INSTALL_OFFICIAL_APP_SUCCESS,
+            type: AppsActions.INSTALL_DOWNLOADABLE_APP_SUCCESS,
             name: 'pc-nrfconnect-foo',
         });
         expect(stateAfter.installingAppName).toEqual(
@@ -148,35 +148,35 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be installing app after INSTALL_OFFICIAL_APP_ERROR has been dispatched', () => {
+    it('should not be installing app after INSTALL_DOWNLOADABLE_APP_ERROR has been dispatched', () => {
         const stateBefore = initialState.set(
             'installingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.INSTALL_OFFICIAL_APP_ERROR,
+            type: AppsActions.INSTALL_DOWNLOADABLE_APP_ERROR,
         });
         expect(stateAfter.installingAppName).toEqual(
             initialState.installingAppName
         );
     });
 
-    it('should be removing app after REMOVE_OFFICIAL_APP has been dispatched', () => {
+    it('should be removing app after REMOVE_DOWNLOADABLE_APP has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.REMOVE_OFFICIAL_APP,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP,
             name: 'pc-nrfconnect-foo',
             source: 'bar',
         });
         expect(state.removingAppName).toEqual('bar/pc-nrfconnect-foo');
     });
 
-    it('should not be removing app after REMOVE_OFFICIAL_APP_SUCCESS has been dispatched', () => {
+    it('should not be removing app after REMOVE_DOWNLOADABLE_APP_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set(
             'removingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.REMOVE_OFFICIAL_APP_SUCCESS,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP_SUCCESS,
             name: 'pc-nrfconnect-foo',
         });
         expect(stateAfter.removingAppName).toEqual(
@@ -184,35 +184,35 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be removing app after REMOVE_OFFICIAL_APP_ERROR has been dispatched', () => {
+    it('should not be removing app after REMOVE_DOWNLOADABLE_APP_ERROR has been dispatched', () => {
         const stateBefore = initialState.set(
             'removingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.REMOVE_OFFICIAL_APP_ERROR,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP_ERROR,
         });
         expect(stateAfter.removingAppName).toEqual(
             initialState.removingAppName
         );
     });
 
-    it('should be upgrading app after UPGRADE_OFFICIAL_APP has been dispatched', () => {
+    it('should be upgrading app after UPGRADE_DOWNLOADABLE_APP has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP,
             name: 'pc-nrfconnect-foo',
             source: 'bar',
         });
         expect(state.upgradingAppName).toEqual('bar/pc-nrfconnect-foo');
     });
 
-    it('should not be upgrading app after UPGRADE_OFFICIAL_APP_SUCCESS has been dispatched', () => {
+    it('should not be upgrading app after UPGRADE_DOWNLOADABLE_APP_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set(
             'upgradingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP_SUCCESS,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP_SUCCESS,
             name: 'pc-nrfconnect-foo',
         });
         expect(stateAfter.upgradingAppName).toEqual(
@@ -220,13 +220,13 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be removing app after UPGRADE_OFFICIAL_APP_ERROR has been dispatched', () => {
+    it('should not be removing app after UPGRADE_DOWNLOADABLE_APP_ERROR has been dispatched', () => {
         const stateBefore = initialState.set(
             'upgradingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP_ERROR,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP_ERROR,
         });
         expect(stateAfter.upgradingAppName).toEqual(
             initialState.upgradingAppName

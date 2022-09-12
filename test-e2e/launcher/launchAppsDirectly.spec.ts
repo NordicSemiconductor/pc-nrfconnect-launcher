@@ -10,14 +10,14 @@ import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
 
 test.describe('launching apps directly', () => {
-    test.describe('an official app', () => {
+    test.describe('a downloadable app', () => {
         const appsRootDir =
-            'launcher/fixtures/one-official-app-installed/.nrfconnect-apps';
+            'launcher/fixtures/one-downloadable-app-installed/.nrfconnect-apps';
         let app: ElectronApplication;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                openOfficialApp: 'pc-nrfconnect-test',
+                openDownloadableApp: 'pc-nrfconnect-test',
             });
         });
 

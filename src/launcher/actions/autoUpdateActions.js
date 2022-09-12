@@ -86,7 +86,7 @@ export function downloadLatestAppInfo(options = { rejectIfError: false }) {
             .then(() =>
                 dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
             )
-            .then(() => dispatch(AppsActions.loadOfficialApps()))
+            .then(() => dispatch(AppsActions.loadDownloadableApps()))
             .catch(error => {
                 dispatch(AppsActions.downloadLatestAppInfoErrorAction());
                 if (options.rejectIfError) {

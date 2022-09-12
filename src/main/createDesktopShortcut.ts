@@ -25,7 +25,7 @@ const mode =
     fs.constants.S_IXOTH;
 
 const sourceName = (app: LaunchableApp) => {
-    if (app.isOfficial) {
+    if (app.isDownloadable) {
         if (app.source === 'official') {
             return '';
         }
@@ -41,7 +41,7 @@ const getFileName = (app: LaunchableApp) =>
 const getArgs = (app: LaunchableApp) =>
     [
         '--args',
-        app.isOfficial ? '--open-official-app' : '--open-local-app',
+        app.isDownloadable ? '--open-downloadable-app' : '--open-local-app',
         app.name,
         '--source',
         `"${app.source}"`,
@@ -144,7 +144,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             '/Contents/Info.plist'
         );
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
-            app.isOfficial ? '' : '-local'
+            app.isDownloadable ? '' : '-local'
         }`;
         const infoContentSource = fs.readFileSync(infoTmpPath, 'utf-8');
         Mustache.parse(infoContentSource);

@@ -35,7 +35,7 @@ interface setupConfig {
     appsRootDir: string;
     additionalBeforeEach?: () => void;
     openLocalApp?: string;
-    openOfficialApp?: string;
+    openDownloadableApp?: string;
     settingsJsonPath?: string;
     skipUpdateApps?: boolean;
 }
@@ -44,7 +44,7 @@ export const setup = async ({
     appsRootDir,
     additionalBeforeEach = () => {},
     openLocalApp,
-    openOfficialApp,
+    openDownloadableApp,
     settingsJsonPath = 'launcher/fixtures/default/settings.json',
     skipUpdateApps = true,
 }: setupConfig) => {
@@ -58,7 +58,9 @@ export const setup = async ({
             : []),
         ...(skipUpdateApps ? ['--skip-update-apps'] : []),
         ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),
-        ...(openOfficialApp ? [`--open-official-app=${openOfficialApp}`] : []),
+        ...(openDownloadableApp
+            ? [`--open-downloadable-app=${openDownloadableApp}`]
+            : []),
     ];
 
     const app = await startApp(electronArgs);

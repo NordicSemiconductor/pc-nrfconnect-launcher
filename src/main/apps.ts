@@ -164,8 +164,8 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         shortcutIconPath = iconPath;
     }
 
-    const isOfficial = !appPath.startsWith(config.getAppsLocalDir());
-    const source = isOfficial
+    const isDownloadable = !appPath.startsWith(config.getAppsLocalDir());
+    const source = isDownloadable
         ? path.basename(path.dirname(path.dirname(appPath)))
         : null;
 
@@ -179,7 +179,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         shortcutIconPath: fs.existsSync(shortcutIconPath)
             ? shortcutIconPath
             : undefined,
-        isOfficial,
+        isDownloadable,
         engineVersion: packageJson.engines?.nrfconnect,
         source,
         repositoryUrl: packageJson.repository?.url,
@@ -187,16 +187,17 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
 };
 
 const latestVersionInfo = (
-    officialApp: { name: string; currentVersion?: string },
+    downloadableApp: { name: string; currentVersion?: string },
     availableUpdates: UpdatesJson
 ) => {
     const latestVersion =
-        availableUpdates[officialApp.name] || officialApp.currentVersion;
+        availableUpdates[downloadableApp.name] ||
+        downloadableApp.currentVersion;
     return {
         latestVersion,
         upgradeAvailable:
-            officialApp.currentVersion &&
-            officialApp.currentVersion !== latestVersion,
+            downloadableApp.currentVersion &&
+            downloadableApp.currentVersion !== latestVersion,
     };
 };
 

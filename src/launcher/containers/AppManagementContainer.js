@@ -25,7 +25,7 @@ function mapStateToProps(state) {
     const {
         apps: {
             localApps,
-            officialApps,
+            downloadableApps,
             installingAppName,
             removingAppName,
             upgradingAppName,
@@ -34,14 +34,16 @@ function mapStateToProps(state) {
             sources,
         },
     } = state;
-    const allApps = localApps.concat(officialApps);
+    const allApps = localApps.concat(downloadableApps);
     const apps = allApps
         .filter(filterByInput(filter))
         .filter(
             app =>
-                ((app.isOfficial === true && app.path && show.installed) ||
-                    (app.isOfficial === null && !app.path && show.available) ||
-                    app.isOfficial === false) &&
+                ((app.isDownloadable === true && app.path && show.installed) ||
+                    (app.isDownloadable === null &&
+                        !app.path &&
+                        show.available) ||
+                    app.isDownloadable === false) &&
                 sources[app.source || 'local'] !== false
         )
         .sort((a, b) => {
@@ -86,7 +88,7 @@ function mapDispatchToProps(dispatch) {
         onCreateShortcut: app => createDesktopShortcut(app.toJS()),
         onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
         onUpgrade: (name, version, source) =>
-            dispatch(AppsActions.upgradeOfficialApp(name, version, source)),
+            dispatch(AppsActions.upgradeDownloadableApp(name, version, source)),
     };
 }
 

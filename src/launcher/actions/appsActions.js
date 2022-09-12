@@ -32,18 +32,21 @@ const fs = remoteRequire('fs-extra');
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
 export const LOAD_LOCAL_APPS_ERROR = 'LOAD_LOCAL_APPS_ERROR';
-export const LOAD_OFFICIAL_APPS = 'LOAD_OFFICIAL_APPS';
-export const LOAD_OFFICIAL_APPS_SUCCESS = 'LOAD_OFFICIAL_APPS_SUCCESS';
-export const LOAD_OFFICIAL_APPS_ERROR = 'LOAD_OFFICIAL_APPS_ERROR';
-export const INSTALL_OFFICIAL_APP = 'INSTALL_OFFICIAL_APP';
-export const INSTALL_OFFICIAL_APP_SUCCESS = 'INSTALL_OFFICIAL_APP_SUCCESS';
-export const INSTALL_OFFICIAL_APP_ERROR = 'INSTALL_OFFICIAL_APP_ERROR';
-export const REMOVE_OFFICIAL_APP = 'REMOVE_OFFICIAL_APP';
-export const REMOVE_OFFICIAL_APP_SUCCESS = 'REMOVE_OFFICIAL_APP_SUCCESS';
-export const REMOVE_OFFICIAL_APP_ERROR = 'REMOVE_OFFICIAL_APP_ERROR';
-export const UPGRADE_OFFICIAL_APP = 'UPGRADE_OFFICIAL_APP';
-export const UPGRADE_OFFICIAL_APP_SUCCESS = 'UPGRADE_OFFICIAL_APP_SUCCESS';
-export const UPGRADE_OFFICIAL_APP_ERROR = 'UPGRADE_OFFICIAL_APP_ERROR';
+export const LOAD_DOWNLOADABLE_APPS = 'LOAD_DOWNLOADABLE_APPS';
+export const LOAD_DOWNLOADABLE_APPS_SUCCESS = 'LOAD_DOWNLOADABLE_APPS_SUCCESS';
+export const LOAD_DOWNLOADABLE_APPS_ERROR = 'LOAD_DOWNLOADABLE_APPS_ERROR';
+export const INSTALL_DOWNLOADABLE_APP = 'INSTALL_DOWNLOADABLE_APP';
+export const INSTALL_DOWNLOADABLE_APP_SUCCESS =
+    'INSTALL_DOWNLOADABLE_APP_SUCCESS';
+export const INSTALL_DOWNLOADABLE_APP_ERROR = 'INSTALL_DOWNLOADABLE_APP_ERROR';
+export const REMOVE_DOWNLOADABLE_APP = 'REMOVE_DOWNLOADABLE_APP';
+export const REMOVE_DOWNLOADABLE_APP_SUCCESS =
+    'REMOVE_DOWNLOADABLE_APP_SUCCESS';
+export const REMOVE_DOWNLOADABLE_APP_ERROR = 'REMOVE_DOWNLOADABLE_APP_ERROR';
+export const UPGRADE_DOWNLOADABLE_APP = 'UPGRADE_DOWNLOADABLE_APP';
+export const UPGRADE_DOWNLOADABLE_APP_SUCCESS =
+    'UPGRADE_DOWNLOADABLE_APP_SUCCESS';
+export const UPGRADE_DOWNLOADABLE_APP_ERROR = 'UPGRADE_DOWNLOADABLE_APP_ERROR';
 export const SHOW_CONFIRM_LAUNCH_DIALOG = 'SHOW_CONFIRM_LAUNCH_DIALOG';
 export const HIDE_CONFIRM_LAUNCH_DIALOG = 'HIDE_CONFIRM_LAUNCH_DIALOG';
 export const DOWNLOAD_LATEST_APP_INFO = 'DOWNLOAD_LATEST_APP_INFO';
@@ -76,29 +79,29 @@ function loadLocalAppsError() {
     };
 }
 
-function loadOfficialAppsAction() {
+function loadDownloadableAppsAction() {
     return {
-        type: LOAD_OFFICIAL_APPS,
+        type: LOAD_DOWNLOADABLE_APPS,
     };
 }
 
-function loadOfficialAppsSuccess(apps, appToUpdate) {
+function loadDownloadableAppsSuccess(apps, appToUpdate) {
     return {
-        type: LOAD_OFFICIAL_APPS_SUCCESS,
+        type: LOAD_DOWNLOADABLE_APPS_SUCCESS,
         apps,
         appToUpdate,
     };
 }
 
-function loadOfficialAppsError() {
+function loadDownloadableAppsError() {
     return {
-        type: LOAD_OFFICIAL_APPS_ERROR,
+        type: LOAD_DOWNLOADABLE_APPS_ERROR,
     };
 }
 
 function installDownloadableAppAction(name, source) {
     return {
-        type: INSTALL_OFFICIAL_APP,
+        type: INSTALL_DOWNLOADABLE_APP,
         name,
         source,
     };
@@ -106,7 +109,7 @@ function installDownloadableAppAction(name, source) {
 
 function installDownloadableAppSuccessAction(name, source) {
     return {
-        type: INSTALL_OFFICIAL_APP_SUCCESS,
+        type: INSTALL_DOWNLOADABLE_APP_SUCCESS,
         name,
         source,
     };
@@ -114,7 +117,7 @@ function installDownloadableAppSuccessAction(name, source) {
 
 function installDownloadableAppErrorAction() {
     return {
-        type: INSTALL_OFFICIAL_APP_ERROR,
+        type: INSTALL_DOWNLOADABLE_APP_ERROR,
     };
 }
 
@@ -127,7 +130,7 @@ function updateInstallProgressAction(message) {
 
 function removeDownloadableAppAction(name, source) {
     return {
-        type: REMOVE_OFFICIAL_APP,
+        type: REMOVE_DOWNLOADABLE_APP,
         name,
         source,
     };
@@ -135,7 +138,7 @@ function removeDownloadableAppAction(name, source) {
 
 function removeDownloadableAppSuccessAction(name, source) {
     return {
-        type: REMOVE_OFFICIAL_APP_SUCCESS,
+        type: REMOVE_DOWNLOADABLE_APP_SUCCESS,
         name,
         source,
     };
@@ -143,31 +146,31 @@ function removeDownloadableAppSuccessAction(name, source) {
 
 function removeDownloadableAppErrorAction() {
     return {
-        type: REMOVE_OFFICIAL_APP_ERROR,
+        type: REMOVE_DOWNLOADABLE_APP_ERROR,
     };
 }
 
-function upgradeOfficialAppAction(name, version, source) {
+function upgradeDownloadableAppAction(name, version, source) {
     return {
-        type: UPGRADE_OFFICIAL_APP,
+        type: UPGRADE_DOWNLOADABLE_APP,
         name,
         version,
         source,
     };
 }
 
-function upgradeOfficialAppSuccessAction(name, version, source) {
+function upgradeDownloadableAppSuccessAction(name, version, source) {
     return {
-        type: UPGRADE_OFFICIAL_APP_SUCCESS,
+        type: UPGRADE_DOWNLOADABLE_APP_SUCCESS,
         name,
         version,
         source,
     };
 }
 
-function upgradeOfficialAppErrorAction() {
+function upgradeDownloadableAppErrorAction() {
     return {
-        type: UPGRADE_OFFICIAL_APP_ERROR,
+        type: UPGRADE_DOWNLOADABLE_APP_ERROR,
     };
 }
 
@@ -325,13 +328,13 @@ async function downloadAllReleaseNotesInBackground(
     }
 }
 
-export function loadOfficialApps(appName, appSource) {
+export function loadDownloadableApps(appName, appSource) {
     return async dispatch => {
-        dispatch(loadOfficialAppsAction());
+        dispatch(loadDownloadableAppsAction());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(
-            loadOfficialAppsSuccess(
+            loadDownloadableAppsSuccess(
                 apps,
                 appName && { name: appName, source: appSource }
             )
@@ -354,7 +357,7 @@ export function loadOfficialApps(appName, appSource) {
 }
 
 const handleAppsWithErrors = (dispatch, apps) => {
-    dispatch(loadOfficialAppsError());
+    dispatch(loadDownloadableAppsError());
     apps.forEach(app => {
         sendLauncherUsageData(
             EventAction.REPORT_INSTALLATION_ERROR,
@@ -389,7 +392,7 @@ export function installDownloadableApp(name, source) {
         installDownloadableAppInMain(name, 'latest', source)
             .then(() => {
                 dispatch(installDownloadableAppSuccessAction(name, source));
-                dispatch(loadOfficialApps(name, source));
+                dispatch(loadDownloadableApps(name, source));
             })
             .catch(error => {
                 dispatch(installDownloadableAppErrorAction());
@@ -427,20 +430,20 @@ export function removeDownloadableApp(name, source) {
     };
 }
 
-export function upgradeOfficialApp(name, version, source) {
+export function upgradeDownloadableApp(name, version, source) {
     return dispatch => {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
-        dispatch(upgradeOfficialAppAction(name, version, source));
+        dispatch(upgradeDownloadableAppAction(name, version, source));
 
         return installDownloadableAppInMain(name, version, source)
             .then(() => {
                 dispatch(
-                    upgradeOfficialAppSuccessAction(name, version, source)
+                    upgradeDownloadableAppSuccessAction(name, version, source)
                 );
-                dispatch(loadOfficialApps(name, source));
+                dispatch(loadDownloadableApps(name, source));
             })
             .catch(error => {
-                dispatch(upgradeOfficialAppErrorAction());
+                dispatch(upgradeDownloadableAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to upgrade: ${error.message}`

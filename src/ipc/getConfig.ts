@@ -22,7 +22,7 @@ export interface Configuration {
     isSkipUpdateApps: boolean;
     isSkipUpdateCore: boolean;
     localAppName: string | null;
-    officialAppName: string | null;
+    downloadableAppName: string | null;
     releaseNotesUrl: string;
     settingsJsonPath: string;
     sourceName: string;

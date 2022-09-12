@@ -69,7 +69,14 @@ export function init(argv: Argv) {
     const isSkipUpdateApps = !!argv['skip-update-apps'] || false;
     const isSkipUpdateCore = !!argv['skip-update-core'] || false;
     const isSkipSplashScreen = !!argv['skip-splash-screen'] || false;
-    const officialAppName = argv['open-official-app'] || null;
+    if (argv['open-official-app'] != null) {
+        console.warn(
+            'Using the command line switch --open-official-app is deprecated,\n' +
+                'use --open-downloadable-app instead.'
+        );
+    }
+    const downloadableAppName =
+        argv['open-downloadable-app'] || argv['open-official-app'] || null;
     const localAppName = argv['open-local-app'] || null;
     const sourceName = argv.source || 'official';
     const isRunningLauncherFromSource = fs.existsSync(
@@ -95,7 +102,7 @@ export function init(argv: Argv) {
         isSkipUpdateApps,
         isSkipUpdateCore,
         localAppName,
-        officialAppName,
+        downloadableAppName,
         releaseNotesUrl,
         settingsJsonPath,
         sourceName,
@@ -143,7 +150,7 @@ export const getReleaseNotesUrl = () => config.releaseNotesUrl;
 export const isSkipUpdateApps = () => config.isSkipUpdateApps;
 export const isSkipUpdateCore = () => config.isSkipUpdateCore;
 export const isSkipSplashScreen = () => config.isSkipSplashScreen;
-export const getOfficialAppName = () => config.officialAppName;
+export const getDownloadableAppName = () => config.downloadableAppName;
 export const getLocalAppName = () => config.localAppName;
 export const getSourceName = () => config.sourceName;
 export const isRunningLauncherFromSource = () =>
