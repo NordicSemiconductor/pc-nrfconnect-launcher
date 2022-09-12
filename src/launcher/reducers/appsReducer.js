@@ -11,7 +11,7 @@ import getImmutableApp from '../models';
 
 const InitialState = Record({
     localApps: List(),
-    officialApps: List(),
+    downloadableApps: List(),
     isDownloadingLatestAppInfo: false,
     isLatestAppInfoDownloaded: false,
     lastUpdateCheckDate: null,
@@ -35,20 +35,20 @@ function setLocalApps(state, apps) {
     return newState.set('localApps', List(immutableApps));
 }
 
-function setOfficialApps(state, apps) {
+function setDownloadableApps(state, apps) {
     const immutableApps = apps.map(app => getImmutableApp(app));
     return state
         .set('isLoadingDownloadableApps', false)
-        .set('officialApps', List(immutableApps));
+        .set('downloadableApps', List(immutableApps));
 }
 
-function setOfficialApp(state, loadedApps, appToUpdate) {
+function setDownloadableApp(state, loadedApps, appToUpdate) {
     const findAppToUpdate = app =>
         app.source === appToUpdate.source && app.name === appToUpdate.name;
 
     return state
         .set('isLoadingDownloadableApps', false)
-        .update('officialApps', existingApps =>
+        .update('downloadableApps', existingApps =>
             existingApps.set(
                 existingApps.findKey(findAppToUpdate),
                 getImmutableApp(loadedApps.find(findAppToUpdate))
@@ -105,8 +105,8 @@ const reducer = (state = initialState, action) => {
             return setLocalApps(state, action.apps);
         case AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS:
             return action.appToUpdate
-                ? setOfficialApp(state, action.apps, action.appToUpdate)
-                : setOfficialApps(state, action.apps);
+                ? setDownloadableApp(state, action.apps, action.appToUpdate)
+                : setDownloadableApps(state, action.apps);
         case AppsActions.LOAD_LOCAL_APPS_ERROR:
             return state.set('isLoadingLocalApps', false);
         case AppsActions.LOAD_DOWNLOADABLE_APPS_ERROR:
@@ -133,9 +133,9 @@ const reducer = (state = initialState, action) => {
             );
         case AppsActions.REMOVE_DOWNLOADABLE_APP_SUCCESS:
             return state
-                .update('officialApps', officialApps =>
-                    officialApps.update(
-                        officialApps.findKey(
+                .update('downloadableApps', downloadableApps =>
+                    downloadableApps.update(
+                        downloadableApps.findKey(
                             app =>
                                 app.source === action.source &&
                                 app.name === action.name
@@ -166,11 +166,11 @@ const reducer = (state = initialState, action) => {
         case AppsActions.DOWNLOAD_LATEST_APP_INFO_ERROR:
             return state.set('isDownloadingLatestAppInfo', false);
         case AppsActions.SET_APP_ICON_PATH:
-            return state.update('officialApps', x =>
+            return state.update('downloadableApps', x =>
                 setAppIconPath(x, action.source, action.name, action.iconPath)
             );
         case AppsActions.SET_APP_RELEASE_NOTE:
-            return state.update('officialApps', x =>
+            return state.update('downloadableApps', x =>
                 setAppReleaseNote(
                     x,
                     action.source,
@@ -185,7 +185,7 @@ const reducer = (state = initialState, action) => {
         case AppsActions.SET_APP_MANAGEMENT_SOURCE:
             return state.set('sources', action.sources);
         case AppsActions.UPDATE_DOWNLOAD_PROGRESS:
-            return state.update('officialApps', appStates =>
+            return state.update('downloadableApps', appStates =>
                 appStates.update(
                     appStates.findKey(
                         app =>

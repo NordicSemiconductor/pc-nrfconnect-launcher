@@ -11,11 +11,11 @@ import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 import ReleaseNotesView from '../components/ReleaseNotesDialogView';
 
 function mapStateToProps({
-    apps: { officialApps },
+    apps: { downloadableApps },
     releaseNotesDialog: { source, name },
 }) {
     if (name) {
-        const app = officialApps.find(
+        const app = downloadableApps.find(
             x => x.source === source && x.name === name
         );
         return {

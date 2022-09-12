@@ -25,7 +25,7 @@ function mapStateToProps(state) {
     const {
         apps: {
             localApps,
-            officialApps,
+            downloadableApps,
             installingAppName,
             removingAppName,
             upgradingAppName,
@@ -34,7 +34,7 @@ function mapStateToProps(state) {
             sources,
         },
     } = state;
-    const allApps = localApps.concat(officialApps);
+    const allApps = localApps.concat(downloadableApps);
     const apps = allApps
         .filter(filterByInput(filter))
         .filter(

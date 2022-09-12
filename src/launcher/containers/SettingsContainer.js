@@ -11,8 +11,8 @@ import * as SettingsActions from '../actions/settingsActions';
 import * as UsageDataActions from '../actions/usageDataActions';
 import SettingsView from '../components/SettingsView';
 
-function isAppUpdateAvailable(officialApps) {
-    return !!officialApps.find(
+function isAppUpdateAvailable(downloadableApps) {
+    return !!downloadableApps.find(
         app => app.currentVersion && app.currentVersion !== app.latestVersion
     );
 }
@@ -27,7 +27,7 @@ function mapStateToProps(state) {
         isUpdateCheckCompleteDialogVisible:
             settings.isUpdateCheckCompleteDialogVisible,
         lastUpdateCheckDate: apps.lastUpdateCheckDate,
-        isAppUpdateAvailable: isAppUpdateAvailable(apps.officialApps),
+        isAppUpdateAvailable: isAppUpdateAvailable(apps.downloadableApps),
         sources: settings.sources,
         isAddSourceDialogVisible: settings.isAddSourceDialogVisible,
         isRemoveSourceDialogVisible: settings.isRemoveSourceDialogVisible,

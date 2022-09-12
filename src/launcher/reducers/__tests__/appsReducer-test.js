@@ -51,7 +51,7 @@ const app2 = {
 describe('appsReducer', () => {
     it('should have no apps in initial state', () => {
         expect(initialState.localApps.size).toEqual(0);
-        expect(initialState.officialApps.size).toEqual(0);
+        expect(initialState.downloadableApps.size).toEqual(0);
     });
 
     it('should be loading apps in initial state', () => {
@@ -99,13 +99,13 @@ describe('appsReducer', () => {
         expect(state.isLoadingDownloadableApps).toEqual(true);
     });
 
-    it('should have official apps when LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched with apps', () => {
+    it('should have downloadable apps when LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched with apps', () => {
         const state = reducer(initialState, {
             type: AppsActions.LOAD_DOWNLOADABLE_APPS_SUCCESS,
             apps: [app1, app2],
         });
-        expect(state.officialApps.get(0).toJS()).toEqual(app1);
-        expect(state.officialApps.get(1).toJS()).toEqual(app2);
+        expect(state.downloadableApps.get(0).toJS()).toEqual(app1);
+        expect(state.downloadableApps.get(1).toJS()).toEqual(app2);
     });
 
     it('should not be loading downloadable apps after LOAD_DOWNLOADABLE_APPS_SUCCESS has been dispatched', () => {
