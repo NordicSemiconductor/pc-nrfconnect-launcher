@@ -187,16 +187,17 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
 };
 
 const latestVersionInfo = (
-    officialApp: { name: string; currentVersion?: string },
+    downloadableApp: { name: string; currentVersion?: string },
     availableUpdates: UpdatesJson
 ) => {
     const latestVersion =
-        availableUpdates[officialApp.name] || officialApp.currentVersion;
+        availableUpdates[downloadableApp.name] ||
+        downloadableApp.currentVersion;
     return {
         latestVersion,
         upgradeAvailable:
-            officialApp.currentVersion &&
-            officialApp.currentVersion !== latestVersion,
+            downloadableApp.currentVersion &&
+            downloadableApp.currentVersion !== latestVersion,
     };
 };
 
