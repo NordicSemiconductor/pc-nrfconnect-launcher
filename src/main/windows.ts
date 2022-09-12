@@ -154,16 +154,20 @@ export const openAppWindow = (app: LaunchableApp) => {
     });
 };
 
-export const openOfficialAppWindow = (appName: string, sourceName: string) =>
+export const openDownloadableAppWindow = (
+    appName: string,
+    sourceName: string
+) =>
     apps.getDownloadableApps().then(({ apps: appList }) => {
-        const officialApp = appList.find(
+        const downloadableApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );
         const isInstalled =
-            officialApp && (officialApp as InstalledDownloadableApp).path;
+            downloadableApp &&
+            (downloadableApp as InstalledDownloadableApp).path;
 
         if (isInstalled) {
-            openAppWindow(officialApp as InstalledDownloadableApp);
+            openAppWindow(downloadableApp as InstalledDownloadableApp);
         } else {
             throw new Error(
                 `Tried to open app ${appName} from source ${sourceName}, but it is not installed`

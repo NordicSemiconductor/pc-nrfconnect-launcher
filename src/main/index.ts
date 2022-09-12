@@ -38,7 +38,7 @@ electronApp.on('ready', async () => {
         const downloadableAppToLaunch = config.getDownloadableAppName();
         const localAppToLaunch = config.getLocalAppName();
         if (downloadableAppToLaunch) {
-            await windows.openOfficialAppWindow(
+            await windows.openDownloadableAppWindow(
                 downloadableAppToLaunch,
                 config.getSourceName()
             );
