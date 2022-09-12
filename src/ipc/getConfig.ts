@@ -6,6 +6,17 @@
 
 import { ipcMain, ipcRenderer } from 'electron';
 
+export type StartupApp =
+    | {
+          local: true;
+          name: string;
+      }
+    | {
+          local: false;
+          name: string;
+          sourceName: string;
+      };
+
 export interface Configuration {
     appsExternalDir: string;
     appsJsonUrl: string;
@@ -21,12 +32,10 @@ export interface Configuration {
     isSkipSplashScreen: boolean;
     isSkipUpdateApps: boolean;
     isSkipUpdateCore: boolean;
-    localAppName: string | null;
-    downloadableAppName: string | null;
     releaseNotesUrl: string;
     settingsJsonPath: string;
-    sourceName: string;
     sourcesJsonPath: string;
+    startupApp?: StartupApp;
     tmpDir: string;
     ubuntuDesktopDir: string;
     userDataDir: string;

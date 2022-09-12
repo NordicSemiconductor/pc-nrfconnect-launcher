@@ -35,15 +35,16 @@ electronApp.on('ready', async () => {
     try {
         await apps.initAppsDirectory();
 
-        const downloadableAppToLaunch = getConfig().downloadableAppName;
-        const localAppToLaunch = getConfig().localAppName;
-        if (downloadableAppToLaunch) {
-            await windows.openDownloadableAppWindow(
-                downloadableAppToLaunch,
-                getConfig().sourceName
-            );
-        } else if (localAppToLaunch) {
-            await windows.openLocalAppWindow(localAppToLaunch);
+        const { startupApp } = getConfig();
+        if (startupApp != null) {
+            if (startupApp.local) {
+                await windows.openLocalAppWindow(startupApp.name);
+            } else {
+                await windows.openDownloadableAppWindow(
+                    startupApp.name,
+                    startupApp.sourceName
+                );
+            }
         } else {
             windows.openLauncherWindow();
         }

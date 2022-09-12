@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
-import { Configuration, registerGetConfig } from '../ipc/getConfig';
+import { Configuration, registerGetConfig, StartupApp } from '../ipc/getConfig';
 import bundledJlinkVersion from './bundledJlinkVersion';
 
 let config: Configuration;
@@ -17,6 +17,41 @@ let config: Configuration;
 export interface Argv {
     [x: string]: string;
 }
+
+const getStartupApp = (argv: Argv): StartupApp | undefined => {
+    const localApp = argv['open-local-app'];
+    if (localApp != null) {
+        return {
+            local: true,
+            name: localApp,
+        };
+    }
+
+    const sourceName = argv.source || 'official';
+
+    const downloadableApp = argv['open-downloadable-app'];
+    if (downloadableApp != null) {
+        return {
+            local: false,
+            sourceName,
+            name: downloadableApp,
+        };
+    }
+
+    const officialApp = argv['open-official-app'];
+    if (officialApp != null) {
+        console.warn(
+            'Using the command line switch --open-official-app is deprecated,\n' +
+                'use --open-downloadable-app instead.'
+        );
+
+        return {
+            local: false,
+            sourceName,
+            name: officialApp,
+        };
+    }
+};
 
 /*
  * Init the config values based on the given command line arguments.
@@ -69,16 +104,7 @@ export function init(argv: Argv) {
     const isSkipUpdateApps = !!argv['skip-update-apps'] || false;
     const isSkipUpdateCore = !!argv['skip-update-core'] || false;
     const isSkipSplashScreen = !!argv['skip-splash-screen'] || false;
-    if (argv['open-official-app'] != null) {
-        console.warn(
-            'Using the command line switch --open-official-app is deprecated,\n' +
-                'use --open-downloadable-app instead.'
-        );
-    }
-    const downloadableAppName =
-        argv['open-downloadable-app'] || argv['open-official-app'] || null;
-    const localAppName = argv['open-local-app'] || null;
-    const sourceName = argv.source || 'official';
+    const startupApp = getStartupApp(argv);
     const isRunningLauncherFromSource = fs.existsSync(
         path.join(electronRootPath, 'README.md')
     );
@@ -101,13 +127,10 @@ export function init(argv: Argv) {
         isSkipSplashScreen,
         isSkipUpdateApps,
         isSkipUpdateCore,
-        localAppName,
-        downloadableAppName,
-
         releaseNotesUrl,
         settingsJsonPath,
-        sourceName,
         sourcesJsonPath,
+        startupApp,
         tmpDir,
         ubuntuDesktopDir,
         userDataDir,
