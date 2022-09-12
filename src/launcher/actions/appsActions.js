@@ -39,9 +39,10 @@ export const INSTALL_DOWNLOADABLE_APP = 'INSTALL_DOWNLOADABLE_APP';
 export const INSTALL_DOWNLOADABLE_APP_SUCCESS =
     'INSTALL_DOWNLOADABLE_APP_SUCCESS';
 export const INSTALL_DOWNLOADABLE_APP_ERROR = 'INSTALL_DOWNLOADABLE_APP_ERROR';
-export const REMOVE_OFFICIAL_APP = 'REMOVE_OFFICIAL_APP';
-export const REMOVE_OFFICIAL_APP_SUCCESS = 'REMOVE_OFFICIAL_APP_SUCCESS';
-export const REMOVE_OFFICIAL_APP_ERROR = 'REMOVE_OFFICIAL_APP_ERROR';
+export const REMOVE_DOWNLOADABLE_APP = 'REMOVE_DOWNLOADABLE_APP';
+export const REMOVE_DOWNLOADABLE_APP_SUCCESS =
+    'REMOVE_DOWNLOADABLE_APP_SUCCESS';
+export const REMOVE_DOWNLOADABLE_APP_ERROR = 'REMOVE_DOWNLOADABLE_APP_ERROR';
 export const UPGRADE_OFFICIAL_APP = 'UPGRADE_OFFICIAL_APP';
 export const UPGRADE_OFFICIAL_APP_SUCCESS = 'UPGRADE_OFFICIAL_APP_SUCCESS';
 export const UPGRADE_OFFICIAL_APP_ERROR = 'UPGRADE_OFFICIAL_APP_ERROR';
@@ -128,7 +129,7 @@ function updateInstallProgressAction(message) {
 
 function removeDownloadableAppAction(name, source) {
     return {
-        type: REMOVE_OFFICIAL_APP,
+        type: REMOVE_DOWNLOADABLE_APP,
         name,
         source,
     };
@@ -136,7 +137,7 @@ function removeDownloadableAppAction(name, source) {
 
 function removeDownloadableAppSuccessAction(name, source) {
     return {
-        type: REMOVE_OFFICIAL_APP_SUCCESS,
+        type: REMOVE_DOWNLOADABLE_APP_SUCCESS,
         name,
         source,
     };
@@ -144,7 +145,7 @@ function removeDownloadableAppSuccessAction(name, source) {
 
 function removeDownloadableAppErrorAction() {
     return {
-        type: REMOVE_OFFICIAL_APP_ERROR,
+        type: REMOVE_DOWNLOADABLE_APP_ERROR,
     };
 }
 

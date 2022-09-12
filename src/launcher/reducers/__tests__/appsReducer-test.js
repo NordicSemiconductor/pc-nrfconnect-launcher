@@ -161,22 +161,22 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should be removing app after REMOVE_OFFICIAL_APP has been dispatched', () => {
+    it('should be removing app after REMOVE_DOWNLOADABLE_APP has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.REMOVE_OFFICIAL_APP,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP,
             name: 'pc-nrfconnect-foo',
             source: 'bar',
         });
         expect(state.removingAppName).toEqual('bar/pc-nrfconnect-foo');
     });
 
-    it('should not be removing app after REMOVE_OFFICIAL_APP_SUCCESS has been dispatched', () => {
+    it('should not be removing app after REMOVE_DOWNLOADABLE_APP_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set(
             'removingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.REMOVE_OFFICIAL_APP_SUCCESS,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP_SUCCESS,
             name: 'pc-nrfconnect-foo',
         });
         expect(stateAfter.removingAppName).toEqual(
@@ -184,13 +184,13 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be removing app after REMOVE_OFFICIAL_APP_ERROR has been dispatched', () => {
+    it('should not be removing app after REMOVE_DOWNLOADABLE_APP_ERROR has been dispatched', () => {
         const stateBefore = initialState.set(
             'removingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.REMOVE_OFFICIAL_APP_ERROR,
+            type: AppsActions.REMOVE_DOWNLOADABLE_APP_ERROR,
         });
         expect(stateAfter.removingAppName).toEqual(
             initialState.removingAppName

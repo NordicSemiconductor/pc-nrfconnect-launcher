@@ -116,7 +116,7 @@ const reducer = (state = initialState, action) => {
                 'installingAppName',
                 `${action.source}/${action.name}`
             );
-        case AppsActions.REMOVE_OFFICIAL_APP:
+        case AppsActions.REMOVE_DOWNLOADABLE_APP:
             return state.set(
                 'removingAppName',
                 `${action.source}/${action.name}`
@@ -131,7 +131,7 @@ const reducer = (state = initialState, action) => {
                 'installingAppName',
                 initialState.installingAppName
             );
-        case AppsActions.REMOVE_OFFICIAL_APP_SUCCESS:
+        case AppsActions.REMOVE_DOWNLOADABLE_APP_SUCCESS:
             return state
                 .update('officialApps', officialApps =>
                     officialApps.update(
@@ -151,7 +151,7 @@ const reducer = (state = initialState, action) => {
                 'installingAppName',
                 initialState.installingAppName
             );
-        case AppsActions.REMOVE_OFFICIAL_APP_ERROR:
+        case AppsActions.REMOVE_DOWNLOADABLE_APP_ERROR:
             return state.set('removingAppName', initialState.removingAppName);
         case AppsActions.UPGRADE_OFFICIAL_APP_ERROR:
             return state.set('upgradingAppName', initialState.upgradingAppName);
