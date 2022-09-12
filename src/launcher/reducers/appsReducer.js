@@ -121,7 +121,7 @@ const reducer = (state = initialState, action) => {
                 'removingAppName',
                 `${action.source}/${action.name}`
             );
-        case AppsActions.UPGRADE_OFFICIAL_APP:
+        case AppsActions.UPGRADE_DOWNLOADABLE_APP:
             return state.set(
                 'upgradingAppName',
                 `${action.source}/${action.name}`
@@ -144,7 +144,7 @@ const reducer = (state = initialState, action) => {
                     )
                 )
                 .set('removingAppName', initialState.removingAppName);
-        case AppsActions.UPGRADE_OFFICIAL_APP_SUCCESS:
+        case AppsActions.UPGRADE_DOWNLOADABLE_APP_SUCCESS:
             return state.set('upgradingAppName', initialState.upgradingAppName);
         case AppsActions.INSTALL_DOWNLOADABLE_APP_ERROR:
             return state.set(
@@ -153,7 +153,7 @@ const reducer = (state = initialState, action) => {
             );
         case AppsActions.REMOVE_DOWNLOADABLE_APP_ERROR:
             return state.set('removingAppName', initialState.removingAppName);
-        case AppsActions.UPGRADE_OFFICIAL_APP_ERROR:
+        case AppsActions.UPGRADE_DOWNLOADABLE_APP_ERROR:
             return state.set('upgradingAppName', initialState.upgradingAppName);
         case AppsActions.SHOW_CONFIRM_LAUNCH_DIALOG:
             return showConfirmLaunchDialog(state, action.text, action.app);

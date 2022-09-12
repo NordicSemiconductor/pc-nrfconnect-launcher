@@ -197,22 +197,22 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should be upgrading app after UPGRADE_OFFICIAL_APP has been dispatched', () => {
+    it('should be upgrading app after UPGRADE_DOWNLOADABLE_APP has been dispatched', () => {
         const state = reducer(initialState, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP,
             name: 'pc-nrfconnect-foo',
             source: 'bar',
         });
         expect(state.upgradingAppName).toEqual('bar/pc-nrfconnect-foo');
     });
 
-    it('should not be upgrading app after UPGRADE_OFFICIAL_APP_SUCCESS has been dispatched', () => {
+    it('should not be upgrading app after UPGRADE_DOWNLOADABLE_APP_SUCCESS has been dispatched', () => {
         const stateBefore = initialState.set(
             'upgradingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP_SUCCESS,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP_SUCCESS,
             name: 'pc-nrfconnect-foo',
         });
         expect(stateAfter.upgradingAppName).toEqual(
@@ -220,13 +220,13 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be removing app after UPGRADE_OFFICIAL_APP_ERROR has been dispatched', () => {
+    it('should not be removing app after UPGRADE_DOWNLOADABLE_APP_ERROR has been dispatched', () => {
         const stateBefore = initialState.set(
             'upgradingAppName',
             'pc-nrfconnect-foo'
         );
         const stateAfter = reducer(stateBefore, {
-            type: AppsActions.UPGRADE_OFFICIAL_APP_ERROR,
+            type: AppsActions.UPGRADE_DOWNLOADABLE_APP_ERROR,
         });
         expect(stateAfter.upgradingAppName).toEqual(
             initialState.upgradingAppName

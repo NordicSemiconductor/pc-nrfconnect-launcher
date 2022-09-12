@@ -43,9 +43,10 @@ export const REMOVE_DOWNLOADABLE_APP = 'REMOVE_DOWNLOADABLE_APP';
 export const REMOVE_DOWNLOADABLE_APP_SUCCESS =
     'REMOVE_DOWNLOADABLE_APP_SUCCESS';
 export const REMOVE_DOWNLOADABLE_APP_ERROR = 'REMOVE_DOWNLOADABLE_APP_ERROR';
-export const UPGRADE_OFFICIAL_APP = 'UPGRADE_OFFICIAL_APP';
-export const UPGRADE_OFFICIAL_APP_SUCCESS = 'UPGRADE_OFFICIAL_APP_SUCCESS';
-export const UPGRADE_OFFICIAL_APP_ERROR = 'UPGRADE_OFFICIAL_APP_ERROR';
+export const UPGRADE_DOWNLOADABLE_APP = 'UPGRADE_DOWNLOADABLE_APP';
+export const UPGRADE_DOWNLOADABLE_APP_SUCCESS =
+    'UPGRADE_DOWNLOADABLE_APP_SUCCESS';
+export const UPGRADE_DOWNLOADABLE_APP_ERROR = 'UPGRADE_DOWNLOADABLE_APP_ERROR';
 export const SHOW_CONFIRM_LAUNCH_DIALOG = 'SHOW_CONFIRM_LAUNCH_DIALOG';
 export const HIDE_CONFIRM_LAUNCH_DIALOG = 'HIDE_CONFIRM_LAUNCH_DIALOG';
 export const DOWNLOAD_LATEST_APP_INFO = 'DOWNLOAD_LATEST_APP_INFO';
@@ -149,27 +150,27 @@ function removeDownloadableAppErrorAction() {
     };
 }
 
-function upgradeOfficialAppAction(name, version, source) {
+function upgradeDownloadableAppAction(name, version, source) {
     return {
-        type: UPGRADE_OFFICIAL_APP,
+        type: UPGRADE_DOWNLOADABLE_APP,
         name,
         version,
         source,
     };
 }
 
-function upgradeOfficialAppSuccessAction(name, version, source) {
+function upgradeDownloadableAppSuccessAction(name, version, source) {
     return {
-        type: UPGRADE_OFFICIAL_APP_SUCCESS,
+        type: UPGRADE_DOWNLOADABLE_APP_SUCCESS,
         name,
         version,
         source,
     };
 }
 
-function upgradeOfficialAppErrorAction() {
+function upgradeDownloadableAppErrorAction() {
     return {
-        type: UPGRADE_OFFICIAL_APP_ERROR,
+        type: UPGRADE_DOWNLOADABLE_APP_ERROR,
     };
 }
 
@@ -432,17 +433,17 @@ export function removeDownloadableApp(name, source) {
 export function upgradeOfficialApp(name, version, source) {
     return dispatch => {
         sendAppUsageData(EventAction.UPGRADE_APP, source, name);
-        dispatch(upgradeOfficialAppAction(name, version, source));
+        dispatch(upgradeDownloadableAppAction(name, version, source));
 
         return installDownloadableAppInMain(name, version, source)
             .then(() => {
                 dispatch(
-                    upgradeOfficialAppSuccessAction(name, version, source)
+                    upgradeDownloadableAppSuccessAction(name, version, source)
                 );
                 dispatch(loadDownloadableApps(name, source));
             })
             .catch(error => {
-                dispatch(upgradeOfficialAppErrorAction());
+                dispatch(upgradeDownloadableAppErrorAction());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to upgrade: ${error.message}`
