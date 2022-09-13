@@ -22,21 +22,21 @@ export const createMenu = (app: App) => [
     {
         label: 'Edit',
         submenu: [
-            { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+            { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
             {
                 label: 'Copy',
                 accelerator: 'CmdOrCtrl+C',
-                selector: 'copy:',
+                role: 'copy',
             },
             {
                 label: 'Paste',
                 accelerator: 'CmdOrCtrl+V',
-                selector: 'paste:',
+                role: 'paste',
             },
             {
                 label: 'Select All',
                 accelerator: 'CmdOrCtrl+A',
-                selector: 'selectAll:',
+                role: 'selectAll',
             },
         ],
     },
