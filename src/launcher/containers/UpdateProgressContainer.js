@@ -6,8 +6,8 @@
 
 import { connect } from 'react-redux';
 
-import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateProgressDialog from '../components/UpdateProgressDialog';
+import { cancelDownload } from '../features/launcherUpdate/launcherUpdateEffects';
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;
@@ -24,7 +24,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onCancel: () => dispatch(AutoUpdateActions.cancelDownload()),
+        onCancel: () => dispatch(cancelDownload()),
     };
 }
 

@@ -13,9 +13,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import * as AppsActions from './actions/appsActions';
-import * as AutoUpdateActions from './actions/autoUpdateActions';
 import * as UsageDataActions from './actions/usageDataActions';
 import RootContainer from './containers/RootContainer';
+import {
+    checkForCoreUpdatesAtStartup,
+    downloadLatestAppInfoAtStartup,
+} from './features/launcherUpdate/launcherUpdateEffects';
 import rootReducer from './reducers';
 import registerIpcHandler from './util/registerIpcHandler';
 
@@ -37,7 +40,7 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.loadDownloadableApps());
     store.dispatch(await AppsActions.setAppManagementShow());
     store.dispatch(await AppsActions.setAppManagementSource());
-    await store.dispatch(AutoUpdateActions.downloadLatestAppInfoAtStartup);
-    await store.dispatch(AutoUpdateActions.checkForCoreUpdatesAtStartup);
+    await store.dispatch(downloadLatestAppInfoAtStartup());
+    await store.dispatch(checkForCoreUpdatesAtStartup());
     UsageDataActions.sendEnvInfo();
 });
