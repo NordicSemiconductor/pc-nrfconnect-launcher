@@ -37,7 +37,7 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await store.dispatch(AppsActions.loadDownloadableApps());
     store.dispatch(await AppsActions.setAppManagementShow());
     store.dispatch(await AppsActions.setAppManagementSource());
-    await store.dispatch(AutoUpdateActions.downloadLatestAppInfoAtStartup());
+    await store.dispatch(AutoUpdateActions.downloadLatestAppInfoAtStartup);
     await store.dispatch(AutoUpdateActions.checkForCoreUpdatesAtStartup);
     UsageDataActions.sendEnvInfo();
 });
