@@ -121,7 +121,7 @@ function installDownloadableAppErrorAction() {
     };
 }
 
-function updateInstallProgressAction(message) {
+export function updateInstallProgressAction(message) {
     return {
         type: UPDATE_DOWNLOAD_PROGRESS,
         ...message,

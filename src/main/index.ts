@@ -8,83 +8,12 @@
 import './init';
 
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
-import { app as electronApp, dialog, Menu } from 'electron';
-import { join } from 'path';
 
-import * as apps from './apps';
-import { getConfig } from './config';
-import describeError from './describeError';
-import loadDevtools from './devtools';
-import { createTextFile } from './fileUtil';
-import { logger } from './log';
-import { createMenu } from './menu';
+import configureElectronApp from './configureElectronApp';
 import registerIpcHandler from './registerIpcHandler';
-import * as windows from './windows';
+import storeExecutablePath from './storeExecutablePath';
 
 initializeElectronRemote();
-
-const applicationMenu = Menu.buildFromTemplate(createMenu(electronApp));
-
-electronApp.allowRendererProcessReuse = false;
-
-electronApp.on('ready', async () => {
-    await loadDevtools();
-
-    Menu.setApplicationMenu(applicationMenu);
-
-    try {
-        await apps.initAppsDirectory();
-
-        const { startupApp } = getConfig();
-        if (startupApp != null) {
-            if (startupApp.local) {
-                await windows.openLocalAppWindow(startupApp.name);
-            } else {
-                await windows.openDownloadableAppWindow(
-                    startupApp.name,
-                    startupApp.sourceName
-                );
-            }
-        } else {
-            windows.openLauncherWindow();
-        }
-    } catch (error) {
-        await dialog.showMessageBox({
-            type: 'error',
-            title: 'Initialization error',
-            message: 'Error when starting application',
-            detail: describeError(error),
-            buttons: ['OK'],
-        });
-        electronApp.quit();
-    }
-});
-
-electronApp.on('render-process-gone', (_event, wc, details) => {
-    wc.getTitle();
-    logger.error(`Renderer crashed ${wc.getTitle()}`, details);
-});
-
-electronApp.on('child-process-gone', (_event, details) => {
-    logger.error(`Child process crashed `, details);
-});
-
-electronApp.on('window-all-closed', () => {
-    electronApp.quit();
-});
-
+configureElectronApp();
 registerIpcHandler();
-
-/**
- * Let's store the full path to the executable if nRFConnect was started from a built package.
- * This execPath is stored in a known location, so e.g. VS Code extension can launch it even on
- * Linux where there's no standard installation location.
- */
-if (electronApp.isPackaged) {
-    createTextFile(
-        join(electronApp.getPath('userData'), 'execPath'),
-        process.platform === 'linux' && process.env.APPIMAGE
-            ? process.env.APPIMAGE
-            : process.execPath
-    ).catch(err => console.log(err.message));
-}
+storeExecutablePath();
