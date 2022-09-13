@@ -80,7 +80,7 @@ export const checkForCoreUpdatesAtStartup = async dispatch => {
 
     if (
         shouldCheckForUpdatesAtStartup &&
-        !mainConfig.isSkipUpdateCore &&
+        !mainConfig().isSkipUpdateCore &&
         process.env.NODE_ENV !== 'development'
     ) {
         await dispatch(checkForCoreUpdates());
