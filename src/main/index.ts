@@ -82,7 +82,7 @@ registerIpcHandler();
  */
 if (electronApp.isPackaged) {
     createTextFile(
-        join(getConfig().userDataDir, 'execPath'),
+        join(electronApp.getPath('userData'), 'execPath'),
         process.platform === 'linux' && process.env.APPIMAGE
             ? process.env.APPIMAGE
             : process.execPath

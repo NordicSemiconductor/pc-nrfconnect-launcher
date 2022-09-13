@@ -18,9 +18,10 @@ import {
     UnversionedDownloadableApp,
 } from '../ipc/apps';
 import {
+    getAppsExternalDir,
     getAppsJsonPath,
+    getAppsLocalDir,
     getAppsRootDir,
-    getConfig,
     getNodeModulesDir,
     getUpdatesJsonPath,
 } from './config';
@@ -111,7 +112,7 @@ const installLocalAppArchive = async (tgzFilePath: string) => {
                 `Expected file name format: {name}-{version}.tgz.`
         );
     }
-    const appPath = path.join(getConfig().appsLocalDir, appName);
+    const appPath = path.join(getAppsLocalDir(), appName);
 
     if (await fs.pathExists(appPath)) {
         await confirmAndRemoveOldLocalApp(tgzFilePath, appPath);
@@ -125,12 +126,11 @@ const installLocalAppArchive = async (tgzFilePath: string) => {
 };
 
 const installAllLocalAppArchives = () => {
-    const { appsLocalDir } = getConfig();
-    const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
+    const tgzFiles = fileUtil.listFiles(getAppsLocalDir(), /\.tgz$/);
     return tgzFiles.reduce(
         (prev, tgzFile) =>
             prev.then(() =>
-                installLocalAppArchive(path.join(appsLocalDir, tgzFile))
+                installLocalAppArchive(path.join(getAppsLocalDir(), tgzFile))
             ),
         Promise.resolve()
     );
@@ -138,8 +138,8 @@ const installAllLocalAppArchives = () => {
 
 export const initAppsDirectory = async () => {
     await mkdirIfNotExists(getAppsRootDir());
-    await mkdirIfNotExists(getConfig().appsLocalDir);
-    await mkdirIfNotExists(getConfig().appsExternalDir);
+    await mkdirIfNotExists(getAppsLocalDir());
+    await mkdirIfNotExists(getAppsExternalDir());
     await mkdirIfNotExists(getNodeModulesDir());
     await initialiseAllSources();
     await installAllLocalAppArchives();
@@ -170,7 +170,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         shortcutIconPath = iconPath;
     }
 
-    const isDownloadable = !appPath.startsWith(getConfig().appsLocalDir);
+    const isDownloadable = !appPath.startsWith(getAppsLocalDir());
     const source = isDownloadable
         ? path.basename(path.dirname(path.dirname(appPath)))
         : null;
@@ -351,10 +351,9 @@ export const getDownloadableApps = async () => {
 };
 
 export const getLocalApps = () => {
-    const appsLocalDir = path.join(getConfig().appsRootDir, 'local');
     const localAppPromises = fileUtil
-        .listDirectories(appsLocalDir)
-        .map(name => infoFromInstalledApp(appsLocalDir, name));
+        .listDirectories(getAppsLocalDir())
+        .map(name => infoFromInstalledApp(getAppsLocalDir(), name));
 
     return Promise.all(localAppPromises as Promise<LocalApp>[]);
 };

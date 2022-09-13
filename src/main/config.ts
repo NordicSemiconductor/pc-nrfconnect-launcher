@@ -10,9 +10,10 @@ import path from 'path';
 
 import packageJson from '../../package.json';
 import { Configuration, registerGetConfig, StartupApp } from '../ipc/getConfig';
-import bundledJlinkVersion from './bundledJlinkVersion';
 
 let config: Configuration;
+
+export const getConfig = () => config;
 
 export interface Argv {
     [x: string]: string;
@@ -79,25 +80,13 @@ export const init = (argv: Argv) => {
         path.join(app.getPath('home'), '.nrfconnect-apps');
 
     config = {
-        appsExternalDir: path.join(appsRootDir, 'external'),
-        appsJsonUrl:
-            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json',
-        appsLocalDir: path.join(appsRootDir, 'local'),
         appsRootDir,
-        bundledJlinkVersion,
-        desktopDir: app.getPath('desktop'),
-        electronExePath: process.env.APPIMAGE || app.getPath('exe'),
-        electronResourcesDir: path.join(app.getAppPath(), 'resources'),
-        electronRootPath: app.getAppPath(),
-        homeDir: app.getPath('home'),
         isRunningLauncherFromSource: fs.existsSync(
             path.join(app.getAppPath(), 'README.md')
         ),
         isSkipSplashScreen: !!argv['skip-splash-screen'],
         isSkipUpdateApps: !!argv['skip-update-apps'],
         isSkipUpdateCore: !!argv['skip-update-core'],
-        releaseNotesUrl:
-            'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases',
         settingsJsonPath:
             argv['settings-json-path'] ||
             path.join(app.getPath('userData'), 'settings.json'),
@@ -105,19 +94,19 @@ export const init = (argv: Argv) => {
             argv['sources-json-path'] ||
             path.join(appsRootDir, 'external', 'sources.json'),
         startupApp: getStartupApp(argv),
-        tmpDir: app.getPath('temp'),
-        ubuntuDesktopDir: path.join(
-            app.getPath('home'),
-            '.local',
-            'share',
-            'applications'
-        ),
-        userDataDir: app.getPath('userData'),
         version: packageJson.version,
     };
 
     registerGetConfig(config);
 };
+
+export const getAppsExternalDir = (effectiveConfig = config) =>
+    path.join(effectiveConfig.appsRootDir, 'external');
+
+export const getAppsLocalDir = () => path.join(config.appsRootDir, 'local');
+
+export const getAppsJsonPath = (sourceName?: string) =>
+    path.join(getAppsRootDir(sourceName), 'apps.json');
 
 export const getAppsRootDir = (
     sourceName = 'official',
@@ -125,15 +114,13 @@ export const getAppsRootDir = (
 ) =>
     sourceName === 'official'
         ? effectiveConfig.appsRootDir
-        : path.join(effectiveConfig.appsExternalDir, sourceName);
+        : path.join(getAppsExternalDir(effectiveConfig), sourceName);
+
+export const getElectronResourcesDir = () =>
+    path.join(app.getAppPath(), 'resources');
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');
 
 export const getUpdatesJsonPath = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'updates.json');
-
-export const getAppsJsonPath = (sourceName?: string) =>
-    path.join(getAppsRootDir(sourceName), 'apps.json');
-
-export const getConfig = () => config;

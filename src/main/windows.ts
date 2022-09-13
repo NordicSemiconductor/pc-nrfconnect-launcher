@@ -18,7 +18,8 @@ import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import * as apps from './apps';
 import * as browser from './browser';
-import { getConfig } from './config';
+import bundledJlinkVersion from './bundledJlinkVersion';
+import { getConfig, getElectronResourcesDir } from './config';
 import * as settings from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -29,7 +30,7 @@ const appWindows: {
 
 const getDefaultIconPath = () =>
     path.join(
-        getConfig().electronResourcesDir,
+        getElectronResourcesDir(),
         process.platform === 'win32' ? 'icon.ico' : 'icon.png'
     );
 
@@ -39,7 +40,7 @@ export const openLauncherWindow = () => {
     } else {
         launcherWindow = browser.createWindow({
             title: `nRF Connect for Desktop v${getConfig().version}`,
-            url: `file://${getConfig().electronResourcesDir}/launcher.html`,
+            url: `file://${getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
             width: 760,
             height: 600,
@@ -102,9 +103,7 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     const appWindow = browser.createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
-        url: `file://${getConfig().electronResourcesDir}/app.html?appPath=${
-            app.path
-        }`,
+        url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
         icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
         x,
         y,
@@ -205,10 +204,10 @@ export const getAppDetails = (webContents: WebContents): AppDetails => {
 
     return {
         coreVersion: config.version,
-        corePath: config.electronRootPath,
-        homeDir: config.homeDir,
-        tmpDir: config.tmpDir,
-        bundledJlink: config.bundledJlinkVersion,
+        corePath: electronApp.getAppPath(),
+        homeDir: electronApp.getPath('home'),
+        tmpDir: electronApp.getPath('temp'),
+        bundledJlink: bundledJlinkVersion,
         ...appWindow.app,
     };
 };

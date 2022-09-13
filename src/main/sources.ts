@@ -21,6 +21,9 @@ import * as net from './net';
 
 let sourcesData: Record<string, string> | undefined;
 
+export const officialSourceUrl =
+    'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
+
 const loadAllSources = () => {
     const filePath = getConfig().sourcesJsonPath;
 
@@ -44,7 +47,7 @@ const saveAllSources = () => {
 
 const initialSources = () => ({
     ...loadAllSources(),
-    official: getConfig().appsJsonUrl,
+    official: officialSourceUrl,
 });
 
 export const getAllSources = () => {
@@ -125,7 +128,7 @@ const downloadAppsJson = async (url: string, name?: string) => {
 
     // eslint-disable-next-line no-underscore-dangle -- underscore is intentially used in JSON as a meta information
     const sourceName = appsJson._source;
-    const isOfficial = url === getConfig().appsJsonUrl;
+    const isOfficial = url === officialSourceUrl;
     if (sourceName == null && !isOfficial) {
         throw new Error('JSON does not contain expected `_source` tag');
     }
