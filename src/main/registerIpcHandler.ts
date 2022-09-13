@@ -13,6 +13,7 @@ import {
     registerInstallDownloadableApp,
     registerRemoveDownloadableApp,
 } from '../ipc/apps';
+import { registerGetConfig } from '../ipc/config';
 import { registerCreateDesktopShortcut } from '../ipc/createDesktopShortcut';
 import { registerDownloadToFile } from '../ipc/downloadToFile';
 import {
@@ -41,6 +42,7 @@ import {
     removeDownloadableApp,
 } from './apps';
 import { cancelUpdate, checkForUpdate, startUpdate } from './autoUpdate';
+import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
 import { downloadToFile } from './net';
 import { callRegisteredCallback } from './proxyLogins';
@@ -52,6 +54,8 @@ export default () => {
     registerGetAppDetails(getAppDetails);
 
     registerDownloadToFile(downloadToFile);
+
+    registerGetConfig(getConfig);
 
     registerCreateDesktopShortcut(createDesktopShortcut);
 

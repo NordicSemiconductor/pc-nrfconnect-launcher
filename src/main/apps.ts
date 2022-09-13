@@ -17,7 +17,14 @@ import {
     LocalApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
-import * as config from './config';
+import {
+    getAppsExternalDir,
+    getAppsJsonPath,
+    getAppsLocalDir,
+    getAppsRootDir,
+    getNodeModulesDir,
+    getUpdatesJsonPath,
+} from './config';
 import * as fileUtil from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
 import * as net from './net';
@@ -41,10 +48,10 @@ const store = new Store<{
 
 const getInstalledAppNames = async (sourceName: string) => {
     const installedAppNames = fileUtil.listDirectories(
-        config.getNodeModulesDir(sourceName)
+        getNodeModulesDir(sourceName)
     );
     const availableApps = await fileUtil.readJsonFile<AppsJson>(
-        config.getAppsJsonPath(sourceName)
+        getAppsJsonPath(sourceName)
     );
     const availableAppNames = Object.keys(availableApps);
 
@@ -58,7 +65,7 @@ const getInstalledAppNames = async (sourceName: string) => {
  * a source. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  */
 const generateUpdatesJsonFile = async (sourceName: string) => {
-    const fileName = config.getUpdatesJsonPath(sourceName);
+    const fileName = getUpdatesJsonPath(sourceName);
     const installedApps = await getInstalledAppNames(sourceName);
     const latestVersions = await registryApi.getLatestAppVersions(
         installedApps,
@@ -105,7 +112,7 @@ const installLocalAppArchive = async (tgzFilePath: string) => {
                 `Expected file name format: {name}-{version}.tgz.`
         );
     }
-    const appPath = path.join(config.getAppsLocalDir(), appName);
+    const appPath = path.join(getAppsLocalDir(), appName);
 
     if (await fs.pathExists(appPath)) {
         await confirmAndRemoveOldLocalApp(tgzFilePath, appPath);
@@ -119,22 +126,21 @@ const installLocalAppArchive = async (tgzFilePath: string) => {
 };
 
 const installAllLocalAppArchives = () => {
-    const appsLocalDir = config.getAppsLocalDir();
-    const tgzFiles = fileUtil.listFiles(appsLocalDir, /\.tgz$/);
+    const tgzFiles = fileUtil.listFiles(getAppsLocalDir(), /\.tgz$/);
     return tgzFiles.reduce(
         (prev, tgzFile) =>
             prev.then(() =>
-                installLocalAppArchive(path.join(appsLocalDir, tgzFile))
+                installLocalAppArchive(path.join(getAppsLocalDir(), tgzFile))
             ),
         Promise.resolve()
     );
 };
 
 export const initAppsDirectory = async () => {
-    await mkdirIfNotExists(config.getAppsRootDir());
-    await mkdirIfNotExists(config.getAppsLocalDir());
-    await mkdirIfNotExists(config.getAppsExternalDir());
-    await mkdirIfNotExists(config.getNodeModulesDir());
+    await mkdirIfNotExists(getAppsRootDir());
+    await mkdirIfNotExists(getAppsLocalDir());
+    await mkdirIfNotExists(getAppsExternalDir());
+    await mkdirIfNotExists(getNodeModulesDir());
     await initialiseAllSources();
     await installAllLocalAppArchives();
 };
@@ -164,7 +170,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         shortcutIconPath = iconPath;
     }
 
-    const isDownloadable = !appPath.startsWith(config.getAppsLocalDir());
+    const isDownloadable = !appPath.startsWith(getAppsLocalDir());
     const source = isDownloadable
         ? path.basename(path.dirname(path.dirname(appPath)))
         : null;
@@ -203,7 +209,7 @@ const latestVersionInfo = (
 
 const downloadableAppsInAppsJson = async (source: string) => {
     const appsJson = await fileUtil.readJsonFile<AppsJson>(
-        config.getAppsJsonPath(source)
+        getAppsJsonPath(source)
     );
 
     return Object.entries(appsJson)
@@ -229,10 +235,7 @@ const installedAppInfo = async (
     availableUpdates: UpdatesJson
 ) => {
     const appWithInstalledAppInfo = {
-        ...(await infoFromInstalledApp(
-            config.getNodeModulesDir(source),
-            app.name
-        )),
+        ...(await infoFromInstalledApp(getNodeModulesDir(source), app.name)),
         ...app,
     };
 
@@ -291,15 +294,12 @@ type SuccessfulAppResult = UninstalledAppResult | InstalledAppResult;
 const getDownloadableAppsFromSource = async (source: string) => {
     const apps = await downloadableAppsInAppsJson(source);
     const availableUpdates = await fileUtil.readJsonFile<UpdatesJson>(
-        config.getUpdatesJsonPath(source)
+        getUpdatesJsonPath(source)
     );
 
     return Promise.all(
         apps.map(async app => {
-            const filePath = path.join(
-                config.getNodeModulesDir(source),
-                app.name
-            );
+            const filePath = path.join(getNodeModulesDir(source), app.name);
 
             try {
                 const isInstalled = await fs.pathExists(filePath);
@@ -351,16 +351,15 @@ export const getDownloadableApps = async () => {
 };
 
 export const getLocalApps = () => {
-    const appsLocalDir = path.join(config.getAppsRootDir(), 'local');
     const localAppPromises = fileUtil
-        .listDirectories(appsLocalDir)
-        .map(name => infoFromInstalledApp(appsLocalDir, name));
+        .listDirectories(getAppsLocalDir())
+        .map(name => infoFromInstalledApp(getAppsLocalDir(), name));
 
     return Promise.all(localAppPromises as Promise<LocalApp>[]);
 };
 
 export const removeDownloadableApp = async (name: string, source: string) => {
-    const appPath = path.join(config.getNodeModulesDir(source), name);
+    const appPath = path.join(getNodeModulesDir(source), name);
     if (!appPath.includes('node_modules')) {
         throw new Error(
             'Sanity check failed when trying ' +
@@ -379,7 +378,7 @@ export const installDownloadableApp = async (
     version: string,
     source: string
 ) => {
-    const destinationDir = config.getAppsRootDir(source);
+    const destinationDir = getAppsRootDir(source);
     const tgzFilePath = await registryApi.downloadTarball(
         name,
         version,
@@ -387,7 +386,7 @@ export const installDownloadableApp = async (
         source
     );
 
-    const appPath = path.join(config.getNodeModulesDir(source), name);
+    const appPath = path.join(getNodeModulesDir(source), name);
     const isInstalled = await fs.pathExists(appPath);
     if (isInstalled) {
         await removeDownloadableApp(name, source);

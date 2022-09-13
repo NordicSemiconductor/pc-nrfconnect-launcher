@@ -12,7 +12,7 @@ import { app as electronApp, dialog, Menu } from 'electron';
 import { join } from 'path';
 
 import * as apps from './apps';
-import * as config from './config';
+import { getConfig } from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
 import { createTextFile } from './fileUtil';
@@ -35,15 +35,16 @@ electronApp.on('ready', async () => {
     try {
         await apps.initAppsDirectory();
 
-        const downloadableAppToLaunch = config.getDownloadableAppName();
-        const localAppToLaunch = config.getLocalAppName();
-        if (downloadableAppToLaunch) {
-            await windows.openDownloadableAppWindow(
-                downloadableAppToLaunch,
-                config.getSourceName()
-            );
-        } else if (localAppToLaunch) {
-            await windows.openLocalAppWindow(localAppToLaunch);
+        const { startupApp } = getConfig();
+        if (startupApp != null) {
+            if (startupApp.local) {
+                await windows.openLocalAppWindow(startupApp.name);
+            } else {
+                await windows.openDownloadableAppWindow(
+                    startupApp.name,
+                    startupApp.sourceName
+                );
+            }
         } else {
             windows.openLauncherWindow();
         }
@@ -81,7 +82,7 @@ registerIpcHandler();
  */
 if (electronApp.isPackaged) {
     createTextFile(
-        join(config.getUserDataDir(), 'execPath'),
+        join(electronApp.getPath('userData'), 'execPath'),
         process.platform === 'linux' && process.env.APPIMAGE
             ? process.env.APPIMAGE
             : process.execPath

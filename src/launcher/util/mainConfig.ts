@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { Configuration, getConfig } from '../../ipc/getConfig';
+import { Configuration, getConfig } from '../../ipc/config';
 
 let cachedConfig: Configuration;
 

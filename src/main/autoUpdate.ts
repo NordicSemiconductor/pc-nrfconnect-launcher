@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { app } from 'electron';
 import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
@@ -14,11 +15,10 @@ import {
     updateStarted,
 } from '../ipc/launcherUpdateProgress';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import * as config from './config';
 
 let installCancellationToken: CancellationToken | undefined;
 
-const nrfConnectPath = path.join(config.getUserDataDir(), 'logs');
+const nrfConnectPath = path.join(app.getPath('userData'), 'logs');
 const logger = createLogger({
     transports: [
         new transports.File({

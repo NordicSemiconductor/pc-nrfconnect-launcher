@@ -6,7 +6,7 @@
 
 /* eslint-disable no-bitwise */
 
-import { shell } from 'electron';
+import { app as electronApp, shell } from 'electron';
 import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';
@@ -14,8 +14,12 @@ import { uuid } from 'short-uuid';
 
 import { LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import * as config from './config';
 import * as fileUtil from './fileUtil';
+
+const getDesktopDir = () => electronApp.getPath('desktop');
+
+const getElectronExePath = () =>
+    process.env.APPIMAGE || electronApp.getPath('exe');
 
 const mode =
     fs.constants.S_IRWXU |
@@ -49,10 +53,10 @@ const getArgs = (app: LaunchableApp) =>
 
 const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
-    const filePath = path.join(config.getDesktopDir(), `${fileName}.lnk`);
+    const filePath = path.join(getDesktopDir(), `${fileName}.lnk`);
     if (app.shortcutIconPath) {
         const shortcutStatus = shell.writeShortcutLink(filePath, {
-            target: config.getElectronExePath(),
+            target: getElectronExePath(),
             args: getArgs(app),
             icon: app.shortcutIconPath,
             // iconIndex has to be set to change icon
@@ -68,12 +72,12 @@ const createShortcutForWindows = (app: LaunchableApp) => {
 
 const createShortcutForLinux = (app: LaunchableApp) => {
     const fileName = getFileName(app);
-    const desktopFilePath = path.join(
-        config.getDesktopDir(),
-        `${fileName}.desktop`
-    );
+    const desktopFilePath = path.join(getDesktopDir(), `${fileName}.desktop`);
     const applicationsFilePath = path.join(
-        config.getUbuntuDesktopDir(),
+        electronApp.getPath('home'),
+        '.local',
+        'share',
+        'applications',
         `${fileName}.desktop`
     );
 
@@ -85,7 +89,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         'Encoding=UTF-8',
         `Version=${app.currentVersion}`,
         `Name=${fileName}`,
-        `Exec=${config.getElectronExePath()} ${args}`,
+        `Exec=${getElectronExePath()} ${args}`,
         'Terminal=false',
         `Icon=${shortcutIconPath || iconPath}`,
         'Type=Application',
@@ -116,15 +120,15 @@ const createShortcutForLinux = (app: LaunchableApp) => {
  */
 const createShortcutForMacOS = async (app: LaunchableApp) => {
     const fileName = getFileName(app);
-    let filePath = path.join(config.getDesktopDir(), `${fileName}.app`);
+    let filePath = path.join(getDesktopDir(), `${fileName}.app`);
     const templateName = `template-${uuid()}.app`;
     const appTemplateTarPath = path.join(
-        config.getElectronRootPath(),
+        electronApp.getAppPath(),
         '/resources/mac/template.tar.gz'
     );
     const tmpAppPath = path.join(
-        config.getTmpDir(),
-        '/com.nordicsemi.nrfconnect'
+        electronApp.getPath('temp'),
+        'com.nordicsemi.nrfconnect'
     );
     const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
     const appExecPath = path.join(filePath, '/Contents/MacOS/Application Stub');
@@ -160,9 +164,10 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             '/Contents/document.wflow'
         );
         // In MacOS spaces should be replaced
-        const shortcutCMD = `${config
-            .getElectronExePath()
-            .replace(/ /g, '\\ ')} ${getArgs(app)}`;
+        const shortcutCMD = `${getElectronExePath().replace(
+            / /g,
+            '\\ '
+        )} ${getArgs(app)}`;
         const wflowContentSource = fs.readFileSync(wflowTmpPath, 'utf-8');
         Mustache.parse(wflowContentSource);
         const wflowContentData = {
@@ -182,7 +187,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
         // Copy to Applications
         filePath = path.join(
-            config.getHomeDir(),
+            electronApp.getPath('home'),
             `/Applications/${fileName}.app/`
         );
         await fileUtil.copy(tmpAppTemplatePath, filePath);

@@ -10,7 +10,9 @@ import { openUrl } from 'pc-nrfconnect-shared';
 import { startUpdate } from '../../ipc/launcherUpdate';
 import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
-import mainConfig from '../util/mainConfig';
+
+const releaseNotesUrl =
+    'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
 
 function mapStateToProps(state) {
     const { autoUpdate } = state;
@@ -23,7 +25,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onClickReleaseNotes: () => openUrl(mainConfig().releaseNotesUrl),
+        onClickReleaseNotes: () => openUrl(releaseNotesUrl),
         onConfirm: startUpdate,
         onCancel: () => dispatch(AutoUpdateActions.resetAction()),
     };

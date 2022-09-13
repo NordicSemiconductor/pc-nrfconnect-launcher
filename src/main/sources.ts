@@ -7,7 +7,13 @@
 import fs from 'fs-extra';
 
 import { AppInAppsJson } from '../ipc/apps';
-import * as config from './config';
+import {
+    getAppsJsonPath,
+    getAppsRootDir,
+    getConfig,
+    getNodeModulesDir,
+    getUpdatesJsonPath,
+} from './config';
 import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { ensureDirExists } from './mkdir';
@@ -15,8 +21,11 @@ import * as net from './net';
 
 let sourcesData: Record<string, string> | undefined;
 
+export const officialSourceUrl =
+    'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
+
 const loadAllSources = () => {
-    const filePath = config.getSourcesJsonPath();
+    const filePath = getConfig().sourcesJsonPath;
 
     if (!fs.existsSync(filePath)) {
         return {};
@@ -33,12 +42,12 @@ const loadAllSources = () => {
 };
 
 const saveAllSources = () => {
-    fs.writeFileSync(config.getSourcesJsonPath(), JSON.stringify(sourcesData));
+    fs.writeFileSync(getConfig().sourcesJsonPath, JSON.stringify(sourcesData));
 };
 
 const initialSources = () => ({
     ...loadAllSources(),
-    official: config.getAppsJsonUrl(),
+    official: officialSourceUrl,
 });
 
 export const getAllSources = () => {
@@ -55,10 +64,10 @@ export const initialiseAllSources = () =>
     Promise.all(getAllSourceNames().map(initialise));
 
 export const initialise = (sourceName?: string) =>
-    ensureDirExists(config.getAppsRootDir(sourceName))
-        .then(() => ensureDirExists(config.getNodeModulesDir(sourceName)))
-        .then(() => ensureFileExists(config.getAppsJsonPath(sourceName)))
-        .then(() => ensureFileExists(config.getUpdatesJsonPath(sourceName)));
+    ensureDirExists(getAppsRootDir(sourceName))
+        .then(() => ensureDirExists(getNodeModulesDir(sourceName)))
+        .then(() => ensureFileExists(getAppsJsonPath(sourceName)))
+        .then(() => ensureFileExists(getUpdatesJsonPath(sourceName)));
 
 const ensureFileExists = (filename: string) =>
     fileUtil.createJsonFileIfNotExists(filename, {});
@@ -119,13 +128,13 @@ const downloadAppsJson = async (url: string, name?: string) => {
 
     // eslint-disable-next-line no-underscore-dangle -- underscore is intentially used in JSON as a meta information
     const sourceName = appsJson._source;
-    const isOfficial = url === config.getAppsJsonUrl();
+    const isOfficial = url === officialSourceUrl;
     if (sourceName == null && !isOfficial) {
         throw new Error('JSON does not contain expected `_source` tag');
     }
 
     await initialise(sourceName);
-    await fileUtil.createJsonFile(config.getAppsJsonPath(sourceName), appsJson);
+    await fileUtil.createJsonFile(getAppsJsonPath(sourceName), appsJson);
 
     return sourceName;
 };
@@ -168,7 +177,7 @@ const notOfficialSource = (sourceName?: string): sourceName is string => {
 };
 
 const removeSourceDirectory = (sourceName: string) =>
-    fs.remove(config.getAppsRootDir(sourceName));
+    fs.remove(getAppsRootDir(sourceName));
 
 export const removeSource = async (sourceName?: string) => {
     if (notOfficialSource(sourceName)) {
