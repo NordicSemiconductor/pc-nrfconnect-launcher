@@ -20,11 +20,14 @@ export function updateAvailableAction(version) {
     };
 }
 
-export function startDownloadAction() {
+export function startDownloadAction(
+    isProgressSupported = isWindows || isMac,
+    isCancelSupported = isWindows
+) {
     return {
         type: AUTO_UPDATE_START_DOWNLOAD,
-        isProgressSupported: isWindows || isMac,
-        isCancelSupported: isWindows,
+        isProgressSupported,
+        isCancelSupported,
     };
 }
 

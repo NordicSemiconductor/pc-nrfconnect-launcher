@@ -4,102 +4,61 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
-
-// Do not render react-bootstrap components in tests
-jest.mock('react-bootstrap', () => ({
-    Modal: 'Modal',
-    Button: 'Button',
-    ModalHeader: 'ModalHeader',
-    ModalFooter: 'ModalFooter',
-    ModalBody: 'ModalBody',
-    ModalTitle: 'ModalTitle',
-    ProgressBar: 'ProgressBar',
-}));
-
 import React from 'react';
-import { shallow } from 'enzyme';
 
-import UpdateProgressDialog from '../UpdateProgressDialog';
+import render from '../../../testrenderer';
+import {
+    cancelDownloadAction,
+    startDownloadAction,
+    updateAvailableAction,
+    updateDownloadingAction,
+} from '../../actions/autoUpdateActions';
+import UpdateProgressContainer from '../../containers/UpdateProgressContainer';
 
 describe('UpdateProgressDialog', () => {
-    it('should render invisible', () => {
+    it('is initially invisible', () => {
         expect(
-            shallow(
-                <UpdateProgressDialog
-                    isVisible={false}
-                    isProgressSupported={false}
-                    isCancelSupported={false}
-                    version=""
-                    percentDownloaded={0}
-                    onCancel={() => {}}
-                    isCancelling={false}
-                />
-            )
+            render(<UpdateProgressContainer />).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should render with version, percent downloaded, and cancellable', () => {
+    it('can have a version, percent downloaded, and be cancellable', () => {
         expect(
-            shallow(
-                <UpdateProgressDialog
-                    isVisible
-                    isProgressSupported
-                    isCancelSupported
-                    version="1.2.3"
-                    percentDownloaded={42}
-                    onCancel={() => {}}
-                    isCancelling={false}
-                />
-            )
+            render(<UpdateProgressContainer />, [
+                updateAvailableAction('1.2.3'),
+                startDownloadAction(true, true),
+                updateDownloadingAction(42),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should render with version, without progress, and not cancellable', () => {
+    it('can be without progress, and not cancellable', () => {
         expect(
-            shallow(
-                <UpdateProgressDialog
-                    isVisible
-                    isProgressSupported={false}
-                    isCancelSupported={false}
-                    version="1.2.3"
-                    percentDownloaded={0}
-                    onCancel={() => {}}
-                    isCancelling={false}
-                />
-            )
+            render(<UpdateProgressContainer />, [
+                updateAvailableAction('1.2.3'),
+                startDownloadAction(false, false),
+                updateDownloadingAction(42),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should render cancelling', () => {
+    it('has cancelling disabled after being cancelled', () => {
         expect(
-            shallow(
-                <UpdateProgressDialog
-                    isVisible
-                    isProgressSupported
-                    isCancelSupported
-                    version="1.2.3"
-                    percentDownloaded={42}
-                    onCancel={() => {}}
-                    isCancelling
-                />
-            )
+            render(<UpdateProgressContainer />, [
+                updateAvailableAction('1.2.3'),
+                startDownloadAction(true, true),
+                cancelDownloadAction(),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should render with cancel disabled when 100 percent complete', () => {
+    it('has cancelling disabled when 100 percent complete', () => {
         expect(
-            shallow(
-                <UpdateProgressDialog
-                    isVisible
-                    isProgressSupported
-                    isCancelSupported
-                    version="1.2.3"
-                    percentDownloaded={100}
-                    onCancel={() => {}}
-                    isCancelling={false}
-                />
-            )
+            render(<UpdateProgressContainer />, [
+                updateAvailableAction('1.2.3'),
+                startDownloadAction(true, true),
+                updateDownloadingAction(100),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 });
