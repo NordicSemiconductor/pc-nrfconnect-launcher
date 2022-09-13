@@ -32,7 +32,7 @@ const channel = 'get-config';
 
 export const getConfig = (): Configuration => ipcRenderer.sendSync(channel);
 
-export const registerGetConfig = (config: Configuration) =>
+export const registerGetConfig = (onGetConfig: () => Configuration) =>
     ipcMain.on(channel, event => {
-        event.returnValue = config;
+        event.returnValue = onGetConfig();
     });

@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
-import { Configuration, registerGetConfig, StartupApp } from '../ipc/getConfig';
+import { Configuration, StartupApp } from '../ipc/config';
 
 let config: Configuration;
 
@@ -96,8 +96,6 @@ export const init = (argv: Argv) => {
         startupApp: getStartupApp(argv),
         version: packageJson.version,
     };
-
-    registerGetConfig(config);
 };
 
 export const getAppsExternalDir = (effectiveConfig = config) =>
