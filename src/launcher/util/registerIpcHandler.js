@@ -17,12 +17,12 @@ import {
 import { registerRequestProxyLogin } from '../../ipc/proxyLogin';
 import { registerShowErrorDialog } from '../../ipc/showErrorDialog';
 import { updateInstallProgressAction } from '../actions/appsActions';
-import {
-    resetAction,
-    startDownloadAction,
-    updateDownloadingAction,
-} from '../actions/autoUpdateActions';
 import { authenticate } from '../actions/proxyActions';
+import {
+    reset,
+    startDownload,
+    updateDownloading,
+} from '../features/launcherUpdate/launcherUpdateSlice';
 
 export default dispatch => {
     registerDownloadProgress(progress => {
@@ -38,15 +38,15 @@ export default dispatch => {
     });
 
     registerUpdateStarted(() => {
-        dispatch(startDownloadAction());
+        dispatch(startDownload());
     });
     registerUpdateProgress(percentage => {
-        dispatch(updateDownloadingAction(percentage));
+        dispatch(updateDownloading(percentage));
     });
     registerUpdateFinished(isSuccessful => {
         if (isSuccessful) {
             usageData.reset();
         }
-        dispatch(resetAction());
+        dispatch(reset());
     });
 };

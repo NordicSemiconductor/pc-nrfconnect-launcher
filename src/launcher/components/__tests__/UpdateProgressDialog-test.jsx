@@ -7,13 +7,13 @@
 import React from 'react';
 
 import render from '../../../testrenderer';
-import {
-    cancelDownloadAction,
-    startDownloadAction,
-    updateAvailableAction,
-    updateDownloadingAction,
-} from '../../actions/autoUpdateActions';
 import UpdateProgressContainer from '../../containers/UpdateProgressContainer';
+import {
+    cancelDownload,
+    startDownload,
+    updateAvailable,
+    updateDownloading,
+} from '../../features/launcherUpdate/launcherUpdateSlice';
 
 describe('UpdateProgressDialog', () => {
     it('is initially invisible', () => {
@@ -25,9 +25,12 @@ describe('UpdateProgressDialog', () => {
     it('can have a version, percent downloaded, and be cancellable', () => {
         expect(
             render(<UpdateProgressContainer />, [
-                updateAvailableAction('1.2.3'),
-                startDownloadAction(true, true),
-                updateDownloadingAction(42),
+                updateAvailable('1.2.3'),
+                startDownload({
+                    isCancelSupported: true,
+                    isProgressSupported: true,
+                }),
+                updateDownloading(42),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -35,9 +38,12 @@ describe('UpdateProgressDialog', () => {
     it('can be without progress, and not cancellable', () => {
         expect(
             render(<UpdateProgressContainer />, [
-                updateAvailableAction('1.2.3'),
-                startDownloadAction(false, false),
-                updateDownloadingAction(42),
+                updateAvailable('1.2.3'),
+                startDownload({
+                    isCancelSupported: false,
+                    isProgressSupported: false,
+                }),
+                updateDownloading(42),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -45,9 +51,12 @@ describe('UpdateProgressDialog', () => {
     it('has cancelling disabled after being cancelled', () => {
         expect(
             render(<UpdateProgressContainer />, [
-                updateAvailableAction('1.2.3'),
-                startDownloadAction(true, true),
-                cancelDownloadAction(),
+                updateAvailable('1.2.3'),
+                startDownload({
+                    isCancelSupported: true,
+                    isProgressSupported: true,
+                }),
+                cancelDownload(),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -55,9 +64,12 @@ describe('UpdateProgressDialog', () => {
     it('has cancelling disabled when 100 percent complete', () => {
         expect(
             render(<UpdateProgressContainer />, [
-                updateAvailableAction('1.2.3'),
-                startDownloadAction(true, true),
-                updateDownloadingAction(100),
+                updateAvailable('1.2.3'),
+                startDownload({
+                    isCancelSupported: true,
+                    isProgressSupported: true,
+                }),
+                updateDownloading(100),
             ]).baseElement
         ).toMatchSnapshot();
     });

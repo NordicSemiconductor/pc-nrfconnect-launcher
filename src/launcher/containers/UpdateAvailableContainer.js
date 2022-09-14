@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { openUrl } from 'pc-nrfconnect-shared';
 
 import { startUpdate } from '../../ipc/launcherUpdate';
-import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import UpdateAvailableDialog from '../components/UpdateAvailableDialog';
+import * as AutoUpdateActions from '../features/launcherUpdate/launcherUpdateSlice';
 
 const releaseNotesUrl =
     'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases';
@@ -27,7 +27,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onClickReleaseNotes: () => openUrl(releaseNotesUrl),
         onConfirm: startUpdate,
-        onCancel: () => dispatch(AutoUpdateActions.resetAction()),
+        onCancel: () => dispatch(AutoUpdateActions.reset()),
     };
 }
 

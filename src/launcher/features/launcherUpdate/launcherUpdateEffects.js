@@ -12,22 +12,22 @@ import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
-import {
-    cancelDownloadAction,
-    resetAction,
-    updateAvailableAction,
-} from '../../actions/autoUpdateActions';
 import * as SettingsActions from '../../actions/settingsActions';
 import mainConfig from '../../util/mainConfig';
+import {
+    cancelDownload as cancelLauncherDownload,
+    reset,
+    updateAvailable,
+} from './launcherUpdateSlice';
 
 export const checkForCoreUpdates = () => async dispatch => {
     try {
         const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
         if (isUpdateAvailable) {
-            dispatch(updateAvailableAction(newVersion));
+            dispatch(updateAvailable(newVersion));
         } else {
-            dispatch(resetAction());
+            dispatch(reset());
         }
     } catch (error) {
         logger.warn(error);
@@ -50,7 +50,7 @@ export const checkForCoreUpdatesAtStartup = () => async dispatch => {
 
 export const cancelDownload = () => dispatch => {
     cancelUpdate();
-    dispatch(cancelDownloadAction());
+    dispatch(cancelLauncherDownload());
 };
 
 export const downloadLatestAppInfo =
