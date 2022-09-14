@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Nordic Semiconductor ASA
+ * Copyright (c) 2022 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
@@ -10,9 +10,9 @@ import reducer, {
     startDownload,
     updateAvailable,
     updateDownloading,
-} from '../../features/launcherUpdate/launcherUpdateSlice';
+} from './launcherUpdateSlice';
 
-const initialState = reducer(undefined, {});
+const initialState = reducer(undefined, { type: '__INIT__' });
 
 describe('autoUpdateReducer', () => {
     it('should not show any dialogs in initial state', () => {
@@ -25,7 +25,7 @@ describe('autoUpdateReducer', () => {
     });
 
     it('should show the update available dialog when updateAvailable has been dispatched', () => {
-        const state = reducer(initialState, updateAvailable());
+        const state = reducer(initialState, updateAvailable('1.2.3'));
         expect(state.isUpdateAvailableDialogVisible).toEqual(true);
     });
 
@@ -35,7 +35,7 @@ describe('autoUpdateReducer', () => {
     });
 
     it('should hide the update available dialog when startDownload has been dispatched', () => {
-        const firstState = reducer(initialState, updateAvailable());
+        const firstState = reducer(initialState, updateAvailable('1.2.3'));
         const secondState = reducer(firstState, startDownload());
         expect(secondState.isUpdateAvailableDialogVisible).toEqual(false);
     });
