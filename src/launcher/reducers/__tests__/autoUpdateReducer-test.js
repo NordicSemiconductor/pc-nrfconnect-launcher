@@ -8,18 +8,6 @@ import * as AutoUpdateActions from '../../actions/autoUpdateActions';
 import reducer from '../autoUpdateReducer';
 
 const initialState = reducer(undefined, {});
-const { CancellationToken } = require('electron-updater');
-
-describe('cancellationToken', () => {
-    it('should have the known message', () => {
-        const token = new CancellationToken();
-        return token
-            .createPromise(() => {
-                token.cancel();
-            })
-            .catch(err => expect(err.message).toBe('cancelled'));
-    });
-});
 
 describe('autoUpdateReducer', () => {
     it('should not show any dialogs in initial state', () => {
