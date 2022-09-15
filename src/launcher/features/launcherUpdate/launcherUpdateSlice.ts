@@ -7,6 +7,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import type { RootState } from '../..';
+
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 
@@ -82,3 +84,5 @@ export const {
     updateDownloading,
     reset,
 } = slice.actions;
+
+export const getLauncherUpdate = (state: RootState) => state.autoUpdate;

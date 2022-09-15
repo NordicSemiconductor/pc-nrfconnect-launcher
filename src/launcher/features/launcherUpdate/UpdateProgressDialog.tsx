@@ -12,6 +12,7 @@ import { Spinner } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { cancelDownload } from './launcherUpdateEffects';
+import { getLauncherUpdate } from './launcherUpdateSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
@@ -22,7 +23,7 @@ export default () => {
         latestVersion: version,
         percentDownloaded,
         isCancelling,
-    } = useLauncherSelector(state => state.autoUpdate);
+    } = useLauncherSelector(getLauncherUpdate);
 
     return (
         <Modal show={isVisible} backdrop>
