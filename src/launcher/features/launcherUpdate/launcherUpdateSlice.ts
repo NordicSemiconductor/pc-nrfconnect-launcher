@@ -85,4 +85,4 @@ export const {
     reset,
 } = slice.actions;
 
-export const getLauncherUpdate = (state: RootState) => state.autoUpdate;
+export const getLauncherUpdate = (state: RootState) => state.launcherUpdate;

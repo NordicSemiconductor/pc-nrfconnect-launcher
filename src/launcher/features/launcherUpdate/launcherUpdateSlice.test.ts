@@ -14,7 +14,7 @@ import reducer, {
 
 const initialState = reducer(undefined, { type: '__INIT__' });
 
-describe('autoUpdateReducer', () => {
+describe('launcherUpdateReducer', () => {
     it('should not show any dialogs in initial state', () => {
         expect(initialState.isUpdateAvailableDialogVisible).toEqual(false);
         expect(initialState.isUpdateProgressDialogVisible).toEqual(false);
