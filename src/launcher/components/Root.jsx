@@ -14,8 +14,8 @@ import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import ProxyErrorContainer from '../containers/ProxyErrorContainer';
 import ProxyLoginContainer from '../containers/ProxyLoginContainer';
 import SettingsContainer from '../containers/SettingsContainer';
-import UpdateAvailableContainer from '../containers/UpdateAvailableContainer';
 import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
+import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
 import AboutView from './AboutView';
 import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
@@ -77,7 +77,7 @@ export default () => {
                 </Tab.Content>
             </Tab.Container>
             <ErrorDialog />
-            <UpdateAvailableContainer />
+            <UpdateAvailableDialog />
             <UpdateProgressDialog />
             <UsageDataDialogContainer />
             <ConfirmLaunchContainer />

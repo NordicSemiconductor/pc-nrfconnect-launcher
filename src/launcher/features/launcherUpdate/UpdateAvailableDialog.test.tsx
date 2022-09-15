@@ -7,8 +7,8 @@
 import React from 'react';
 
 import render from '../../../testrenderer';
-import UpdateAvailableDialog from '../../containers/UpdateAvailableContainer';
 import { updateAvailable } from './launcherUpdateSlice';
+import UpdateAvailableDialog from './UpdateAvailableDialog';
 
 describe('UpdateAvailableDialog', () => {
     it('is initially invisible', () => {
