@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Nordic Semiconductor ASA
+ * Copyright (c) 2022 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
@@ -7,13 +7,13 @@
 import React from 'react';
 
 import render from '../../../testrenderer';
-import UpdateProgressContainer from '../../containers/UpdateProgressContainer';
 import {
     cancelDownload,
     startDownload,
     updateAvailable,
     updateDownloading,
-} from '../../features/launcherUpdate/launcherUpdateSlice';
+} from './launcherUpdateSlice';
+import UpdateProgressContainer from './UpdateProgressDialog';
 
 describe('UpdateProgressDialog', () => {
     it('is initially invisible', () => {

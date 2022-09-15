@@ -28,6 +28,7 @@ const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
 );
+// TODO: Switch to using configureStore from RTK
 
 registerIpcHandler(store.dispatch);
 
