@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateAvailableDialog is initially invisible 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`UpdateAvailableDialog shows the new version if one becomes available  1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog modal-lg"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+            data-testid="title"
+          >
+            <h3>
+              Update available
+            </h3>
+          </div>
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close
+            </span>
+          </button>
+        </div>
+        <div
+          class="modal-body"
+        >
+          <p>
+            A new version (
+            1.2.3
+            ) of nRF Connect for Desktop is available. Would you like to upgrade now?
+          </p>
+          <button
+            class="btn btn-link core-btn-link"
+            type="button"
+          >
+            Click to see release notes
+          </button>
+        </div>
+        <div
+          class="modal-footer"
+        >
+           
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Yes
+          </button>
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

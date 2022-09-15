@@ -41,9 +41,9 @@ import {
     installDownloadableApp,
     removeDownloadableApp,
 } from './apps';
-import { cancelUpdate, checkForUpdate, startUpdate } from './autoUpdate';
 import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
+import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { downloadToFile } from './net';
 import { callRegisteredCallback } from './proxyLogins';
 import { get as getSetting, set as setSetting } from './settings';

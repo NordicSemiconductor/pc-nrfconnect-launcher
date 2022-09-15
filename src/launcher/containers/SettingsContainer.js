@@ -6,10 +6,10 @@
 
 import { connect } from 'react-redux';
 
-import * as AutoUpdateActions from '../actions/autoUpdateActions';
 import * as SettingsActions from '../actions/settingsActions';
 import * as UsageDataActions from '../actions/usageDataActions';
 import SettingsView from '../components/SettingsView';
+import { checkForUpdatesManually } from '../features/launcherUpdate/launcherUpdateEffects';
 
 function isAppUpdateAvailable(downloadableApps) {
     return !!downloadableApps.find(
@@ -40,8 +40,7 @@ function mapDispatchToProps(dispatch) {
         onMount: () => SettingsActions.loadSettings(dispatch),
         onCheckUpdatesAtStartupChanged: isEnabled =>
             dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled)),
-        onTriggerUpdateCheck: () =>
-            dispatch(AutoUpdateActions.checkForUpdatesManually()),
+        onTriggerUpdateCheck: () => dispatch(checkForUpdatesManually()),
         onHideUpdateCheckCompleteDialog: () =>
             dispatch(SettingsActions.hideUpdateCheckCompleteDialog()),
         addSource: url => dispatch(SettingsActions.addSource(url)),
