@@ -10,6 +10,7 @@ import './module-loader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { dialog } from '@electron/remote';
+import { execSync } from 'child_process';
 
 import initApp from './initApp';
 
@@ -27,5 +28,10 @@ const showLoadingError = error => {
         message: error.message,
     });
 };
+
+// Path is sometimes unset on mac and linux
+if (process.env.PATH === undefined) {
+    process.env.PATH = execSync('echo $PATH').toString().replace('\n', '');
+}
 
 initApp(appPath).then(render).catch(showLoadingError);

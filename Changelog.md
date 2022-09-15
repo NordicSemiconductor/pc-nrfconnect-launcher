@@ -1,3 +1,9 @@
+## 3.12.1 - 2022-09-15
+
+### Fixed
+
+-   macOS: Some crashes due to lacking environment path was fixed.
+
 ## 3.12.0 - 2022-09-05
 
 ### Added
