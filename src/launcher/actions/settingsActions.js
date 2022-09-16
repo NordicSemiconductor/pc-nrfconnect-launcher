@@ -37,27 +37,27 @@ export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW =
 export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE =
     'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
 
-function loadSettingsAction() {
+export function loadSettingsAction() {
     return {
         type: SETTINGS_LOAD,
     };
 }
 
-function loadSettingsSuccessAction(settingsObj) {
+export function loadSettingsSuccessAction(settingsObj) {
     return {
         type: SETTINGS_LOAD_SUCCESS,
         settings: settingsObj,
     };
 }
 
-function loadSettingsErrorAction(error) {
+export function loadSettingsErrorAction(error) {
     return {
         type: SETTINGS_LOAD_ERROR,
         error,
     };
 }
 
-function checkUpdatesAtStartupChangedAction(isEnabled) {
+export function checkUpdatesAtStartupChangedAction(isEnabled) {
     return {
         type: SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
         isEnabled,

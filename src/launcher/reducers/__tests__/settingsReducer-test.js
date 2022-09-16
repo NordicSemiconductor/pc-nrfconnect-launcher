@@ -4,7 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as SettingsActions from '../../actions/settingsActions';
+import {
+    checkUpdatesAtStartupChangedAction,
+    hideUpdateCheckCompleteDialog,
+    loadSettingsAction,
+    loadSettingsErrorAction,
+    loadSettingsSuccessAction,
+    showUpdateCheckCompleteDialog,
+} from '../../actions/settingsActions';
 import reducer from '../settingsReducer';
 
 const initialState = reducer(undefined, {});
@@ -14,37 +21,33 @@ describe('settingsReducer', () => {
         expect(initialState.isLoading).toEqual(false);
     });
 
-    it('should be loading when SETTINGS_LOAD has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: SettingsActions.SETTINGS_LOAD,
-        });
+    it('should be loading when loadSettings has been dispatched', () => {
+        const state = reducer(initialState, loadSettingsAction());
         expect(state.isLoading).toEqual(true);
     });
 
-    it('should not be loading when SETTINGS_LOAD_SUCCESS has been dispatched', () => {
-        const state = reducer(initialState.set('isLoading', true), {
-            type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-            settings: {},
-        });
+    it('should not be loading when loadSettingsSuccess has been dispatched', () => {
+        const state = reducer(
+            initialState.set('isLoading', true),
+            loadSettingsSuccessAction({})
+        );
         expect(state.isLoading).toEqual(false);
     });
 
-    it('should not be loading when SETTINGS_LOAD_ERROR has been dispatched', () => {
-        const state = reducer(initialState.set('isLoading', false), {
-            type: SettingsActions.SETTINGS_LOAD_ERROR,
-        });
+    it('should not be loading when loadSettingsError has been dispatched', () => {
+        const state = reducer(
+            initialState.set('isLoading', false),
+            loadSettingsErrorAction()
+        );
         expect(state.isLoading).toEqual(false);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to true after loading when enabled', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', false),
-            {
-                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-                settings: {
-                    shouldCheckForUpdatesAtStartup: true,
-                },
-            }
+            loadSettingsSuccessAction({
+                shouldCheckForUpdatesAtStartup: true,
+            })
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
@@ -52,12 +55,9 @@ describe('settingsReducer', () => {
     it('should set shouldCheckForUpdatesAtStartup to false after loading when disabled', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', true),
-            {
-                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-                settings: {
-                    shouldCheckForUpdatesAtStartup: false,
-                },
-            }
+            loadSettingsSuccessAction({
+                shouldCheckForUpdatesAtStartup: false,
+            })
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
@@ -65,12 +65,9 @@ describe('settingsReducer', () => {
     it('should set shouldCheckForUpdatesAtStartup to false after loading if it is not defined in settings', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', true),
-            {
-                type: SettingsActions.SETTINGS_LOAD_SUCCESS,
-                settings: {
-                    shouldCheckForUpdatesAtStartup: null,
-                },
-            }
+            loadSettingsSuccessAction({
+                shouldCheckForUpdatesAtStartup: null,
+            })
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
@@ -78,10 +75,7 @@ describe('settingsReducer', () => {
     it('should set shouldCheckForUpdatesAtStartup to true when changed to enabled', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', false),
-            {
-                type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
-                isEnabled: true,
-            }
+            checkUpdatesAtStartupChangedAction(true)
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
@@ -89,27 +83,20 @@ describe('settingsReducer', () => {
     it('should set shouldCheckForUpdatesAtStartup to false when changed to disabled', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', false),
-            {
-                type: SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED,
-                isEnabled: false,
-            }
+            checkUpdatesAtStartupChangedAction(false)
         );
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });
 
-    it('should show update check complete dialog when SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW has been dispatched', () => {
-        const state = reducer(initialState, {
-            type: SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW,
-        });
+    it('should show update check complete dialog when showUpdateCheckCompleteDialog has been dispatched', () => {
+        const state = reducer(initialState, showUpdateCheckCompleteDialog());
         expect(state.isUpdateCheckCompleteDialogVisible).toEqual(true);
     });
 
-    it('should not show update check complete dialog when SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE has been dispatched', () => {
+    it('should not show update check complete dialog when hideUpdateCheckCompleteDialog has been dispatched', () => {
         const state = reducer(
             initialState.set('isUpdateCheckCompleteDialogVisible', true),
-            {
-                type: SettingsActions.SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_HIDE,
-            }
+            hideUpdateCheckCompleteDialog()
         );
         expect(state.isUpdateCheckCompleteDialogVisible).toEqual(false);
     });
