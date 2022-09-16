@@ -17,9 +17,7 @@ import {
 } from '../../ipc/sources';
 import * as AppsActions from './appsActions';
 
-export const SETTINGS_LOAD = 'SETTINGS_LOAD';
 export const SETTINGS_LOAD_SUCCESS = 'SETTINGS_LOAD_SUCCESS';
-export const SETTINGS_LOAD_ERROR = 'SETTINGS_LOAD_ERROR';
 export const SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED =
     'SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED';
 export const SETTINGS_UPDATE_CHECK_COMPLETE_DIALOG_SHOW =
@@ -37,23 +35,10 @@ export const SETTINGS_REMOVE_SOURCE_DIALOG_SHOW =
 export const SETTINGS_REMOVE_SOURCE_DIALOG_HIDE =
     'SETTINGS_REMOVE_SOURCE_DIALOG_HIDE';
 
-export function loadSettingsAction() {
-    return {
-        type: SETTINGS_LOAD,
-    };
-}
-
 export function loadSettingsSuccessAction(settingsObj) {
     return {
         type: SETTINGS_LOAD_SUCCESS,
         settings: settingsObj,
-    };
-}
-
-export function loadSettingsErrorAction(error) {
-    return {
-        type: SETTINGS_LOAD_ERROR,
-        error,
     };
 }
 
@@ -65,7 +50,6 @@ export function checkUpdatesAtStartupChangedAction(isEnabled) {
 }
 
 export async function loadSettings(dispatch) {
-    dispatch(loadSettingsAction());
     try {
         const shouldCheckForUpdatesAtStartup =
             (await getSetting('shouldCheckForUpdatesAtStartup')) ?? true;
@@ -78,7 +62,6 @@ export async function loadSettings(dispatch) {
             })
         );
     } catch (error) {
-        dispatch(loadSettingsErrorAction(error));
         dispatch(
             ErrorDialogActions.showDialog(
                 `Unable to load settings: ${error.message}`

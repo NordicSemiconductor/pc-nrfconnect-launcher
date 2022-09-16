@@ -12,7 +12,6 @@ import * as UsageDataActions from '../actions/usageDataActions';
 const InitialState = Record({
     shouldCheckForUpdatesAtStartup: true,
     isUpdateCheckCompleteDialogVisible: false,
-    isLoading: false,
     sources: Map({}),
     isAddSourceDialogVisible: false,
     isRemoveSourceDialogVisible: false,
@@ -25,7 +24,6 @@ const initialState = new InitialState();
 
 function setSettings(state, settings) {
     return state
-        .set('isLoading', false)
         .set(
             'shouldCheckForUpdatesAtStartup',
             !!settings.shouldCheckForUpdatesAtStartup
@@ -48,12 +46,8 @@ function removeSource(state, name) {
 // eslint-disable-next-line default-param-last -- Because this is a reducer, where this is the required signature
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case SettingsActions.SETTINGS_LOAD:
-            return state.set('isLoading', true);
         case SettingsActions.SETTINGS_LOAD_SUCCESS:
             return setSettings(state, action.settings);
-        case SettingsActions.SETTINGS_LOAD_ERROR:
-            return state.set('isLoading', false);
         case SettingsActions.SETTINGS_CHECK_UPDATES_AT_STARTUP_CHANGED:
             return state.set(
                 'shouldCheckForUpdatesAtStartup',

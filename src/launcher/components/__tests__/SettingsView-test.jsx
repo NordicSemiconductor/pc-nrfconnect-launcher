@@ -25,34 +25,10 @@ import { Map } from 'immutable';
 import SettingsView from '../SettingsView';
 
 describe('SettingsView', () => {
-    it('should render empty div while loading', () => {
-        expect(
-            shallow(
-                <SettingsView
-                    isLoading
-                    isSendingUsageData={false}
-                    showUsageDataDialog={() => {}}
-                    toggleSendingUsageData={() => {}}
-                    shouldCheckForUpdatesAtStartup
-                    isCheckingForUpdates={false}
-                    onTriggerUpdateCheck={() => {}}
-                    onCheckUpdatesAtStartupChanged={() => {}}
-                    onHideUpdateCheckCompleteDialog={() => {}}
-                    sources={Map({})}
-                    addSource={() => {}}
-                    onShowRemoveSourceDialog={() => {}}
-                    onShowAddSourceDialog={() => {}}
-                    onHideAddSourceDialog={() => {}}
-                />
-            )
-        ).toMatchSnapshot();
-    });
-
     it('should render with check for updates enabled', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}
@@ -75,7 +51,6 @@ describe('SettingsView', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}
@@ -98,7 +73,6 @@ describe('SettingsView', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}
@@ -121,7 +95,6 @@ describe('SettingsView', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}
@@ -145,7 +118,6 @@ describe('SettingsView', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}
@@ -171,7 +143,6 @@ describe('SettingsView', () => {
         expect(
             shallow(
                 <SettingsView
-                    isLoading={false}
                     isSendingUsageData={false}
                     showUsageDataDialog={() => {}}
                     toggleSendingUsageData={() => {}}

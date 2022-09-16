@@ -21,7 +21,6 @@ function mapStateToProps(state) {
     const { settings, apps } = state;
 
     return {
-        isLoading: settings.isLoading,
         shouldCheckForUpdatesAtStartup: settings.shouldCheckForUpdatesAtStartup,
         isCheckingForUpdates: apps.isDownloadingLatestAppInfo,
         isUpdateCheckCompleteDialogVisible:

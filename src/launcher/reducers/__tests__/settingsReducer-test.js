@@ -7,8 +7,6 @@
 import {
     checkUpdatesAtStartupChangedAction,
     hideUpdateCheckCompleteDialog,
-    loadSettingsAction,
-    loadSettingsErrorAction,
     loadSettingsSuccessAction,
     showUpdateCheckCompleteDialog,
 } from '../../actions/settingsActions';
@@ -17,31 +15,6 @@ import reducer from '../settingsReducer';
 const initialState = reducer(undefined, {});
 
 describe('settingsReducer', () => {
-    it('should not be loading in initial state', () => {
-        expect(initialState.isLoading).toEqual(false);
-    });
-
-    it('should be loading when loadSettings has been dispatched', () => {
-        const state = reducer(initialState, loadSettingsAction());
-        expect(state.isLoading).toEqual(true);
-    });
-
-    it('should not be loading when loadSettingsSuccess has been dispatched', () => {
-        const state = reducer(
-            initialState.set('isLoading', true),
-            loadSettingsSuccessAction({})
-        );
-        expect(state.isLoading).toEqual(false);
-    });
-
-    it('should not be loading when loadSettingsError has been dispatched', () => {
-        const state = reducer(
-            initialState.set('isLoading', false),
-            loadSettingsErrorAction()
-        );
-        expect(state.isLoading).toEqual(false);
-    });
-
     it('should set shouldCheckForUpdatesAtStartup to true after loading when enabled', () => {
         const state = reducer(
             initialState.set('shouldCheckForUpdatesAtStartup', false),
