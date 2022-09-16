@@ -5,6 +5,15 @@
 -   Removed pc-ble-driver as the Bluetooth Low Energy app now contains it
     itself.
 
+## 3.12.1 - 2022-09-16
+
+This version is released only for macOS.
+
+### Fixed
+
+-   macOS: In the Toolchain Manager installing toolchains and launching tools
+    such as VS code did not work anymore
+
 ## 3.12.0 - 2022-09-05
 
 ### Added
