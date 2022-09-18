@@ -14,7 +14,7 @@ import Row from 'react-bootstrap/Row';
 import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
-import { bool, func, instanceOf, shape } from 'prop-types';
+import { bool, func, instanceOf, object } from 'prop-types';
 
 import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
@@ -82,8 +82,6 @@ class SettingsView extends React.Component {
             showUsageDataDialog,
         } = this.props;
 
-        const sourcesJS = sources.toJS();
-
         return (
             <WithScrollbarContainer>
                 <div className="settings-pane-container">
@@ -148,7 +146,7 @@ class SettingsView extends React.Component {
                                 </Button>
                             </Col>
                         </Row>
-                        {Object.keys(sourcesJS)
+                        {Object.keys(sources)
                             .filter(name => name !== 'official')
                             .map(name => (
                                 <Row key={name}>
@@ -162,7 +160,7 @@ class SettingsView extends React.Component {
                                                 size="sm"
                                                 onClick={() =>
                                                     clipboard.writeText(
-                                                        sourcesJS[name]
+                                                        sources[name]
                                                     )
                                                 }
                                                 title="Copy URL to clipboard"
@@ -269,9 +267,7 @@ SettingsView.propTypes = {
     isUpdateCheckCompleteDialogVisible: bool,
     onHideUpdateCheckCompleteDialog: func.isRequired,
     isAppUpdateAvailable: bool,
-    sources: shape({
-        toJS: func.isRequired,
-    }).isRequired,
+    sources: object.isRequired, // eslint-disable-line react/forbid-prop-types
     addSource: func.isRequired,
     onShowRemoveSourceDialog: func.isRequired,
     isAddSourceDialogVisible: bool,

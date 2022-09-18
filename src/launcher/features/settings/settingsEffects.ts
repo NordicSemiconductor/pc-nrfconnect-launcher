@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// @ts-check
-
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { getSetting, setSetting } from '../../../ipc/settings';
@@ -14,47 +12,49 @@ import {
     addSource as addSourceInMain,
     getSources,
     removeSource as removeSourceInMain,
+    SourceName,
+    SourceUrl,
 } from '../../../ipc/sources';
+import type { AppDispatch } from '../..';
 import {
     loadDownloadableApps,
     setAppManagementSource,
 } from '../../actions/appsActions';
 import {
-    addSourceAction,
-    checkUpdatesAtStartupChangedAction,
-    loadSettingsSuccessAction,
-    sourceRemovedAction,
-} from '../../actions/settingsActions';
+    addSource as addSourceAction,
+    removeSource as removeSourceAction,
+    setCheckUpdatesAtStartup,
+    setSources,
+} from './settingsSlice';
 
-export const loadSettings = async dispatch => {
+export const loadSettings = async (dispatch: AppDispatch) => {
     try {
         const shouldCheckForUpdatesAtStartup =
-            (await getSetting('shouldCheckForUpdatesAtStartup')) ?? true;
-        const sources = await getSources();
+            <boolean | null>(
+                await getSetting('shouldCheckForUpdatesAtStartup')
+            ) ?? true;
+        dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
 
-        dispatch(
-            loadSettingsSuccessAction({
-                shouldCheckForUpdatesAtStartup,
-                sources,
-            })
-        );
+        const sources = await getSources();
+        dispatch(setSources(sources));
     } catch (error) {
         dispatch(
             ErrorDialogActions.showDialog(
-                `Unable to load settings: ${error.message}`
+                `Unable to load settings: ${describeError(error)}`
             )
         );
     }
 };
 
-export const checkUpdatesAtStartupChanged = isEnabled => dispatch => {
-    dispatch(checkUpdatesAtStartupChangedAction(isEnabled));
-    setSetting('shouldCheckForUpdatesAtStartup', isEnabled);
-};
+export const checkUpdatesAtStartupChanged =
+    (isEnabled: boolean) => (dispatch: AppDispatch) => {
+        dispatch(setCheckUpdatesAtStartup(isEnabled));
+        setSetting('shouldCheckForUpdatesAtStartup', isEnabled);
+    };
 
-export const addSource = url => dispatch => {
+export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
     addSourceInMain(url)
-        .then(source => dispatch(addSourceAction(source, url)))
+        .then(source => dispatch(addSourceAction({ name: source, url })))
         .catch(error =>
             dispatch(
                 ErrorDialogActions.showDialog(
@@ -68,9 +68,9 @@ export const addSource = url => dispatch => {
         .then(() => dispatch(loadDownloadableApps()));
 };
 
-export const removeSource = name => dispatch => {
+export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
     removeSourceInMain(name)
-        .then(() => dispatch(sourceRemovedAction(name)))
+        .then(() => dispatch(removeSourceAction(name)))
         .then(() => dispatch(loadDownloadableApps()))
         .then(async () => dispatch(await setAppManagementSource(name)))
         .catch(error =>

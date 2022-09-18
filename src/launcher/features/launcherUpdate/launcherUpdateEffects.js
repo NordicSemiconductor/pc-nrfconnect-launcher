@@ -12,9 +12,9 @@ import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
-import * as SettingsActions from '../../actions/settingsActions';
 import mainConfig from '../../util/mainConfig';
 import { removeSource } from '../settings/settingsEffects';
+import { showUpdateCheckCompleteDialog } from '../settings/settingsSlice';
 import {
     cancelDownload as cancelLauncherDownload,
     reset,
@@ -109,7 +109,7 @@ export const checkForUpdatesManually = () => dispatch =>
     dispatch(downloadLatestAppInfo({ rejectIfError: true }))
         .then(() => {
             dispatch(checkForCoreUpdates());
-            dispatch(SettingsActions.showUpdateCheckCompleteDialog());
+            dispatch(showUpdateCheckCompleteDialog());
         })
         .catch(error =>
             dispatch(

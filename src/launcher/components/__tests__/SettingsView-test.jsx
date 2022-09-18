@@ -26,25 +26,24 @@ import {
     downloadLatestAppInfoSuccessAction,
     loadDownloadableAppsSuccess,
 } from '../../actions/appsActions';
-import {
-    checkUpdatesAtStartupChangedAction,
-    showUpdateCheckCompleteDialog,
-} from '../../actions/settingsActions';
 import SettingsView from '../../containers/SettingsContainer';
+import {
+    setCheckUpdatesAtStartup,
+    showUpdateCheckCompleteDialog,
+} from '../../features/settings/settingsSlice';
 
 describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {
         expect(
-            render(<SettingsView />, [checkUpdatesAtStartupChangedAction(true)])
+            render(<SettingsView />, [setCheckUpdatesAtStartup(true)])
                 .baseElement
         ).toMatchSnapshot();
     });
 
     it('should render with check for updates disabled', () => {
         expect(
-            render(<SettingsView />, [
-                checkUpdatesAtStartupChangedAction(false),
-            ]).baseElement
+            render(<SettingsView />, [setCheckUpdatesAtStartup(false)])
+                .baseElement
         ).toMatchSnapshot();
     });
 

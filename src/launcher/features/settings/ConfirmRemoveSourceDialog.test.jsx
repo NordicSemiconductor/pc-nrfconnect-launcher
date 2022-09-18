@@ -7,8 +7,8 @@
 import React from 'react';
 
 import render from '../../../testrenderer';
-import { showRemoveSourceDialog } from '../../actions/settingsActions';
 import ConfirmRemoveSourceDialog from '../../containers/ConfirmRemoveSourceDialog';
+import { showRemoveSourceDialog } from './settingsSlice';
 
 describe('ConfirmRemoveSourceDialog', () => {
     it('is initially invisible', () => {

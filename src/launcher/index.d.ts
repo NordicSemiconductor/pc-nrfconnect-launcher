@@ -7,9 +7,11 @@
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
 import type { SliceState as LauncherUpdateState } from './features/launcherUpdate/launcherUpdateSlice';
+import type { SliceState as SettingsState } from './features/settings/settingsSlice';
 
 export type RootState = {
     launcherUpdate: LauncherUpdateState;
+    settings: SettingsState;
     // TODO: Add more sub states
 };
 export type AppDispatch = ThunkDispatch<RootState, null, AnyAction>;

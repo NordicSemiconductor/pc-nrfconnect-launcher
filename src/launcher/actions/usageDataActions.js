@@ -8,11 +8,12 @@ import { usageData } from 'pc-nrfconnect-shared';
 import si from 'systeminformation';
 
 import pkgJson from '../../../package.json';
-
-export const USAGE_DATA_DIALOG_SHOW = 'USAGE_DATA_DIALOG_SHOW';
-export const USAGE_DATA_DIALOG_HIDE = 'USAGE_DATA_DIALOG_HIDE';
-export const USAGE_DATA_SEND_ON = 'USAGE_DATA_SEND_ON';
-export const USAGE_DATA_SEND_OFF = 'USAGE_DATA_SEND_OFF';
+import {
+    hideUsageDataDialog,
+    setUsageDataOff,
+    setUsageDataOn,
+    showUsageDataDialog,
+} from '../features/settings/settingsSlice';
 
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
@@ -30,30 +31,6 @@ const EventLabel = {
     LAUNCHER_USAGE_DATA_OFF: 'Usage data off',
     LAUNCHER_USAGE_DATA_NOT_SET: 'Usage data not set',
 };
-
-export function showUsageDataDialog() {
-    return {
-        type: USAGE_DATA_DIALOG_SHOW,
-    };
-}
-
-export function hideUsageDataDialog() {
-    return {
-        type: USAGE_DATA_DIALOG_HIDE,
-    };
-}
-
-export function setUsageDataOn() {
-    return {
-        type: USAGE_DATA_SEND_ON,
-    };
-}
-
-export function setUsageDataOff() {
-    return {
-        type: USAGE_DATA_SEND_OFF,
-    };
-}
 
 export function isUsageDataOn() {
     return usageData.isEnabled();

@@ -6,8 +6,7 @@
 
 import { connect } from 'react-redux';
 
-import * as SettingsActions from '../actions/settingsActions';
-import * as UsageDataActions from '../actions/usageDataActions';
+import { toggleSendingUsageData } from '../actions/usageDataActions';
 import SettingsView from '../components/SettingsView';
 import { checkForUpdatesManually } from '../features/launcherUpdate/launcherUpdateEffects';
 import {
@@ -16,6 +15,14 @@ import {
     loadSettings,
     removeSource,
 } from '../features/settings/settingsEffects';
+import {
+    hideAddSourceDialog,
+    hideRemoveSourceDialog,
+    hideUpdateCheckCompleteDialog,
+    showAddSourceDialog,
+    showRemoveSourceDialog,
+    showUsageDataDialog,
+} from '../features/settings/settingsSlice';
 
 function isAppUpdateAvailable(downloadableApps) {
     return !!downloadableApps.find(
@@ -47,21 +54,16 @@ function mapDispatchToProps(dispatch) {
             dispatch(checkUpdatesAtStartupChanged(isEnabled)),
         onTriggerUpdateCheck: () => dispatch(checkForUpdatesManually()),
         onHideUpdateCheckCompleteDialog: () =>
-            dispatch(SettingsActions.hideUpdateCheckCompleteDialog()),
+            dispatch(hideUpdateCheckCompleteDialog()),
         addSource: url => dispatch(addSource(url)),
         removeSource: name => dispatch(removeSource(name)),
-        onShowAddSourceDialog: () =>
-            dispatch(SettingsActions.showAddSourceDialog()),
-        onHideAddSourceDialog: () =>
-            dispatch(SettingsActions.hideAddSourceDialog()),
+        onShowAddSourceDialog: () => dispatch(showAddSourceDialog()),
+        onHideAddSourceDialog: () => dispatch(hideAddSourceDialog()),
         onShowRemoveSourceDialog: name =>
-            dispatch(SettingsActions.showRemoveSourceDialog(name)),
-        onHideRemoveSourceDialog: () =>
-            dispatch(SettingsActions.hideRemoveSourceDialog()),
-        toggleSendingUsageData: () =>
-            dispatch(UsageDataActions.toggleSendingUsageData()),
-        showUsageDataDialog: () =>
-            dispatch(UsageDataActions.showUsageDataDialog()),
+            dispatch(showRemoveSourceDialog(name)),
+        onHideRemoveSourceDialog: () => dispatch(hideRemoveSourceDialog()),
+        toggleSendingUsageData: () => dispatch(toggleSendingUsageData()),
+        showUsageDataDialog: () => dispatch(showUsageDataDialog()),
     };
 }
 
