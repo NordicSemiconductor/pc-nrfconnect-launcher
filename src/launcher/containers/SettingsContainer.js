@@ -10,6 +10,12 @@ import * as SettingsActions from '../actions/settingsActions';
 import * as UsageDataActions from '../actions/usageDataActions';
 import SettingsView from '../components/SettingsView';
 import { checkForUpdatesManually } from '../features/launcherUpdate/launcherUpdateEffects';
+import {
+    addSource,
+    checkUpdatesAtStartupChanged,
+    loadSettings,
+    removeSource,
+} from '../features/settings/settingsEffects';
 
 function isAppUpdateAvailable(downloadableApps) {
     return !!downloadableApps.find(
@@ -36,14 +42,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onMount: () => SettingsActions.loadSettings(dispatch),
+        onMount: () => loadSettings(dispatch),
         onCheckUpdatesAtStartupChanged: isEnabled =>
-            dispatch(SettingsActions.checkUpdatesAtStartupChanged(isEnabled)),
+            dispatch(checkUpdatesAtStartupChanged(isEnabled)),
         onTriggerUpdateCheck: () => dispatch(checkForUpdatesManually()),
         onHideUpdateCheckCompleteDialog: () =>
             dispatch(SettingsActions.hideUpdateCheckCompleteDialog()),
-        addSource: url => dispatch(SettingsActions.addSource(url)),
-        removeSource: name => dispatch(SettingsActions.removeSource(name)),
+        addSource: url => dispatch(addSource(url)),
+        removeSource: name => dispatch(removeSource(name)),
         onShowAddSourceDialog: () =>
             dispatch(SettingsActions.showAddSourceDialog()),
         onHideAddSourceDialog: () =>

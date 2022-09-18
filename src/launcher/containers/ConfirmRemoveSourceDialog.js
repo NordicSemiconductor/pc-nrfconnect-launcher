@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
 import ConfirmRemoveSourceDialog from '../components/ConfirmRemoveSourceDialog';
+import { removeSource } from '../features/settings/settingsEffects';
 
 function mapStateToProps(state) {
     return {
@@ -20,7 +21,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onConfirm: source => {
             dispatch(SettingsActions.hideRemoveSourceDialog());
-            dispatch(SettingsActions.removeSource(source));
+            dispatch(removeSource(source));
         },
         onCancel: () => dispatch(SettingsActions.hideRemoveSourceDialog()),
     };

@@ -14,6 +14,7 @@ import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
 import * as SettingsActions from '../../actions/settingsActions';
 import mainConfig from '../../util/mainConfig';
+import { removeSource } from '../settings/settingsEffects';
 import {
     cancelDownload as cancelLauncherDownload,
     reset,
@@ -75,11 +76,7 @@ export const downloadLatestAppInfo =
                                 'where the sources files was removed from the server.',
                             {
                                 'Remove source': () => {
-                                    dispatch(
-                                        SettingsActions.removeSource(
-                                            error.source.name
-                                        )
-                                    );
+                                    dispatch(removeSource(error.source.name));
                                     dispatch(ErrorDialogActions.hideDialog());
                                 },
                                 Cancel: () => {
