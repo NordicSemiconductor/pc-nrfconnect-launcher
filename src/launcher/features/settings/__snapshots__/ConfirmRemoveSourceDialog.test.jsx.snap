@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmRemoveSourceDialog is initially invisible 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`ConfirmRemoveSourceDialog shows the new version if one becomes available  1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog modal-lg"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+            data-testid="title"
+          >
+            <h3>
+              Remove app source
+            </h3>
+          </div>
+          <button
+            class="close"
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <span
+              class="sr-only"
+            >
+              Close
+            </span>
+          </button>
+        </div>
+        <div
+          class="modal-body"
+        >
+          <p
+            data-testid="body"
+          >
+            Are you sure to remove "the source to remove" source along with any apps installed from it?
+          </p>
+        </div>
+        <div
+          class="modal-footer"
+        >
+           
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Yes, remove
+          </button>
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
