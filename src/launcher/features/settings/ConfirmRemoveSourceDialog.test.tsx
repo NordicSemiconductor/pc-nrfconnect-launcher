@@ -7,7 +7,7 @@
 import React from 'react';
 
 import render from '../../../testrenderer';
-import ConfirmRemoveSourceDialog from '../../containers/ConfirmRemoveSourceDialog';
+import ConfirmRemoveSourceDialog from './ConfirmRemoveSourceDialog';
 import { showRemoveSourceDialog } from './settingsSlice';
 
 describe('ConfirmRemoveSourceDialog', () => {

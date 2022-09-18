@@ -16,8 +16,6 @@ jest.mock('react-bootstrap', () => ({
     ModalTitle: 'ModalTitle',
 }));
 
-jest.mock('../../containers/ConfirmRemoveSourceDialog', () => 'div');
-
 import React from 'react';
 
 import render from '../../../testrenderer';

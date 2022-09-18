@@ -16,8 +16,8 @@ import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
 import { bool, func, instanceOf, object } from 'prop-types';
 
-import ConfirmRemoveSourceDialog from '../containers/ConfirmRemoveSourceDialog';
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+import ConfirmRemoveSourceDialog from '../features/settings/ConfirmRemoveSourceDialog';
 import InputLineDialog from './InputLineDialog';
 
 const { white, gray700, nordicBlue } = colors;

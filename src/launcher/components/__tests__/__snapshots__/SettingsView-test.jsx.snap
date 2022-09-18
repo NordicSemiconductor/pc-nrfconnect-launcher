@@ -173,7 +173,6 @@ exports[`SettingsView should render check for updates completed, with everything
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
@@ -398,7 +397,6 @@ exports[`SettingsView should render check for updates completed, with updates av
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
@@ -619,7 +617,6 @@ exports[`SettingsView should render when checking for updates 1`] = `
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
@@ -794,7 +791,6 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
@@ -970,7 +966,6 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
@@ -1150,7 +1145,6 @@ exports[`SettingsView should render with last update check date 1`] = `
               </div>
             </div>
           </div>
-          <div />
         </div>
       </div>
     </div>
