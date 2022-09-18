@@ -1,967 +1,1159 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SettingsView should render check for updates completed, with everything up to date 1`] = `
-<WithScrollbarContainer>
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
   <div
-    className="settings-pane-container"
+    aria-hidden="true"
   >
-    <Card
-      body={true}
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Check for updates
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      >
-        Last update check performed:
-         
-        2017-02-03 13:41:36
-      </p>
-      <Toggle
-        id="checkForUpdates"
-        isToggled={false}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={true}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        All apps are up to date.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Update check completed
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          All apps are up to date.
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 `;
 
 exports[`SettingsView should render check for updates completed, with updates available 1`] = `
-<WithScrollbarContainer>
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
   <div
-    className="settings-pane-container"
+    aria-hidden="true"
   >
-    <Card
-      body={true}
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Check for updates
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      >
-        Last update check performed:
-         
-        2017-02-03 13:41:36
-      </p>
-      <Toggle
-        id="checkForUpdates"
-        isToggled={false}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={true}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        One or more updates are available. Go to the apps screen to update.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Update check completed
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          One or more updates are available. Go to the apps screen to update.
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 `;
 
 exports[`SettingsView should render when checking for updates 1`] = `
-<WithScrollbarContainer>
-  <div
-    className="settings-pane-container"
-  >
-    <Card
-      body={true}
+<body>
+  <div>
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={true}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Checking...
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      />
-      <Toggle
-        id="checkForUpdates"
-        isToggled={false}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    disabled=""
+                    type="button"
+                  >
+                    Checking...
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={false}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        All apps are up to date.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+</body>
 `;
 
 exports[`SettingsView should render with check for updates disabled 1`] = `
-<WithScrollbarContainer>
-  <div
-    className="settings-pane-container"
-  >
-    <Card
-      body={true}
+<body>
+  <div>
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Check for updates
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      />
-      <Toggle
-        id="checkForUpdates"
-        isToggled={false}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={false}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        All apps are up to date.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+</body>
 `;
 
 exports[`SettingsView should render with check for updates enabled 1`] = `
-<WithScrollbarContainer>
-  <div
-    className="settings-pane-container"
-  >
-    <Card
-      body={true}
+<body>
+  <div>
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Check for updates
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      />
-      <Toggle
-        id="checkForUpdates"
-        isToggled={true}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={false}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        All apps are up to date.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+</body>
 `;
 
 exports[`SettingsView should render with last update check date 1`] = `
-<WithScrollbarContainer>
-  <div
-    className="settings-pane-container"
-  >
-    <Card
-      body={true}
+<body>
+  <div>
+    <div
+      class="with-scrollbar "
     >
-      <Row
-        noGutters={false}
+      <div
+        class="content-container"
       >
-        <Col>
-          <CardTitle>
-            Updates
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
+        <div
+          class="settings-pane-container"
         >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+          <div
+            class="card"
           >
-            Check for updates
-          </Button>
-        </Col>
-      </Row>
-      <p
-        className="small text-muted"
-      >
-        Last update check performed:
-         
-        2017-02-03 13:41:36
-      </p>
-      <Toggle
-        id="checkForUpdates"
-        isToggled={false}
-        label="Check for updates at startup"
-        onToggle={[Function]}
-        variant="primary"
-      />
-    </Card>
-    <Card
-      body={true}
-      id="app-sources"
-      onDragEnter={[Function]}
-      onDragOver={[Function]}
-      onDrop={[Function]}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            App sources
-          </CardTitle>
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                Last update check performed:
+                 
+                2017-02-03 13:41:36
+              </p>
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
           >
-            Add source
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Card
-      body={true}
-    >
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <CardTitle>
-            Usage statistics
-          </CardTitle>
-        </Col>
-      </Row>
-      <Row
-        noGutters={false}
-      >
-        <Col>
-          <Toggle
-            id="checkForShare"
-            isToggled={false}
-            label="Collect anonymous usage data"
-            onToggle={[Function]}
-            variant="primary"
-          />
-        </Col>
-        <Col
-          xs="auto"
-        >
-          <Button
-            active={false}
-            disabled={false}
-            onClick={[Function]}
-            variant="outline-primary"
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
-            Show agreement
-          </Button>
-        </Col>
-      </Row>
-    </Card>
-    <Modal
-      animation={true}
-      autoFocus={true}
-      backdrop={true}
-      dialogAs={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "ModalDialog",
-          "render": [Function],
-        }
-      }
-      enforceFocus={true}
-      keyboard={true}
-      onHide={[Function]}
-      restoreFocus={true}
-      show={false}
-    >
-      <ModalHeader
-        closeButton={false}
-        closeLabel="Close"
-      >
-        <ModalTitle>
-          Update check completed
-        </ModalTitle>
-      </ModalHeader>
-      <ModalBody>
-        All apps are up to date.
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          active={false}
-          disabled={false}
-          onClick={[Function]}
-          variant="outline-primary"
-        >
-          Got it
-        </Button>
-      </ModalFooter>
-    </Modal>
-    <InputLineDialog
-      isVisible={false}
-      onCancel={[Function]}
-      onOk={[Function]}
-      placeholder="https://..."
-      subtext="The source file must be in .json format"
-      title="Add source"
-    />
-    <div />
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
   </div>
-</WithScrollbarContainer>
+</body>
 `;
