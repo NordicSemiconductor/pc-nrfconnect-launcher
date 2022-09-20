@@ -9,7 +9,7 @@ exports[`SettingsView should render check for updates completed, with everything
     aria-hidden="true"
   >
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"
@@ -233,7 +233,7 @@ exports[`SettingsView should render check for updates completed, with updates av
     aria-hidden="true"
   >
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"
@@ -452,7 +452,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
 <body>
   <div>
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"
@@ -628,7 +628,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
 <body>
   <div>
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"
@@ -802,7 +802,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
 <body>
   <div>
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"
@@ -977,7 +977,7 @@ exports[`SettingsView should render with last update check date 1`] = `
 <body>
   <div>
     <div
-      class="with-scrollbar "
+      class="with-scrollbar"
     >
       <div
         class="content-container"

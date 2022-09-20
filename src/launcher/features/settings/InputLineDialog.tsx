@@ -9,16 +9,15 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { bool, func, string } from 'prop-types';
 
-const InputLineDialog = ({
-    isVisible,
-    title,
-    placeholder,
-    subtext,
-    onOk,
-    onCancel,
-}) => (
+const InputLineDialog: React.FC<{
+    isVisible: boolean;
+    title: string;
+    placeholder: string;
+    subtext: string;
+    onOk: (value: string) => void;
+    onCancel: () => void;
+}> = ({ isVisible, title, placeholder, subtext, onOk, onCancel }) => (
     <Modal show={isVisible} onHide={onCancel} backdrop="static">
         <Modal.Header>
             <Modal.Title>{title}</Modal.Title>
@@ -54,20 +53,5 @@ const InputLineDialog = ({
         </Form>
     </Modal>
 );
-
-InputLineDialog.propTypes = {
-    isVisible: bool,
-    title: string.isRequired,
-    placeholder: string,
-    subtext: string,
-    onOk: func.isRequired,
-    onCancel: func.isRequired,
-};
-
-InputLineDialog.defaultProps = {
-    isVisible: false,
-    placeholder: null,
-    subtext: null,
-};
 
 export default InputLineDialog;

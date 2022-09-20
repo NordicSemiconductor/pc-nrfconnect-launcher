@@ -4,12 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import type { AnyAction } from 'redux';
-import type { ThunkAction } from 'redux-thunk';
+import type { AppThunk } from '../..';
 
-export const cancelDownload: () => ThunkAction<
-    void,
-    unknown,
-    unknown,
-    AnyAction
->;
+export const checkForUpdatesManually: () => AppThunk;
+export const cancelDownload: () => AppThunk;

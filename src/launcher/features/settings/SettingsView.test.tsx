@@ -24,11 +24,20 @@ import {
     downloadLatestAppInfoSuccessAction,
     loadDownloadableAppsSuccess,
 } from '../../actions/appsActions';
-import SettingsView from '../../containers/SettingsContainer';
 import {
     setCheckUpdatesAtStartup,
     showUpdateCheckCompleteDialog,
-} from '../../features/settings/settingsSlice';
+} from './settingsSlice';
+import SettingsView from './SettingsView';
+
+const unimportantAppProperties = {
+    name: 'test-app',
+    displayName: 'test app',
+    description: 'the test app',
+    isDownloadable: true,
+    source: 'test source',
+    url: 'test url',
+};
 
 describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {
@@ -70,6 +79,7 @@ describe('SettingsView', () => {
                     {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
+                        ...unimportantAppProperties,
                     },
                 ]),
             ]).baseElement
@@ -84,6 +94,7 @@ describe('SettingsView', () => {
                     {
                         currentVersion: '1.0.0',
                         latestVersion: '1.0.0',
+                        ...unimportantAppProperties,
                     },
                 ]),
             ]).baseElement

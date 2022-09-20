@@ -200,4 +200,6 @@ const reducer = (state = initialState, action) => {
     }
 };
 
+export const getApps = state => state.apps;
+
 export default reducer;

@@ -5,6 +5,10 @@
  */
 
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+// TODO: As soon as we converted `src/launcher/index.js` to TypeScript:
+//          - replace this RootState definition by `ReturnType<typeof store.getState>`
+//          - define AppDispatch as `export type AppDispatch = typeof store.dispatch`
+import type { ThunkAction } from 'redux-thunk';
 
 import type { SliceState as LauncherUpdateState } from './features/launcherUpdate/launcherUpdateSlice';
 import type { SliceState as SettingsState } from './features/settings/settingsSlice';
@@ -16,6 +20,9 @@ export type RootState = {
 };
 export type AppDispatch = ThunkDispatch<RootState, null, AnyAction>;
 
-// TODO: As soon as we converted `src/launcher/index.js` to TypeScript:
-//          - replace this RootState definition by `ReturnType<typeof store.getState>`
-//          - define AppDispatch as `export type AppDispatch = typeof store.dispatch`
+export type AppThunk<ReturnType = void> = ThunkAction<
+    ReturnType,
+    RootState,
+    unknown,
+    AnyAction
+>;

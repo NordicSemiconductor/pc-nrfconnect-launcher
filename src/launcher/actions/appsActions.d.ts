@@ -5,32 +5,28 @@
  */
 
 import type { AnyAction } from 'redux';
-import type { ThunkAction } from 'redux-thunk';
 
-import { SourceName } from '../../ipc/sources';
-
-declare function LoadDownloadableApps(
-    appName: string,
-    appSource: SourceName
-): ThunkAction<void, unknown, unknown, AnyAction>;
-declare function LoadDownloadableApps(): ThunkAction<
-    void,
-    unknown,
-    unknown,
-    AnyAction
->;
+import { App } from '../../ipc/apps';
+import type { SourceName } from '../../ipc/sources';
+import type { AppThunk } from '..';
 
 export const loadDownloadableApps: {
-    (appName: string, appSource: SourceName): ThunkAction<
-        void,
-        unknown,
-        unknown,
-        AnyAction
-    >;
-    (): ThunkAction<void, unknown, unknown, AnyAction>;
+    (appName: string, appSource: SourceName): AppThunk;
+    (): AppThunk;
 };
 
 export const setAppManagementSource: (
     source?: SourceName,
     show?: boolean
-) => ThunkAction<void, unknown, unknown, AnyAction>;
+) => AppThunk;
+
+export const downloadLatestAppInfoAction: () => AnyAction;
+
+export const downloadLatestAppInfoSuccessAction: (
+    updateCheckDate?: Date
+) => AnyAction;
+
+export const loadDownloadableAppsSuccess: (
+    apps: App[],
+    appToUpdate?: { name: string; source: string }
+) => AnyAction;
