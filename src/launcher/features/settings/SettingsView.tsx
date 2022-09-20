@@ -20,8 +20,8 @@ import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { getApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
+import AddSourceDialog from './AddSourceDialog';
 import ConfirmRemoveSourceDialog from './ConfirmRemoveSourceDialog';
-import InputLineDialog from './InputLineDialog';
 import {
     addSource,
     checkUpdatesAtStartupChanged,
@@ -29,7 +29,6 @@ import {
 } from './settingsEffects';
 import {
     getSettings,
-    hideAddSourceDialog,
     hideUpdateCheckCompleteDialog,
     showAddSourceDialog,
     showRemoveSourceDialog,
@@ -54,7 +53,6 @@ export default () => {
         shouldCheckForUpdatesAtStartup,
         isUpdateCheckCompleteDialogVisible,
         sources,
-        isAddSourceDialogVisible,
         isSendingUsageData,
     } = useLauncherSelector(getSettings);
 
@@ -241,17 +239,7 @@ export default () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <InputLineDialog
-                    isVisible={isAddSourceDialogVisible}
-                    title="Add source"
-                    placeholder="https://..."
-                    subtext="The source file must be in .json format"
-                    onOk={url => {
-                        dispatch(addSource(url));
-                        dispatch(hideAddSourceDialog());
-                    }}
-                    onCancel={() => dispatch(hideAddSourceDialog())}
-                />
+                <AddSourceDialog />
                 <ConfirmRemoveSourceDialog />
             </div>
         </WithScrollbarContainer>
