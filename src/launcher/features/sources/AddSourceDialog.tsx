@@ -11,15 +11,14 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { addSource } from './settingsEffects';
-import { getSettings, hideAddSourceDialog } from './settingsSlice';
+import { addSource } from './sourcesEffects';
+import { getIsAddSourceVisible, hideAddSource } from './sourcesSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isAddSourceDialogVisible: isVisible } =
-        useLauncherSelector(getSettings);
+    const isVisible = useLauncherSelector(getIsAddSourceVisible);
 
-    const cancel = () => dispatch(hideAddSourceDialog());
+    const cancel = () => dispatch(hideAddSource());
 
     return (
         <Modal show={isVisible} onHide={cancel} backdrop="static">
@@ -30,7 +29,7 @@ export default () => {
                 onSubmit={e => {
                     const url = e.currentTarget.inputField.value;
                     dispatch(addSource(url));
-                    dispatch(hideAddSourceDialog());
+                    dispatch(hideAddSource());
                     e.preventDefault();
                 }}
             >

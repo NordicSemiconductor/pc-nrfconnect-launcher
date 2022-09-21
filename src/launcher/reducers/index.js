@@ -9,15 +9,17 @@ import { combineReducers } from 'redux';
 
 import launcherUpdate from '../features/launcherUpdate/launcherUpdateSlice';
 import settings from '../features/settings/settingsSlice';
+import sources from '../features/sources/sourcesSlice';
 import apps from './appsReducer';
 import proxy from './proxyReducer';
 import releaseNotesDialog from './releaseNotesDialogReducer';
 
 export default combineReducers({
-    releaseNotesDialog,
     apps,
+    errorDialog,
     launcherUpdate,
     proxy,
+    releaseNotesDialog,
     settings,
-    errorDialog,
+    sources,
 });

@@ -8,7 +8,7 @@ import React from 'react';
 
 import render from '../../../testrenderer';
 import ConfirmRemoveSourceDialog from './ConfirmRemoveSourceDialog';
-import { showRemoveSourceDialog } from './settingsSlice';
+import { showRemoveSource } from './sourcesSlice';
 
 describe('ConfirmRemoveSourceDialog', () => {
     it('is initially invisible', () => {
@@ -20,7 +20,7 @@ describe('ConfirmRemoveSourceDialog', () => {
     it('shows the new version if one becomes available ', () => {
         expect(
             render(<ConfirmRemoveSourceDialog />, [
-                showRemoveSourceDialog('the source to remove'),
+                showRemoveSource('the source to remove'),
             ]).baseElement
         ).toMatchSnapshot();
     });

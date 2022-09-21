@@ -12,10 +12,12 @@ import type { ThunkAction } from 'redux-thunk';
 
 import type { SliceState as LauncherUpdateState } from './features/launcherUpdate/launcherUpdateSlice';
 import type { SliceState as SettingsState } from './features/settings/settingsSlice';
+import type { SliceState as SourcesState } from './features/sources/sourcesSlice';
 
 export type RootState = {
     launcherUpdate: LauncherUpdateState;
     settings: SettingsState;
+    sources: SourcesState;
     // TODO: Add more sub states
 };
 export type AppDispatch = ThunkDispatch<RootState, null, AnyAction>;

@@ -20,18 +20,18 @@ import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { getApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
-import AddSourceDialog from './AddSourceDialog';
-import ConfirmRemoveSourceDialog from './ConfirmRemoveSourceDialog';
+import AddSourceDialog from '../sources/AddSourceDialog';
+import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
+import { addSource, loadSources } from '../sources/sourcesEffects';
 import {
-    addSource,
-    checkUpdatesAtStartupChanged,
-    loadSettings,
-} from './settingsEffects';
+    getSources,
+    showAddSource,
+    showRemoveSource,
+} from '../sources/sourcesSlice';
+import { checkUpdatesAtStartupChanged, loadSettings } from './settingsEffects';
 import {
     getSettings,
     hideUpdateCheckCompleteDialog,
-    showAddSourceDialog,
-    showRemoveSourceDialog,
     showUsageDataDialog,
 } from './settingsSlice';
 
@@ -47,14 +47,16 @@ export default () => {
 
     useEffect(() => {
         loadSettings(dispatch);
+        loadSources(dispatch);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const {
         shouldCheckForUpdatesAtStartup,
         isUpdateCheckCompleteDialogVisible,
-        sources,
         isSendingUsageData,
     } = useLauncherSelector(getSettings);
+
+    const sources = useLauncherSelector(getSources);
 
     const {
         isDownloadingLatestAppInfo: isCheckingForUpdates,
@@ -138,7 +140,7 @@ export default () => {
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
-                                onClick={() => dispatch(showAddSourceDialog())}
+                                onClick={() => dispatch(showAddSource())}
                             >
                                 Add source
                             </Button>
@@ -169,9 +171,7 @@ export default () => {
                                             variant="outline-secondary"
                                             size="sm"
                                             onClick={() =>
-                                                dispatch(
-                                                    showRemoveSourceDialog(name)
-                                                )
+                                                dispatch(showRemoveSource(name))
                                             }
                                             title="Remove source and associated apps"
                                         >

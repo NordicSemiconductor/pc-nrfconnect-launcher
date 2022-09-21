@@ -13,8 +13,8 @@ import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
 import mainConfig from '../../util/mainConfig';
-import { removeSource } from '../settings/settingsEffects';
 import { showUpdateCheckCompleteDialog } from '../settings/settingsSlice';
+import { removeSource } from '../sources/sourcesEffects';
 import {
     cancelDownload as cancelLauncherDownload,
     reset,
