@@ -9,7 +9,6 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
@@ -33,11 +32,8 @@ import {
     showUsageDataDialog,
 } from '../usageData/usageDataSlice';
 import { checkUpdatesAtStartupChanged, loadSettings } from './settingsEffects';
-import {
-    getIsUpdateCheckCompleteVisible,
-    getShouldCheckForUpdatesAtStartup,
-    hideUpdateCheckComplete,
-} from './settingsSlice';
+import { getShouldCheckForUpdatesAtStartup } from './settingsSlice';
+import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
 const { white, gray700, nordicBlue } = colors;
 
@@ -57,9 +53,6 @@ export default () => {
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
         getShouldCheckForUpdatesAtStartup
     );
-    const isUpdateCheckCompleteVisible = useLauncherSelector(
-        getIsUpdateCheckCompleteVisible
-    );
     const isSendingUsageData = useLauncherSelector(getIsSendingUsageData);
 
     const sources = useLauncherSelector(getSources);
@@ -67,15 +60,7 @@ export default () => {
     const {
         isDownloadingLatestAppInfo: isCheckingForUpdates,
         lastUpdateCheckDate,
-        downloadableApps,
     } = useLauncherSelector(getApps);
-
-    const isAppUpdateAvailable = !!downloadableApps.find(
-        app => app.currentVersion && app.currentVersion !== app.latestVersion
-    );
-
-    const onHideUpdateCheckCompleteDialog = () =>
-        dispatch(hideUpdateCheckComplete());
 
     const onDropUrl: React.DragEventHandler = event => {
         event.preventDefault();
@@ -219,32 +204,7 @@ export default () => {
                         </Col>
                     </Row>
                 </Card>
-                <Modal
-                    show={isUpdateCheckCompleteVisible}
-                    onHide={onHideUpdateCheckCompleteDialog}
-                >
-                    <Modal.Header>
-                        <Modal.Title>Update check completed</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {isAppUpdateAvailable ? (
-                            <>
-                                One or more updates are available. Go to the
-                                apps screen to update.
-                            </>
-                        ) : (
-                            <>All apps are up to date.</>
-                        )}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            variant="outline-primary"
-                            onClick={onHideUpdateCheckCompleteDialog}
-                        >
-                            Got it
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <UpdateCheckCompleteDialog />
                 <AddSourceDialog />
                 <ConfirmRemoveSourceDialog />
             </div>
