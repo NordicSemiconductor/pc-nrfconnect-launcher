@@ -9,18 +9,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { RootState } from '../..';
 
-export type SliceState = {
+export type State = {
     shouldCheckForUpdatesAtStartup: boolean;
-    isUpdateCheckCompleteDialogVisible: boolean;
-    isUsageDataDialogVisible: boolean;
-    isSendingUsageData: boolean;
+    isUpdateCheckCompleteVisible: boolean;
 };
 
-const initialState: SliceState = {
+const initialState: State = {
     shouldCheckForUpdatesAtStartup: true,
-    isUpdateCheckCompleteDialogVisible: false,
-    isUsageDataDialogVisible: false,
-    isSendingUsageData: false,
+    isUpdateCheckCompleteVisible: false,
 };
 
 const slice = createSlice({
@@ -33,23 +29,11 @@ const slice = createSlice({
         ) {
             state.shouldCheckForUpdatesAtStartup = isEnabled;
         },
-        showUpdateCheckCompleteDialog(state) {
-            state.isUpdateCheckCompleteDialogVisible = true;
+        showUpdateCheckComplete(state) {
+            state.isUpdateCheckCompleteVisible = true;
         },
-        hideUpdateCheckCompleteDialog(state) {
-            state.isUpdateCheckCompleteDialogVisible = false;
-        },
-        showUsageDataDialog(state) {
-            state.isUsageDataDialogVisible = true;
-        },
-        hideUsageDataDialog(state) {
-            state.isUsageDataDialogVisible = false;
-        },
-        setUsageDataOn(state) {
-            state.isSendingUsageData = true;
-        },
-        setUsageDataOff(state) {
-            state.isSendingUsageData = false;
+        hideUpdateCheckComplete(state) {
+            state.isUpdateCheckCompleteVisible = false;
         },
     },
 });
@@ -58,12 +42,11 @@ export default slice.reducer;
 
 export const {
     setCheckUpdatesAtStartup,
-    showUpdateCheckCompleteDialog,
-    hideUpdateCheckCompleteDialog,
-    showUsageDataDialog,
-    hideUsageDataDialog,
-    setUsageDataOn,
-    setUsageDataOff,
+    showUpdateCheckComplete,
+    hideUpdateCheckComplete,
 } = slice.actions;
 
-export const getSettings = (state: RootState) => state.settings;
+export const getShouldCheckForUpdatesAtStartup = (state: RootState) =>
+    state.settings.shouldCheckForUpdatesAtStartup;
+export const getIsUpdateCheckCompleteVisible = (state: RootState) =>
+    state.settings.isUpdateCheckCompleteVisible;

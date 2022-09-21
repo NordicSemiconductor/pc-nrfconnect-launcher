@@ -19,13 +19,13 @@ import { downloadToFile } from '../../ipc/downloadToFile';
 import { openApp } from '../../ipc/openWindow';
 import { getSetting, setSetting } from '../../ipc/settings';
 import { getAppsRootDir } from '../../main/config';
-import checkAppCompatibility from '../util/checkAppCompatibility';
-import mainConfig from '../util/mainConfig';
 import {
     EventAction,
     sendAppUsageData,
     sendLauncherUsageData,
-} from './usageDataActions';
+} from '../features/usageData/usageDataEffects';
+import checkAppCompatibility from '../util/checkAppCompatibility';
+import mainConfig from '../util/mainConfig';
 
 const fs = remoteRequire('fs-extra');
 

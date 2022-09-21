@@ -13,12 +13,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import * as AppsActions from './actions/appsActions';
-import * as UsageDataActions from './actions/usageDataActions';
 import RootContainer from './containers/RootContainer';
 import {
     checkForCoreUpdatesAtStartup,
     downloadLatestAppInfoAtStartup,
 } from './features/launcherUpdate/launcherUpdateEffects';
+import {
+    checkUsageDataSetting,
+    sendEnvInfo,
+} from './features/usageData/usageDataEffects';
 import rootReducer from './reducers';
 import registerIpcHandler from './util/registerIpcHandler';
 
@@ -35,7 +38,7 @@ registerIpcHandler(store.dispatch);
 const rootElement = React.createElement(RootContainer, { store });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await store.dispatch(UsageDataActions.checkUsageDataSetting());
+    await store.dispatch(checkUsageDataSetting());
     store.dispatch(await AppsActions.setAppManagementFilter());
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadDownloadableApps());
@@ -43,5 +46,5 @@ render(rootElement, document.getElementById('webapp'), async () => {
     store.dispatch(await AppsActions.setAppManagementSource());
     await store.dispatch(downloadLatestAppInfoAtStartup());
     await store.dispatch(checkForCoreUpdatesAtStartup());
-    UsageDataActions.sendEnvInfo();
+    sendEnvInfo();
 });

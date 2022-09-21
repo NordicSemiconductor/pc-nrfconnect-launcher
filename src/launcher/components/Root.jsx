@@ -13,7 +13,7 @@ import AppManagementContainer from '../containers/AppManagementContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import ProxyErrorContainer from '../containers/ProxyErrorContainer';
 import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import UsageDataDialogContainer from '../containers/UsageDataDialogContainer';
+import UsageDataDialog from '../features/usageData/UsageDataDialog';
 import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
 import SettingsView from '../features/settings/SettingsView';
@@ -79,7 +79,7 @@ export default () => {
             <ErrorDialog />
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
-            <UsageDataDialogContainer />
+            <UsageDataDialog />
             <ConfirmLaunchContainer />
             <ProxyLoginContainer />
             <ProxyErrorContainer />

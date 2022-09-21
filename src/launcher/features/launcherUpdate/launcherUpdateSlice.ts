@@ -12,7 +12,7 @@ import type { RootState } from '../..';
 const isWindows = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 
-export type SliceState = {
+export type State = {
     isUpdateAvailableDialogVisible: boolean;
     isUpdateProgressDialogVisible: boolean;
     isProgressSupported: boolean;
@@ -22,7 +22,7 @@ export type SliceState = {
     isCancelling: boolean;
 };
 
-const initialState: SliceState = {
+const initialState: State = {
     isUpdateAvailableDialogVisible: false,
     isUpdateProgressDialogVisible: false,
     isProgressSupported: false,

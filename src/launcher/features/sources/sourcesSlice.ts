@@ -10,13 +10,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { SourceName, Sources, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../..';
 
-export type SliceState = {
+export type State = {
     sources: Sources;
     isAddSourceVisible: boolean;
     sourceToRemove: null | SourceName;
 };
 
-const initialState: SliceState = {
+const initialState: State = {
     sources: {},
     isAddSourceVisible: false,
     sourceToRemove: null,

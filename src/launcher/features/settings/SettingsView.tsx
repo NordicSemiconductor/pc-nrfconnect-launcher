@@ -15,7 +15,6 @@ import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
 
-import { toggleSendingUsageData } from '../../actions/usageDataActions';
 import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { getApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -28,11 +27,16 @@ import {
     showAddSource,
     showRemoveSource,
 } from '../sources/sourcesSlice';
+import { toggleSendingUsageData } from '../usageData/usageDataEffects';
+import {
+    getIsSendingUsageData,
+    showUsageDataDialog,
+} from '../usageData/usageDataSlice';
 import { checkUpdatesAtStartupChanged, loadSettings } from './settingsEffects';
 import {
-    getSettings,
-    hideUpdateCheckCompleteDialog,
-    showUsageDataDialog,
+    getIsUpdateCheckCompleteVisible,
+    getShouldCheckForUpdatesAtStartup,
+    hideUpdateCheckComplete,
 } from './settingsSlice';
 
 const { white, gray700, nordicBlue } = colors;
@@ -50,11 +54,13 @@ export default () => {
         loadSources(dispatch);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const {
-        shouldCheckForUpdatesAtStartup,
-        isUpdateCheckCompleteDialogVisible,
-        isSendingUsageData,
-    } = useLauncherSelector(getSettings);
+    const shouldCheckForUpdatesAtStartup = useLauncherSelector(
+        getShouldCheckForUpdatesAtStartup
+    );
+    const isUpdateCheckCompleteVisible = useLauncherSelector(
+        getIsUpdateCheckCompleteVisible
+    );
+    const isSendingUsageData = useLauncherSelector(getIsSendingUsageData);
 
     const sources = useLauncherSelector(getSources);
 
@@ -69,7 +75,7 @@ export default () => {
     );
 
     const onHideUpdateCheckCompleteDialog = () =>
-        dispatch(hideUpdateCheckCompleteDialog());
+        dispatch(hideUpdateCheckComplete());
 
     const onDropUrl: React.DragEventHandler = event => {
         event.preventDefault();
@@ -214,7 +220,7 @@ export default () => {
                     </Row>
                 </Card>
                 <Modal
-                    show={isUpdateCheckCompleteDialogVisible}
+                    show={isUpdateCheckCompleteVisible}
                     onHide={onHideUpdateCheckCompleteDialog}
                 >
                     <Modal.Header>

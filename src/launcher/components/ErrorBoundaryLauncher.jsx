@@ -12,7 +12,7 @@ import { node } from 'prop-types';
 
 import pkgJson from '../../../package.json';
 import * as AppsActions from '../actions/appsActions';
-import { sendLauncherUsageData } from '../actions/usageDataActions';
+import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
 
 const ErrorBoundaryLauncher = ({ children }) => {
     const dispatch = useDispatch();

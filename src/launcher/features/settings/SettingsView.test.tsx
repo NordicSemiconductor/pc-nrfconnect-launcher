@@ -26,7 +26,7 @@ import {
 } from '../../actions/appsActions';
 import {
     setCheckUpdatesAtStartup,
-    showUpdateCheckCompleteDialog,
+    showUpdateCheckComplete,
 } from './settingsSlice';
 import SettingsView from './SettingsView';
 
@@ -74,7 +74,7 @@ describe('SettingsView', () => {
     it('should render check for updates completed, with updates available', () => {
         expect(
             render(<SettingsView />, [
-                showUpdateCheckCompleteDialog(),
+                showUpdateCheckComplete(),
                 loadDownloadableAppsSuccess([
                     {
                         currentVersion: '1.0.0',
@@ -89,7 +89,7 @@ describe('SettingsView', () => {
     it('should render check for updates completed, with everything up to date', () => {
         expect(
             render(<SettingsView />, [
-                showUpdateCheckCompleteDialog(),
+                showUpdateCheckComplete(),
                 loadDownloadableAppsSuccess([
                     {
                         currentVersion: '1.0.0',

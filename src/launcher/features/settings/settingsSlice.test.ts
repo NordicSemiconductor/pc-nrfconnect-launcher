@@ -7,9 +7,9 @@
 import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
 import reducer, {
-    hideUpdateCheckCompleteDialog,
+    hideUpdateCheckComplete,
     setCheckUpdatesAtStartup,
-    showUpdateCheckCompleteDialog,
+    showUpdateCheckComplete,
 } from './settingsSlice';
 
 describe('settingsReducer', () => {
@@ -30,15 +30,15 @@ describe('settingsReducer', () => {
     });
 
     it('should show update check complete dialog when showUpdateCheckCompleteDialog has been dispatched', () => {
-        const state = dispatchTo(reducer, [showUpdateCheckCompleteDialog()]);
-        expect(state.isUpdateCheckCompleteDialogVisible).toEqual(true);
+        const state = dispatchTo(reducer, [showUpdateCheckComplete()]);
+        expect(state.isUpdateCheckCompleteVisible).toEqual(true);
     });
 
     it('should not show update check complete dialog when hideUpdateCheckCompleteDialog has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            showUpdateCheckCompleteDialog(),
-            hideUpdateCheckCompleteDialog(),
+            showUpdateCheckComplete(),
+            hideUpdateCheckComplete(),
         ]);
-        expect(state.isUpdateCheckCompleteDialogVisible).toEqual(false);
+        expect(state.isUpdateCheckCompleteVisible).toEqual(false);
     });
 });

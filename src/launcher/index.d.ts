@@ -10,14 +10,16 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 //          - define AppDispatch as `export type AppDispatch = typeof store.dispatch`
 import type { ThunkAction } from 'redux-thunk';
 
-import type { SliceState as LauncherUpdateState } from './features/launcherUpdate/launcherUpdateSlice';
-import type { SliceState as SettingsState } from './features/settings/settingsSlice';
-import type { SliceState as SourcesState } from './features/sources/sourcesSlice';
+import type { State as LauncherUpdate } from './features/launcherUpdate/launcherUpdateSlice';
+import type { State as Settings } from './features/settings/settingsSlice';
+import type { State as Sources } from './features/sources/sourcesSlice';
+import type { State as UsageData } from './features/usageData/usageDataSlice';
 
 export type RootState = {
-    launcherUpdate: LauncherUpdateState;
-    settings: SettingsState;
-    sources: SourcesState;
+    launcherUpdate: LauncherUpdate;
+    settings: Settings;
+    sources: Sources;
+    usageData: UsageData;
     // TODO: Add more sub states
 };
 export type AppDispatch = ThunkDispatch<RootState, null, AnyAction>;
