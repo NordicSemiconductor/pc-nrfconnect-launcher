@@ -12,8 +12,12 @@ const channel = {
     remove: 'sources:remove',
 };
 
+export type SourceName = string;
+export type SourceUrl = string;
+export type Sources = Record<SourceName, SourceUrl>;
+
 // Get
-type GetSources = () => Record<string, string>;
+type GetSources = () => Sources;
 
 export const getSources = invoke<GetSources>(channel.get);
 export const registerGetSources = handle<GetSources>(channel.get);

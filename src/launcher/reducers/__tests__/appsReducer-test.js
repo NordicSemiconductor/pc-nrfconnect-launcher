@@ -278,6 +278,7 @@ describe('appsReducer', () => {
     it('should have downloaded latest app info when DOWNLOAD_LATEST_APP_INFO_SUCCESS has been dispatched', () => {
         const state = reducer(initialState, {
             type: AppsActions.DOWNLOAD_LATEST_APP_INFO_SUCCESS,
+            updateCheckDate: new Date(),
         });
         expect(state.isLatestAppInfoDownloaded).toEqual(true);
     });
@@ -287,6 +288,7 @@ describe('appsReducer', () => {
             initialState.set('isDownloadingLatestAppInfo', true),
             {
                 type: AppsActions.DOWNLOAD_LATEST_APP_INFO_SUCCESS,
+                updateCheckDate: new Date(),
             }
         );
         expect(state.isDownloadingLatestAppInfo).toEqual(false);
@@ -303,9 +305,12 @@ describe('appsReducer', () => {
     });
 
     it('should set a last update check date when DOWNLOAD_LATEST_APP_INFO_SUCCESS has been dispatched', () => {
+        const aDate = new Date(1972, 5, 27);
+
         const state = reducer(initialState, {
             type: AppsActions.DOWNLOAD_LATEST_APP_INFO_SUCCESS,
+            updateCheckDate: aDate,
         });
-        expect(state.lastUpdateCheckDate).not.toBeNull();
+        expect(state.lastUpdateCheckDate).toEqual(aDate);
     });
 });

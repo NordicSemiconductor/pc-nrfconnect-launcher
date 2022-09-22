@@ -8,16 +8,20 @@ import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 import { combineReducers } from 'redux';
 
 import launcherUpdate from '../features/launcherUpdate/launcherUpdateSlice';
+import settings from '../features/settings/settingsSlice';
+import sources from '../features/sources/sourcesSlice';
+import usageData from '../features/usageData/usageDataSlice';
 import apps from './appsReducer';
 import proxy from './proxyReducer';
 import releaseNotesDialog from './releaseNotesDialogReducer';
-import settings from './settingsReducer';
 
 export default combineReducers({
-    releaseNotesDialog,
     apps,
+    errorDialog,
     launcherUpdate,
     proxy,
+    releaseNotesDialog,
     settings,
-    errorDialog,
+    sources,
+    usageData,
 });

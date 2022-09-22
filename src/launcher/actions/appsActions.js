@@ -19,13 +19,13 @@ import { downloadToFile } from '../../ipc/downloadToFile';
 import { openApp } from '../../ipc/openWindow';
 import { getSetting, setSetting } from '../../ipc/settings';
 import { getAppsRootDir } from '../../main/config';
-import checkAppCompatibility from '../util/checkAppCompatibility';
-import mainConfig from '../util/mainConfig';
 import {
     EventAction,
     sendAppUsageData,
     sendLauncherUsageData,
-} from './usageDataActions';
+} from '../features/usageData/usageDataEffects';
+import checkAppCompatibility from '../util/checkAppCompatibility';
+import mainConfig from '../util/mainConfig';
 
 const fs = remoteRequire('fs-extra');
 
@@ -85,7 +85,7 @@ function loadDownloadableAppsAction() {
     };
 }
 
-function loadDownloadableAppsSuccess(apps, appToUpdate) {
+export function loadDownloadableAppsSuccess(apps, appToUpdate) {
     return {
         type: LOAD_DOWNLOADABLE_APPS_SUCCESS,
         apps,
@@ -180,9 +180,12 @@ export function downloadLatestAppInfoAction() {
     };
 }
 
-export function downloadLatestAppInfoSuccessAction() {
+export function downloadLatestAppInfoSuccessAction(
+    updateCheckDate = new Date()
+) {
     return {
         type: DOWNLOAD_LATEST_APP_INFO_SUCCESS,
+        updateCheckDate,
     };
 }
 

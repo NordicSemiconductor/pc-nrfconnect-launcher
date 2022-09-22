@@ -12,8 +12,9 @@ import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
-import * as SettingsActions from '../../actions/settingsActions';
 import mainConfig from '../../util/mainConfig';
+import { showUpdateCheckComplete } from '../settings/settingsSlice';
+import { removeSource } from '../sources/sourcesEffects';
 import {
     cancelDownload as cancelLauncherDownload,
     reset,
@@ -75,11 +76,7 @@ export const downloadLatestAppInfo =
                                 'where the sources files was removed from the server.',
                             {
                                 'Remove source': () => {
-                                    dispatch(
-                                        SettingsActions.removeSource(
-                                            error.source.name
-                                        )
-                                    );
+                                    dispatch(removeSource(error.source.name));
                                     dispatch(ErrorDialogActions.hideDialog());
                                 },
                                 Cancel: () => {
@@ -112,7 +109,7 @@ export const checkForUpdatesManually = () => dispatch =>
     dispatch(downloadLatestAppInfo({ rejectIfError: true }))
         .then(() => {
             dispatch(checkForCoreUpdates());
-            dispatch(SettingsActions.showUpdateCheckCompleteDialog());
+            dispatch(showUpdateCheckComplete());
         })
         .catch(error =>
             dispatch(

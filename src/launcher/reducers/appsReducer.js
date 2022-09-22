@@ -73,11 +73,11 @@ function hideConfirmLaunchDialog(state) {
         );
 }
 
-function setLatestAppInfoDownloaded(state) {
+function setLatestAppInfoDownloaded(state, updateCheckDate) {
     return state
         .set('isLatestAppInfoDownloaded', true)
         .set('isDownloadingLatestAppInfo', false)
-        .set('lastUpdateCheckDate', new Date());
+        .set('lastUpdateCheckDate', updateCheckDate);
 }
 
 function setAppIconPath(state, source, name, iconPath) {
@@ -162,7 +162,7 @@ const reducer = (state = initialState, action) => {
         case AppsActions.DOWNLOAD_LATEST_APP_INFO:
             return state.set('isDownloadingLatestAppInfo', true);
         case AppsActions.DOWNLOAD_LATEST_APP_INFO_SUCCESS:
-            return setLatestAppInfoDownloaded(state);
+            return setLatestAppInfoDownloaded(state, action.updateCheckDate);
         case AppsActions.DOWNLOAD_LATEST_APP_INFO_ERROR:
             return state.set('isDownloadingLatestAppInfo', false);
         case AppsActions.SET_APP_ICON_PATH:
@@ -199,5 +199,7 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export const getApps = state => state.apps;
 
 export default reducer;

@@ -1,0 +1,1153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsView should render check for updates completed, with everything up to date 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  >
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Update check completed
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          All apps are up to date.
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SettingsView should render check for updates completed, with updates available 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  >
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Update check completed
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          One or more updates are available. Go to the apps screen to update.
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SettingsView should render when checking for updates 1`] = `
+<body>
+  <div>
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    disabled=""
+                    type="button"
+                  >
+                    Checking...
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SettingsView should render with check for updates disabled 1`] = `
+<body>
+  <div>
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SettingsView should render with check for updates enabled 1`] = `
+<body>
+  <div>
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SettingsView should render with last update check date 1`] = `
+<body>
+  <div>
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                Last update check performed:
+                 
+                2017-02-03 13:41:36
+              </p>
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
