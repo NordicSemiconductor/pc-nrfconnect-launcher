@@ -27,6 +27,7 @@ import {
     registerStartPreventingSleep,
 } from '../ipc/preventSleep';
 import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
+import { registerRequire } from '../ipc/require';
 import { registerGetSetting, registerSetSetting } from '../ipc/settings';
 import {
     registerAddSource,
@@ -46,6 +47,7 @@ import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { downloadToFile } from './net';
 import { callRegisteredCallback } from './proxyLogins';
+import { requireModule } from './require';
 import { get as getSetting, set as setSetting } from './settings';
 import { addSource, getAllSources, removeSource } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
@@ -84,4 +86,6 @@ export default () => {
     registerGetSources(getAllSources);
     registerAddSource(addSource);
     registerRemoveSource(removeSource);
+
+    registerRequire(requireModule);
 };
