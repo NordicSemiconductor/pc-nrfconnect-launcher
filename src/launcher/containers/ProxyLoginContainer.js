@@ -6,8 +6,13 @@
 
 import { connect } from 'react-redux';
 
-import * as ProxyActions from '../actions/proxyActions';
+import { answerProxyLoginRequest } from '../../ipc/proxyLogin';
 import ProxyLoginDialog from '../components/ProxyLoginDialog';
+import {
+    changeUserName,
+    loginCancelledByUser,
+    loginRequestSent,
+} from '../features/proxyLogin/proxyLoginSlice';
 
 function mapStateToProps(state) {
     const { proxy } = state;
@@ -22,14 +27,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onUsernameChanged: username =>
-            dispatch(ProxyActions.changeUserName(username)),
-        onCancel: requestId =>
-            dispatch(ProxyActions.loginCancelledByUser(requestId)),
-        onSubmit: (requestId, username, password) =>
-            dispatch(
-                ProxyActions.sendLoginRequest(requestId, username, password)
-            ),
+        onUsernameChanged: username => dispatch(changeUserName(username)),
+        onCancel: requestId => {
+            answerProxyLoginRequest(requestId);
+            dispatch(loginCancelledByUser());
+        },
+        onSubmit: (requestId, username, password) => {
+            answerProxyLoginRequest(requestId, username, password);
+            dispatch(loginRequestSent(username));
+        },
     };
 }
 

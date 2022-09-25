@@ -17,12 +17,12 @@ import {
 import { registerRequestProxyLogin } from '../../ipc/proxyLogin';
 import { registerShowErrorDialog } from '../../ipc/showErrorDialog';
 import { updateInstallProgressAction } from '../actions/appsActions';
-import { authenticate } from '../actions/proxyActions';
 import {
     reset,
     startDownload,
     updateDownloading,
 } from '../features/launcherUpdate/launcherUpdateSlice';
+import { loginRequestedByServer } from '../features/proxyLogin/proxyLoginSlice';
 
 export default dispatch => {
     registerDownloadProgress(progress => {
@@ -34,7 +34,7 @@ export default dispatch => {
     });
 
     registerRequestProxyLogin((requestId, authInfo) => {
-        dispatch(authenticate(requestId, authInfo));
+        dispatch(loginRequestedByServer({ requestId, authInfo }));
     });
 
     registerUpdateStarted(() => {

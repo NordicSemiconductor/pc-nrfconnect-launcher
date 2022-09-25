@@ -6,8 +6,8 @@
 
 import { connect } from 'react-redux';
 
-import * as ProxyActions from '../actions/proxyActions';
 import ProxyErrorDialog from '../components/ProxyErrorDialog';
+import { loginErrorDialogClosed } from '../features/proxyLogin/proxyLoginSlice';
 
 function mapStateToProps(state) {
     const { proxy } = state;
@@ -19,7 +19,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onOk: () => dispatch(ProxyActions.loginErrorDialogClosedAction()),
+        onOk: () => dispatch(loginErrorDialogClosed()),
     };
 }
 
