@@ -73,4 +73,4 @@ export const {
     loginErrorDialogClosed,
 } = slice.actions;
 
-export const getProxyLogin = (state: RootState) => state.proxy;
+export const getProxyLogin = (state: RootState) => state.proxyLogin;
