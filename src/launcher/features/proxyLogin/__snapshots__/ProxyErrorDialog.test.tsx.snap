@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProxyErrorDialog is displayed after users canceled the login 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Proxy error
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          <p>
+            It appears that you are having problems authenticating with a proxy server. This will prevent you from using certain features of nRF Connect for Desktop, such as installing apps from the "Add/remove apps" screen.
+          </p>
+          <p>
+            If you are unable to resolve the issue, then go to Settings and disable "Check for updates at startup". Then restart nRF Connect for Desktop and install apps manually by following the instructions at https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.
+          </p>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ProxyErrorDialog is hidden again after users confirmed the login 1`] = `
+<body
+  class=""
+  style="padding-right: 0px;"
+>
+  <div />
+</body>
+`;
+
+exports[`ProxyErrorDialog is initially invisible 1`] = `
+<body>
+  <div />
+</body>
+`;

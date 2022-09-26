@@ -11,12 +11,12 @@ import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
 import AppManagementContainer from '../containers/AppManagementContainer';
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
-import ProxyErrorContainer from '../containers/ProxyErrorContainer';
-import ProxyLoginContainer from '../containers/ProxyLoginContainer';
-import UsageDataDialog from '../features/usageData/UsageDataDialog';
 import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
+import ProxyErrorDialog from '../features/proxyLogin/ProxyErrorDialog';
+import ProxyLoginDialog from '../features/proxyLogin/ProxyLoginDialog';
 import SettingsView from '../features/settings/SettingsView';
+import UsageDataDialog from '../features/usageData/UsageDataDialog';
 import AboutView from './AboutView';
 import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
 
@@ -76,13 +76,14 @@ export default () => {
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
+
             <ErrorDialog />
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
             <UsageDataDialog />
             <ConfirmLaunchContainer />
-            <ProxyLoginContainer />
-            <ProxyErrorContainer />
+            <ProxyLoginDialog />
+            <ProxyErrorDialog />
         </ErrorBoundaryLauncher>
     );
 };

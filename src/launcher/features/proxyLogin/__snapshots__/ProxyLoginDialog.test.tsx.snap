@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProxyLoginDialog is displayed after a login is requested 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Proxy authentication required
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          <p>
+            The proxy server test host (realm: test realm) requires authentication. Please enter username and password
+          </p>
+          <div
+            class="form-group"
+          >
+            <label
+              class="form-label"
+              for="username"
+            >
+              Username:
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control focus-visible"
+                data-focus-visible-added=""
+                id="username"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="form-label"
+              for="password"
+            >
+              Password:
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                id="password"
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-primary"
+            disabled=""
+            type="button"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ProxyLoginDialog is initially invisible 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`ProxyLoginDialog is invisible after users cancel the login 1`] = `
+<body
+  class=""
+  style="padding-right: 0px;"
+>
+  <div />
+</body>
+`;
+
+exports[`ProxyLoginDialog is invisible after users enter username and password 1`] = `
+<body
+  class=""
+  style="padding-right: 0px;"
+>
+  <div />
+</body>
+`;
+
+exports[`ProxyLoginDialog is updated if users enter a username 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Proxy authentication required
+          </div>
+        </div>
+        <div
+          class="modal-body"
+        >
+          <p>
+            The proxy server test host (realm: test realm) requires authentication. Please enter username and password
+          </p>
+          <div
+            class="form-group"
+          >
+            <label
+              class="form-label"
+              for="username"
+            >
+              Username:
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control focus-visible"
+                data-focus-visible-added=""
+                id="username"
+                value="new username"
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="form-label"
+              for="password"
+            >
+              Password:
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                id="password"
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-primary"
+            disabled=""
+            type="button"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
