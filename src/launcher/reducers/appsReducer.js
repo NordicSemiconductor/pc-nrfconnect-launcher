@@ -202,4 +202,11 @@ const reducer = (state = initialState, action) => {
 
 export const getApps = state => state.apps;
 
+export const getDownloadableApp =
+    ({ source, name }) =>
+    state =>
+        state.apps.downloadableApps.find(
+            x => x.source === source && x.name === name
+        );
+
 export default reducer;

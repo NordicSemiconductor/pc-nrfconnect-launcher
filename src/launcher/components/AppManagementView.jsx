@@ -9,8 +9,8 @@ import { Iterable } from 'immutable';
 import { bool, func, instanceOf, string } from 'prop-types';
 
 import AppManagementFilter from '../containers/AppManagementFilterContainer';
-import ReleaseNotesDialog from '../containers/ReleaseNotesDialogContainer';
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+import ReleaseNotesDialog from '../features/releaseNotes/ReleaseNotesDialog';
 import AppItem from './AppItem';
 
 const AppManagementView = ({

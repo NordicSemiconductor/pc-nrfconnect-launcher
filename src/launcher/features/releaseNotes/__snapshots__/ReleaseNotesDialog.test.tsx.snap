@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReleaseNotesDialog is displayed for an uninstalled app 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog modal-xl modal-dialog-scrollable"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Release notes for 
+            uninstalled test app
+          </div>
+        </div>
+        <div
+          class="release-notes modal-body"
+        >
+          <p>
+            Release notes for uninstalled
+          </p>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Install
+          </button>
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ReleaseNotesDialog is displayed for an up-to-date installed app 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog modal-xl modal-dialog-scrollable"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Release notes for 
+            installed test app
+          </div>
+        </div>
+        <div
+          class="release-notes modal-body"
+        >
+          <p>
+            Release notes for installed
+          </p>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ReleaseNotesDialog is displayed for an updatable app 1`] = `
+<body
+  class="modal-open"
+  style="padding-right: 0px;"
+>
+  <div
+    aria-hidden="true"
+  />
+  <div
+    class="fade modal-backdrop show"
+  />
+  <div
+    aria-modal="true"
+    class="fade modal show"
+    data-focus-visible-added=""
+    role="dialog"
+    style="display: block;"
+    tabindex="-1"
+  >
+    <div
+      class="modal-dialog modal-xl modal-dialog-scrollable"
+    >
+      <div
+        class="modal-content"
+      >
+        <div
+          class="modal-header"
+        >
+          <div
+            class="modal-title h4"
+          >
+            Release notes for 
+            updatable test app
+          </div>
+        </div>
+        <div
+          class="release-notes modal-body"
+        >
+          <p>
+            Release notes for updatable
+          </p>
+        </div>
+        <div
+          class="modal-footer"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Update to latest version
+          </button>
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ReleaseNotesDialog is hidden again after closing the dialog 1`] = `
+<body
+  class=""
+  style="padding-right: 0px;"
+>
+  <div />
+</body>
+`;
+
+exports[`ReleaseNotesDialog is initially invisible 1`] = `
+<body>
+  <div />
+</body>
+`;

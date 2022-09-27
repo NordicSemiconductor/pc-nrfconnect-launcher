@@ -43,6 +43,7 @@ export interface UnversionedDownloadableApp extends BaseApp {
 
 export interface DownloadableApp extends UnversionedDownloadableApp {
     latestVersion: string;
+    releaseNote?: string;
 }
 
 export interface UninstalledDownloadableApp extends DownloadableApp {
