@@ -37,7 +37,11 @@ const unimportantAppProperties = {
     isDownloadable: true,
     source: 'test source',
     url: 'test url',
-};
+    isInstalled: true,
+    path: 'test path',
+    iconPath: 'test icon path',
+    shortcutIconPath: 'test shortcut icon path',
+} as const;
 
 describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {

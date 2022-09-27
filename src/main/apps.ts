@@ -189,6 +189,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         engineVersion: packageJson.engines?.nrfconnect,
         source,
         repositoryUrl: packageJson.repository?.url,
+        isInstalled: true,
     };
 };
 
@@ -271,6 +272,7 @@ const uninstalledAppInfo = async (
             value: {
                 ...app,
                 ...latestVersionInfo(app, latestVersions),
+                isInstalled: false,
             },
         } as UninstalledAppResult;
     } catch (error) {
