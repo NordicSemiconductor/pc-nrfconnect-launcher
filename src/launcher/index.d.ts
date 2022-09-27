@@ -12,6 +12,7 @@ import type { ThunkAction } from 'redux-thunk';
 
 import type { State as LauncherUpdate } from './features/launcherUpdate/launcherUpdateSlice';
 import type { State as ProxyLogin } from './features/proxyLogin/proxyLoginSlice';
+import type { State as ReleaseNotesDialog } from './features/releaseNotes/releaseNotesDialogSlice';
 import type { State as Settings } from './features/settings/settingsSlice';
 import type { State as Sources } from './features/sources/sourcesSlice';
 import type { State as UsageData } from './features/usageData/usageDataSlice';
@@ -19,6 +20,7 @@ import type { State as UsageData } from './features/usageData/usageDataSlice';
 export type RootState = {
     launcherUpdate: LauncherUpdate;
     proxyLogin: ProxyLogin;
+    releaseNotesDialog: ReleaseNotesDialog;
     settings: Settings;
     sources: Sources;
     usageData: UsageData;

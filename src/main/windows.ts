@@ -161,11 +161,8 @@ export const openDownloadableAppWindow = (
         const downloadableApp = appList.find(
             app => app.name === appName && app.source === sourceName
         );
-        const isInstalled =
-            downloadableApp &&
-            (downloadableApp as InstalledDownloadableApp).path;
 
-        if (isInstalled) {
+        if (downloadableApp?.isInstalled) {
             openAppWindow(downloadableApp as InstalledDownloadableApp);
         } else {
             throw new Error(

@@ -17,6 +17,7 @@ interface BaseApp {
     name: string;
     displayName: string;
     description: string;
+    isInstalled: boolean;
 }
 
 export interface InstalledApp extends BaseApp {
@@ -31,6 +32,7 @@ export interface InstalledApp extends BaseApp {
 export interface LocalApp extends InstalledApp {
     source: null | undefined;
     isDownloadable: false;
+    isInstalled: true;
 }
 
 export interface UnversionedDownloadableApp extends BaseApp {
@@ -41,15 +43,19 @@ export interface UnversionedDownloadableApp extends BaseApp {
 
 export interface DownloadableApp extends UnversionedDownloadableApp {
     latestVersion: string;
+    releaseNote?: string;
 }
 
-export type UninstalledDownloadableApp = DownloadableApp;
+export interface UninstalledDownloadableApp extends DownloadableApp {
+    isInstalled: false;
+}
 
 export interface InstalledDownloadableApp
     extends DownloadableApp,
         InstalledApp {
     isDownloadable: true;
     upgradeAvailable?: boolean;
+    isInstalled: true;
 }
 
 export type LaunchableApp = LocalApp | InstalledDownloadableApp;

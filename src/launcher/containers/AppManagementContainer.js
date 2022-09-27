@@ -9,8 +9,8 @@ import { openUrl } from 'pc-nrfconnect-shared';
 
 import { createDesktopShortcut } from '../../ipc/createDesktopShortcut';
 import * as AppsActions from '../actions/appsActions';
-import * as ReleaseNotes from '../actions/releaseNotesDialogActions';
 import AppManagementView from '../components/AppManagementView';
+import { show as showReleaseNotes } from '../features/releaseNotes/releaseNotesDialogSlice';
 
 const filterByInput = filter => app => {
     try {
@@ -86,7 +86,7 @@ function mapDispatchToProps(dispatch) {
         // Launcher actions
         onAppSelected: app => dispatch(AppsActions.checkEngineAndLaunch(app)),
         onCreateShortcut: app => createDesktopShortcut(app.toJS()),
-        onShowReleaseNotes: appid => dispatch(ReleaseNotes.show(appid)),
+        onShowReleaseNotes: appid => dispatch(showReleaseNotes(appid)),
         onUpgrade: (name, version, source) =>
             dispatch(AppsActions.upgradeDownloadableApp(name, version, source)),
     };

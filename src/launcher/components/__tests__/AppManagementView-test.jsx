@@ -17,7 +17,7 @@ jest.mock('react-bootstrap', () => ({
 }));
 
 jest.mock('../../containers/AppManagementFilterContainer', () => 'div');
-jest.mock('../../containers/ReleaseNotesDialogContainer', () => 'div');
+jest.mock('../../features/releaseNotes/ReleaseNotesDialog', () => 'div');
 
 import React from 'react';
 import renderer from 'react-test-renderer';

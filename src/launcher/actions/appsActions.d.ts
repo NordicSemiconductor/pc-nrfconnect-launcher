@@ -30,3 +30,9 @@ export const loadDownloadableAppsSuccess: (
     apps: App[],
     appToUpdate?: { name: string; source: string }
 ) => AnyAction;
+
+export const upgradeDownloadableApp: (
+    name: string,
+    latestVersion: string,
+    source: SourceName
+) => AppThunk;

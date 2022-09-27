@@ -22,6 +22,7 @@ const requiringEngine = (engineVersion?: string): InstalledApp => ({
     path: 'test path',
     iconPath: 'test icon path',
     shortcutIconPath: 'test shortcut icon path',
+    isInstalled: true,
 });
 
 const failingCheck = {

@@ -4,7 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import type { InstalledDownloadableApp } from '../../ipc/apps';
+import type {
+    InstalledDownloadableApp,
+    UninstalledDownloadableApp,
+} from '../../ipc/apps';
+import { SourceName } from '../../ipc/sources';
 import type { RootState } from '..';
 
 export const getApps: (state: RootState) => {
@@ -12,3 +16,10 @@ export const getApps: (state: RootState) => {
     lastUpdateCheckDate: Date | null;
     downloadableApps: InstalledDownloadableApp[];
 };
+
+export const getDownloadableApp: (app: {
+    name?: string;
+    source?: SourceName;
+}) => (
+    state: RootState
+) => InstalledDownloadableApp | UninstalledDownloadableApp | undefined;
