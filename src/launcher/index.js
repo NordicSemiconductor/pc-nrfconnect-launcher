@@ -38,7 +38,7 @@ registerIpcHandler(store.dispatch);
 const rootElement = React.createElement(RootContainer, { store });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await store.dispatch(checkUsageDataSetting());
+    store.dispatch(checkUsageDataSetting());
     store.dispatch(await AppsActions.setAppManagementFilter());
     await store.dispatch(AppsActions.loadLocalApps());
     await store.dispatch(AppsActions.loadDownloadableApps());

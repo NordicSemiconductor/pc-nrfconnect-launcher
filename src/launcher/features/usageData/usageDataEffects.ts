@@ -65,8 +65,8 @@ const initUsageData = (label: string) => {
     usageData.sendUsageData(EventAction.LAUNCH_LAUNCHER, label);
 };
 
-export const checkUsageDataSetting = () => async (dispatch: AppDispatch) => {
-    await usageData.init(pkgJson);
+export const checkUsageDataSetting = () => (dispatch: AppDispatch) => {
+    usageData.init(pkgJson);
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {
         dispatch(showUsageDataDialog());
