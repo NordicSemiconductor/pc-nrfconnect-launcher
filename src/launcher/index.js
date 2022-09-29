@@ -35,20 +35,22 @@ const store = createStore(
 );
 // TODO: Switch to using configureStore from RTK
 
-registerIpcHandler(store.dispatch);
+const { dispatch } = store;
+
+registerIpcHandler(dispatch);
 
 const rootElement = React.createElement(RootContainer, { store });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    store.dispatch(checkUsageDataSetting());
-    await store.dispatch(loadSettings());
-    await store.dispatch(loadSources());
-    store.dispatch(await AppsActions.setAppManagementFilter());
-    await store.dispatch(AppsActions.loadLocalApps());
-    await store.dispatch(AppsActions.loadDownloadableApps());
-    store.dispatch(await AppsActions.setAppManagementShow());
-    store.dispatch(await AppsActions.setAppManagementSource());
-    await store.dispatch(downloadLatestAppInfoAtStartup());
-    await store.dispatch(checkForCoreUpdatesAtStartup());
+    dispatch(checkUsageDataSetting());
+    await dispatch(loadSettings());
+    await dispatch(loadSources());
+    dispatch(await AppsActions.setAppManagementFilter());
+    await dispatch(AppsActions.loadLocalApps());
+    await dispatch(AppsActions.loadDownloadableApps());
+    dispatch(await AppsActions.setAppManagementShow());
+    dispatch(await AppsActions.setAppManagementSource());
+    await dispatch(downloadLatestAppInfoAtStartup());
+    await dispatch(checkForCoreUpdatesAtStartup());
     sendEnvInfo();
 });
