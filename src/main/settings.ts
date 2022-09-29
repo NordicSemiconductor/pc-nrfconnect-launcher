@@ -6,9 +6,10 @@
 
 import fs from 'fs';
 
+import { Settings } from '../ipc/settings';
 import { getConfig } from './config';
 
-let data: Record<string, unknown> | undefined;
+let data: Settings | undefined;
 
 const parseJsonFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) {
@@ -31,9 +32,9 @@ const load = () => {
     }
     const settings = parseJsonFile(getConfig().settingsJsonPath);
     if (settings && typeof settings === 'object') {
-        data = settings;
+        data = <Settings>settings;
     } else {
-        data = {};
+        data = <Settings>{};
     }
 
     return data;
@@ -43,14 +44,20 @@ const save = () => {
     fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
 };
 
-export const set = (key: string, value: unknown) => {
+export const set = <Key extends keyof Settings>(
+    key: Key,
+    value: Settings[Key]
+) => {
     const loadedData = load();
     loadedData[key] = value;
     save();
 };
 
-export const get = <T>(key: string, defaultValue: T | null = null) => {
+export const get = <Key extends keyof Settings>(
+    key: Key,
+    defaultValue: Settings[Key]
+) => {
     const loadedData = load();
 
-    return key in loadedData ? (loadedData[key] as T) : defaultValue;
+    return key in loadedData ? loadedData[key] : defaultValue;
 };

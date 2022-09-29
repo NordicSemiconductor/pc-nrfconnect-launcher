@@ -11,14 +11,39 @@ const channel = {
     set: 'setting:set',
 };
 
+export type WindowState = {
+    x?: number;
+    y?: number;
+    width: number;
+    height: number;
+    maximized: boolean;
+};
+
+export type Settings = {
+    'app-management.filter': string;
+    'app-management.show': {
+        installed: boolean;
+        available: boolean;
+    };
+    'app-management.sources': Record<string, boolean>;
+    lastWindowState: WindowState;
+    shouldCheckForUpdatesAtStartup: boolean;
+};
+
 // Get
-type GetSetting = (settingKey: string, defaultValue?: unknown) => unknown;
+type GetSetting = <Key extends keyof Settings>(
+    settingKey: Key,
+    defaultValue: Settings[Key]
+) => Settings[Key];
 
 export const getSetting = invoke<GetSetting>(channel.get);
 export const registerGetSetting = handle<GetSetting>(channel.get);
 
 // Set
-type SetSetting = (key: string, value: unknown) => unknown;
+type SetSetting = <Key extends keyof Settings>(
+    key: Key,
+    value: Settings[Key]
+) => void;
 
 export const setSetting = send<SetSetting>(channel.set);
 export const registerSetSetting = on<SetSetting>(channel.set);

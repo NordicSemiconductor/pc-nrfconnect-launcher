@@ -12,10 +12,9 @@ import { setCheckUpdatesAtStartup } from './settingsSlice';
 
 export const loadSettings = () => async (dispatch: AppDispatch) => {
     try {
-        const shouldCheckForUpdatesAtStartup =
-            <boolean | null>(
-                await getSetting('shouldCheckForUpdatesAtStartup')
-            ) ?? true;
+        const shouldCheckForUpdatesAtStartup = <boolean>(
+            await getSetting('shouldCheckForUpdatesAtStartup', true)
+        );
         dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
     } catch (error) {
         dispatch(

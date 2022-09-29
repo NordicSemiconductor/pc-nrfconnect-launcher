@@ -69,19 +69,8 @@ const defaultWindowSize = {
     maximized: false,
 };
 
-interface WindowState {
-    x?: number;
-    y?: number;
-    width: number;
-    height: number;
-    maximized: boolean;
-}
-
 export const openAppWindow = (app: LaunchableApp) => {
-    const lastWindowState = settings.get(
-        'lastWindowState',
-        defaultWindowSize
-    ) as WindowState;
+    const lastWindowState = settings.get('lastWindowState', defaultWindowSize);
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
