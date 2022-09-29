@@ -25,7 +25,7 @@ import {
     setSources,
 } from './sourcesSlice';
 
-export const loadSources = async (dispatch: AppDispatch) => {
+export const loadSources = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setSources(await getSources()));
     } catch (error) {

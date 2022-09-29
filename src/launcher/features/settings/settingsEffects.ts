@@ -10,7 +10,7 @@ import { getSetting, setSetting } from '../../../ipc/settings';
 import type { AppDispatch } from '../..';
 import { setCheckUpdatesAtStartup } from './settingsSlice';
 
-export const loadSettings = async (dispatch: AppDispatch) => {
+export const loadSettings = () => async (dispatch: AppDispatch) => {
     try {
         const shouldCheckForUpdatesAtStartup =
             <boolean | null>(

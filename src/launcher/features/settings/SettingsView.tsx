@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
@@ -20,7 +20,7 @@ import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import AddSourceDialog from '../sources/AddSourceDialog';
 import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
-import { addSource, loadSources } from '../sources/sourcesEffects';
+import { addSource } from '../sources/sourcesEffects';
 import {
     getSources,
     showAddSource,
@@ -31,7 +31,7 @@ import {
     getIsSendingUsageData,
     showUsageDataDialog,
 } from '../usageData/usageDataSlice';
-import { checkUpdatesAtStartupChanged, loadSettings } from './settingsEffects';
+import { checkUpdatesAtStartupChanged } from './settingsEffects';
 import { getShouldCheckForUpdatesAtStartup } from './settingsSlice';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
@@ -44,11 +44,6 @@ const cancel: React.DragEventHandler = event => {
 
 export default () => {
     const dispatch = useLauncherDispatch();
-
-    useEffect(() => {
-        loadSettings(dispatch);
-        loadSources(dispatch);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
         getShouldCheckForUpdatesAtStartup
