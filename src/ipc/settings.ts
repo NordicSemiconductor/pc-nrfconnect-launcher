@@ -32,8 +32,7 @@ export type Settings = {
 
 // Get
 type GetSetting = <Key extends keyof Settings>(
-    settingKey: Key,
-    defaultValue: Settings[Key]
+    settingKey: Key
 ) => Settings[Key];
 
 export const getSetting = invoke<GetSetting>(channel.get);

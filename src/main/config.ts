@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
-import { Configuration, StartupApp } from '../ipc/config';
+import type { Configuration, StartupApp } from '../ipc/config';
 
 let config: Configuration;
 

@@ -228,11 +228,9 @@ export function setAppReleaseNoteAction(source, name, releaseNote) {
 }
 
 export async function setAppManagementShow(show = {}) {
-    const previousSetting = await getSetting('app-management.show', {});
+    const previousSetting = await getSetting('app-management.show');
 
     const newState = {
-        installed: true,
-        available: true,
         ...previousSetting,
         ...show,
     };
@@ -246,7 +244,7 @@ export async function setAppManagementShow(show = {}) {
 export async function setAppManagementFilter(filter) {
     const newState =
         filter === undefined
-            ? await getSetting('app-management.filter', '')
+            ? await getSetting('app-management.filter')
             : filter;
     setSetting('app-management.filter', newState);
     return {
@@ -256,7 +254,7 @@ export async function setAppManagementFilter(filter) {
 }
 
 export async function setAppManagementSource(source, show) {
-    const sources = await getSetting('app-management.sources', {});
+    const sources = await getSetting('app-management.sources');
     if (source) {
         if (show !== undefined) {
             sources[source] = show;

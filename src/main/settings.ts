@@ -5,11 +5,29 @@
  */
 
 import fs from 'fs';
+import merge from 'lodash.merge';
 
 import { Settings } from '../ipc/settings';
 import { getConfig } from './config';
 
-let data: Settings | undefined;
+const defaultWindowSize = {
+    width: 1024,
+    height: 800,
+    maximized: false,
+};
+
+const defaultSettings: Settings = {
+    'app-management.filter': '',
+    'app-management.show': {
+        installed: true,
+        available: true,
+    },
+    'app-management.sources': {
+        official: true,
+    },
+    lastWindowState: defaultWindowSize,
+    shouldCheckForUpdatesAtStartup: true,
+};
 
 const parseJsonFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) {
@@ -27,18 +45,15 @@ const parseJsonFile = (filePath: string) => {
 };
 
 const load = () => {
-    if (data != null) {
-        return data;
-    }
     const settings = parseJsonFile(getConfig().settingsJsonPath);
     if (settings && typeof settings === 'object') {
-        data = <Settings>settings;
-    } else {
-        data = <Settings>{};
+        return merge(defaultSettings, settings);
     }
 
-    return data;
+    return defaultSettings;
 };
+
+const data = load();
 
 const save = () => {
     fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
@@ -48,16 +63,8 @@ export const set = <Key extends keyof Settings>(
     key: Key,
     value: Settings[Key]
 ) => {
-    const loadedData = load();
-    loadedData[key] = value;
+    data[key] = value;
     save();
 };
 
-export const get = <Key extends keyof Settings>(
-    key: Key,
-    defaultValue: Settings[Key]
-) => {
-    const loadedData = load();
-
-    return key in loadedData ? loadedData[key] : defaultValue;
-};
+export const get = <Key extends keyof Settings>(key: Key) => data[key];
