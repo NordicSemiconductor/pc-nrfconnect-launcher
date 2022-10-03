@@ -173,7 +173,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     const isDownloadable = !appPath.startsWith(getAppsLocalDir());
     const source = isDownloadable
         ? path.basename(path.dirname(path.dirname(appPath)))
-        : null;
+        : 'local';
 
     return {
         name: packageJson.name,

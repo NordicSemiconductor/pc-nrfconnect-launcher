@@ -30,7 +30,7 @@ export interface InstalledApp extends BaseApp {
 }
 
 export interface LocalApp extends InstalledApp {
-    source: null | undefined;
+    source: 'local';
     isDownloadable: false;
     isInstalled: true;
 }
