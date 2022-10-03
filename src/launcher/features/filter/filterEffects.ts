@@ -14,11 +14,11 @@ import {
 
 export const initializeFilters =
     (settings: Settings) => (dispatch: AppDispatch) => {
-        dispatch(setShownStates(settings['app-management.show']));
-        dispatch(setNameFilter(settings['app-management.filter']));
+        dispatch(setShownStates(settings.appFilter.shownStates));
+        dispatch(setNameFilter(settings.appFilter.nameFilter));
         dispatch(
             setAllShownSources(
-                Object.entries(settings['app-management.sources'])
+                Object.entries(settings.appFilter.sources)
                     .filter(([, visible]) => visible)
                     .flatMap(([sourcename]) => sourcename)
             )

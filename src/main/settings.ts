@@ -19,14 +19,16 @@ const defaultWindowSize = {
 };
 
 const defaultSettings: Settings = {
-    'app-management.filter': '',
-    'app-management.show': {
-        installed: true,
-        available: true,
-    },
-    'app-management.sources': {
-        official: true,
-        local: true,
+    appFilter: {
+        shownStates: {
+            installed: true,
+            available: true,
+        },
+        nameFilter: '',
+        sources: {
+            official: true,
+            local: true,
+        },
     },
     lastWindowState: defaultWindowSize,
     shouldCheckForUpdatesAtStartup: true,
@@ -70,23 +72,23 @@ export const resetSettings = () => {
 export const get = () => data as Settings;
 
 export const addShownSource = (name: SourceName) => {
-    data['app-management.sources'][name] = true;
+    data.appFilter.sources[name] = true;
     save();
 };
 
 export const removeShownSource = (name: SourceName) => {
-    delete data['app-management.sources'][name];
+    delete data.appFilter.sources[name];
     save();
 };
 
 export const setNameFilter = (nameFilter: string) => {
-    data['app-management.filter'] = nameFilter;
+    data.appFilter.nameFilter = nameFilter;
     save();
 };
 
 export const setShownStates = (shownStates: Partial<ShownStates>) => {
-    data['app-management.show'] = {
-        ...data['app-management.show'],
+    data.appFilter.shownStates = {
+        ...data.appFilter.shownStates,
         ...shownStates,
     };
     save();

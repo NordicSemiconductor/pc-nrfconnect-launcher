@@ -33,9 +33,11 @@ export type ShownStates = {
 };
 
 export type Settings = Immutable<{
-    'app-management.filter': string;
-    'app-management.show': ShownStates;
-    'app-management.sources': Record<string, boolean>;
+    appFilter: {
+        sources: Record<SourceName, boolean>;
+        nameFilter: string;
+        shownStates: ShownStates;
+    };
     lastWindowState: WindowState;
     shouldCheckForUpdatesAtStartup: boolean;
 }>;
