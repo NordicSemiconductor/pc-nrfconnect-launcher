@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import type { Immutable } from 'immer';
+
 import { handle, invoke, on, send } from './infrastructure/rendererToMain';
 import { SourceName } from './sources';
 
@@ -30,13 +32,13 @@ export type ShownStates = {
     available: boolean;
 };
 
-export type Settings = {
+export type Settings = Immutable<{
     'app-management.filter': string;
     'app-management.show': ShownStates;
     'app-management.sources': Record<string, boolean>;
     lastWindowState: WindowState;
     shouldCheckForUpdatesAtStartup: boolean;
-};
+}>;
 
 // Reset
 type ResetSettings = () => void;

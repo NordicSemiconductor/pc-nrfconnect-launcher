@@ -5,6 +5,7 @@
  */
 
 import fs from 'fs';
+import type { Draft } from 'immer';
 import merge from 'lodash.merge';
 
 import type { Settings, ShownStates, WindowState } from '../ipc/settings';
@@ -55,7 +56,7 @@ const load = () => {
     return merge({}, defaultSettings);
 };
 
-let data: Settings = load();
+let data: Draft<Settings> = load();
 
 const save = () => {
     fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
@@ -66,7 +67,7 @@ export const resetSettings = () => {
     save();
 };
 
-export const get = () => data;
+export const get = () => data as Settings;
 
 export const addShownSource = (name: SourceName) => {
     data['app-management.sources'][name] = true;
