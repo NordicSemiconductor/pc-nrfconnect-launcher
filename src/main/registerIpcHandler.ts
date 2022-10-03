@@ -28,7 +28,15 @@ import {
 } from '../ipc/preventSleep';
 import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
 import { registerRequire } from '../ipc/require';
-import { registerGetSetting, registerSetSetting } from '../ipc/settings';
+import {
+    registerGetSetting,
+    registerHideSource,
+    registerResetSettings,
+    registerSetCheckUpdatesAtStartup,
+    registerSetNameFilter,
+    registerSetShownStates,
+    registerShowSource,
+} from '../ipc/settings';
 import {
     registerAddSource,
     registerGetSources,
@@ -48,7 +56,15 @@ import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { downloadToFile } from './net';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
-import { get as getSetting, set as setSetting } from './settings';
+import {
+    addShownSource,
+    get as getSetting,
+    removeShownSource,
+    resetSettings,
+    setCheckUpdatesAtStartup,
+    setNameFilter,
+    setShownStates,
+} from './settings';
 import { addSource, getAllSources, removeSource } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
 
@@ -61,8 +77,13 @@ export default () => {
 
     registerCreateDesktopShortcut(createDesktopShortcut);
 
+    registerResetSettings(resetSettings);
     registerGetSetting(getSetting);
-    registerSetSetting(setSetting);
+    registerShowSource(addShownSource);
+    registerHideSource(removeShownSource);
+    registerSetNameFilter(setNameFilter);
+    registerSetShownStates(setShownStates);
+    registerSetCheckUpdatesAtStartup(setCheckUpdatesAtStartup);
 
     registerEndPreventingSleep();
     registerStartPreventingSleep();

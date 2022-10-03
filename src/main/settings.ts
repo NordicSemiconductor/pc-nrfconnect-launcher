@@ -7,8 +7,8 @@
 import fs from 'fs';
 import merge from 'lodash.merge';
 
-import { Settings } from '../ipc/settings';
-import { SourceName } from '../ipc/sources';
+import type { Settings, ShownStates } from '../ipc/settings';
+import type { SourceName } from '../ipc/sources';
 import { getConfig } from './config';
 
 const defaultWindowSize = {
@@ -49,16 +49,21 @@ const parseJsonFile = (filePath: string) => {
 const load = () => {
     const settings = parseJsonFile(getConfig().settingsJsonPath);
     if (settings && typeof settings === 'object') {
-        return merge(defaultSettings, settings);
+        return merge({}, defaultSettings, settings);
     }
 
-    return defaultSettings;
+    return merge({}, defaultSettings);
 };
 
-const data = load();
+let data: Settings = load();
 
 const save = () => {
     fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
+};
+
+export const resetSettings = () => {
+    data = merge({}, defaultSettings);
+    save();
 };
 
 export const set = <Key extends keyof Settings>(
@@ -84,4 +89,21 @@ export const removeShownSource = (name: SourceName) => {
     const names = get('app-management.sources');
     delete names[name];
     set('app-management.sources', names);
+};
+
+export const setNameFilter = (nameFilter: string) => {
+    set('app-management.filter', nameFilter);
+};
+
+export const setShownStates = (shownStates: Partial<ShownStates>) => {
+    const currentlyShownStates = get('app-management.show');
+
+    set('app-management.show', {
+        ...currentlyShownStates,
+        ...shownStates,
+    });
+};
+
+export const setCheckUpdatesAtStartup = (isEnabled: boolean) => {
+    set('shouldCheckForUpdatesAtStartup', isEnabled);
 };

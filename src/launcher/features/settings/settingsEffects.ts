@@ -6,7 +6,10 @@
 
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import { getSetting, setSetting } from '../../../ipc/settings';
+import {
+    getSetting,
+    setCheckUpdatesAtStartup as setCheckUpdatesAtStartupInSettings,
+} from '../../../ipc/settings';
 import type { AppDispatch } from '../..';
 import { setCheckUpdatesAtStartup } from './settingsSlice';
 
@@ -28,5 +31,5 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
 export const checkUpdatesAtStartupChanged =
     (isEnabled: boolean) => (dispatch: AppDispatch) => {
         dispatch(setCheckUpdatesAtStartup(isEnabled));
-        setSetting('shouldCheckForUpdatesAtStartup', isEnabled);
+        setCheckUpdatesAtStartupInSettings(isEnabled);
     };

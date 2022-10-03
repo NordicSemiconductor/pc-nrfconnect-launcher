@@ -14,7 +14,12 @@ import { Iterable } from 'immutable';
 import { useHotKey } from 'pc-nrfconnect-shared';
 import { func, instanceOf } from 'prop-types';
 
-import { setSetting } from '../../ipc/settings';
+import {
+    hideSource as hideSourceInSettings,
+    setNameFilter as setNameFilterInSettings,
+    setShownStates as setShownStatesInSettings,
+    showSource as showSourceInSettings,
+} from '../../ipc/settings';
 import {
     getNameFilter,
     getShownSources,
@@ -44,24 +49,12 @@ const SourceFilter = () => {
                     custom
                     checked={shownSourceNames.has(sourceName)}
                     onChange={({ target }) => {
-                        const show = target.checked;
-
-                        setSetting('app-management.sources', {
-                            ...Object.fromEntries(
-                                allSourceNames.map(source => [
-                                    source,
-                                    shownSourceNames.has(source),
-                                ])
-                            ),
-                            [sourceName]: show,
-                        });
-
-                        if (show) {
+                        if (target.checked) {
                             dispatch(showSource(sourceName));
-                            // TODO: Implement showSourceInSettings(name);
+                            showSourceInSettings(sourceName);
                         } else {
                             dispatch(hideSource(sourceName));
-                            // TODO: Implement hideSourceInSettings(name);
+                            hideSourceInSettings(sourceName);
                         }
                     }}
                 />
@@ -84,11 +77,10 @@ const StateFilter = () => {
                 custom
                 checked={installed}
                 onChange={({ target }) => {
-                    setSetting('app-management.show', {
-                        available,
+                    dispatch(setShownStates({ installed: target.checked }));
+                    setShownStatesInSettings({
                         installed: target.checked,
                     });
-                    dispatch(setShownStates({ installed: target.checked }));
                 }}
             />
             <Form.Check
@@ -98,11 +90,10 @@ const StateFilter = () => {
                 custom
                 checked={available}
                 onChange={({ target }) => {
-                    setSetting('app-management.show', {
-                        available: target.checked,
-                        installed,
-                    });
                     dispatch(setShownStates({ available: target.checked }));
+                    setShownStatesInSettings({
+                        available: target.checked,
+                    });
                 }}
             />
         </Col>
@@ -148,8 +139,8 @@ const NameFilter = () => {
             ref={searchFieldRef}
             onChange={event => {
                 const nameFilter = event.target.value;
-                setSetting('app-management.filter', nameFilter);
                 dispatch(setNameFilter(nameFilter));
+                setNameFilterInSettings(nameFilter);
             }}
         />
     );

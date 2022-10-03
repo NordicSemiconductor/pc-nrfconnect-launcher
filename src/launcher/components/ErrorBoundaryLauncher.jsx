@@ -10,27 +10,12 @@ import { ErrorBoundary } from 'pc-nrfconnect-shared';
 import { node } from 'prop-types';
 
 import pkgJson from '../../../package.json';
-import { setSetting } from '../../ipc/settings';
-import { getSources } from '../features/sources/sourcesSlice';
+import { resetSettings } from '../../ipc/settings';
 import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
-import { useLauncherSelector } from '../util/hooks';
 
 const ErrorBoundaryLauncher = ({ children }) => {
-    const sources = useLauncherSelector(getSources);
-
-    const restoreDefaults = () => {
-        // TODO: Replace with a new IPC call 'resetSettings'
-        setSetting('app-management.filter', '');
-        setSetting('app-management.show', {
-            installed: true,
-            available: true,
-        });
-        setSetting(
-            'app-management.sources',
-            Object.fromEntries(
-                Object.keys(sources).map(sourceName => [sourceName, true])
-            )
-        );
+    const restoreDefaults = async () => {
+        await resetSettings();
         getCurrentWindow().reload();
     };
 

@@ -5,10 +5,16 @@
  */
 
 import { handle, invoke, on, send } from './infrastructure/rendererToMain';
+import { SourceName } from './sources';
 
 const channel = {
+    reset: 'setting:reset',
     get: 'setting:get',
-    set: 'setting:set',
+    showSource: 'setting:showSource',
+    hideSource: 'setting:hideSource',
+    setShownStates: 'setting:setShownStates',
+    setNameFilter: 'setting:setNameFilter',
+    setCheckUpdatesAtStartup: 'setting:setCheckUpdatesAtStartup',
 };
 
 export type WindowState = {
@@ -19,16 +25,24 @@ export type WindowState = {
     maximized: boolean;
 };
 
+export type ShownStates = {
+    installed: boolean;
+    available: boolean;
+};
+
 export type Settings = {
     'app-management.filter': string;
-    'app-management.show': {
-        installed: boolean;
-        available: boolean;
-    };
+    'app-management.show': ShownStates;
     'app-management.sources': Record<string, boolean>;
     lastWindowState: WindowState;
     shouldCheckForUpdatesAtStartup: boolean;
 };
+
+// Reset
+type ResetSettings = () => void;
+
+export const resetSettings = invoke<ResetSettings>(channel.reset);
+export const registerResetSettings = handle<ResetSettings>(channel.reset);
 
 // Get
 type GetSetting = <Key extends keyof Settings>(
@@ -38,11 +52,38 @@ type GetSetting = <Key extends keyof Settings>(
 export const getSetting = invoke<GetSetting>(channel.get);
 export const registerGetSetting = handle<GetSetting>(channel.get);
 
-// Set
-type SetSetting = <Key extends keyof Settings>(
-    key: Key,
-    value: Settings[Key]
-) => void;
+// Show source
+type ShowSource = (sourceName: SourceName) => void;
 
-export const setSetting = send<SetSetting>(channel.set);
-export const registerSetSetting = on<SetSetting>(channel.set);
+export const showSource = send<ShowSource>(channel.showSource);
+export const registerShowSource = on<ShowSource>(channel.showSource);
+
+// Hide source
+type HideSource = (sourceName: SourceName) => void;
+
+export const hideSource = send<HideSource>(channel.hideSource);
+export const registerHideSource = on<HideSource>(channel.hideSource);
+
+// Set shown states
+type SetShownStates = (shownStates: Partial<ShownStates>) => void;
+
+export const setShownStates = send<SetShownStates>(channel.setShownStates);
+export const registerSetShownStates = on<SetShownStates>(
+    channel.setShownStates
+);
+
+// Set name filter
+type SetNameFilter = (nameFilter: string) => void;
+
+export const setNameFilter = send<SetNameFilter>(channel.setNameFilter);
+export const registerSetNameFilter = on<SetNameFilter>(channel.setNameFilter);
+
+// Set check updates at startup
+type SetCheckUpdatesAtStartup = (isEnabled: boolean) => void;
+
+export const setCheckUpdatesAtStartup = send<SetCheckUpdatesAtStartup>(
+    channel.setCheckUpdatesAtStartup
+);
+export const registerSetCheckUpdatesAtStartup = on<SetCheckUpdatesAtStartup>(
+    channel.setCheckUpdatesAtStartup
+);
