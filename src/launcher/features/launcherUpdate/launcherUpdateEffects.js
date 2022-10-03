@@ -10,7 +10,6 @@ import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
 import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
-import { getSetting } from '../../../ipc/settings';
 import * as AppsActions from '../../actions/appsActions';
 import mainConfig from '../../util/mainConfig';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
@@ -35,19 +34,16 @@ export const checkForCoreUpdates = () => async dispatch => {
     }
 };
 
-export const checkForCoreUpdatesAtStartup = () => async dispatch => {
-    const shouldCheckForUpdatesAtStartup = await getSetting(
-        'shouldCheckForUpdatesAtStartup'
-    );
-
-    if (
-        shouldCheckForUpdatesAtStartup &&
-        !mainConfig().isSkipUpdateCore &&
-        process.env.NODE_ENV !== 'development'
-    ) {
-        await dispatch(checkForCoreUpdates());
-    }
-};
+export const checkForCoreUpdatesAtStartup =
+    shouldCheckForUpdatesAtStartup => async dispatch => {
+        if (
+            shouldCheckForUpdatesAtStartup &&
+            !mainConfig().isSkipUpdateCore &&
+            process.env.NODE_ENV !== 'development'
+        ) {
+            await dispatch(checkForCoreUpdates());
+        }
+    };
 
 export const cancelDownload = () => dispatch => {
     cancelUpdate();
@@ -95,15 +91,12 @@ export const downloadLatestAppInfo =
             });
     };
 
-export const downloadLatestAppInfoAtStartup = () => async dispatch => {
-    const shouldCheckForUpdatesAtStartup = await getSetting(
-        'shouldCheckForUpdatesAtStartup'
-    );
-
-    if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
-        dispatch(downloadLatestAppInfo());
-    }
-};
+export const downloadLatestAppInfoAtStartup =
+    shouldCheckForUpdatesAtStartup => dispatch => {
+        if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
+            dispatch(downloadLatestAppInfo());
+        }
+    };
 
 export const checkForUpdatesManually = () => dispatch =>
     dispatch(downloadLatestAppInfo({ rejectIfError: true }))

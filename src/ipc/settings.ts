@@ -45,12 +45,10 @@ export const resetSettings = invoke<ResetSettings>(channel.reset);
 export const registerResetSettings = handle<ResetSettings>(channel.reset);
 
 // Get
-type GetSetting = <Key extends keyof Settings>(
-    settingKey: Key
-) => Settings[Key];
+type GetSettings = () => Settings;
 
-export const getSetting = invoke<GetSetting>(channel.get);
-export const registerGetSetting = handle<GetSetting>(channel.get);
+export const getSettings = invoke<GetSettings>(channel.get);
+export const registerGetSettings = handle<GetSettings>(channel.get);
 
 // Show source
 type ShowSource = (sourceName: SourceName) => void;

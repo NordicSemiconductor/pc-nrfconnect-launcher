@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getSetting } from '../../../ipc/settings';
-import { SourceName } from '../../../ipc/sources';
+import { Settings } from '../../../ipc/settings';
 import type { AppDispatch } from '../..';
 import {
     setAllShownSources,
@@ -13,32 +12,15 @@ import {
     setShownStates,
 } from './filterSlice';
 
-export const initializeFilters = () => async (dispatch: AppDispatch) => {
-    // TODO: Do a single IPC call instead
-
-    const show = (await getSetting('app-management.show')) as {
-        installed: boolean;
-        available: boolean;
+export const initializeFilters =
+    (settings: Settings) => (dispatch: AppDispatch) => {
+        dispatch(setShownStates(settings['app-management.show']));
+        dispatch(setNameFilter(settings['app-management.filter']));
+        dispatch(
+            setAllShownSources(
+                Object.entries(settings['app-management.sources'])
+                    .filter(([, visible]) => visible)
+                    .flatMap(([sourcename]) => sourcename)
+            )
+        );
     };
-    dispatch(
-        setShownStates({
-            installed: show.installed,
-            available: show.available,
-        })
-    );
-
-    const filter = (await getSetting('app-management.filter')) as string;
-    dispatch(setNameFilter(filter));
-
-    const sources = (await getSetting('app-management.sources')) as Record<
-        SourceName,
-        boolean
-    >;
-    dispatch(
-        setAllShownSources(
-            Object.entries(sources)
-                .filter(([, visible]) => visible)
-                .flatMap(([sourcename]) => sourcename)
-        )
-    );
-};

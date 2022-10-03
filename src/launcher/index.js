@@ -12,6 +12,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
+import { getSettings } from '../ipc/settings';
 import * as AppsActions from './actions/appsActions';
 import RootContainer from './containers/RootContainer';
 import { initializeFilters } from './features/filter/filterEffects';
@@ -19,7 +20,7 @@ import {
     checkForCoreUpdatesAtStartup,
     downloadLatestAppInfoAtStartup,
 } from './features/launcherUpdate/launcherUpdateEffects';
-import { loadSettings } from './features/settings/settingsEffects';
+import { setCheckUpdatesAtStartup } from './features/settings/settingsSlice';
 import { loadSources } from './features/sources/sourcesEffects';
 import {
     checkUsageDataSetting,
@@ -44,13 +45,18 @@ const rootElement = React.createElement(RootContainer, { store });
 
 render(rootElement, document.getElementById('webapp'), async () => {
     dispatch(checkUsageDataSetting());
-    await dispatch(loadSettings());
+
+    const settings = await getSettings();
+    const { shouldCheckForUpdatesAtStartup } = settings;
+    dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
+    dispatch(initializeFilters(settings));
+
     await dispatch(loadSources());
-    await dispatch(initializeFilters());
 
     await dispatch(AppsActions.loadLocalApps());
     await dispatch(AppsActions.loadDownloadableApps());
-    await dispatch(downloadLatestAppInfoAtStartup());
-    await dispatch(checkForCoreUpdatesAtStartup());
+
+    dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
+    dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
     sendEnvInfo();
 });

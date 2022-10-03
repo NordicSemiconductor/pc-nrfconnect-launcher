@@ -29,7 +29,7 @@ import {
 import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
 import { registerRequire } from '../ipc/require';
 import {
-    registerGetSetting,
+    registerGetSettings,
     registerHideSource,
     registerResetSettings,
     registerSetCheckUpdatesAtStartup,
@@ -58,7 +58,7 @@ import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
 import {
     addShownSource,
-    get as getSetting,
+    getAll as getAllSettings,
     removeShownSource,
     resetSettings,
     setCheckUpdatesAtStartup,
@@ -78,7 +78,7 @@ export default () => {
     registerCreateDesktopShortcut(createDesktopShortcut);
 
     registerResetSettings(resetSettings);
-    registerGetSetting(getSetting);
+    registerGetSettings(getAllSettings);
     registerShowSource(addShownSource);
     registerHideSource(removeShownSource);
     registerSetNameFilter(setNameFilter);

@@ -76,6 +76,8 @@ export const set = <Key extends keyof Settings>(
 
 export const get = <Key extends keyof Settings>(key: Key) => data[key];
 
+export const getAll = () => data;
+
 export const addShownSource = (name: SourceName) => {
     const names = get('app-management.sources');
     delete names[name];
