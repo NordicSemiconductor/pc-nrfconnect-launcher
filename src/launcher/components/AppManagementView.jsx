@@ -15,7 +15,6 @@ import AppItem from './AppItem';
 
 const AppManagementView = ({
     apps,
-    sources,
     installingAppName,
     upgradingAppName,
     removingAppName,
@@ -28,7 +27,7 @@ const AppManagementView = ({
     onShowReleaseNotes,
 }) => (
     <>
-        <AppManagementFilter apps={apps} sources={sources} />
+        <AppManagementFilter apps={apps} />
         <WithScrollbarContainer hasFilter>
             {apps.map(app => (
                 <AppItem
@@ -57,7 +56,6 @@ const AppManagementView = ({
 
 AppManagementView.propTypes = {
     apps: instanceOf(Iterable).isRequired,
-    sources: instanceOf(Object).isRequired,
     installingAppName: string,
     upgradingAppName: string,
     removingAppName: string,

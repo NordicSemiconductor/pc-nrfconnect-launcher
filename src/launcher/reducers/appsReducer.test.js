@@ -4,8 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import * as AppsActions from '../../actions/appsActions';
-import reducer from '../appsReducer';
+import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
+
+import * as AppsActions from '../actions/appsActions';
+import rootReducer from '.';
+import reducer, { getAllSourceNamesSorted } from './appsReducer';
 
 const initialState = reducer(undefined, {});
 
@@ -315,4 +318,21 @@ describe('appsReducer', () => {
         });
         expect(state.lastUpdateCheckDate).toEqual(aDate);
     });
+});
+
+test('sortedSources sorts the sources into official, local and then the rest in alphabetical order', () => {
+    const state = dispatchTo(rootReducer, [
+        AppsActions.loadDownloadableAppsSuccess([
+            { ...app1, source: 'OtherB' },
+            { ...app1, source: 'official' },
+            { ...app2, source: 'OtherA' },
+        ]),
+    ]);
+
+    expect(getAllSourceNamesSorted(state)).toStrictEqual([
+        'official',
+        'local',
+        'OtherA',
+        'OtherB',
+    ]);
 });

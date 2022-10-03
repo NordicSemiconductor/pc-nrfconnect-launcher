@@ -10,16 +10,8 @@ import { openUrl } from 'pc-nrfconnect-shared';
 import { createDesktopShortcut } from '../../ipc/createDesktopShortcut';
 import * as AppsActions from '../actions/appsActions';
 import AppManagementView from '../components/AppManagementView';
+import { getAppsFilter } from '../features/filter/filterSlice';
 import { show as showReleaseNotes } from '../features/releaseNotes/releaseNotesDialogSlice';
-
-const filterByInput = filter => app => {
-    try {
-        return new RegExp(filter, 'i').test(app.displayName);
-    } catch (_) {
-        //
-    }
-    return app.displayName?.includes(filter);
-};
 
 function mapStateToProps(state) {
     const {
@@ -29,37 +21,16 @@ function mapStateToProps(state) {
             installingAppName,
             removingAppName,
             upgradingAppName,
-            show,
-            filter,
-            sources,
         },
     } = state;
     const allApps = localApps.concat(downloadableApps);
-    const apps = allApps
-        .filter(filterByInput(filter))
-        .filter(
-            app =>
-                ((app.isDownloadable === true && app.path && show.installed) ||
-                    (app.isDownloadable === null &&
-                        !app.path &&
-                        show.available) ||
-                    app.isDownloadable === false) &&
-                sources[app.source || 'local'] !== false
-        )
-        .sort((a, b) => {
-            const cmpInstalled = !!b.currentVersion - !!a.currentVersion;
-            const aName = a.displayName || a.name;
-            const bName = b.displayName || b.name;
-            return cmpInstalled || aName.localeCompare(bName);
-        });
 
-    const allSources = [
-        ...new Set(allApps.map(({ source }) => source || 'local')),
-    ];
-    allSources.forEach(x => {
-        if (sources[x] === undefined) {
-            sources[x] = true;
-        }
+    const appsFilter = getAppsFilter(state);
+    const apps = allApps.filter(appsFilter).sort((a, b) => {
+        const cmpInstalled = !!b.currentVersion - !!a.currentVersion;
+        const aName = a.displayName || a.name;
+        const bName = b.displayName || b.name;
+        return cmpInstalled || aName.localeCompare(bName);
     });
 
     return {
@@ -69,10 +40,7 @@ function mapStateToProps(state) {
         upgradingAppName,
         isProcessing:
             !!installingAppName || !!upgradingAppName || !!removingAppName,
-        show: { ...show },
-        filter,
         upgradeableApps: apps.filter(app => app.upgradeAvailable),
-        sources,
     };
 }
 

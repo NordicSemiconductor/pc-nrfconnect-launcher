@@ -15,11 +15,6 @@ export const loadDownloadableApps: {
     (): AppThunk;
 };
 
-export const setAppManagementSource: (
-    source?: SourceName,
-    show?: boolean
-) => AppThunk;
-
 export const downloadLatestAppInfoAction: () => AnyAction;
 
 export const downloadLatestAppInfoSuccessAction: (

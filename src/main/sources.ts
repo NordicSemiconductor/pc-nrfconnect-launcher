@@ -18,6 +18,7 @@ import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { ensureDirExists } from './mkdir';
 import * as net from './net';
+import { addShownSource, removeShownSource } from './settings';
 
 let sourcesData: Record<string, string> | undefined;
 
@@ -165,6 +166,8 @@ export const addSource = async (url: string) => {
     getAllSources()[name] = url;
     saveAllSources();
 
+    addShownSource(name);
+
     return name;
 };
 
@@ -185,5 +188,7 @@ export const removeSource = async (sourceName?: string) => {
 
         delete getAllSources()[sourceName];
         saveAllSources();
+
+        removeShownSource(sourceName);
     }
 };

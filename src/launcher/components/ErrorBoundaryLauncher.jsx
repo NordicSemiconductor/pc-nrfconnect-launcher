@@ -5,22 +5,32 @@
  */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { getCurrentWindow } from '@electron/remote';
 import { ErrorBoundary } from 'pc-nrfconnect-shared';
 import { node } from 'prop-types';
 
 import pkgJson from '../../../package.json';
-import * as AppsActions from '../actions/appsActions';
+import { setSetting } from '../../ipc/settings';
+import { getSources } from '../features/sources/sourcesSlice';
 import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
+import { useLauncherSelector } from '../util/hooks';
 
 const ErrorBoundaryLauncher = ({ children }) => {
-    const dispatch = useDispatch();
+    const sources = useLauncherSelector(getSources);
 
-    const restoreDefaults = async () => {
-        dispatch(await AppsActions.setAppManagementFilter(''));
-        dispatch(await AppsActions.setAppManagementShow({}));
-        dispatch(await AppsActions.setAppManagementSource({}));
+    const restoreDefaults = () => {
+        // TODO: Replace with a new IPC call 'resetSettings'
+        setSetting('app-management.filter', '');
+        setSetting('app-management.show', {
+            installed: true,
+            available: true,
+        });
+        setSetting(
+            'app-management.sources',
+            Object.fromEntries(
+                Object.keys(sources).map(sourceName => [sourceName, true])
+            )
+        );
         getCurrentWindow().reload();
     };
 

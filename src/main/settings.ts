@@ -8,6 +8,7 @@ import fs from 'fs';
 import merge from 'lodash.merge';
 
 import { Settings } from '../ipc/settings';
+import { SourceName } from '../ipc/sources';
 import { getConfig } from './config';
 
 const defaultWindowSize = {
@@ -24,6 +25,7 @@ const defaultSettings: Settings = {
     },
     'app-management.sources': {
         official: true,
+        local: true,
     },
     lastWindowState: defaultWindowSize,
     shouldCheckForUpdatesAtStartup: true,
@@ -68,3 +70,18 @@ export const set = <Key extends keyof Settings>(
 };
 
 export const get = <Key extends keyof Settings>(key: Key) => data[key];
+
+export const addShownSource = (name: SourceName) => {
+    const names = get('app-management.sources');
+    delete names[name];
+    set('app-management.sources', {
+        ...names,
+        [name]: true,
+    });
+};
+
+export const removeShownSource = (name: SourceName) => {
+    const names = get('app-management.sources');
+    delete names[name];
+    set('app-management.sources', names);
+};

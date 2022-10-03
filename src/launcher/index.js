@@ -14,6 +14,7 @@ import thunk from 'redux-thunk';
 
 import * as AppsActions from './actions/appsActions';
 import RootContainer from './containers/RootContainer';
+import { initializeFilters } from './features/filter/filterEffects';
 import {
     checkForCoreUpdatesAtStartup,
     downloadLatestAppInfoAtStartup,
@@ -45,11 +46,10 @@ render(rootElement, document.getElementById('webapp'), async () => {
     dispatch(checkUsageDataSetting());
     await dispatch(loadSettings());
     await dispatch(loadSources());
-    dispatch(await AppsActions.setAppManagementFilter());
+    await dispatch(initializeFilters());
+
     await dispatch(AppsActions.loadLocalApps());
     await dispatch(AppsActions.loadDownloadableApps());
-    dispatch(await AppsActions.setAppManagementShow());
-    dispatch(await AppsActions.setAppManagementSource());
     await dispatch(downloadLatestAppInfoAtStartup());
     await dispatch(checkForCoreUpdatesAtStartup());
     sendEnvInfo();
