@@ -58,7 +58,7 @@ import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
 import {
     addShownSource,
-    getAll as getAllSettings,
+    get as getSettings,
     removeShownSource,
     resetSettings,
     setCheckUpdatesAtStartup,
@@ -78,7 +78,7 @@ export default () => {
     registerCreateDesktopShortcut(createDesktopShortcut);
 
     registerResetSettings(resetSettings);
-    registerGetSettings(getAllSettings);
+    registerGetSettings(getSettings);
     registerShowSource(addShownSource);
     registerHideSource(removeShownSource);
     registerSetNameFilter(setNameFilter);

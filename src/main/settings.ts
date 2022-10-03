@@ -7,7 +7,7 @@
 import fs from 'fs';
 import merge from 'lodash.merge';
 
-import type { Settings, ShownStates } from '../ipc/settings';
+import type { Settings, ShownStates, WindowState } from '../ipc/settings';
 import type { SourceName } from '../ipc/sources';
 import { getConfig } from './config';
 
@@ -66,46 +66,37 @@ export const resetSettings = () => {
     save();
 };
 
-export const set = <Key extends keyof Settings>(
-    key: Key,
-    value: Settings[Key]
-) => {
-    data[key] = value;
+export const get = () => data;
+
+export const addShownSource = (name: SourceName) => {
+    data['app-management.sources'][name] = true;
     save();
 };
 
-export const get = <Key extends keyof Settings>(key: Key) => data[key];
-
-export const getAll = () => data;
-
-export const addShownSource = (name: SourceName) => {
-    const names = get('app-management.sources');
-    delete names[name];
-    set('app-management.sources', {
-        ...names,
-        [name]: true,
-    });
-};
-
 export const removeShownSource = (name: SourceName) => {
-    const names = get('app-management.sources');
-    delete names[name];
-    set('app-management.sources', names);
+    delete data['app-management.sources'][name];
+    save();
 };
 
 export const setNameFilter = (nameFilter: string) => {
-    set('app-management.filter', nameFilter);
+    data['app-management.filter'] = nameFilter;
+    save();
 };
 
 export const setShownStates = (shownStates: Partial<ShownStates>) => {
-    const currentlyShownStates = get('app-management.show');
-
-    set('app-management.show', {
-        ...currentlyShownStates,
+    data['app-management.show'] = {
+        ...data['app-management.show'],
         ...shownStates,
-    });
+    };
+    save();
 };
 
 export const setCheckUpdatesAtStartup = (isEnabled: boolean) => {
-    set('shouldCheckForUpdatesAtStartup', isEnabled);
+    data.shouldCheckForUpdatesAtStartup = isEnabled;
+    save();
+};
+
+export const setLastWindowState = (windowState: WindowState) => {
+    data.lastWindowState = { ...windowState };
+    save();
 };

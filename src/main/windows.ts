@@ -64,7 +64,7 @@ export const hideLauncherWindow = () => {
 };
 
 export const openAppWindow = (app: LaunchableApp) => {
-    const lastWindowState = settings.get('lastWindowState');
+    const { lastWindowState } = settings.get();
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
@@ -111,7 +111,7 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     appWindow.on('close', () => {
         const bounds = appWindow.getBounds();
-        settings.set('lastWindowState', {
+        settings.setLastWindowState({
             x: bounds.x,
             y: bounds.y,
             width: bounds.width,
