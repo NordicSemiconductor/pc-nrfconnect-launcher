@@ -14,6 +14,7 @@ import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
 
+import { OFFICIAL } from '../../../ipc/sources';
 import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { getApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -133,7 +134,7 @@ export default () => {
                         </Col>
                     </Row>
                     {Object.keys(sources)
-                        .filter(name => name !== 'official')
+                        .filter(name => name !== OFFICIAL)
                         .map(name => (
                             <Row key={name}>
                                 <Col className="item-name text-capitalize">

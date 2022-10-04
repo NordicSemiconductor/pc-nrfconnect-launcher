@@ -7,6 +7,7 @@
 import fs from 'fs-extra';
 
 import { AppInAppsJson } from '../ipc/apps';
+import { allStandardSourceNames } from '../ipc/sources';
 import {
     getAppsJsonPath,
     getAppsRootDir,
@@ -171,9 +172,9 @@ export const addSource = async (url: string) => {
     return name;
 };
 
-const notOfficialSource = (sourceName?: string): sourceName is string => {
-    if (!sourceName || sourceName === 'official') {
-        throw new Error('The official source shall not be removed.');
+const isRemovableSource = (sourceName?: string): sourceName is string => {
+    if (!sourceName || allStandardSourceNames.includes(sourceName)) {
+        throw new Error('The official or local source shall not be removed.');
     }
 
     return true;
@@ -183,7 +184,7 @@ const removeSourceDirectory = (sourceName: string) =>
     fs.remove(getAppsRootDir(sourceName));
 
 export const removeSource = async (sourceName?: string) => {
-    if (notOfficialSource(sourceName)) {
+    if (isRemovableSource(sourceName)) {
         await removeSourceDirectory(sourceName);
 
         delete getAllSources()[sourceName];

@@ -9,7 +9,7 @@ import type { Draft } from 'immer';
 import merge from 'lodash.merge';
 
 import type { Settings, ShownStates, WindowState } from '../ipc/settings';
-import type { SourceName } from '../ipc/sources';
+import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
 
 const defaultWindowSize = {
@@ -25,7 +25,7 @@ const defaultSettings = {
             available: true,
         },
         nameFilter: '',
-        shownSources: new Set(['official', 'local']),
+        shownSources: new Set(allStandardSourceNames),
     },
     lastWindowState: defaultWindowSize,
     shouldCheckForUpdatesAtStartup: true,

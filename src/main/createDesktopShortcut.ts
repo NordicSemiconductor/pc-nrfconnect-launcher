@@ -14,6 +14,7 @@ import { uuid } from 'short-uuid';
 
 import { LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
+import { OFFICIAL } from '../ipc/sources';
 import * as fileUtil from './fileUtil';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
@@ -30,7 +31,7 @@ const mode =
 
 const sourceName = (app: LaunchableApp) => {
     if (app.isDownloadable) {
-        if (app.source === 'official') {
+        if (app.source === OFFICIAL) {
             return '';
         }
         return ` (${app.source})`;

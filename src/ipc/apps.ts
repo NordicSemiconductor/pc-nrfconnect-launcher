@@ -5,6 +5,7 @@
  */
 
 import { handle, invoke } from './infrastructure/rendererToMain';
+import { LOCAL } from './sources';
 
 export interface AppInAppsJson {
     displayName: string;
@@ -30,7 +31,7 @@ export interface InstalledApp extends BaseApp {
 }
 
 export interface LocalApp extends InstalledApp {
-    source: 'local';
+    source: typeof LOCAL;
     isDownloadable: false;
     isInstalled: true;
 }

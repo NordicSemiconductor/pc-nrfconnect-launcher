@@ -6,6 +6,7 @@
 
 import { List, Record } from 'immutable';
 
+import { allStandardSourceNames } from '../../ipc/sources';
 import * as AppsActions from '../actions/appsActions';
 import getImmutableApp from '../models';
 
@@ -200,12 +201,18 @@ const getAllApps = state => {
 };
 
 export const getAllSourceNamesSorted = state => {
-    const allSources = new Set(getAllApps(state).map(({ source }) => source));
-    allSources.delete('official');
-    allSources.delete('local');
-    const rest = [...allSources].sort((a, b) => a.localeCompare(b));
+    const allSources = [
+        ...new Set(getAllApps(state).map(({ source }) => source)),
+    ];
 
-    return ['official', 'local', ...rest];
+    const withoutStandardSources = allSources.filter(
+        source => !allStandardSourceNames.includes(source)
+    );
+
+    return [
+        ...allStandardSourceNames,
+        ...withoutStandardSources.sort((a, b) => a.localeCompare(b)),
+    ];
 };
 
 export const getDownloadableApp =

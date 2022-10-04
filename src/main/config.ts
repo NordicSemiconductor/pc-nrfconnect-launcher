@@ -10,6 +10,7 @@ import path from 'path';
 
 import packageJson from '../../package.json';
 import type { Configuration, StartupApp } from '../ipc/config';
+import { OFFICIAL, SourceName } from '../ipc/sources';
 
 let config: Configuration;
 
@@ -28,7 +29,7 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
         };
     }
 
-    const sourceName = argv.source || 'official';
+    const sourceName = argv.source || OFFICIAL;
 
     const downloadableApp = argv['open-downloadable-app'];
     if (downloadableApp != null) {
@@ -107,10 +108,10 @@ export const getAppsJsonPath = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'apps.json');
 
 export const getAppsRootDir = (
-    sourceName = 'official',
+    sourceName: SourceName = OFFICIAL,
     effectiveConfig = config
 ) =>
-    sourceName === 'official'
+    sourceName === OFFICIAL
         ? effectiveConfig.appsRootDir
         : path.join(getAppsExternalDir(effectiveConfig), sourceName);
 
