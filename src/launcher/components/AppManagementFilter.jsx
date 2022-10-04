@@ -65,7 +65,7 @@ const SourceFilter = () => {
 
 const StateFilter = () => {
     const dispatch = useLauncherDispatch();
-    const { installed, available } = useLauncherSelector(getShownStates);
+    const { installed, downloadable } = useLauncherSelector(getShownStates);
 
     return (
         <Col className="pr-4 pl-0">
@@ -84,15 +84,15 @@ const StateFilter = () => {
                 }}
             />
             <Form.Check
-                label="Available"
-                id="cb-available"
+                label="Downloadable"
+                id="cb-downloadable"
                 className="mx-3 py-1 px-4"
                 custom
-                checked={available}
+                checked={downloadable}
                 onChange={({ target }) => {
-                    dispatch(setShownStates({ available: target.checked }));
+                    dispatch(setShownStates({ downloadable: target.checked }));
                     setShownStatesInSettings({
-                        available: target.checked,
+                        downloadable: target.checked,
                     });
                 }}
             />

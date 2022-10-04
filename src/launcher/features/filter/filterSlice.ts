@@ -7,26 +7,18 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { App } from '../../../ipc/apps';
-import { SourceName } from '../../../ipc/sources';
+import type { App } from '../../../ipc/apps';
+import type { Settings, ShownStates } from '../../../ipc/settings';
+import type { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../..';
 
-type ShownStates = {
-    available: boolean;
-    installed: boolean;
-};
-
-export type State = {
-    shownSources: Set<SourceName>;
-    nameFilter: string;
-    shownStates: ShownStates;
-};
+export type State = Settings['appFilter'];
 
 const initialState: State = {
     shownSources: new Set(),
     nameFilter: '',
     shownStates: {
-        available: true,
+        downloadable: true,
         installed: true,
     },
 };
@@ -92,7 +84,7 @@ const matchesNameFilter = (app: App, state: RootState) => {
 
 const matchesStateFilter = (app: App, state: RootState) =>
     (state.filter.shownStates.installed && app.isInstalled) ||
-    (state.filter.shownStates.available && !app.isInstalled);
+    (state.filter.shownStates.downloadable && !app.isInstalled);
 
 export const getAppsFilter = (state: RootState) => (app: App) =>
     matchesSourceFilter(app, state) &&

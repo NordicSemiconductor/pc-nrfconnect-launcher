@@ -22,7 +22,7 @@ const defaultSettings = {
     appFilter: {
         shownStates: {
             installed: true,
-            available: true,
+            downloadable: true,
         },
         nameFilter: '',
         shownSources: new Set(allStandardSourceNames),

@@ -28,8 +28,8 @@ export type WindowState = {
 };
 
 export type ShownStates = {
+    downloadable: boolean;
     installed: boolean;
-    available: boolean;
 };
 
 export type Settings = Immutable<{
