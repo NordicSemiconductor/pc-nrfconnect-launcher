@@ -37,7 +37,7 @@ const slice = createSlice({
     reducers: {
         setAllShownSources(
             state,
-            { payload: shownSources }: PayloadAction<SourceName[]>
+            { payload: shownSources }: PayloadAction<ReadonlySet<SourceName>>
         ) {
             state.shownSources = new Set(shownSources);
         },

@@ -16,11 +16,5 @@ export const initializeFilters =
     (settings: Settings) => (dispatch: AppDispatch) => {
         dispatch(setShownStates(settings.appFilter.shownStates));
         dispatch(setNameFilter(settings.appFilter.nameFilter));
-        dispatch(
-            setAllShownSources(
-                Object.entries(settings.appFilter.sources)
-                    .filter(([, visible]) => visible)
-                    .flatMap(([sourcename]) => sourcename)
-            )
-        );
+        dispatch(setAllShownSources(settings.appFilter.shownSources));
     };

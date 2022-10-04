@@ -34,7 +34,7 @@ export type ShownStates = {
 
 export type Settings = Immutable<{
     appFilter: {
-        sources: Record<SourceName, boolean>;
+        shownSources: Set<SourceName>;
         nameFilter: string;
         shownStates: ShownStates;
     };

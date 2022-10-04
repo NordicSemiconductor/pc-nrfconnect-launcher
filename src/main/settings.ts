@@ -18,17 +18,14 @@ const defaultWindowSize = {
     maximized: false,
 };
 
-const defaultSettings: Settings = {
+const defaultSettings = {
     appFilter: {
         shownStates: {
             installed: true,
             available: true,
         },
         nameFilter: '',
-        sources: {
-            official: true,
-            local: true,
-        },
+        shownSources: new Set(['official', 'local']),
     },
     lastWindowState: defaultWindowSize,
     shouldCheckForUpdatesAtStartup: true,
@@ -39,10 +36,9 @@ const parseJsonFile = (filePath: string) => {
         return {};
     }
     try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as Record<
-            string,
-            unknown
-        >;
+        return JSON.parse(fs.readFileSync(filePath, 'utf-8'), (key, value) =>
+            key === 'shownSources' ? new Set(value) : value
+        );
     } catch (err) {
         console.error('Could not load settings. Reason: ', err);
     }
@@ -61,7 +57,12 @@ const load = () => {
 let data: Draft<Settings> = load();
 
 const save = () => {
-    fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
+    fs.writeFileSync(
+        getConfig().settingsJsonPath,
+        JSON.stringify(data, (key, value) =>
+            key === 'shownSources' ? [...value] : value
+        )
+    );
 };
 
 export const resetSettings = () => {
@@ -71,13 +72,13 @@ export const resetSettings = () => {
 
 export const get = () => data as Settings;
 
-export const addShownSource = (name: SourceName) => {
-    data.appFilter.sources[name] = true;
+export const addShownSource = (sourceToAdd: SourceName) => {
+    data.appFilter.shownSources.add(sourceToAdd);
     save();
 };
 
-export const removeShownSource = (name: SourceName) => {
-    delete data.appFilter.sources[name];
+export const removeShownSource = (sourceToRemove: SourceName) => {
+    data.appFilter.shownSources.delete(sourceToRemove);
     save();
 };
 
