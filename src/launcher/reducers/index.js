@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { enableMapSet } from 'immer';
 import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 import { combineReducers } from 'redux';
 
@@ -15,6 +16,8 @@ import settings from '../features/settings/settingsSlice';
 import sources from '../features/sources/sourcesSlice';
 import usageData from '../features/usageData/usageDataSlice';
 import apps from './appsReducer';
+
+enableMapSet();
 
 export default combineReducers({
     apps,
