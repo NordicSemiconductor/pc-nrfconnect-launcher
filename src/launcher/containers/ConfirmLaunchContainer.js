@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import * as AppsActions from '../actions/appsActions';
 import ConfirmLaunchDialog from '../components/ConfirmLaunchDialog';
+import { launch } from '../features/apps/appsEffects';
 
 function mapStateToProps(state) {
     const { apps } = state;
@@ -23,7 +24,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onConfirm: app => {
             dispatch(AppsActions.hideConfirmLaunchDialogAction());
-            AppsActions.launch(app);
+            launch(app);
         },
         onCancel: () => dispatch(AppsActions.hideConfirmLaunchDialogAction()),
     };

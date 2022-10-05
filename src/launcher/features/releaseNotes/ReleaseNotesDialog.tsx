@@ -10,9 +10,9 @@ import Modal from 'react-bootstrap/Modal';
 import ReactMarkdown from 'react-markdown';
 
 import { InstalledDownloadableApp } from '../../../ipc/apps';
-import { upgradeDownloadableApp } from '../../actions/appsActions';
 import { getDownloadableApp } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { upgradeDownloadableApp } from '../apps/appsEffects';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 type Uninstalled = { isInstalled: false };

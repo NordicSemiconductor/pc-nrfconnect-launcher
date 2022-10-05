@@ -7,9 +7,9 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-import { upgradeDownloadableApp } from '../../actions/appsActions';
 import { getUpgradeableVisibleApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { upgradeDownloadableApp } from '../apps/appsEffects';
 
 export default () => {
     const dispatch = useLauncherDispatch();

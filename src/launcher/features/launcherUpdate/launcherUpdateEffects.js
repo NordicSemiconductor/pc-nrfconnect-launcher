@@ -12,6 +12,7 @@ import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import * as AppsActions from '../../actions/appsActions';
 import mainConfig from '../../util/mainConfig';
+import { loadDownloadableApps } from '../apps/appsEffects';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { removeSource } from '../sources/sourcesEffects';
 import {
@@ -59,7 +60,7 @@ export const downloadLatestAppInfo =
             .then(() =>
                 dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
             )
-            .then(() => dispatch(AppsActions.loadDownloadableApps()))
+            .then(() => dispatch(loadDownloadableApps()))
             .catch(error => {
                 dispatch(AppsActions.downloadLatestAppInfoErrorAction());
                 if (options.rejectIfError) {

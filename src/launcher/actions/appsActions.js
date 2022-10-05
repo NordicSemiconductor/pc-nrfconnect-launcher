@@ -4,30 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
-import { join } from 'path';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
-
-import {
-    downloadReleaseNotes,
-    getDownloadableApps,
-    getLocalApps,
-    installDownloadableApp as installDownloadableAppInMain,
-    removeDownloadableApp as removeDownloadableAppInMain,
-} from '../../ipc/apps';
-import { downloadToFile } from '../../ipc/downloadToFile';
-import { openApp } from '../../ipc/openWindow';
-import { getAppsRootDir } from '../../main/config';
-import {
-    EventAction,
-    sendAppUsageData,
-    sendLauncherUsageData,
-} from '../features/usageData/usageDataEffects';
-import checkAppCompatibility from '../util/checkAppCompatibility';
-import mainConfig from '../util/mainConfig';
-
-const fs = remoteRequire('fs-extra');
-
 export const LOAD_LOCAL_APPS = 'LOAD_LOCAL_APPS';
 export const LOAD_LOCAL_APPS_SUCCESS = 'LOAD_LOCAL_APPS_SUCCESS';
 export const LOAD_LOCAL_APPS_ERROR = 'LOAD_LOCAL_APPS_ERROR';
@@ -59,26 +35,26 @@ export const SET_APP_MANAGEMENT_FILTER = 'SET_APP_MANAGEMENT_FILTER';
 export const SET_APP_MANAGEMENT_SOURCE = 'SET_APP_MANAGEMENT_SOURCE';
 export const UPDATE_DOWNLOAD_PROGRESS = 'UPDATE_DOWNLOAD_PROGRESS';
 
-function loadLocalAppsAction() {
+export function loadLocalAppsAction() {
     return {
         type: LOAD_LOCAL_APPS,
     };
 }
 
-function loadLocalAppsSuccess(apps) {
+export function loadLocalAppsSuccess(apps) {
     return {
         type: LOAD_LOCAL_APPS_SUCCESS,
         apps,
     };
 }
 
-function loadLocalAppsError() {
+export function loadLocalAppsError() {
     return {
         type: LOAD_LOCAL_APPS_ERROR,
     };
 }
 
-function loadDownloadableAppsAction() {
+export function loadDownloadableAppsAction() {
     return {
         type: LOAD_DOWNLOADABLE_APPS,
     };
@@ -92,13 +68,13 @@ export function loadDownloadableAppsSuccess(apps, appToUpdate) {
     };
 }
 
-function loadDownloadableAppsError() {
+export function loadDownloadableAppsError() {
     return {
         type: LOAD_DOWNLOADABLE_APPS_ERROR,
     };
 }
 
-function installDownloadableAppAction(name, source) {
+export function installDownloadableAppAction(name, source) {
     return {
         type: INSTALL_DOWNLOADABLE_APP,
         name,
@@ -106,7 +82,7 @@ function installDownloadableAppAction(name, source) {
     };
 }
 
-function installDownloadableAppSuccessAction(name, source) {
+export function installDownloadableAppSuccessAction(name, source) {
     return {
         type: INSTALL_DOWNLOADABLE_APP_SUCCESS,
         name,
@@ -114,7 +90,7 @@ function installDownloadableAppSuccessAction(name, source) {
     };
 }
 
-function installDownloadableAppErrorAction() {
+export function installDownloadableAppErrorAction() {
     return {
         type: INSTALL_DOWNLOADABLE_APP_ERROR,
     };
@@ -127,7 +103,7 @@ export function updateInstallProgressAction(message) {
     };
 }
 
-function removeDownloadableAppAction(name, source) {
+export function removeDownloadableAppAction(name, source) {
     return {
         type: REMOVE_DOWNLOADABLE_APP,
         name,
@@ -135,7 +111,7 @@ function removeDownloadableAppAction(name, source) {
     };
 }
 
-function removeDownloadableAppSuccessAction(name, source) {
+export function removeDownloadableAppSuccessAction(name, source) {
     return {
         type: REMOVE_DOWNLOADABLE_APP_SUCCESS,
         name,
@@ -143,13 +119,13 @@ function removeDownloadableAppSuccessAction(name, source) {
     };
 }
 
-function removeDownloadableAppErrorAction() {
+export function removeDownloadableAppErrorAction() {
     return {
         type: REMOVE_DOWNLOADABLE_APP_ERROR,
     };
 }
 
-function upgradeDownloadableAppAction(name, version, source) {
+export function upgradeDownloadableAppAction(name, version, source) {
     return {
         type: UPGRADE_DOWNLOADABLE_APP,
         name,
@@ -158,7 +134,7 @@ function upgradeDownloadableAppAction(name, version, source) {
     };
 }
 
-function upgradeDownloadableAppSuccessAction(name, version, source) {
+export function upgradeDownloadableAppSuccessAction(name, version, source) {
     return {
         type: UPGRADE_DOWNLOADABLE_APP_SUCCESS,
         name,
@@ -167,7 +143,7 @@ function upgradeDownloadableAppSuccessAction(name, version, source) {
     };
 }
 
-function upgradeDownloadableAppErrorAction() {
+export function upgradeDownloadableAppErrorAction() {
     return {
         type: UPGRADE_DOWNLOADABLE_APP_ERROR,
     };
@@ -223,218 +199,5 @@ export function setAppReleaseNoteAction(source, name, releaseNote) {
         source,
         name,
         releaseNote,
-    };
-}
-
-/**
- * Download app icon and dispatch icon update event
- *
- * @param {string} source app source identifier
- * @param {string} name app name
- * @param {string} iconPath path to store the icon at
- * @param {string} iconUrl url to download from
- *
- * @returns {void}
- */
-function downloadAppIcon(source, name, iconPath, iconUrl) {
-    return dispatch => {
-        // If there is a cached version, use it even before downloading.
-        if (fs.existsSync(iconPath)) {
-            dispatch(setAppIconPath(source, name, iconPath));
-        }
-        downloadToFile(iconUrl, iconPath)
-            .then(() => dispatch(setAppIconPath(source, name, iconPath)))
-            .catch(() => {
-                /* Ignore 404 not found. */
-            });
-    };
-}
-
-export function loadLocalApps() {
-    return dispatch => {
-        dispatch(loadLocalAppsAction());
-
-        return getLocalApps()
-            .then(apps => dispatch(loadLocalAppsSuccess(apps)))
-            .catch(error => {
-                dispatch(loadLocalAppsError());
-                dispatch(ErrorDialogActions.showDialog(error.message));
-            });
-    };
-}
-
-async function downloadAllReleaseNotesInBackground(
-    dispatch,
-    apps,
-    appName,
-    appSource
-) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const app of apps) {
-        if (appName && !(app.name === appName && app.source === appSource)) {
-            // eslint-disable-next-line no-continue
-            continue;
-        }
-
-        // eslint-disable-next-line no-await-in-loop
-        const releaseNote = await downloadReleaseNotes(app);
-        if (releaseNote != null) {
-            dispatch(
-                setAppReleaseNoteAction(app.source, app.name, releaseNote)
-            );
-        }
-    }
-}
-
-export function loadDownloadableApps(appName, appSource) {
-    return async dispatch => {
-        dispatch(loadDownloadableAppsAction());
-        const { apps, appsWithErrors } = await getDownloadableApps();
-
-        dispatch(
-            loadDownloadableAppsSuccess(
-                apps,
-                appName && { name: appName, source: appSource }
-            )
-        );
-        apps.filter(({ path }) => !path).forEach(({ source, name, url }) => {
-            const iconPath = join(
-                `${getAppsRootDir(source, mainConfig())}`,
-                `${name}.svg`
-            );
-            const iconUrl = `${url}.svg`;
-            dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
-        });
-
-        downloadAllReleaseNotesInBackground(dispatch, apps, appName, appSource);
-
-        if (appsWithErrors.length > 0) {
-            handleAppsWithErrors(dispatch, appsWithErrors);
-        }
-    };
-}
-
-const handleAppsWithErrors = (dispatch, apps) => {
-    dispatch(loadDownloadableAppsError());
-    apps.forEach(app => {
-        sendLauncherUsageData(
-            EventAction.REPORT_INSTALLATION_ERROR,
-            `${app.source} - ${app.name}`
-        );
-    });
-
-    const recover = invalidPaths => () => {
-        invalidPaths.forEach(p => fs.remove(p));
-        getCurrentWindow().reload();
-    };
-
-    dispatch(
-        ErrorDialogActions.showDialog(buildErrorMessage(apps), {
-            Recover: recover(apps.map(app => app.path)),
-            Close: () => dispatch(ErrorDialogActions.hideDialog()),
-        })
-    );
-};
-
-const buildErrorMessage = apps => {
-    const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');
-    const paths = apps.map(app => `* *${app.path}*\n\n`).join('');
-    return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
-};
-
-export function installDownloadableApp(name, source) {
-    return dispatch => {
-        sendAppUsageData(EventAction.INSTALL_APP, source, name);
-        dispatch(installDownloadableAppAction(name, source));
-
-        installDownloadableAppInMain(name, 'latest', source)
-            .then(() => {
-                dispatch(installDownloadableAppSuccessAction(name, source));
-                dispatch(loadDownloadableApps(name, source));
-            })
-            .catch(error => {
-                dispatch(installDownloadableAppErrorAction());
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to install: ${error.message}`
-                    )
-                );
-            });
-    };
-}
-
-export function updateInstallProgress(message) {
-    return dispatch => {
-        dispatch(updateInstallProgressAction(...message));
-    };
-}
-
-export function removeDownloadableApp(name, source) {
-    return dispatch => {
-        sendAppUsageData(EventAction.REMOVE_APP, source, name);
-        dispatch(removeDownloadableAppAction(name, source));
-        removeDownloadableAppInMain(name, source)
-            .then(() => {
-                dispatch(removeDownloadableAppSuccessAction(name, source));
-            })
-            .catch(error => {
-                dispatch(removeDownloadableAppErrorAction());
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to remove: ${error.message}`
-                    )
-                );
-            });
-    };
-}
-
-export function upgradeDownloadableApp(name, version, source) {
-    return dispatch => {
-        sendAppUsageData(EventAction.UPGRADE_APP, source, name);
-        dispatch(upgradeDownloadableAppAction(name, version, source));
-
-        return installDownloadableAppInMain(name, version, source)
-            .then(() => {
-                dispatch(
-                    upgradeDownloadableAppSuccessAction(name, version, source)
-                );
-                dispatch(loadDownloadableApps(name, source));
-            })
-            .catch(error => {
-                dispatch(upgradeDownloadableAppErrorAction());
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to upgrade: ${error.message}`
-                    )
-                );
-            });
-    };
-}
-
-export function launch(app) {
-    // The apps in state are Immutable Maps which cannot be sent over IPC.
-    // Converting to plain JS object before sending to the main process.
-    const appObj = app.toJS();
-    const sharedData =
-        `App version: ${appObj.currentVersion};` +
-        ` Engine version: ${appObj.engineVersion};`;
-    sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name);
-    openApp(appObj);
-}
-
-export function checkEngineAndLaunch(app) {
-    return dispatch => {
-        const appCompatibility = checkAppCompatibility(app);
-        const launchAppWithoutWarning =
-            appCompatibility.isCompatible ||
-            mainConfig().isRunningLauncherFromSource;
-
-        if (launchAppWithoutWarning) {
-            launch(app);
-        } else {
-            dispatch(
-                showConfirmLaunchDialogAction(appCompatibility.longWarning, app)
-            );
-        }
     };
 }

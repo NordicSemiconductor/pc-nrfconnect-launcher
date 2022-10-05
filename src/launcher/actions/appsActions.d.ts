@@ -6,14 +6,8 @@
 
 import type { AnyAction } from 'redux';
 
-import { App } from '../../ipc/apps';
-import type { SourceName } from '../../ipc/sources';
-import type { AppThunk } from '..';
-
-export const loadDownloadableApps: {
-    (appName: string, appSource: SourceName): AppThunk;
-    (): AppThunk;
-};
+import { DownloadableApp, LaunchableApp, LocalApp } from '../../ipc/apps';
+import { SourceName } from '../../ipc/sources';
 
 export const downloadLatestAppInfoAction: () => AnyAction;
 
@@ -22,12 +16,73 @@ export const downloadLatestAppInfoSuccessAction: (
 ) => AnyAction;
 
 export const loadDownloadableAppsSuccess: (
-    apps: App[],
-    appToUpdate?: { name: string; source: string }
+    apps: DownloadableApp[],
+    appToUpdate?: { name: string; source: SourceName }
 ) => AnyAction;
 
-export const upgradeDownloadableApp: (
+export const showConfirmLaunchDialogAction: (
+    text: string,
+    app: LaunchableApp
+) => AnyAction;
+
+export const upgradeDownloadableAppAction: (
     name: string,
-    latestVersion: string,
+    version: string,
     source: SourceName
-) => AppThunk;
+) => AnyAction;
+
+export const upgradeDownloadableAppErrorAction: () => AnyAction;
+
+export const upgradeDownloadableAppSuccessAction: (
+    name: string,
+    version: string,
+    source: SourceName
+) => AnyAction;
+
+export const removeDownloadableAppAction: (
+    name: string,
+    source: SourceName
+) => AnyAction;
+
+export const removeDownloadableAppSuccessAction: (
+    name: string,
+    source: SourceName
+) => AnyAction;
+
+export const removeDownloadableAppErrorAction: () => AnyAction;
+
+export const installDownloadableAppAction: (
+    name: string,
+    source: SourceName
+) => AnyAction;
+
+export const installDownloadableAppSuccessAction: (
+    name: string,
+    source: SourceName
+) => AnyAction;
+
+export const installDownloadableAppErrorAction: () => AnyAction;
+
+export const loadDownloadableAppsAction: () => AnyAction;
+
+export const loadDownloadableAppsError: () => AnyAction;
+
+export const setAppReleaseNoteAction: (
+    source: SourceName,
+    name: string,
+    releaseNote: string
+) => AnyAction;
+
+export const loadLocalAppsAction: () => AnyAction;
+
+export const loadLocalAppsSuccess: (apps: LocalApp[]) => AnyAction;
+
+export const loadLocalAppsError: () => AnyAction;
+
+export const setAppIconPath: (
+    source: string,
+    name: string,
+    iconPath: string
+) => AnyAction;
+
+export const downloadLatestAppInfoErrorAction: () => AnyAction;

@@ -13,8 +13,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import { getSettings } from '../ipc/settings';
-import * as AppsActions from './actions/appsActions';
 import RootContainer from './containers/RootContainer';
+import {
+    loadDownloadableApps,
+    loadLocalApps,
+} from './features/apps/appsEffects';
 import { initializeFilters } from './features/filter/filterEffects';
 import {
     checkForCoreUpdatesAtStartup,
@@ -53,8 +56,8 @@ render(rootElement, document.getElementById('webapp'), async () => {
 
     await dispatch(loadSources());
 
-    await dispatch(AppsActions.loadLocalApps());
-    await dispatch(AppsActions.loadDownloadableApps());
+    await dispatch(loadLocalApps());
+    await dispatch(loadDownloadableApps());
 
     dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
     dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));

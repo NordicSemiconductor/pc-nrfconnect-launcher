@@ -42,29 +42,29 @@ export interface UnversionedDownloadableApp extends BaseApp {
     url: string;
 }
 
-export interface DownloadableApp extends UnversionedDownloadableApp {
+export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
+    isInstalled: false;
     latestVersion: string;
     releaseNote?: string;
 }
 
-export interface UninstalledDownloadableApp extends DownloadableApp {
-    isInstalled: false;
-}
-
 export interface InstalledDownloadableApp
-    extends DownloadableApp,
+    extends UnversionedDownloadableApp,
         InstalledApp {
     isDownloadable: true;
     upgradeAvailable?: boolean;
     isInstalled: true;
+    latestVersion: string;
+    releaseNote?: string;
 }
+
+export type DownloadableApp =
+    | InstalledDownloadableApp
+    | UninstalledDownloadableApp;
 
 export type LaunchableApp = LocalApp | InstalledDownloadableApp;
 
-export type App =
-    | LocalApp
-    | UninstalledDownloadableApp
-    | InstalledDownloadableApp;
+export type App = LocalApp | DownloadableApp;
 
 export interface AppWithError {
     reason: unknown;
