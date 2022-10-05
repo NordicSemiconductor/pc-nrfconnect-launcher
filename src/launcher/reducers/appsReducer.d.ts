@@ -8,7 +8,7 @@ import type {
     InstalledDownloadableApp,
     UninstalledDownloadableApp,
 } from '../../ipc/apps';
-import { SourceName } from '../../ipc/sources';
+import type { SourceName } from '../../ipc/sources';
 import type { RootState } from '..';
 
 export const isAppUpdateAvailable: (state: RootState) => boolean;
@@ -24,3 +24,9 @@ export const getDownloadableApp: (app: {
 }) => (
     state: RootState
 ) => InstalledDownloadableApp | UninstalledDownloadableApp | undefined;
+
+export const getUpgradeableVisibleApps: (
+    state: RootState
+) => InstalledDownloadableApp[];
+
+export const getAllSourceNamesSorted: (state: RootState) => SourceName[];
