@@ -11,10 +11,11 @@ import type {
 import { SourceName } from '../../ipc/sources';
 import type { RootState } from '..';
 
-export const getApps: (state: RootState) => {
-    isDownloadingLatestAppInfo: boolean;
-    lastUpdateCheckDate: Date | null;
-    downloadableApps: InstalledDownloadableApp[];
+export const isAppUpdateAvailable: (state: RootState) => boolean;
+
+export const getUpdateCheckStatus: (state: RootState) => {
+    isCheckingForUpdates: boolean;
+    lastUpdateCheckDate: null | Date;
 };
 
 export const getDownloadableApp: (app: {
