@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, Page, test } from '@playwright/test';
+import { ElectronApplication, Page } from '@playwright/test';
 import { removeSync } from 'fs-extra';
 import path from 'path';
 
@@ -19,6 +19,7 @@ import {
     checkShowsNoAppUpdate,
     checkTitleOfLastWindow,
 } from '../assertions';
+import { test } from '../baseFixtures';
 import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 

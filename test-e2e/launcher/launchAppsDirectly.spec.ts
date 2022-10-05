@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, test } from '@playwright/test';
+import { ElectronApplication } from '@playwright/test';
 
 import { checkTitleOfWindow } from '../assertions';
+import { test } from '../baseFixtures';
 import { setup, teardown } from '../setupTestApp';
 
 test.describe('launching apps directly', () => {

@@ -1,12 +1,1 @@
-{
-    "app-management.filter": "",
-    "app-management.show": { "installed": true, "available": true },
-    "app-management.sources": {},
-    "lastWindowState": {
-        "x": 2048,
-        "y": 320,
-        "width": 1024,
-        "height": 800,
-        "maximized": false
-    }
-}
+{"app-management.filter":"","app-management.show":{"installed":true,"available":true},"app-management.sources":{},"lastWindowState":{"x":448,"y":120,"width":1024,"height":800,"maximized":false}}

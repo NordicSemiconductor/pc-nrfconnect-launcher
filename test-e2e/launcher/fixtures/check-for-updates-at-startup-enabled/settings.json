@@ -1,6 +1,1 @@
-{
-    "shouldCheckForUpdatesAtStartup": true,
-    "app-management.show": { "installed": true, "available": true },
-    "app-management.filter": "",
-    "app-management.sources": {}
-}
+{"shouldCheckForUpdatesAtStartup":true,"app-management.show":{"installed":true,"available":true},"app-management.filter":"","app-management.sources":{}}

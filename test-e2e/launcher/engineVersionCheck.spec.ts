@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, Page, test } from '@playwright/test';
+import { ElectronApplication, expect, Page } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
+import { test } from '../baseFixtures';
 import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 
+// TODO: if test suite fails - file is not restored; fix
 const oldPath = path.join(__dirname, '../../', 'README.md');
 const newPath = path.join(__dirname, '../../', 'README.md.not');
 

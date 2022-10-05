@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, Page, test } from '@playwright/test';
+import { ElectronApplication, expect, Page } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
 import { checkTitleOfWindow } from '../assertions';
+import { test } from '../baseFixtures';
 import { setup, teardown } from '../setupTestApp';
 
 const { version } = packageJson;

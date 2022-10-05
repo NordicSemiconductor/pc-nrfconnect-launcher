@@ -20,6 +20,7 @@ module.exports = (_, argv) => {
     const isProd = mode === 'production';
 
     return {
+        cache: false,
         mode,
         devtool: isProd ? 'source-map' : 'cheap-eval-source-map',
         entry: {
@@ -39,13 +40,26 @@ module.exports = (_, argv) => {
                         {
                             loader: require.resolve('babel-loader'),
                             options: {
-                                cacheDirectory: true,
-                                configFile:
-                                    './node_modules/pc-nrfconnect-shared/config/babel.config.js',
+                                // cacheDirectory: true,
+                                presets: [
+                                    '@babel/preset-react',
+                                    '@babel/preset-typescript',
+                                ],
+                                plugins: [
+                                    '@babel/plugin-proposal-class-properties',
+                                    '@babel/plugin-transform-destructuring',
+                                    '@babel/plugin-transform-modules-commonjs',
+                                    '@babel/plugin-transform-parameters',
+                                    '@babel/plugin-transform-spread',
+                                    '@babel/plugin-proposal-object-rest-spread',
+                                    '@babel/plugin-proposal-optional-chaining',
+                                    '@babel/plugin-proposal-nullish-coalescing-operator',
+                                    'istanbul',
+                                ],
                             },
                         },
                     ],
-                    exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
+                    // exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
                 },
                 {
                     test: /\.scss|\.css$/,

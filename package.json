@@ -27,7 +27,8 @@
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
         "test": "jest src",
-        "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
+        "test:e2e:env": "cross-env NODE_ENV=test npm run test-e2e",
+        "test-e2e": "xvfb-maybe npx playwright test --config=test-e2e/playwright.config.ts",
         "pack": "npm run build:prod && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
@@ -89,12 +90,13 @@
         }
     },
     "devDependencies": {
-        "@playwright/test": "^1.16.3",
+        "@playwright/test": "^1.26.1",
         "@types/chmodr": "1.0.0",
         "@types/mustache": "4.2.1",
         "@types/node": "14.17.17",
         "@types/targz": "1.0.1",
         "asar": "3.0.3",
+        "babel-plugin-istanbul": "^6.1.1",
         "cross-env": "7.0.3",
         "electron": "13.5.1",
         "electron-builder": "^22.14.13",
@@ -102,8 +104,9 @@
         "electron-notarize": "0.3.0",
         "esbuild": "0.14.49",
         "mini-css-extract-plugin": "0.9.0",
+        "nyc": "^15.1.0",
         "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.6.1",
-        "playwright": "^1.16.3",
+        "playwright": "^1.26.1",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
@@ -126,5 +129,11 @@
     "eslintConfig": {
         "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
     },
-    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
+    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
+    "nyc": {
+        "include": "src",
+        "exclude": [
+            "test-e2e"
+        ]
+    }
 }
