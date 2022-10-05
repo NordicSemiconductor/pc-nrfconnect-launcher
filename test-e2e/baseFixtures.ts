@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2022 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
+/* eslint-disable no-underscore-dangle */
+
 import { test as baseTest } from '@playwright/test';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
@@ -13,9 +21,8 @@ export const test = baseTest.extend({
     context: async ({ context }, use) => {
         await context.addInitScript(() =>
             window.addEventListener('beforeunload', () =>
-                (window as any).collectIstanbulCoverage(
-                    // eslint-disable-next-line no-underscore-dangle
-                    JSON.stringify((window as any).__coverage__)
+                (window as Window).collectIstanbulCoverage(
+                    JSON.stringify((window as Window).__coverage__)
                 )
             )
         );
@@ -38,9 +45,8 @@ export const test = baseTest.extend({
         for (const page of context.pages()) {
             // eslint-disable-next-line no-await-in-loop
             await page.evaluate(() =>
-                (window as any).collectIstanbulCoverage(
-                    // eslint-disable-next-line no-underscore-dangle
-                    JSON.stringify((window as any).__coverage__)
+                (window as Window).collectIstanbulCoverage(
+                    JSON.stringify((window as Window).__coverage__)
                 )
             );
         }
