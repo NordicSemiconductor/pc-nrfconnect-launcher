@@ -11,7 +11,7 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const istanbulCLIOutput = path.join(process.cwd(), '.nyc_output');
+const istanbulCLIOutput = path.join(process.cwd(), 'test-e2e/.nyc_output');
 
 export function generateUUID(): string {
     return crypto.randomBytes(16).toString('hex');
@@ -26,7 +26,9 @@ export const test = baseTest.extend({
                 )
             )
         );
+
         await fs.promises.mkdir(istanbulCLIOutput, { recursive: true });
+
         await context.exposeFunction(
             'collectIstanbulCoverage',
             (coverageJSON: string) => {
@@ -40,7 +42,9 @@ export const test = baseTest.extend({
                     );
             }
         );
+
         await use(context);
+
         // eslint-disable-next-line no-restricted-syntax
         for (const page of context.pages()) {
             // eslint-disable-next-line no-await-in-loop
