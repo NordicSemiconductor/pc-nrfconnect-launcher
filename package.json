@@ -131,6 +131,7 @@
     },
     "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "nyc": {
+        "all": true,
         "temp-dir": "test-e2e/.nyc-output",
         "report-dir": "test-e2e/coverage",
         "include": "src",
