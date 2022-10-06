@@ -37,6 +37,7 @@ export interface LocalApp extends InstalledApp {
 }
 
 export interface UnversionedDownloadableApp extends BaseApp {
+    isDownloadable: true;
     source: string;
     homepage?: string;
     url: string;
@@ -51,7 +52,6 @@ export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
 export interface InstalledDownloadableApp
     extends UnversionedDownloadableApp,
         InstalledApp {
-    isDownloadable: true;
     upgradeAvailable?: boolean;
     isInstalled: true;
     latestVersion: string;
