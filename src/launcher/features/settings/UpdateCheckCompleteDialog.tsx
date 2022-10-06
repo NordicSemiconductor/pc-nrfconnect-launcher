@@ -8,7 +8,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import { getApps } from '../../reducers/appsReducer';
+import { isAppUpdateAvailable as isAppUpdateAvailableSelector } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
     getIsUpdateCheckCompleteVisible,
@@ -20,9 +20,8 @@ export default () => {
 
     const isVisible = useLauncherSelector(getIsUpdateCheckCompleteVisible);
 
-    const { downloadableApps } = useLauncherSelector(getApps);
-    const isAppUpdateAvailable = !!downloadableApps.find(
-        app => app.currentVersion && app.currentVersion !== app.latestVersion
+    const isAppUpdateAvailable = useLauncherSelector(
+        isAppUpdateAvailableSelector
     );
 
     const hideDialog = () => dispatch(hideUpdateCheckComplete());

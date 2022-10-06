@@ -8,8 +8,8 @@ import React from 'react';
 import { Iterable } from 'immutable';
 import { bool, func, instanceOf, string } from 'prop-types';
 
-import AppManagementFilter from '../containers/AppManagementFilterContainer';
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+import AppFilterBar from '../features/filter/AppFilterBar';
 import ReleaseNotesDialog from '../features/releaseNotes/ReleaseNotesDialog';
 import AppItem from './AppItem';
 
@@ -27,7 +27,7 @@ const AppManagementView = ({
     onShowReleaseNotes,
 }) => (
     <>
-        <AppManagementFilter apps={apps} />
+        <AppFilterBar />
         <WithScrollbarContainer hasFilter>
             {apps.map(app => (
                 <AppItem
@@ -50,6 +50,7 @@ const AppManagementView = ({
                 />
             ))}
         </WithScrollbarContainer>
+
         <ReleaseNotesDialog />
     </>
 );

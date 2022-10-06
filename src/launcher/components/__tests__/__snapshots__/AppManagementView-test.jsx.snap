@@ -2,32 +2,7 @@
 
 exports[`AppManagementView should disable buttons and display "Installing..." button text when installing app 1`] = `
 Array [
-  <div
-    apps={
-      Immutable.List [
-        Immutable.Record {
-          "name": "pc-nrfconnect-foo",
-          "displayName": "Foo app",
-          "description": "Foo description",
-          "homepage": null,
-          "currentVersion": null,
-          "latestVersion": null,
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": "bar",
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-      ]
-    }
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -114,32 +89,7 @@ Array [
 
 exports[`AppManagementView should disable buttons and display "Removing..." button text when removing app 1`] = `
 Array [
-  <div
-    apps={
-      Immutable.List [
-        Immutable.Record {
-          "name": "pc-nrfconnect-foo",
-          "displayName": "Foo app",
-          "description": "Foo description",
-          "homepage": null,
-          "currentVersion": "1.2.3",
-          "latestVersion": "1.2.3",
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": "bar",
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-      ]
-    }
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -237,32 +187,7 @@ Array [
 
 exports[`AppManagementView should disable buttons and display "Upgrading..." button text when upgrading app 1`] = `
 Array [
-  <div
-    apps={
-      Immutable.List [
-        Immutable.Record {
-          "name": "pc-nrfconnect-foo",
-          "displayName": "Foo app",
-          "description": "Foo description",
-          "homepage": null,
-          "currentVersion": "1.2.3",
-          "latestVersion": "1.2.4",
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": "bar",
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-      ]
-    }
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -360,72 +285,7 @@ Array [
 
 exports[`AppManagementView should render more info links for correctly defined homepage 1`] = `
 Array [
-  <div
-    apps={
-      Immutable.List [
-        Immutable.Record {
-          "name": "appA",
-          "displayName": "App A",
-          "description": "appA description",
-          "homepage": "https://foo.bar/readme.md",
-          "currentVersion": null,
-          "latestVersion": null,
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-        Immutable.Record {
-          "name": "appB",
-          "displayName": "App B",
-          "description": "appB description",
-          "homepage": "",
-          "currentVersion": null,
-          "latestVersion": null,
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-        Immutable.Record {
-          "name": "appC",
-          "displayName": "App C",
-          "description": "appC description",
-          "homepage": null,
-          "currentVersion": null,
-          "latestVersion": null,
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-      ]
-    }
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -650,72 +510,7 @@ Array [
 
 exports[`AppManagementView should render not-installed, installed, and upgradable apps 1`] = `
 Array [
-  <div
-    apps={
-      Immutable.List [
-        Immutable.Record {
-          "name": "appB",
-          "displayName": "App B",
-          "description": "appB description",
-          "homepage": null,
-          "currentVersion": null,
-          "latestVersion": null,
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-        Immutable.Record {
-          "name": "appC",
-          "displayName": "App C",
-          "description": "appC description",
-          "homepage": null,
-          "currentVersion": "1.2.3",
-          "latestVersion": "1.2.3",
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-        Immutable.Record {
-          "name": "appA",
-          "displayName": "App A",
-          "description": "appA description",
-          "homepage": null,
-          "currentVersion": "1.2.3",
-          "latestVersion": "1.2.4",
-          "engineVersion": null,
-          "path": null,
-          "iconPath": null,
-          "shortcutIconPath": null,
-          "isDownloadable": null,
-          "source": null,
-          "url": null,
-          "releaseNote": null,
-          "upgradeAvailable": null,
-          "repositoryUrl": null,
-          "progress": null,
-          "isInstalled": null,
-        },
-      ]
-    }
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >
@@ -964,9 +759,7 @@ Array [
 
 exports[`AppManagementView should render without any apps 1`] = `
 Array [
-  <div
-    apps={Immutable.List []}
-  />,
+  <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
   >

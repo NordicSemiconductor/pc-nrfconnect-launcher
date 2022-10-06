@@ -16,7 +16,7 @@ import { colors, Toggle } from 'pc-nrfconnect-shared';
 
 import { OFFICIAL } from '../../../ipc/sources';
 import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
-import { getApps } from '../../reducers/appsReducer';
+import { getUpdateCheckStatus } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import AddSourceDialog from '../sources/AddSourceDialog';
@@ -53,10 +53,8 @@ export default () => {
 
     const sources = useLauncherSelector(getSources);
 
-    const {
-        isDownloadingLatestAppInfo: isCheckingForUpdates,
-        lastUpdateCheckDate,
-    } = useLauncherSelector(getApps);
+    const { isCheckingForUpdates, lastUpdateCheckDate } =
+        useLauncherSelector(getUpdateCheckStatus);
 
     const onDropUrl: React.DragEventHandler = event => {
         event.preventDefault();

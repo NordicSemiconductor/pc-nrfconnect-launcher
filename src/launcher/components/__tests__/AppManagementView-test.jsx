@@ -16,7 +16,7 @@ jest.mock('react-bootstrap', () => ({
     ModalTitle: 'ModalTitle',
 }));
 
-jest.mock('../../containers/AppManagementFilterContainer', () => 'div');
+jest.mock('../../features/filter/AppFilterBar', () => 'div');
 jest.mock('../../features/releaseNotes/ReleaseNotesDialog', () => 'div');
 
 import React from 'react';

@@ -83,6 +83,7 @@ describe('SettingsView', () => {
                     {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
+                        upgradeAvailable: true,
                         ...unimportantAppProperties,
                     },
                 ]),
@@ -98,6 +99,7 @@ describe('SettingsView', () => {
                     {
                         currentVersion: '1.0.0',
                         latestVersion: '1.0.0',
+                        upgradeAvailable: false,
                         ...unimportantAppProperties,
                     },
                 ]),

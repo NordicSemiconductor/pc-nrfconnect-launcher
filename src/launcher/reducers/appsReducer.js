@@ -8,6 +8,7 @@ import { List, Record } from 'immutable';
 
 import { allStandardSourceNames } from '../../ipc/sources';
 import * as AppsActions from '../actions/appsActions';
+import { getAppsFilter } from '../features/filter/filterSlice';
 import getImmutableApp from '../models';
 
 const InitialState = Record({
@@ -192,8 +193,6 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-export const getApps = state => state.apps;
-
 const getAllApps = state => {
     const { downloadableApps, localApps } = state.apps;
 
@@ -221,5 +220,19 @@ export const getDownloadableApp =
         state.apps.downloadableApps.find(
             x => x.source === source && x.name === name
         );
+
+export const isAppUpdateAvailable = state =>
+    state.apps.downloadableApps.find(app => app.upgradeAvailable) != null;
+
+export const getUpdateCheckStatus = state => ({
+    isCheckingForUpdates: state.apps.isDownloadingLatestAppInfo,
+    lastUpdateCheckDate: state.apps.lastUpdateCheckDate,
+});
+
+export const getUpgradeableVisibleApps = state =>
+    state.apps.downloadableApps
+        .filter(getAppsFilter(state))
+        .filter(app => app.upgradeAvailable)
+        .toJS();
 
 export default reducer;
