@@ -12,90 +12,95 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Iterable } from 'immutable';
 import { useHotKey } from 'pc-nrfconnect-shared';
-import { bool, func, instanceOf, shape, string } from 'prop-types';
+import { func, instanceOf } from 'prop-types';
 
-export const sortedSources = sources => {
-    const all = Object.entries(sources);
-    const officialsAndLocal = [
-        ...all.filter(([name]) => name === 'official'),
-        ...all.filter(([name]) => name === 'local'),
-    ];
-    const rest = all
-        .filter(source => !officialsAndLocal.includes(source))
-        .sort((a, b) => a[0].localeCompare(b[0]));
+import {
+    hideSource as hideSourceInSettings,
+    setNameFilter as setNameFilterInSettings,
+    setShownStates as setShownStatesInSettings,
+    showSource as showSourceInSettings,
+} from '../../ipc/settings';
+import {
+    getNameFilter,
+    getShownSources,
+    getShownStates,
+    hideSource,
+    setNameFilter,
+    setShownStates,
+    showSource,
+} from '../features/filter/filterSlice';
+import { getAllSourceNamesSorted } from '../reducers/appsReducer';
+import { useLauncherDispatch, useLauncherSelector } from '../util/hooks';
 
-    return [...officialsAndLocal, ...rest];
+const SourceFilter = () => {
+    const dispatch = useLauncherDispatch();
+    const allSourceNames = useLauncherSelector(getAllSourceNamesSorted);
+    const shownSourceNames = useLauncherSelector(getShownSources);
+
+    return (
+        <Col className="pl-4 pr-0">
+            <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
+            {allSourceNames.map((sourceName, i) => (
+                <Form.Check
+                    label={sourceName}
+                    id={`cb-${sourceName}`}
+                    key={`cb-${i + 1}`}
+                    className="mx-3 py-1 px-4 text-capitalize"
+                    custom
+                    checked={shownSourceNames.has(sourceName)}
+                    onChange={({ target }) => {
+                        if (target.checked) {
+                            dispatch(showSource(sourceName));
+                            showSourceInSettings(sourceName);
+                        } else {
+                            dispatch(hideSource(sourceName));
+                            hideSourceInSettings(sourceName);
+                        }
+                    }}
+                />
+            ))}
+        </Col>
+    );
 };
 
-const SourceFilter = ({ sources, setAppManagementSource }) => (
-    <Col className="pl-4 pr-0">
-        <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
-        {sortedSources(sources).map(([name, checked], i) => (
+const StateFilter = () => {
+    const dispatch = useLauncherDispatch();
+    const { installed, downloadable } = useLauncherSelector(getShownStates);
+
+    return (
+        <Col className="pr-4 pl-0">
+            <div className="border-bottom py-1 mx-3 mb-2">State</div>
             <Form.Check
-                label={name}
-                id={`cb-${name}`}
-                key={`cb-${i + 1}`}
-                className="mx-3 py-1 px-4 text-capitalize"
+                label="Installed"
+                id="cb-installed"
+                className="mx-3 py-1 px-4"
                 custom
-                checked={checked}
-                onChange={({ target }) =>
-                    setAppManagementSource(name, target.checked)
-                }
+                checked={installed}
+                onChange={({ target }) => {
+                    dispatch(setShownStates({ installed: target.checked }));
+                    setShownStatesInSettings({
+                        installed: target.checked,
+                    });
+                }}
             />
-        ))}
-    </Col>
-);
-SourceFilter.propTypes = {
-    sources: instanceOf(Object).isRequired,
-    setAppManagementSource: func.isRequired,
+            <Form.Check
+                label="Downloadable"
+                id="cb-downloadable"
+                className="mx-3 py-1 px-4"
+                custom
+                checked={downloadable}
+                onChange={({ target }) => {
+                    dispatch(setShownStates({ downloadable: target.checked }));
+                    setShownStatesInSettings({
+                        downloadable: target.checked,
+                    });
+                }}
+            />
+        </Col>
+    );
 };
 
-const StateFilter = ({
-    show: { installed, available },
-    setAppManagementShow,
-}) => (
-    <Col className="pr-4 pl-0">
-        <div className="border-bottom py-1 mx-3 mb-2">State</div>
-        <Form.Check
-            label="Installed"
-            id="cb-installed"
-            className="mx-3 py-1 px-4"
-            custom
-            checked={installed}
-            onChange={({ target }) =>
-                setAppManagementShow({
-                    installed: target.checked,
-                })
-            }
-        />
-        <Form.Check
-            label="Available"
-            id="cb-available"
-            className="mx-3 py-1 px-4"
-            custom
-            checked={available}
-            onChange={({ target }) =>
-                setAppManagementShow({
-                    available: target.checked,
-                })
-            }
-        />
-    </Col>
-);
-StateFilter.propTypes = {
-    show: shape({
-        installed: bool,
-        available: bool,
-    }).isRequired,
-    setAppManagementShow: func.isRequired,
-};
-
-const FilterDropdown = ({
-    sources,
-    show,
-    setAppManagementShow,
-    setAppManagementSource,
-}) => {
+const FilterDropdown = () => {
     const [active, toggleActive] = useState(false);
 
     return (
@@ -106,39 +111,17 @@ const FilterDropdown = ({
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Row className="flex-nowrap">
-                    <SourceFilter
-                        sources={sources}
-                        setAppManagementSource={setAppManagementSource}
-                    />
-                    <StateFilter
-                        show={show}
-                        setAppManagementShow={setAppManagementShow}
-                    />
+                    <SourceFilter />
+                    <StateFilter />
                 </Row>
             </Dropdown.Menu>
         </Dropdown>
     );
 };
-FilterDropdown.propTypes = {
-    sources: instanceOf(Object).isRequired,
-    show: shape({
-        installed: bool,
-        available: bool,
-    }).isRequired,
-    setAppManagementShow: func.isRequired,
-    setAppManagementSource: func.isRequired,
-};
 
-const AppManagementFilter = ({
-    upgradeableApps,
-    sources,
-    show,
-    filter,
-    onUpgrade,
-    setAppManagementShow,
-    setAppManagementFilter,
-    setAppManagementSource,
-}) => {
+const NameFilter = () => {
+    const dispatch = useLauncherDispatch();
+    const filter = useLauncherSelector(getNameFilter);
     const searchFieldRef = useRef(null);
 
     useHotKey({
@@ -149,51 +132,55 @@ const AppManagementFilter = ({
     });
 
     return (
-        <div className="filterbox w-100 d-inline-flex">
-            <FilterDropdown
-                sources={sources}
-                show={show}
-                setAppManagementShow={setAppManagementShow}
-                setAppManagementSource={setAppManagementSource}
-            />
-            <Form.Control
-                type="text"
-                placeholder="Search..."
-                value={filter}
-                ref={searchFieldRef}
-                onChange={({ target }) => setAppManagementFilter(target.value)}
-            />
-            <div className="flex-fill" />
-            {upgradeableApps.size > 0 && (
-                <Button
-                    variant="outline-secondary"
-                    onClick={() =>
-                        upgradeableApps.forEach(
-                            ({ name, latestVersion, source }) =>
-                                onUpgrade(name, latestVersion, source)
-                        )
-                    }
-                    className="me_32px"
-                >
-                    Update all apps
-                </Button>
-            )}
-        </div>
+        <Form.Control
+            type="text"
+            placeholder="Search..."
+            value={filter}
+            ref={searchFieldRef}
+            onChange={event => {
+                const nameFilter = event.target.value;
+                dispatch(setNameFilter(nameFilter));
+                setNameFilterInSettings(nameFilter);
+            }}
+        />
     );
 };
 
+const UpdateAllApps = ({ onUpgrade, upgradeableApps }) =>
+    upgradeableApps.size > 0 && (
+        <Button
+            variant="outline-secondary"
+            onClick={() =>
+                upgradeableApps.forEach(({ name, latestVersion, source }) =>
+                    onUpgrade(name, latestVersion, source)
+                )
+            }
+            className="me_32px"
+        >
+            Update all apps
+        </Button>
+    );
+
+UpdateAllApps.propTypes = {
+    upgradeableApps: instanceOf(Iterable).isRequired,
+    onUpgrade: func.isRequired,
+};
+
+const AppManagementFilter = ({ upgradeableApps, onUpgrade }) => (
+    <div className="filterbox w-100 d-inline-flex">
+        <FilterDropdown />
+        <NameFilter />
+        <div className="flex-fill" />
+        <UpdateAllApps
+            onUpgrade={onUpgrade}
+            upgradeableApps={upgradeableApps}
+        />
+    </div>
+);
+
 AppManagementFilter.propTypes = {
     upgradeableApps: instanceOf(Iterable).isRequired,
-    sources: instanceOf(Object).isRequired,
     onUpgrade: func.isRequired,
-    show: shape({
-        installed: bool,
-        available: bool,
-    }).isRequired,
-    filter: string.isRequired,
-    setAppManagementShow: func.isRequired,
-    setAppManagementFilter: func.isRequired,
-    setAppManagementSource: func.isRequired,
 };
 
 export default AppManagementFilter;

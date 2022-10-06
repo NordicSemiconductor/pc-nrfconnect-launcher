@@ -15,17 +15,15 @@ import {
     SourceUrl,
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../..';
-import {
-    loadDownloadableApps,
-    setAppManagementSource,
-} from '../../actions/appsActions';
+import { loadDownloadableApps } from '../../actions/appsActions';
+import { hideSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
     setSources,
 } from './sourcesSlice';
 
-export const loadSources = async (dispatch: AppDispatch) => {
+export const loadSources = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setSources(await getSources()));
     } catch (error) {
@@ -39,7 +37,10 @@ export const loadSources = async (dispatch: AppDispatch) => {
 
 export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
     addSourceInMain(url)
-        .then(source => dispatch(addSourceAction({ name: source, url })))
+        .then(name => {
+            dispatch(addSourceAction({ name, url }));
+            dispatch(hideSource(name));
+        })
         .catch(error =>
             dispatch(
                 ErrorDialogActions.showDialog(
@@ -55,9 +56,11 @@ export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
 
 export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
     removeSourceInMain(name)
-        .then(() => dispatch(removeSourceAction(name)))
+        .then(() => {
+            dispatch(removeSourceAction(name));
+            dispatch(hideSource(name));
+        })
         .then(() => dispatch(loadDownloadableApps()))
-        .then(async () => dispatch(await setAppManagementSource(name)))
         .catch(error =>
             dispatch(
                 ErrorDialogActions.showDialog(

@@ -5,20 +5,40 @@
  */
 
 import fs from 'fs';
+import type { Draft } from 'immer';
+import merge from 'lodash.merge';
 
+import type { Settings, ShownStates, WindowState } from '../ipc/settings';
+import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
 
-let data: Record<string, unknown> | undefined;
+const defaultWindowSize = {
+    width: 1024,
+    height: 800,
+    maximized: false,
+};
+
+const defaultSettings = {
+    appFilter: {
+        shownStates: {
+            installed: true,
+            downloadable: true,
+        },
+        nameFilter: '',
+        shownSources: new Set(allStandardSourceNames),
+    },
+    lastWindowState: defaultWindowSize,
+    shouldCheckForUpdatesAtStartup: true,
+};
 
 const parseJsonFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) {
         return {};
     }
     try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as Record<
-            string,
-            unknown
-        >;
+        return JSON.parse(fs.readFileSync(filePath, 'utf-8'), (key, value) =>
+            key === 'shownSources' ? new Set(value) : value
+        );
     } catch (err) {
         console.error('Could not load settings. Reason: ', err);
     }
@@ -26,31 +46,61 @@ const parseJsonFile = (filePath: string) => {
 };
 
 const load = () => {
-    if (data != null) {
-        return data;
-    }
     const settings = parseJsonFile(getConfig().settingsJsonPath);
     if (settings && typeof settings === 'object') {
-        data = settings;
-    } else {
-        data = {};
+        return merge({}, defaultSettings, settings);
     }
 
-    return data;
+    return merge({}, defaultSettings);
 };
+
+let data: Draft<Settings> = load();
 
 const save = () => {
-    fs.writeFileSync(getConfig().settingsJsonPath, JSON.stringify(data));
+    fs.writeFileSync(
+        getConfig().settingsJsonPath,
+        JSON.stringify(data, (key, value) =>
+            key === 'shownSources' ? [...value] : value
+        )
+    );
 };
 
-export const set = (key: string, value: unknown) => {
-    const loadedData = load();
-    loadedData[key] = value;
+export const resetSettings = () => {
+    data = merge({}, defaultSettings);
     save();
 };
 
-export const get = <T>(key: string, defaultValue: T | null = null) => {
-    const loadedData = load();
+export const get = () => data as Settings;
 
-    return key in loadedData ? (loadedData[key] as T) : defaultValue;
+export const addShownSource = (sourceToAdd: SourceName) => {
+    data.appFilter.shownSources.add(sourceToAdd);
+    save();
+};
+
+export const removeShownSource = (sourceToRemove: SourceName) => {
+    data.appFilter.shownSources.delete(sourceToRemove);
+    save();
+};
+
+export const setNameFilter = (nameFilter: string) => {
+    data.appFilter.nameFilter = nameFilter;
+    save();
+};
+
+export const setShownStates = (shownStates: Partial<ShownStates>) => {
+    data.appFilter.shownStates = {
+        ...data.appFilter.shownStates,
+        ...shownStates,
+    };
+    save();
+};
+
+export const setCheckUpdatesAtStartup = (isEnabled: boolean) => {
+    data.shouldCheckForUpdatesAtStartup = isEnabled;
+    save();
+};
+
+export const setLastWindowState = (windowState: WindowState) => {
+    data.lastWindowState = { ...windowState };
+    save();
 };

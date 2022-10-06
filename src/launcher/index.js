@@ -12,12 +12,16 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
+import { getSettings } from '../ipc/settings';
 import * as AppsActions from './actions/appsActions';
 import RootContainer from './containers/RootContainer';
+import { initializeFilters } from './features/filter/filterEffects';
 import {
     checkForCoreUpdatesAtStartup,
     downloadLatestAppInfoAtStartup,
 } from './features/launcherUpdate/launcherUpdateEffects';
+import { setCheckUpdatesAtStartup } from './features/settings/settingsSlice';
+import { loadSources } from './features/sources/sourcesEffects';
 import {
     checkUsageDataSetting,
     sendEnvInfo,
@@ -33,18 +37,26 @@ const store = createStore(
 );
 // TODO: Switch to using configureStore from RTK
 
-registerIpcHandler(store.dispatch);
+const { dispatch } = store;
+
+registerIpcHandler(dispatch);
 
 const rootElement = React.createElement(RootContainer, { store });
 
 render(rootElement, document.getElementById('webapp'), async () => {
-    await store.dispatch(checkUsageDataSetting());
-    store.dispatch(await AppsActions.setAppManagementFilter());
-    await store.dispatch(AppsActions.loadLocalApps());
-    await store.dispatch(AppsActions.loadDownloadableApps());
-    store.dispatch(await AppsActions.setAppManagementShow());
-    store.dispatch(await AppsActions.setAppManagementSource());
-    await store.dispatch(downloadLatestAppInfoAtStartup());
-    await store.dispatch(checkForCoreUpdatesAtStartup());
+    dispatch(checkUsageDataSetting());
+
+    const settings = await getSettings();
+    const { shouldCheckForUpdatesAtStartup } = settings;
+    dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
+    dispatch(initializeFilters(settings));
+
+    await dispatch(loadSources());
+
+    await dispatch(AppsActions.loadLocalApps());
+    await dispatch(AppsActions.loadDownloadableApps());
+
+    dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
+    dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
     sendEnvInfo();
 });

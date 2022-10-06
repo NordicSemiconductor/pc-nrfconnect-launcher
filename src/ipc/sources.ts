@@ -6,6 +6,14 @@
 
 import { handle, invoke } from './infrastructure/rendererToMain';
 
+export enum StandardSourceNames {
+    OFFICIAL = 'official',
+    LOCAL = 'local',
+}
+
+export const { LOCAL, OFFICIAL } = StandardSourceNames;
+export const allStandardSourceNames: SourceName[] = [OFFICIAL, LOCAL];
+
 const channel = {
     get: 'sources:get',
     add: 'sources:add',

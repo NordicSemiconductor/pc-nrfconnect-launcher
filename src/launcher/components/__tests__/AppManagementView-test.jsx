@@ -208,6 +208,7 @@ describe('AppManagementView', () => {
             currentVersion: '1.2.3',
             latestVersion: '1.2.3',
             source: 'beta',
+            isDownloadable: true,
         });
         const onRemove = jest.fn();
         const wrapper = mount(

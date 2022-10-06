@@ -33,7 +33,6 @@ const AppItem = ({
     onShowReleaseNotes,
 }) => {
     const installed = !!app.currentVersion;
-    const local = !app.source;
     return (
         <ListGroup.Item>
             <Row noGutters className="py-1">
@@ -44,7 +43,7 @@ const AppItem = ({
                     <div className="h8">{app.displayName || app.name}</div>
                     <div className="small text-muted">{app.description}</div>
                     <div className="small text-muted-more">
-                        {app.source || 'local'}
+                        {app.source}
                         {installed && <>, v{app.currentVersion}</>}
                         {installed && app.upgradeAvailable && (
                             <> (v{app.latestVersion} available)</>
@@ -121,7 +120,7 @@ const AppItem = ({
                                     Create shortcut
                                 </Dropdown.Item>
                             )}
-                            {installed && !local && (
+                            {installed && app.isDownloadable && (
                                 <Dropdown.Item
                                     title={`Remove ${app.displayName}`}
                                     disabled={isDisabled}

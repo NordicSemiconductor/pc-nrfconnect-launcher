@@ -17,6 +17,7 @@ import {
     LocalApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
+import { LOCAL } from '../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsJsonPath,
@@ -173,7 +174,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     const isDownloadable = !appPath.startsWith(getAppsLocalDir());
     const source = isDownloadable
         ? path.basename(path.dirname(path.dirname(appPath)))
-        : null;
+        : LOCAL;
 
     return {
         name: packageJson.name,

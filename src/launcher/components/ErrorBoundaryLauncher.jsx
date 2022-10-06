@@ -5,22 +5,17 @@
  */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { getCurrentWindow } from '@electron/remote';
 import { ErrorBoundary } from 'pc-nrfconnect-shared';
 import { node } from 'prop-types';
 
 import pkgJson from '../../../package.json';
-import * as AppsActions from '../actions/appsActions';
+import { resetSettings } from '../../ipc/settings';
 import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
 
 const ErrorBoundaryLauncher = ({ children }) => {
-    const dispatch = useDispatch();
-
     const restoreDefaults = async () => {
-        dispatch(await AppsActions.setAppManagementFilter(''));
-        dispatch(await AppsActions.setAppManagementShow({}));
-        dispatch(await AppsActions.setAppManagementSource({}));
+        await resetSettings();
         getCurrentWindow().reload();
     };
 

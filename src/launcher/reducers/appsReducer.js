@@ -6,6 +6,7 @@
 
 import { List, Record } from 'immutable';
 
+import { allStandardSourceNames } from '../../ipc/sources';
 import * as AppsActions from '../actions/appsActions';
 import getImmutableApp from '../models';
 
@@ -23,9 +24,6 @@ const InitialState = Record({
     isConfirmLaunchDialogVisible: false,
     confirmLaunchText: '',
     confirmLaunchApp: null,
-    show: { installed: true, available: true },
-    filter: '',
-    sources: {},
 });
 const initialState = new InitialState();
 
@@ -178,12 +176,6 @@ const reducer = (state = initialState, action) => {
                     action.releaseNote
                 )
             );
-        case AppsActions.SET_APP_MANAGEMENT_SHOW:
-            return state.set('show', action.show);
-        case AppsActions.SET_APP_MANAGEMENT_FILTER:
-            return state.set('filter', action.filter);
-        case AppsActions.SET_APP_MANAGEMENT_SOURCE:
-            return state.set('sources', action.sources);
         case AppsActions.UPDATE_DOWNLOAD_PROGRESS:
             return state.update('downloadableApps', appStates =>
                 appStates.update(
@@ -201,6 +193,27 @@ const reducer = (state = initialState, action) => {
 };
 
 export const getApps = state => state.apps;
+
+const getAllApps = state => {
+    const { downloadableApps, localApps } = state.apps;
+
+    return localApps.concat(downloadableApps);
+};
+
+export const getAllSourceNamesSorted = state => {
+    const allSources = [
+        ...new Set(getAllApps(state).map(({ source }) => source)),
+    ];
+
+    const withoutStandardSources = allSources.filter(
+        source => !allStandardSourceNames.includes(source)
+    );
+
+    return [
+        ...allStandardSourceNames,
+        ...withoutStandardSources.sort((a, b) => a.localeCompare(b)),
+    ];
+};
 
 export const getDownloadableApp =
     ({ source, name }) =>

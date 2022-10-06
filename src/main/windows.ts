@@ -63,25 +63,8 @@ export const hideLauncherWindow = () => {
     launcherWindow?.hide();
 };
 
-const defaultWindowSize = {
-    width: 1024,
-    height: 800,
-    maximized: false,
-};
-
-interface WindowState {
-    x?: number;
-    y?: number;
-    width: number;
-    height: number;
-    maximized: boolean;
-}
-
 export const openAppWindow = (app: LaunchableApp) => {
-    const lastWindowState = settings.get(
-        'lastWindowState',
-        defaultWindowSize
-    ) as WindowState;
+    const { lastWindowState } = settings.get();
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
@@ -128,7 +111,7 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     appWindow.on('close', () => {
         const bounds = appWindow.getBounds();
-        settings.set('lastWindowState', {
+        settings.setLastWindowState({
             x: bounds.x,
             y: bounds.y,
             width: bounds.width,

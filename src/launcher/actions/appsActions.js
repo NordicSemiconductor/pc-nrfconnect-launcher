@@ -17,7 +17,6 @@ import {
 } from '../../ipc/apps';
 import { downloadToFile } from '../../ipc/downloadToFile';
 import { openApp } from '../../ipc/openWindow';
-import { getSetting, setSetting } from '../../ipc/settings';
 import { getAppsRootDir } from '../../main/config';
 import {
     EventAction,
@@ -224,50 +223,6 @@ export function setAppReleaseNoteAction(source, name, releaseNote) {
         source,
         name,
         releaseNote,
-    };
-}
-
-export async function setAppManagementShow(show = {}) {
-    const previousSetting = await getSetting('app-management.show', {});
-
-    const newState = {
-        installed: true,
-        available: true,
-        ...previousSetting,
-        ...show,
-    };
-    setSetting('app-management.show', newState);
-    return {
-        type: SET_APP_MANAGEMENT_SHOW,
-        show: newState,
-    };
-}
-
-export async function setAppManagementFilter(filter) {
-    const newState =
-        filter === undefined
-            ? await getSetting('app-management.filter', '')
-            : filter;
-    setSetting('app-management.filter', newState);
-    return {
-        type: SET_APP_MANAGEMENT_FILTER,
-        filter: newState,
-    };
-}
-
-export async function setAppManagementSource(source, show) {
-    const sources = await getSetting('app-management.sources', {});
-    if (source) {
-        if (show !== undefined) {
-            sources[source] = show;
-        } else {
-            delete sources[source];
-        }
-    }
-    setSetting('app-management.sources', sources);
-    return {
-        type: SET_APP_MANAGEMENT_SOURCE,
-        sources,
     };
 }
 

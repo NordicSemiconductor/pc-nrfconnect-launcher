@@ -27,7 +27,6 @@ Array [
         },
       ]
     }
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -140,7 +139,6 @@ Array [
         },
       ]
     }
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -264,7 +262,6 @@ Array [
         },
       ]
     }
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -428,7 +425,6 @@ Array [
         },
       ]
     }
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -470,9 +466,7 @@ Array [
             </div>
             <div
               className="small text-muted-more"
-            >
-              local
-            </div>
+            />
           </div>
           <div
             className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
@@ -542,9 +536,7 @@ Array [
             </div>
             <div
               className="small text-muted-more"
-            >
-              local
-            </div>
+            />
           </div>
           <div
             className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
@@ -614,9 +606,7 @@ Array [
             </div>
             <div
               className="small text-muted-more"
-            >
-              local
-            </div>
+            />
           </div>
           <div
             className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
@@ -725,7 +715,6 @@ Array [
         },
       ]
     }
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -767,9 +756,7 @@ Array [
             </div>
             <div
               className="small text-muted-more"
-            >
-              local
-            </div>
+            />
           </div>
           <div
             className="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
@@ -849,7 +836,6 @@ Array [
             <div
               className="small text-muted-more"
             >
-              local
               , v
               1.2.3
             </div>
@@ -932,7 +918,6 @@ Array [
             <div
               className="small text-muted-more"
             >
-              local
               , v
               1.2.3
             </div>
@@ -981,7 +966,6 @@ exports[`AppManagementView should render without any apps 1`] = `
 Array [
   <div
     apps={Immutable.List []}
-    sources={Object {}}
   />,
   <div
     className="with-scrollbar filter-adjusted-height"
