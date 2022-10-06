@@ -26,7 +26,7 @@
         "check:lint": "eslint --color .",
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
-        "test:unit": "jest src",
+        "test": "jest src",
         "test:unit:coverage": "jest src --coverage",
         "test:e2e": "xvfb-maybe npx playwright test --config=test-e2e/playwright.config.ts",
         "test:e2e:coverage": "npx nyc npm run test:e2e",
