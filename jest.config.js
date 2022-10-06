@@ -8,6 +8,10 @@ const sharedConfig = require('pc-nrfconnect-shared/config/jest.config')([
     'packageJson',
 ]);
 
+sharedConfig.coverageDirectory = 'src/jest-coverage';
+sharedConfig.collectCoverage = true;
+sharedConfig.coverageReporters = ['json', 'text'];
+
 sharedConfig.setupFilesAfterEnv.push('<rootDir>/src/setupMocks.js');
 
 module.exports = sharedConfig;

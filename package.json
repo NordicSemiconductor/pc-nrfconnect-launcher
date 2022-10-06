@@ -26,9 +26,13 @@
         "check:lint": "eslint --color .",
         "check:types": "check-for-typescript tsc --noEmit --pretty",
         "check:license": "nrfconnect-license check",
-        "test": "jest src",
-        "test:e2e:env": "cross-env NODE_ENV=test npm run test-e2e",
-        "test-e2e": "xvfb-maybe npx playwright test --config=test-e2e/playwright.config.ts",
+
+        "test:unit": "jest src",
+        "test:unit:coverage": "jest src --coverage",
+
+        "test:e2e": "xvfb-maybe npx playwright test --config=test-e2e/playwright.config.ts",
+        "test:e2e:coverage": "npx nyc npm run test:e2e",
+
         "pack": "npm run build:prod && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
@@ -132,8 +136,10 @@
     "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
     "nyc": {
         "all": true,
+        "check-coverage": true,
         "temp-dir": "test-e2e/.nyc_output",
-        "report-dir": "test-e2e/coverage",
+        "report-dir": "test-e2e/playwright-coverage",
+        "reporter": "json",
         "include": "src",
         "exclude": [
             "test-e2e"
