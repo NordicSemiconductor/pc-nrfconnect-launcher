@@ -15,7 +15,6 @@ const InitialState = Record({
     localApps: List(),
     downloadableApps: List(),
     isDownloadingLatestAppInfo: false,
-    isLatestAppInfoDownloaded: false,
     lastUpdateCheckDate: null,
     isLoadingLocalApps: true,
     isLoadingDownloadableApps: true,
@@ -74,7 +73,6 @@ function hideConfirmLaunchDialog(state) {
 
 function setLatestAppInfoDownloaded(state, updateCheckDate) {
     return state
-        .set('isLatestAppInfoDownloaded', true)
         .set('isDownloadingLatestAppInfo', false)
         .set('lastUpdateCheckDate', updateCheckDate);
 }
