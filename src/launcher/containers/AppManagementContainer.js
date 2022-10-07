@@ -5,18 +5,9 @@
  */
 
 import { connect } from 'react-redux';
-import { openUrl } from 'pc-nrfconnect-shared';
 
-import { createDesktopShortcut } from '../../ipc/createDesktopShortcut';
 import AppManagementView from '../components/AppManagementView';
-import {
-    checkEngineAndLaunch,
-    installDownloadableApp,
-    removeDownloadableApp,
-    upgradeDownloadableApp,
-} from '../features/apps/appsEffects';
 import { getAppsFilter } from '../features/filter/filterSlice';
-import { show as showReleaseNotes } from '../features/releaseNotes/releaseNotesDialogSlice';
 
 function mapStateToProps(state) {
     const {
@@ -40,29 +31,9 @@ function mapStateToProps(state) {
 
     return {
         apps,
-        installingAppName,
-        removingAppName,
-        upgradingAppName,
         isProcessing:
             !!installingAppName || !!upgradingAppName || !!removingAppName,
-        upgradeableApps: apps.filter(app => app.upgradeAvailable),
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        onInstall: (name, source) =>
-            dispatch(installDownloadableApp({ name, source })),
-        onRemove: (name, source) =>
-            dispatch(removeDownloadableApp({ name, source })),
-        onReadMore: homepage => openUrl(homepage),
-        // Launcher actions
-        onAppSelected: app => dispatch(checkEngineAndLaunch(app)),
-        onCreateShortcut: app => createDesktopShortcut(app),
-        onShowReleaseNotes: appid => dispatch(showReleaseNotes(appid)),
-        onUpgrade: (name, version, source) =>
-            dispatch(upgradeDownloadableApp({ name, source }, version)),
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppManagementView);
+export default connect(mapStateToProps)(AppManagementView);

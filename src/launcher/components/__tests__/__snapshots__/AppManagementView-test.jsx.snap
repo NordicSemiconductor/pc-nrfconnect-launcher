@@ -100,7 +100,7 @@ exports[`AppManagementView should disable buttons and display "Updating..." whil
             class="py-1 row no-gutters"
           >
             <div
-              class="d-flex align-items-start col-auto my-2 mr-3"
+              class="d-flex align-items-start my-2 mr-3 col-auto"
             >
               <div
                 class="core-app-icon"
@@ -135,7 +135,7 @@ exports[`AppManagementView should disable buttons and display "Updating..." whil
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 col-auto ml-auto"
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"

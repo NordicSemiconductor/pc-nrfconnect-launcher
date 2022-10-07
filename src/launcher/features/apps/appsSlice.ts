@@ -317,3 +317,9 @@ export const getUpgradeableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
         .filter(app => app.isInstalled && app.upgradeAvailable);
+
+export const getAppsInProgress = (state: RootState) => ({
+    installingAppName: state.apps.installingAppName,
+    removingAppName: state.apps.removingAppName,
+    upgradingAppName: state.apps.upgradingAppName,
+});

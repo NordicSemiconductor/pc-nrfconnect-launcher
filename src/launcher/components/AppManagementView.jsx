@@ -5,47 +5,22 @@
  */
 
 import React from 'react';
-import { array, bool, func, string } from 'prop-types';
+import { array, bool } from 'prop-types';
 
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+import App from '../features/apps/App';
 import AppFilterBar from '../features/filter/AppFilterBar';
 import ReleaseNotesDialog from '../features/releaseNotes/ReleaseNotesDialog';
-import AppItem from './AppItem';
 
-const AppManagementView = ({
-    apps,
-    installingAppName,
-    upgradingAppName,
-    removingAppName,
-    isProcessing,
-    onInstall,
-    onRemove,
-    onReadMore,
-    onAppSelected,
-    onCreateShortcut,
-    onShowReleaseNotes,
-}) => (
+const AppManagementView = ({ apps, isProcessing }) => (
     <>
         <AppFilterBar />
         <WithScrollbarContainer hasFilter>
             {apps.map(app => (
-                <AppItem
+                <App
                     key={`${app.name}-${app.source}`}
                     app={app}
                     isDisabled={isProcessing}
-                    isInstalling={
-                        installingAppName === `${app.source}/${app.name}`
-                    }
-                    isUpgrading={
-                        upgradingAppName === `${app.source}/${app.name}`
-                    }
-                    isRemoving={removingAppName === `${app.source}/${app.name}`}
-                    onRemove={() => onRemove(app.name, app.source)}
-                    onInstall={() => onInstall(app.name, app.source)}
-                    onReadMore={() => onReadMore(app.homepage)}
-                    onAppSelected={() => onAppSelected(app)}
-                    onCreateShortcut={() => onCreateShortcut(app)}
-                    onShowReleaseNotes={() => onShowReleaseNotes(app)}
                 />
             ))}
         </WithScrollbarContainer>
@@ -56,16 +31,7 @@ const AppManagementView = ({
 
 AppManagementView.propTypes = {
     apps: array.isRequired, // eslint-disable-line react/forbid-prop-types
-    installingAppName: string,
-    upgradingAppName: string,
-    removingAppName: string,
     isProcessing: bool,
-    onInstall: func.isRequired,
-    onRemove: func.isRequired,
-    onReadMore: func.isRequired,
-    onAppSelected: func.isRequired,
-    onCreateShortcut: func.isRequired,
-    onShowReleaseNotes: func.isRequired,
 };
 
 AppManagementView.defaultProps = {
