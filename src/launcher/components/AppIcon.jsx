@@ -9,7 +9,7 @@ import { classNames } from 'pc-nrfconnect-shared';
 import { shape, string } from 'prop-types';
 import semver from 'semver';
 
-import checkAppCompatibility from '../util/checkAppCompatibility';
+import appCompatibilityWarning from '../util/appCompatibilityWarning';
 
 const warning = altText => (
     <div>
@@ -20,11 +20,11 @@ const warning = altText => (
 
 const appBadge = app => {
     const notInstalled = !app.currentVersion;
-    const appCompatibility = checkAppCompatibility(app);
+    const compatibilityWarning = appCompatibilityWarning(app);
 
-    return notInstalled || appCompatibility.isCompatible
+    return notInstalled || compatibilityWarning == null
         ? null
-        : warning(appCompatibility.warning);
+        : warning(compatibilityWarning.warning);
 };
 
 const AppIcon = ({ app }) => {

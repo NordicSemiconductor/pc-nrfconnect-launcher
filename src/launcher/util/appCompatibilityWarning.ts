@@ -10,7 +10,6 @@ import { InstalledApp } from '../../ipc/apps';
 import mainConfig from './mainConfig';
 
 const undecided = { isDecided: false } as const;
-const compatible = { isDecided: true, isCompatible: true } as const;
 const incompatible = (warning: string, longWarning: string) =>
     ({
         isDecided: true,
@@ -20,13 +19,12 @@ const incompatible = (warning: string, longWarning: string) =>
     } as const);
 
 type Undecided = typeof undecided;
-type Compatible = typeof compatible;
 type Incompatible = ReturnType<typeof incompatible>;
 
 type AppCompatibilityChecker = (
     app: InstalledApp,
     providedVersionOfEngine: string
-) => Undecided | Compatible | Incompatible;
+) => Undecided | Incompatible;
 
 export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
@@ -63,14 +61,14 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
 export default (
     app: InstalledApp,
     providedVersionOfEngine = mainConfig().version
-): Compatible | Incompatible => {
+): undefined | { warning: string; longWarning: string } => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [checkEngineVersionIsSet, checkEngineIsSupported]) {
         const result = check(app, providedVersionOfEngine);
         if (result.isDecided) {
-            return result;
+            return { warning: result.warning, longWarning: result.longWarning };
         }
     }
 
-    return compatible;
+    return undefined;
 };

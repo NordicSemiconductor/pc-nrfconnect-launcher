@@ -23,7 +23,7 @@ import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
 import { getAppsRootDir } from '../../../main/config';
 import type { AppDispatch } from '../..';
-import checkAppCompatibility from '../../util/checkAppCompatibility';
+import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
 import {
     EventAction,
@@ -224,9 +224,9 @@ export const launch = (app: LaunchableApp) => {
 
 export const checkEngineAndLaunch =
     (app: LaunchableApp) => (dispatch: AppDispatch) => {
-        const appCompatibility = checkAppCompatibility(app);
+        const compatibilityWarning = appCompatibilityWarning(app);
         const launchAppWithoutWarning =
-            appCompatibility.isCompatible ||
+            compatibilityWarning == null ||
             mainConfig().isRunningLauncherFromSource;
 
         if (launchAppWithoutWarning) {
@@ -235,7 +235,7 @@ export const checkEngineAndLaunch =
             dispatch(
                 showConfirmLaunchDialog({
                     app,
-                    text: appCompatibility.longWarning,
+                    text: compatibilityWarning.longWarning,
                 })
             );
         }
