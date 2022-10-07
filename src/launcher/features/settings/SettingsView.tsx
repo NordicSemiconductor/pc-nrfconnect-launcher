@@ -16,8 +16,8 @@ import { colors, Toggle } from 'pc-nrfconnect-shared';
 
 import { OFFICIAL } from '../../../ipc/sources';
 import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
-import { getUpdateCheckStatus } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { getUpdateCheckStatus } from '../apps/appsSlice';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import AddSourceDialog from '../sources/AddSourceDialog';
 import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
@@ -85,7 +85,7 @@ export default () => {
                         </Col>
                     </Row>
                     <p className="small text-muted">
-                        {lastUpdateCheckDate && (
+                        {lastUpdateCheckDate != null && (
                             <>
                                 Last update check performed:{' '}
                                 {formatDate(

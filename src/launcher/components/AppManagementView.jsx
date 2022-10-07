@@ -5,8 +5,7 @@
  */
 
 import React from 'react';
-import { Iterable } from 'immutable';
-import { bool, func, instanceOf, string } from 'prop-types';
+import { array, bool, func, string } from 'prop-types';
 
 import WithScrollbarContainer from '../containers/WithScrollbarContainer';
 import AppFilterBar from '../features/filter/AppFilterBar';
@@ -56,7 +55,7 @@ const AppManagementView = ({
 );
 
 AppManagementView.propTypes = {
-    apps: instanceOf(Iterable).isRequired,
+    apps: array.isRequired, // eslint-disable-line react/forbid-prop-types
     installingAppName: string,
     upgradingAppName: string,
     removingAppName: string,
@@ -70,9 +69,6 @@ AppManagementView.propTypes = {
 };
 
 AppManagementView.defaultProps = {
-    installingAppName: '',
-    upgradingAppName: '',
-    removingAppName: '',
     isProcessing: false,
 };
 

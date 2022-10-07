@@ -9,6 +9,7 @@ import { join } from 'path';
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
+    AppSpec,
     AppWithError,
     DownloadableApp,
     downloadReleaseNotes,
@@ -20,29 +21,8 @@ import {
 } from '../../../ipc/apps';
 import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
-import { SourceName } from '../../../ipc/sources';
 import { getAppsRootDir } from '../../../main/config';
 import type { AppDispatch } from '../..';
-import {
-    installDownloadableAppAction,
-    installDownloadableAppErrorAction,
-    installDownloadableAppSuccessAction,
-    loadDownloadableAppsAction,
-    loadDownloadableAppsError,
-    loadDownloadableAppsSuccess,
-    loadLocalAppsAction,
-    loadLocalAppsError,
-    loadLocalAppsSuccess,
-    removeDownloadableAppAction,
-    removeDownloadableAppErrorAction,
-    removeDownloadableAppSuccessAction,
-    setAppIconPath,
-    setAppReleaseNoteAction,
-    showConfirmLaunchDialogAction,
-    upgradeDownloadableAppAction,
-    upgradeDownloadableAppErrorAction,
-    upgradeDownloadableAppSuccessAction,
-} from '../../actions/appsActions';
 import checkAppCompatibility from '../../util/checkAppCompatibility';
 import mainConfig from '../../util/mainConfig';
 import {
@@ -50,35 +30,45 @@ import {
     sendAppUsageData,
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
+import {
+    installDownloadableAppError,
+    installDownloadableAppStarted,
+    installDownloadableAppSuccess,
+    loadDownloadableAppsError,
+    loadDownloadableAppsStarted,
+    loadDownloadableAppsSuccess,
+    loadLocalAppsError,
+    loadLocalAppsStarted,
+    loadLocalAppsSuccess,
+    removeDownloadableAppError,
+    removeDownloadableAppStarted,
+    removeDownloadableAppSuccess,
+    setAppIconPath,
+    setAppReleaseNote,
+    showConfirmLaunchDialog,
+    upgradeDownloadableAppError,
+    upgradeDownloadableAppStarted,
+    upgradeDownloadableAppSuccess,
+} from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
 
-/**
- * Download app icon and dispatch icon update event
- *
- * @param {string} source app source identifier
- * @param {string} name app name
- * @param {string} iconPath path to store the icon at
- * @param {string} iconUrl url to download from
- *
- * @returns {void}
- */
 const downloadAppIcon =
-    (source: string, name: string, iconPath: string, iconUrl: string) =>
+    (app: AppSpec, iconUrl: string, iconPath: string) =>
     (dispatch: AppDispatch) => {
         // If there is a cached version, use it even before downloading.
         if (fs.existsSync(iconPath)) {
-            dispatch(setAppIconPath(source, name, iconPath));
+            dispatch(setAppIconPath({ app, iconPath }));
         }
         downloadToFile(iconUrl, iconPath)
-            .then(() => dispatch(setAppIconPath(source, name, iconPath)))
+            .then(() => dispatch(setAppIconPath({ app, iconPath })))
             .catch(() => {
                 /* Ignore 404 not found. */
             });
     };
 
 export const loadLocalApps = () => (dispatch: AppDispatch) => {
-    dispatch(loadLocalAppsAction());
+    dispatch(loadLocalAppsStarted());
 
     return getLocalApps()
         .then(apps => dispatch(loadLocalAppsSuccess(apps)))
@@ -91,12 +81,14 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
 const downloadAllReleaseNotesInBackground = async (
     dispatch: AppDispatch,
     apps: DownloadableApp[],
-    appName?: string,
-    appSource?: string
+    appToUpdate?: AppSpec
 ) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const app of apps) {
-        if (appName && !(app.name === appName && app.source === appSource)) {
+        if (
+            appToUpdate != null &&
+            (app.name !== appToUpdate.name || app.source !== appToUpdate.source)
+        ) {
             // eslint-disable-next-line no-continue
             continue;
         }
@@ -104,39 +96,32 @@ const downloadAllReleaseNotesInBackground = async (
         // eslint-disable-next-line no-await-in-loop
         const releaseNote = await downloadReleaseNotes(app);
         if (releaseNote != null) {
-            dispatch(
-                setAppReleaseNoteAction(app.source, app.name, releaseNote)
-            );
+            dispatch(setAppReleaseNote({ app, releaseNote }));
         }
     }
 };
 
 export const loadDownloadableApps =
-    (appName?: string, appSource?: SourceName) =>
-    async (dispatch: AppDispatch) => {
-        dispatch(loadDownloadableAppsAction());
+    (appToUpdate?: AppSpec) => async (dispatch: AppDispatch) => {
+        dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(
-            loadDownloadableAppsSuccess(
-                apps,
-                appName == null
-                    ? undefined
-                    : { name: appName, source: appSource! } // eslint-disable-line @typescript-eslint/no-non-null-assertion
-            )
+            loadDownloadableAppsSuccess({
+                downloadableApps: apps,
+                appToUpdate,
+            })
         );
-        apps.filter(app => !app.isInstalled).forEach(
-            ({ source, name, url }) => {
-                const iconPath = join(
-                    `${getAppsRootDir(source, mainConfig())}`,
-                    `${name}.svg`
-                );
-                const iconUrl = `${url}.svg`;
-                dispatch(downloadAppIcon(source, name, iconPath, iconUrl));
-            }
-        );
+        apps.filter(app => !app.isInstalled).forEach(app => {
+            const iconPath = join(
+                `${getAppsRootDir(app.source, mainConfig())}`,
+                `${app.name}.svg`
+            );
+            const iconUrl = `${app.url}.svg`;
+            dispatch(downloadAppIcon(app, iconUrl, iconPath));
+        });
 
-        downloadAllReleaseNotesInBackground(dispatch, apps, appName, appSource);
+        downloadAllReleaseNotesInBackground(dispatch, apps, appToUpdate);
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
@@ -172,17 +157,17 @@ const buildErrorMessage = (apps: AppWithError[]) => {
 };
 
 export const installDownloadableApp =
-    (name: string, source: SourceName) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.INSTALL_APP, source, name);
-        dispatch(installDownloadableAppAction(name, source));
+    (app: AppSpec) => (dispatch: AppDispatch) => {
+        sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
+        dispatch(installDownloadableAppStarted(app));
 
-        installDownloadableAppInMain(name, 'latest', source)
+        installDownloadableAppInMain(app, 'latest')
             .then(() => {
-                dispatch(installDownloadableAppSuccessAction(name, source));
-                dispatch(loadDownloadableApps(name, source));
+                dispatch(installDownloadableAppSuccess(app));
+                dispatch(loadDownloadableApps(app));
             })
             .catch(error => {
-                dispatch(installDownloadableAppErrorAction());
+                dispatch(installDownloadableAppError());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to install: ${error.message}`
@@ -192,15 +177,15 @@ export const installDownloadableApp =
     };
 
 export const removeDownloadableApp =
-    (name: string, source: SourceName) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.REMOVE_APP, source, name);
-        dispatch(removeDownloadableAppAction(name, source));
-        removeDownloadableAppInMain(name, source)
+    (app: AppSpec) => (dispatch: AppDispatch) => {
+        sendAppUsageData(EventAction.REMOVE_APP, app.source, app.name);
+        dispatch(removeDownloadableAppStarted(app));
+        removeDownloadableAppInMain(app)
             .then(() => {
-                dispatch(removeDownloadableAppSuccessAction(name, source));
+                dispatch(removeDownloadableAppSuccess(app));
             })
             .catch(error => {
-                dispatch(removeDownloadableAppErrorAction());
+                dispatch(removeDownloadableAppError());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to remove: ${error.message}`
@@ -210,20 +195,17 @@ export const removeDownloadableApp =
     };
 
 export const upgradeDownloadableApp =
-    (name: string, version: string, source: SourceName) =>
-    (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.UPGRADE_APP, source, name);
-        dispatch(upgradeDownloadableAppAction(name, version, source));
+    (app: AppSpec, version: string) => (dispatch: AppDispatch) => {
+        sendAppUsageData(EventAction.UPGRADE_APP, app.source, app.name);
+        dispatch(upgradeDownloadableAppStarted(app));
 
-        return installDownloadableAppInMain(name, version, source)
+        return installDownloadableAppInMain(app, version)
             .then(() => {
-                dispatch(
-                    upgradeDownloadableAppSuccessAction(name, version, source)
-                );
-                dispatch(loadDownloadableApps(name, source));
+                dispatch(upgradeDownloadableAppSuccess(app));
+                dispatch(loadDownloadableApps(app));
             })
             .catch(error => {
-                dispatch(upgradeDownloadableAppErrorAction());
+                dispatch(upgradeDownloadableAppError());
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to upgrade: ${error.message}`
@@ -233,14 +215,11 @@ export const upgradeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    // The apps in state are Immutable Maps which cannot be sent over IPC.
-    // Converting to plain JS object before sending to the main process.
-    const appObj = app;
     const sharedData =
-        `App version: ${appObj.currentVersion};` +
-        ` Engine version: ${appObj.engineVersion};`;
-    sendAppUsageData(EventAction.LAUNCH_APP, sharedData, appObj.name);
-    openApp(appObj);
+        `App version: ${app.currentVersion};` +
+        ` Engine version: ${app.engineVersion};`;
+    sendAppUsageData(EventAction.LAUNCH_APP, sharedData, app.name);
+    openApp(app);
 };
 
 export const checkEngineAndLaunch =
@@ -254,7 +233,10 @@ export const checkEngineAndLaunch =
             launch(app);
         } else {
             dispatch(
-                showConfirmLaunchDialogAction(appCompatibility.longWarning, app)
+                showConfirmLaunchDialog({
+                    app,
+                    text: appCompatibility.longWarning,
+                })
             );
         }
     };

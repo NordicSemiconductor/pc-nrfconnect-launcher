@@ -52,16 +52,16 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onInstall: (name, source) =>
-            dispatch(installDownloadableApp(name, source)),
+            dispatch(installDownloadableApp({ name, source })),
         onRemove: (name, source) =>
-            dispatch(removeDownloadableApp(name, source)),
+            dispatch(removeDownloadableApp({ name, source })),
         onReadMore: homepage => openUrl(homepage),
         // Launcher actions
-        onAppSelected: app => dispatch(checkEngineAndLaunch(app.toJS())),
-        onCreateShortcut: app => createDesktopShortcut(app.toJS()),
+        onAppSelected: app => dispatch(checkEngineAndLaunch(app)),
+        onCreateShortcut: app => createDesktopShortcut(app),
         onShowReleaseNotes: appid => dispatch(showReleaseNotes(appid)),
         onUpgrade: (name, version, source) =>
-            dispatch(upgradeDownloadableApp(name, version, source)),
+            dispatch(upgradeDownloadableApp({ name, source }, version)),
     };
 }
 

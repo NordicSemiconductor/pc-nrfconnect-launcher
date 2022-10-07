@@ -10,18 +10,18 @@ import { mount } from 'enzyme';
 
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import render, { createPreparedStore } from '../../../testrenderer';
-import {
-    installDownloadableAppAction,
-    loadDownloadableAppsSuccess,
-    removeDownloadableAppAction,
-    upgradeDownloadableAppAction,
-} from '../../actions/appsActions';
 import AppList from '../../containers/AppManagementContainer';
 import {
     checkEngineAndLaunch,
     installDownloadableApp,
     removeDownloadableApp,
 } from '../../features/apps/appsEffects';
+import {
+    installDownloadableAppStarted,
+    loadDownloadableAppsSuccess,
+    removeDownloadableAppStarted,
+    upgradeDownloadableAppStarted,
+} from '../../features/apps/appsSlice';
 import { setAllShownSources } from '../../features/filter/filterSlice';
 
 // Do not render react-bootstrap components in tests
@@ -112,13 +112,15 @@ describe('AppManagementView', () => {
     it('should render local, not-installed, installed, and upgradable apps', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources([OFFICIAL, LOCAL]),
-                loadDownloadableAppsSuccess([
-                    uninstalledApp,
-                    installedApp,
-                    updateableApp,
-                    localApp,
-                ]),
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [
+                        uninstalledApp,
+                        installedApp,
+                        updateableApp,
+                        localApp,
+                    ],
+                }),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -126,12 +128,11 @@ describe('AppManagementView', () => {
     it('should disable buttons and display "Installing..." button text while installing an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources([OFFICIAL, LOCAL]),
-                loadDownloadableAppsSuccess([uninstalledApp]),
-                installDownloadableAppAction(
-                    uninstalledApp.name,
-                    uninstalledApp.source
-                ),
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [uninstalledApp],
+                }),
+                installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -139,26 +140,23 @@ describe('AppManagementView', () => {
     it('should disable buttons while removing an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources([OFFICIAL, LOCAL]),
-                loadDownloadableAppsSuccess([installedApp]),
-                removeDownloadableAppAction(
-                    installedApp.name,
-                    installedApp.source
-                ),
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [installedApp],
+                }),
+                removeDownloadableAppStarted(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should disable buttons and display "Updating..." while updating an app', () => {
+    fit('should disable buttons and display "Updating..." while updating an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources([OFFICIAL, LOCAL]),
-                loadDownloadableAppsSuccess([updateableApp]),
-                upgradeDownloadableAppAction(
-                    updateableApp.name,
-                    updateableApp.latestVersion,
-                    updateableApp.source
-                ),
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [updateableApp],
+                }),
+                upgradeDownloadableAppStarted(updateableApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -169,8 +167,10 @@ describe('AppManagementView', () => {
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
-                    setAllShownSources([OFFICIAL, LOCAL]),
-                    loadDownloadableAppsSuccess([uninstalledApp]),
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [uninstalledApp],
+                    }),
                 ])}
             >
                 <AppList />
@@ -181,10 +181,10 @@ describe('AppManagementView', () => {
             .first()
             .simulate('click');
 
-        expect(installDownloadableApp).toHaveBeenCalledWith(
-            uninstalledApp.name,
-            uninstalledApp.source
-        );
+        expect(installDownloadableApp).toHaveBeenCalledWith({
+            name: uninstalledApp.name,
+            source: uninstalledApp.source,
+        });
     });
 
     it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
@@ -193,8 +193,10 @@ describe('AppManagementView', () => {
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
-                    setAllShownSources([OFFICIAL, LOCAL]),
-                    loadDownloadableAppsSuccess([installedApp]),
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [installedApp],
+                    }),
                 ])}
             >
                 <AppList />
@@ -207,10 +209,10 @@ describe('AppManagementView', () => {
             .first()
             .simulate('click');
 
-        expect(removeDownloadableApp).toHaveBeenCalledWith(
-            installedApp.name,
-            installedApp.source
-        );
+        expect(removeDownloadableApp).toHaveBeenCalledWith({
+            name: installedApp.name,
+            source: installedApp.source,
+        });
     });
 
     it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
@@ -219,8 +221,10 @@ describe('AppManagementView', () => {
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
-                    setAllShownSources([OFFICIAL, LOCAL]),
-                    loadDownloadableAppsSuccess([installedApp]),
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [installedApp],
+                    }),
                 ])}
             >
                 <AppList />

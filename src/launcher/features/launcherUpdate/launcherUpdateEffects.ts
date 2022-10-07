@@ -10,9 +10,14 @@ import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
 import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
-import * as AppsActions from '../../actions/appsActions';
+import type { AppDispatch } from '../..';
 import mainConfig from '../../util/mainConfig';
 import { loadDownloadableApps } from '../apps/appsEffects';
+import {
+    downloadLatestAppInfoError,
+    downloadLatestAppInfoStarted,
+    downloadLatestAppInfoSuccess,
+} from '../apps/appsSlice';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { removeSource } from '../sources/sourcesEffects';
 import {
@@ -21,7 +26,7 @@ import {
     updateAvailable,
 } from './launcherUpdateSlice';
 
-export const checkForCoreUpdates = () => async dispatch => {
+export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
     try {
         const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
@@ -36,7 +41,8 @@ export const checkForCoreUpdates = () => async dispatch => {
 };
 
 export const checkForCoreUpdatesAtStartup =
-    shouldCheckForUpdatesAtStartup => async dispatch => {
+    (shouldCheckForUpdatesAtStartup: boolean) =>
+    async (dispatch: AppDispatch) => {
         if (
             shouldCheckForUpdatesAtStartup &&
             !mainConfig().isSkipUpdateCore &&
@@ -46,23 +52,21 @@ export const checkForCoreUpdatesAtStartup =
         }
     };
 
-export const cancelDownload = () => dispatch => {
+export const cancelDownload = () => (dispatch: AppDispatch) => {
     cancelUpdate();
     dispatch(cancelLauncherDownload());
 };
 
 export const downloadLatestAppInfo =
     (options = { rejectIfError: false }) =>
-    dispatch => {
-        dispatch(AppsActions.downloadLatestAppInfoAction());
+    (dispatch: AppDispatch) => {
+        dispatch(downloadLatestAppInfoStarted());
 
         return downloadAllAppsJsonFiles()
-            .then(() =>
-                dispatch(AppsActions.downloadLatestAppInfoSuccessAction())
-            )
+            .then(() => dispatch(downloadLatestAppInfoSuccess()))
             .then(() => dispatch(loadDownloadableApps()))
             .catch(error => {
-                dispatch(AppsActions.downloadLatestAppInfoErrorAction());
+                dispatch(downloadLatestAppInfoError());
                 if (options.rejectIfError) {
                     throw error;
                 } else if (error.sourceNotFound) {
@@ -93,13 +97,13 @@ export const downloadLatestAppInfo =
     };
 
 export const downloadLatestAppInfoAtStartup =
-    shouldCheckForUpdatesAtStartup => dispatch => {
+    (shouldCheckForUpdatesAtStartup: boolean) => (dispatch: AppDispatch) => {
         if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
             dispatch(downloadLatestAppInfo());
         }
     };
 
-export const checkForUpdatesManually = () => dispatch =>
+export const checkForUpdatesManually = () => (dispatch: AppDispatch) =>
     dispatch(downloadLatestAppInfo({ rejectIfError: true }))
         .then(() => {
             dispatch(checkForCoreUpdates());
