@@ -222,7 +222,7 @@ const slice = createSlice({
             state.removingAppName = initialState.removingAppName;
 
             updateApp(removedApp, state.downloadableApps, app => {
-                app.currentVersion = null;
+                app.currentVersion = undefined;
                 app.isInstalled = false;
             });
         },

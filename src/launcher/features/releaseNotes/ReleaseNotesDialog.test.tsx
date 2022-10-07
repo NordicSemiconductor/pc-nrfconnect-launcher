@@ -32,7 +32,7 @@ const uninstalledApp: UninstalledDownloadableApp = {
     latestVersion: '2.0.0',
     releaseNote: 'Release notes for uninstalled',
     isInstalled: false,
-    currentVersion: null,
+    currentVersion: undefined,
 };
 const installedApp: InstalledDownloadableApp = {
     ...unimportantAppProperties,
