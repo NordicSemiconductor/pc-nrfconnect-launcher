@@ -275,10 +275,10 @@ export const {
     upgradeDownloadableAppSuccess,
 } = slice.actions;
 
-const getAllApps = (state: RootState) => {
+export const getAllApps = (state: RootState) => {
     const { downloadableApps, localApps } = state.apps;
 
-    return (localApps as App[]).concat(downloadableApps);
+    return [...localApps, ...downloadableApps];
 };
 
 export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {

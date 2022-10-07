@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppList should disable buttons and display "Updating..." while updating an app 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App A
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appA description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                1.2.3
+                 (v
+                1.2.4
+                 available)
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  disabled=""
+                  title="Update App A"
+                  type="button"
+                >
+                  Updating...
+                </button>
+                <button
+                  class="btn btn-primary"
+                  disabled=""
+                  title="Open App A"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;

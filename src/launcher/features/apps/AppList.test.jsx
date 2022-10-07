@@ -10,19 +10,19 @@ import { mount } from 'enzyme';
 
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import render, { createPreparedStore } from '../../../testrenderer';
-import AppList from '../../containers/AppManagementContainer';
+import { setAllShownSources } from '../filter/filterSlice';
+import AppList from './AppList';
 import {
     checkEngineAndLaunch,
     installDownloadableApp,
     removeDownloadableApp,
-} from '../../features/apps/appsEffects';
+} from './appsEffects';
 import {
     installDownloadableAppStarted,
     loadDownloadableAppsSuccess,
     removeDownloadableAppStarted,
     upgradeDownloadableAppStarted,
-} from '../../features/apps/appsSlice';
-import { setAllShownSources } from '../../features/filter/filterSlice';
+} from './appsSlice';
 
 // Do not render react-bootstrap components in tests
 jest.mock('react-bootstrap', () => ({
@@ -104,7 +104,7 @@ const installedApp = {
     shortcutIconPath: '',
 };
 
-describe('AppManagementView', () => {
+describe('AppList', () => {
     it('should render without any apps', () => {
         expect(render(<AppList />).baseElement).toMatchSnapshot();
     });
