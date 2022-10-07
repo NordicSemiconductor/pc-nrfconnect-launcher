@@ -15,7 +15,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Row from 'react-bootstrap/Row';
 import { bool, func, shape, string } from 'prop-types';
 
-import AppIcon from './AppIcon';
+import AppIcon from '../features/apps/AppIcon';
 
 import '../../../resources/css/launcher.scss';
 
