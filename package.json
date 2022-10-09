@@ -140,6 +140,10 @@
         "include": "src",
         "exclude": [
             "test-e2e"
-        ]
+        ],
+        "branches": 30,
+        "lines": 30,
+        "functions": 20,
+        "statements": 30
     }
 }
