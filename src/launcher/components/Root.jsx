@@ -15,7 +15,7 @@ import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDia
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
 import ProxyErrorDialog from '../features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from '../features/proxyLogin/ProxyLoginDialog';
-import SettingsView from '../features/settings/SettingsView';
+import Settings from '../features/settings/Settings';
 import UsageDataDialog from '../features/usageData/UsageDataDialog';
 import ErrorBoundaryLauncher from '../util/ErrorBoundaryLauncher';
 import AboutView from './AboutView';
@@ -69,7 +69,7 @@ export default () => {
                         <AppList />
                     </Tab.Pane>
                     <Tab.Pane eventKey="settings">
-                        <SettingsView />
+                        <Settings />
                     </Tab.Pane>
                     <Tab.Pane eventKey="about">
                         <AboutView />
