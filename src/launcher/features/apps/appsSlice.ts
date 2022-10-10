@@ -323,3 +323,9 @@ export const getAppsInProgress = (state: RootState) => ({
     removingAppName: state.apps.removingAppName,
     upgradingAppName: state.apps.upgradingAppName,
 });
+
+export const getConfirmLaunch = (state: RootState) => ({
+    isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
+    text: state.apps.confirmLaunchText,
+    app: state.apps.confirmLaunchApp,
+});

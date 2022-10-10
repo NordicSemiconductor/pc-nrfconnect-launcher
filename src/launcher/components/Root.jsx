@@ -9,9 +9,9 @@ import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
-import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
 import About from '../features/about/About';
 import AppList from '../features/apps/AppList';
+import ConfirmLaunchDialog from '../features/apps/ConfirmLaunchDialog';
 import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
 import ProxyErrorDialog from '../features/proxyLogin/ProxyErrorDialog';
@@ -81,7 +81,7 @@ export default () => {
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
             <UsageDataDialog />
-            <ConfirmLaunchContainer />
+            <ConfirmLaunchDialog />
             <ProxyLoginDialog />
             <ProxyErrorDialog />
         </ErrorBoundaryLauncher>
