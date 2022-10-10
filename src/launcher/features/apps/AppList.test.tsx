@@ -7,7 +7,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import type { AnyAction } from 'redux';
 
+import {
+    InstalledDownloadableApp,
+    LocalApp,
+    UninstalledDownloadableApp,
+} from '../../../ipc/apps';
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import render, { createPreparedStore } from '../../../testrenderer';
 import { setAllShownSources } from '../filter/filterSlice';
@@ -20,6 +26,7 @@ import {
 import {
     installDownloadableAppStarted,
     loadDownloadableAppsSuccess,
+    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     upgradeDownloadableAppStarted,
 } from './appsSlice';
@@ -40,7 +47,7 @@ jest.mock('../../util/mainConfig', () => () => ({ version: '6.1.0' }));
 
 jest.mock('../../features/apps/appsEffects');
 
-const localApp = {
+const localApp: LocalApp = {
     name: 'local',
     source: LOCAL,
     displayName: 'Local App',
@@ -56,7 +63,7 @@ const localApp = {
     shortcutIconPath: '',
 };
 
-const updateableApp = {
+const updateableApp: InstalledDownloadableApp = {
     name: 'appA',
     source: OFFICIAL,
     displayName: 'App A',
@@ -74,7 +81,7 @@ const updateableApp = {
     shortcutIconPath: '',
 };
 
-const uninstalledApp = {
+const uninstalledApp: UninstalledDownloadableApp = {
     name: 'appB',
     source: OFFICIAL,
     displayName: 'App B',
@@ -82,12 +89,13 @@ const uninstalledApp = {
     isInstalled: false,
     isDownloadable: true,
 
-    engineVersion: '6.1.0',
     url: '',
     latestVersion: '',
+    iconPath: '',
+    currentVersion: undefined,
 };
 
-const installedApp = {
+const installedApp: InstalledDownloadableApp = {
     name: 'appC',
     source: OFFICIAL,
     displayName: 'App C',
@@ -104,6 +112,14 @@ const installedApp = {
     shortcutIconPath: '',
 };
 
+const mockThunk = (thunkToMock: unknown) => {
+    const mockedThunk = thunkToMock as jest.MockedFunction<() => AnyAction>;
+
+    mockedThunk.mockReturnValue({
+        type: 'an action',
+    });
+};
+
 describe('AppList', () => {
     it('should render without any apps', () => {
         expect(render(<AppList />).baseElement).toMatchSnapshot();
@@ -118,9 +134,9 @@ describe('AppList', () => {
                         uninstalledApp,
                         installedApp,
                         updateableApp,
-                        localApp,
                     ],
                 }),
+                loadLocalAppsSuccess([localApp]),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -149,7 +165,7 @@ describe('AppList', () => {
         ).toMatchSnapshot();
     });
 
-    fit('should disable buttons and display "Updating..." while updating an app', () => {
+    it('should disable buttons and display "Updating..." while updating an app', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
@@ -162,7 +178,7 @@ describe('AppList', () => {
     });
 
     it('should invoke installDownloadableApp with app name and source when install button is clicked', () => {
-        installDownloadableApp.mockReturnValue({ type: 'an action' });
+        mockThunk(installDownloadableApp);
 
         const wrapper = mount(
             <Provider
@@ -181,14 +197,11 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(installDownloadableApp).toHaveBeenCalledWith({
-            name: uninstalledApp.name,
-            source: uninstalledApp.source,
-        });
+        expect(installDownloadableApp).toHaveBeenCalledWith(uninstalledApp);
     });
 
     it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
-        removeDownloadableApp.mockReturnValue({ type: 'an action' });
+        mockThunk(removeDownloadableApp);
 
         const wrapper = mount(
             <Provider
@@ -209,14 +222,11 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(removeDownloadableApp).toHaveBeenCalledWith({
-            name: installedApp.name,
-            source: installedApp.source,
-        });
+        expect(removeDownloadableApp).toHaveBeenCalledWith(installedApp);
     });
 
     it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
-        checkEngineAndLaunch.mockReturnValue({ type: 'an action' });
+        mockThunk(checkEngineAndLaunch);
 
         const wrapper = mount(
             <Provider
@@ -236,8 +246,6 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(checkEngineAndLaunch).toHaveBeenCalledWith(
-            expect.objectContaining(installedApp)
-        );
+        expect(checkEngineAndLaunch).toHaveBeenCalledWith(installedApp);
     });
 });

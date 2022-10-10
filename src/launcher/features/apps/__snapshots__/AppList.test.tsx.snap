@@ -1,0 +1,569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppList should disable buttons and display "Installing..." button text while installing an app 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App B
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appB description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-outline-secondary"
+                  disabled=""
+                  title="Install App B"
+                  type="button"
+                >
+                  Installing...
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-secondary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
+exports[`AppList should disable buttons and display "Updating..." while updating an app 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App A
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appA description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                1.2.3
+                 (v
+                1.2.4
+                 available)
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  disabled=""
+                  title="Update App A"
+                  type="button"
+                >
+                  Updating...
+                </button>
+                <button
+                  class="btn btn-primary"
+                  disabled=""
+                  title="Open App A"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
+exports[`AppList should disable buttons while removing an app 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App C
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appC description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                1.2.3
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-primary"
+                  disabled=""
+                  title="Open App C"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
+exports[`AppList should render local, not-installed, installed, and upgradable apps 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App A
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appA description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                1.2.3
+                 (v
+                1.2.4
+                 available)
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  title="Update App A"
+                  type="button"
+                >
+                  Update
+                </button>
+                <button
+                  class="btn btn-primary"
+                  title="Open App A"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App C
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appC description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                1.2.3
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-primary"
+                  title="Open App C"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                Local App
+              </div>
+              <div
+                class="small text-muted"
+              >
+                An local app
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                local
+                , v
+                2.0.0
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-primary"
+                  title="Open Local App"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <div
+                  class="icon-replacement"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                App B
+              </div>
+              <div
+                class="small text-muted"
+              >
+                appB description
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-outline-secondary"
+                  title="Install App B"
+                  type="button"
+                >
+                  Install
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-secondary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
+exports[`AppList should render without any apps 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="with-scrollbar filter-adjusted-height"
+    >
+      <div
+        class="content-container"
+      />
+    </div>
+    <div />
+  </div>
+</body>
+`;
