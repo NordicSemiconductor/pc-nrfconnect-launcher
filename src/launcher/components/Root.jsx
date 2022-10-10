@@ -10,6 +10,7 @@ import Tab from 'react-bootstrap/Tab';
 import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
 import ConfirmLaunchContainer from '../containers/ConfirmLaunchContainer';
+import About from '../features/about/About';
 import AppList from '../features/apps/AppList';
 import UpdateAvailableDialog from '../features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from '../features/launcherUpdate/UpdateProgressDialog';
@@ -18,7 +19,6 @@ import ProxyLoginDialog from '../features/proxyLogin/ProxyLoginDialog';
 import Settings from '../features/settings/Settings';
 import UsageDataDialog from '../features/usageData/UsageDataDialog';
 import ErrorBoundaryLauncher from '../util/ErrorBoundaryLauncher';
-import AboutView from './AboutView';
 
 const blurActiveElementOnLaunch = () => {
     /* react-bootstrap 1.0.1 on macOS focusses the first nav item after a few
@@ -72,7 +72,7 @@ export default () => {
                         <Settings />
                     </Tab.Pane>
                     <Tab.Pane eventKey="about">
-                        <AboutView />
+                        <About />
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
