@@ -7,8 +7,8 @@
 import React from 'react';
 
 import { App as AppType } from '../../../ipc/apps';
-import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { useLauncherSelector } from '../../util/hooks';
+import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';

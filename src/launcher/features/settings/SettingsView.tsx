@@ -15,8 +15,8 @@ import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
 
 import { OFFICIAL } from '../../../ipc/sources';
-import WithScrollbarContainer from '../../containers/WithScrollbarContainer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import { getUpdateCheckStatus } from '../apps/appsSlice';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import AddSourceDialog from '../sources/AddSourceDialog';
