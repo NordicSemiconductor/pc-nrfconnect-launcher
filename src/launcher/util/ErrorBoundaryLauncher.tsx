@@ -7,19 +7,18 @@
 import React from 'react';
 import { getCurrentWindow } from '@electron/remote';
 import { ErrorBoundary } from 'pc-nrfconnect-shared';
-import { node } from 'prop-types';
 
 import pkgJson from '../../../package.json';
 import { resetSettings } from '../../ipc/settings';
 import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
 
-const ErrorBoundaryLauncher = ({ children }) => {
+const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     const restoreDefaults = async () => {
         await resetSettings();
         getCurrentWindow().reload();
     };
 
-    const sendUsageData = error => {
+    const sendUsageData = (error: string) => {
         const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
         const errorLabel = `${process.platform}; ${process.arch}; v${launcherInfo}; ${error}`;
         sendLauncherUsageData('Report error', errorLabel);
@@ -27,6 +26,7 @@ const ErrorBoundaryLauncher = ({ children }) => {
 
     return (
         <ErrorBoundary
+            // @ts-expect-error: ErrorBoundary is not typed correctly yet in shared
             appName="Launcher"
             restoreDefaults={restoreDefaults}
             sendUsageData={sendUsageData}
@@ -34,10 +34,6 @@ const ErrorBoundaryLauncher = ({ children }) => {
             {children}
         </ErrorBoundary>
     );
-};
-
-ErrorBoundaryLauncher.propTypes = {
-    children: node,
 };
 
 export default ErrorBoundaryLauncher;

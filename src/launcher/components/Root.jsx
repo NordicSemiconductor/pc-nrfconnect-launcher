@@ -17,8 +17,8 @@ import ProxyErrorDialog from '../features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from '../features/proxyLogin/ProxyLoginDialog';
 import SettingsView from '../features/settings/SettingsView';
 import UsageDataDialog from '../features/usageData/UsageDataDialog';
+import ErrorBoundaryLauncher from '../util/ErrorBoundaryLauncher';
 import AboutView from './AboutView';
-import ErrorBoundaryLauncher from './ErrorBoundaryLauncher';
 
 const blurActiveElementOnLaunch = () => {
     /* react-bootstrap 1.0.1 on macOS focusses the first nav item after a few
