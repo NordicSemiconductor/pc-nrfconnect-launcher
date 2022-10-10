@@ -109,7 +109,7 @@ test.describe('the list of all apps', () => {
 
     test.describe('has a downloadable apps that is upgradable', () => {
         const appsRootDir =
-            'launcher/fixtures/one-downloadable-app-upgradable/.nrfconnect-apps';
+            'launcher/fixtures/one-official-app-upgradable/.nrfconnect-apps';
 
         let app: ElectronApplication;
         let page: Page;
