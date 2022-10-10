@@ -10,7 +10,7 @@ import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
 import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
-import type { AppDispatch } from '../..';
+import type { AppDispatch } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import { loadDownloadableApps } from '../apps/appsEffects';
 import {

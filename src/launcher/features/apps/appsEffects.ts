@@ -22,7 +22,7 @@ import {
 import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
 import { getAppsRootDir } from '../../../main/config';
-import type { AppDispatch } from '../..';
+import type { AppDispatch } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
 import {

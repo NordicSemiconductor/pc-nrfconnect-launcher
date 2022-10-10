@@ -10,11 +10,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 import { Action } from 'redux';
 
-import rootReducer from './launcher/reducers';
+import { reducer } from './launcher/store';
 
 export const createPreparedStore = (actions: Action[]) => {
     const store = configureStore({
-        reducer: rootReducer,
+        reducer,
         middleware: getDefaultMiddleware =>
             getDefaultMiddleware({ serializableCheck: false }),
     });

@@ -8,12 +8,9 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 
 import { getSettings } from '../ipc/settings';
-import RootContainer from './containers/RootContainer';
 import {
     loadDownloadableApps,
     loadLocalApps,
@@ -29,22 +26,20 @@ import {
     checkUsageDataSetting,
     sendEnvInfo,
 } from './features/usageData/usageDataEffects';
-import rootReducer from './reducers';
+import Root from './Root';
+import store from './store';
 import registerIpcHandler from './util/registerIpcHandler';
 
 import '../../resources/css/launcher.scss';
 
-const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-);
-// TODO: Switch to using configureStore from RTK
-
 const { dispatch } = store;
-
 registerIpcHandler(dispatch);
 
-const rootElement = React.createElement(RootContainer, { store });
+const rootElement = (
+    <Provider store={store}>
+        <Root />
+    </Provider>
+);
 
 render(rootElement, document.getElementById('webapp'), async () => {
     dispatch(checkUsageDataSetting());

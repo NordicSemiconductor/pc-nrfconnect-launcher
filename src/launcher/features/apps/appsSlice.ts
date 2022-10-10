@@ -16,7 +16,7 @@ import {
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
 export type State = {

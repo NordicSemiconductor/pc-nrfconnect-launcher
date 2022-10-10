@@ -8,7 +8,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { SourceName, Sources, SourceUrl } from '../../../ipc/sources';
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 
 export type State = {
     sources: Sources;

@@ -14,7 +14,7 @@ import {
     SourceName,
     SourceUrl,
 } from '../../../ipc/sources';
-import type { AppDispatch } from '../..';
+import type { AppDispatch } from '../../store';
 import { loadDownloadableApps } from '../apps/appsEffects';
 import { hideSource } from '../filter/filterSlice';
 import {

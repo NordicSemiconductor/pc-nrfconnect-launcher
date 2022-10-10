@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { configureStore } from '@reduxjs/toolkit';
 import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
-import rootReducer from '../../reducers';
+import { reducer as rootReducer } from '../../store';
 import reducer, {
     downloadLatestAppInfoError,
     downloadLatestAppInfoStarted,
@@ -315,17 +316,22 @@ describe('appsReducer', () => {
 });
 
 test('sortedSources sorts the sources into official, local and then the rest in alphabetical order', () => {
-    const state = dispatchTo(rootReducer, [
+    const store = configureStore({
+        reducer: rootReducer,
+        middleware: getDefaultMiddleware =>
+            getDefaultMiddleware({ serializableCheck: false }),
+    });
+    store.dispatch(
         loadDownloadableAppsSuccess({
             downloadableApps: [
                 { ...downloadableApp1, source: 'OtherB' },
                 { ...downloadableApp1, source: 'official' },
                 { ...downloadableApp1, source: 'OtherA' },
             ],
-        }),
-    ]);
+        })
+    );
 
-    expect(getAllSourceNamesSorted(state)).toStrictEqual([
+    expect(getAllSourceNamesSorted(store.getState())).toStrictEqual([
         'official',
         'local',
         'OtherA',

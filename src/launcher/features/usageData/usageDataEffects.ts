@@ -8,7 +8,7 @@ import { usageData } from 'pc-nrfconnect-shared';
 import si from 'systeminformation';
 
 import pkgJson from '../../../../package.json';
-import type { AppDispatch, RootState } from '../..';
+import type { AppDispatch, RootState } from '../../store';
 import {
     getIsSendingUsageData,
     hideUsageDataDialog,
