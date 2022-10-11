@@ -12,7 +12,7 @@ import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppDispatch } from '../../store';
 import mainConfig from '../../util/mainConfig';
-import { loadDownloadableApps } from '../apps/appsEffects';
+import { fetchInfoForAllDownloadableApps } from '../apps/appsEffects';
 import {
     downloadLatestAppInfoError,
     downloadLatestAppInfoStarted,
@@ -64,7 +64,7 @@ export const downloadLatestAppInfo =
 
         return downloadAllAppsJsonFiles()
             .then(() => dispatch(downloadLatestAppInfoSuccess()))
-            .then(() => dispatch(loadDownloadableApps()))
+            .then(() => dispatch(fetchInfoForAllDownloadableApps()))
             .catch(error => {
                 dispatch(downloadLatestAppInfoError());
                 if (options.rejectIfError) {

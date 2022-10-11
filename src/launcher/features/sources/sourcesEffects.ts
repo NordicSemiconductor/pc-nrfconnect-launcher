@@ -15,7 +15,7 @@ import {
     SourceUrl,
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../../store';
-import { loadDownloadableApps } from '../apps/appsEffects';
+import { fetchInfoForAllDownloadableApps } from '../apps/appsEffects';
 import { hideSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,
@@ -51,7 +51,7 @@ export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
                 )
             )
         )
-        .then(() => dispatch(loadDownloadableApps()));
+        .then(() => dispatch(fetchInfoForAllDownloadableApps()));
 };
 
 export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
@@ -60,7 +60,7 @@ export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
             dispatch(removeSourceAction(name));
             dispatch(hideSource(name));
         })
-        .then(() => dispatch(loadDownloadableApps()))
+        .then(() => dispatch(fetchInfoForAllDownloadableApps()))
         .catch(error =>
             dispatch(
                 ErrorDialogActions.showDialog(

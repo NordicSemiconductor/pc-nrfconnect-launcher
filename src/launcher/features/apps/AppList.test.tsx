@@ -25,9 +25,9 @@ import {
 } from './appsEffects';
 import {
     installDownloadableAppStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsSuccess,
     removeDownloadableAppStarted,
+    updateAllDownloadableApps,
     upgradeDownloadableAppStarted,
 } from './appsSlice';
 
@@ -129,13 +129,11 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [
-                        uninstalledApp,
-                        installedApp,
-                        updateableApp,
-                    ],
-                }),
+                updateAllDownloadableApps([
+                    uninstalledApp,
+                    installedApp,
+                    updateableApp,
+                ]),
                 loadLocalAppsSuccess([localApp]),
             ]).baseElement
         ).toMatchSnapshot();
@@ -145,9 +143,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [uninstalledApp],
-                }),
+                updateAllDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -157,9 +153,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [installedApp],
-                }),
+                updateAllDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -169,9 +163,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [updateableApp],
-                }),
+                updateAllDownloadableApps([updateableApp]),
                 upgradeDownloadableAppStarted(updateableApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -184,9 +176,7 @@ describe('AppList', () => {
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [uninstalledApp],
-                    }),
+                    updateAllDownloadableApps([uninstalledApp]),
                 ])}
             >
                 <AppList />
@@ -207,9 +197,7 @@ describe('AppList', () => {
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [installedApp],
-                    }),
+                    updateAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />
@@ -232,9 +220,7 @@ describe('AppList', () => {
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [installedApp],
-                    }),
+                    updateAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />

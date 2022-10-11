@@ -87,34 +87,21 @@ const slice = createSlice({
         loadDownloadableAppsStarted(state) {
             state.isLoadingDownloadableApps = true;
         },
-        loadDownloadableAppsSuccess(
+        updateAllDownloadableApps(
             state,
-            {
-                payload,
-            }: PayloadAction<{
-                downloadableApps: DownloadableApp[];
-                appToUpdate?: AppSpec;
-            }>
+            { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
             state.isLoadingDownloadableApps = false;
-
-            const { appToUpdate, downloadableApps } = payload;
-            if (appToUpdate == null) {
-                state.downloadableApps = [...downloadableApps];
-            } else {
-                const equalsAppToUpdate = equalsSpec(appToUpdate);
-                const updatedApp = downloadableApps.find(equalsAppToUpdate);
-
-                if (updatedApp != null) {
-                    state.downloadableApps = state.downloadableApps.map(app =>
-                        equalsAppToUpdate(app) ? updatedApp : app
-                    );
-                } else {
-                    console.error(
-                        `No app ${appToUpdate} found in the existing downloadable apps though there is supposed to be one.`
-                    );
-                }
-            }
+            state.downloadableApps = [...downloadableApps];
+        },
+        updateDownloadableApp(
+            state,
+            { payload: updatedApp }: PayloadAction<DownloadableApp>
+        ) {
+            state.isLoadingDownloadableApps = false;
+            state.downloadableApps = state.downloadableApps.map(app =>
+                equalsSpec(updatedApp)(app) ? updatedApp : app
+            );
         },
         loadDownloadableAppsError(state) {
             state.isLoadingDownloadableApps = false;
@@ -261,7 +248,6 @@ export const {
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
@@ -271,6 +257,8 @@ export const {
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
+    updateAllDownloadableApps,
+    updateDownloadableApp,
     updateInstallProgress,
     upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,

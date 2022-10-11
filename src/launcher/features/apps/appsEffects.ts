@@ -36,7 +36,6 @@ import {
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
@@ -46,6 +45,8 @@ import {
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
+    updateAllDownloadableApps,
+    updateDownloadableApp,
     upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
@@ -78,40 +79,23 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
         });
 };
 
-const downloadAllReleaseNotesInBackground = async (
+const downloadSingleReleaseNotes = async (
     dispatch: AppDispatch,
-    apps: DownloadableApp[],
-    appToUpdate?: AppSpec
+    app: DownloadableApp
 ) => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const app of apps) {
-        if (
-            appToUpdate != null &&
-            (app.name !== appToUpdate.name || app.source !== appToUpdate.source)
-        ) {
-            // eslint-disable-next-line no-continue
-            continue;
-        }
-
-        // eslint-disable-next-line no-await-in-loop
-        const releaseNote = await downloadReleaseNotes(app);
-        if (releaseNote != null) {
-            dispatch(setAppReleaseNote({ app, releaseNote }));
-        }
+    const releaseNote = await downloadReleaseNotes(app);
+    if (releaseNote != null) {
+        dispatch(setAppReleaseNote({ app, releaseNote }));
     }
 };
 
-export const loadDownloadableApps =
-    (appToUpdate?: AppSpec) => async (dispatch: AppDispatch) => {
+export const fetchInfoForAllDownloadableApps =
+    () => async (dispatch: AppDispatch) => {
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
-        dispatch(
-            loadDownloadableAppsSuccess({
-                downloadableApps: apps,
-                appToUpdate,
-            })
-        );
+        dispatch(updateAllDownloadableApps(apps));
+
         apps.filter(app => !app.isInstalled).forEach(app => {
             const iconPath = join(
                 `${getAppsRootDir(app.source, mainConfig())}`,
@@ -121,10 +105,32 @@ export const loadDownloadableApps =
             dispatch(downloadAppIcon(app, iconUrl, iconPath));
         });
 
-        downloadAllReleaseNotesInBackground(dispatch, apps, appToUpdate);
+        apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
+        }
+    };
+
+export const fetchInfoForSingleDownloadableApp =
+    (appToUpdate: AppSpec) => async (dispatch: AppDispatch) => {
+        dispatch(loadDownloadableAppsStarted());
+        const { apps } = await getDownloadableApps();
+
+        const updatedApp = apps.find(
+            app =>
+                app.source === appToUpdate.source &&
+                app.name === appToUpdate.name
+        );
+
+        if (updatedApp != null) {
+            dispatch(updateDownloadableApp(updatedApp));
+            downloadSingleReleaseNotes(dispatch, updatedApp);
+        } else {
+            dispatch(loadDownloadableAppsError());
+            console.error(
+                `No app ${appToUpdate} found in the fought app infos though there is supposed to be one.`
+            );
         }
     };
 
@@ -164,7 +170,7 @@ export const installDownloadableApp =
         installDownloadableAppInMain(app, 'latest')
             .then(() => {
                 dispatch(installDownloadableAppSuccess(app));
-                dispatch(loadDownloadableApps(app));
+                dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
                 dispatch(installDownloadableAppError());
@@ -202,7 +208,7 @@ export const upgradeDownloadableApp =
         return installDownloadableAppInMain(app, version)
             .then(() => {
                 dispatch(upgradeDownloadableAppSuccess(app));
-                dispatch(loadDownloadableApps(app));
+                dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
                 dispatch(upgradeDownloadableAppError());

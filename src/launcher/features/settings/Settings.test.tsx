@@ -10,7 +10,7 @@ import render from '../../../testrenderer';
 import {
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,
-    loadDownloadableAppsSuccess,
+    updateAllDownloadableApps,
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
@@ -74,16 +74,14 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [
-                        {
-                            currentVersion: '1.0.0',
-                            latestVersion: '1.2.3',
-                            upgradeAvailable: true,
-                            ...unimportantAppProperties,
-                        },
-                    ],
-                }),
+                updateAllDownloadableApps([
+                    {
+                        currentVersion: '1.0.0',
+                        latestVersion: '1.2.3',
+                        upgradeAvailable: true,
+                        ...unimportantAppProperties,
+                    },
+                ]),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -92,16 +90,14 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [
-                        {
-                            currentVersion: '1.0.0',
-                            latestVersion: '1.0.0',
-                            upgradeAvailable: false,
-                            ...unimportantAppProperties,
-                        },
-                    ],
-                }),
+                updateAllDownloadableApps([
+                    {
+                        currentVersion: '1.0.0',
+                        latestVersion: '1.0.0',
+                        upgradeAvailable: false,
+                        ...unimportantAppProperties,
+                    },
+                ]),
             ]).baseElement
         ).toMatchSnapshot();
     });

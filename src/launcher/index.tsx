@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 
 import { getSettings } from '../ipc/settings';
 import {
-    loadDownloadableApps,
+    fetchInfoForAllDownloadableApps,
     loadLocalApps,
 } from './features/apps/appsEffects';
 import { initializeFilters } from './features/filter/filterEffects';
@@ -52,7 +52,7 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await dispatch(loadSources());
 
     await dispatch(loadLocalApps());
-    await dispatch(loadDownloadableApps());
+    await dispatch(fetchInfoForAllDownloadableApps());
 
     dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
     dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));

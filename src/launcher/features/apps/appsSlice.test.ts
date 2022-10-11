@@ -20,7 +20,6 @@ import reducer, {
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
@@ -28,6 +27,7 @@ import reducer, {
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     showConfirmLaunchDialog,
+    updateAllDownloadableApps,
     upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
@@ -136,9 +136,7 @@ describe('appsReducer', () => {
 
     it('should have downloadable apps when loadDownloadableAppsSuccess has been dispatched with apps', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({
-                downloadableApps,
-            }),
+            updateAllDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toEqual(downloadableApps);
     });
@@ -146,7 +144,7 @@ describe('appsReducer', () => {
     it('should not be loading downloadable apps after loadDownloadableAppsSuccess has been dispatched', () => {
         const state = dispatchTo(reducer, [
             loadDownloadableAppsStarted(),
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
         ]);
         expect(state.isLoadingDownloadableApps).toEqual(false);
     });
@@ -161,7 +159,7 @@ describe('appsReducer', () => {
 
     it('should be installing app after installDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
         ]);
         expect(state.installingAppName).toEqual(
@@ -171,7 +169,7 @@ describe('appsReducer', () => {
 
     it('should not be installing app after installDownloadableAppSuccessAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
             installDownloadableAppSuccess(downloadableApp1),
         ]);
@@ -180,7 +178,7 @@ describe('appsReducer', () => {
 
     it('should not be installing app after installDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
             installDownloadableAppError(),
         ]);
@@ -189,7 +187,7 @@ describe('appsReducer', () => {
 
     it('should be removing app after removeDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
         ]);
         expect(state.removingAppName).toEqual(
@@ -199,7 +197,7 @@ describe('appsReducer', () => {
 
     it('should not be removing app after removeDownloadableAppSuccessAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
             removeDownloadableAppSuccess(downloadableApp1),
         ]);
@@ -208,7 +206,7 @@ describe('appsReducer', () => {
 
     it('should not be removing app after removeDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
             removeDownloadableAppError(),
         ]);
@@ -217,7 +215,7 @@ describe('appsReducer', () => {
 
     it('should be upgrading app after upgradeDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
         ]);
         expect(state.upgradingAppName).toEqual(
@@ -227,7 +225,7 @@ describe('appsReducer', () => {
 
     it('should not be upgrading app after upgradeDownloadableAppSuccessAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
             upgradeDownloadableAppSuccess(downloadableApp1),
         ]);
@@ -236,7 +234,7 @@ describe('appsReducer', () => {
 
     it('should not be removing app after upgradeDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsSuccess({ downloadableApps }),
+            updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
             upgradeDownloadableAppError(),
         ]);
@@ -322,13 +320,11 @@ test('sortedSources sorts the sources into official, local and then the rest in 
             getDefaultMiddleware({ serializableCheck: false }),
     });
     store.dispatch(
-        loadDownloadableAppsSuccess({
-            downloadableApps: [
-                { ...downloadableApp1, source: 'OtherB' },
-                { ...downloadableApp1, source: 'official' },
-                { ...downloadableApp1, source: 'OtherA' },
-            ],
-        })
+        updateAllDownloadableApps([
+            { ...downloadableApp1, source: 'OtherB' },
+            { ...downloadableApp1, source: 'official' },
+            { ...downloadableApp1, source: 'OtherA' },
+        ])
     );
 
     expect(getAllSourceNamesSorted(store.getState())).toStrictEqual([
