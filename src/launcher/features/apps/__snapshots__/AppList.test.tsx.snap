@@ -75,6 +75,18 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               </div>
             </div>
           </div>
+          <div
+            class="progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              class="progress-bar"
+              role="progressbar"
+              style="width: 0%;"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -170,6 +182,18 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               </div>
             </div>
           </div>
+          <div
+            class="progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              class="progress-bar"
+              role="progressbar"
+              style="width: 0%;"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -253,6 +277,18 @@ exports[`AppList should disable buttons while removing an app 1`] = `
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            class="progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="0"
+              class="progress-bar"
+              role="progressbar"
+              style="width: 0%;"
+            />
           </div>
         </div>
       </div>

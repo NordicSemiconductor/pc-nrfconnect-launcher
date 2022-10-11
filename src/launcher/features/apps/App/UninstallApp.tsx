@@ -9,16 +9,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import { removeDownloadableApp } from '../appsEffects';
-import {
-    DisplayedApp,
-    getIsAnAppInProgress,
-    getIsAppRemoving,
-} from '../appsSlice';
+import { DisplayedApp, getIsAnAppInProgress } from '../appsSlice';
 
 const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
     const isAnAppInProgress = useLauncherSelector(getIsAnAppInProgress);
-    const isRemoving = useLauncherSelector(getIsAppRemoving(app));
 
     if (!app.isInstalled || !app.isDownloadable) return null;
 
@@ -28,7 +23,7 @@ const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             disabled={isAnAppInProgress}
             onClick={() => dispatch(removeDownloadableApp(app))}
         >
-            {isRemoving ? 'Uninstalling...' : 'Uninstall'}
+            {app.progress.isRemoving ? 'Uninstalling...' : 'Uninstall'}
         </Dropdown.Item>
     );
 };

@@ -10,9 +10,18 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { DisplayedApp } from '../appsSlice';
 
 const AppProgress: React.FC<{ app: DisplayedApp }> = ({ app }) => {
-    if (!app.isDownloadable || app.progress == null) return null;
+    if (
+        !app.isDownloadable ||
+        !(
+            app.progress.isInstalling ||
+            app.progress.isUpgrading ||
+            app.progress.isRemoving
+        )
+    ) {
+        return null;
+    }
 
-    return <ProgressBar now={app.progress} />;
+    return <ProgressBar now={app.progress.fraction} />;
 };
 
 export default AppProgress;

@@ -9,16 +9,11 @@ import Button from 'react-bootstrap/Button';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import { show as showReleaseNotes } from '../../releaseNotes/releaseNotesDialogSlice';
-import {
-    DisplayedApp,
-    getIsAnAppInProgress,
-    getIsAppUpgrading,
-} from '../appsSlice';
+import { DisplayedApp, getIsAnAppInProgress } from '../appsSlice';
 
 const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
     const isAnAppInProgress = useLauncherSelector(getIsAnAppInProgress);
-    const isUpgrading = useLauncherSelector(getIsAppUpgrading(app));
 
     if (!app.isInstalled || !app.isDownloadable || !app.upgradeAvailable)
         return null;
@@ -30,7 +25,7 @@ const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             disabled={isAnAppInProgress}
             onClick={() => dispatch(showReleaseNotes(app))}
         >
-            {isUpgrading ? 'Updating...' : 'Update'}
+            {app.progress.isUpgrading ? 'Updating...' : 'Update'}
         </Button>
     );
 };

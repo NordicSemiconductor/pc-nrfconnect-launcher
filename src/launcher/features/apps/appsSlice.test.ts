@@ -7,6 +7,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
+import { AppSpec } from '../../../ipc/apps';
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
@@ -15,7 +16,6 @@ import reducer, {
     downloadLatestAppInfoSuccess,
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
-    installDownloadableAppError,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
@@ -23,12 +23,12 @@ import reducer, {
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
-    removeDownloadableAppError,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    resetAppProgress,
     showConfirmLaunchDialog,
+    State,
     updateAllDownloadableApps,
-    upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
 } from './appsSlice';
@@ -92,6 +92,20 @@ const downloadableApps = [downloadableApp1, downloadableApp2];
 
 const initialState = dispatchTo(reducer);
 
+const findApp = (appToFind: AppSpec, state: State) => {
+    const foundApp = state.downloadableApps.find(
+        app =>
+            app.name === downloadableApp1.name &&
+            app.source === downloadableApp1.source
+    );
+
+    if (foundApp == null) {
+        throw new Error(`Found no app '${appToFind}'`);
+    }
+
+    return foundApp;
+};
+
 describe('appsReducer', () => {
     it('should have no apps in initial state', () => {
         expect(initialState.localApps.length).toEqual(0);
@@ -138,7 +152,7 @@ describe('appsReducer', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
         ]);
-        expect(state.downloadableApps).toEqual(downloadableApps);
+        expect(state.downloadableApps).toMatchObject(downloadableApps);
     });
 
     it('should not be loading downloadable apps after loadDownloadableAppsSuccess has been dispatched', () => {
@@ -162,8 +176,8 @@ describe('appsReducer', () => {
             updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
         ]);
-        expect(state.installingAppName).toEqual(
-            `${downloadableApp1.source}/${downloadableApp1.name}`
+        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
+            true
         );
     });
 
@@ -173,16 +187,20 @@ describe('appsReducer', () => {
             installDownloadableAppStarted(downloadableApp1),
             installDownloadableAppSuccess(downloadableApp1),
         ]);
-        expect(state.installingAppName).toEqual(initialState.installingAppName);
+        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
+            false
+        );
     });
 
     it('should not be installing app after installDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
-            installDownloadableAppError(),
+            resetAppProgress(downloadableApp1),
         ]);
-        expect(state.installingAppName).toEqual(initialState.installingAppName);
+        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
+            false
+        );
     });
 
     it('should be removing app after removeDownloadableAppAction has been dispatched', () => {
@@ -190,9 +208,7 @@ describe('appsReducer', () => {
             updateAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
         ]);
-        expect(state.removingAppName).toEqual(
-            `${downloadableApp1.source}/${downloadableApp1.name}`
-        );
+        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(true);
     });
 
     it('should not be removing app after removeDownloadableAppSuccessAction has been dispatched', () => {
@@ -201,16 +217,20 @@ describe('appsReducer', () => {
             removeDownloadableAppStarted(downloadableApp1),
             removeDownloadableAppSuccess(downloadableApp1),
         ]);
-        expect(state.removingAppName).toEqual(initialState.removingAppName);
+        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(
+            false
+        );
     });
 
     it('should not be removing app after removeDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
-            removeDownloadableAppError(),
+            resetAppProgress(downloadableApp1),
         ]);
-        expect(state.removingAppName).toEqual(initialState.removingAppName);
+        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(
+            false
+        );
     });
 
     it('should be upgrading app after upgradeDownloadableAppAction has been dispatched', () => {
@@ -218,8 +238,8 @@ describe('appsReducer', () => {
             updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
         ]);
-        expect(state.upgradingAppName).toEqual(
-            `${downloadableApp1.source}/${downloadableApp1.name}`
+        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+            true
         );
     });
 
@@ -229,16 +249,20 @@ describe('appsReducer', () => {
             upgradeDownloadableAppStarted(downloadableApp1),
             upgradeDownloadableAppSuccess(downloadableApp1),
         ]);
-        expect(state.upgradingAppName).toEqual(initialState.upgradingAppName);
+        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+            false
+        );
     });
 
     it('should not be removing app after upgradeDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
-            upgradeDownloadableAppError(),
+            resetAppProgress(downloadableApp1),
         ]);
-        expect(state.upgradingAppName).toEqual(initialState.upgradingAppName);
+        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+            false
+        );
     });
 
     it('should show confirm dialog when showConfirmLaunchDialogAction has been dispatched', () => {

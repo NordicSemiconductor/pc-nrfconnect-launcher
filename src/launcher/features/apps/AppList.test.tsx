@@ -187,7 +187,9 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(installDownloadableApp).toHaveBeenCalledWith(uninstalledApp);
+        expect(installDownloadableApp).toHaveBeenCalledWith(
+            expect.objectContaining(uninstalledApp)
+        );
     });
 
     it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
@@ -210,7 +212,9 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(removeDownloadableApp).toHaveBeenCalledWith(installedApp);
+        expect(removeDownloadableApp).toHaveBeenCalledWith(
+            expect.objectContaining(installedApp)
+        );
     });
 
     it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
@@ -232,6 +236,8 @@ describe('AppList', () => {
             .first()
             .simulate('click');
 
-        expect(checkEngineAndLaunch).toHaveBeenCalledWith(installedApp);
+        expect(checkEngineAndLaunch).toHaveBeenCalledWith(
+            expect.objectContaining(installedApp)
+        );
     });
 });

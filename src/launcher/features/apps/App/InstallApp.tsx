@@ -9,16 +9,11 @@ import Button from 'react-bootstrap/Button';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import { installDownloadableApp } from '../appsEffects';
-import {
-    DisplayedApp,
-    getIsAnAppInProgress,
-    getIsAppInstalling,
-} from '../appsSlice';
+import { DisplayedApp, getIsAnAppInProgress } from '../appsSlice';
 
 const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
     const isAnAppInProgress = useLauncherSelector(getIsAnAppInProgress);
-    const isInstalling = useLauncherSelector(getIsAppInstalling(app));
 
     if (app.isInstalled) return null;
 
@@ -29,7 +24,7 @@ const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             disabled={isAnAppInProgress}
             onClick={() => dispatch(installDownloadableApp(app))}
         >
-            {isInstalling ? 'Installing...' : 'Install'}
+            {app.progress.isInstalling ? 'Installing...' : 'Install'}
         </Button>
     );
 };

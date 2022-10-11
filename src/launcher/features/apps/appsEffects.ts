@@ -31,7 +31,6 @@ import {
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
-    installDownloadableAppError,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
@@ -39,15 +38,14 @@ import {
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
-    removeDownloadableAppError,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
     updateAllDownloadableApps,
     updateDownloadableApp,
-    upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
 } from './appsSlice';
@@ -173,7 +171,7 @@ export const installDownloadableApp =
                 dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
-                dispatch(installDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to install: ${error.message}`
@@ -191,7 +189,7 @@ export const removeDownloadableApp =
                 dispatch(removeDownloadableAppSuccess(app));
             })
             .catch(error => {
-                dispatch(removeDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to remove: ${error.message}`
@@ -211,7 +209,7 @@ export const upgradeDownloadableApp =
                 dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
-                dispatch(upgradeDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to upgrade: ${error.message}`
