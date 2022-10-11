@@ -70,11 +70,12 @@ test.describe(
             });
 
             test.afterAll(async () => {
+                fs.renameSync(newPath, oldPath);
+
                 await teardown({
                     app,
                     appsRootDir,
                 });
-                fs.renameSync(newPath, oldPath);
             });
 
             test('shows a warning in the app list', async () => {
@@ -87,7 +88,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstApp(page, false);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -101,7 +102,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstApp(page, false);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
@@ -124,11 +125,11 @@ test.describe(
             });
 
             test.afterAll(async () => {
+                fs.renameSync(newPath, oldPath);
                 await teardown({
                     app,
                     appsRootDir,
                 });
-                fs.renameSync(newPath, oldPath);
             });
 
             test('shows a warning in the app list', async () => {
@@ -142,7 +143,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstApp(page, false);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -156,7 +157,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstApp(page, false);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
