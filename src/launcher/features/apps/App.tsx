@@ -25,7 +25,11 @@ import {
     installDownloadableApp,
     removeDownloadableApp,
 } from './appsEffects';
-import { getAppsInProgress } from './appsSlice';
+import {
+    getIsAppInstalling,
+    getIsAppRemoving,
+    getIsAppUpgrading,
+} from './appsSlice';
 
 import '../../../../resources/css/launcher.scss';
 
@@ -34,12 +38,10 @@ const AppItem: React.FC<{
     isDisabled: boolean;
 }> = ({ app, isDisabled }) => {
     const dispatch = useLauncherDispatch();
-    const { installingAppName, removingAppName, upgradingAppName } =
-        useLauncherSelector(getAppsInProgress);
 
-    const isInstalling = installingAppName === `${app.source}/${app.name}`;
-    const isUpgrading = upgradingAppName === `${app.source}/${app.name}`;
-    const isRemoving = removingAppName === `${app.source}/${app.name}`;
+    const isInstalling = useLauncherSelector(getIsAppInstalling(app));
+    const isUpgrading = useLauncherSelector(getIsAppUpgrading(app));
+    const isRemoving = useLauncherSelector(getIsAppRemoving(app));
 
     return (
         <ListGroup.Item>

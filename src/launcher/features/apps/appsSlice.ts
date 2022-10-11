@@ -318,11 +318,17 @@ export const getUpgradeableVisibleApps = (state: RootState) =>
         .filter(getAppsFilter(state))
         .filter(app => app.isInstalled && app.upgradeAvailable);
 
-export const getAppsInProgress = (state: RootState) => ({
-    installingAppName: state.apps.installingAppName,
-    removingAppName: state.apps.removingAppName,
-    upgradingAppName: state.apps.upgradingAppName,
-});
+export const getIsAnAppInProgress = (state: RootState) =>
+    state.apps.installingAppName != null ||
+    state.apps.removingAppName != null ||
+    state.apps.upgradingAppName != null;
+
+export const getIsAppInstalling = (app: App) => (state: RootState) =>
+    state.apps.installingAppName === `${app.source}/${app.name}`;
+export const getIsAppRemoving = (app: App) => (state: RootState) =>
+    state.apps.removingAppName === `${app.source}/${app.name}`;
+export const getIsAppUpgrading = (app: App) => (state: RootState) =>
+    state.apps.upgradingAppName === `${app.source}/${app.name}`;
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

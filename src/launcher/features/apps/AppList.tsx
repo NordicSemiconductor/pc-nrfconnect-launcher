@@ -13,7 +13,7 @@ import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App';
-import { getAllApps, getAppsInProgress } from './appsSlice';
+import { getAllApps, getIsAnAppInProgress } from './appsSlice';
 
 const sortByStateAndName = (appA: AppType, appB: AppType) => {
     const cmpInstalled =
@@ -26,12 +26,7 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
 };
 
 export default () => {
-    const { installingAppName, removingAppName, upgradingAppName } =
-        useLauncherSelector(getAppsInProgress);
-    const isProcessing =
-        installingAppName != null ||
-        upgradingAppName != null ||
-        removingAppName != null;
+    const isAnAppInProgress = useLauncherSelector(getIsAnAppInProgress);
 
     const allApps = useLauncherSelector(getAllApps);
     const appsFilter = useLauncherSelector(getAppsFilter);
@@ -46,7 +41,7 @@ export default () => {
                     <App
                         key={`${app.name}-${app.source}`}
                         app={app}
-                        isDisabled={isProcessing}
+                        isDisabled={isAnAppInProgress}
                     />
                 ))}
             </WithScrollbarContainer>
