@@ -19,6 +19,8 @@ import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
+export type DisplayedApp = LocalApp | (DownloadableApp & { progress?: number });
+
 export type State = {
     localApps: LocalApp[];
     downloadableApps: (DownloadableApp & { progress?: number })[];
@@ -275,7 +277,7 @@ export const {
     upgradeDownloadableAppSuccess,
 } = slice.actions;
 
-export const getAllApps = (state: RootState) => {
+export const getAllApps = (state: RootState): DisplayedApp[] => {
     const { downloadableApps, localApps } = state.apps;
 
     return [...localApps, ...downloadableApps];

@@ -12,8 +12,8 @@ import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
-import App from './App';
-import { getAllApps, getIsAnAppInProgress } from './appsSlice';
+import App from './App/App';
+import { getAllApps } from './appsSlice';
 
 const sortByStateAndName = (appA: AppType, appB: AppType) => {
     const cmpInstalled =
@@ -26,8 +26,6 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
 };
 
 export default () => {
-    const isAnAppInProgress = useLauncherSelector(getIsAnAppInProgress);
-
     const allApps = useLauncherSelector(getAllApps);
     const appsFilter = useLauncherSelector(getAppsFilter);
 
@@ -38,11 +36,7 @@ export default () => {
             <AppFilterBar />
             <WithScrollbarContainer hasFilter>
                 {apps.map(app => (
-                    <App
-                        key={`${app.name}-${app.source}`}
-                        app={app}
-                        isDisabled={isAnAppInProgress}
-                    />
+                    <App key={`${app.name}-${app.source}`} app={app} />
                 ))}
             </WithScrollbarContainer>
 
