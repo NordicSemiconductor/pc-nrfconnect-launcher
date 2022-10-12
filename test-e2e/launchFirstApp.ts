@@ -26,9 +26,14 @@ const waitForSecondWindow = async (
     throw new Error('Timed out while waiting for second window');
 };
 
-export default async (page: Page, waitForAppToAppear = true) => {
-    await page.locator('button[title*="Open Test App"]').click();
-    // if (waitForAppToAppear) {
-    //     await waitForSecondWindow(app, windows.length);
-    // }
+export default async (app: ElectronApplication, waitForAppToAppear = true) => {
+    const windows = await app.windows();
+    await windows[0].click('button[title*="Open"]');
+    if (waitForAppToAppear) {
+        await waitForSecondWindow(app, windows.length);
+    }
+};
+
+export const launchFirstAppFromPage = async (page: Page) => {
+    await page.locator('button[title*="Open"]').click();
 };

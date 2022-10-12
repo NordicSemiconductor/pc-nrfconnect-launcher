@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { test } from '../baseFixtures';
-import launchFirstApp from '../launchFirstApp';
+import { launchFirstAppFromPage } from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 
 // TODO: if test suite fails - file is not restored; fix
@@ -88,7 +88,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(page, false);
+                await launchFirstAppFromPage(page);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -102,7 +102,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(page, false);
+                await launchFirstAppFromPage(page);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
@@ -143,7 +143,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(page, false);
+                await launchFirstAppFromPage(page);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -157,7 +157,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(page, false);
+                await launchFirstAppFromPage(page);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
