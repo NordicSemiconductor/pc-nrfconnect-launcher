@@ -7,17 +7,10 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-import { DisplayedApp } from '../appsSlice';
+import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const AppProgress: React.FC<{ app: DisplayedApp }> = ({ app }) => {
-    if (
-        !app.isDownloadable ||
-        !(
-            app.progress.isInstalling ||
-            app.progress.isUpgrading ||
-            app.progress.isRemoving
-        )
-    ) {
+    if (!isInProgress(app)) {
         return null;
     }
 
