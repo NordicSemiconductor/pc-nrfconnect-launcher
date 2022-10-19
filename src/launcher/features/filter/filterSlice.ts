@@ -10,7 +10,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { App } from '../../../ipc/apps';
 import type { Settings, ShownStates } from '../../../ipc/settings';
 import type { SourceName } from '../../../ipc/sources';
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 
 export type State = Settings['appFilter'];
 

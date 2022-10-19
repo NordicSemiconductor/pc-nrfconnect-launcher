@@ -10,11 +10,11 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import WithScrollbarContainer from '../containers/WithScrollbarContainer';
+import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 
 const appVersion = require('@electron/remote').app.getVersion();
 
-const AboutView = () => (
+export default () => (
     <WithScrollbarContainer>
         <Card body>
             <Row>
@@ -108,5 +108,3 @@ const AboutView = () => (
         </Card>
     </WithScrollbarContainer>
 );
-
-export default AboutView;

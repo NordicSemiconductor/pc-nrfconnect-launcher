@@ -22,8 +22,8 @@ import {
 import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
 import { getAppsRootDir } from '../../../main/config';
-import type { AppDispatch } from '../..';
-import checkAppCompatibility from '../../util/checkAppCompatibility';
+import type { AppDispatch } from '../../store';
+import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
 import {
     EventAction,
@@ -31,22 +31,21 @@ import {
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
-    installDownloadableAppError,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
-    removeDownloadableAppError,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    upgradeDownloadableAppError,
+    updateAllDownloadableApps,
+    updateDownloadableApp,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
 } from './appsSlice';
@@ -78,40 +77,23 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
         });
 };
 
-const downloadAllReleaseNotesInBackground = async (
+const downloadSingleReleaseNotes = async (
     dispatch: AppDispatch,
-    apps: DownloadableApp[],
-    appToUpdate?: AppSpec
+    app: DownloadableApp
 ) => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const app of apps) {
-        if (
-            appToUpdate != null &&
-            (app.name !== appToUpdate.name || app.source !== appToUpdate.source)
-        ) {
-            // eslint-disable-next-line no-continue
-            continue;
-        }
-
-        // eslint-disable-next-line no-await-in-loop
-        const releaseNote = await downloadReleaseNotes(app);
-        if (releaseNote != null) {
-            dispatch(setAppReleaseNote({ app, releaseNote }));
-        }
+    const releaseNote = await downloadReleaseNotes(app);
+    if (releaseNote != null) {
+        dispatch(setAppReleaseNote({ app, releaseNote }));
     }
 };
 
-export const loadDownloadableApps =
-    (appToUpdate?: AppSpec) => async (dispatch: AppDispatch) => {
+export const fetchInfoForAllDownloadableApps =
+    () => async (dispatch: AppDispatch) => {
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
-        dispatch(
-            loadDownloadableAppsSuccess({
-                downloadableApps: apps,
-                appToUpdate,
-            })
-        );
+        dispatch(updateAllDownloadableApps(apps));
+
         apps.filter(app => !app.isInstalled).forEach(app => {
             const iconPath = join(
                 `${getAppsRootDir(app.source, mainConfig())}`,
@@ -121,10 +103,32 @@ export const loadDownloadableApps =
             dispatch(downloadAppIcon(app, iconUrl, iconPath));
         });
 
-        downloadAllReleaseNotesInBackground(dispatch, apps, appToUpdate);
+        apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
+        }
+    };
+
+export const fetchInfoForSingleDownloadableApp =
+    (appToUpdate: AppSpec) => async (dispatch: AppDispatch) => {
+        dispatch(loadDownloadableAppsStarted());
+        const { apps } = await getDownloadableApps();
+
+        const updatedApp = apps.find(
+            app =>
+                app.source === appToUpdate.source &&
+                app.name === appToUpdate.name
+        );
+
+        if (updatedApp != null) {
+            dispatch(updateDownloadableApp(updatedApp));
+            downloadSingleReleaseNotes(dispatch, updatedApp);
+        } else {
+            dispatch(loadDownloadableAppsError());
+            console.error(
+                `No app ${appToUpdate} found in the fought app infos though there is supposed to be one.`
+            );
         }
     };
 
@@ -164,10 +168,10 @@ export const installDownloadableApp =
         installDownloadableAppInMain(app, 'latest')
             .then(() => {
                 dispatch(installDownloadableAppSuccess(app));
-                dispatch(loadDownloadableApps(app));
+                dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
-                dispatch(installDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to install: ${error.message}`
@@ -185,7 +189,7 @@ export const removeDownloadableApp =
                 dispatch(removeDownloadableAppSuccess(app));
             })
             .catch(error => {
-                dispatch(removeDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to remove: ${error.message}`
@@ -202,10 +206,10 @@ export const upgradeDownloadableApp =
         return installDownloadableAppInMain(app, version)
             .then(() => {
                 dispatch(upgradeDownloadableAppSuccess(app));
-                dispatch(loadDownloadableApps(app));
+                dispatch(fetchInfoForSingleDownloadableApp(app));
             })
             .catch(error => {
-                dispatch(upgradeDownloadableAppError());
+                dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
                         `Unable to upgrade: ${error.message}`
@@ -224,9 +228,9 @@ export const launch = (app: LaunchableApp) => {
 
 export const checkEngineAndLaunch =
     (app: LaunchableApp) => (dispatch: AppDispatch) => {
-        const appCompatibility = checkAppCompatibility(app);
+        const compatibilityWarning = appCompatibilityWarning(app);
         const launchAppWithoutWarning =
-            appCompatibility.isCompatible ||
+            compatibilityWarning == null ||
             mainConfig().isRunningLauncherFromSource;
 
         if (launchAppWithoutWarning) {
@@ -235,7 +239,7 @@ export const checkEngineAndLaunch =
             dispatch(
                 showConfirmLaunchDialog({
                     app,
-                    text: appCompatibility.longWarning,
+                    text: compatibilityWarning.longWarning,
                 })
             );
         }

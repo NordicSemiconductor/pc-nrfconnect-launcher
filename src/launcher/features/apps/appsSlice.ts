@@ -16,19 +16,36 @@ import {
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
+
+type AppProgess = {
+    isInstalling: boolean;
+    isUpgrading: boolean;
+    isRemoving: boolean;
+    fraction: number;
+};
+
+const notInProgress = (): AppProgess => ({
+    isInstalling: false,
+    isUpgrading: false,
+    isRemoving: false,
+    fraction: 0,
+});
+
+type DownloadableAppWithProgress = DownloadableApp & {
+    progress: AppProgess;
+};
+
+export type DisplayedApp = LocalApp | DownloadableAppWithProgress;
 
 export type State = {
     localApps: LocalApp[];
-    downloadableApps: (DownloadableApp & { progress?: number })[];
+    downloadableApps: DownloadableAppWithProgress[];
     lastUpdateCheckDate?: Date;
     isDownloadingLatestAppInfo: boolean;
     isLoadingLocalApps: boolean;
     isLoadingDownloadableApps: boolean;
-    installingAppName?: string;
-    upgradingAppName?: string;
-    removingAppName?: string;
     isConfirmLaunchDialogVisible: boolean;
     confirmLaunchText?: string;
     confirmLaunchApp?: LaunchableApp;
@@ -62,6 +79,15 @@ const updateApp = <AppType extends App>(
     }
 };
 
+const resetProgress = (
+    specOfAppToUpdate: AppSpec,
+    apps: DownloadableAppWithProgress[]
+) => {
+    updateApp(specOfAppToUpdate, apps, app => {
+        app.progress = notInProgress();
+    });
+};
+
 const slice = createSlice({
     name: 'apps',
     initialState,
@@ -85,34 +111,26 @@ const slice = createSlice({
         loadDownloadableAppsStarted(state) {
             state.isLoadingDownloadableApps = true;
         },
-        loadDownloadableAppsSuccess(
+        updateAllDownloadableApps(
             state,
-            {
-                payload,
-            }: PayloadAction<{
-                downloadableApps: DownloadableApp[];
-                appToUpdate?: AppSpec;
-            }>
+            { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
             state.isLoadingDownloadableApps = false;
-
-            const { appToUpdate, downloadableApps } = payload;
-            if (appToUpdate == null) {
-                state.downloadableApps = [...downloadableApps];
-            } else {
-                const equalsAppToUpdate = equalsSpec(appToUpdate);
-                const updatedApp = downloadableApps.find(equalsAppToUpdate);
-
-                if (updatedApp != null) {
-                    state.downloadableApps = state.downloadableApps.map(app =>
-                        equalsAppToUpdate(app) ? updatedApp : app
-                    );
-                } else {
-                    console.error(
-                        `No app ${appToUpdate} found in the existing downloadable apps though there is supposed to be one.`
-                    );
-                }
-            }
+            state.downloadableApps = downloadableApps.map(app => ({
+                ...app,
+                progress: notInProgress(),
+            }));
+        },
+        updateDownloadableApp(
+            state,
+            { payload: updatedApp }: PayloadAction<DownloadableApp>
+        ) {
+            state.isLoadingDownloadableApps = false;
+            state.downloadableApps = state.downloadableApps.map(app =>
+                equalsSpec(updatedApp)(app)
+                    ? { ...updatedApp, progress: notInProgress() }
+                    : app
+            );
         },
         loadDownloadableAppsError(state) {
             state.isLoadingDownloadableApps = false;
@@ -164,8 +182,11 @@ const slice = createSlice({
         },
         updateInstallProgress(state, { payload }: PayloadAction<Progress>) {
             updateApp(payload.app, state.downloadableApps, app => {
-                app.progress = payload.progressFraction;
+                app.progress.fraction = payload.progressFraction;
             });
+        },
+        resetAppProgress(state, { payload: app }: PayloadAction<AppSpec>) {
+            resetProgress(app, state.downloadableApps);
         },
 
         // Install downloadable app
@@ -173,19 +194,15 @@ const slice = createSlice({
             state,
             { payload: appToInstall }: PayloadAction<AppSpec>
         ) {
-            state.installingAppName = `${appToInstall.source}/${appToInstall.name}`;
+            updateApp(appToInstall, state.downloadableApps, app => {
+                app.progress.isInstalling = true;
+            });
         },
         installDownloadableAppSuccess(
             state,
             { payload: installedApp }: PayloadAction<AppSpec>
         ) {
-            state.installingAppName = initialState.installingAppName;
-            updateApp(installedApp, state.downloadableApps, app => {
-                app.progress = undefined;
-            });
-        },
-        installDownloadableAppError(state) {
-            state.installingAppName = initialState.installingAppName;
+            resetProgress(installedApp, state.downloadableApps);
         },
 
         // Upgrade downloadable app
@@ -193,19 +210,15 @@ const slice = createSlice({
             state,
             { payload: appToUpgrade }: PayloadAction<AppSpec>
         ) {
-            state.upgradingAppName = `${appToUpgrade.source}/${appToUpgrade.name}`;
+            updateApp(appToUpgrade, state.downloadableApps, app => {
+                app.progress.isUpgrading = true;
+            });
         },
         upgradeDownloadableAppSuccess(
             state,
             { payload: updatedApp }: PayloadAction<AppSpec>
         ) {
-            state.upgradingAppName = initialState.upgradingAppName;
-            updateApp(updatedApp, state.downloadableApps, app => {
-                app.progress = undefined;
-            });
-        },
-        upgradeDownloadableAppError(state) {
-            state.upgradingAppName = initialState.upgradingAppName;
+            resetProgress(updatedApp, state.downloadableApps);
         },
 
         // Remove downloadable app
@@ -213,21 +226,20 @@ const slice = createSlice({
             state,
             { payload: appToRemove }: PayloadAction<AppSpec>
         ) {
-            state.removingAppName = `${appToRemove.source}/${appToRemove.name}`;
+            updateApp(appToRemove, state.downloadableApps, app => {
+                app.progress.isRemoving = true;
+            });
         },
         removeDownloadableAppSuccess(
             state,
             { payload: removedApp }: PayloadAction<AppSpec>
         ) {
-            state.removingAppName = initialState.removingAppName;
+            resetProgress(removedApp, state.downloadableApps);
 
             updateApp(removedApp, state.downloadableApps, app => {
-                app.currentVersion = null;
+                app.currentVersion = undefined;
                 app.isInstalled = false;
             });
-        },
-        removeDownloadableAppError(state) {
-            state.removingAppName = initialState.removingAppName;
         },
 
         // Confirm launch dialog
@@ -254,31 +266,30 @@ export const {
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,
     hideConfirmLaunchDialog,
-    installDownloadableAppError,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadDownloadableAppsSuccess,
     loadLocalAppsError,
     loadLocalAppsStarted,
     loadLocalAppsSuccess,
-    removeDownloadableAppError,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
+    updateAllDownloadableApps,
+    updateDownloadableApp,
     updateInstallProgress,
-    upgradeDownloadableAppError,
     upgradeDownloadableAppStarted,
     upgradeDownloadableAppSuccess,
 } = slice.actions;
 
-const getAllApps = (state: RootState) => {
+export const getAllApps = (state: RootState): DisplayedApp[] => {
     const { downloadableApps, localApps } = state.apps;
 
-    return (localApps as App[]).concat(downloadableApps);
+    return [...localApps, ...downloadableApps];
 };
 
 export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
@@ -317,3 +328,17 @@ export const getUpgradeableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
         .filter(app => app.isInstalled && app.upgradeAvailable);
+
+export const getIsAnAppInProgress = (state: RootState) =>
+    state.apps.downloadableApps.find(
+        app =>
+            app.progress.isInstalling ||
+            app.progress.isRemoving ||
+            app.progress.isUpgrading
+    ) != null;
+
+export const getConfirmLaunch = (state: RootState) => ({
+    isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
+    text: state.apps.confirmLaunchText,
+    app: state.apps.confirmLaunchApp,
+});

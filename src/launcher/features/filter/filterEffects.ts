@@ -5,7 +5,7 @@
  */
 
 import { Settings } from '../../../ipc/settings';
-import type { AppDispatch } from '../..';
+import type { AppDispatch } from '../../store';
 import {
     setAllShownSources,
     setNameFilter,

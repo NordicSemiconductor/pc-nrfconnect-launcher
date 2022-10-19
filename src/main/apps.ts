@@ -275,8 +275,9 @@ const uninstalledAppInfo = async (
             value: {
                 ...app,
                 ...latestVersionInfo(app, latestVersions),
+                isDownloadable: true,
                 isInstalled: false,
-                currentVersion: null,
+                currentVersion: undefined,
             },
         } as UninstalledAppResult;
     } catch (error) {

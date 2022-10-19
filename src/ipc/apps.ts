@@ -52,7 +52,7 @@ export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
     isInstalled: false;
     latestVersion: string;
     releaseNote?: string;
-    currentVersion: null; // TODO: Maybe change this to undefined
+    currentVersion: undefined;
 }
 
 export interface InstalledDownloadableApp

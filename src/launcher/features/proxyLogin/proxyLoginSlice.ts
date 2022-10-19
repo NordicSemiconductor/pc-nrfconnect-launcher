@@ -8,7 +8,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { AuthInfo } from 'electron';
 
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 
 export type State = {
     username: string;

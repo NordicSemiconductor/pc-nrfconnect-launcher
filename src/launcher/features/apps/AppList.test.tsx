@@ -7,22 +7,29 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import type { AnyAction } from 'redux';
 
+import {
+    InstalledDownloadableApp,
+    LocalApp,
+    UninstalledDownloadableApp,
+} from '../../../ipc/apps';
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import render, { createPreparedStore } from '../../../testrenderer';
-import AppList from '../../containers/AppManagementContainer';
+import { setAllShownSources } from '../filter/filterSlice';
+import AppList from './AppList';
 import {
     checkEngineAndLaunch,
     installDownloadableApp,
     removeDownloadableApp,
-} from '../../features/apps/appsEffects';
+} from './appsEffects';
 import {
     installDownloadableAppStarted,
-    loadDownloadableAppsSuccess,
+    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
+    updateAllDownloadableApps,
     upgradeDownloadableAppStarted,
-} from '../../features/apps/appsSlice';
-import { setAllShownSources } from '../../features/filter/filterSlice';
+} from './appsSlice';
 
 // Do not render react-bootstrap components in tests
 jest.mock('react-bootstrap', () => ({
@@ -40,7 +47,7 @@ jest.mock('../../util/mainConfig', () => () => ({ version: '6.1.0' }));
 
 jest.mock('../../features/apps/appsEffects');
 
-const localApp = {
+const localApp: LocalApp = {
     name: 'local',
     source: LOCAL,
     displayName: 'Local App',
@@ -56,7 +63,7 @@ const localApp = {
     shortcutIconPath: '',
 };
 
-const updateableApp = {
+const updateableApp: InstalledDownloadableApp = {
     name: 'appA',
     source: OFFICIAL,
     displayName: 'App A',
@@ -74,7 +81,7 @@ const updateableApp = {
     shortcutIconPath: '',
 };
 
-const uninstalledApp = {
+const uninstalledApp: UninstalledDownloadableApp = {
     name: 'appB',
     source: OFFICIAL,
     displayName: 'App B',
@@ -82,12 +89,13 @@ const uninstalledApp = {
     isInstalled: false,
     isDownloadable: true,
 
-    engineVersion: '6.1.0',
     url: '',
     latestVersion: '',
+    iconPath: '',
+    currentVersion: undefined,
 };
 
-const installedApp = {
+const installedApp: InstalledDownloadableApp = {
     name: 'appC',
     source: OFFICIAL,
     displayName: 'App C',
@@ -104,7 +112,15 @@ const installedApp = {
     shortcutIconPath: '',
 };
 
-describe('AppManagementView', () => {
+const mockThunk = (thunkToMock: unknown) => {
+    const mockedThunk = thunkToMock as jest.MockedFunction<() => AnyAction>;
+
+    mockedThunk.mockReturnValue({
+        type: 'an action',
+    });
+};
+
+describe('AppList', () => {
     it('should render without any apps', () => {
         expect(render(<AppList />).baseElement).toMatchSnapshot();
     });
@@ -113,14 +129,12 @@ describe('AppManagementView', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [
-                        uninstalledApp,
-                        installedApp,
-                        updateableApp,
-                        localApp,
-                    ],
-                }),
+                updateAllDownloadableApps([
+                    uninstalledApp,
+                    installedApp,
+                    updateableApp,
+                ]),
+                loadLocalAppsSuccess([localApp]),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -129,9 +143,7 @@ describe('AppManagementView', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [uninstalledApp],
-                }),
+                updateAllDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -141,36 +153,30 @@ describe('AppManagementView', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [installedApp],
-                }),
+                updateAllDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
 
-    fit('should disable buttons and display "Updating..." while updating an app', () => {
+    it('should disable buttons and display "Updating..." while updating an app', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                loadDownloadableAppsSuccess({
-                    downloadableApps: [updateableApp],
-                }),
+                updateAllDownloadableApps([updateableApp]),
                 upgradeDownloadableAppStarted(updateableApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
 
     it('should invoke installDownloadableApp with app name and source when install button is clicked', () => {
-        installDownloadableApp.mockReturnValue({ type: 'an action' });
+        mockThunk(installDownloadableApp);
 
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [uninstalledApp],
-                    }),
+                    updateAllDownloadableApps([uninstalledApp]),
                 ])}
             >
                 <AppList />
@@ -181,22 +187,19 @@ describe('AppManagementView', () => {
             .first()
             .simulate('click');
 
-        expect(installDownloadableApp).toHaveBeenCalledWith({
-            name: uninstalledApp.name,
-            source: uninstalledApp.source,
-        });
+        expect(installDownloadableApp).toHaveBeenCalledWith(
+            expect.objectContaining(uninstalledApp)
+        );
     });
 
     it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
-        removeDownloadableApp.mockReturnValue({ type: 'an action' });
+        mockThunk(removeDownloadableApp);
 
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [installedApp],
-                    }),
+                    updateAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />
@@ -209,22 +212,19 @@ describe('AppManagementView', () => {
             .first()
             .simulate('click');
 
-        expect(removeDownloadableApp).toHaveBeenCalledWith({
-            name: installedApp.name,
-            source: installedApp.source,
-        });
+        expect(removeDownloadableApp).toHaveBeenCalledWith(
+            expect.objectContaining(installedApp)
+        );
     });
 
     it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
-        checkEngineAndLaunch.mockReturnValue({ type: 'an action' });
+        mockThunk(checkEngineAndLaunch);
 
         const wrapper = mount(
             <Provider
                 store={createPreparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    loadDownloadableAppsSuccess({
-                        downloadableApps: [installedApp],
-                    }),
+                    updateAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />

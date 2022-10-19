@@ -105,11 +105,6 @@ body {
         background: #e6f8ff;
     }
 
-    // Transform old primary color to match brand.
-    &.old-app-icon {
-        filter: hue-rotate(-10deg) brightness(106%);
-    }
-
     .mdi {
         position: absolute;
         top: 22px;

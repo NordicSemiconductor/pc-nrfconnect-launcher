@@ -7,7 +7,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from '../..';
+import type { RootState } from '../../store';
 
 export type State = {
     source?: string;
