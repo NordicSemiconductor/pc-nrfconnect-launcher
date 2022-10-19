@@ -13,7 +13,7 @@ import { DisplayedApp } from '../appsSlice';
 
 const ShowReleaseNotes: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
-    if (!app.isDownloadable || app.releaseNote != null) return null;
+    if (!app.isDownloadable || app.releaseNote == null) return null;
 
     return (
         <Dropdown.Item
