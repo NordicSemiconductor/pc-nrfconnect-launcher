@@ -329,9 +329,6 @@ export const getUpgradeableVisibleApps = (state: RootState) =>
         .filter(getAppsFilter(state))
         .filter(app => app.isInstalled && app.upgradeAvailable);
 
-export const getIsAnAppInProgress = (state: RootState) =>
-    state.apps.downloadableApps.find(isInProgress) != null;
-
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
     text: state.apps.confirmLaunchText,
