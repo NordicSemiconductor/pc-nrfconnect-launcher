@@ -8,8 +8,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import { isAppUpdateAvailable as isAppUpdateAvailableSelector } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { isAppUpdateAvailable as isAppUpdateAvailableSelector } from '../apps/appsSlice';
 import {
     getIsUpdateCheckCompleteVisible,
     hideUpdateCheckComplete,

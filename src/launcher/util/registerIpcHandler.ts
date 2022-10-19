@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// @ts-check
-
 import { ErrorDialogActions, usageData } from 'pc-nrfconnect-shared';
 
 import { registerDownloadProgress } from '../../ipc/downloadProgress';
@@ -16,7 +14,8 @@ import {
 } from '../../ipc/launcherUpdateProgress';
 import { registerRequestProxyLogin } from '../../ipc/proxyLogin';
 import { registerShowErrorDialog } from '../../ipc/showErrorDialog';
-import { updateInstallProgressAction } from '../actions/appsActions';
+import type { AppDispatch } from '..';
+import { updateInstallProgress } from '../features/apps/appsSlice';
 import {
     reset,
     startDownload,
@@ -24,9 +23,9 @@ import {
 } from '../features/launcherUpdate/launcherUpdateSlice';
 import { loginRequestedByServer } from '../features/proxyLogin/proxyLoginSlice';
 
-export default dispatch => {
+export default (dispatch: AppDispatch) => {
     registerDownloadProgress(progress => {
-        dispatch(updateInstallProgressAction(progress));
+        dispatch(updateInstallProgress(progress));
     });
 
     registerShowErrorDialog(errorMessage => {

@@ -7,17 +7,17 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-import { upgradeDownloadableApp } from '../../actions/appsActions';
-import { getUpgradeableVisibleApps } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { upgradeDownloadableApp } from '../apps/appsEffects';
+import { getUpgradeableVisibleApps } from '../apps/appsSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
     const upgradeableApps = useLauncherSelector(getUpgradeableVisibleApps);
 
     const upgradeAllApps = () =>
-        upgradeableApps.forEach(({ name, latestVersion, source }) =>
-            dispatch(upgradeDownloadableApp(name, latestVersion, source))
+        upgradeableApps.forEach(app =>
+            dispatch(upgradeDownloadableApp(app, app.latestVersion))
         );
 
     if (upgradeableApps.length === 0) return null;

@@ -7,6 +7,7 @@
 import { net, session } from 'electron';
 import fs from 'fs-extra';
 
+import type { AppSpec } from '../ipc/apps';
 import { downloadProgress } from '../ipc/downloadProgress';
 import { requestProxyLogin } from '../ipc/proxyLogin';
 import { storeProxyLoginRequest } from './proxyLogins';
@@ -15,19 +16,13 @@ import { storeProxyLoginRequest } from './proxyLogins';
 // (if required) only have to be sent once.
 const NET_SESSION_NAME = 'electron-updater';
 
-interface ProgressIdentifiers {
-    name: string;
-    source: string;
-}
-
 const reportInstallProgress = (
-    { name, source }: ProgressIdentifiers,
+    app: AppSpec,
     progress: number,
     totalInstallSize: number
 ) => {
     downloadProgress({
-        name,
-        source,
+        app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
     });
 };
@@ -44,7 +39,7 @@ const downloadToBuffer = (
     url: string,
     enableProxyLogin: boolean,
     headers: Record<string, string> = {},
-    progressIdentifiers: ProgressIdentifiers | undefined = undefined
+    app: AppSpec | undefined = undefined
 ) =>
     new Promise<DownloadResult>((resolve, reject) => {
         const request = net.request({
@@ -81,12 +76,9 @@ const downloadToBuffer = (
             response.on('data', data => {
                 addToBuffer(data);
                 progress += data.length;
-                if (progressIdentifiers)
-                    reportInstallProgress(
-                        progressIdentifiers,
-                        progress,
-                        downloadSize
-                    );
+                if (app) {
+                    reportInstallProgress(app, progress, downloadSize);
+                }
             });
             response.on('end', () =>
                 resolve({
@@ -150,13 +142,13 @@ export const downloadToFile = async (
     url: string,
     filePath: string,
     enableProxyLogin: boolean | undefined = false,
-    progressIdentifiers: ProgressIdentifiers | undefined = undefined
+    app: AppSpec | undefined = undefined
 ) => {
     const { buffer } = await downloadToBuffer(
         url,
         enableProxyLogin,
         undefined,
-        progressIdentifiers
+        app
     );
     await fs.writeFile(filePath, buffer);
 };

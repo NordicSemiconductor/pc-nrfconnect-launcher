@@ -15,7 +15,7 @@ import {
     SourceUrl,
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../..';
-import { loadDownloadableApps } from '../../actions/appsActions';
+import { loadDownloadableApps } from '../apps/appsEffects';
 import { hideSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,

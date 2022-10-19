@@ -20,10 +20,10 @@ import React from 'react';
 
 import render from '../../../testrenderer';
 import {
-    downloadLatestAppInfoAction,
-    downloadLatestAppInfoSuccessAction,
+    downloadLatestAppInfoStarted,
+    downloadLatestAppInfoSuccess,
     loadDownloadableAppsSuccess,
-} from '../../actions/appsActions';
+} from '../apps/appsSlice';
 import {
     setCheckUpdatesAtStartup,
     showUpdateCheckComplete,
@@ -60,7 +60,7 @@ describe('SettingsView', () => {
 
     it('should render when checking for updates', () => {
         expect(
-            render(<SettingsView />, [downloadLatestAppInfoAction()])
+            render(<SettingsView />, [downloadLatestAppInfoStarted()])
                 .baseElement
         ).toMatchSnapshot();
     });
@@ -68,7 +68,7 @@ describe('SettingsView', () => {
     it('should render with last update check date', () => {
         expect(
             render(<SettingsView />, [
-                downloadLatestAppInfoSuccessAction(
+                downloadLatestAppInfoSuccess(
                     new Date(2017, 1, 3, 13, 41, 36, 20)
                 ),
             ]).baseElement
@@ -79,14 +79,16 @@ describe('SettingsView', () => {
         expect(
             render(<SettingsView />, [
                 showUpdateCheckComplete(),
-                loadDownloadableAppsSuccess([
-                    {
-                        currentVersion: '1.0.0',
-                        latestVersion: '1.2.3',
-                        upgradeAvailable: true,
-                        ...unimportantAppProperties,
-                    },
-                ]),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [
+                        {
+                            currentVersion: '1.0.0',
+                            latestVersion: '1.2.3',
+                            upgradeAvailable: true,
+                            ...unimportantAppProperties,
+                        },
+                    ],
+                }),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -95,14 +97,16 @@ describe('SettingsView', () => {
         expect(
             render(<SettingsView />, [
                 showUpdateCheckComplete(),
-                loadDownloadableAppsSuccess([
-                    {
-                        currentVersion: '1.0.0',
-                        latestVersion: '1.0.0',
-                        upgradeAvailable: false,
-                        ...unimportantAppProperties,
-                    },
-                ]),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [
+                        {
+                            currentVersion: '1.0.0',
+                            latestVersion: '1.0.0',
+                            upgradeAvailable: false,
+                            ...unimportantAppProperties,
+                        },
+                    ],
+                }),
             ]).baseElement
         ).toMatchSnapshot();
     });

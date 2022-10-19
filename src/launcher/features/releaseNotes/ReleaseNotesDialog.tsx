@@ -10,9 +10,9 @@ import Modal from 'react-bootstrap/Modal';
 import ReactMarkdown from 'react-markdown';
 
 import { InstalledDownloadableApp } from '../../../ipc/apps';
-import { upgradeDownloadableApp } from '../../actions/appsActions';
-import { getDownloadableApp } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { upgradeDownloadableApp } from '../apps/appsEffects';
+import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 type Uninstalled = { isInstalled: false };
@@ -22,16 +22,17 @@ const canBeInstalledOrUpdated = (
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { source, name } = useLauncherSelector(getReleaseNotesDialog);
-    const app = useLauncherSelector(getDownloadableApp({ source, name })) ?? {
+    const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
+    const app = useLauncherSelector(getDownloadableApp(appToDisplay)) ?? {
+        name: appToDisplay.name ?? '',
+        source: appToDisplay.source ?? '',
         isInstalled: false,
         displayName: '',
-        releaseNote: '',
+        releaseNote: undefined,
         latestVersion: '',
     };
-    const { isInstalled, displayName, releaseNote, latestVersion } = app;
 
-    const isVisible = name != null;
+    const isVisible = appToDisplay.name != null;
 
     const hideDialog = () => dispatch(hide());
 
@@ -44,10 +45,13 @@ export default () => {
             key="releaseNotes"
         >
             <Modal.Header>
-                <Modal.Title>Release notes for {displayName}</Modal.Title>
+                <Modal.Title>Release notes for {app.displayName}</Modal.Title>
             </Modal.Header>
             <Modal.Body className="release-notes">
-                <ReactMarkdown source={releaseNote ?? ''} linkTarget="_blank" />
+                <ReactMarkdown
+                    source={app.releaseNote ?? ''}
+                    linkTarget="_blank"
+                />
             </Modal.Body>
             <Modal.Footer>
                 {canBeInstalledOrUpdated(app) && (
@@ -55,16 +59,14 @@ export default () => {
                         variant="primary"
                         onClick={() => {
                             dispatch(
-                                upgradeDownloadableApp(
-                                    name!, // eslint-disable-line @typescript-eslint/no-non-null-assertion -- If the name is undefined, then the whole dialog is invisble
-                                    latestVersion,
-                                    source! // eslint-disable-line @typescript-eslint/no-non-null-assertion
-                                )
+                                upgradeDownloadableApp(app, app.latestVersion)
                             );
                             hideDialog();
                         }}
                     >
-                        {isInstalled ? 'Update to latest version' : 'Install'}
+                        {app.isInstalled
+                            ? 'Update to latest version'
+                            : 'Install'}
                     </Button>
                 )}
                 <Button variant="outline-primary" onClick={hideDialog}>

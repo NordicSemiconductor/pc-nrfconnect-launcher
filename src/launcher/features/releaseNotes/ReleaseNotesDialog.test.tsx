@@ -11,7 +11,7 @@ import type {
     UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import render from '../../../testrenderer';
-import { loadDownloadableAppsSuccess } from '../../actions/appsActions';
+import { loadDownloadableAppsSuccess } from '../apps/appsSlice';
 import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';
 
@@ -32,6 +32,7 @@ const uninstalledApp: UninstalledDownloadableApp = {
     latestVersion: '2.0.0',
     releaseNote: 'Release notes for uninstalled',
     isInstalled: false,
+    currentVersion: null,
 };
 const installedApp: InstalledDownloadableApp = {
     ...unimportantAppProperties,
@@ -52,20 +53,21 @@ const updatableApp: InstalledDownloadableApp = {
     isInstalled: true,
 };
 
-const apps = [uninstalledApp, installedApp, updatableApp];
+const downloadableApps = [uninstalledApp, installedApp, updatableApp];
 
 describe('ReleaseNotesDialog', () => {
     it('is initially invisible', () => {
         expect(
-            render(<ReleaseNotesDialog />, [loadDownloadableAppsSuccess(apps)])
-                .baseElement
+            render(<ReleaseNotesDialog />, [
+                loadDownloadableAppsSuccess({ downloadableApps }),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
     it('is displayed for an uninstalled app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                loadDownloadableAppsSuccess(apps),
+                loadDownloadableAppsSuccess({ downloadableApps }),
                 show(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -74,7 +76,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an up-to-date installed app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                loadDownloadableAppsSuccess(apps),
+                loadDownloadableAppsSuccess({ downloadableApps }),
                 show(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -83,7 +85,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an updatable app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                loadDownloadableAppsSuccess(apps),
+                loadDownloadableAppsSuccess({ downloadableApps }),
                 show(updatableApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -92,7 +94,7 @@ describe('ReleaseNotesDialog', () => {
     it('is hidden again after closing the dialog', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                loadDownloadableAppsSuccess(apps),
+                loadDownloadableAppsSuccess({ downloadableApps }),
                 show(uninstalledApp),
                 hide(),
             ]).baseElement

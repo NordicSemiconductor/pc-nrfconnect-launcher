@@ -12,8 +12,8 @@ import {
     hideSource as hideSourceInSettings,
     showSource as showSourceInSettings,
 } from '../../../ipc/settings';
-import { getAllSourceNamesSorted } from '../../reducers/appsReducer';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { getAllSourceNamesSorted } from '../apps/appsSlice';
 import { getShownSources, hideSource, showSource } from './filterSlice';
 
 export default () => {

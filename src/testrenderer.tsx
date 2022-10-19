@@ -12,7 +12,7 @@ import { Action } from 'redux';
 
 import rootReducer from './launcher/reducers';
 
-const createPreparedStore = (actions: Action[]) => {
+export const createPreparedStore = (actions: Action[]) => {
     const store = configureStore({
         reducer: rootReducer,
         middleware: getDefaultMiddleware =>

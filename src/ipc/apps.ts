@@ -5,7 +5,12 @@
  */
 
 import { handle, invoke } from './infrastructure/rendererToMain';
-import { LOCAL } from './sources';
+import { LOCAL, SourceName } from './sources';
+
+export interface AppSpec {
+    name: string;
+    source: SourceName;
+}
 
 export interface AppInAppsJson {
     displayName: string;
@@ -19,12 +24,12 @@ interface BaseApp {
     displayName: string;
     description: string;
     isInstalled: boolean;
+    iconPath: string;
 }
 
 export interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
-    iconPath: string;
     shortcutIconPath: string;
     engineVersion?: string;
     repositoryUrl?: string;
@@ -37,40 +42,39 @@ export interface LocalApp extends InstalledApp {
 }
 
 export interface UnversionedDownloadableApp extends BaseApp {
-    source: string;
+    isDownloadable: true;
+    source: SourceName;
     homepage?: string;
     url: string;
 }
 
-export interface DownloadableApp extends UnversionedDownloadableApp {
+export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
+    isInstalled: false;
+    latestVersion: string;
+    releaseNote?: string;
+    currentVersion: null; // TODO: Maybe change this to undefined
+}
+
+export interface InstalledDownloadableApp
+    extends UnversionedDownloadableApp,
+        InstalledApp {
+    upgradeAvailable?: boolean;
+    isInstalled: true;
     latestVersion: string;
     releaseNote?: string;
 }
 
-export interface UninstalledDownloadableApp extends DownloadableApp {
-    isInstalled: false;
-}
-
-export interface InstalledDownloadableApp
-    extends DownloadableApp,
-        InstalledApp {
-    isDownloadable: true;
-    upgradeAvailable?: boolean;
-    isInstalled: true;
-}
+export type DownloadableApp =
+    | InstalledDownloadableApp
+    | UninstalledDownloadableApp;
 
 export type LaunchableApp = LocalApp | InstalledDownloadableApp;
 
-export type App =
-    | LocalApp
-    | UninstalledDownloadableApp
-    | InstalledDownloadableApp;
+export type App = LocalApp | DownloadableApp;
 
-export interface AppWithError {
+export interface AppWithError extends AppSpec {
     reason: unknown;
     path: string;
-    name: string;
-    source: string;
 }
 
 const channel = {
@@ -124,11 +128,7 @@ export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
 );
 
 // installDownloadableApp
-type InstallDownloadableApp = (
-    name: string,
-    version: string,
-    source: string
-) => void;
+type InstallDownloadableApp = (app: AppSpec, version: string) => void;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(
     channel.installDownloadableApp
@@ -138,7 +138,7 @@ export const registerInstallDownloadableApp = handle<InstallDownloadableApp>(
 );
 
 // removeDownloadableApp
-type RemoveDownloadableApp = (name: string, source: string) => void;
+type RemoveDownloadableApp = (app: AppSpec) => void;
 
 export const removeDownloadableApp = invoke<RemoveDownloadableApp>(
     channel.removeDownloadableApp

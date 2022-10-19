@@ -4,7 +4,25 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
+import React from 'react';
+import { Provider } from 'react-redux';
+import { mount } from 'enzyme';
+
+import { LOCAL, OFFICIAL } from '../../../ipc/sources';
+import render, { createPreparedStore } from '../../../testrenderer';
+import AppList from '../../containers/AppManagementContainer';
+import {
+    checkEngineAndLaunch,
+    installDownloadableApp,
+    removeDownloadableApp,
+} from '../../features/apps/appsEffects';
+import {
+    installDownloadableAppStarted,
+    loadDownloadableAppsSuccess,
+    removeDownloadableAppStarted,
+    upgradeDownloadableAppStarted,
+} from '../../features/apps/appsSlice';
+import { setAllShownSources } from '../../features/filter/filterSlice';
 
 // Do not render react-bootstrap components in tests
 jest.mock('react-bootstrap', () => ({
@@ -18,286 +36,208 @@ jest.mock('react-bootstrap', () => ({
 
 jest.mock('../../features/filter/AppFilterBar', () => 'div');
 jest.mock('../../features/releaseNotes/ReleaseNotesDialog', () => 'div');
+jest.mock('../../util/mainConfig', () => () => ({ version: '6.1.0' }));
 
-import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
-import { List } from 'immutable';
+jest.mock('../../features/apps/appsEffects');
 
-import getImmutableApp from '../../models';
-import AppManagementView from '../AppManagementView';
+const localApp = {
+    name: 'local',
+    source: LOCAL,
+    displayName: 'Local App',
+    description: 'An local app',
+    isInstalled: true,
+    isDownloadable: false,
+
+    currentVersion: '2.0.0',
+
+    engineVersion: '6.1.0',
+    path: '',
+    iconPath: '',
+    shortcutIconPath: '',
+};
+
+const updateableApp = {
+    name: 'appA',
+    source: OFFICIAL,
+    displayName: 'App A',
+    description: 'appA description',
+    isInstalled: true,
+    isDownloadable: true,
+    currentVersion: '1.2.3',
+    latestVersion: '1.2.4',
+    upgradeAvailable: true,
+
+    engineVersion: '6.1.0',
+    url: '',
+    path: '',
+    iconPath: '',
+    shortcutIconPath: '',
+};
+
+const uninstalledApp = {
+    name: 'appB',
+    source: OFFICIAL,
+    displayName: 'App B',
+    description: 'appB description',
+    isInstalled: false,
+    isDownloadable: true,
+
+    engineVersion: '6.1.0',
+    url: '',
+    latestVersion: '',
+};
+
+const installedApp = {
+    name: 'appC',
+    source: OFFICIAL,
+    displayName: 'App C',
+    description: 'appC description',
+    isInstalled: true,
+    isDownloadable: true,
+    currentVersion: '1.2.3',
+    latestVersion: '1.2.3',
+
+    engineVersion: '6.1.0',
+    url: '',
+    path: '',
+    iconPath: '',
+    shortcutIconPath: '',
+};
 
 describe('AppManagementView', () => {
     it('should render without any apps', () => {
+        expect(render(<AppList />).baseElement).toMatchSnapshot();
+    });
+
+    it('should render local, not-installed, installed, and upgradable apps', () => {
         expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List()}
-                    isRetrievingApps={false}
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onMount={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
+            render(<AppList />, [
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [
+                        uninstalledApp,
+                        installedApp,
+                        updateableApp,
+                        localApp,
+                    ],
+                }),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should render not-installed, installed, and upgradable apps', () => {
+    it('should disable buttons and display "Installing..." button text while installing an app', () => {
         expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List([
-                        getImmutableApp({
-                            name: 'appB',
-                            displayName: 'App B',
-                            description: 'appB description',
-                        }),
-                        getImmutableApp({
-                            name: 'appC',
-                            displayName: 'App C',
-                            description: 'appC description',
-                            currentVersion: '1.2.3',
-                            latestVersion: '1.2.3',
-                        }),
-                        getImmutableApp({
-                            name: 'appA',
-                            displayName: 'App A',
-                            description: 'appA description',
-                            currentVersion: '1.2.3',
-                            latestVersion: '1.2.4',
-                        }),
-                    ])}
-                    isRetrievingApps={false}
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
+            render(<AppList />, [
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [uninstalledApp],
+                }),
+                installDownloadableAppStarted(uninstalledApp),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should disable buttons and display "Installing..." button text when installing app', () => {
+    it('should disable buttons while removing an app', () => {
         expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List([
-                        getImmutableApp({
-                            name: 'pc-nrfconnect-foo',
-                            displayName: 'Foo app',
-                            description: 'Foo description',
-                            source: 'bar',
-                        }),
-                    ])}
-                    isRetrievingApps={false}
-                    installingAppName="bar/pc-nrfconnect-foo"
-                    isProcessing
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
+            render(<AppList />, [
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [installedApp],
+                }),
+                removeDownloadableAppStarted(installedApp),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should disable buttons and display "Removing..." button text when removing app', () => {
+    fit('should disable buttons and display "Updating..." while updating an app', () => {
         expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List([
-                        getImmutableApp({
-                            name: 'pc-nrfconnect-foo',
-                            displayName: 'Foo app',
-                            description: 'Foo description',
-                            currentVersion: '1.2.3',
-                            latestVersion: '1.2.3',
-                            source: 'bar',
-                        }),
-                    ])}
-                    isRetrievingApps={false}
-                    removingAppName="bar/pc-nrfconnect-foo"
-                    isProcessing
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
+            render(<AppList />, [
+                setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                loadDownloadableAppsSuccess({
+                    downloadableApps: [updateableApp],
+                }),
+                upgradeDownloadableAppStarted(updateableApp),
+            ]).baseElement
         ).toMatchSnapshot();
     });
 
-    it('should disable buttons and display "Upgrading..." button text when upgrading app', () => {
-        expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List([
-                        getImmutableApp({
-                            name: 'pc-nrfconnect-foo',
-                            displayName: 'Foo app',
-                            description: 'Foo description',
-                            currentVersion: '1.2.3',
-                            latestVersion: '1.2.4',
-                            source: 'bar',
-                        }),
-                    ])}
-                    isRetrievingApps={false}
-                    upgradingAppName="bar/pc-nrfconnect-foo"
-                    isProcessing
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
-        ).toMatchSnapshot();
-    });
+    it('should invoke installDownloadableApp with app name and source when install button is clicked', () => {
+        installDownloadableApp.mockReturnValue({ type: 'an action' });
 
-    it('should invoke onInstall with app name, source and url when install button is clicked', () => {
-        const app = getImmutableApp({
-            name: 'pc-nrfconnect-foobar',
-            displayName: 'Foobar displayName',
-            description: 'Foobar description',
-            source: 'beta',
-            url: 'https://foo.bar/dists/beta',
-        });
-        const onInstall = jest.fn();
         const wrapper = mount(
-            <AppManagementView
-                apps={List([app])}
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={onInstall}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />
+            <Provider
+                store={createPreparedStore([
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [uninstalledApp],
+                    }),
+                ])}
+            >
+                <AppList />
+            </Provider>
         );
         wrapper
-            .find('button[title="Install Foobar displayName"]')
+            .find(`[title="Install ${uninstalledApp.displayName}"]`)
             .first()
             .simulate('click');
 
-        expect(onInstall).toHaveBeenCalledWith(app.name, app.source);
+        expect(installDownloadableApp).toHaveBeenCalledWith({
+            name: uninstalledApp.name,
+            source: uninstalledApp.source,
+        });
     });
 
-    it('should invoke onRemove with app name and source when remove button is clicked', () => {
-        const app = getImmutableApp({
-            name: 'pc-nrfconnect-foobar',
-            displayName: 'Foobar displayName',
-            description: 'Foobar description',
-            currentVersion: '1.2.3',
-            latestVersion: '1.2.3',
-            source: 'beta',
-            isDownloadable: true,
-        });
-        const onRemove = jest.fn();
+    it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
+        removeDownloadableApp.mockReturnValue({ type: 'an action' });
+
         const wrapper = mount(
-            <AppManagementView
-                apps={List([app])}
-                isRetrievingApps={false}
-                onAppSelected={() => {}}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={onRemove}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />
+            <Provider
+                store={createPreparedStore([
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [installedApp],
+                    }),
+                ])}
+            >
+                <AppList />
+            </Provider>
         );
 
-        wrapper.find('.dropdown-toggle').first().simulate('click');
+        wrapper.find(`button.dropdown-toggle`).first().simulate('click');
         wrapper
-            .find('a[title="Remove Foobar displayName"]')
+            .find(`[title="Remove ${installedApp.displayName}"]`)
             .first()
             .simulate('click');
 
-        expect(onRemove).toHaveBeenCalledWith(app.name, app.source);
-    });
-
-    it('should render more info links for correctly defined homepage', () => {
-        expect(
-            renderer.create(
-                <AppManagementView
-                    apps={List([
-                        getImmutableApp({
-                            name: 'appA',
-                            displayName: 'App A',
-                            description: 'appA description',
-                            homepage: 'https://foo.bar/readme.md',
-                        }),
-                        getImmutableApp({
-                            name: 'appB',
-                            displayName: 'App B',
-                            description: 'appB description',
-                            homepage: '',
-                        }),
-                        getImmutableApp({
-                            name: 'appC',
-                            displayName: 'App C',
-                            description: 'appC description',
-                        }),
-                    ])}
-                    isRetrievingApps={false}
-                    onAppSelected={() => {}}
-                    onCreateShortcut={() => {}}
-                    onInstall={() => {}}
-                    onRemove={() => {}}
-                    onReadMore={() => {}}
-                    onShowReleaseNotes={() => {}}
-                    sources={{}}
-                />
-            )
-        ).toMatchSnapshot();
-    });
-
-    it('should invoke onAppSelected with given app item when Open is clicked', () => {
-        const app = getImmutableApp({
-            name: 'pc-nrfconnect-foobar',
-            displayName: 'Foobar displayName',
-            description: 'Foobar description',
-            currentVersion: '1.2.3',
-            path: '/path/to/pc-nrfconnect-foobar',
-            isDownloadable: false,
+        expect(removeDownloadableApp).toHaveBeenCalledWith({
+            name: installedApp.name,
+            source: installedApp.source,
         });
-        const onAppSelected = jest.fn();
+    });
+
+    it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
+        checkEngineAndLaunch.mockReturnValue({ type: 'an action' });
+
         const wrapper = mount(
-            <AppManagementView
-                apps={List([app])}
-                isRetrievingApps={false}
-                onAppSelected={onAppSelected}
-                onCreateShortcut={() => {}}
-                onInstall={() => {}}
-                onRemove={() => {}}
-                onReadMore={() => {}}
-                onShowReleaseNotes={() => {}}
-                sources={{}}
-            />
+            <Provider
+                store={createPreparedStore([
+                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
+                    loadDownloadableAppsSuccess({
+                        downloadableApps: [installedApp],
+                    }),
+                ])}
+            >
+                <AppList />
+            </Provider>
         );
+
         wrapper
-            .find('button[title="Open Foobar displayName"]')
+            .find(`[title="Open ${installedApp.displayName}"]`)
             .first()
             .simulate('click');
 
-        expect(onAppSelected).toHaveBeenCalledWith(app);
+        expect(checkEngineAndLaunch).toHaveBeenCalledWith(
+            expect.objectContaining(installedApp)
+        );
     });
 });

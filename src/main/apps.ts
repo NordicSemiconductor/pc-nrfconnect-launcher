@@ -12,9 +12,11 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     AppInAppsJson,
+    AppSpec,
     AppWithError,
     DownloadableApp,
     LocalApp,
+    UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
 import { LOCAL } from '../ipc/sources';
@@ -252,7 +254,7 @@ const installedAppInfo = async (
 
 interface UninstalledAppResult {
     status: 'success';
-    value: DownloadableApp;
+    value: UninstalledDownloadableApp;
 }
 interface InvalidAppResult {
     status: 'invalid';
@@ -274,6 +276,7 @@ const uninstalledAppInfo = async (
                 ...app,
                 ...latestVersionInfo(app, latestVersions),
                 isInstalled: false,
+                currentVersion: null,
             },
         } as UninstalledAppResult;
     } catch (error) {
@@ -361,8 +364,8 @@ export const getLocalApps = () => {
     return Promise.all(localAppPromises as Promise<LocalApp>[]);
 };
 
-export const removeDownloadableApp = async (name: string, source: string) => {
-    const appPath = path.join(getNodeModulesDir(source), name);
+export const removeDownloadableApp = async (app: AppSpec) => {
+    const appPath = path.join(getNodeModulesDir(app.source), app.name);
     if (!appPath.includes('node_modules')) {
         throw new Error(
             'Sanity check failed when trying ' +
@@ -371,28 +374,25 @@ export const removeDownloadableApp = async (name: string, source: string) => {
         );
     }
 
-    const tmpDir = fileUtil.getTmpFilename(name);
+    const tmpDir = fileUtil.getTmpFilename(app.name);
     await fs.move(appPath, tmpDir);
     return fs.remove(tmpDir);
 };
 
-export const installDownloadableApp = async (
-    name: string,
-    version: string,
-    source: string
-) => {
+export const installDownloadableApp = async (app: AppSpec, version: string) => {
+    const { name, source } = app;
+
     const destinationDir = getAppsRootDir(source);
     const tgzFilePath = await registryApi.downloadTarball(
-        name,
+        app,
         version,
-        destinationDir,
-        source
+        destinationDir
     );
 
     const appPath = path.join(getNodeModulesDir(source), name);
     const isInstalled = await fs.pathExists(appPath);
     if (isInstalled) {
-        await removeDownloadableApp(name, source);
+        await removeDownloadableApp(app);
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
     await fileUtil.deleteFile(tgzFilePath);

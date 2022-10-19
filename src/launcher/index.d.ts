@@ -10,6 +10,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 //          - define AppDispatch as `export type AppDispatch = typeof store.dispatch`
 import type { ThunkAction } from 'redux-thunk';
 
+import type { State as Apps } from './features/apps/appsSlice';
 import type { State as Filter } from './features/filter/filterSlice';
 import type { State as LauncherUpdate } from './features/launcherUpdate/launcherUpdateSlice';
 import type { State as ProxyLogin } from './features/proxyLogin/proxyLoginSlice';
@@ -19,6 +20,7 @@ import type { State as Sources } from './features/sources/sourcesSlice';
 import type { State as UsageData } from './features/usageData/usageDataSlice';
 
 export type RootState = {
+    apps: Apps;
     filter: Filter;
     launcherUpdate: LauncherUpdate;
     proxyLogin: ProxyLogin;
@@ -26,7 +28,6 @@ export type RootState = {
     settings: Settings;
     sources: Sources;
     usageData: UsageData;
-    // TODO: Add more sub states
 };
 export type AppDispatch = ThunkDispatch<RootState, null, AnyAction>;
 
