@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, Page, test } from '@playwright/test';
+import { ElectronApplication, expect, Page } from '@playwright/test';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 import fs from 'fs';
 import path from 'path';
 
-import launchFirstApp from '../launchFirstApp';
+import { launchFirstAppFromPage } from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
 
 const oldPath = path.join(__dirname, '../../', 'README.md');
@@ -85,7 +87,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstAppFromPage(page);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -99,7 +101,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstAppFromPage(page);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',
@@ -140,7 +142,7 @@ test.describe(
             });
 
             test('shows a warning dialog when launching the app', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstAppFromPage(page);
                 await expect(
                     page.$('button:has-text("Launch anyway")')
                 ).resolves.not.toBeNull();
@@ -154,7 +156,7 @@ test.describe(
             });
 
             test('launches the app regardless when selecting "Launch anyway"', async () => {
-                await launchFirstApp(app, false);
+                await launchFirstAppFromPage(page);
                 await page.click('button:has-text("Launch anyway")');
                 await page.waitForSelector('button:has-text("Cancel")', {
                     state: 'detached',

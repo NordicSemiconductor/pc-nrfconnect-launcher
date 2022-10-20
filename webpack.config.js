@@ -19,6 +19,8 @@ module.exports = (_, argv) => {
     const mode = argv.mode ?? 'production';
     const isProd = mode === 'production';
 
+    console.log('WP isProd', isProd);
+
     return {
         mode,
         devtool: isProd ? 'source-map' : 'cheap-eval-source-map',
@@ -42,10 +44,11 @@ module.exports = (_, argv) => {
                                 cacheDirectory: true,
                                 configFile:
                                     './node_modules/pc-nrfconnect-shared/config/babel.config.js',
+                                plugins: isProd ? [] : ['istanbul'],
                             },
                         },
                     ],
-                    exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
+                    // exclude: /node_modules\/(?!pc-nrfconnect-shared\/)/,
                 },
                 {
                     test: /\.scss|\.css$/,

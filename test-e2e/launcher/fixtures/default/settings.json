@@ -1,18 +1,1 @@
-{
-    "shownStates": {
-        "installed": true,
-        "available": true
-    },
-    "nameFilter": "",
-    "sources": {
-        "official": true,
-        "local": true
-    },
-    "lastWindowState": {
-        "x": 2048,
-        "y": 320,
-        "width": 1024,
-        "height": 800,
-        "maximized": false
-    }
-}
+{"appFilter":{"shownStates":{"installed":true,"downloadable":true},"nameFilter":"","shownSources":["official","local"]},"lastWindowState":{"x":328,"y":125,"width":1024,"height":800,"maximized":false},"shouldCheckForUpdatesAtStartup":true,"shownStates":{"installed":true,"available":true},"nameFilter":"","sources":{"official":true,"local":true}}

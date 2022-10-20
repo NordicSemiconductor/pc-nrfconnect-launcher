@@ -1,132 +1,147 @@
 {
-    "name": "nrfconnect",
-    "version": "3.12.1",
-    "description": "nRF Connect for Desktop",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
+  "name": "nrfconnect",
+  "version": "3.12.1",
+  "description": "nRF Connect for Desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.git"
+  },
+  "main": "dist/main.js",
+  "scripts": {
+    "prepare": "husky install",
+    "postinstall": "ts-node scripts/getJlink",
+    "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
+    "watch": "run-p --silent --continue-on-error --print-label watch:**",
+    "watch:build:main": "node scripts/esbuild --watch",
+    "watch:build:renderer": "webpack watch --mode development --color",
+    "watch:types": "tsc --noEmit --pretty --watch --preserveWatchOutput",
+    "watch:test": "jest src --watch --color --watchPathIgnorePatterns '<rootDir>/dist'",
+    "build:dev": "run-p --silent --continue-on-error --print-label build:dev:*",
+    "build:dev:renderer": "webpack build --mode development --color",
+    "build:dev:main": "node scripts/esbuild",
+    "build:prod": "run-p --silent --continue-on-error --print-label build:prod:*",
+    "build:prod:renderer": "webpack build --color",
+    "build:prod:main": "node scripts/esbuild --prod",
+    "check": "run-p --silent --continue-on-error --print-label check:*",
+    "check:lint": "eslint --color .",
+    "check:types": "check-for-typescript tsc --noEmit --pretty",
+    "check:license": "nrfconnect-license check",
+    "test": "jest src",
+    "test:e2e": "xvfb-maybe npx playwright test test-e2e/",
+    "test:e2e:coverage": "npx nyc npm run test:e2e",
+    "pack": "npm run build:prod && electron-builder -p never",
+    "release": "electron-builder -p always",
+    "install-devtools": "electron . --install-devtools",
+    "remove-devtools": "electron . --remove-devtools"
+  },
+  "author": "Nordic Semiconductor ASA",
+  "license": "Proprietary",
+  "build": {
+    "appId": "com.nordicsemi.nrfconnect",
+    "productName": "nRF Connect for Desktop",
+    "npmRebuild": false,
+    "publish": [
+      "github"
+    ],
+    "files": [
+      "dist/",
+      "node_modules/",
+      "resources/*.html",
+      "resources/*.png",
+      "resources/*.ico",
+      "resources/*.svg",
+      "resources/mac/"
+    ],
+    "directories": {
+      "output": "release"
     },
-    "main": "dist/main.js",
-    "scripts": {
-        "prepare": "husky install",
-        "postinstall": "ts-node scripts/getJlink",
-        "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
-        "watch": "run-p --silent --continue-on-error --print-label watch:**",
-        "watch:build:main": "node scripts/esbuild --watch",
-        "watch:build:renderer": "webpack watch --mode development --color",
-        "watch:types": "tsc --noEmit --pretty --watch --preserveWatchOutput",
-        "watch:test": "jest src --watch --color --watchPathIgnorePatterns '<rootDir>/dist'",
-        "build:dev": "run-p --silent --continue-on-error --print-label build:dev:*",
-        "build:dev:renderer": "webpack build --mode development --color",
-        "build:dev:main": "node scripts/esbuild",
-        "build:prod": "run-p --silent --continue-on-error --print-label build:prod:*",
-        "build:prod:renderer": "webpack build --color",
-        "build:prod:main": "node scripts/esbuild --prod",
-        "check": "run-p --silent --continue-on-error --print-label check:*",
-        "check:lint": "eslint --color .",
-        "check:types": "check-for-typescript tsc --noEmit --pretty",
-        "check:license": "nrfconnect-license check",
-        "test": "jest src",
-        "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
-        "pack": "npm run build:prod && electron-builder -p never",
-        "release": "electron-builder -p always",
-        "install-devtools": "electron . --install-devtools",
-        "remove-devtools": "electron . --remove-devtools"
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "artifactName": "${name}-${version}-${arch}.${ext}",
+      "category": "Development",
+      "icon": "resources/icon.icns"
     },
-    "author": "Nordic Semiconductor ASA",
-    "license": "Proprietary",
-    "build": {
-        "appId": "com.nordicsemi.nrfconnect",
-        "productName": "nRF Connect for Desktop",
-        "npmRebuild": false,
-        "publish": [
-            "github"
-        ],
-        "files": [
-            "dist/",
-            "node_modules/",
-            "resources/*.html",
-            "resources/*.png",
-            "resources/*.ico",
-            "resources/*.svg",
-            "resources/mac/"
-        ],
-        "directories": {
-            "output": "release"
-        },
-        "linux": {
-            "target": [
-                "AppImage",
-                "tar.gz"
-            ],
-            "artifactName": "${name}-${version}-${arch}.${ext}",
-            "category": "Development",
-            "icon": "resources/icon.icns"
-        },
-        "afterSign": "build/notarize.js",
-        "mac": {
-            "category": "public.app-category.developer-tools",
-            "artifactName": "${name}-${version}-${os}.${ext}",
-            "hardenedRuntime": true,
-            "gatekeeperAssess": false,
-            "entitlements": "build/entitlements.mac.plist",
-            "entitlementsInherit": "build/entitlements.mac.plist",
-            "icon": "resources/icon.icns"
-        },
-        "dmg": {
-            "artifactName": "${name}-${version}.${ext}",
-            "sign": false
-        },
-        "win": {
-            "target": "nsis",
-            "publisherName": "Nordic Semiconductor ASA",
-            "icon": "resources/icon.ico"
-        },
-        "nsis": {
-            "menuCategory": "Nordic Semiconductor",
-            "include": "build/installer.nsh",
-            "artifactName": "${name}-setup-${version}-${arch}.${ext}"
-        }
+    "afterSign": "build/notarize.js",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "artifactName": "${name}-${version}-${os}.${ext}",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "icon": "resources/icon.icns"
     },
-    "devDependencies": {
-        "@playwright/test": "^1.16.3",
-        "@types/chmodr": "1.0.0",
-        "@types/lodash.merge": "4.6.7",
-        "@types/mustache": "4.2.1",
-        "@types/node": "14.17.17",
-        "@types/targz": "1.0.1",
-        "asar": "3.0.3",
-        "cross-env": "7.0.3",
-        "electron": "13.5.1",
-        "electron-builder": "^22.14.13",
-        "electron-devtools-installer": "3.2.0",
-        "electron-notarize": "0.3.0",
-        "esbuild": "0.14.49",
-        "mini-css-extract-plugin": "0.9.0",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.6.1",
-        "playwright": "^1.16.3",
-        "xvfb-maybe": "0.2.1"
+    "dmg": {
+      "artifactName": "${name}-${version}.${ext}",
+      "sign": false
     },
-    "dependencies": {
-        "@electron/remote": "2.0.8",
-        "@nordicsemiconductor/nrf-device-lib-js": "^0.4.15",
-        "axios": "0.22.0",
-        "chmodr": "1.2.0",
-        "electron-store": "8.0.1",
-        "electron-updater": "4.3.1",
-        "fs-extra": "9.0.0",
-        "lodash.merge": "4.6.2",
-        "mustache": "4.0.1",
-        "serialport": "8.0.8",
-        "shasum": "1.0.2",
-        "short-uuid": "4.2.0",
-        "sudo-prompt": "^9.2.1",
-        "targz": "1.0.1",
-        "winston": "3.8.1",
-        "yargs": "15.3.1"
+    "win": {
+      "target": "nsis",
+      "publisherName": "Nordic Semiconductor ASA",
+      "icon": "resources/icon.ico"
     },
-    "eslintConfig": {
-        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
-    },
-    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
+    "nsis": {
+      "menuCategory": "Nordic Semiconductor",
+      "include": "build/installer.nsh",
+      "artifactName": "${name}-setup-${version}-${arch}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "@types/chmodr": "1.0.0",
+    "@types/lodash.merge": "4.6.7",
+    "@types/mustache": "4.2.1",
+    "@types/node": "14.17.17",
+    "@types/targz": "1.0.1",
+    "asar": "3.0.3",
+    "cross-env": "7.0.3",
+    "electron": "13.5.1",
+    "electron-builder": "^22.14.13",
+    "electron-devtools-installer": "3.2.0",
+    "electron-notarize": "0.3.0",
+    "esbuild": "0.14.49",
+    "mini-css-extract-plugin": "0.9.0",
+    "pc-nrfconnect-shared": "file:../pc-nrfconnect-shared",
+    "playwright": "^1.27.1",
+    "xvfb-maybe": "0.2.1"
+  },
+  "dependencies": {
+    "@electron/remote": "2.0.8",
+    "@nordicsemiconductor/nrf-device-lib-js": "^0.4.15",
+    "axios": "0.22.0",
+    "chmodr": "1.2.0",
+    "electron-store": "8.0.1",
+    "electron-updater": "4.3.1",
+    "fs-extra": "9.0.0",
+    "lodash.merge": "4.6.2",
+    "mustache": "4.0.1",
+    "serialport": "8.0.8",
+    "shasum": "1.0.2",
+    "short-uuid": "4.2.0",
+    "sudo-prompt": "^9.2.1",
+    "targz": "1.0.1",
+    "winston": "3.8.1",
+    "yargs": "15.3.1"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
+  },
+  "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js",
+  "nyc": {
+    "all": true,
+    "check-coverage": true,
+    "temp-dir": "coverage/pw/.nyc_output",
+    "report-dir": "coverage/pw/json",
+    "reporter": "json",
+    "include": "src",
+    "exclude": [
+      "test-e2e"
+    ],
+    "branches": 30,
+    "lines": 30,
+    "functions": 20,
+    "statements": 30
+  }
 }

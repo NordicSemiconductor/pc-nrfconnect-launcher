@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, Page, test } from '@playwright/test';
+import { ElectronApplication, Page } from '@playwright/test';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 import { removeSync } from 'fs-extra';
 import path from 'path';
 
@@ -108,7 +110,7 @@ test.describe('the list of all apps', () => {
 
     test.describe('has a downloadable apps that is upgradable', () => {
         const appsRootDir =
-            'launcher/fixtures/one-downloadable-app-upgradable/.nrfconnect-apps';
+            'launcher/fixtures/one-official-app-upgradable/.nrfconnect-apps';
 
         let app: ElectronApplication;
         let page: Page;

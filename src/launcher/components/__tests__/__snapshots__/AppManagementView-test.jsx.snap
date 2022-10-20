@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AppManagementView should disable buttons and display "Installing..." button text when installing app 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -88,7 +88,7 @@ Array [
 `;
 
 exports[`AppManagementView should disable buttons and display "Removing..." button text when removing app 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -186,7 +186,7 @@ Array [
 `;
 
 exports[`AppManagementView should disable buttons and display "Upgrading..." button text when upgrading app 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -284,7 +284,7 @@ Array [
 `;
 
 exports[`AppManagementView should render more info links for correctly defined homepage 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -509,7 +509,7 @@ Array [
 `;
 
 exports[`AppManagementView should render not-installed, installed, and upgradable apps 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"
@@ -758,7 +758,7 @@ Array [
 `;
 
 exports[`AppManagementView should render without any apps 1`] = `
-Array [
+[
   <div />,
   <div
     className="with-scrollbar filter-adjusted-height"

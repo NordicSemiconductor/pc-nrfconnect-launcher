@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { expect, Page } from '@playwright/test';
-import { ElectronApplication } from 'playwright';
+import { expect } from './launcher/baseFixtures';
+import { ElectronApplication, Page } from 'playwright-core';
 
 const getTitleOfWindow = (app: ElectronApplication, page: Page) =>
     new Promise(resolve => {
@@ -64,7 +64,7 @@ export const checkShowsAppUpdate = async (
     availableVersion: string
 ) => {
     await page.waitForSelector(`[title="Update ${appName}"]`);
-    expect(page.locator(`.list-group-item`)).toContainText(
+    await expect(page.locator(`.list-group-item`)).toContainText(
         `${availableVersion} available`
     );
 };

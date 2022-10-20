@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication } from 'playwright';
+import { ElectronApplication, Page } from 'playwright-core';
 
 const sleep = (millis: number) =>
     new Promise(resolve => {
@@ -24,6 +24,10 @@ const waitForSecondWindow = async (
     }
 
     throw new Error('Timed out while waiting for second window');
+};
+
+export const launchFirstAppFromPage = async (page: Page) => {
+    await page.locator('button[title*="Open"]').click();
 };
 
 export default async (app: ElectronApplication, waitForAppToAppear = true) => {

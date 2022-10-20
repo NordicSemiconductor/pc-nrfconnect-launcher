@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect, Page, test } from '@playwright/test';
+import { ElectronApplication, Page } from '@playwright/test';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test, expect } from './baseFixtures';
 import fs from 'fs';
 import { removeSync } from 'fs-extra';
 import path from 'path';

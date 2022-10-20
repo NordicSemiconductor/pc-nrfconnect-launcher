@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ElectronApplication, expect } from '@playwright/test';
+import { expect } from "./launcher/baseFixtures";
 import { removeSync } from 'fs-extra';
 import path from 'path';
-import { _electron as electron } from 'playwright';
+import { ElectronApplication, _electron as electron } from 'playwright-core';
 
 const startApp = async (extraArgs: string[]) => {
     const projectPath = path.resolve(__dirname, '../');
@@ -65,7 +65,7 @@ export const setup = async ({
 
     const app = await startApp(electronArgs);
 
-    expect(app).not.toBe(undefined);
+    await expect(app).not.toBe(undefined);
 
     return app;
 };
