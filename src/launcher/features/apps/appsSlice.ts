@@ -329,16 +329,16 @@ export const getUpgradeableVisibleApps = (state: RootState) =>
         .filter(getAppsFilter(state))
         .filter(app => app.isInstalled && app.upgradeAvailable);
 
-export const getIsAnAppInProgress = (state: RootState) =>
-    state.apps.downloadableApps.find(
-        app =>
-            app.progress.isInstalling ||
-            app.progress.isRemoving ||
-            app.progress.isUpgrading
-    ) != null;
-
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
     text: state.apps.confirmLaunchText,
     app: state.apps.confirmLaunchApp,
 });
+
+export const isInProgress = (
+    app: DisplayedApp
+): app is DownloadableAppWithProgress =>
+    app.isDownloadable &&
+    (app.progress.isInstalling ||
+        app.progress.isUpgrading ||
+        app.progress.isRemoving);
