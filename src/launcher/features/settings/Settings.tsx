@@ -21,7 +21,6 @@ import { getUpdateCheckStatus } from '../apps/appsSlice';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import AddSourceDialog from '../sources/AddSourceDialog';
 import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
-import { addSource } from '../sources/sourcesEffects';
 import {
     getSources,
     showAddSource,
@@ -38,11 +37,6 @@ import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
 const { white, gray700, nordicBlue } = colors;
 
-const cancel: React.DragEventHandler = event => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-};
-
 export default () => {
     const dispatch = useLauncherDispatch();
 
@@ -55,12 +49,6 @@ export default () => {
 
     const { isCheckingForUpdates, lastUpdateCheckDate } =
         useLauncherSelector(getUpdateCheckStatus);
-
-    const onDropUrl: React.DragEventHandler = event => {
-        event.preventDefault();
-        const url = event.dataTransfer.getData('Text');
-        dispatch(addSource(url));
-    };
 
     return (
         <WithScrollbarContainer>
@@ -112,12 +100,7 @@ export default () => {
                         barColorToggled={nordicBlue}
                     />
                 </Card>
-                <Card
-                    body
-                    onDrop={onDropUrl}
-                    onDragOver={cancel}
-                    id="app-sources"
-                >
+                <Card body id="app-sources">
                     <Row>
                         <Col>
                             <Card.Title>App sources</Card.Title>
