@@ -5,14 +5,14 @@
  */
 
 import { ElectronApplication, expect, Page } from '@playwright/test';
-// import { test } from 'pc-nrfconnect-shared/tests-e2e';
-import { test } from './baseFixtures';
 import fs from 'fs';
 import path from 'path';
 
 import packageJson from '../../package.json';
 import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 
 const { version } = packageJson;
 

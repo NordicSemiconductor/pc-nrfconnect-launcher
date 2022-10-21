@@ -5,11 +5,11 @@
  */
 
 import { ElectronApplication } from '@playwright/test';
-// import { test } from 'pc-nrfconnect-shared/tests-e2e';
-import { test } from './baseFixtures';
 
 import { checkTitleOfWindow } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 
 test.describe('launching apps directly', () => {
     test.describe('a downloadable app', () => {

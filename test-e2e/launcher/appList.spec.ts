@@ -5,8 +5,6 @@
  */
 
 import { ElectronApplication, Page } from '@playwright/test';
-// import { test } from 'pc-nrfconnect-shared/tests-e2e';
-import { test } from './baseFixtures';
 import { removeSync } from 'fs-extra';
 import path from 'path';
 
@@ -23,6 +21,8 @@ import {
 } from '../assertions';
 import launchFirstApp from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 
 test.describe('the list of all apps', () => {
     test.describe('has a downloadable app that is available', () => {

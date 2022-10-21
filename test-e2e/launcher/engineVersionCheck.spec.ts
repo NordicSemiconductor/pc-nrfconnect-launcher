@@ -5,13 +5,13 @@
  */
 
 import { ElectronApplication, expect, Page } from '@playwright/test';
-// import { test } from 'pc-nrfconnect-shared/tests-e2e';
-import { test } from './baseFixtures';
 import fs from 'fs';
 import path from 'path';
 
 import { launchFirstAppFromPage } from '../launchFirstApp';
 import { setup, teardown } from '../setupTestApp';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { test } from './baseFixtures';
 
 const oldPath = path.join(__dirname, '../../', 'README.md');
 const newPath = path.join(__dirname, '../../', 'README.md.not');

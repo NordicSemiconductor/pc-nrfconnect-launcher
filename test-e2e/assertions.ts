@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { expect } from './launcher/baseFixtures';
 import { ElectronApplication, Page } from 'playwright-core';
+
+import { expect } from './launcher/baseFixtures';
 
 const getTitleOfWindow = (app: ElectronApplication, page: Page) =>
     new Promise(resolve => {

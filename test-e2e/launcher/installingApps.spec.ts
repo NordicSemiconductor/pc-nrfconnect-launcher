@@ -5,14 +5,14 @@
  */
 
 import { ElectronApplication, Page } from '@playwright/test';
-// import { test } from 'pc-nrfconnect-shared/tests-e2e';
-import { test, expect } from './baseFixtures';
 import fs from 'fs';
 import { removeSync } from 'fs-extra';
 import path from 'path';
 
 import { checkAppListContains } from '../assertions';
 import { setup, teardown } from '../setupTestApp';
+// import { test } from 'pc-nrfconnect-shared/tests-e2e';
+import { expect, test } from './baseFixtures';
 
 test.describe('app installation', () => {
     test.describe('online from the server', () => {
