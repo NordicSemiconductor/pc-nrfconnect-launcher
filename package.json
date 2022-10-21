@@ -75,13 +75,13 @@
             "icon": "resources/icon.icns"
         },
         "dmg": {
-                "artifactName": "${name}-${version}.${ext}",
-                "sign": false
+            "artifactName": "${name}-${version}.${ext}",
+            "sign": false
         },
         "win": {
-                "target": "nsis",
-                "publisherName": "Nordic Semiconductor ASA",
-                "icon": "resources/icon.ico"
+            "target": "nsis",
+            "publisherName": "Nordic Semiconductor ASA",
+            "icon": "resources/icon.ico"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
