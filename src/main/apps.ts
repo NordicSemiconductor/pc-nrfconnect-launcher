@@ -107,7 +107,10 @@ const confirmAndRemoveOldLocalApp = async (
     }
 };
 
-const installLocalAppArchive = async (tgzFilePath: string) => {
+export const installLocalApp = async (
+    tgzFilePath: string,
+    removeArchiveAfterInstall = false
+) => {
     const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
         throw new Error(
@@ -124,8 +127,15 @@ const installLocalAppArchive = async (tgzFilePath: string) => {
     if (!(await fs.pathExists(appPath))) {
         await mkdir(appPath);
         await fileUtil.extractNpmPackage(appName, tgzFilePath, appPath);
-        await fileUtil.deleteFile(tgzFilePath);
+        if (removeArchiveAfterInstall) {
+            await fileUtil.deleteFile(tgzFilePath);
+        }
     }
+
+    return infoFromInstalledApp(
+        getAppsLocalDir(),
+        appName
+    ) as unknown as LocalApp;
 };
 
 const installAllLocalAppArchives = () => {
@@ -133,9 +143,9 @@ const installAllLocalAppArchives = () => {
     return tgzFiles.reduce(
         (prev, tgzFile) =>
             prev.then(() =>
-                installLocalAppArchive(path.join(getAppsLocalDir(), tgzFile))
+                installLocalApp(path.join(getAppsLocalDir(), tgzFile), true)
             ),
-        Promise.resolve()
+        Promise.resolve<unknown>(undefined)
     );
 };
 

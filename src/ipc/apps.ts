@@ -83,6 +83,7 @@ const channel = {
     getDownloadableApps: 'apps:get-downloadable-apps',
     downloadReleaseNotes: 'apps:download-release-notes',
     installDownloadableApp: 'apps:install-downloadable-app',
+    installLocalApp: 'apps:install-local-app',
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
 
@@ -135,6 +136,15 @@ export const installDownloadableApp = invoke<InstallDownloadableApp>(
 );
 export const registerInstallDownloadableApp = handle<InstallDownloadableApp>(
     channel.installDownloadableApp
+);
+
+// installLocalApp
+
+type InstallLocalApp = (path: string) => LocalApp;
+
+export const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
+export const registerInstallLocalApp = handle<InstallLocalApp>(
+    channel.installLocalApp
 );
 
 // removeDownloadableApp

@@ -11,6 +11,7 @@ import {
     registerGetDownloadableApps,
     registerGetLocalApps,
     registerInstallDownloadableApp,
+    registerInstallLocalApp,
     registerRemoveDownloadableApp,
 } from '../ipc/apps';
 import { registerGetConfig } from '../ipc/config';
@@ -48,6 +49,7 @@ import {
     getDownloadableApps,
     getLocalApps,
     installDownloadableApp,
+    installLocalApp,
     removeDownloadableApp,
 } from './apps';
 import { getConfig } from './config';
@@ -102,6 +104,7 @@ export default () => {
     registerGetDownloadableApps(getDownloadableApps);
     registerGetLocalApps(getLocalApps);
     registerInstallDownloadableApp(installDownloadableApp);
+    registerInstallLocalApp(installLocalApp);
     registerRemoveDownloadableApp(removeDownloadableApp);
 
     registerGetSources(getAllSources);

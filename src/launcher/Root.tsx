@@ -18,6 +18,7 @@ import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
 import Settings from './features/settings/Settings';
 import UsageDataDialog from './features/usageData/UsageDataDialog';
+import DropZoneForLocalApps from './util/DropZoneForLocalApps';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
 
 const blurActiveElementOnLaunch = () => {
@@ -48,34 +49,36 @@ export default () => {
 
     return (
         <ErrorBoundaryLauncher>
-            <Tab.Container id="launcher" defaultActiveKey="apps">
-                <Nav>
-                    {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                    <Nav.Link accessKey="1" eventKey="apps">
-                        apps
-                    </Nav.Link>
-                    {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                    <Nav.Link accessKey="2" eventKey="settings">
-                        settings
-                    </Nav.Link>
-                    {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                    <Nav.Link accessKey="3" eventKey="about">
-                        about
-                    </Nav.Link>
-                    <Logo changeWithDeviceState={false} />
-                </Nav>
-                <Tab.Content>
-                    <Tab.Pane eventKey="apps">
-                        <AppList />
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="settings">
-                        <Settings />
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="about">
-                        <About />
-                    </Tab.Pane>
-                </Tab.Content>
-            </Tab.Container>
+            <DropZoneForLocalApps>
+                <Tab.Container id="launcher" defaultActiveKey="apps">
+                    <Nav>
+                        {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+                        <Nav.Link accessKey="1" eventKey="apps">
+                            apps
+                        </Nav.Link>
+                        {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+                        <Nav.Link accessKey="2" eventKey="settings">
+                            settings
+                        </Nav.Link>
+                        {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+                        <Nav.Link accessKey="3" eventKey="about">
+                            about
+                        </Nav.Link>
+                        <Logo changeWithDeviceState={false} />
+                    </Nav>
+                    <Tab.Content>
+                        <Tab.Pane eventKey="apps">
+                            <AppList />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="settings">
+                            <Settings />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="about">
+                            <About />
+                        </Tab.Pane>
+                    </Tab.Content>
+                </Tab.Container>
+            </DropZoneForLocalApps>
 
             <ErrorDialog />
             <UpdateAvailableDialog />
