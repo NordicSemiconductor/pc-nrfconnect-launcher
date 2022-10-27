@@ -12,7 +12,9 @@ import { Action } from 'redux';
 
 import { reducer } from './launcher/store';
 
-export const createPreparedStore = (actions: Action[]) => {
+type Store = ReturnType<typeof preparedStore>;
+
+export const preparedStore = (actions: Action[] = []) => {
     const store = configureStore({
         reducer,
         middleware: getDefaultMiddleware =>
@@ -23,8 +25,17 @@ export const createPreparedStore = (actions: Action[]) => {
     return store;
 };
 
-const preparedProvider = (actions: Action[]) => (props: object) =>
-    <Provider store={createPreparedStore(actions)} {...props} />;
+const preparedProvider = (store: Store) => (props: object) =>
+    <Provider store={store} {...props} />;
 
-export default (element: React.ReactElement, actions: Action[] = []) =>
-    render(element, { wrapper: preparedProvider(actions) });
+export default (
+    element: React.ReactElement,
+    actionsOrStore?: Action[] | Store
+) => {
+    const store =
+        actionsOrStore === undefined || Array.isArray(actionsOrStore)
+            ? preparedStore(actionsOrStore)
+            : actionsOrStore;
+
+    return render(element, { wrapper: preparedProvider(store) });
+};
