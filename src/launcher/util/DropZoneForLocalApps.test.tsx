@@ -31,11 +31,28 @@ const installedApp: LocalApp = {
     shortcutIconPath: '',
 };
 
-jest.mocked(installLocalApp).mockResolvedValueOnce(installedApp);
+const anotherInstalledApp: LocalApp = {
+    name: 'another local',
+    source: LOCAL,
+    displayName: 'Local App',
+    description: 'Another local app',
+    isInstalled: true,
+    isDownloadable: false,
+
+    currentVersion: '2.0.0',
+
+    engineVersion: '6.1.0',
+    path: '',
+    iconPath: '',
+    shortcutIconPath: '',
+};
 
 describe('DropZoneForLocalApps', () => {
     beforeEach(() => {
-        jest.mocked(installLocalApp).mockClear();
+        jest.mocked(installLocalApp)
+            .mockClear()
+            .mockResolvedValueOnce(installedApp)
+            .mockResolvedValueOnce(anotherInstalledApp);
     });
 
     it('installs the dropped file', async () => {
@@ -65,5 +82,28 @@ describe('DropZoneForLocalApps', () => {
         });
 
         expect(installLocalApp).not.toHaveBeenCalled();
+    });
+
+    it('installs all files that are dropped', async () => {
+        const path1 = 'one-testapp-1.2.3.tgz';
+        const path2 = 'another-testapp-1.2.3.tgz';
+        const store = preparedStore();
+
+        testrenderer(<DropZoneForLocalApps />, store);
+
+        fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {
+            dataTransfer: {
+                files: [{ path: path1 }, { path: path2 }],
+            },
+        });
+
+        await waitFor(() => {
+            expect(installLocalApp).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
+            expect(getAllApps(store.getState())).toEqual(
+                expect.arrayContaining([installedApp, anotherInstalledApp])
+            );
+        });
     });
 });
