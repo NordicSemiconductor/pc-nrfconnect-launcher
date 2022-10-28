@@ -7,11 +7,14 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
-import { installLocalApp, LocalApp } from '../../ipc/apps';
+import type { LocalApp } from '../../ipc/apps';
+import { installLocalApp } from '../../ipc/apps';
 import { LOCAL } from '../../ipc/sources';
 import testrenderer, { preparedStore } from '../../testrenderer';
 import { getAllApps } from '../features/apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
+
+const { successfulInstall } = jest.requireActual('../../ipc/apps');
 
 jest.mock('../../ipc/apps');
 
@@ -51,8 +54,8 @@ describe('DropZoneForLocalApps', () => {
     beforeEach(() => {
         jest.mocked(installLocalApp)
             .mockClear()
-            .mockResolvedValueOnce(installedApp)
-            .mockResolvedValueOnce(anotherInstalledApp);
+            .mockResolvedValueOnce(successfulInstall(installedApp))
+            .mockResolvedValueOnce(successfulInstall(anotherInstalledApp));
     });
 
     it('installs the dropped file', async () => {

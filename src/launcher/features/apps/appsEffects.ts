@@ -164,8 +164,10 @@ const buildErrorMessage = (apps: AppWithError[]) => {
 
 export const installLocalApp =
     (appPackagePath: string) => async (dispatch: AppDispatch) => {
-        const localApp = await installLocalAppInMain(appPackagePath);
-        dispatch(addLocalApp(localApp));
+        const installResult = await installLocalAppInMain(appPackagePath);
+        if (installResult.type === 'success') {
+            dispatch(addLocalApp(installResult.app));
+        }
     };
 
 export const installDownloadableApp =

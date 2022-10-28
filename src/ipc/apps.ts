@@ -140,7 +140,33 @@ export const registerInstallDownloadableApp = handle<InstallDownloadableApp>(
 
 // installLocalApp
 
-type InstallLocalApp = (path: string) => LocalApp;
+export const successfulInstall = (app: LocalApp) =>
+    ({
+        type: 'success',
+        app,
+    } as const);
+
+export const failureReadingFile = (errorMessage: string, error?: unknown) =>
+    ({
+        type: 'failure',
+        errorType: 'error reading file',
+        errorMessage,
+        error,
+    } as const);
+
+export const failureBecauseAppExists = (appPath: string) =>
+    ({
+        type: 'failure',
+        errorType: 'error because app exists',
+        appPath,
+    } as const);
+
+export type InstallResult =
+    | ReturnType<typeof successfulInstall>
+    | ReturnType<typeof failureReadingFile>
+    | ReturnType<typeof failureBecauseAppExists>;
+
+type InstallLocalApp = (path: string) => InstallResult;
 
 export const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
 export const registerInstallLocalApp = handle<InstallLocalApp>(
