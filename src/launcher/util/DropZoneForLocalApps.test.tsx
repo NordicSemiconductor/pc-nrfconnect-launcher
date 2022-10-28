@@ -15,7 +15,7 @@ import testrenderer, { preparedStore } from '../../testrenderer';
 import { getAllApps } from '../features/apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
 
-const { successfulInstall, failureReadingFile } =
+const { appExists, failureReadingFile, successfulInstall } =
     jest.requireActual('../../ipc/apps');
 
 jest.mock('../../ipc/apps');
@@ -136,5 +136,32 @@ describe('DropZoneForLocalApps', () => {
         });
 
         await screen.findByText(errorMessage);
+    });
+
+    it('shows an error if the app exists', async () => {
+        const path = 'testapp-1.2.3.tgz';
+        jest.mocked(installLocalApp)
+            .mockClear()
+            .mockResolvedValue(appExists('testapp', path));
+
+        testrenderer(
+            <>
+                <DropZoneForLocalApps />
+                <ErrorDialog />
+            </>
+        );
+
+        fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {
+            dataTransfer: {
+                files: [{ path }],
+            },
+        });
+
+        // The real string we search for is 'A local app `testapp` already exists. Overwrite it with the content of `testapp-1.2.3.tgz`?'
+        await screen.findByText(
+            'A local app already exists. Overwrite it with the content of ?'
+        );
+        await screen.findByText('testapp');
+        await screen.findByText('testapp-1.2.3.tgz');
     });
 });

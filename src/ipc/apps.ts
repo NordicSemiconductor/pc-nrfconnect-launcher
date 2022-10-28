@@ -84,6 +84,7 @@ const channel = {
     downloadReleaseNotes: 'apps:download-release-notes',
     installDownloadableApp: 'apps:install-downloadable-app',
     installLocalApp: 'apps:install-local-app',
+    removeLocalApp: 'apps:remove-local-app',
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
 
@@ -154,10 +155,11 @@ export const failureReadingFile = (errorMessage: string, error?: unknown) =>
         error,
     } as const);
 
-export const appExists = (appPath: string) =>
+export const appExists = (appName: string, appPath: string) =>
     ({
         type: 'failure',
         errorType: 'error because app exists',
+        appName,
         appPath,
     } as const);
 
@@ -171,6 +173,14 @@ type InstallLocalApp = (path: string) => InstallResult;
 export const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
 export const registerInstallLocalApp = handle<InstallLocalApp>(
     channel.installLocalApp
+);
+
+// removeLocalApp
+type RemoveLocalApp = (appName: string) => void;
+
+export const removeLocalApp = invoke<RemoveLocalApp>(channel.removeLocalApp);
+export const registerRemoveLocalApp = handle<RemoveLocalApp>(
+    channel.removeLocalApp
 );
 
 // removeDownloadableApp

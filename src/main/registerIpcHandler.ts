@@ -13,6 +13,7 @@ import {
     registerInstallDownloadableApp,
     registerInstallLocalApp,
     registerRemoveDownloadableApp,
+    registerRemoveLocalApp,
 } from '../ipc/apps';
 import { registerGetConfig } from '../ipc/config';
 import { registerCreateDesktopShortcut } from '../ipc/createDesktopShortcut';
@@ -51,6 +52,7 @@ import {
     installDownloadableApp,
     installLocalApp,
     removeDownloadableApp,
+    removeLocalApp,
 } from './apps';
 import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
@@ -105,6 +107,7 @@ export default () => {
     registerGetLocalApps(getLocalApps);
     registerInstallDownloadableApp(installDownloadableApp);
     registerInstallLocalApp(installLocalApp);
+    registerRemoveLocalApp(removeLocalApp);
     registerRemoveDownloadableApp(removeDownloadableApp);
 
     registerGetSources(getAllSources);

@@ -19,6 +19,7 @@ import {
     installLocalApp as installLocalAppInMain,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
+    removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
 import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
@@ -42,6 +43,7 @@ import {
     loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    removeLocalApp,
     resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,
@@ -176,6 +178,24 @@ export const installLocalApp =
             if (installResult.error != null) {
                 console.warn(describeError(installResult.error));
             }
+        } else if (installResult.errorType === 'error because app exists') {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `A local app \`${installResult.appName}\` already exists. ` +
+                        `Overwrite it with the content of \`${appPackagePath}\`?`,
+                    {
+                        Overwrite: async () => {
+                            dispatch(ErrorDialogActions.hideDialog());
+                            await removeLocalAppInMain(installResult.appName);
+                            dispatch(removeLocalApp(installResult.appName));
+                            dispatch(installLocalApp(appPackagePath));
+                        },
+                        Cancel: () => {
+                            dispatch(ErrorDialogActions.hideDialog());
+                        },
+                    }
+                )
+            );
         }
     };
 

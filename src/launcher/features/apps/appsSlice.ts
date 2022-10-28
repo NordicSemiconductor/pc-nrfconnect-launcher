@@ -107,11 +107,12 @@ const slice = createSlice({
             state.isLoadingLocalApps = false;
         },
         addLocalApp(state, { payload: newApp }: PayloadAction<LocalApp>) {
-            const oldAppsWithoutNewApp = state.localApps.filter(
-                app => app.name !== newApp.name
+            state.localApps.push(newApp);
+        },
+        removeLocalApp(state, { payload: appName }: PayloadAction<string>) {
+            state.localApps = state.localApps.filter(
+                app => app.name !== appName
             );
-
-            state.localApps = [...oldAppsWithoutNewApp, newApp];
         },
 
         // Load Downloadable apps
@@ -283,6 +284,7 @@ export const {
     loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    removeLocalApp,
     resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,

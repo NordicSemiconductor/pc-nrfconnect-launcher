@@ -113,15 +113,15 @@ export const installLocalApp = async (
     const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
         return failureReadingFile(
-            `Unable to get app name from archive: ${tgzFilePath}. ` +
-                `Expected file name format: {name}-{version}.tgz.`
+            `Unable to get app name from archive: \`${tgzFilePath}\`. ` +
+                `Expected file name format: \`{name}-{version}.tgz.\``
         );
     }
     const appPath = path.join(getAppsLocalDir(), appName);
 
     // Check if app exists
     if (await fs.pathExists(appPath)) {
-        return appExists(appPath);
+        return appExists(appName, appPath);
     }
 
     // Extract app package
@@ -131,7 +131,7 @@ export const installLocalApp = async (
     } catch (error) {
         await fs.remove(appPath);
         return failureReadingFile(
-            `Unable to extract app archive ${tgzFilePath}.`,
+            `Unable to extract app archive \`${tgzFilePath}\`.`,
             error
         );
     }
@@ -140,6 +140,9 @@ export const installLocalApp = async (
         (await infoFromInstalledApp(getAppsLocalDir(), appName)) as LocalApp
     );
 };
+
+export const removeLocalApp = (appName: string) =>
+    fs.remove(path.join(getAppsLocalDir(), appName));
 
 const deleteFileOnSuccess = async (
     result: InstallResult,
