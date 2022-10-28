@@ -7,7 +7,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
-import type { AnyAction } from 'redux';
 
 import {
     InstalledDownloadableApp,
@@ -112,10 +111,8 @@ const installedApp: InstalledDownloadableApp = {
     shortcutIconPath: '',
 };
 
-const mockThunk = (thunkToMock: unknown) => {
-    const mockedThunk = thunkToMock as jest.MockedFunction<() => AnyAction>;
-
-    mockedThunk.mockReturnValue({
+const mockThunk = (thunkToMock: jest.MockableFunction) => {
+    jest.mocked(thunkToMock).mockReturnValue({
         type: 'an action',
     });
 };
