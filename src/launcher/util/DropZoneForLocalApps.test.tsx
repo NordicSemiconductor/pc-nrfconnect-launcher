@@ -31,11 +31,16 @@ const installedApp: LocalApp = {
     shortcutIconPath: '',
 };
 
+jest.mocked(installLocalApp).mockResolvedValueOnce(installedApp);
+
 describe('DropZoneForLocalApps', () => {
+    beforeEach(() => {
+        jest.mocked(installLocalApp).mockClear();
+    });
+
     it('installs the dropped file', async () => {
         const path = 'testapp-1.2.3.tgz';
         const store = preparedStore();
-        jest.mocked(installLocalApp).mockResolvedValueOnce(installedApp);
 
         testrenderer(<DropZoneForLocalApps />, store);
 
@@ -50,5 +55,15 @@ describe('DropZoneForLocalApps', () => {
         await waitFor(() =>
             expect(getAllApps(store.getState())).toContain(installedApp)
         );
+    });
+
+    it('installs nothing when dropping no file (e.g. only text)', () => {
+        testrenderer(<DropZoneForLocalApps />);
+
+        fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {
+            dataTransfer: { files: [] },
+        });
+
+        expect(installLocalApp).not.toHaveBeenCalled();
     });
 });

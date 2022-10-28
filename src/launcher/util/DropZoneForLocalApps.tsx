@@ -14,7 +14,9 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
 
     const installAppPackage = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
-        dispatch(installLocalApp(event.dataTransfer.files[0].path));
+        if (event.dataTransfer.files.length > 0) {
+            dispatch(installLocalApp(event.dataTransfer.files[0].path));
+        }
     };
 
     const showAddCursor = (event: React.DragEvent<HTMLDivElement>) => {
