@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { ErrorDialog } from 'pc-nrfconnect-shared';
 
 import type { LocalApp } from '../../ipc/apps';
 import { installLocalApp } from '../../ipc/apps';
@@ -14,7 +15,8 @@ import testrenderer, { preparedStore } from '../../testrenderer';
 import { getAllApps } from '../features/apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
 
-const { successfulInstall } = jest.requireActual('../../ipc/apps');
+const { successfulInstall, failureReadingFile } =
+    jest.requireActual('../../ipc/apps');
 
 jest.mock('../../ipc/apps');
 
@@ -51,14 +53,11 @@ const anotherInstalledApp: LocalApp = {
 };
 
 describe('DropZoneForLocalApps', () => {
-    beforeEach(() => {
+    it('installs the dropped file', async () => {
         jest.mocked(installLocalApp)
             .mockClear()
-            .mockResolvedValueOnce(successfulInstall(installedApp))
-            .mockResolvedValueOnce(successfulInstall(anotherInstalledApp));
-    });
+            .mockResolvedValue(successfulInstall(installedApp));
 
-    it('installs the dropped file', async () => {
         const path = 'testapp-1.2.3.tgz';
         const store = preparedStore();
 
@@ -78,6 +77,8 @@ describe('DropZoneForLocalApps', () => {
     });
 
     it('installs nothing when dropping no file (e.g. only text)', () => {
+        jest.mocked(installLocalApp).mockClear();
+
         testrenderer(<DropZoneForLocalApps />);
 
         fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {
@@ -88,6 +89,11 @@ describe('DropZoneForLocalApps', () => {
     });
 
     it('installs all files that are dropped', async () => {
+        jest.mocked(installLocalApp)
+            .mockClear()
+            .mockResolvedValueOnce(successfulInstall(installedApp))
+            .mockResolvedValueOnce(successfulInstall(anotherInstalledApp));
+
         const path1 = 'one-testapp-1.2.3.tgz';
         const path2 = 'another-testapp-1.2.3.tgz';
         const store = preparedStore();
@@ -108,5 +114,27 @@ describe('DropZoneForLocalApps', () => {
                 expect.arrayContaining([installedApp, anotherInstalledApp])
             );
         });
+    });
+
+    it('shows an error if the archive cannot be unpacked', async () => {
+        const errorMessage = 'Could not unpack the archive';
+        jest.mocked(installLocalApp)
+            .mockClear()
+            .mockResolvedValue(failureReadingFile(errorMessage));
+
+        testrenderer(
+            <>
+                <DropZoneForLocalApps />
+                <ErrorDialog />
+            </>
+        );
+
+        fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {
+            dataTransfer: {
+                files: [{ path: 'testapp-1.2.3.tgz' }],
+            },
+        });
+
+        await screen.findByText(errorMessage);
     });
 });

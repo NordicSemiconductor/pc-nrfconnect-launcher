@@ -6,7 +6,7 @@
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import { join } from 'path';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
     AppSpec,
@@ -167,6 +167,15 @@ export const installLocalApp =
         const installResult = await installLocalAppInMain(appPackagePath);
         if (installResult.type === 'success') {
             dispatch(addLocalApp(installResult.app));
+        } else if (installResult.errorType === 'error reading file') {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Error while installing local app:\n\n${installResult.errorMessage}`
+                )
+            );
+            if (installResult.error != null) {
+                console.warn(describeError(installResult.error));
+            }
         }
     };
 
