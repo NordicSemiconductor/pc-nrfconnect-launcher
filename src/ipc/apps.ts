@@ -154,7 +154,7 @@ export const failureReadingFile = (errorMessage: string, error?: unknown) =>
         error,
     } as const);
 
-export const failureBecauseAppExists = (appPath: string) =>
+export const appExists = (appPath: string) =>
     ({
         type: 'failure',
         errorType: 'error because app exists',
@@ -164,7 +164,7 @@ export const failureBecauseAppExists = (appPath: string) =>
 export type InstallResult =
     | ReturnType<typeof successfulInstall>
     | ReturnType<typeof failureReadingFile>
-    | ReturnType<typeof failureBecauseAppExists>;
+    | ReturnType<typeof appExists>;
 
 type InstallLocalApp = (path: string) => InstallResult;
 

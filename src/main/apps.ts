@@ -11,11 +11,11 @@ import path from 'path';
 import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
+    appExists,
     AppInAppsJson,
     AppSpec,
     AppWithError,
     DownloadableApp,
-    failureBecauseAppExists,
     failureReadingFile,
     InstallResult,
     LocalApp,
@@ -121,7 +121,7 @@ export const installLocalApp = async (
 
     // Check if app exists
     if (await fs.pathExists(appPath)) {
-        return failureBecauseAppExists(appPath);
+        return appExists(appPath);
     }
 
     // Extract app package
@@ -141,40 +141,54 @@ export const installLocalApp = async (
     );
 };
 
+const deleteFileOnSuccess = async (
+    result: InstallResult,
+    tgzFilePath: string
+) => {
+    if (result.type === 'success') {
+        await fileUtil.deleteFile(tgzFilePath);
+    }
+};
+
+const showErrorOnUnreadableFile = (result: InstallResult) => {
+    if (
+        result.type === 'failure' &&
+        result.errorType === 'error reading file'
+    ) {
+        dialog.showErrorBox('Failed to install local app', result.errorMessage);
+    }
+};
+
+const confirmOverwritingOnExistingApp = async (
+    result: InstallResult,
+    tgzFilePath: string
+) => {
+    if (
+        result.type === 'failure' &&
+        result.errorType === 'error because app exists' &&
+        shouldRemoveExistingApp(tgzFilePath, result.appPath)
+    ) {
+        await fs.remove(result.appPath);
+        const resultOfRetry = await installLocalApp(tgzFilePath);
+
+        if (resultOfRetry.type === 'success') {
+            await fileUtil.deleteFile(tgzFilePath);
+        }
+    }
+};
+
 const installAllLocalAppArchives = () => {
     const tgzFiles = fileUtil.listFiles(getAppsLocalDir(), /\.tgz$/);
     return tgzFiles.reduce(
         (prev, tgzFile) =>
             prev.then(async () => {
                 const tgzFilePath = path.join(getAppsLocalDir(), tgzFile);
+
                 const result = await installLocalApp(tgzFilePath);
 
-                if (result.type === 'success') {
-                    await fileUtil.deleteFile(tgzFilePath);
-                }
-
-                if (
-                    result.type === 'failure' &&
-                    result.errorType === 'error reading file'
-                ) {
-                    dialog.showErrorBox(
-                        'Failed to install local app',
-                        result.errorMessage
-                    );
-                }
-
-                if (
-                    result.type === 'failure' &&
-                    result.errorType === 'error because app exists' &&
-                    shouldRemoveExistingApp(tgzFilePath, result.appPath)
-                ) {
-                    await fs.remove(result.appPath);
-                    const resultOfRetry = await installLocalApp(tgzFilePath);
-
-                    if (resultOfRetry.type === 'success') {
-                        await fileUtil.deleteFile(tgzFilePath);
-                    }
-                }
+                await deleteFileOnSuccess(result, tgzFilePath);
+                await confirmOverwritingOnExistingApp(result, tgzFilePath);
+                showErrorOnUnreadableFile(result);
             }),
         Promise.resolve<unknown>(undefined)
     );
