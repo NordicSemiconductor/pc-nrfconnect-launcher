@@ -308,6 +308,14 @@ interface ErroneousAppResult {
 
 type SuccessfulAppResult = UninstalledAppResult | InstalledAppResult;
 
+type AppResult = SuccessfulAppResult | ErroneousAppResult | InvalidAppResult;
+
+const isErroneous = (result: AppResult): result is ErroneousAppResult =>
+    result.status === 'erroneous';
+
+const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
+    result.status === 'success';
+
 const getDownloadableAppsFromSource = async (source: string) => {
     const apps = await downloadableAppsInAppsJson(source);
     const availableUpdates = await fileUtil.readJsonFile<UpdatesJson>(
@@ -358,12 +366,8 @@ export const getDownloadableApps = async () => {
     });
 
     return {
-        apps: appResults
-            .filter(result => result.status === 'success')
-            .map(result => (result as SuccessfulAppResult).value),
-        appsWithErrors: appResults.filter(
-            result => result.status === 'erroneous'
-        ) as AppWithError[],
+        apps: appResults.filter(isSuccessful).map(result => result.value),
+        appsWithErrors: appResults.filter(isErroneous),
     };
 };
 
