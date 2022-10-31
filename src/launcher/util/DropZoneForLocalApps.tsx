@@ -4,25 +4,45 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { installLocalApp } from '../features/apps/appsEffects';
+import { hideDropZone, showDropZone } from '../features/apps/appsSlice';
+import DropZoneInfo from './DropZoneInfo';
 import { useLauncherDispatch } from './hooks';
 
 const DropZoneForLocalApps: React.FC = ({ children }) => {
     const dispatch = useLauncherDispatch();
+    const enterCounter = useRef(0);
 
-    const installAppPackage = (event: React.DragEvent<HTMLDivElement>) => {
+    const installAppPackage: React.DragEventHandler = event => {
         event.preventDefault();
 
         [...event.dataTransfer.files].forEach(file =>
             dispatch(installLocalApp(file.path))
         );
+
+        enterCounter.current = 0;
+        dispatch(hideDropZone());
     };
 
-    const showAddCursor = (event: React.DragEvent<HTMLDivElement>) => {
+    const showAddCursor: React.DragEventHandler = event => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
+    };
+
+    const maybeShowDropZone: React.DragEventHandler = () => {
+        if (enterCounter.current === 0) {
+            dispatch(showDropZone());
+        }
+        enterCounter.current += 1;
+    };
+
+    const maybeHideDropZone: React.DragEventHandler = () => {
+        enterCounter.current -= 1;
+        if (enterCounter.current === 0) {
+            dispatch(hideDropZone());
+        }
     };
 
     return (
@@ -30,8 +50,12 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
             data-testid="app-install-drop-zone"
             onDrop={installAppPackage}
             onDragOver={showAddCursor}
+            onDragEnter={maybeShowDropZone}
+            onDragLeave={maybeHideDropZone}
         >
             {children}
+
+            <DropZoneInfo />
         </div>
     );
 };

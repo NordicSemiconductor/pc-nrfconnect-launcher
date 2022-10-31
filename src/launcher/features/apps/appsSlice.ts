@@ -49,6 +49,7 @@ export type State = {
     isConfirmLaunchDialogVisible: boolean;
     confirmLaunchText?: string;
     confirmLaunchApp?: LaunchableApp;
+    isDropZoneVisible: boolean;
 };
 
 const initialState: State = {
@@ -58,6 +59,7 @@ const initialState: State = {
     isLoadingLocalApps: true,
     isLoadingDownloadableApps: true,
     isConfirmLaunchDialogVisible: false,
+    isDropZoneVisible: false,
 };
 
 const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
@@ -264,6 +266,14 @@ const slice = createSlice({
             state.confirmLaunchText = initialState.confirmLaunchText;
             state.confirmLaunchApp = initialState.confirmLaunchApp;
         },
+
+        // Drop Zone
+        showDropZone(state) {
+            state.isDropZoneVisible = true;
+        },
+        hideDropZone(state) {
+            state.isDropZoneVisible = false;
+        },
     },
 });
 
@@ -275,6 +285,7 @@ export const {
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,
     hideConfirmLaunchDialog,
+    hideDropZone,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
@@ -289,6 +300,7 @@ export const {
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
+    showDropZone,
     updateAllDownloadableApps,
     updateDownloadableApp,
     updateInstallProgress,
@@ -352,3 +364,6 @@ export const isInProgress = (
     (app.progress.isInstalling ||
         app.progress.isUpgrading ||
         app.progress.isRemoving);
+
+export const isDropZoneVisible = (state: RootState) =>
+    state.apps.isDropZoneVisible;
