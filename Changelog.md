@@ -1,5 +1,10 @@
 ## Unreleased
 
+### Added
+
+-   Install local apps by dragging a file containing an app package and dropping
+    it onto the app list.
+
 ### Changed
 
 -   Installing or upgrading an app does not prevent working with other apps in
