@@ -1,0 +1,45 @@
+/*
+ * Copyright (c) 2022 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
+@import '~pc-nrfconnect-shared/styles';
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: #00000080;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: opacity $normal-transition;
+
+    pointer-events: none;
+}
+
+.infobox {
+    width: 80vw;
+    height: 80vh;
+
+    background-color: #ffffffc0;
+
+    border-color: #777;
+    border-style: dashed;
+    border-radius: 3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+
+    font-size: 2rem;
+    text-align: center;
+}

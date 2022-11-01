@@ -13,11 +13,11 @@ import About from './features/about/About';
 import AppList from './features/apps/AppList';
 import UpdateAvailableDialog from './features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog';
+import DropZoneForLocalApps from './features/localAppInstall/DropZoneForLocalApps';
 import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
 import Settings from './features/settings/Settings';
 import UsageDataDialog from './features/usageData/UsageDataDialog';
-import DropZoneForLocalApps from './util/DropZoneForLocalApps';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
 
 const blurActiveElementOnLaunch = () => {

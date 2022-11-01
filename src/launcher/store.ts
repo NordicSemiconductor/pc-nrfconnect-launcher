@@ -11,6 +11,7 @@ import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 import apps from './features/apps/appsSlice';
 import filter from './features/filter/filterSlice';
 import launcherUpdate from './features/launcherUpdate/launcherUpdateSlice';
+import localAppInstall from './features/localAppInstall/localAppInstallSlice';
 import proxyLogin from './features/proxyLogin/proxyLoginSlice';
 import releaseNotesDialog from './features/releaseNotes/releaseNotesDialogSlice';
 import settings from './features/settings/settingsSlice';
@@ -24,6 +25,7 @@ export const reducer = {
     errorDialog,
     filter,
     launcherUpdate,
+    localAppInstall,
     proxyLogin,
     releaseNotesDialog,
     settings,

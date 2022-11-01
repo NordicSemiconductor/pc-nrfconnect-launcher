@@ -14,7 +14,6 @@ import {
     appExists,
     AppInAppsJson,
     AppSpec,
-    AppWithError,
     DownloadableApp,
     failureReadingFile,
     InstallResult,
