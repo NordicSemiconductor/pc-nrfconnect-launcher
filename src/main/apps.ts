@@ -11,11 +11,15 @@ import path from 'path';
 import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
+    appExists,
     AppInAppsJson,
     AppSpec,
     AppWithError,
     DownloadableApp,
+    failureReadingFile,
+    InstallResult,
     LocalApp,
+    successfulInstall,
     UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
@@ -88,11 +92,8 @@ export const downloadAllAppsJsonFiles = async () => {
     await generateUpdatesJsonFiles();
 };
 
-const confirmAndRemoveOldLocalApp = async (
-    tgzFilePath: string,
-    appPath: string
-) => {
-    const { response } = await dialog.showMessageBox({
+const shouldRemoveExistingApp = (tgzFilePath: string, appPath: string) => {
+    const clickedButton = dialog.showMessageBoxSync({
         type: 'question',
         title: 'Existing app directory',
         message:
@@ -102,49 +103,96 @@ const confirmAndRemoveOldLocalApp = async (
         buttons: ['Remove', 'Cancel'],
     });
 
-    if (response === 0) {
-        await fs.remove(appPath);
-    }
+    return clickedButton === 0;
 };
 
 export const installLocalApp = async (
-    tgzFilePath: string,
-    removeArchiveAfterInstall = false
-) => {
+    tgzFilePath: string
+): Promise<InstallResult> => {
+    // Determine app name and path
     const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
-        throw new Error(
-            `Unable to get app name from archive: ${tgzFilePath}. ` +
-                `Expected file name format: {name}-{version}.tgz.`
+        return failureReadingFile(
+            `Unable to get app name from archive: \`${tgzFilePath}\`. ` +
+                `Expected file name format: \`{name}-{version}.tgz.\``
         );
     }
     const appPath = path.join(getAppsLocalDir(), appName);
 
+    // Check if app exists
     if (await fs.pathExists(appPath)) {
-        await confirmAndRemoveOldLocalApp(tgzFilePath, appPath);
+        return appExists(appName, appPath);
     }
 
-    if (!(await fs.pathExists(appPath))) {
-        await mkdir(appPath);
+    // Extract app package
+    await mkdir(appPath);
+    try {
         await fileUtil.extractNpmPackage(appName, tgzFilePath, appPath);
-        if (removeArchiveAfterInstall) {
+    } catch (error) {
+        await fs.remove(appPath);
+        return failureReadingFile(
+            `Unable to extract app archive \`${tgzFilePath}\`.`,
+            error
+        );
+    }
+
+    return successfulInstall(
+        (await infoFromInstalledApp(getAppsLocalDir(), appName)) as LocalApp
+    );
+};
+
+export const removeLocalApp = (appName: string) =>
+    fs.remove(path.join(getAppsLocalDir(), appName));
+
+const deleteFileOnSuccess = async (
+    result: InstallResult,
+    tgzFilePath: string
+) => {
+    if (result.type === 'success') {
+        await fileUtil.deleteFile(tgzFilePath);
+    }
+};
+
+const showErrorOnUnreadableFile = (result: InstallResult) => {
+    if (
+        result.type === 'failure' &&
+        result.errorType === 'error reading file'
+    ) {
+        dialog.showErrorBox('Failed to install local app', result.errorMessage);
+    }
+};
+
+const confirmOverwritingOnExistingApp = async (
+    result: InstallResult,
+    tgzFilePath: string
+) => {
+    if (
+        result.type === 'failure' &&
+        result.errorType === 'error because app exists' &&
+        shouldRemoveExistingApp(tgzFilePath, result.appPath)
+    ) {
+        await fs.remove(result.appPath);
+        const resultOfRetry = await installLocalApp(tgzFilePath);
+
+        if (resultOfRetry.type === 'success') {
             await fileUtil.deleteFile(tgzFilePath);
         }
     }
-
-    return infoFromInstalledApp(
-        getAppsLocalDir(),
-        appName
-    ) as unknown as LocalApp;
 };
 
 const installAllLocalAppArchives = () => {
     const tgzFiles = fileUtil.listFiles(getAppsLocalDir(), /\.tgz$/);
     return tgzFiles.reduce(
         (prev, tgzFile) =>
-            prev.then(() =>
-                installLocalApp(path.join(getAppsLocalDir(), tgzFile), true)
-            ),
+            prev.then(async () => {
+                const tgzFilePath = path.join(getAppsLocalDir(), tgzFile);
+
+                const result = await installLocalApp(tgzFilePath);
+
+                await deleteFileOnSuccess(result, tgzFilePath);
+                await confirmOverwritingOnExistingApp(result, tgzFilePath);
+                showErrorOnUnreadableFile(result);
+            }),
         Promise.resolve<unknown>(undefined)
     );
 };

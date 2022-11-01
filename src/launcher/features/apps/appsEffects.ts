@@ -6,7 +6,7 @@
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import { join } from 'path';
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
     AppSpec,
@@ -19,6 +19,7 @@ import {
     installLocalApp as installLocalAppInMain,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
+    removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
 import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
@@ -42,6 +43,7 @@ import {
     loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
+    removeLocalApp,
     resetAppProgress,
     setAppIconPath,
     setAppReleaseNote,
@@ -164,8 +166,37 @@ const buildErrorMessage = (apps: AppWithError[]) => {
 
 export const installLocalApp =
     (appPackagePath: string) => async (dispatch: AppDispatch) => {
-        const localApp = await installLocalAppInMain(appPackagePath);
-        dispatch(addLocalApp(localApp));
+        const installResult = await installLocalAppInMain(appPackagePath);
+        if (installResult.type === 'success') {
+            dispatch(addLocalApp(installResult.app));
+        } else if (installResult.errorType === 'error reading file') {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Error while installing local app:\n\n${installResult.errorMessage}`
+                )
+            );
+            if (installResult.error != null) {
+                console.warn(describeError(installResult.error));
+            }
+        } else if (installResult.errorType === 'error because app exists') {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `A local app \`${installResult.appName}\` already exists. ` +
+                        `Overwrite it with the content of \`${appPackagePath}\`?`,
+                    {
+                        Overwrite: async () => {
+                            dispatch(ErrorDialogActions.hideDialog());
+                            await removeLocalAppInMain(installResult.appName);
+                            dispatch(removeLocalApp(installResult.appName));
+                            dispatch(installLocalApp(appPackagePath));
+                        },
+                        Cancel: () => {
+                            dispatch(ErrorDialogActions.hideDialog());
+                        },
+                    }
+                )
+            );
+        }
     };
 
 export const installDownloadableApp =
