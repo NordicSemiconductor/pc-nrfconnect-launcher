@@ -6,10 +6,10 @@
 
 import React, { useRef } from 'react';
 
-import { installLocalApp } from '../features/apps/appsEffects';
-import { hideDropZone, showDropZone } from '../features/apps/appsSlice';
+import { useLauncherDispatch } from '../../util/hooks';
+import { installLocalApp } from '../apps/appsEffects';
 import DropZoneInfo from './DropZoneInfo';
-import { useLauncherDispatch } from './hooks';
+import { hideDropZone, showDropZone } from './localAppInstallSlice';
 
 const DropZoneForLocalApps: React.FC = ({ children }) => {
     const dispatch = useLauncherDispatch();

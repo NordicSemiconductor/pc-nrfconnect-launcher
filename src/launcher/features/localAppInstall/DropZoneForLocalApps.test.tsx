@@ -8,17 +8,17 @@ import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { ErrorDialog } from 'pc-nrfconnect-shared';
 
-import type { LocalApp } from '../../ipc/apps';
-import { installLocalApp } from '../../ipc/apps';
-import { LOCAL } from '../../ipc/sources';
-import testrenderer, { preparedStore } from '../../testrenderer';
-import { getAllApps } from '../features/apps/appsSlice';
+import type { LocalApp } from '../../../ipc/apps';
+import { installLocalApp } from '../../../ipc/apps';
+import { LOCAL } from '../../../ipc/sources';
+import testrenderer, { preparedStore } from '../../../testrenderer';
+import { getAllApps } from '../apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
 
 const { appExists, failureReadingFile, successfulInstall } =
-    jest.requireActual('../../ipc/apps');
+    jest.requireActual('../../../ipc/apps');
 
-jest.mock('../../ipc/apps');
+jest.mock('../../../ipc/apps');
 
 const installedApp: LocalApp = {
     name: 'local',

@@ -8,7 +8,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { classNames } from 'pc-nrfconnect-shared';
 
-import { isDropZoneVisible } from '../features/apps/appsSlice';
+import { isDropZoneVisible } from './localAppInstallSlice';
 
 import styles from './dropZoneInfo.module.scss';
 
