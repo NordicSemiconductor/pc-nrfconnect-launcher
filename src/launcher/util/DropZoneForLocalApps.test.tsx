@@ -35,9 +35,7 @@ describe('DropZoneForLocalApps', () => {
     it('installs the dropped file', async () => {
         const path = 'testapp-1.2.3.tgz';
         const store = preparedStore();
-        (
-            installLocalApp as jest.MockedFunction<typeof installLocalApp>
-        ).mockResolvedValueOnce(installedApp);
+        jest.mocked(installLocalApp).mockResolvedValueOnce(installedApp);
 
         testrenderer(<DropZoneForLocalApps />, store);
 

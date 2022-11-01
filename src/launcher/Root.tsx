@@ -11,7 +11,6 @@ import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
 
 import About from './features/about/About';
 import AppList from './features/apps/AppList';
-import ConfirmLaunchDialog from './features/apps/ConfirmLaunchDialog';
 import UpdateAvailableDialog from './features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog';
 import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
@@ -84,7 +83,6 @@ export default () => {
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
             <UsageDataDialog />
-            <ConfirmLaunchDialog />
             <ProxyLoginDialog />
             <ProxyErrorDialog />
         </ErrorBoundaryLauncher>

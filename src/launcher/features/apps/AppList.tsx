@@ -14,6 +14,7 @@ import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
 import { getAllApps } from './appsSlice';
+import ConfirmLaunchDialog from './ConfirmLaunchDialog';
 
 const sortByStateAndName = (appA: AppType, appB: AppType) => {
     const cmpInstalled =
@@ -40,6 +41,7 @@ export default () => {
                 ))}
             </WithScrollbarContainer>
 
+            <ConfirmLaunchDialog />
             <ReleaseNotesDialog />
         </>
     );
