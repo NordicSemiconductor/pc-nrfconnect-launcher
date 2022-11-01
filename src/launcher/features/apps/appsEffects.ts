@@ -16,6 +16,7 @@ import {
     getDownloadableApps,
     getLocalApps,
     installDownloadableApp as installDownloadableAppInMain,
+    installLocalApp as installLocalAppInMain,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
 } from '../../../ipc/apps';
@@ -31,6 +32,7 @@ import {
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
+    addLocalApp,
     installDownloadableAppStarted,
     installDownloadableAppSuccess,
     loadDownloadableAppsError,
@@ -159,6 +161,12 @@ const buildErrorMessage = (apps: AppWithError[]) => {
     const paths = apps.map(app => `* *${app.path}*\n\n`).join('');
     return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
 };
+
+export const installLocalApp =
+    (appPackagePath: string) => async (dispatch: AppDispatch) => {
+        const localApp = await installLocalAppInMain(appPackagePath);
+        dispatch(addLocalApp(localApp));
+    };
 
 export const installDownloadableApp =
     (app: AppSpec) => (dispatch: AppDispatch) => {

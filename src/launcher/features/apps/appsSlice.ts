@@ -106,6 +106,13 @@ const slice = createSlice({
         loadLocalAppsError(state) {
             state.isLoadingLocalApps = false;
         },
+        addLocalApp(state, { payload: newApp }: PayloadAction<LocalApp>) {
+            const oldAppsWithoutNewApp = state.localApps.filter(
+                app => app.name !== newApp.name
+            );
+
+            state.localApps = [...oldAppsWithoutNewApp, newApp];
+        },
 
         // Load Downloadable apps
         loadDownloadableAppsStarted(state) {
@@ -262,6 +269,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
+    addLocalApp,
     downloadLatestAppInfoError,
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,

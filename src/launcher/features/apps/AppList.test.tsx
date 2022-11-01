@@ -15,7 +15,7 @@ import {
     UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
-import render, { createPreparedStore } from '../../../testrenderer';
+import render, { preparedStore } from '../../../testrenderer';
 import { setAllShownSources } from '../filter/filterSlice';
 import AppList from './AppList';
 import {
@@ -174,7 +174,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={createPreparedStore([
+                store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
                     updateAllDownloadableApps([uninstalledApp]),
                 ])}
@@ -197,7 +197,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={createPreparedStore([
+                store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
                     updateAllDownloadableApps([installedApp]),
                 ])}
@@ -222,7 +222,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={createPreparedStore([
+                store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
                     updateAllDownloadableApps([installedApp]),
                 ])}
