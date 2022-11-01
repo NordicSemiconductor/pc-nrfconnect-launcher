@@ -10,11 +10,6 @@
 -   Installing or upgrading an app does not prevent working with other apps in
     the list of apps any longer.
 
-### Removed
-
--   Removed pc-ble-driver as the Bluetooth Low Energy app now contains it
-    itself.
-
 ## 3.12.1 - 2022-09-16
 
 This version is released only for macOS.
