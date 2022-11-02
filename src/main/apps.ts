@@ -22,6 +22,7 @@ import {
     UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
+import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL } from '../ipc/sources';
 import {
     getAppsExternalDir,
@@ -430,12 +431,27 @@ export const getDownloadableApps = async () => {
     };
 };
 
-export const getLocalApps = () => {
-    const localAppPromises = fileUtil
-        .listDirectories(getAppsLocalDir())
-        .map(name => infoFromInstalledApp(getAppsLocalDir(), name));
+const consistentAppAndDirectoryName = (app: LocalApp) =>
+    app.name === path.basename(app.path);
 
-    return Promise.all(localAppPromises as Promise<LocalApp>[]);
+export const getLocalApps = async () => {
+    const localApps = (await Promise.all(
+        fileUtil
+            .listDirectories(getAppsLocalDir())
+            .map(name => infoFromInstalledApp(getAppsLocalDir(), name))
+    )) as LocalApp[];
+
+    localApps
+        .filter(app => !consistentAppAndDirectoryName(app))
+        .forEach(app => {
+            showErrorDialog(
+                `The local app at the path \`${app.path}\` has the name ` +
+                    `\`${app.name}\`, which does not match the directory. ` +
+                    `Not showing this app.`
+            );
+        });
+
+    return localApps.filter(consistentAppAndDirectoryName);
 };
 
 export const removeDownloadableApp = async (app: AppSpec) => {
