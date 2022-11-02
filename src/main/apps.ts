@@ -22,6 +22,7 @@ import {
     UninstalledDownloadableApp,
     UnversionedDownloadableApp,
 } from '../ipc/apps';
+import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL } from '../ipc/sources';
 import {
     getAppsExternalDir,
@@ -135,9 +136,21 @@ export const installLocalApp = async (
         );
     }
 
-    return successfulInstall(
-        (await infoFromInstalledApp(getAppsLocalDir(), appName)) as LocalApp
-    );
+    const app = (await infoFromInstalledApp(
+        getAppsLocalDir(),
+        appName
+    )) as LocalApp;
+
+    if (app.name !== appName) {
+        await fs.remove(appPath);
+        return failureReadingFile(
+            `According to the filename \`${tgzFilePath}\`, the app should ` +
+                `be called \`${appName}\`, but internally it is called ` +
+                `\`${app.name}\`.`
+        );
+    }
+
+    return successfulInstall(app);
 };
 
 export const removeLocalApp = (appName: string) =>
@@ -418,12 +431,27 @@ export const getDownloadableApps = async () => {
     };
 };
 
-export const getLocalApps = () => {
-    const localAppPromises = fileUtil
-        .listDirectories(getAppsLocalDir())
-        .map(name => infoFromInstalledApp(getAppsLocalDir(), name));
+const consistentAppAndDirectoryName = (app: LocalApp) =>
+    app.name === path.basename(app.path);
 
-    return Promise.all(localAppPromises as Promise<LocalApp>[]);
+export const getLocalApps = async () => {
+    const localApps = (await Promise.all(
+        fileUtil
+            .listDirectories(getAppsLocalDir())
+            .map(name => infoFromInstalledApp(getAppsLocalDir(), name))
+    )) as LocalApp[];
+
+    localApps
+        .filter(app => !consistentAppAndDirectoryName(app))
+        .forEach(app => {
+            showErrorDialog(
+                `The local app at the path \`${app.path}\` has the name ` +
+                    `\`${app.name}\`, which does not match the directory. ` +
+                    `Not showing this app.`
+            );
+        });
+
+    return localApps.filter(consistentAppAndDirectoryName);
 };
 
 export const removeDownloadableApp = async (app: AppSpec) => {
