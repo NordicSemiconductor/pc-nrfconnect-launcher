@@ -135,9 +135,21 @@ export const installLocalApp = async (
         );
     }
 
-    return successfulInstall(
-        (await infoFromInstalledApp(getAppsLocalDir(), appName)) as LocalApp
-    );
+    const app = (await infoFromInstalledApp(
+        getAppsLocalDir(),
+        appName
+    )) as LocalApp;
+
+    if (app.name !== appName) {
+        await fs.remove(appPath);
+        return failureReadingFile(
+            `According to the filename \`${tgzFilePath}\`, the app should ` +
+                `be called \`${appName}\`, but internally it is called ` +
+                `\`${app.name}\`.`
+        );
+    }
+
+    return successfulInstall(app);
 };
 
 export const removeLocalApp = (appName: string) =>
