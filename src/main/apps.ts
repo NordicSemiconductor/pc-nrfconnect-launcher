@@ -218,6 +218,22 @@ export const initAppsDirectory = async () => {
     await installAllLocalAppArchives();
 };
 
+const shortcutIconExtension = () => {
+    if (process.platform === 'win32') {
+        return 'ico';
+    }
+    if (process.platform === 'darwin') {
+        return 'icns';
+    }
+    return 'png';
+};
+
+const shortcutIconPath = (resourcesPath: string) => {
+    const result = path.join(resourcesPath, `icon.${shortcutIconExtension()}`);
+
+    return fs.existsSync(result) ? result : undefined;
+};
+
 const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
 
@@ -227,21 +243,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     );
 
     const resourcesPath = path.join(appPath, 'resources');
-
-    let iconPath = path.join(resourcesPath, 'icon.png');
-    if (!fs.existsSync(iconPath)) {
-        iconPath = path.join(appPath, 'icon.png');
-    }
-
-    let shortcutIconPath;
-    if (process.platform === 'win32') {
-        shortcutIconPath = path.join(resourcesPath, 'icon.ico');
-    } else if (process.platform === 'darwin') {
-        shortcutIconPath = path.join(resourcesPath, 'icon.icns');
-    }
-    if (shortcutIconPath == null || !fs.existsSync(shortcutIconPath)) {
-        shortcutIconPath = iconPath;
-    }
+    const iconPath = path.join(resourcesPath, 'icon.png');
 
     const isDownloadable = !appPath.startsWith(getAppsLocalDir());
     const source = isDownloadable
@@ -254,10 +256,8 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         currentVersion: packageJson.version,
         description: packageJson.description,
         path: appPath,
-        iconPath: fs.existsSync(iconPath) ? iconPath : undefined,
-        shortcutIconPath: fs.existsSync(shortcutIconPath)
-            ? shortcutIconPath
-            : undefined,
+        iconPath,
+        shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPath,
         isDownloadable,
         engineVersion: packageJson.engines?.nrfconnect,
         source,
