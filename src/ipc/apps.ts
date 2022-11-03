@@ -58,7 +58,7 @@ export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
 export interface InstalledDownloadableApp
     extends UnversionedDownloadableApp,
         InstalledApp {
-    upgradeAvailable?: boolean;
+    upgradeAvailable: boolean;
     isInstalled: true;
     latestVersion: string;
     releaseNote?: string;

@@ -234,18 +234,12 @@ const shortcutIconPath = (resourcesPath: string) => {
 const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
 
-    const packageJsonPath = path.join(appPath, 'package.json');
     const packageJson = await fileUtil.readJsonFile<PackageJson>(
-        packageJsonPath
+        path.join(appPath, 'package.json')
     );
 
     const resourcesPath = path.join(appPath, 'resources');
     const iconPath = path.join(resourcesPath, 'icon.png');
-
-    const isDownloadable = !appPath.startsWith(getAppsLocalDir());
-    const source = isDownloadable
-        ? path.basename(path.dirname(path.dirname(appPath)))
-        : LOCAL;
 
     return {
         name: packageJson.name,
@@ -255,27 +249,9 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         path: appPath,
         iconPath,
         shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPath,
-        isDownloadable,
         engineVersion: packageJson.engines?.nrfconnect,
-        source,
         repositoryUrl: packageJson.repository?.url,
-        isInstalled: true,
     } as const;
-};
-
-const latestVersionInfo = (
-    downloadableApp: { name: string; currentVersion?: string },
-    availableUpdates: UpdatesJson
-) => {
-    const latestVersion =
-        availableUpdates[downloadableApp.name] ||
-        downloadableApp.currentVersion;
-    return {
-        latestVersion,
-        upgradeAvailable:
-            downloadableApp.currentVersion &&
-            downloadableApp.currentVersion !== latestVersion,
-    };
 };
 
 const downloadableAppsInAppsJson = async (source: string) => {
@@ -304,19 +280,29 @@ const installedAppInfo = async (
     app: UnversionedDownloadableApp,
     source: string,
     availableUpdates: UpdatesJson
-) => {
+): Promise<InstalledAppResult> => {
     const appWithInstalledAppInfo = {
         ...(await infoFromInstalledApp(getNodeModulesDir(source), app.name)),
         ...app,
-    };
+        isInstalled: true,
+        isDownloadable: true,
+    } as const;
+
+    const latestVersion =
+        availableUpdates[appWithInstalledAppInfo.name] ||
+        appWithInstalledAppInfo.currentVersion;
+
+    const upgradeAvailable =
+        appWithInstalledAppInfo.currentVersion !== latestVersion;
 
     return {
         status: 'success',
         value: {
             ...appWithInstalledAppInfo,
-            ...latestVersionInfo(appWithInstalledAppInfo, availableUpdates),
+            latestVersion,
+            upgradeAvailable,
         },
-    } as InstalledAppResult;
+    };
 };
 
 interface UninstalledAppResult {
@@ -341,10 +327,9 @@ const uninstalledAppInfo = async (
             status: 'success',
             value: {
                 ...app,
-                ...latestVersionInfo(app, latestVersions),
-                isDownloadable: true,
+                latestVersion: latestVersions[app.name],
                 isInstalled: false,
-                currentVersion: undefined,
+                isDownloadable: true,
             },
         } as UninstalledAppResult;
     } catch (error) {
@@ -434,6 +419,7 @@ const consistentAppAndDirectoryName = (app: LocalApp) =>
 const getLocalApp = async (appName: string): Promise<LocalApp> => ({
     ...(await infoFromInstalledApp(getAppsLocalDir(), appName)),
     isDownloadable: false,
+    isInstalled: true,
     source: LOCAL,
 });
 
