@@ -136,10 +136,7 @@ export const installLocalApp = async (
         );
     }
 
-    const app = (await infoFromInstalledApp(
-        getAppsLocalDir(),
-        appName
-    )) as LocalApp;
+    const app = await getLocalApp(appName);
 
     if (app.name !== appName) {
         await fs.remove(appPath);
@@ -263,7 +260,7 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
         source,
         repositoryUrl: packageJson.repository?.url,
         isInstalled: true,
-    };
+    } as const;
 };
 
 const latestVersionInfo = (
@@ -434,12 +431,16 @@ export const getDownloadableApps = async () => {
 const consistentAppAndDirectoryName = (app: LocalApp) =>
     app.name === path.basename(app.path);
 
+const getLocalApp = async (appName: string): Promise<LocalApp> => ({
+    ...(await infoFromInstalledApp(getAppsLocalDir(), appName)),
+    isDownloadable: false,
+    source: LOCAL,
+});
+
 export const getLocalApps = async () => {
-    const localApps = (await Promise.all(
-        fileUtil
-            .listDirectories(getAppsLocalDir())
-            .map(name => infoFromInstalledApp(getAppsLocalDir(), name))
-    )) as LocalApp[];
+    const localApps = await Promise.all(
+        fileUtil.listDirectories(getAppsLocalDir()).map(getLocalApp)
+    );
 
     localApps
         .filter(app => !consistentAppAndDirectoryName(app))
