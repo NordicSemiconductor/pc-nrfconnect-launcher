@@ -32,14 +32,14 @@ exports[`ReleaseNotesDialog is displayed for an uninstalled app 1`] = `
             class="modal-title h4"
           >
             Release notes for 
-            uninstalled test app
+            Uninstalled One Test App
           </div>
         </div>
         <div
           class="release-notes modal-body"
         >
           <p>
-            Release notes for uninstalled
+            Release notes for one uninstalled app
           </p>
         </div>
         <div
@@ -96,14 +96,14 @@ exports[`ReleaseNotesDialog is displayed for an up-to-date installed app 1`] = `
             class="modal-title h4"
           >
             Release notes for 
-            installed test app
+            Downloadable Another Test App
           </div>
         </div>
         <div
           class="release-notes modal-body"
         >
           <p>
-            Release notes for installed
+            Release notes for another installed app
           </p>
         </div>
         <div
@@ -154,14 +154,14 @@ exports[`ReleaseNotesDialog is displayed for an updatable app 1`] = `
             class="modal-title h4"
           >
             Release notes for 
-            updatable test app
+            Downloadable Third Test App
           </div>
         </div>
         <div
           class="release-notes modal-body"
         >
           <p>
-            Release notes for updatable
+            Release notes for a third updatable app
           </p>
         </div>
         <div

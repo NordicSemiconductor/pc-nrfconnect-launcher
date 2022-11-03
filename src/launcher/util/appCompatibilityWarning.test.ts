@@ -7,23 +7,14 @@
 import { inspect } from 'util';
 
 import { InstalledApp } from '../../ipc/apps';
+import { createDownloadableTestApp } from '../../testFixtures';
 import appCompatibilityWarning, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,
 } from './appCompatibilityWarning';
 
-const requiringEngine = (engineVersion?: string): InstalledApp => ({
-    engineVersion,
-
-    name: 'test name',
-    displayName: 'test display name',
-    description: 'test description',
-    currentVersion: 'test current version',
-    path: 'test path',
-    iconPath: 'test icon path',
-    shortcutIconPath: 'test shortcut icon path',
-    isInstalled: true,
-});
+const requiringEngine = (engineVersion?: string): InstalledApp =>
+    createDownloadableTestApp(undefined, { engineVersion });
 
 const failingCheck = {
     isDecided: true,

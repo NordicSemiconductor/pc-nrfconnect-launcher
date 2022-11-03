@@ -8,9 +8,8 @@ import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { ErrorDialog } from 'pc-nrfconnect-shared';
 
-import type { LocalApp } from '../../../ipc/apps';
 import { installLocalApp } from '../../../ipc/apps';
-import { LOCAL } from '../../../ipc/sources';
+import { createLocalTestApp } from '../../../testFixtures';
 import testrenderer, { preparedStore } from '../../../testrenderer';
 import { getAllApps } from '../apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
@@ -20,37 +19,8 @@ const { appExists, failureReadingFile, successfulInstall } =
 
 jest.mock('../../../ipc/apps');
 
-const installedApp: LocalApp = {
-    name: 'local',
-    source: LOCAL,
-    displayName: 'Local App',
-    description: 'An local app',
-    isInstalled: true,
-    isDownloadable: false,
-
-    currentVersion: '2.0.0',
-
-    engineVersion: '6.1.0',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-};
-
-const anotherInstalledApp: LocalApp = {
-    name: 'another local',
-    source: LOCAL,
-    displayName: 'Local App',
-    description: 'Another local app',
-    isInstalled: true,
-    isDownloadable: false,
-
-    currentVersion: '2.0.0',
-
-    engineVersion: '6.1.0',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-};
+const installedApp = createLocalTestApp('anApp');
+const anotherInstalledApp = createLocalTestApp('anotherApp');
 
 const drop = (paths: string[]) => {
     fireEvent.drop(screen.getByTestId('app-install-drop-zone'), {

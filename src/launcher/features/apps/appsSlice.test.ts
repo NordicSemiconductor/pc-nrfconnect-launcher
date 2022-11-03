@@ -8,7 +8,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
 import { AppSpec } from '../../../ipc/apps';
-import { LOCAL, OFFICIAL } from '../../../ipc/sources';
+import {
+    createDownloadableTestApp,
+    createLocalTestApp,
+} from '../../../testFixtures';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
     downloadLatestAppInfoError,
@@ -33,60 +36,13 @@ import reducer, {
     upgradeDownloadableAppSuccess,
 } from './appsSlice';
 
-const generalAppProperties = {
-    isInstalled: true,
-    currentVersion: '1.0.0',
-    engineVersion: '6.1.0',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-} as const;
-
-const localApp1 = {
-    name: 'app-a',
-    source: LOCAL,
-    displayName: 'App A',
-    description: 'The local app A',
-    isDownloadable: false,
-
-    ...generalAppProperties,
-} as const;
-
-const localApp2 = {
-    name: 'app-b',
-    source: LOCAL,
-    displayName: 'App B',
-    description: 'The local app B',
-    isDownloadable: false,
-
-    ...generalAppProperties,
-} as const;
+const localApp1 = createLocalTestApp('a');
+const localApp2 = createLocalTestApp('b');
 
 const localApps = [localApp1, localApp2];
 
-const downloadableApp1 = {
-    name: 'app-c',
-    source: OFFICIAL,
-    displayName: 'App C',
-    description: 'The local app C',
-    isDownloadable: true,
-    latestVersion: '1.0.0',
-    url: '',
-
-    ...generalAppProperties,
-} as const;
-
-const downloadableApp2 = {
-    name: 'app-D',
-    source: OFFICIAL,
-    displayName: 'App D',
-    description: 'The local app D',
-    isDownloadable: true,
-    latestVersion: '1.0.0',
-    url: '',
-
-    ...generalAppProperties,
-} as const;
+const downloadableApp1 = createDownloadableTestApp('c');
+const downloadableApp2 = createDownloadableTestApp('d');
 
 const downloadableApps = [downloadableApp1, downloadableApp2];
 

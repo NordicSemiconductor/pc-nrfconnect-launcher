@@ -6,52 +6,27 @@
 
 import React from 'react';
 
-import type {
-    InstalledDownloadableApp,
-    UninstalledDownloadableApp,
-} from '../../../ipc/apps';
+import {
+    createDownloadableTestApp,
+    createUninstalledTestApp,
+} from '../../../testFixtures';
 import render from '../../../testrenderer';
 import { updateAllDownloadableApps } from '../apps/appsSlice';
 import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';
 
-const unimportantAppProperties = {
-    description: 'the test app',
-    isDownloadable: true,
-    source: 'test source',
-    url: 'test url',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-} as const;
-
-const uninstalledApp: UninstalledDownloadableApp = {
-    ...unimportantAppProperties,
-    name: 'uninstalled',
-    displayName: 'uninstalled test app',
-    latestVersion: '2.0.0',
-    releaseNote: 'Release notes for uninstalled',
-    isInstalled: false,
-    currentVersion: undefined,
-};
-const installedApp: InstalledDownloadableApp = {
-    ...unimportantAppProperties,
-    name: 'installed',
-    displayName: 'installed test app',
-    latestVersion: '2.0.0',
+const uninstalledApp = createUninstalledTestApp('one', {
+    releaseNote: 'Release notes for one uninstalled app',
+});
+const installedApp = createDownloadableTestApp('another', {
+    releaseNote: 'Release notes for another installed app',
+});
+const updatableApp = createDownloadableTestApp('third', {
+    releaseNote: 'Release notes for a third updatable app',
     currentVersion: '2.0.0',
-    releaseNote: 'Release notes for installed',
-    isInstalled: true,
-};
-const updatableApp: InstalledDownloadableApp = {
-    ...unimportantAppProperties,
-    name: 'updatable',
-    displayName: 'updatable test app',
-    latestVersion: '2.0.0',
-    currentVersion: '2.1.0',
-    releaseNote: 'Release notes for updatable',
-    isInstalled: true,
-};
+    latestVersion: '2.1.0',
+    upgradeAvailable: false,
+});
 
 const downloadableApps = [uninstalledApp, installedApp, updatableApp];
 

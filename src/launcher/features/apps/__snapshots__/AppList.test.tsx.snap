@@ -22,8 +22,10 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/uninstalled/icon.png"
                 />
               </div>
             </div>
@@ -33,18 +35,19 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               <div
                 class="h8"
               >
-                App B
+                Uninstalled Uninstalled Test App
               </div>
               <div
                 class="small text-muted"
               >
-                appB description
+                The uninstalled uninstalled test app
               </div>
               <div
                 class="small text-muted-more"
               >
                 official
-                
+                , v
+                7.8.9
               </div>
             </div>
             <div
@@ -57,7 +60,7 @@ exports[`AppList should disable buttons and display "Installing..." button text 
                 <button
                   class="btn btn-outline-secondary"
                   disabled=""
-                  title="Install App B"
+                  title="Install Uninstalled Uninstalled Test App"
                   type="button"
                 >
                   Installing...
@@ -117,8 +120,10 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/updateable/icon.png"
                 />
               </div>
             </div>
@@ -128,12 +133,12 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               <div
                 class="h8"
               >
-                App A
+                Downloadable Updateable Test App
               </div>
               <div
                 class="small text-muted"
               >
-                appA description
+                The downloadable updateable test app
               </div>
               <div
                 class="small text-muted-more"
@@ -156,7 +161,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <button
                   class="btn btn-outline-primary"
                   disabled=""
-                  title="Update App A"
+                  title="Update Downloadable Updateable Test App"
                   type="button"
                 >
                   Updating...
@@ -164,7 +169,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <button
                   class="btn btn-primary"
                   disabled=""
-                  title="Open App A"
+                  title="Open Downloadable Updateable Test App"
                   type="button"
                 >
                   Open
@@ -224,8 +229,10 @@ exports[`AppList should disable buttons while removing an app 1`] = `
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/installed/icon.png"
                 />
               </div>
             </div>
@@ -235,19 +242,19 @@ exports[`AppList should disable buttons while removing an app 1`] = `
               <div
                 class="h8"
               >
-                App C
+                Downloadable Installed Test App
               </div>
               <div
                 class="small text-muted"
               >
-                appC description
+                The downloadable installed test app
               </div>
               <div
                 class="small text-muted-more"
               >
                 official
                 , v
-                1.2.3
+                4.5.6
               </div>
             </div>
             <div
@@ -260,7 +267,7 @@ exports[`AppList should disable buttons while removing an app 1`] = `
                 <button
                   class="btn btn-primary"
                   disabled=""
-                  title="Open App C"
+                  title="Open Downloadable Installed Test App"
                   type="button"
                 >
                   Open
@@ -320,8 +327,10 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/installed/icon.png"
                 />
               </div>
             </div>
@@ -331,12 +340,80 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="h8"
               >
-                App A
+                Downloadable Installed Test App
               </div>
               <div
                 class="small text-muted"
               >
-                appA description
+                The downloadable installed test app
+              </div>
+              <div
+                class="small text-muted-more"
+              >
+                official
+                , v
+                4.5.6
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+            >
+              <div
+                class="wide-btns btn-toolbar"
+                role="toolbar"
+              >
+                <button
+                  class="btn btn-primary"
+                  title="Open Downloadable Installed Test App"
+                  type="button"
+                >
+                  Open
+                </button>
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="dropdown-toggle btn btn-outline-primary"
+                    type="button"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list-group-item"
+        >
+          <div
+            class="py-1 row no-gutters"
+          >
+            <div
+              class="d-flex align-items-start my-2 mr-3 col-auto"
+            >
+              <div
+                class="core-app-icon"
+              >
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/updateable/icon.png"
+                />
+              </div>
+            </div>
+            <div
+              class="col"
+            >
+              <div
+                class="h8"
+              >
+                Downloadable Updateable Test App
+              </div>
+              <div
+                class="small text-muted"
+              >
+                The downloadable updateable test app
               </div>
               <div
                 class="small text-muted-more"
@@ -358,14 +435,14 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               >
                 <button
                   class="btn btn-outline-primary"
-                  title="Update App A"
+                  title="Update Downloadable Updateable Test App"
                   type="button"
                 >
                   Update
                 </button>
                 <button
                   class="btn btn-primary"
-                  title="Open App A"
+                  title="Open Downloadable Updateable Test App"
                   type="button"
                 >
                   Open
@@ -396,8 +473,10 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/dummy/icon.png"
                 />
               </div>
             </div>
@@ -407,17 +486,17 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="h8"
               >
-                App C
+                Local Dummy Test App
               </div>
               <div
                 class="small text-muted"
               >
-                appC description
+                The local dummy test app
               </div>
               <div
                 class="small text-muted-more"
               >
-                official
+                local
                 , v
                 1.2.3
               </div>
@@ -431,7 +510,7 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               >
                 <button
                   class="btn btn-primary"
-                  title="Open App C"
+                  title="Open Local Dummy Test App"
                   type="button"
                 >
                   Open
@@ -462,8 +541,10 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="core-app-icon"
               >
-                <div
-                  class="icon-replacement"
+                <img
+                  alt=""
+                  draggable="false"
+                  src="/path/to/uninstalled/icon.png"
                 />
               </div>
             </div>
@@ -473,84 +554,19 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="h8"
               >
-                Local App
+                Uninstalled Uninstalled Test App
               </div>
               <div
                 class="small text-muted"
               >
-                An local app
-              </div>
-              <div
-                class="small text-muted-more"
-              >
-                local
-                , v
-                2.0.0
-              </div>
-            </div>
-            <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
-            >
-              <div
-                class="wide-btns btn-toolbar"
-                role="toolbar"
-              >
-                <button
-                  class="btn btn-primary"
-                  title="Open Local App"
-                  type="button"
-                >
-                  Open
-                </button>
-                <div
-                  class="dropdown"
-                >
-                  <button
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class="dropdown-toggle btn btn-outline-primary"
-                    type="button"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="list-group-item"
-        >
-          <div
-            class="py-1 row no-gutters"
-          >
-            <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
-            >
-              <div
-                class="core-app-icon"
-              >
-                <div
-                  class="icon-replacement"
-                />
-              </div>
-            </div>
-            <div
-              class="col"
-            >
-              <div
-                class="h8"
-              >
-                App B
-              </div>
-              <div
-                class="small text-muted"
-              >
-                appB description
+                The uninstalled uninstalled test app
               </div>
               <div
                 class="small text-muted-more"
               >
                 official
-                
+                , v
+                7.8.9
               </div>
             </div>
             <div
@@ -562,7 +578,7 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               >
                 <button
                   class="btn btn-outline-secondary"
-                  title="Install App B"
+                  title="Install Uninstalled Uninstalled Test App"
                   type="button"
                 >
                   Install

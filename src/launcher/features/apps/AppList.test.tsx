@@ -8,12 +8,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import {
-    InstalledDownloadableApp,
-    LocalApp,
-    UninstalledDownloadableApp,
-} from '../../../ipc/apps';
 import { LOCAL, OFFICIAL } from '../../../ipc/sources';
+import {
+    createDownloadableTestApp,
+    createLocalTestApp,
+    createUninstalledTestApp,
+} from '../../../testFixtures';
 import render, { preparedStore } from '../../../testrenderer';
 import { setAllShownSources } from '../filter/filterSlice';
 import AppList from './AppList';
@@ -46,70 +46,20 @@ jest.mock('../../util/mainConfig', () => () => ({ version: '6.1.0' }));
 
 jest.mock('../../features/apps/appsEffects');
 
-const localApp: LocalApp = {
-    name: 'local',
-    source: LOCAL,
-    displayName: 'Local App',
-    description: 'An local app',
-    isInstalled: true,
-    isDownloadable: false,
+const localApp = createLocalTestApp('dummy', { engineVersion: '6.1.0' });
 
-    currentVersion: '2.0.0',
-
-    engineVersion: '6.1.0',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-};
-
-const updateableApp: InstalledDownloadableApp = {
-    name: 'appA',
-    source: OFFICIAL,
-    displayName: 'App A',
-    description: 'appA description',
-    isInstalled: true,
-    isDownloadable: true,
+const updateableApp = createDownloadableTestApp('updateable', {
     currentVersion: '1.2.3',
     latestVersion: '1.2.4',
     upgradeAvailable: true,
-
     engineVersion: '6.1.0',
-    url: '',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-};
+});
 
-const uninstalledApp: UninstalledDownloadableApp = {
-    name: 'appB',
-    source: OFFICIAL,
-    displayName: 'App B',
-    description: 'appB description',
-    isInstalled: false,
-    isDownloadable: true,
+const uninstalledApp = createUninstalledTestApp('uninstalled');
 
-    url: '',
-    latestVersion: '',
-    iconPath: '',
-    currentVersion: undefined,
-};
-
-const installedApp: InstalledDownloadableApp = {
-    name: 'appC',
-    source: OFFICIAL,
-    displayName: 'App C',
-    description: 'appC description',
-    isInstalled: true,
-    isDownloadable: true,
-    currentVersion: '1.2.3',
-    latestVersion: '1.2.3',
-
+const installedApp = createDownloadableTestApp('installed', {
     engineVersion: '6.1.0',
-    url: '',
-    path: '',
-    iconPath: '',
-    shortcutIconPath: '',
-};
+});
 
 const mockThunk = (thunkToMock: jest.MockableFunction) => {
     jest.mocked(thunkToMock).mockReturnValue({

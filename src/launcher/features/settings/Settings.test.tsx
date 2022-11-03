@@ -6,6 +6,7 @@
 
 import React from 'react';
 
+import { createDownloadableTestApp } from '../../../testFixtures';
 import render from '../../../testrenderer';
 import {
     downloadLatestAppInfoStarted,
@@ -27,19 +28,6 @@ jest.mock('react-bootstrap', () => ({
     ModalBody: 'ModalBody',
     ModalTitle: 'ModalTitle',
 }));
-
-const unimportantAppProperties = {
-    name: 'test-app',
-    displayName: 'test app',
-    description: 'the test app',
-    isDownloadable: true,
-    source: 'test source',
-    url: 'test url',
-    isInstalled: true,
-    path: 'test path',
-    iconPath: 'test icon path',
-    shortcutIconPath: 'test shortcut icon path',
-} as const;
 
 describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {
@@ -75,12 +63,11 @@ describe('SettingsView', () => {
             render(<Settings />, [
                 showUpdateCheckComplete(),
                 updateAllDownloadableApps([
-                    {
+                    createDownloadableTestApp(undefined, {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
                         upgradeAvailable: true,
-                        ...unimportantAppProperties,
-                    },
+                    }),
                 ]),
             ]).baseElement
         ).toMatchSnapshot();
@@ -90,14 +77,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                updateAllDownloadableApps([
-                    {
-                        currentVersion: '1.0.0',
-                        latestVersion: '1.0.0',
-                        upgradeAvailable: false,
-                        ...unimportantAppProperties,
-                    },
-                ]),
+                updateAllDownloadableApps([createDownloadableTestApp()]),
             ]).baseElement
         ).toMatchSnapshot();
     });
