@@ -252,9 +252,9 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
 
     return {
         name: packageJson.name,
-        displayName: packageJson.displayName,
+        displayName: packageJson.displayName ?? packageJson.name,
         currentVersion: packageJson.version,
-        description: packageJson.description,
+        description: packageJson.description ?? '',
         path: appPath,
         iconPath,
         shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPath,
