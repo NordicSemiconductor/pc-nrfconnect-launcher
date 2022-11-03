@@ -154,17 +154,17 @@ export const openDownloadableAppWindow = (
         }
     });
 
-export const openLocalAppWindow = (appName: string) =>
-    apps.getLocalApps().then(appList => {
-        const localApp = appList.find(app => app.name === appName);
-        if (localApp) {
-            openAppWindow(localApp);
-        } else {
-            throw new Error(
-                `Tried to open local app ${appName}, but it is not installed`
-            );
-        }
-    });
+export const openLocalAppWindow = (appName: string) => {
+    const localApp = apps.getLocalApps().find(app => app.name === appName);
+
+    if (localApp) {
+        openAppWindow(localApp);
+    } else {
+        throw new Error(
+            `Tried to open local app ${appName}, but it is not installed`
+        );
+    }
+};
 
 const getAppWindow = (sender: WebContents) => {
     const parentWindow = BrowserWindow.fromWebContents(sender);

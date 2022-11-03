@@ -13,17 +13,17 @@ import targz from 'targz';
 
 import describeError from './describeError';
 
-const readFile = async (filePath: string) => {
+const readFile = (filePath: string) => {
     try {
-        return await fs.readFile(filePath, 'utf8');
+        return fs.readFileSync(filePath, 'utf8');
     } catch (error) {
         throw new Error(`Unable to read ${filePath}: ${describeError(error)}`);
     }
 };
 
-export const readJsonFile = async <T>(filePath: string) => {
+export const readJsonFile = <T>(filePath: string) => {
     try {
-        return <T>JSON.parse(await readFile(filePath));
+        return <T>JSON.parse(readFile(filePath));
     } catch (error) {
         throw new Error(`Unable to parse ${filePath}: ${describeError(error)}`);
     }

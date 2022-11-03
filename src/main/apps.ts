@@ -53,11 +53,11 @@ const store = new Store<{
     apps: { [appUrl: string]: AppData };
 }>({ name: 'pc-nrfconnect-launcher' });
 
-const getInstalledAppNames = async (sourceName: string) => {
+const getInstalledAppNames = (sourceName: string) => {
     const installedAppNames = fileUtil.listDirectories(
         getNodeModulesDir(sourceName)
     );
-    const availableApps = await fileUtil.readJsonFile<AppsJson>(
+    const availableApps = fileUtil.readJsonFile<AppsJson>(
         getAppsJsonPath(sourceName)
     );
     const availableAppNames = Object.keys(availableApps);
@@ -73,7 +73,7 @@ const getInstalledAppNames = async (sourceName: string) => {
  */
 const generateUpdatesJsonFile = async (sourceName: string) => {
     const fileName = getUpdatesJsonPath(sourceName);
-    const installedApps = await getInstalledAppNames(sourceName);
+    const installedApps = getInstalledAppNames(sourceName);
     const latestVersions = await registryApi.getLatestAppVersions(
         installedApps,
         sourceName
@@ -136,7 +136,7 @@ export const installLocalApp = async (
         );
     }
 
-    const app = await getLocalApp(appName);
+    const app = getLocalApp(appName);
 
     if (app.name !== appName) {
         await fs.remove(appPath);
@@ -231,10 +231,10 @@ const shortcutIconPath = (resourcesPath: string) => {
     return fs.existsSync(result) ? result : undefined;
 };
 
-const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
+const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
 
-    const packageJson = await fileUtil.readJsonFile<PackageJson>(
+    const packageJson = fileUtil.readJsonFile<PackageJson>(
         path.join(appPath, 'package.json')
     );
 
@@ -254,10 +254,8 @@ const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = async (source: string) => {
-    const appsJson = await fileUtil.readJsonFile<AppsJson>(
-        getAppsJsonPath(source)
-    );
+const downloadableAppsInAppsJson = (source: string) => {
+    const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
     return Object.entries(appsJson)
         .filter(([name]) => name !== '_source')
@@ -276,13 +274,13 @@ interface InstalledAppResult {
     value: DownloadableApp;
 }
 
-const installedAppInfo = async (
+const installedAppInfo = (
     app: UnversionedDownloadableApp,
     source: string,
     availableUpdates: UpdatesJson
-): Promise<InstalledAppResult> => {
+): InstalledAppResult => {
     const appWithInstalledAppInfo = {
-        ...(await infoFromInstalledApp(getNodeModulesDir(source), app.name)),
+        ...infoFromInstalledApp(getNodeModulesDir(source), app.name),
         ...app,
         isInstalled: true,
         isDownloadable: true,
@@ -358,9 +356,9 @@ const isErroneous = (result: AppResult): result is ErroneousAppResult =>
 const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
     result.status === 'success';
 
-const getDownloadableAppsFromSource = async (source: string) => {
-    const apps = await downloadableAppsInAppsJson(source);
-    const availableUpdates = await fileUtil.readJsonFile<UpdatesJson>(
+const getDownloadableAppsFromSource = (source: string) => {
+    const apps = downloadableAppsInAppsJson(source);
+    const availableUpdates = fileUtil.readJsonFile<UpdatesJson>(
         getUpdatesJsonPath(source)
     );
 
@@ -416,17 +414,17 @@ export const getDownloadableApps = async () => {
 const consistentAppAndDirectoryName = (app: LocalApp) =>
     app.name === path.basename(app.path);
 
-const getLocalApp = async (appName: string): Promise<LocalApp> => ({
-    ...(await infoFromInstalledApp(getAppsLocalDir(), appName)),
+const getLocalApp = (appName: string): LocalApp => ({
+    ...infoFromInstalledApp(getAppsLocalDir(), appName),
     isDownloadable: false,
     isInstalled: true,
     source: LOCAL,
 });
 
-export const getLocalApps = async () => {
-    const localApps = await Promise.all(
-        fileUtil.listDirectories(getAppsLocalDir()).map(getLocalApp)
-    );
+export const getLocalApps = () => {
+    const localApps = fileUtil
+        .listDirectories(getAppsLocalDir())
+        .map(getLocalApp);
 
     localApps
         .filter(app => !consistentAppAndDirectoryName(app))
