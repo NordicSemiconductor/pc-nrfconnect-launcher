@@ -9,8 +9,8 @@ import React from 'react';
 import {
     createDownloadableTestApp,
     createUninstalledTestApp,
-} from '../../../testFixtures';
-import render from '../../../testrenderer';
+} from '../../../test/testFixtures';
+import render from '../../../test/testrenderer';
 import { updateAllDownloadableApps } from '../apps/appsSlice';
 import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';

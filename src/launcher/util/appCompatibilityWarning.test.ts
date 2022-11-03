@@ -7,7 +7,7 @@
 import { inspect } from 'util';
 
 import { InstalledApp } from '../../ipc/apps';
-import { createDownloadableTestApp } from '../../testFixtures';
+import { createDownloadableTestApp } from '../../test/testFixtures';
 import appCompatibilityWarning, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,

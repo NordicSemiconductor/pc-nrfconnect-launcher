@@ -10,8 +10,8 @@ import {
     InstalledDownloadableApp,
     LocalApp,
     UninstalledDownloadableApp,
-} from './ipc/apps';
-import { LOCAL, OFFICIAL } from './ipc/sources';
+} from '../ipc/apps';
+import { LOCAL, OFFICIAL } from '../ipc/sources';
 
 const url = (appName: string) => `http://example.org/apps/${appName}.json`;
 const path = (appName: string) => `/path/to/${appName}`;

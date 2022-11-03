@@ -9,8 +9,8 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { ErrorDialog } from 'pc-nrfconnect-shared';
 
 import { installLocalApp } from '../../../ipc/apps';
-import { createLocalTestApp } from '../../../testFixtures';
-import testrenderer, { preparedStore } from '../../../testrenderer';
+import { createLocalTestApp } from '../../../test/testFixtures';
+import testrenderer, { preparedStore } from '../../../test/testrenderer';
 import { getAllApps } from '../apps/appsSlice';
 import DropZoneForLocalApps from './DropZoneForLocalApps';
 

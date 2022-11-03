@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { createDownloadableTestApp } from '../../../testFixtures';
-import render from '../../../testrenderer';
+import { createDownloadableTestApp } from '../../../test/testFixtures';
+import render from '../../../test/testrenderer';
 import {
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,

@@ -10,7 +10,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
 import { Action } from 'redux';
 
-import { reducer } from './launcher/store';
+import { reducer } from '../launcher/store';
 
 type Store = ReturnType<typeof preparedStore>;
 

@@ -13,8 +13,8 @@ import {
     createDownloadableTestApp,
     createLocalTestApp,
     createUninstalledTestApp,
-} from '../../../testFixtures';
-import render, { preparedStore } from '../../../testrenderer';
+} from '../../../test/testFixtures';
+import render, { preparedStore } from '../../../test/testrenderer';
 import { setAllShownSources } from '../filter/filterSlice';
 import AppList from './AppList';
 import {

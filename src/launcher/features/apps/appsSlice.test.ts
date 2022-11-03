@@ -11,7 +11,7 @@ import { AppSpec } from '../../../ipc/apps';
 import {
     createDownloadableTestApp,
     createLocalTestApp,
-} from '../../../testFixtures';
+} from '../../../test/testFixtures';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
     downloadLatestAppInfoError,
