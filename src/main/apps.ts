@@ -278,27 +278,24 @@ interface InstalledAppResult {
 
 const installedAppInfo = (
     app: AppInAppsJson & AppSpec,
-    source: string,
     availableUpdates: UpdatesJson
 ): InstalledAppResult => {
-    const appWithInstalledAppInfo = {
-        ...infoFromInstalledApp(getNodeModulesDir(source), app.name),
-        ...app,
-        isInstalled: true,
-        isDownloadable: true,
-    } as const;
+    const fromInstalledApp = infoFromInstalledApp(
+        getNodeModulesDir(app.source),
+        app.name
+    );
 
-    const latestVersion =
-        availableUpdates[appWithInstalledAppInfo.name] ||
-        appWithInstalledAppInfo.currentVersion;
-
-    const upgradeAvailable =
-        appWithInstalledAppInfo.currentVersion !== latestVersion;
+    const currentVersion = fromInstalledApp.currentVersion;
+    const latestVersion = availableUpdates[app.name] || currentVersion;
+    const upgradeAvailable = currentVersion !== latestVersion;
 
     return {
         status: 'success',
         value: {
-            ...appWithInstalledAppInfo,
+            ...fromInstalledApp,
+            ...app,
+            isInstalled: true,
+            isDownloadable: true,
             latestVersion,
             upgradeAvailable,
         },
@@ -371,7 +368,7 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
                 const isInstalled = await fs.pathExists(filePath);
 
                 if (isInstalled) {
-                    return installedAppInfo(app, source, availableUpdates);
+                    return installedAppInfo(app, availableUpdates);
                 }
 
                 return uninstalledAppInfo(app);
