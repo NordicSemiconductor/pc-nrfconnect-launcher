@@ -312,20 +312,14 @@ interface InvalidAppResult {
     reason: unknown;
 }
 
-const uninstalledAppInfo = async (
-    app: UnversionedDownloadableApp,
-    source: string
-) => {
+const uninstalledAppInfo = async (app: UnversionedDownloadableApp) => {
     try {
-        const latestVersions = await registryApi.getLatestAppVersions(
-            [app.name],
-            source
-        );
+        const latestVersion = await registryApi.getLatestAppVersion(app);
         return {
             status: 'success',
             value: {
                 ...app,
-                latestVersion: latestVersions[app.name],
+                latestVersion,
                 isInstalled: false,
                 isDownloadable: true,
             },
@@ -373,7 +367,7 @@ const getDownloadableAppsFromSource = (source: string) => {
                     return installedAppInfo(app, source, availableUpdates);
                 }
 
-                return uninstalledAppInfo(app, source);
+                return uninstalledAppInfo(app);
             } catch (error) {
                 return {
                     status: 'erroneous',

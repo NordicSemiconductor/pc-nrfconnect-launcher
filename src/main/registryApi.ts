@@ -86,6 +86,9 @@ export const downloadTarball = async (
     return tarballFile;
 };
 
+export const getLatestAppVersion = async ({ name, source }: AppSpec) =>
+    (await getAppInfo({ name, source }))['dist-tags'].latest;
+
 /*
  * Get the latest package versions for the given packages. Returns
  * an object with package names as keys, and their latest versions
@@ -97,7 +100,7 @@ export const getLatestAppVersions = async (
 ) => {
     const nameVersionPairPromises = appNames.map(async name => [
         name,
-        (await getAppInfo({ name, source }))['dist-tags'].latest,
+        await getLatestAppVersion({ name, source }),
     ]);
 
     return Object.fromEntries(await Promise.all(nameVersionPairPromises));
