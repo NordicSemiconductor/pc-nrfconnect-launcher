@@ -91,20 +91,14 @@ export const downloadTarball = async (
  * an object with package names as keys, and their latest versions
  * as values. E.g: { foo: "1.2.3", bar: "2.3.4" }.
  */
-export const getLatestAppVersions = (appNames: string[], source: string) => {
-    const promises = appNames.map(async name => ({
-        [name]: (await getAppInfo({ name, source }))['dist-tags'].latest,
-    }));
-    // Performing the network requests in sequence in case proxy auth is
-    // required. When running in sequence, the first request will require
-    // authentication, while subsequent requests use cached credentials.
-    return promises.reduce(
-        (prev, curr) =>
-            prev.then(packages =>
-                curr.then(packageVersion =>
-                    Object.assign(packages, packageVersion)
-                )
-            ),
-        Promise.resolve({})
-    );
+export const getLatestAppVersions = async (
+    appNames: string[],
+    source: string
+) => {
+    const nameVersionPairPromises = appNames.map(async name => [
+        name,
+        (await getAppInfo({ name, source }))['dist-tags'].latest,
+    ]);
+
+    return Object.fromEntries(await Promise.all(nameVersionPairPromises));
 };
