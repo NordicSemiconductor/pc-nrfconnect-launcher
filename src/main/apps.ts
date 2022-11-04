@@ -20,10 +20,9 @@ import {
     LocalApp,
     successfulInstall,
     UninstalledDownloadableApp,
-    UnversionedDownloadableApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { LOCAL } from '../ipc/sources';
+import { LOCAL, SourceName } from '../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsJsonPath,
@@ -254,19 +253,22 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = (source: string) => {
+const downloadableAppsInAppsJson = (
+    source: string
+): (AppInAppsJson & AppSpec)[] => {
     const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
+    const isAnAppEntry = (
+        entry: [string, unknown]
+    ): entry is [string, AppInAppsJson] => entry[0] !== '_source';
+
     return Object.entries(appsJson)
-        .filter(([name]) => name !== '_source')
-        .map(
-            ([name, app]) =>
-                ({
-                    name,
-                    source,
-                    ...(app as AppInAppsJson),
-                } as UnversionedDownloadableApp)
-        );
+        .filter(isAnAppEntry)
+        .map(([name, app]) => ({
+            name,
+            source,
+            ...app,
+        }));
 };
 
 interface InstalledAppResult {
@@ -275,7 +277,7 @@ interface InstalledAppResult {
 }
 
 const installedAppInfo = (
-    app: UnversionedDownloadableApp,
+    app: AppInAppsJson & AppSpec,
     source: string,
     availableUpdates: UpdatesJson
 ): InstalledAppResult => {
@@ -312,9 +314,12 @@ interface InvalidAppResult {
     reason: unknown;
 }
 
-const uninstalledAppInfo = async (app: UnversionedDownloadableApp) => {
+const uninstalledAppInfo = async (
+    app: AppInAppsJson & AppSpec
+): Promise<UninstalledAppResult | InvalidAppResult> => {
     try {
         const latestVersion = await registryApi.getLatestAppVersion(app);
+
         return {
             status: 'success',
             value: {
@@ -322,13 +327,14 @@ const uninstalledAppInfo = async (app: UnversionedDownloadableApp) => {
                 latestVersion,
                 isInstalled: false,
                 isDownloadable: true,
-            },
-        } as UninstalledAppResult;
+                currentVersion: undefined,
+            } as const,
+        };
     } catch (error) {
         return {
             status: 'invalid',
             reason: error,
-        } as InvalidAppResult;
+        };
     }
 };
 
@@ -350,11 +356,12 @@ const isErroneous = (result: AppResult): result is ErroneousAppResult =>
 const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
     result.status === 'success';
 
-const getDownloadableAppsFromSource = (source: string) => {
+const getUpdates = (source: SourceName) =>
+    fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
+
+const getDownloadableAppsFromSource = (source: SourceName) => {
     const apps = downloadableAppsInAppsJson(source);
-    const availableUpdates = fileUtil.readJsonFile<UpdatesJson>(
-        getUpdatesJsonPath(source)
-    );
+    const availableUpdates = getUpdates(source);
 
     return Promise.all(
         apps.map(async app => {

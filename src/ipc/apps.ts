@@ -24,7 +24,7 @@ interface BaseApp {
     displayName: string;
     description: string;
     isInstalled: boolean;
-    iconPath: string;
+    iconPath?: string;
 }
 
 export interface InstalledApp extends BaseApp {
@@ -37,29 +37,25 @@ export interface InstalledApp extends BaseApp {
 
 export interface LocalApp extends InstalledApp {
     source: typeof LOCAL;
+    iconPath: string;
     isDownloadable: false;
     isInstalled: true;
 }
-
-export interface UnversionedDownloadableApp extends BaseApp {
+export interface UninstalledDownloadableApp extends BaseApp, AppInAppsJson {
     isDownloadable: true;
-    source: SourceName;
-    homepage?: string;
-    url: string;
-}
-
-export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
     isInstalled: false;
+    source: SourceName;
     latestVersion: string;
     releaseNote?: string;
     currentVersion: undefined;
 }
 
-export interface InstalledDownloadableApp
-    extends UnversionedDownloadableApp,
-        InstalledApp {
-    upgradeAvailable: boolean;
+export interface InstalledDownloadableApp extends InstalledApp, AppInAppsJson {
+    isDownloadable: true;
     isInstalled: true;
+    source: SourceName;
+    iconPath: string;
+    upgradeAvailable: boolean;
     latestVersion: string;
     releaseNote?: string;
 }
