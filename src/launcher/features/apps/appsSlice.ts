@@ -63,6 +63,9 @@ const initialState: State = {
 const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
     app.source === specOfSoughtApp.source && app.name === specOfSoughtApp.name;
 
+const notEqualsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
+    !equalsSpec(specOfSoughtApp)(app);
+
 const updateApp = <AppType extends App>(
     specOfAppToUpdate: AppSpec,
     apps: AppType[],
@@ -134,11 +137,12 @@ const slice = createSlice({
             { payload: updatedApp }: PayloadAction<DownloadableApp>
         ) {
             state.isLoadingDownloadableApps = false;
-            state.downloadableApps = state.downloadableApps.map(app =>
-                equalsSpec(updatedApp)(app)
-                    ? { ...updatedApp, progress: notInProgress() }
-                    : app
-            );
+            state.downloadableApps = state.downloadableApps
+                .filter(notEqualsSpec(updatedApp))
+                .concat({
+                    ...updatedApp,
+                    progress: notInProgress(),
+                });
         },
         loadDownloadableAppsError(state) {
             state.isLoadingDownloadableApps = false;
@@ -206,12 +210,6 @@ const slice = createSlice({
                 app.progress.isInstalling = true;
             });
         },
-        installDownloadableAppSuccess(
-            state,
-            { payload: installedApp }: PayloadAction<AppSpec>
-        ) {
-            resetProgress(installedApp, state.downloadableApps);
-        },
 
         // Upgrade downloadable app
         upgradeDownloadableAppStarted(
@@ -221,12 +219,6 @@ const slice = createSlice({
             updateApp(appToUpgrade, state.downloadableApps, app => {
                 app.progress.isUpgrading = true;
             });
-        },
-        upgradeDownloadableAppSuccess(
-            state,
-            { payload: updatedApp }: PayloadAction<AppSpec>
-        ) {
-            resetProgress(updatedApp, state.downloadableApps);
         },
 
         // Remove downloadable app
@@ -276,7 +268,6 @@ export const {
     downloadLatestAppInfoSuccess,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
     loadLocalAppsError,
@@ -293,7 +284,6 @@ export const {
     updateDownloadableApp,
     updateInstallProgress,
     upgradeDownloadableAppStarted,
-    upgradeDownloadableAppSuccess,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {

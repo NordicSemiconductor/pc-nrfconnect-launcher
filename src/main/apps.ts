@@ -295,6 +295,7 @@ const installedAppInfo = (
             ...app,
             isInstalled: true,
             isDownloadable: true,
+            currentVersion,
             latestVersion,
             upgradeAvailable,
         },

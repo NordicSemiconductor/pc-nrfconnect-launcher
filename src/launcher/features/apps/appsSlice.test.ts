@@ -20,7 +20,6 @@ import reducer, {
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
     loadLocalAppsError,
@@ -32,8 +31,8 @@ import reducer, {
     showConfirmLaunchDialog,
     State,
     updateAllDownloadableApps,
+    updateDownloadableApp,
     upgradeDownloadableAppStarted,
-    upgradeDownloadableAppSuccess,
 } from './appsSlice';
 
 const localApp1 = createLocalTestApp('a');
@@ -137,11 +136,11 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be installing app after installDownloadableAppSuccessAction has been dispatched', () => {
+    it('should not be installing app after updateDownloadableApp has been dispatched', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
-            installDownloadableAppSuccess(downloadableApp1),
+            updateDownloadableApp(downloadableApp1),
         ]);
         expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
             false
@@ -199,11 +198,11 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be upgrading app after upgradeDownloadableAppSuccessAction has been dispatched', () => {
+    it('should not be upgrading app after updateDownloadableApp has been dispatched', () => {
         const state = dispatchTo(reducer, [
             updateAllDownloadableApps(downloadableApps),
             upgradeDownloadableAppStarted(downloadableApp1),
-            upgradeDownloadableAppSuccess(downloadableApp1),
+            updateDownloadableApp(downloadableApp1),
         ]);
         expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
             false
