@@ -277,7 +277,7 @@ interface InstalledAppResult {
 
 const installedAppInfo = (
     app: DownloadableAppInfo,
-    availableUpdates: UpdatesJson
+    availableUpdates: UpdatesJson = getUpdates(app.source)
 ): InstalledAppResult => {
     const fromInstalledApp = infoFromInstalledApp(
         getNodeModulesDir(app.source),
@@ -451,7 +451,10 @@ export const removeDownloadableApp = async (app: AppSpec) => {
     return fs.remove(tmpDir);
 };
 
-export const installDownloadableApp = async (app: AppSpec, version: string) => {
+export const installDownloadableApp = async (
+    app: DownloadableAppInfo,
+    version: string
+) => {
     const { name, source } = app;
 
     const destinationDir = getAppsRootDir(source);
@@ -468,6 +471,11 @@ export const installDownloadableApp = async (app: AppSpec, version: string) => {
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
     await fileUtil.deleteFile(tgzFilePath);
+
+    return {
+        ...app,
+        ...installedAppInfo(app).value,
+    };
 };
 
 const migrateStoreIfNeeded = () => {

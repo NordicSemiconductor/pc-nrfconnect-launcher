@@ -12,6 +12,7 @@ import {
     AppSpec,
     AppWithError,
     DownloadableApp,
+    DownloadableAppInfo,
     downloadReleaseNotes,
     getDownloadableApps,
     getLocalApps,
@@ -200,7 +201,7 @@ export const installLocalApp =
     };
 
 export const installDownloadableApp =
-    (app: AppSpec) => (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfo) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         dispatch(installDownloadableAppStarted(app));
 
@@ -238,7 +239,7 @@ export const removeDownloadableApp =
     };
 
 export const upgradeDownloadableApp =
-    (app: AppSpec, version: string) => (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPGRADE_APP, app.source, app.name);
         dispatch(upgradeDownloadableAppStarted(app));
 

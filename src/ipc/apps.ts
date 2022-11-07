@@ -132,7 +132,10 @@ export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
 );
 
 // installDownloadableApp
-type InstallDownloadableApp = (app: AppSpec, version: string) => void;
+type InstallDownloadableApp = (
+    app: DownloadableAppInfo,
+    version: string
+) => DownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(
     channel.installDownloadableApp
