@@ -12,19 +12,21 @@ export interface AppSpec {
     source: SourceName;
 }
 
-export interface AppInAppsJson {
+export interface DownloadableAppInfoBase {
     displayName: string;
     description: string;
     url: string;
     homepage?: string;
 }
 
+export interface DownloadableAppInfo extends AppSpec, DownloadableAppInfoBase {}
+
 interface BaseApp {
     name: string;
     displayName: string;
     description: string;
     isInstalled: boolean;
-    iconPath: string;
+    iconPath?: string;
 }
 
 export interface InstalledApp extends BaseApp {
@@ -37,29 +39,29 @@ export interface InstalledApp extends BaseApp {
 
 export interface LocalApp extends InstalledApp {
     source: typeof LOCAL;
+    iconPath: string;
     isDownloadable: false;
     isInstalled: true;
 }
-
-export interface UnversionedDownloadableApp extends BaseApp {
+export interface UninstalledDownloadableApp
+    extends BaseApp,
+        DownloadableAppInfo {
     isDownloadable: true;
-    source: SourceName;
-    homepage?: string;
-    url: string;
-}
-
-export interface UninstalledDownloadableApp extends UnversionedDownloadableApp {
     isInstalled: false;
+    source: SourceName;
     latestVersion: string;
     releaseNote?: string;
     currentVersion: undefined;
 }
 
 export interface InstalledDownloadableApp
-    extends UnversionedDownloadableApp,
-        InstalledApp {
-    upgradeAvailable?: boolean;
+    extends InstalledApp,
+        DownloadableAppInfo {
+    isDownloadable: true;
     isInstalled: true;
+    source: SourceName;
+    iconPath: string;
+    upgradeAvailable: boolean;
     latestVersion: string;
     releaseNote?: string;
 }
@@ -130,7 +132,10 @@ export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
 );
 
 // installDownloadableApp
-type InstallDownloadableApp = (app: AppSpec, version: string) => void;
+type InstallDownloadableApp = (
+    app: DownloadableAppInfo,
+    version: string
+) => DownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(
     channel.installDownloadableApp

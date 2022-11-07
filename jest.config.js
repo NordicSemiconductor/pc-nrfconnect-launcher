@@ -8,6 +8,6 @@ const sharedConfig = require('pc-nrfconnect-shared/config/jest.config')([
     'packageJson',
 ]);
 
-sharedConfig.setupFilesAfterEnv.push('<rootDir>/src/setupMocks.js');
+sharedConfig.setupFilesAfterEnv.push('<rootDir>/src/test/setupMocks.js');
 
 module.exports = sharedConfig;

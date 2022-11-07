@@ -12,6 +12,7 @@ import {
     AppSpec,
     AppWithError,
     DownloadableApp,
+    DownloadableAppInfo,
     downloadReleaseNotes,
     getDownloadableApps,
     getLocalApps,
@@ -35,7 +36,6 @@ import {
 import {
     addLocalApp,
     installDownloadableAppStarted,
-    installDownloadableAppSuccess,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
     loadLocalAppsError,
@@ -51,7 +51,6 @@ import {
     updateAllDownloadableApps,
     updateDownloadableApp,
     upgradeDownloadableAppStarted,
-    upgradeDownloadableAppSuccess,
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
@@ -111,28 +110,6 @@ export const fetchInfoForAllDownloadableApps =
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
-        }
-    };
-
-export const fetchInfoForSingleDownloadableApp =
-    (appToUpdate: AppSpec) => async (dispatch: AppDispatch) => {
-        dispatch(loadDownloadableAppsStarted());
-        const { apps } = await getDownloadableApps();
-
-        const updatedApp = apps.find(
-            app =>
-                app.source === appToUpdate.source &&
-                app.name === appToUpdate.name
-        );
-
-        if (updatedApp != null) {
-            dispatch(updateDownloadableApp(updatedApp));
-            downloadSingleReleaseNotes(dispatch, updatedApp);
-        } else {
-            dispatch(loadDownloadableAppsError());
-            console.error(
-                `No app ${appToUpdate} found in the fought app infos though there is supposed to be one.`
-            );
         }
     };
 
@@ -200,14 +177,13 @@ export const installLocalApp =
     };
 
 export const installDownloadableApp =
-    (app: AppSpec) => (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfo) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         dispatch(installDownloadableAppStarted(app));
 
         installDownloadableAppInMain(app, 'latest')
-            .then(() => {
-                dispatch(installDownloadableAppSuccess(app));
-                dispatch(fetchInfoForSingleDownloadableApp(app));
+            .then(installedApp => {
+                dispatch(updateDownloadableApp(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));
@@ -238,14 +214,13 @@ export const removeDownloadableApp =
     };
 
 export const upgradeDownloadableApp =
-    (app: AppSpec, version: string) => (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPGRADE_APP, app.source, app.name);
         dispatch(upgradeDownloadableAppStarted(app));
 
         return installDownloadableAppInMain(app, version)
-            .then(() => {
-                dispatch(upgradeDownloadableAppSuccess(app));
-                dispatch(fetchInfoForSingleDownloadableApp(app));
+            .then(installedApp => {
+                dispatch(updateDownloadableApp(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));

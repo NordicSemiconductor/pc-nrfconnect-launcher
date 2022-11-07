@@ -12,18 +12,18 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     appExists,
-    AppInAppsJson,
     AppSpec,
     DownloadableApp,
+    DownloadableAppInfo,
+    DownloadableAppInfoBase,
     failureReadingFile,
     InstallResult,
     LocalApp,
     successfulInstall,
     UninstalledDownloadableApp,
-    UnversionedDownloadableApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { LOCAL } from '../ipc/sources';
+import { LOCAL, SourceName } from '../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsJsonPath,
@@ -53,11 +53,11 @@ const store = new Store<{
     apps: { [appUrl: string]: AppData };
 }>({ name: 'pc-nrfconnect-launcher' });
 
-const getInstalledAppNames = async (sourceName: string) => {
+const getInstalledAppNames = (sourceName: string) => {
     const installedAppNames = fileUtil.listDirectories(
         getNodeModulesDir(sourceName)
     );
-    const availableApps = await fileUtil.readJsonFile<AppsJson>(
+    const availableApps = fileUtil.readJsonFile<AppsJson>(
         getAppsJsonPath(sourceName)
     );
     const availableAppNames = Object.keys(availableApps);
@@ -73,7 +73,7 @@ const getInstalledAppNames = async (sourceName: string) => {
  */
 const generateUpdatesJsonFile = async (sourceName: string) => {
     const fileName = getUpdatesJsonPath(sourceName);
-    const installedApps = await getInstalledAppNames(sourceName);
+    const installedApps = getInstalledAppNames(sourceName);
     const latestVersions = await registryApi.getLatestAppVersions(
         installedApps,
         sourceName
@@ -136,10 +136,7 @@ export const installLocalApp = async (
         );
     }
 
-    const app = (await infoFromInstalledApp(
-        getAppsLocalDir(),
-        appName
-    )) as LocalApp;
+    const app = getLocalApp(appName);
 
     if (app.name !== appName) {
         await fs.remove(appPath);
@@ -218,84 +215,59 @@ export const initAppsDirectory = async () => {
     await installAllLocalAppArchives();
 };
 
-const infoFromInstalledApp = async (appParendDir: string, appName: string) => {
+const shortcutIconExtension = () => {
+    if (process.platform === 'win32') {
+        return 'ico';
+    }
+    if (process.platform === 'darwin') {
+        return 'icns';
+    }
+    return 'png';
+};
+
+const shortcutIconPath = (resourcesPath: string) => {
+    const result = path.join(resourcesPath, `icon.${shortcutIconExtension()}`);
+
+    return fs.existsSync(result) ? result : undefined;
+};
+
+const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
 
-    const packageJsonPath = path.join(appPath, 'package.json');
-    const packageJson = await fileUtil.readJsonFile<PackageJson>(
-        packageJsonPath
+    const packageJson = fileUtil.readJsonFile<PackageJson>(
+        path.join(appPath, 'package.json')
     );
 
     const resourcesPath = path.join(appPath, 'resources');
-
-    let iconPath = path.join(resourcesPath, 'icon.png');
-    if (!fs.existsSync(iconPath)) {
-        iconPath = path.join(appPath, 'icon.png');
-    }
-
-    let shortcutIconPath;
-    if (process.platform === 'win32') {
-        shortcutIconPath = path.join(resourcesPath, 'icon.ico');
-    } else if (process.platform === 'darwin') {
-        shortcutIconPath = path.join(resourcesPath, 'icon.icns');
-    }
-    if (shortcutIconPath == null || !fs.existsSync(shortcutIconPath)) {
-        shortcutIconPath = iconPath;
-    }
-
-    const isDownloadable = !appPath.startsWith(getAppsLocalDir());
-    const source = isDownloadable
-        ? path.basename(path.dirname(path.dirname(appPath)))
-        : LOCAL;
+    const iconPath = path.join(resourcesPath, 'icon.png');
 
     return {
         name: packageJson.name,
-        displayName: packageJson.displayName,
+        displayName: packageJson.displayName ?? packageJson.name,
         currentVersion: packageJson.version,
-        description: packageJson.description,
+        description: packageJson.description ?? '',
         path: appPath,
-        iconPath: fs.existsSync(iconPath) ? iconPath : undefined,
-        shortcutIconPath: fs.existsSync(shortcutIconPath)
-            ? shortcutIconPath
-            : undefined,
-        isDownloadable,
+        iconPath,
+        shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPath,
         engineVersion: packageJson.engines?.nrfconnect,
-        source,
         repositoryUrl: packageJson.repository?.url,
-        isInstalled: true,
-    };
+    } as const;
 };
 
-const latestVersionInfo = (
-    downloadableApp: { name: string; currentVersion?: string },
-    availableUpdates: UpdatesJson
-) => {
-    const latestVersion =
-        availableUpdates[downloadableApp.name] ||
-        downloadableApp.currentVersion;
-    return {
-        latestVersion,
-        upgradeAvailable:
-            downloadableApp.currentVersion &&
-            downloadableApp.currentVersion !== latestVersion,
-    };
-};
+const downloadableAppsInAppsJson = (source: string): DownloadableAppInfo[] => {
+    const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
-const downloadableAppsInAppsJson = async (source: string) => {
-    const appsJson = await fileUtil.readJsonFile<AppsJson>(
-        getAppsJsonPath(source)
-    );
+    const isAnAppEntry = (
+        entry: [string, unknown]
+    ): entry is [string, DownloadableAppInfoBase] => entry[0] !== '_source';
 
     return Object.entries(appsJson)
-        .filter(([name]) => name !== '_source')
-        .map(
-            ([name, app]) =>
-                ({
-                    name,
-                    source,
-                    ...(app as AppInAppsJson),
-                } as UnversionedDownloadableApp)
-        );
+        .filter(isAnAppEntry)
+        .map(([name, app]) => ({
+            name,
+            source,
+            ...app,
+        }));
 };
 
 interface InstalledAppResult {
@@ -303,23 +275,31 @@ interface InstalledAppResult {
     value: DownloadableApp;
 }
 
-const installedAppInfo = async (
-    app: UnversionedDownloadableApp,
-    source: string,
-    availableUpdates: UpdatesJson
-) => {
-    const appWithInstalledAppInfo = {
-        ...(await infoFromInstalledApp(getNodeModulesDir(source), app.name)),
-        ...app,
-    };
+const installedAppInfo = (
+    app: DownloadableAppInfo,
+    availableUpdates: UpdatesJson = getUpdates(app.source)
+): InstalledAppResult => {
+    const fromInstalledApp = infoFromInstalledApp(
+        getNodeModulesDir(app.source),
+        app.name
+    );
+
+    const currentVersion = fromInstalledApp.currentVersion;
+    const latestVersion = availableUpdates[app.name] || currentVersion;
+    const upgradeAvailable = currentVersion !== latestVersion;
 
     return {
         status: 'success',
         value: {
-            ...appWithInstalledAppInfo,
-            ...latestVersionInfo(appWithInstalledAppInfo, availableUpdates),
+            ...fromInstalledApp,
+            ...app,
+            isInstalled: true,
+            isDownloadable: true,
+            currentVersion,
+            latestVersion,
+            upgradeAvailable,
         },
-    } as InstalledAppResult;
+    };
 };
 
 interface UninstalledAppResult {
@@ -332,29 +312,26 @@ interface InvalidAppResult {
 }
 
 const uninstalledAppInfo = async (
-    app: UnversionedDownloadableApp,
-    source: string
-) => {
+    app: DownloadableAppInfo
+): Promise<UninstalledAppResult | InvalidAppResult> => {
     try {
-        const latestVersions = await registryApi.getLatestAppVersions(
-            [app.name],
-            source
-        );
+        const latestVersion = await registryApi.getLatestAppVersion(app);
+
         return {
             status: 'success',
             value: {
                 ...app,
-                ...latestVersionInfo(app, latestVersions),
-                isDownloadable: true,
+                latestVersion,
                 isInstalled: false,
+                isDownloadable: true,
                 currentVersion: undefined,
-            },
-        } as UninstalledAppResult;
+            } as const,
+        };
     } catch (error) {
         return {
             status: 'invalid',
             reason: error,
-        } as InvalidAppResult;
+        };
     }
 };
 
@@ -376,11 +353,12 @@ const isErroneous = (result: AppResult): result is ErroneousAppResult =>
 const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
     result.status === 'success';
 
-const getDownloadableAppsFromSource = async (source: string) => {
-    const apps = await downloadableAppsInAppsJson(source);
-    const availableUpdates = await fileUtil.readJsonFile<UpdatesJson>(
-        getUpdatesJsonPath(source)
-    );
+const getUpdates = (source: SourceName) =>
+    fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
+
+const getDownloadableAppsFromSource = (source: SourceName) => {
+    const apps = downloadableAppsInAppsJson(source);
+    const availableUpdates = getUpdates(source);
 
     return Promise.all(
         apps.map(async app => {
@@ -390,10 +368,10 @@ const getDownloadableAppsFromSource = async (source: string) => {
                 const isInstalled = await fs.pathExists(filePath);
 
                 if (isInstalled) {
-                    return installedAppInfo(app, source, availableUpdates);
+                    return installedAppInfo(app, availableUpdates);
                 }
 
-                return uninstalledAppInfo(app, source);
+                return uninstalledAppInfo(app);
             } catch (error) {
                 return {
                     status: 'erroneous',
@@ -434,12 +412,17 @@ export const getDownloadableApps = async () => {
 const consistentAppAndDirectoryName = (app: LocalApp) =>
     app.name === path.basename(app.path);
 
-export const getLocalApps = async () => {
-    const localApps = (await Promise.all(
-        fileUtil
-            .listDirectories(getAppsLocalDir())
-            .map(name => infoFromInstalledApp(getAppsLocalDir(), name))
-    )) as LocalApp[];
+const getLocalApp = (appName: string): LocalApp => ({
+    ...infoFromInstalledApp(getAppsLocalDir(), appName),
+    isDownloadable: false,
+    isInstalled: true,
+    source: LOCAL,
+});
+
+export const getLocalApps = () => {
+    const localApps = fileUtil
+        .listDirectories(getAppsLocalDir())
+        .map(getLocalApp);
 
     localApps
         .filter(app => !consistentAppAndDirectoryName(app))
@@ -469,7 +452,10 @@ export const removeDownloadableApp = async (app: AppSpec) => {
     return fs.remove(tmpDir);
 };
 
-export const installDownloadableApp = async (app: AppSpec, version: string) => {
+export const installDownloadableApp = async (
+    app: DownloadableAppInfo,
+    version: string
+) => {
     const { name, source } = app;
 
     const destinationDir = getAppsRootDir(source);
@@ -486,6 +472,11 @@ export const installDownloadableApp = async (app: AppSpec, version: string) => {
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
     await fileUtil.deleteFile(tgzFilePath);
+
+    return {
+        ...app,
+        ...installedAppInfo(app).value,
+    };
 };
 
 const migrateStoreIfNeeded = () => {

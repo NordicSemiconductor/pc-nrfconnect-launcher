@@ -26,6 +26,8 @@ export default () => {
     const app = useLauncherSelector(getDownloadableApp(appToDisplay)) ?? {
         name: appToDisplay.name ?? '',
         source: appToDisplay.source ?? '',
+        description: '',
+        url: '',
         isInstalled: false,
         displayName: '',
         releaseNote: undefined,

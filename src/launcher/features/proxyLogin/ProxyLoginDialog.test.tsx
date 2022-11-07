@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import render from '../../../testrenderer';
+import render from '../../../test/testrenderer';
 import ProxyLoginDialog from './ProxyLoginDialog';
 import {
     changeUserName,
