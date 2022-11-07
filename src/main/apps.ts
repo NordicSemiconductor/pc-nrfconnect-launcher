@@ -12,9 +12,10 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     appExists,
-    AppInAppsJson,
     AppSpec,
     DownloadableApp,
+    DownloadableAppInfo,
+    DownloadableAppInfoBase,
     failureReadingFile,
     InstallResult,
     LocalApp,
@@ -253,14 +254,12 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = (
-    source: string
-): (AppInAppsJson & AppSpec)[] => {
+const downloadableAppsInAppsJson = (source: string): DownloadableAppInfo[] => {
     const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
     const isAnAppEntry = (
         entry: [string, unknown]
-    ): entry is [string, AppInAppsJson] => entry[0] !== '_source';
+    ): entry is [string, DownloadableAppInfoBase] => entry[0] !== '_source';
 
     return Object.entries(appsJson)
         .filter(isAnAppEntry)
@@ -277,7 +276,7 @@ interface InstalledAppResult {
 }
 
 const installedAppInfo = (
-    app: AppInAppsJson & AppSpec,
+    app: DownloadableAppInfo,
     availableUpdates: UpdatesJson
 ): InstalledAppResult => {
     const fromInstalledApp = infoFromInstalledApp(
@@ -312,7 +311,7 @@ interface InvalidAppResult {
 }
 
 const uninstalledAppInfo = async (
-    app: AppInAppsJson & AppSpec
+    app: DownloadableAppInfo
 ): Promise<UninstalledAppResult | InvalidAppResult> => {
     try {
         const latestVersion = await registryApi.getLatestAppVersion(app);

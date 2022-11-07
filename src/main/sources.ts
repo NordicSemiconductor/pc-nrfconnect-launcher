@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 
-import { AppInAppsJson } from '../ipc/apps';
+import { DownloadableAppInfoBase } from '../ipc/apps';
 import { allStandardSourceNames } from '../ipc/sources';
 import {
     getAppsJsonPath,
@@ -111,7 +111,7 @@ export interface UpdatesJson {
 
 export interface AppsJson {
     _source?: string;
-    [app: `pc-nrfconnect-${string}`]: AppInAppsJson;
+    [app: `pc-nrfconnect-${string}`]: DownloadableAppInfoBase;
 }
 
 const downloadAppsJson = async (url: string, name?: string) => {

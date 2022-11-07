@@ -12,12 +12,14 @@ export interface AppSpec {
     source: SourceName;
 }
 
-export interface AppInAppsJson {
+export interface DownloadableAppInfoBase {
     displayName: string;
     description: string;
     url: string;
     homepage?: string;
 }
+
+export interface DownloadableAppInfo extends AppSpec, DownloadableAppInfoBase {}
 
 interface BaseApp {
     name: string;
@@ -41,7 +43,9 @@ export interface LocalApp extends InstalledApp {
     isDownloadable: false;
     isInstalled: true;
 }
-export interface UninstalledDownloadableApp extends BaseApp, AppInAppsJson {
+export interface UninstalledDownloadableApp
+    extends BaseApp,
+        DownloadableAppInfo {
     isDownloadable: true;
     isInstalled: false;
     source: SourceName;
@@ -50,7 +54,9 @@ export interface UninstalledDownloadableApp extends BaseApp, AppInAppsJson {
     currentVersion: undefined;
 }
 
-export interface InstalledDownloadableApp extends InstalledApp, AppInAppsJson {
+export interface InstalledDownloadableApp
+    extends InstalledApp,
+        DownloadableAppInfo {
     isDownloadable: true;
     isInstalled: true;
     source: SourceName;
