@@ -55,30 +55,15 @@ const store = new Store<{
 
 const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
 
-const getInstalledAppNames = (sourceName: string) => {
-    const installedAppNames = fileUtil.listDirectories(
-        getNodeModulesDir(sourceName)
-    );
-    const availableApps = fileUtil.readJsonFile<AppsJson>(
-        getAppsJsonPath(sourceName)
-    );
-    const availableAppNames = Object.keys(availableApps);
-
-    return availableAppNames.filter(appName =>
-        installedAppNames.includes(appName)
-    );
-};
-
 /*
  * Create the updates.json file containing the latest available versions for
  * a source. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  */
-const generateUpdatesJsonFile = async (sourceName: string) => {
+const generateUpdatesJsonFile = async (sourceName: SourceName) => {
     const fileName = getUpdatesJsonPath(sourceName);
-    const installedApps = getInstalledAppNames(sourceName);
+
     const latestVersions = await registryApi.getLatestAppVersions(
-        installedApps,
-        sourceName
+        downloadableAppsInAppsJson(sourceName)
     );
     await fileUtil.createJsonFile(fileName, latestVersions);
 };
@@ -256,7 +241,9 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = (source: string): DownloadableAppInfo[] => {
+const downloadableAppsInAppsJson = (
+    source: SourceName
+): DownloadableAppInfo[] => {
     const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
     const isAnAppEntry = (
@@ -307,19 +294,18 @@ interface InvalidAppResult {
     reason: unknown;
 }
 
-const uninstalledAppInfo = async (
-    app: DownloadableAppInfo
-): Promise<UninstalledAppResult | InvalidAppResult> => {
+const uninstalledAppInfo = (
+    app: DownloadableAppInfo,
+    availableUpdates: UpdatesJson
+): UninstalledAppResult | InvalidAppResult => {
     try {
-        const latestVersion = await registryApi.getLatestAppVersion(app);
-
         return {
             status: 'success',
             value: {
                 ...app,
-                latestVersion,
+                latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
-            } as const,
+            },
         };
     } catch (error) {
         return {
@@ -354,33 +340,29 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
     const apps = downloadableAppsInAppsJson(source);
     const availableUpdates = getUpdates(source);
 
-    return Promise.all(
-        apps.map(app => {
-            const filePath = path.join(getNodeModulesDir(source), app.name);
+    return apps.map(app => {
+        const filePath = path.join(getNodeModulesDir(source), app.name);
 
-            try {
-                return isInstalled(filePath)
-                    ? installedAppInfo(app, availableUpdates)
-                    : uninstalledAppInfo(app);
-            } catch (error) {
-                return {
-                    status: 'erroneous',
-                    reason: error,
-                    path: filePath,
-                    name: app.name,
-                    source,
-                } as ErroneousAppResult;
-            }
-        })
-    );
+        try {
+            return isInstalled(filePath)
+                ? installedAppInfo(app, availableUpdates)
+                : uninstalledAppInfo(app, availableUpdates);
+        } catch (error) {
+            return {
+                status: 'erroneous',
+                reason: error,
+                path: filePath,
+                name: app.name,
+                source,
+            } as ErroneousAppResult;
+        }
+    });
 };
 
-export const getDownloadableApps = async () => {
-    const appResults = (
-        await Promise.all(
-            getAllSourceNames().map(getDownloadableAppsFromSource)
-        )
-    ).flat();
+export const getDownloadableApps = () => {
+    const appResults = getAllSourceNames().flatMap(
+        getDownloadableAppsFromSource
+    );
 
     appResults.forEach(result => {
         if (result.status === 'invalid') {
