@@ -14,7 +14,7 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!app.isInstalled || !app.isDownloadable || !app.upgradeAvailable)
+    if (!app.isInstalled || !app.isDownloadable || !app.updateAvailable)
         return null;
 
     return (
@@ -24,7 +24,7 @@ const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             disabled={isInProgress(app)}
             onClick={() => dispatch(showReleaseNotes(app))}
         >
-            {app.progress.isUpgrading ? 'Updating...' : 'Update'}
+            {app.progress.isUpdating ? 'Updating...' : 'Update'}
         </Button>
     );
 };

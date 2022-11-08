@@ -36,7 +36,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                     {app.isInstalled && <>, v{app.currentVersion}</>}
                     {app.isInstalled &&
                         app.isDownloadable &&
-                        app.upgradeAvailable && (
+                        app.updateAvailable && (
                             <> (v{app.latestVersion} available)</>
                         )}
                     {!app.isInstalled && app.latestVersion && (

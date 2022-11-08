@@ -32,7 +32,7 @@ import reducer, {
     showConfirmLaunchDialog,
     State,
     updateDownloadableAppInfo,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppStarted,
 } from './appsSlice';
 
 const localApp1 = createLocalTestApp('a');
@@ -188,34 +188,32 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should be upgrading app after upgradeDownloadableAppAction has been dispatched', () => {
+    it('should be updating app after updateDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
             setAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
+            updateDownloadableAppStarted(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
-            true
-        );
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(true);
     });
 
-    it('should not be upgrading app after updateDownloadableAppInfo has been dispatched', () => {
+    it('should not be updating app after updateDownloadableAppInfo has been dispatched', () => {
         const state = dispatchTo(reducer, [
             setAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
+            updateDownloadableAppStarted(downloadableApp1),
             updateDownloadableAppInfo(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
             false
         );
     });
 
-    it('should not be removing app after upgradeDownloadableAppErrorAction has been dispatched', () => {
+    it('should not be removing app after updateDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
             setAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
+            updateDownloadableAppStarted(downloadableApp1),
             resetAppProgress(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
             false
         );
     });

@@ -21,14 +21,14 @@ import { getAppsFilter } from '../filter/filterSlice';
 
 type AppProgess = {
     isInstalling: boolean;
-    isUpgrading: boolean;
+    isUpdating: boolean;
     isRemoving: boolean;
     fraction: number;
 };
 
 const notInProgress = (): AppProgess => ({
     isInstalling: false,
-    isUpgrading: false,
+    isUpdating: false,
     isRemoving: false,
     fraction: 0,
 });
@@ -211,13 +211,13 @@ const slice = createSlice({
             });
         },
 
-        // Upgrade downloadable app
-        upgradeDownloadableAppStarted(
+        // Update downloadable app
+        updateDownloadableAppStarted(
             state,
-            { payload: appToUpgrade }: PayloadAction<AppSpec>
+            { payload: appToUpdate }: PayloadAction<AppSpec>
         ) {
-            updateApp(appToUpgrade, state.downloadableApps, app => {
-                app.progress.isUpgrading = true;
+            updateApp(appToUpdate, state.downloadableApps, app => {
+                app.progress.isUpdating = true;
             });
         },
 
@@ -283,7 +283,7 @@ export const {
     setAllDownloadableApps,
     updateDownloadableAppInfo,
     updateInstallProgress,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppStarted,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {
@@ -316,7 +316,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => app.isInstalled && app.upgradeAvailable
+        app => app.isInstalled && app.updateAvailable
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -324,10 +324,10 @@ export const getUpdateCheckStatus = (state: RootState) => ({
     lastUpdateCheckDate: state.apps.lastUpdateCheckDate,
 });
 
-export const getUpgradeableVisibleApps = (state: RootState) =>
+export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => app.isInstalled && app.upgradeAvailable);
+        .filter(app => app.isInstalled && app.updateAvailable);
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
@@ -340,5 +340,5 @@ export const isInProgress = (
 ): app is DownloadableAppWithProgress =>
     app.isDownloadable &&
     (app.progress.isInstalling ||
-        app.progress.isUpgrading ||
+        app.progress.isUpdating ||
         app.progress.isRemoving);

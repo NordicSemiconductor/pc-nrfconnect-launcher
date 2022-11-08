@@ -61,7 +61,7 @@ export interface InstalledDownloadableApp
     isInstalled: true;
     source: SourceName;
     iconPath: string;
-    upgradeAvailable: boolean;
+    updateAvailable: boolean;
     latestVersion: string;
     releaseNote?: string;
 }

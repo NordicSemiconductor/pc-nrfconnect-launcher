@@ -60,7 +60,7 @@ test.describe('the list of all apps', () => {
         test('has no remove button', async () => {
             await checkHasNoRemoveButton(page, 'Bluetooth Low Energy');
         });
-        test('shows no available upgrade', async () => {
+        test('shows no available update', async () => {
             await checkShowsNoAppUpdate(page, 'Bluetooth Low Energy');
         });
     });
@@ -101,12 +101,12 @@ test.describe('the list of all apps', () => {
             await checkHasRemoveButton(page, 'Test App');
         });
 
-        test('shows no available upgrade', async () => {
+        test('shows no available update', async () => {
             await checkShowsNoAppUpdate(page, 'Test App');
         });
     });
 
-    test.describe('has a downloadable apps that is upgradable', () => {
+    test.describe('has a downloadable apps that is updatable', () => {
         const appsRootDir =
             'launcher/fixtures/one-downloadable-app-upgradable/.nrfconnect-apps';
 
@@ -143,7 +143,7 @@ test.describe('the list of all apps', () => {
             await checkHasRemoveButton(page, 'Test App');
         });
 
-        test('shows an available upgrade', async () => {
+        test('shows an available update', async () => {
             await checkShowsAppUpdate(page, 'Test App', 'v1.2.4');
         });
     });
@@ -184,7 +184,7 @@ test.describe('the list of all apps', () => {
             await checkHasNoRemoveButton(page, 'Test App');
         });
 
-        test('shows no available upgrade', async () => {
+        test('shows no available update', async () => {
             await checkShowsNoAppUpdate(page, 'Test App');
         });
     });

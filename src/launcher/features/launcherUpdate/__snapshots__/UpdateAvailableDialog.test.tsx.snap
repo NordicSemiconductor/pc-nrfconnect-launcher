@@ -64,7 +64,7 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
           <p>
             A new version (
             1.2.3
-            ) of nRF Connect for Desktop is available. Would you like to upgrade now?
+            ) of nRF Connect for Desktop is available. Would you like to update now?
           </p>
           <button
             class="btn btn-link core-btn-link"

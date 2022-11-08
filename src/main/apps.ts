@@ -286,7 +286,7 @@ const installedAppInfo = (
 
     const currentVersion = fromInstalledApp.currentVersion;
     const latestVersion = availableUpdates[app.name] || currentVersion;
-    const upgradeAvailable = currentVersion !== latestVersion;
+    const updateAvailable = currentVersion !== latestVersion;
 
     return {
         status: 'success',
@@ -297,7 +297,7 @@ const installedAppInfo = (
             isDownloadable: true,
             currentVersion,
             latestVersion,
-            upgradeAvailable,
+            updateAvailable,
         },
     };
 };

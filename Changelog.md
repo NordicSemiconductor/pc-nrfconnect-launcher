@@ -7,7 +7,7 @@
 
 ### Changed
 
--   Installing or upgrading an app does not prevent working with other apps in
+-   Installing or updating an app does not prevent working with other apps in
     the list of apps any longer.
 
 ## 3.12.1 - 2022-09-16
@@ -154,7 +154,7 @@ This version is released only for macOS.
 -   Windows x64 binaries.
 -   In some apps link to documentation in About pane (e.g. in Programmer).
 -   App launcher:
-    -   Progress indicators for app installation and upgrade.
+    -   Progress indicators for app installation and update.
     -   Show version numbers of uninstalled apps.
     -   About pane with version, documentation and license information.
 

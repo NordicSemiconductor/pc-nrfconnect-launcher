@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown';
 
 import { InstalledDownloadableApp } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { upgradeDownloadableApp } from '../apps/appsEffects';
+import { updateDownloadableApp } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
@@ -61,7 +61,7 @@ export default () => {
                         variant="primary"
                         onClick={() => {
                             dispatch(
-                                upgradeDownloadableApp(app, app.latestVersion)
+                                updateDownloadableApp(app, app.latestVersion)
                             );
                             hideDialog();
                         }}

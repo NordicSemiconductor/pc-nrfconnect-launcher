@@ -25,7 +25,7 @@ const updatableApp = createDownloadableTestApp('third', {
     releaseNote: 'Release notes for a third updatable app',
     currentVersion: '2.0.0',
     latestVersion: '2.1.0',
-    upgradeAvailable: false,
+    updateAvailable: false,
 });
 
 const downloadableApps = [uninstalledApp, installedApp, updatableApp];

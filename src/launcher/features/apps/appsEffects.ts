@@ -50,7 +50,7 @@ import {
     setAppReleaseNote,
     showConfirmLaunchDialog,
     updateDownloadableAppInfo,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppStarted,
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
@@ -213,10 +213,10 @@ export const removeDownloadableApp =
             });
     };
 
-export const upgradeDownloadableApp =
+export const updateDownloadableApp =
     (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.UPGRADE_APP, app.source, app.name);
-        dispatch(upgradeDownloadableAppStarted(app));
+        sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
+        dispatch(updateDownloadableAppStarted(app));
 
         return installDownloadableAppInMain(app, version)
             .then(installedApp => {
@@ -226,7 +226,7 @@ export const upgradeDownloadableApp =
                 dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to upgrade: ${error.message}`
+                        `Unable to update: ${error.message}`
                     )
                 );
             });
