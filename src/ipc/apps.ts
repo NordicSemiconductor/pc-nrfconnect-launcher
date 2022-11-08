@@ -54,7 +54,6 @@ export interface InstalledDownloadableApp
         DownloadableAppInfo {
     source: SourceName;
     iconPath: string;
-    updateAvailable: boolean;
     latestVersion: string;
     releaseNote?: string;
 }
@@ -77,6 +76,9 @@ export const isDownloadable = (app: App): app is DownloadableApp =>
 
 export const isInstalled = (app: App): app is LaunchableApp =>
     app.currentVersion != null;
+
+export const updateAvailable = (app: InstalledDownloadableApp) =>
+    app.currentVersion !== app.latestVersion;
 
 const channel = {
     downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',

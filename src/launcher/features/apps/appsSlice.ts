@@ -15,6 +15,7 @@ import {
     isInstalled,
     LaunchableApp,
     LocalApp,
+    updateAvailable,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
@@ -317,7 +318,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => isInstalled(app) && app.updateAvailable
+        app => isInstalled(app) && updateAvailable(app)
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -328,7 +329,7 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => isInstalled(app) && app.updateAvailable);
+        .filter(app => isInstalled(app) && updateAvailable(app));
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

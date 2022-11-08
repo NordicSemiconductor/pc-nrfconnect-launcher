@@ -47,7 +47,6 @@ export const createDownloadableTestApp = (
 
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
-    updateAvailable: false,
 
     url: url(appName),
     path: path(appName),

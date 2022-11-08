@@ -284,18 +284,14 @@ const installedAppInfo = (
         app.name
     );
 
-    const currentVersion = fromInstalledApp.currentVersion;
-    const latestVersion = availableUpdates[app.name] || currentVersion;
-    const updateAvailable = currentVersion !== latestVersion;
-
     return {
         status: 'success',
         value: {
             ...fromInstalledApp,
             ...app,
-            currentVersion,
-            latestVersion,
-            updateAvailable,
+            currentVersion: fromInstalledApp.currentVersion,
+            latestVersion:
+                availableUpdates[app.name] || fromInstalledApp.currentVersion,
         },
     };
 };

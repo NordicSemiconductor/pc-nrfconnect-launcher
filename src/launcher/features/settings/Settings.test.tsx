@@ -66,7 +66,6 @@ describe('SettingsView', () => {
                     createDownloadableTestApp(undefined, {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
-                        updateAvailable: true,
                     }),
                 ]),
             ]).baseElement

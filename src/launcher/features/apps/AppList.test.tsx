@@ -51,7 +51,6 @@ const localApp = createLocalTestApp('dummy', { engineVersion: '6.1.0' });
 const updatableApp = createDownloadableTestApp('updatable', {
     currentVersion: '1.2.3',
     latestVersion: '1.2.4',
-    updateAvailable: true,
     engineVersion: '6.1.0',
 });
 
