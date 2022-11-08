@@ -293,7 +293,6 @@ const installedAppInfo = (
         value: {
             ...fromInstalledApp,
             ...app,
-            isInstalled: true,
             currentVersion,
             latestVersion,
             updateAvailable,
@@ -321,7 +320,6 @@ const uninstalledAppInfo = async (
             value: {
                 ...app,
                 latestVersion,
-                isInstalled: false,
                 currentVersion: undefined,
             } as const,
         };
@@ -364,12 +362,9 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
 
             try {
                 const isInstalled = await fs.pathExists(filePath);
-
-                if (isInstalled) {
-                    return installedAppInfo(app, availableUpdates);
-                }
-
-                return uninstalledAppInfo(app);
+                return isInstalled
+                    ? installedAppInfo(app, availableUpdates)
+                    : uninstalledAppInfo(app);
             } catch (error) {
                 return {
                     status: 'erroneous',
@@ -412,7 +407,6 @@ const consistentAppAndDirectoryName = (app: LocalApp) =>
 
 const getLocalApp = (appName: string): LocalApp => ({
     ...infoFromInstalledApp(getAppsLocalDir(), appName),
-    isInstalled: true,
     source: LOCAL,
 });
 

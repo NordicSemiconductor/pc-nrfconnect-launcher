@@ -9,30 +9,26 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ReactMarkdown from 'react-markdown';
 
-import { InstalledDownloadableApp } from '../../../ipc/apps';
+import {
+    App,
+    DownloadableApp,
+    isDownloadable,
+    isInstalled,
+} from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
-type Uninstalled = { isInstalled: false };
-const canBeInstalledOrUpdated = (
-    app?: Uninstalled | InstalledDownloadableApp
-) => !app?.isInstalled || app?.currentVersion !== app?.latestVersion;
+const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
+    app != null &&
+    isDownloadable(app) &&
+    (!isInstalled(app) || app.updateAvailable);
 
 export default () => {
     const dispatch = useLauncherDispatch();
     const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
-    const app = useLauncherSelector(getDownloadableApp(appToDisplay)) ?? {
-        name: appToDisplay.name ?? '',
-        source: appToDisplay.source ?? '',
-        description: '',
-        url: '',
-        isInstalled: false,
-        displayName: '',
-        releaseNote: undefined,
-        latestVersion: '',
-    };
+    const app = useLauncherSelector(getDownloadableApp(appToDisplay));
 
     const isVisible = appToDisplay.name != null;
 
@@ -47,11 +43,13 @@ export default () => {
             key="releaseNotes"
         >
             <Modal.Header>
-                <Modal.Title>Release notes for {app.displayName}</Modal.Title>
+                <Modal.Title>
+                    Release notes for {app?.displayName ?? appToDisplay.name}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body className="release-notes">
                 <ReactMarkdown
-                    source={app.releaseNote ?? ''}
+                    source={app?.releaseNote ?? ''}
                     linkTarget="_blank"
                 />
             </Modal.Body>
@@ -66,7 +64,7 @@ export default () => {
                             hideDialog();
                         }}
                     >
-                        {app.isInstalled
+                        {isInstalled(app)
                             ? 'Update to latest version'
                             : 'Install'}
                     </Button>

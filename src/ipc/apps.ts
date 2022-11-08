@@ -25,7 +25,6 @@ interface BaseApp {
     name: string;
     displayName: string;
     description: string;
-    isInstalled: boolean;
     iconPath?: string;
 }
 
@@ -40,12 +39,10 @@ export interface InstalledApp extends BaseApp {
 export interface LocalApp extends InstalledApp {
     source: typeof LOCAL;
     iconPath: string;
-    isInstalled: true;
 }
 export interface UninstalledDownloadableApp
     extends BaseApp,
         DownloadableAppInfo {
-    isInstalled: false;
     source: SourceName;
     latestVersion: string;
     releaseNote?: string;
@@ -55,7 +52,6 @@ export interface UninstalledDownloadableApp
 export interface InstalledDownloadableApp
     extends InstalledApp,
         DownloadableAppInfo {
-    isInstalled: true;
     source: SourceName;
     iconPath: string;
     updateAvailable: boolean;
@@ -78,6 +74,9 @@ export interface AppWithError extends AppSpec {
 
 export const isDownloadable = (app: App): app is DownloadableApp =>
     app.source !== LOCAL;
+
+export const isInstalled = (app: App): app is LaunchableApp =>
+    app.currentVersion != null;
 
 const channel = {
     downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',

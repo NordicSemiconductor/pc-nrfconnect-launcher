@@ -12,6 +12,7 @@ import {
     AppSpec,
     DownloadableApp,
     isDownloadable,
+    isInstalled,
     LaunchableApp,
     LocalApp,
 } from '../../../ipc/apps';
@@ -239,7 +240,6 @@ const slice = createSlice({
 
             updateApp(removedApp, state.downloadableApps, app => {
                 app.currentVersion = undefined;
-                app.isInstalled = false;
             });
         },
 
@@ -317,7 +317,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => app.isInstalled && app.updateAvailable
+        app => isInstalled(app) && app.updateAvailable
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -328,7 +328,7 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => app.isInstalled && app.updateAvailable);
+        .filter(app => isInstalled(app) && app.updateAvailable);
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

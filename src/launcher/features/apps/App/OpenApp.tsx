@@ -7,6 +7,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
+import { isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { checkEngineAndLaunch } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
@@ -14,7 +15,7 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!app.isInstalled) return null;
+    if (!isInstalled(app)) return null;
 
     return (
         <Button

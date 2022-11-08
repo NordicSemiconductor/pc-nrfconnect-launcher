@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { App } from '../../../../ipc/apps';
+import { App, isInstalled } from '../../../../ipc/apps';
 import appCompatibilityWarning from '../../../util/appCompatibilityWarning';
 
 const warning = (altText: string) => (
@@ -17,7 +17,7 @@ const warning = (altText: string) => (
 );
 
 const appBadge = (app: App) => {
-    if (!app.isInstalled) {
+    if (!isInstalled(app)) {
         return null;
     }
 

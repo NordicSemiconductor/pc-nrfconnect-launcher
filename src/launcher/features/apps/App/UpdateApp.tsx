@@ -7,7 +7,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-import { isDownloadable } from '../../../../ipc/apps';
+import { isDownloadable, isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { show as showReleaseNotes } from '../../releaseNotes/releaseNotesDialogSlice';
 import { DisplayedApp, isInProgress } from '../appsSlice';
@@ -15,7 +15,7 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!app.isInstalled || !isDownloadable(app) || !app.updateAvailable)
+    if (!isInstalled(app) || !isDownloadable(app) || !app.updateAvailable)
         return null;
 
     return (

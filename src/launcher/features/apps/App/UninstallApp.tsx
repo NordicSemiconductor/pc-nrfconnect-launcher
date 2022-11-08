@@ -7,7 +7,7 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import { isDownloadable } from '../../../../ipc/apps';
+import { isDownloadable, isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { removeDownloadableApp } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
@@ -15,7 +15,7 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!app.isInstalled || !isDownloadable(app)) return null;
+    if (!isInstalled(app) || !isDownloadable(app)) return null;
 
     return (
         <Dropdown.Item

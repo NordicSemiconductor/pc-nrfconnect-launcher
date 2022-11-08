@@ -14,7 +14,7 @@ import {
 import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
-import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
+import { isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import * as apps from './apps';
 import * as browser from './browser';
@@ -145,8 +145,8 @@ export const openDownloadableAppWindow = (
             app => app.name === appName && app.source === sourceName
         );
 
-        if (downloadableApp?.isInstalled) {
-            openAppWindow(downloadableApp as InstalledDownloadableApp);
+        if (downloadableApp != null && isInstalled(downloadableApp)) {
+            openAppWindow(downloadableApp);
         } else {
             throw new Error(
                 `Tried to open app ${appName} from source ${sourceName}, but it is not installed`

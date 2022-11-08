@@ -18,6 +18,7 @@ import {
     getLocalApps,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
+    isInstalled,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
@@ -97,7 +98,7 @@ export const fetchInfoForAllDownloadableApps =
 
         dispatch(setAllDownloadableApps(apps));
 
-        apps.filter(app => !app.isInstalled).forEach(app => {
+        apps.filter(app => !isInstalled(app)).forEach(app => {
             const iconPath = join(
                 `${getAppsRootDir(app.source, mainConfig())}`,
                 `${app.name}.svg`

@@ -27,8 +27,6 @@ export const createLocalTestApp = (
     displayName: `Local ${startCase(appName)} Test App`,
     description: `The local ${lowerCase(appName)} test app`,
 
-    isInstalled: true,
-
     currentVersion: '1.2.3',
 
     path: path(appName),
@@ -46,8 +44,6 @@ export const createDownloadableTestApp = (
     source: OFFICIAL,
     displayName: `Downloadable ${startCase(appName)} Test App`,
     description: `The downloadable ${lowerCase(appName)} test app`,
-
-    isInstalled: true,
 
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
@@ -69,8 +65,6 @@ export const createUninstalledTestApp = (
     source: OFFICIAL,
     displayName: `Uninstalled ${startCase(appName)} Test App`,
     description: `The uninstalled ${lowerCase(appName)} test app`,
-
-    isInstalled: false,
 
     latestVersion: '7.8.9',
     currentVersion: undefined,
