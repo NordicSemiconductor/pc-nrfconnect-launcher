@@ -8,10 +8,11 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { openUrl } from 'pc-nrfconnect-shared';
 
+import { isDownloadable } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
 
 const OpenHomepage: React.FC<{ app: DisplayedApp }> = ({ app }) => {
-    if (!app.isDownloadable || app.homepage == null) return null;
+    if (!isDownloadable(app) || app.homepage == null) return null;
 
     return (
         <Dropdown.Item

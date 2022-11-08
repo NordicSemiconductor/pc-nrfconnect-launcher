@@ -28,7 +28,6 @@ export const createLocalTestApp = (
     description: `The local ${lowerCase(appName)} test app`,
 
     isInstalled: true,
-    isDownloadable: false,
 
     currentVersion: '1.2.3',
 
@@ -49,7 +48,6 @@ export const createDownloadableTestApp = (
     description: `The downloadable ${lowerCase(appName)} test app`,
 
     isInstalled: true,
-    isDownloadable: true,
 
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
@@ -73,7 +71,6 @@ export const createUninstalledTestApp = (
     description: `The uninstalled ${lowerCase(appName)} test app`,
 
     isInstalled: false,
-    isDownloadable: true,
 
     latestVersion: '7.8.9',
     currentVersion: undefined,

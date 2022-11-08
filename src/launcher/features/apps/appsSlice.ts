@@ -11,6 +11,7 @@ import {
     App,
     AppSpec,
     DownloadableApp,
+    isDownloadable,
     LaunchableApp,
     LocalApp,
 } from '../../../ipc/apps';
@@ -338,7 +339,7 @@ export const getConfirmLaunch = (state: RootState) => ({
 export const isInProgress = (
     app: DisplayedApp
 ): app is DownloadableAppWithProgress =>
-    app.isDownloadable &&
+    isDownloadable(app) &&
     (app.progress.isInstalling ||
         app.progress.isUpdating ||
         app.progress.isRemoving);

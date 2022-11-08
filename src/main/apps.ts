@@ -294,7 +294,6 @@ const installedAppInfo = (
             ...fromInstalledApp,
             ...app,
             isInstalled: true,
-            isDownloadable: true,
             currentVersion,
             latestVersion,
             updateAvailable,
@@ -323,7 +322,6 @@ const uninstalledAppInfo = async (
                 ...app,
                 latestVersion,
                 isInstalled: false,
-                isDownloadable: true,
                 currentVersion: undefined,
             } as const,
         };
@@ -414,7 +412,6 @@ const consistentAppAndDirectoryName = (app: LocalApp) =>
 
 const getLocalApp = (appName: string): LocalApp => ({
     ...infoFromInstalledApp(getAppsLocalDir(), appName),
-    isDownloadable: false,
     isInstalled: true,
     source: LOCAL,
 });

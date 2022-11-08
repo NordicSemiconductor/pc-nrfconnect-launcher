@@ -12,7 +12,7 @@ import Mustache from 'mustache';
 import path from 'path';
 import { uuid } from 'short-uuid';
 
-import { LaunchableApp } from '../ipc/apps';
+import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
 import * as fileUtil from './fileUtil';
@@ -30,7 +30,7 @@ const mode =
     fs.constants.S_IXOTH;
 
 const sourceName = (app: LaunchableApp) => {
-    if (app.isDownloadable) {
+    if (isDownloadable(app)) {
         if (app.source === OFFICIAL) {
             return '';
         }
@@ -46,7 +46,7 @@ const getFileName = (app: LaunchableApp) =>
 const getArgs = (app: LaunchableApp) =>
     [
         '--args',
-        app.isDownloadable ? '--open-downloadable-app' : '--open-local-app',
+        isDownloadable(app) ? '--open-downloadable-app' : '--open-local-app',
         app.name,
         '--source',
         `"${app.source}"`,
@@ -149,7 +149,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             '/Contents/Info.plist'
         );
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
-            app.isDownloadable ? '' : '-local'
+            isDownloadable(app) ? '' : '-local'
         }`;
         const infoContentSource = fs.readFileSync(infoTmpPath, 'utf-8');
         Mustache.parse(infoContentSource);

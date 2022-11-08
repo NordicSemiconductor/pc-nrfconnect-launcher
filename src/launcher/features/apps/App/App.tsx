@@ -11,6 +11,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
+import { isDownloadable } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
@@ -35,7 +36,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                     {app.source}
                     {app.isInstalled && <>, v{app.currentVersion}</>}
                     {app.isInstalled &&
-                        app.isDownloadable &&
+                        isDownloadable(app) &&
                         app.updateAvailable && (
                             <> (v{app.latestVersion} available)</>
                         )}
