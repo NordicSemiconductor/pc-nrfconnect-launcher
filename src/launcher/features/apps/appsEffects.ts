@@ -45,11 +45,11 @@ import {
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
+    setAllDownloadableApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    updateAllDownloadableApps,
-    updateDownloadableApp,
+    updateDownloadableAppInfo,
     upgradeDownloadableAppStarted,
 } from './appsSlice';
 
@@ -95,7 +95,7 @@ export const fetchInfoForAllDownloadableApps =
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
-        dispatch(updateAllDownloadableApps(apps));
+        dispatch(setAllDownloadableApps(apps));
 
         apps.filter(app => !app.isInstalled).forEach(app => {
             const iconPath = join(
@@ -183,7 +183,7 @@ export const installDownloadableApp =
 
         installDownloadableAppInMain(app, 'latest')
             .then(installedApp => {
-                dispatch(updateDownloadableApp(installedApp));
+                dispatch(updateDownloadableAppInfo(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));
@@ -220,7 +220,7 @@ export const upgradeDownloadableApp =
 
         return installDownloadableAppInMain(app, version)
             .then(installedApp => {
-                dispatch(updateDownloadableApp(installedApp));
+                dispatch(updateDownloadableAppInfo(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));

@@ -11,7 +11,7 @@ import render from '../../../test/testrenderer';
 import {
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,
-    updateAllDownloadableApps,
+    setAllDownloadableApps,
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
@@ -62,7 +62,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                updateAllDownloadableApps([
+                setAllDownloadableApps([
                     createDownloadableTestApp(undefined, {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
@@ -77,7 +77,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                updateAllDownloadableApps([createDownloadableTestApp()]),
+                setAllDownloadableApps([createDownloadableTestApp()]),
             ]).baseElement
         ).toMatchSnapshot();
     });

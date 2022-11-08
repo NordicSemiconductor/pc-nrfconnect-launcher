@@ -122,7 +122,7 @@ const slice = createSlice({
         loadDownloadableAppsStarted(state) {
             state.isLoadingDownloadableApps = true;
         },
-        updateAllDownloadableApps(
+        setAllDownloadableApps(
             state,
             { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
@@ -132,7 +132,7 @@ const slice = createSlice({
                 progress: notInProgress(),
             }));
         },
-        updateDownloadableApp(
+        updateDownloadableAppInfo(
             state,
             { payload: updatedApp }: PayloadAction<DownloadableApp>
         ) {
@@ -280,8 +280,8 @@ export const {
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    updateAllDownloadableApps,
-    updateDownloadableApp,
+    setAllDownloadableApps,
+    updateDownloadableAppInfo,
     updateInstallProgress,
     upgradeDownloadableAppStarted,
 } = slice.actions;
