@@ -11,7 +11,7 @@ import {
     createUninstalledTestApp,
 } from '../../../test/testFixtures';
 import render from '../../../test/testrenderer';
-import { updateAllDownloadableApps } from '../apps/appsSlice';
+import { setAllDownloadableApps } from '../apps/appsSlice';
 import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';
 
@@ -25,7 +25,6 @@ const updatableApp = createDownloadableTestApp('third', {
     releaseNote: 'Release notes for a third updatable app',
     currentVersion: '2.0.0',
     latestVersion: '2.1.0',
-    upgradeAvailable: false,
 });
 
 const downloadableApps = [uninstalledApp, installedApp, updatableApp];
@@ -34,7 +33,7 @@ describe('ReleaseNotesDialog', () => {
     it('is initially invisible', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                updateAllDownloadableApps(downloadableApps),
+                setAllDownloadableApps(downloadableApps),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -42,7 +41,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an uninstalled app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                updateAllDownloadableApps(downloadableApps),
+                setAllDownloadableApps(downloadableApps),
                 show(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -51,7 +50,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an up-to-date installed app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                updateAllDownloadableApps(downloadableApps),
+                setAllDownloadableApps(downloadableApps),
                 show(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -60,7 +59,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an updatable app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                updateAllDownloadableApps(downloadableApps),
+                setAllDownloadableApps(downloadableApps),
                 show(updatableApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -69,7 +68,7 @@ describe('ReleaseNotesDialog', () => {
     it('is hidden again after closing the dialog', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                updateAllDownloadableApps(downloadableApps),
+                setAllDownloadableApps(downloadableApps),
                 show(uninstalledApp),
                 hide(),
             ]).baseElement

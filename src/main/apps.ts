@@ -53,30 +53,17 @@ const store = new Store<{
     apps: { [appUrl: string]: AppData };
 }>({ name: 'pc-nrfconnect-launcher' });
 
-const getInstalledAppNames = (sourceName: string) => {
-    const installedAppNames = fileUtil.listDirectories(
-        getNodeModulesDir(sourceName)
-    );
-    const availableApps = fileUtil.readJsonFile<AppsJson>(
-        getAppsJsonPath(sourceName)
-    );
-    const availableAppNames = Object.keys(availableApps);
-
-    return availableAppNames.filter(appName =>
-        installedAppNames.includes(appName)
-    );
-};
+const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
 
 /*
  * Create the updates.json file containing the latest available versions for
  * a source. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  */
-const generateUpdatesJsonFile = async (sourceName: string) => {
+const generateUpdatesJsonFile = async (sourceName: SourceName) => {
     const fileName = getUpdatesJsonPath(sourceName);
-    const installedApps = getInstalledAppNames(sourceName);
+
     const latestVersions = await registryApi.getLatestAppVersions(
-        installedApps,
-        sourceName
+        downloadableAppsInAppsJson(sourceName)
     );
     await fileUtil.createJsonFile(fileName, latestVersions);
 };
@@ -120,7 +107,7 @@ export const installLocalApp = async (
     const appPath = path.join(getAppsLocalDir(), appName);
 
     // Check if app exists
-    if (await fs.pathExists(appPath)) {
+    if (isInstalled(appPath)) {
         return appExists(appName, appPath);
     }
 
@@ -254,7 +241,9 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = (source: string): DownloadableAppInfo[] => {
+const downloadableAppsInAppsJson = (
+    source: SourceName
+): DownloadableAppInfo[] => {
     const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
     const isAnAppEntry = (
@@ -284,20 +273,14 @@ const installedAppInfo = (
         app.name
     );
 
-    const currentVersion = fromInstalledApp.currentVersion;
-    const latestVersion = availableUpdates[app.name] || currentVersion;
-    const upgradeAvailable = currentVersion !== latestVersion;
-
     return {
         status: 'success',
         value: {
             ...fromInstalledApp,
             ...app,
-            isInstalled: true,
-            isDownloadable: true,
-            currentVersion,
-            latestVersion,
-            upgradeAvailable,
+            currentVersion: fromInstalledApp.currentVersion,
+            latestVersion:
+                availableUpdates[app.name] || fromInstalledApp.currentVersion,
         },
     };
 };
@@ -311,21 +294,18 @@ interface InvalidAppResult {
     reason: unknown;
 }
 
-const uninstalledAppInfo = async (
-    app: DownloadableAppInfo
-): Promise<UninstalledAppResult | InvalidAppResult> => {
+const uninstalledAppInfo = (
+    app: DownloadableAppInfo,
+    availableUpdates: UpdatesJson
+): UninstalledAppResult | InvalidAppResult => {
     try {
-        const latestVersion = await registryApi.getLatestAppVersion(app);
-
         return {
             status: 'success',
             value: {
                 ...app,
-                latestVersion,
-                isInstalled: false,
-                isDownloadable: true,
+                latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
-            } as const,
+            },
         };
     } catch (error) {
         return {
@@ -360,37 +340,29 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
     const apps = downloadableAppsInAppsJson(source);
     const availableUpdates = getUpdates(source);
 
-    return Promise.all(
-        apps.map(async app => {
-            const filePath = path.join(getNodeModulesDir(source), app.name);
+    return apps.map(app => {
+        const filePath = path.join(getNodeModulesDir(source), app.name);
 
-            try {
-                const isInstalled = await fs.pathExists(filePath);
-
-                if (isInstalled) {
-                    return installedAppInfo(app, availableUpdates);
-                }
-
-                return uninstalledAppInfo(app);
-            } catch (error) {
-                return {
-                    status: 'erroneous',
-                    reason: error,
-                    path: filePath,
-                    name: app.name,
-                    source,
-                } as ErroneousAppResult;
-            }
-        })
-    );
+        try {
+            return isInstalled(filePath)
+                ? installedAppInfo(app, availableUpdates)
+                : uninstalledAppInfo(app, availableUpdates);
+        } catch (error) {
+            return {
+                status: 'erroneous',
+                reason: error,
+                path: filePath,
+                name: app.name,
+                source,
+            } as ErroneousAppResult;
+        }
+    });
 };
 
-export const getDownloadableApps = async () => {
-    const appResults = (
-        await Promise.all(
-            getAllSourceNames().map(getDownloadableAppsFromSource)
-        )
-    ).flat();
+export const getDownloadableApps = () => {
+    const appResults = getAllSourceNames().flatMap(
+        getDownloadableAppsFromSource
+    );
 
     appResults.forEach(result => {
         if (result.status === 'invalid') {
@@ -414,8 +386,6 @@ const consistentAppAndDirectoryName = (app: LocalApp) =>
 
 const getLocalApp = (appName: string): LocalApp => ({
     ...infoFromInstalledApp(getAppsLocalDir(), appName),
-    isDownloadable: false,
-    isInstalled: true,
     source: LOCAL,
 });
 
@@ -466,8 +436,8 @@ export const installDownloadableApp = async (
     );
 
     const appPath = path.join(getNodeModulesDir(source), name);
-    const isInstalled = await fs.pathExists(appPath);
-    if (isInstalled) {
+
+    if (isInstalled(appPath)) {
         await removeDownloadableApp(app);
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);

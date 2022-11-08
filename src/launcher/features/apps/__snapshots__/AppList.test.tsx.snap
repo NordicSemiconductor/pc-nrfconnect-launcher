@@ -123,7 +123,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/updateable/icon.png"
+                  src="/path/to/updatable/icon.png"
                 />
               </div>
             </div>
@@ -133,12 +133,12 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               <div
                 class="h8"
               >
-                Downloadable Updateable Test App
+                Downloadable Updatable Test App
               </div>
               <div
                 class="small text-muted"
               >
-                The downloadable updateable test app
+                The downloadable updatable test app
               </div>
               <div
                 class="small text-muted-more"
@@ -161,7 +161,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <button
                   class="btn btn-outline-primary"
                   disabled=""
-                  title="Update Downloadable Updateable Test App"
+                  title="Update Downloadable Updatable Test App"
                   type="button"
                 >
                   Updating...
@@ -169,7 +169,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <button
                   class="btn btn-primary"
                   disabled=""
-                  title="Open Downloadable Updateable Test App"
+                  title="Open Downloadable Updatable Test App"
                   type="button"
                 >
                   Open
@@ -305,7 +305,7 @@ exports[`AppList should disable buttons while removing an app 1`] = `
 </body>
 `;
 
-exports[`AppList should render local, not-installed, installed, and upgradable apps 1`] = `
+exports[`AppList should render local, not-installed, installed, and updatable apps 1`] = `
 <body>
   <div>
     <div />
@@ -398,7 +398,7 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/updateable/icon.png"
+                  src="/path/to/updatable/icon.png"
                 />
               </div>
             </div>
@@ -408,12 +408,12 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               <div
                 class="h8"
               >
-                Downloadable Updateable Test App
+                Downloadable Updatable Test App
               </div>
               <div
                 class="small text-muted"
               >
-                The downloadable updateable test app
+                The downloadable updatable test app
               </div>
               <div
                 class="small text-muted-more"
@@ -435,14 +435,14 @@ exports[`AppList should render local, not-installed, installed, and upgradable a
               >
                 <button
                   class="btn btn-outline-primary"
-                  title="Update Downloadable Updateable Test App"
+                  title="Update Downloadable Updatable Test App"
                   type="button"
                 >
                   Update
                 </button>
                 <button
                   class="btn btn-primary"
-                  title="Open Downloadable Updateable Test App"
+                  title="Open Downloadable Updatable Test App"
                   type="button"
                 >
                   Open

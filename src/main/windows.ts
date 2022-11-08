@@ -14,9 +14,9 @@ import {
 import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
-import { InstalledDownloadableApp, LaunchableApp } from '../ipc/apps';
+import { isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
-import * as apps from './apps';
+import { getDownloadableApps, getLocalApps } from './apps';
 import * as browser from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
@@ -139,23 +139,22 @@ export const openAppWindow = (app: LaunchableApp) => {
 export const openDownloadableAppWindow = (
     appName: string,
     sourceName: string
-) =>
-    apps.getDownloadableApps().then(({ apps: appList }) => {
-        const downloadableApp = appList.find(
-            app => app.name === appName && app.source === sourceName
-        );
+) => {
+    const downloadableApp = getDownloadableApps().apps.find(
+        app => app.name === appName && app.source === sourceName
+    );
 
-        if (downloadableApp?.isInstalled) {
-            openAppWindow(downloadableApp as InstalledDownloadableApp);
-        } else {
-            throw new Error(
-                `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
-            );
-        }
-    });
+    if (downloadableApp != null && isInstalled(downloadableApp)) {
+        openAppWindow(downloadableApp);
+    } else {
+        throw new Error(
+            `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
+        );
+    }
+};
 
 export const openLocalAppWindow = (appName: string) => {
-    const localApp = apps.getLocalApps().find(app => app.name === appName);
+    const localApp = getLocalApps().find(app => app.name === appName);
 
     if (localApp) {
         openAppWindow(localApp);

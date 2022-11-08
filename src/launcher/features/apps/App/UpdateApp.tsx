@@ -7,6 +7,11 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
+import {
+    isDownloadable,
+    isInstalled,
+    updateAvailable,
+} from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { show as showReleaseNotes } from '../../releaseNotes/releaseNotesDialogSlice';
 import { DisplayedApp, isInProgress } from '../appsSlice';
@@ -14,7 +19,7 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!app.isInstalled || !app.isDownloadable || !app.upgradeAvailable)
+    if (!isInstalled(app) || !isDownloadable(app) || !updateAvailable(app))
         return null;
 
     return (
@@ -24,7 +29,7 @@ const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             disabled={isInProgress(app)}
             onClick={() => dispatch(showReleaseNotes(app))}
         >
-            {app.progress.isUpgrading ? 'Updating...' : 'Update'}
+            {app.progress.isUpdating ? 'Updating...' : 'Update'}
         </Button>
     );
 };

@@ -18,6 +18,7 @@ import {
     getLocalApps,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
+    isInstalled,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
@@ -45,12 +46,12 @@ import {
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
+    setAllDownloadableApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    updateAllDownloadableApps,
-    updateDownloadableApp,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppInfo,
+    updateDownloadableAppStarted,
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
@@ -95,9 +96,9 @@ export const fetchInfoForAllDownloadableApps =
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
-        dispatch(updateAllDownloadableApps(apps));
+        dispatch(setAllDownloadableApps(apps));
 
-        apps.filter(app => !app.isInstalled).forEach(app => {
+        apps.filter(app => !isInstalled(app)).forEach(app => {
             const iconPath = join(
                 `${getAppsRootDir(app.source, mainConfig())}`,
                 `${app.name}.svg`
@@ -183,7 +184,7 @@ export const installDownloadableApp =
 
         installDownloadableAppInMain(app, 'latest')
             .then(installedApp => {
-                dispatch(updateDownloadableApp(installedApp));
+                dispatch(updateDownloadableAppInfo(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));
@@ -213,20 +214,20 @@ export const removeDownloadableApp =
             });
     };
 
-export const upgradeDownloadableApp =
+export const updateDownloadableApp =
     (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.UPGRADE_APP, app.source, app.name);
-        dispatch(upgradeDownloadableAppStarted(app));
+        sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
+        dispatch(updateDownloadableAppStarted(app));
 
         return installDownloadableAppInMain(app, version)
             .then(installedApp => {
-                dispatch(updateDownloadableApp(installedApp));
+                dispatch(updateDownloadableAppInfo(installedApp));
             })
             .catch(error => {
                 dispatch(resetAppProgress(app));
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        `Unable to upgrade: ${error.message}`
+                        `Unable to update: ${error.message}`
                     )
                 );
             });

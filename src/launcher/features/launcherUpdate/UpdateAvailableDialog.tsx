@@ -27,7 +27,7 @@ export default () => {
             title="Update available"
             text={
                 `A new version (${version}) of nRF Connect for Desktop is available. ` +
-                'Would you like to upgrade now?'
+                'Would you like to update now?'
             }
             okButtonText="Yes"
             cancelButtonText="No"
@@ -36,7 +36,7 @@ export default () => {
         >
             <p>
                 A new version ({version}) of nRF Connect for Desktop is
-                available. Would you like to upgrade now?
+                available. Would you like to update now?
             </p>
             <button
                 className="btn btn-link core-btn-link"

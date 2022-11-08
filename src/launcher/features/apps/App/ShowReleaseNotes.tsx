@@ -7,13 +7,14 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
+import { isDownloadable } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { show as showReleaseNotes } from '../../releaseNotes/releaseNotesDialogSlice';
 import { DisplayedApp } from '../appsSlice';
 
 const ShowReleaseNotes: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
-    if (!app.isDownloadable || app.releaseNote == null) return null;
+    if (!isDownloadable(app) || app.releaseNote == null) return null;
 
     return (
         <Dropdown.Item

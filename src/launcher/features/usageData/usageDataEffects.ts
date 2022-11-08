@@ -22,7 +22,7 @@ export const EventAction = {
     INSTALL_APP: 'Install app',
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
-    UPGRADE_APP: 'Upgrade app',
+    UPDATE_APP: 'Update app',
     REPORT_OS_INFO: 'Report OS info',
     REPORT_LAUNCHER_INFO: 'Report launcher info',
     REPORT_INSTALLATION_ERROR: 'Report installation error',

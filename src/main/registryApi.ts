@@ -94,13 +94,10 @@ export const getLatestAppVersion = async ({ name, source }: AppSpec) =>
  * an object with package names as keys, and their latest versions
  * as values. E.g: { foo: "1.2.3", bar: "2.3.4" }.
  */
-export const getLatestAppVersions = async (
-    appNames: string[],
-    source: string
-) => {
-    const nameVersionPairPromises = appNames.map(async name => [
-        name,
-        await getLatestAppVersion({ name, source }),
+export const getLatestAppVersions = async (appSpecs: AppSpec[]) => {
+    const nameVersionPairPromises = appSpecs.map(async appSpec => [
+        appSpec.name,
+        await getLatestAppVersion(appSpec),
     ]);
 
     return Object.fromEntries(await Promise.all(nameVersionPairPromises));

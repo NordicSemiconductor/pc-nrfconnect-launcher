@@ -26,8 +26,8 @@ import {
     installDownloadableAppStarted,
     loadLocalAppsSuccess,
     removeDownloadableAppStarted,
-    updateAllDownloadableApps,
-    upgradeDownloadableAppStarted,
+    setAllDownloadableApps,
+    updateDownloadableAppStarted,
 } from './appsSlice';
 
 // Do not render react-bootstrap components in tests
@@ -48,10 +48,9 @@ jest.mock('../../features/apps/appsEffects');
 
 const localApp = createLocalTestApp('dummy', { engineVersion: '6.1.0' });
 
-const updateableApp = createDownloadableTestApp('updateable', {
+const updatableApp = createDownloadableTestApp('updatable', {
     currentVersion: '1.2.3',
     latestVersion: '1.2.4',
-    upgradeAvailable: true,
     engineVersion: '6.1.0',
 });
 
@@ -72,14 +71,14 @@ describe('AppList', () => {
         expect(render(<AppList />).baseElement).toMatchSnapshot();
     });
 
-    it('should render local, not-installed, installed, and upgradable apps', () => {
+    it('should render local, not-installed, installed, and updatable apps', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                updateAllDownloadableApps([
+                setAllDownloadableApps([
                     uninstalledApp,
                     installedApp,
-                    updateableApp,
+                    updatableApp,
                 ]),
                 loadLocalAppsSuccess([localApp]),
             ]).baseElement
@@ -90,7 +89,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                updateAllDownloadableApps([uninstalledApp]),
+                setAllDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -100,7 +99,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                updateAllDownloadableApps([installedApp]),
+                setAllDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -110,8 +109,8 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                updateAllDownloadableApps([updateableApp]),
-                upgradeDownloadableAppStarted(updateableApp),
+                setAllDownloadableApps([updatableApp]),
+                updateDownloadableAppStarted(updatableApp),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -123,7 +122,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    updateAllDownloadableApps([uninstalledApp]),
+                    setAllDownloadableApps([uninstalledApp]),
                 ])}
             >
                 <AppList />
@@ -146,7 +145,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    updateAllDownloadableApps([installedApp]),
+                    setAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />
@@ -171,7 +170,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    updateAllDownloadableApps([installedApp]),
+                    setAllDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />

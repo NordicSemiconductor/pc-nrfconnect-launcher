@@ -28,11 +28,11 @@ import reducer, {
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
+    setAllDownloadableApps,
     showConfirmLaunchDialog,
     State,
-    updateAllDownloadableApps,
-    updateDownloadableApp,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppInfo,
+    updateDownloadableAppStarted,
 } from './appsSlice';
 
 const localApp1 = createLocalTestApp('a');
@@ -105,7 +105,7 @@ describe('appsReducer', () => {
 
     it('should have downloadable apps when loadDownloadableAppsSuccess has been dispatched with apps', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
     });
@@ -113,7 +113,7 @@ describe('appsReducer', () => {
     it('should not be loading downloadable apps after loadDownloadableAppsSuccess has been dispatched', () => {
         const state = dispatchTo(reducer, [
             loadDownloadableAppsStarted(),
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
         ]);
         expect(state.isLoadingDownloadableApps).toEqual(false);
     });
@@ -128,7 +128,7 @@ describe('appsReducer', () => {
 
     it('should be installing app after installDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
         ]);
         expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
@@ -136,11 +136,11 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should not be installing app after updateDownloadableApp has been dispatched', () => {
+    it('should not be installing app after updateDownloadableAppInfo has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
-            updateDownloadableApp(downloadableApp1),
+            updateDownloadableAppInfo(downloadableApp1),
         ]);
         expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
             false
@@ -149,7 +149,7 @@ describe('appsReducer', () => {
 
     it('should not be installing app after installDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             installDownloadableAppStarted(downloadableApp1),
             resetAppProgress(downloadableApp1),
         ]);
@@ -160,7 +160,7 @@ describe('appsReducer', () => {
 
     it('should be removing app after removeDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
         ]);
         expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(true);
@@ -168,7 +168,7 @@ describe('appsReducer', () => {
 
     it('should not be removing app after removeDownloadableAppSuccessAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
             removeDownloadableAppSuccess(downloadableApp1),
         ]);
@@ -179,7 +179,7 @@ describe('appsReducer', () => {
 
     it('should not be removing app after removeDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
+            setAllDownloadableApps(downloadableApps),
             removeDownloadableAppStarted(downloadableApp1),
             resetAppProgress(downloadableApp1),
         ]);
@@ -188,34 +188,32 @@ describe('appsReducer', () => {
         );
     });
 
-    it('should be upgrading app after upgradeDownloadableAppAction has been dispatched', () => {
+    it('should be updating app after updateDownloadableAppAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
+            setAllDownloadableApps(downloadableApps),
+            updateDownloadableAppStarted(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
-            true
-        );
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(true);
     });
 
-    it('should not be upgrading app after updateDownloadableApp has been dispatched', () => {
+    it('should not be updating app after updateDownloadableAppInfo has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
-            updateDownloadableApp(downloadableApp1),
+            setAllDownloadableApps(downloadableApps),
+            updateDownloadableAppStarted(downloadableApp1),
+            updateDownloadableAppInfo(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
             false
         );
     });
 
-    it('should not be removing app after upgradeDownloadableAppErrorAction has been dispatched', () => {
+    it('should not be removing app after updateDownloadableAppErrorAction has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            updateAllDownloadableApps(downloadableApps),
-            upgradeDownloadableAppStarted(downloadableApp1),
+            setAllDownloadableApps(downloadableApps),
+            updateDownloadableAppStarted(downloadableApp1),
             resetAppProgress(downloadableApp1),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpgrading).toBe(
+        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
             false
         );
     });
@@ -299,7 +297,7 @@ test('sortedSources sorts the sources into official, local and then the rest in 
             getDefaultMiddleware({ serializableCheck: false }),
     });
     store.dispatch(
-        updateAllDownloadableApps([
+        setAllDownloadableApps([
             { ...downloadableApp1, source: 'OtherB' },
             { ...downloadableApp1, source: 'official' },
             { ...downloadableApp1, source: 'OtherA' },

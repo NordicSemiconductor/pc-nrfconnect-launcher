@@ -7,7 +7,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { App } from '../../../ipc/apps';
+import { App, isInstalled } from '../../../ipc/apps';
 import type { Settings, ShownStates } from '../../../ipc/settings';
 import type { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
@@ -83,8 +83,8 @@ const matchesNameFilter = (app: App, state: RootState) => {
 };
 
 const matchesStateFilter = (app: App, state: RootState) =>
-    (state.filter.shownStates.installed && app.isInstalled) ||
-    (state.filter.shownStates.downloadable && !app.isInstalled);
+    (state.filter.shownStates.installed && isInstalled(app)) ||
+    (state.filter.shownStates.downloadable && !isInstalled(app));
 
 export const getAppsFilter = (state: RootState) => (app: App) =>
     matchesSourceFilter(app, state) &&

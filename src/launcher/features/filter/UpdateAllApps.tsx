@@ -8,24 +8,24 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { upgradeDownloadableApp } from '../apps/appsEffects';
-import { getUpgradeableVisibleApps } from '../apps/appsSlice';
+import { updateDownloadableApp } from '../apps/appsEffects';
+import { getUpdatableVisibleApps } from '../apps/appsSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const upgradeableApps = useLauncherSelector(getUpgradeableVisibleApps);
+    const updatableApps = useLauncherSelector(getUpdatableVisibleApps);
 
-    const upgradeAllApps = () =>
-        upgradeableApps.forEach(app =>
-            dispatch(upgradeDownloadableApp(app, app.latestVersion))
+    const updateAllApps = () =>
+        updatableApps.forEach(app =>
+            dispatch(updateDownloadableApp(app, app.latestVersion))
         );
 
-    if (upgradeableApps.length === 0) return null;
+    if (updatableApps.length === 0) return null;
 
     return (
         <Button
             variant="outline-secondary"
-            onClick={upgradeAllApps}
+            onClick={updateAllApps}
             className="me_32px"
         >
             Update all apps

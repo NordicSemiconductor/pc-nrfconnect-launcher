@@ -11,6 +11,11 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
+import {
+    isDownloadable,
+    isInstalled,
+    updateAvailable,
+} from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
@@ -33,13 +38,13 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                 <div className="small text-muted">{app.description}</div>
                 <div className="small text-muted-more">
                     {app.source}
-                    {app.isInstalled && <>, v{app.currentVersion}</>}
-                    {app.isInstalled &&
-                        app.isDownloadable &&
-                        app.upgradeAvailable && (
+                    {isInstalled(app) && <>, v{app.currentVersion}</>}
+                    {isInstalled(app) &&
+                        isDownloadable(app) &&
+                        updateAvailable(app) && (
                             <> (v{app.latestVersion} available)</>
                         )}
-                    {!app.isInstalled && app.latestVersion && (
+                    {!isInstalled(app) && app.latestVersion && (
                         <>, v{app.latestVersion}</>
                     )}
                 </div>
@@ -54,7 +59,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                     <InstallApp app={app} />
                     <DropdownButton
                         variant={
-                            app.isInstalled
+                            isInstalled(app)
                                 ? 'outline-primary'
                                 : 'outline-secondary'
                         }

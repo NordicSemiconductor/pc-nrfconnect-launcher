@@ -11,8 +11,11 @@ import {
     App,
     AppSpec,
     DownloadableApp,
+    isDownloadable,
+    isInstalled,
     LaunchableApp,
     LocalApp,
+    updateAvailable,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
@@ -21,14 +24,14 @@ import { getAppsFilter } from '../filter/filterSlice';
 
 type AppProgess = {
     isInstalling: boolean;
-    isUpgrading: boolean;
+    isUpdating: boolean;
     isRemoving: boolean;
     fraction: number;
 };
 
 const notInProgress = (): AppProgess => ({
     isInstalling: false,
-    isUpgrading: false,
+    isUpdating: false,
     isRemoving: false,
     fraction: 0,
 });
@@ -122,7 +125,7 @@ const slice = createSlice({
         loadDownloadableAppsStarted(state) {
             state.isLoadingDownloadableApps = true;
         },
-        updateAllDownloadableApps(
+        setAllDownloadableApps(
             state,
             { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
@@ -132,7 +135,7 @@ const slice = createSlice({
                 progress: notInProgress(),
             }));
         },
-        updateDownloadableApp(
+        updateDownloadableAppInfo(
             state,
             { payload: updatedApp }: PayloadAction<DownloadableApp>
         ) {
@@ -211,13 +214,13 @@ const slice = createSlice({
             });
         },
 
-        // Upgrade downloadable app
-        upgradeDownloadableAppStarted(
+        // Update downloadable app
+        updateDownloadableAppStarted(
             state,
-            { payload: appToUpgrade }: PayloadAction<AppSpec>
+            { payload: appToUpdate }: PayloadAction<AppSpec>
         ) {
-            updateApp(appToUpgrade, state.downloadableApps, app => {
-                app.progress.isUpgrading = true;
+            updateApp(appToUpdate, state.downloadableApps, app => {
+                app.progress.isUpdating = true;
             });
         },
 
@@ -238,7 +241,6 @@ const slice = createSlice({
 
             updateApp(removedApp, state.downloadableApps, app => {
                 app.currentVersion = undefined;
-                app.isInstalled = false;
             });
         },
 
@@ -280,10 +282,10 @@ export const {
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    updateAllDownloadableApps,
-    updateDownloadableApp,
+    setAllDownloadableApps,
+    updateDownloadableAppInfo,
     updateInstallProgress,
-    upgradeDownloadableAppStarted,
+    updateDownloadableAppStarted,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {
@@ -316,7 +318,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => app.isInstalled && app.upgradeAvailable
+        app => isInstalled(app) && updateAvailable(app)
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -324,10 +326,10 @@ export const getUpdateCheckStatus = (state: RootState) => ({
     lastUpdateCheckDate: state.apps.lastUpdateCheckDate,
 });
 
-export const getUpgradeableVisibleApps = (state: RootState) =>
+export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => app.isInstalled && app.upgradeAvailable);
+        .filter(app => isInstalled(app) && updateAvailable(app));
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
@@ -338,7 +340,7 @@ export const getConfirmLaunch = (state: RootState) => ({
 export const isInProgress = (
     app: DisplayedApp
 ): app is DownloadableAppWithProgress =>
-    app.isDownloadable &&
+    isDownloadable(app) &&
     (app.progress.isInstalling ||
-        app.progress.isUpgrading ||
+        app.progress.isUpdating ||
         app.progress.isRemoving);
