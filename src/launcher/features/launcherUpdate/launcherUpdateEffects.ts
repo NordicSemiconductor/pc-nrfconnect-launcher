@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// @ts-check
-
 import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
 
 import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
