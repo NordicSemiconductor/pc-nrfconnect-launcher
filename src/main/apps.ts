@@ -53,6 +53,8 @@ const store = new Store<{
     apps: { [appUrl: string]: AppData };
 }>({ name: 'pc-nrfconnect-launcher' });
 
+const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
+
 const getInstalledAppNames = (sourceName: string) => {
     const installedAppNames = fileUtil.listDirectories(
         getNodeModulesDir(sourceName)
@@ -120,7 +122,7 @@ export const installLocalApp = async (
     const appPath = path.join(getAppsLocalDir(), appName);
 
     // Check if app exists
-    if (await fs.pathExists(appPath)) {
+    if (isInstalled(appPath)) {
         return appExists(appName, appPath);
     }
 
@@ -353,12 +355,11 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
     const availableUpdates = getUpdates(source);
 
     return Promise.all(
-        apps.map(async app => {
+        apps.map(app => {
             const filePath = path.join(getNodeModulesDir(source), app.name);
 
             try {
-                const isInstalled = await fs.pathExists(filePath);
-                return isInstalled
+                return isInstalled(filePath)
                     ? installedAppInfo(app, availableUpdates)
                     : uninstalledAppInfo(app);
             } catch (error) {
@@ -453,8 +454,8 @@ export const installDownloadableApp = async (
     );
 
     const appPath = path.join(getNodeModulesDir(source), name);
-    const isInstalled = await fs.pathExists(appPath);
-    if (isInstalled) {
+
+    if (isInstalled(appPath)) {
         await removeDownloadableApp(app);
     }
     await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
