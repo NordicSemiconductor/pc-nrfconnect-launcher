@@ -190,6 +190,15 @@ body {
     padding: 1rem;
 }
 
+.pdfobject {
+    min-height: 600px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pdfobject-modal {
+    min-height: 720px;
+}
+
 .text-muted-more {
     @extend .text-muted;
     color: lighten($color: $text-muted, $amount: 30%) !important;
