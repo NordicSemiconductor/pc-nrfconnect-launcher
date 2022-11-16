@@ -1,0 +1,13 @@
+$roboto-font-path: 'roboto-fontface/fonts' !default;
+@import 'roboto-fontface/css/roboto/sass/roboto-fontface';
+
+@import '@mdi/font/css/materialdesignicons.min.css';
+
+@import 'pc-nrfconnect-shared/src/variables';
+@import 'bootstrap/scss/bootstrap';
+
+@each $color, $value in $theme-colors {
+    .btn-#{$color}, .btn-#{$color}.disabled, .btn-#{$color}:disabled {
+        border-color: $gray-200;
+    }
+}
