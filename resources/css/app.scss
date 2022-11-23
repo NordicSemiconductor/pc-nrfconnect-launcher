@@ -4,12 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-$roboto-font-path: "~roboto-fontface/fonts" !default;
-@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
-
-@import "~@mdi/font/css/materialdesignicons.min.css";
 @import "./common/styles";
-@import "~bootstrap/scss/bootstrap";
 
 @each $color, $value in $theme-colors {
     .btn-#{$color} {
