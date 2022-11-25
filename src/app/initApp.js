@@ -34,7 +34,7 @@ const loadApp = appDir => {
         return null;
     }
 
-    // Using window.require instead of require, so that webpack
+    // Using window.require instead of require, so that the bundler
     // ignores it when bundling core
     const app = window.require(appDir);
 

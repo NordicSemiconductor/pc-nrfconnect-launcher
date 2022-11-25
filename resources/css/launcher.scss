@@ -4,22 +4,18 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-@import '~@mdi/font/css/materialdesignicons.min.css';
 
-$roboto-font-path: '~roboto-fontface/fonts' !default;
-@import '~roboto-fontface/css/roboto/sass/roboto-fontface';
+$enable-transitions: false;
+$enable-rounded: false;
+$body-bg: #cfd8dc;
 
-$font-family-sans-serif: Roboto;
+@import 'pc-nrfconnect-shared/styles';
+@import 'bootstrap/scss/bootstrap';
+
 $theme-colors: (
     'primary': #00a9ce,
     // Nordic primary blue
 );
-$enable-transitions: false;
-$enable-rounded: false;
-$body-bg: #cfd8dc;
-@import '~bootstrap/scss/bootstrap';
-
-@import '~pc-nrfconnect-shared/styles';
 
 body {
     -webkit-user-select: none;

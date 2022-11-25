@@ -25,15 +25,25 @@
                 }
             }
         </style>
-        <link
-            id="stylesheet"
-            rel="stylesheet"
-            type="text/css"
-            href="../dist/app.css"
-        />
-        <script src="../dist/app-bundle.js" defer></script>
+
+        <link rel="stylesheet" href="../dist/bootstrap.css" type="text/css"/>
+
+        <script src="../dist/app.js" defer></script>
+
+        <script>
+            // We loaded all the assets we needed from the launcher now. 
+            // Time to change the base to the apps dist folder
+            const params = new URL(window.location).searchParams;
+            const appPath = params.get('appPath');
+
+            document.write("<base href='" + appPath + "/dist/' />");
+            document.write('<link rel="stylesheet" href="bundle.css" type="text/css" />');
+        </script>
+
     </head>
     <body>
+
+
         <div id="webapp">
             <div id="app-loader"></div>
         </div>
