@@ -13,4 +13,7 @@ jest.mock('electron', () => ({
                   }
                 : 'Unknown channel used in tests',
     },
+    app: {
+        on: jest.fn(),
+    },
 }));
