@@ -294,9 +294,6 @@ export const changeOptions = async (
     }
 
     const result = await openNewSerialPort(options);
-    if (result !== 'SUCCESS') {
-        return 'FAILED';
-    }
     return result;
 };
 
