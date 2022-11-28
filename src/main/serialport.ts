@@ -75,18 +75,12 @@ export const openOrAdd = async (
                 }
 
                 const result = await changeOptions(options);
-                if (result === 'SUCCESS') {
-                    existingPort.renderers.forEach(renderer => {
-                        renderer.send(SERIALPORT_CHANNEL.ON_CHANGED, options);
-                    });
-                    renderers.push(sender);
-                    sender.on('destroyed', () => {
-                        console.log('Window Closed!');
-                        removeRenderer(path, sender);
-                    });
-                    return;
+                if (result === 'FAILED') {
+                    throw new Error('FAILED');
                 }
-                throw new Error('FAILED');
+                existingPort.renderers.forEach(renderer => {
+                    renderer.send(SERIALPORT_CHANNEL.ON_CHANGED, options);
+                });
             }
             renderers.push(sender);
             sender.on('destroyed', () => {
@@ -97,53 +91,20 @@ export const openOrAdd = async (
         return;
     }
 
-    let port: SerialPort<AutoDetectTypes>;
-    try {
-        port = new SerialPort({ ...options, autoOpen: false });
-    } catch (error) {
-        throw new Error('FAILED');
-    }
-    const openPort: OpenPort = {
-        serialPort: port,
-        renderers: [sender],
-        settingsLocked: false,
-        opening: true,
-    };
-    serialPorts.set(path, openPort);
-
-    // Remove renderer if renderer process is destroyed (window is closed).
-    sender.on('destroyed', () => removeRenderer(path, sender));
-    // Remove renderer if renderer window is reloaded
-    sender.on('did-finish-load', () => {
-        removeRenderer(path, sender);
-    });
-
-    port.on('data', data => {
-        onData(path, data);
-    });
-
-    port.on('close', (error: Error) => {
-        // Device powers off, or is closed manually: do a clean up
-        if (error) {
-            if (openPort) {
-                openPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-                });
-
-                serialPorts.delete(path);
-            }
-        }
-    });
-
-    return new Promise<void>((resolve, reject) => {
-        port.open(err => {
-            if (err) {
-                reject(new Error('FAILED'));
-            }
-            openPort.opening = false;
-            resolve();
+    await openNewSerialPort(options)
+        .then(() => {
+            const openPort = serialPorts.get(path);
+            openPort?.renderers.push(sender);
+            // Remove renderer if renderer process is destroyed (window is closed).
+            sender.on('destroyed', () => removeRenderer(path, sender));
+            // Remove renderer if renderer window is reloaded
+            sender.on('did-finish-load', () => {
+                removeRenderer(path, sender);
+            });
+        })
+        .catch(() => {
+            throw new Error('FAILED');
         });
-    });
 };
 
 export const writeToSerialport = (
@@ -289,10 +250,14 @@ const openNewSerialPort = (options: SerialPortOpenOptions<AutoDetectTypes>) => {
     if (openPort && openPort.serialPort.isOpen) {
         openPort.serialPort.close();
     }
-    const newOpenPort = {
+
+    const newOpenPort: OpenPort = {
         ...openPort,
         serialPort: new SerialPort({ ...options, path, autoOpen: false }),
-    } as OpenPort;
+        renderers: openPort?.renderers ?? [],
+        settingsLocked: false,
+        opening: true,
+    };
     serialPorts.set(path, newOpenPort);
 
     const { serialPort: port } = newOpenPort;
@@ -304,22 +269,20 @@ const openNewSerialPort = (options: SerialPortOpenOptions<AutoDetectTypes>) => {
     port.on('close', (error: Error) => {
         // Device powers off, or is closed manually: do a clean up
         if (error) {
-            const refreshedOpenPort = serialPorts.get(path);
-            if (refreshedOpenPort) {
-                refreshedOpenPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-                });
-
-                serialPorts.delete(path);
-            }
+            newOpenPort.renderers.forEach(renderer => {
+                renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
+            });
+            serialPorts.delete(path);
         }
     });
-    return new Promise((resolve, reject) => {
-        newOpenPort.serialPort.open(err => {
+
+    return new Promise<void>((resolve, reject) => {
+        port.open(err => {
             if (err) {
                 reject(Error('FAILED'));
             }
-            resolve('SUCCESS');
+            newOpenPort.opening = false;
+            resolve();
         });
     });
 };
