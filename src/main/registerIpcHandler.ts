@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { ipcMain } from 'electron';
 import Store from 'electron-store';
 
 import { registerGetAppDetails } from '../ipc/appDetails';
@@ -63,6 +64,14 @@ import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
 import {
+    closeSerialPort,
+    isOpen,
+    openOrAdd,
+    set,
+    update,
+    writeToSerialport,
+} from './serialport';
+import {
     addShownSource,
     get as getSettings,
     removeShownSource,
@@ -118,4 +127,32 @@ export default () => {
     registerRemoveSource(removeSource);
 
     registerRequire(requireModule);
+
+    // To handle renderer asking for serialport
+    ipcMain.handle('serialport:open', ({ sender }, options, overwrite) =>
+        openOrAdd(sender, options, overwrite)
+    );
+
+    // To handle writing to a serialport from renderer
+    ipcMain.handle('serialport:write', ({ sender }, path, data) => {
+        writeToSerialport(path, sender, data);
+    });
+
+    // Renderer asks if the serialport is open
+    ipcMain.handle('serialport:is-open', (_event, path) => isOpen(path));
+
+    // Renderer asks to close the serialport
+    // If >1 renderers subscribe to a port, then just close the communication
+    // between the sender and the serialport.
+    ipcMain.handle('serialport:close', ({ sender }, path) =>
+        closeSerialPort(path, sender)
+    );
+
+    ipcMain.handle('serialport:update', (_event, path, options) =>
+        update(path, options)
+    );
+
+    ipcMain.handle('serialport:set', (_event, path, options) =>
+        set(path, options)
+    );
 };
