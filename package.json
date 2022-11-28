@@ -115,7 +115,7 @@
         "fs-extra": "9.0.0",
         "lodash.merge": "4.6.2",
         "mustache": "4.0.1",
-        "serialport": "8.0.8",
+        "serialport": "10.4.0",
         "shasum": "1.0.2",
         "short-uuid": "4.2.0",
         "sudo-prompt": "^9.2.1",
