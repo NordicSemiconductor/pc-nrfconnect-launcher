@@ -9,7 +9,11 @@ require('esbuild')
         bundle: true,
         color: true,
         entryPoints: ['src/main/index.ts'],
-        external: ['electron', /node_modules\/(?!pc-nrfconnect-shared\/)/],
+        external: [
+            'electron',
+            'serialport',
+            /node_modules\/(?!pc-nrfconnect-shared\/)/,
+        ],
         logLevel: 'info',
         outfile: 'dist/main.js',
         platform: 'node',
