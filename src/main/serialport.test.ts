@@ -5,6 +5,7 @@
  */
 
 import { MockBinding } from '@serialport/binding-mock';
+import { UpdateOptions } from '@serialport/bindings-cpp';
 import { SerialPortStream as MockSerialPortStream } from '@serialport/stream';
 import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
 
@@ -151,8 +152,10 @@ describe('Two renderers', () => {
 
         // eslint-disable-next-line no-restricted-syntax
         for (const rate of baudRatesToTest) {
-            // eslint-disable-next-line no-await-in-loop
-            expect(await update(testPortPath, rate)).toBeUndefined();
+            expect(
+                // eslint-disable-next-line no-await-in-loop
+                await update(testPortPath, { baudRate: rate } as UpdateOptions)
+            ).toBeUndefined();
             expect(getSettings(testPortPath)).toBe(rate);
         }
     });

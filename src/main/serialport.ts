@@ -4,7 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import type { AutoDetectTypes, SetOptions } from '@serialport/bindings-cpp';
+import type {
+    AutoDetectTypes,
+    SetOptions,
+    UpdateOptions,
+} from '@serialport/bindings-cpp';
 import { Renderer, WebContents } from 'electron';
 import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
@@ -220,9 +224,8 @@ const removeRenderer = (path: string, sender: Renderer): boolean => {
     return closedPort;
 };
 
-export const update = (path: string, baudRate: number) => {
+export const update = (path: string, options: UpdateOptions) => {
     const openPort = serialPorts.get(path);
-
     if (!openPort) {
         logger.error(
             `SerialPort: Port with path=${path} could not update options, because port was not found.`
@@ -231,9 +234,8 @@ export const update = (path: string, baudRate: number) => {
     }
 
     const { serialPort, renderers } = openPort;
-
     return new Promise<void>((resolve, reject) => {
-        serialPort.update({ baudRate }, error => {
+        serialPort.update(options, error => {
             if (error) {
                 logger.error(
                     `SerialPort: Port with path=${path} could not update options: ${error.message}`
@@ -247,7 +249,9 @@ export const update = (path: string, baudRate: number) => {
                     );
                 });
                 logger.info(
-                    `SerialPort: Port with path=${path} updated settings: baudRate=${baudRate}`
+                    `SerialPort: Port with path=${path} updated settings: ${JSON.stringify(
+                        options
+                    )}`
                 );
                 resolve();
             }
@@ -269,7 +273,9 @@ export const set = (path: string, newOptions: SetOptions) => {
 
     serialPort.set(newOptions);
     logger.info(
-        `SerialPort: Port with path=${path} was set with new settings: ${newOptions}`
+        `SerialPort: Port with path=${path} was set with new settings: ${JSON.stringify(
+            newOptions
+        )}`
     );
 
     renderers.forEach(renderer => {
