@@ -11,6 +11,7 @@
         "prepare": "husky install",
         "postinstall": "ts-node scripts/getJlink",
         "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
+        "app:debug": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
         "watch": "run-p --silent --continue-on-error --print-label watch:**",
         "watch:build:main": "node scripts/esbuild --watch",
         "watch:build:renderer": "node scripts/esbuild-renderer --watch",

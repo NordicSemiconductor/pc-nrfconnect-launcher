@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Launcher",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+        "runtimeArgs": [
+            "--remote-debugging-port=9223",
+            "."
+        ],
+        "windows": {
+          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+        },
+        "args" : ["."],
+        "outputCapture": "std"
+      }
+    ]
+  }
