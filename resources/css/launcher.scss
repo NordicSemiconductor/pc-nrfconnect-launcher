@@ -9,13 +9,17 @@ $enable-transitions: false;
 $enable-rounded: false;
 $body-bg: #cfd8dc;
 
-@import 'pc-nrfconnect-shared/styles';
-@import 'bootstrap/scss/bootstrap';
-
+$primary: #00a9ce;
 $theme-colors: (
-    'primary': #00a9ce,
+    'primary': $primary,
+    'secondary': #6c757d, // From brand.scss
     // Nordic primary blue
 );
+
+@import 'pc-nrfconnect-shared/styles';
+$custom-control-indicator-checked-border-color: $primary;
+$custom-control-indicator-active-bg: $primary;
+@import 'bootstrap/scss/bootstrap';
 
 body {
     -webkit-user-select: none;

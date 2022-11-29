@@ -6,4 +6,10 @@
 
 const { build } = require('pc-nrfconnect-shared/scripts/esbuild-renderer');
 
-build(['./src/app', './src/launcher'], 'iife');
+build({
+    entryPoints: ['./resources/css/fonts.scss'],
+    outfile: './dist/fonts.css',
+    sourcemap: false,
+});
+
+build({ entryPoints: ['./src/app', './src/launcher'], format: 'iife' });

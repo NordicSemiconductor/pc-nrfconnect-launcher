@@ -26,7 +26,7 @@
             }
         </style>
 
-        <link rel="stylesheet" href="../dist/bootstrap.css" type="text/css"/>
+        <link rel="stylesheet" href="../dist/fonts.css" type="text/css"/>
 
         <script src="../dist/app.js" defer></script>
 
@@ -37,6 +37,7 @@
             const appPath = params.get('appPath');
 
             document.write("<base href='" + appPath + "/dist/' />");
+            document.write('<link rel="stylesheet" href="bootstrap.css" type="text/css" />');
             document.write('<link rel="stylesheet" href="bundle.css" type="text/css" />');
         </script>
 
