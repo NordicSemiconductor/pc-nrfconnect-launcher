@@ -9,6 +9,8 @@ import { Renderer, WebContents } from 'electron';
 import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
+import { logger } from './log';
+
 export type Renderer = Pick<WebContents, 'on' | 'send' | 'id'>;
 
 /**
@@ -83,10 +85,7 @@ export const openOrAdd = async (
                 });
             }
             renderers.push(sender);
-            sender.on('destroyed', () => {
-                console.log('Window Closed!');
-                removeRenderer(path, sender);
-            });
+            addSenderEvents(path, sender);
         }
         return;
     }
@@ -95,12 +94,7 @@ export const openOrAdd = async (
         .then(() => {
             const openPort = serialPorts.get(path);
             openPort?.renderers.push(sender);
-            // Remove renderer if renderer process is destroyed (window is closed).
-            sender.on('destroyed', () => removeRenderer(path, sender));
-            // Remove renderer if renderer window is reloaded
-            sender.on('did-finish-load', () => {
-                removeRenderer(path, sender);
-            });
+            addSenderEvents(path, sender);
         })
         .catch(() => {
             throw new Error('FAILED');
@@ -303,4 +297,22 @@ export const getSettings = (path: string): number | void => {
         return;
     }
     return openPort.serialPort.baudRate;
+};
+
+const addSenderEvents = (path: string, sender: Renderer) => {
+    // Remove renderer if renderer process is destroyed (window is closed).
+    sender.on('destroyed', () => {
+        logger.info(
+            `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} because renderer was destroyed.`
+        );
+        removeRenderer(path, sender);
+    });
+
+    // Remove renderer if renderer window is reloaded
+    sender.on('did-finish-load', () => {
+        logger.info(
+            `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} because renderer reloaded window.`
+        );
+        removeRenderer(path, sender);
+    });
 };
