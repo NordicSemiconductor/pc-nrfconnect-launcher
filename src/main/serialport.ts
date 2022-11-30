@@ -286,14 +286,24 @@ export const set = (path: string, newOptions: SetOptions) => {
     });
 };
 
-const openNewSerialPort = (options: SerialPortOpenOptions<AutoDetectTypes>) => {
+const openNewSerialPort = async (
+    options: SerialPortOpenOptions<AutoDetectTypes>
+) => {
     const { path } = options;
     const openPort = serialPorts.get(path);
     if (openPort && openPort.serialPort.isOpen) {
         logger.info(
             `SerialPort: Port with path=${path} is already open, but will be reopened.`
         );
-        openPort.serialPort.close();
+        await new Promise<void>((resolve, reject) => {
+            openPort.serialPort.close(error => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 
     const newOpenPort: OpenPort = {
