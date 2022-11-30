@@ -14,31 +14,17 @@ import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
 import { logger } from './log';
+import { initPlatformSpecificMap } from './utils/map';
 
 export type Renderer = Pick<WebContents, 'on' | 'send' | 'id'>;
 
-/**
- *  serialPorts: {
-
-        '/dev/Robot': {
-            renderers: Renderer[],
-            serialPort: SerialPort,
-        },
-
-        '/dev/Rowboat': {
-            renderers: Renderer[],
-            serialPort: SerialPort,
-        }
-    }
-*/
 type OpenPort = {
     serialPort: SerialPort;
     renderers: Renderer[];
     settingsLocked: boolean;
     opening: boolean;
 };
-
-const serialPorts = new Map<string, OpenPort>();
+const serialPorts = initPlatformSpecificMap<string, OpenPort>();
 
 export const openOrAdd = async (
     sender: Renderer,
@@ -47,7 +33,6 @@ export const openOrAdd = async (
 ) => {
     const { path } = options;
     const existingPort = serialPorts.get(path);
-
     if (existingPort) {
         if (existingPort.opening) {
             logger.warn(
