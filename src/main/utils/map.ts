@@ -28,6 +28,14 @@ class CaseInsensitiveMap<T, U> extends Map<T, U> {
         }
         return super.has(key);
     }
+
+    delete(key: T): boolean {
+        if (typeof key === 'string') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            key = key.toLowerCase() as any as T;
+        }
+        return super.delete(key);
+    }
 }
 
 type PlatformSpecificMap<T, U> = CaseInsensitiveMap<T, U> | Map<T, U>;
