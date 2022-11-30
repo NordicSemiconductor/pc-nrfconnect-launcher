@@ -65,14 +65,16 @@ export const openOrAdd = async (
             let isDifferentSettings;
             if (existingPort.serialPort) {
                 const currentOptions = existingPort.serialPort.settings;
-                Object.entries(options).forEach(([key, value]) => {
+                Object.entries(options).every(([key, value]) => {
                     if (
                         !(key in currentOptions) ||
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (currentOptions as any)[key] !== value
                     ) {
                         isDifferentSettings = true;
+                        return false;
                     }
+                    return true;
                 });
             }
 
