@@ -56,9 +56,8 @@ export const openOrAdd = async (
             throw new Error('PORT_IS_ALREADY_BEING_OPENED');
         }
 
-        const renderers = existingPort.renderers;
-        const alreadyInList = renderers.find(
-            existing => sender.id === existing.id
+        const alreadyInList = existingPort.renderers.some(
+            renderer => renderer.id === sender.id
         );
 
         if (!alreadyInList) {
@@ -97,7 +96,7 @@ export const openOrAdd = async (
                     renderer.send(SERIALPORT_CHANNEL.ON_CHANGED, options);
                 });
             }
-            renderers.push(sender);
+            existingPort.renderers.push(sender);
             addSenderEvents(path, sender);
             logger.info(
                 `SerialPort: Port with path=${path} added renderer with id=${sender.id} to its list of renderers.`
