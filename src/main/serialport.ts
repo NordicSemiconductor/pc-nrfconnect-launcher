@@ -174,10 +174,10 @@ export const isOpen = (path: string): boolean => {
 };
 
 /* Return true if port is closed, false otherwise */
-export const closeSerialPort = (
+export const closeSerialPort = async (
     path: string,
     sender: Renderer
-): [Error | undefined, boolean] => {
+): Promise<[Error | undefined, boolean]> => {
     const port = serialPorts.get(path)?.serialPort;
     let portWasClosed = false;
     if (!port) {
@@ -191,15 +191,15 @@ export const closeSerialPort = (
 
     const renderers = serialPorts.get(path)?.renderers;
     if (renderers) {
-        // FIXME: Issue is I can't get the potential Error from port.close().
-        // removeRenderer will close the port and return true if list of renderers is empty after removing sender.
-        portWasClosed = removeRenderer(path, sender);
+        portWasClosed = await removeRenderer(path, sender);
     }
     return [undefined, portWasClosed];
 };
 
-const removeRenderer = (path: string, sender: Renderer): boolean => {
-    let closedPort = false;
+const removeRenderer = async (
+    path: string,
+    sender: Renderer
+): Promise<boolean> => {
     const openPort = serialPorts.get(path);
     if (openPort) {
         openPort.renderers = openPort.renderers.filter(
@@ -214,15 +214,30 @@ const removeRenderer = (path: string, sender: Renderer): boolean => {
                 logger.info(
                     `SerialPort: Port with path=${path} have an empty renderers list and will be closed.`
                 );
-                openPort.serialPort.close();
+                const closeResponse = await new Promise<boolean>(
+                    (resolve, reject) => {
+                        openPort.serialPort.close(error => {
+                            if (error) {
+                                reject(error);
+                            } else {
+                                resolve(true);
+                            }
+                        });
+                    }
+                );
                 serialPorts.delete(path);
-                closedPort = true;
+                return closeResponse;
             }
-        } else {
-            serialPorts.set(path, openPort);
+            serialPorts.delete(path);
+            return false;
         }
+        serialPorts.set(path, openPort);
+        return false;
     }
-    return closedPort;
+    logger.error(
+        `SerialPort: Port with path=${path}: tried to remove renderer with id=${sender.id}, but could not find port.`
+    );
+    throw new Error(`Could not find port with path: ${path}`);
 };
 
 export const update = (path: string, options: UpdateOptions) => {

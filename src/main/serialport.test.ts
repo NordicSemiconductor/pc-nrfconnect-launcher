@@ -112,27 +112,30 @@ describe('Two renderers', () => {
             openOrAdd(rendererTwo, defaultOptions, false)
         ).resolves.toBeUndefined();
 
-        const [error, didClose] = closeSerialPort(testPortPath, rendererOne);
+        const [error, didClose] = await closeSerialPort(
+            testPortPath,
+            rendererOne
+        );
         expect(error).toBeUndefined();
         expect(didClose).toBe(false);
         // Having closed with one renderer, should still keep port open
         // as long as there are renderers that are subcribed to the port.
         expect(isOpen(testPortPath)).toBe(true);
         // Closing the same serialport several times does nothing...
-        closeSerialPort(testPortPath, rendererOne);
-        closeSerialPort(testPortPath, rendererOne);
+        await closeSerialPort(testPortPath, rendererOne);
+        await closeSerialPort(testPortPath, rendererOne);
         expect(isOpen(testPortPath)).toBe(true);
 
-        expect(closeSerialPort(testPortPath, rendererTwo)).toEqual([
+        expect(await closeSerialPort(testPortPath, rendererTwo)).toEqual([
             undefined,
             true,
         ]);
         // Having closed the port with all renderers, the port should be closed
         expect(isOpen(testPortPath)).toBe(false);
         // Closing the same serialport several times after it is closed, still does nothing...
-        closeSerialPort(testPortPath, rendererTwo); // Returns an error... maybe it should throw?
-        closeSerialPort(testPortPath, rendererTwo);
-        closeSerialPort(testPortPath, rendererTwo);
+        await closeSerialPort(testPortPath, rendererTwo); // Returns an error... maybe it should throw?
+        await closeSerialPort(testPortPath, rendererTwo);
+        await closeSerialPort(testPortPath, rendererTwo);
         expect(isOpen(testPortPath)).toBe(false);
     });
 
