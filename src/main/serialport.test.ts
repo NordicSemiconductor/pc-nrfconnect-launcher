@@ -14,6 +14,7 @@ import {
     getSettings,
     isOpen,
     openOrAdd,
+    OverwriteOptions,
     Renderer,
     serialPorts,
     update,
@@ -23,6 +24,11 @@ import {
 const testPortPath = '/dev/ROBOT';
 
 const defaultOptions = { path: testPortPath, baudRate: 115200 };
+const defaultOverwriteOptions: OverwriteOptions = {
+    overwrite: false,
+    settingsLocked: false,
+};
+
 jest.mock('serialport', () => {
     const MockSerialPort = new Proxy(MockSerialPortStream, {
         construct(Target, args) {
@@ -70,7 +76,7 @@ describe('Single renderer', () => {
     });
 
     test('writes to a port', async () => {
-        await openOrAdd(renderer, defaultOptions, false);
+        await openOrAdd(renderer, defaultOptions, defaultOverwriteOptions);
 
         writeToSerialport(testPortPath, renderer, 'OK');
         await flushMacroTaskQueue();
@@ -82,7 +88,11 @@ describe('Single renderer', () => {
     });
 
     test('writing to the port before it is open should throw', async () => {
-        const openPromise = openOrAdd(renderer, defaultOptions, false);
+        const openPromise = openOrAdd(
+            renderer,
+            defaultOptions,
+            defaultOverwriteOptions
+        );
         expect(() => writeToSerialport(testPortPath, renderer, 'Test')).toThrow(
             'PORT_NOT_OPEN'
         );
@@ -102,11 +112,11 @@ describe('Two renderers', () => {
 
     test('opening one serialport with two renderers should work', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, false)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, false)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
         await closeSerialPort(testPortPath, rendererOne);
@@ -129,11 +139,11 @@ describe('Two renderers', () => {
 
     test('baudRate may be updated whilst port is open, and is renderer-independent', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, false)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, false)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
         const baudRatesToTest = [
@@ -152,9 +162,13 @@ describe('Two renderers', () => {
     });
 
     test('opening the same port at the same time should throw', async () => {
-        const promise = openOrAdd(rendererOne, defaultOptions, false);
+        const promise = openOrAdd(
+            rendererOne,
+            defaultOptions,
+            defaultOverwriteOptions
+        );
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, false)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
         ).rejects.toThrow('PORT_IS_ALREADY_BEING_OPENED');
 
         // Wait for the first open to finish.
@@ -163,41 +177,78 @@ describe('Two renderers', () => {
 
     test('with the second renderer providing the overwrite flag decides if the port options should be overwritten', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, false)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
         await expect(
             openOrAdd(
                 rendererTwo,
                 { path: testPortPath, baudRate: 9600 },
-                false
+                defaultOverwriteOptions
             )
         ).rejects.toThrow('FAILED_DIFFERENT_SETTINGS');
 
         await expect(
-            openOrAdd(rendererTwo, { path: testPortPath, baudRate: 9600 }, true)
+            openOrAdd(
+                rendererTwo,
+                { path: testPortPath, baudRate: 9600 },
+                { overwrite: true, settingsLocked: false }
+            )
         ).resolves.toBeUndefined();
     });
-});
 
-describe('xxx342', () => {
-    let rendererOne: Renderer;
-    let rendererTwo: Renderer;
+    test('cannot overwrite the settings of the first when settings are locked.', async () => {
+        await openOrAdd(rendererOne, defaultOptions, {
+            ...defaultOverwriteOptions,
+            settingsLocked: true,
+        });
 
-    beforeEach(() => {
-        rendererOne = createMockSender();
-        rendererTwo = createMockSender();
+        await expect(
+            openOrAdd(
+                rendererTwo,
+                { ...defaultOptions, stopBits: 2, parity: 'odd' },
+                defaultOverwriteOptions
+            )
+        ).rejects.toThrow('FAILED_SETTINGS_LOCKED');
+        await expect(
+            openOrAdd(
+                rendererTwo,
+                { ...defaultOptions, stopBits: 2, parity: 'odd' },
+                { ...defaultOverwriteOptions, overwrite: true }
+            )
+        ).rejects.toThrow('FAILED_SETTINGS_LOCKED');
     });
 
-    test('write from renderer A will also notify renderer B', async () => {
-        await openOrAdd(rendererOne, defaultOptions, false);
-        await openOrAdd(rendererTwo, defaultOptions, false);
+    test('can still subscribe to port with the same settings, even though settings are locked.', async () => {
+        await openOrAdd(rendererOne, defaultOptions, {
+            ...defaultOverwriteOptions,
+            settingsLocked: true,
+        });
+
+        await expect(
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
+        ).resolves.toBe(undefined);
+
+        await expect(
+            openOrAdd(rendererTwo, defaultOptions, {
+                ...defaultOverwriteOptions,
+                overwrite: true,
+            })
+        ).resolves.toBe(undefined);
+    });
+
+    test('write from renderer A will forward the written data to renderer A and B', async () => {
+        await openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions);
+        await openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions);
         const terminalData = 'TestData';
         writeToSerialport(testPortPath, rendererOne, terminalData);
 
         await flushMacroTaskQueue();
 
-        expect(rendererTwo.send).toBeCalled();
+        expect(rendererOne.send).toHaveBeenCalledWith(
+            'serialport:on-write',
+            terminalData
+        );
         expect(rendererTwo.send).toHaveBeenCalledWith(
             'serialport:on-write',
             terminalData

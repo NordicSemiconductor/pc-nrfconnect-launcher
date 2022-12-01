@@ -26,10 +26,14 @@ type OpenPort = {
 };
 export const serialPorts = initPlatformSpecificMap<string, OpenPort>();
 
+export type OverwriteOptions = {
+    overwrite: boolean;
+    settingsLocked: boolean;
+};
 export const openOrAdd = async (
     sender: Renderer,
     options: SerialPortOpenOptions<AutoDetectTypes>,
-    overwrite: boolean
+    overwriteOptions: OverwriteOptions
 ) => {
     const { path } = options;
     const existingPort = serialPorts.get(path);
@@ -63,14 +67,23 @@ export const openOrAdd = async (
             }
 
             if (isDifferentSettings) {
-                if (!overwrite) {
+                if (existingPort.settingsLocked) {
+                    logger.warn(
+                        `SerialPort: Port with path=${path} rejected renderer with id=${sender.id}, because the port is already open with different settings than what the renderer requested, and the settings are locked.`
+                    );
+                    throw new Error('FAILED_SETTINGS_LOCKED');
+                }
+                if (!overwriteOptions.overwrite) {
                     logger.warn(
                         `SerialPort: Port with path=${path} rejected renderer with id=${sender.id}, because the port is already open with different settings than what the renderer requested, and the renderer did not request to overwrite settings.`
                     );
                     throw new Error('FAILED_DIFFERENT_SETTINGS');
                 }
 
-                const result = await changeOptions(options);
+                const result = await changeOptions(
+                    options,
+                    overwriteOptions.settingsLocked
+                );
                 if (result === 'FAILED') {
                     logger.error(
                         `SerialPort: Renderer with id=${sender.id} requested to overwrite settings of port=${path}, but failed.`
@@ -90,7 +103,7 @@ export const openOrAdd = async (
         return;
     }
 
-    await openNewSerialPort(options)
+    await openNewSerialPort(options, overwriteOptions.settingsLocked)
         .then(() => {
             const openPort = serialPorts.get(path);
             openPort?.renderers.push(sender);
@@ -275,7 +288,8 @@ export const set = (path: string, newOptions: SetOptions) => {
 };
 
 const openNewSerialPort = async (
-    options: SerialPortOpenOptions<AutoDetectTypes>
+    options: SerialPortOpenOptions<AutoDetectTypes>,
+    settingsLocked: boolean
 ) => {
     const { path } = options;
     const openPort = serialPorts.get(path);
@@ -298,7 +312,7 @@ const openNewSerialPort = async (
         ...openPort,
         serialPort: new SerialPort({ ...options, path, autoOpen: false }),
         renderers: openPort?.renderers ?? [],
-        settingsLocked: false,
+        settingsLocked,
         opening: true,
     };
     serialPorts.set(path, newOpenPort);
@@ -344,7 +358,8 @@ const openNewSerialPort = async (
 };
 
 export const changeOptions = async (
-    options: SerialPortOpenOptions<AutoDetectTypes>
+    options: SerialPortOpenOptions<AutoDetectTypes>,
+    settingsLocked: boolean
 ) => {
     const openPort = serialPorts.get(options.path);
     if (!openPort) {
@@ -354,7 +369,7 @@ export const changeOptions = async (
         return 'FAILED';
     }
 
-    const result = await openNewSerialPort(options);
+    const result = await openNewSerialPort(options, settingsLocked);
     return result;
 };
 
