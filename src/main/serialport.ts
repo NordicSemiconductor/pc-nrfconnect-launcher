@@ -121,9 +121,9 @@ export const writeToSerialport = (
         throw new Error('PORT_NOT_OPEN');
     }
 
-    openPort.renderers
-        .filter(renderer => renderer.id !== sender.id)
-        .forEach(renderer => renderer.send('serialport:on-write', data));
+    openPort.renderers.forEach(renderer =>
+        renderer.send('serialport:on-write', data)
+    );
 
     return new Promise<void>((resolve, reject) => {
         openPort.serialPort.write(data, error => {
