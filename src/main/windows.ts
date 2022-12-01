@@ -154,7 +154,7 @@ export const openDownloadableAppWindow = (
 };
 
 export const openLocalAppWindow = (appName: string) => {
-    const localApp = getLocalApps().find(app => app.name === appName);
+    const localApp = getLocalApps(false).find(app => app.name === appName);
 
     if (localApp) {
         openAppWindow(localApp);

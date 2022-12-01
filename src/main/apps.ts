@@ -389,20 +389,22 @@ const getLocalApp = (appName: string): LocalApp => ({
     source: LOCAL,
 });
 
-export const getLocalApps = () => {
+export const getLocalApps = (consistencyCheck = true) => {
     const localApps = fileUtil
         .listDirectories(getAppsLocalDir())
         .map(getLocalApp);
 
-    localApps
-        .filter(app => !consistentAppAndDirectoryName(app))
-        .forEach(app => {
-            showErrorDialog(
-                `The local app at the path \`${app.path}\` has the name ` +
-                    `\`${app.name}\`, which does not match the directory. ` +
-                    `Not showing this app.`
-            );
-        });
+    if (consistencyCheck) {
+        localApps
+            .filter(app => !consistentAppAndDirectoryName(app))
+            .forEach(app => {
+                showErrorDialog(
+                    `The local app at the path \`${app.path}\` has the name ` +
+                        `\`${app.name}\`, which does not match the directory. ` +
+                        `Not showing this app.`
+                );
+            });
+    }
 
     return localApps.filter(consistentAppAndDirectoryName);
 };
