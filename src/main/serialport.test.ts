@@ -15,6 +15,7 @@ import {
     isOpen,
     openOrAdd,
     Renderer,
+    serialPorts,
     update,
     writeToSerialport,
 } from './serialport';
@@ -22,9 +23,6 @@ import {
 const testPortPath = '/dev/ROBOT';
 
 const defaultOptions = { path: testPortPath, baudRate: 115200 };
-
-MockBinding.createPort(testPortPath, { echo: true, record: true });
-
 jest.mock('serialport', () => {
     const MockSerialPort = new Proxy(MockSerialPortStream, {
         construct(Target, args) {
@@ -54,15 +52,21 @@ const flushMacroTaskQueue = () =>
         setTimeout(resolve);
     });
 
+beforeEach(() => {
+    // Cleanup between each test.
+    serialPorts.clear();
+    MockBinding.reset();
+    MockBinding.createPort(testPortPath, {
+        echo: true,
+        record: true,
+    });
+});
+
 describe('Single renderer', () => {
     let renderer: Renderer;
 
     beforeEach(() => {
         renderer = createMockSender();
-    });
-
-    afterEach(() => {
-        closeSerialPort(testPortPath, renderer);
     });
 
     test('writes to a port', async () => {
@@ -96,13 +100,6 @@ describe('Two renderers', () => {
         rendererTwo = createMockSender();
     });
 
-    afterEach(() => {
-        // if (isOpen(testPortPath)) {
-        closeSerialPort(testPortPath, rendererOne);
-        closeSerialPort(testPortPath, rendererTwo);
-        // }
-    });
-
     test('opening one serialport with two renderers should work', async () => {
         await expect(
             openOrAdd(rendererOne, defaultOptions, false)
@@ -112,31 +109,22 @@ describe('Two renderers', () => {
             openOrAdd(rendererTwo, defaultOptions, false)
         ).resolves.toBeUndefined();
 
-        const [error, didClose] = await closeSerialPort(
-            testPortPath,
-            rendererOne
-        );
-        expect(error).toBeUndefined();
-        expect(didClose).toBe(false);
+        await closeSerialPort(testPortPath, rendererOne);
+
         // Having closed with one renderer, should still keep port open
-        // as long as there are renderers that are subcribed to the port.
+        // as long as there are renderers that are subscribed to the port.
         expect(isOpen(testPortPath)).toBe(true);
         // Closing the same serialport several times does nothing...
         await closeSerialPort(testPortPath, rendererOne);
-        await closeSerialPort(testPortPath, rendererOne);
         expect(isOpen(testPortPath)).toBe(true);
 
-        expect(await closeSerialPort(testPortPath, rendererTwo)).toEqual([
-            undefined,
-            true,
-        ]);
+        await closeSerialPort(testPortPath, rendererTwo);
         // Having closed the port with all renderers, the port should be closed
-        expect(isOpen(testPortPath)).toBe(false);
-        // Closing the same serialport several times after it is closed, still does nothing...
-        await closeSerialPort(testPortPath, rendererTwo); // Returns an error... maybe it should throw?
-        await closeSerialPort(testPortPath, rendererTwo);
-        await closeSerialPort(testPortPath, rendererTwo);
-        expect(isOpen(testPortPath)).toBe(false);
+        expect(() => isOpen(testPortPath)).toThrow('PORT_NOT_FOUND');
+        // Closing the same port when it has been deleted throws an error.
+        await expect(
+            closeSerialPort(testPortPath, rendererTwo)
+        ).rejects.toThrow('PORT_NOT_FOUND');
     });
 
     test('baudRate may be updated whilst port is open, and is renderer-independent', async () => {
@@ -192,25 +180,18 @@ describe('Two renderers', () => {
     });
 });
 
-describe('Two renderers with one serialport open:', () => {
+describe('xxx342', () => {
     let rendererOne: Renderer;
     let rendererTwo: Renderer;
 
-    beforeEach(async () => {
+    beforeEach(() => {
         rendererOne = createMockSender();
         rendererTwo = createMockSender();
-        await openOrAdd(rendererOne, defaultOptions, false);
-        await openOrAdd(rendererTwo, defaultOptions, false);
-    });
-
-    afterEach(() => {
-        // if (isOpen(testPortPath)) {
-        closeSerialPort(testPortPath, rendererOne);
-        closeSerialPort(testPortPath, rendererTwo);
-        // }
     });
 
     test('write from renderer A will also notify renderer B', async () => {
+        await openOrAdd(rendererOne, defaultOptions, false);
+        await openOrAdd(rendererTwo, defaultOptions, false);
         const terminalData = 'TestData';
         writeToSerialport(testPortPath, rendererOne, terminalData);
 
@@ -223,13 +204,3 @@ describe('Two renderers with one serialport open:', () => {
         );
     });
 });
-
-// Single renderer writes to a port
-// Single renderer disconnects by user
-// Single renderer disconnects by device
-// Single renderer destroyed
-
-// Multiple renderers open a port
-// Multiple renderers, one disconnects, other renderer still reads
-// Multiple renderers disconnects by device
-// Multiple renderers, one renderer is destroyed

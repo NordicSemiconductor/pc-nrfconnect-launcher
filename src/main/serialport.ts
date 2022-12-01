@@ -24,7 +24,7 @@ type OpenPort = {
     settingsLocked: boolean;
     opening: boolean;
 };
-const serialPorts = initPlatformSpecificMap<string, OpenPort>();
+export const serialPorts = initPlatformSpecificMap<string, OpenPort>();
 
 export const openOrAdd = async (
     sender: Renderer,
@@ -150,7 +150,7 @@ export const isOpen = (path: string): boolean => {
         logger.error(
             `SerialPort: Port with path=${path} was not found, and could not report if it's open.`
         );
-        return false;
+        throw new Error('PORT_NOT_FOUND');
     }
     logger.info(
         `SerialPort: Port with path=${path} was asked if it's open, and returned ${port.isOpen}`
@@ -162,34 +162,28 @@ export const isOpen = (path: string): boolean => {
 export const closeSerialPort = async (
     path: string,
     sender: Renderer
-): Promise<[Error | undefined, boolean]> => {
-    const port = serialPorts.get(path)?.serialPort;
-    let portWasClosed = false;
-    if (!port) {
-        return [
-            Error(
-                `Could not find SerialPort with path ${path}, and could not be closed.`
-            ),
-            portWasClosed,
-        ];
+): Promise<void> => {
+    const openPort = serialPorts.get(path);
+    if (!openPort) {
+        logger.error(
+            `SerialPort: Port with path=${path} could not set new options, because port was not found.`
+        );
+        throw new Error('PORT_NOT_FOUND');
     }
 
-    const renderers = serialPorts.get(path)?.renderers;
-    if (renderers) {
-        portWasClosed = await removeRenderer(path, sender);
-    }
-    return [undefined, portWasClosed];
+    await removeRenderer(path, sender);
 };
 
 const removeRenderer = async (
     path: string,
     sender: Renderer
-): Promise<boolean> => {
+): Promise<void> => {
     const openPort = serialPorts.get(path);
     if (openPort) {
         openPort.renderers = openPort.renderers.filter(
             renderer => renderer.id !== sender.id
         );
+        serialPorts.set(path, openPort);
         logger.info(
             `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} from its renderers list.`
         );
@@ -199,30 +193,24 @@ const removeRenderer = async (
                 logger.info(
                     `SerialPort: Port with path=${path} have an empty renderers list and will be closed.`
                 );
-                const closeResponse = await new Promise<boolean>(
-                    (resolve, reject) => {
-                        openPort.serialPort.close(error => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                resolve(true);
-                            }
-                        });
-                    }
-                );
-                serialPorts.delete(path);
-                return closeResponse;
+                await new Promise<void>(resolve => {
+                    openPort.serialPort.close(error => {
+                        if (error) {
+                            throw error;
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
             }
             serialPorts.delete(path);
-            return false;
         }
-        serialPorts.set(path, openPort);
-        return false;
+    } else {
+        logger.error(
+            `SerialPort: Port with path=${path}: tried to remove renderer with id=${sender.id}, but could not find port.`
+        );
+        throw new Error('PORT_NOT_FOUND');
     }
-    logger.error(
-        `SerialPort: Port with path=${path}: tried to remove renderer with id=${sender.id}, but could not find port.`
-    );
-    throw new Error(`Could not find port with path: ${path}`);
 };
 
 export const update = (path: string, options: UpdateOptions) => {
