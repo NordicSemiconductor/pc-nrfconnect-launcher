@@ -355,6 +355,10 @@ const openNewSerialPort = async (
                 logger.error(
                     `SerialPort: Port with path=${path} could not be opened: ${err.message}`
                 );
+                newOpenPort.renderers.forEach(renderer => {
+                    renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
+                });
+                serialPorts.delete(path);
                 reject(Error('FAILED'));
             } else {
                 newOpenPort.opening = false;
