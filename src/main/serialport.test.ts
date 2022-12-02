@@ -23,7 +23,7 @@ import {
 
 const testPortPath = '/dev/ROBOT';
 
-const defaultOptions = { path: testPortPath, baudRate: 115200 };
+const defaultOptions = { path: testPortPath, baudRate: 115200, xany: true };
 const defaultOverwriteOptions: OverwriteOptions = {
     overwrite: false,
     settingsLocked: false,
@@ -188,6 +188,15 @@ describe('Two renderers', () => {
             )
         ).rejects.toThrow('FAILED_DIFFERENT_SETTINGS');
 
+        // remove property (xon) is also different
+        await expect(
+            openOrAdd(
+                rendererTwo,
+                { path: testPortPath, baudRate: 115200 },
+                defaultOverwriteOptions
+            )
+        ).rejects.toThrow('FAILED_DIFFERENT_SETTINGS');
+
         await expect(
             openOrAdd(
                 rendererTwo,
@@ -206,7 +215,7 @@ describe('Two renderers', () => {
         await expect(
             openOrAdd(
                 rendererTwo,
-                { ...defaultOptions, stopBits: 2, parity: 'odd' },
+                { ...defaultOptions, stopBits: 2 },
                 defaultOverwriteOptions
             )
         ).rejects.toThrow('FAILED_SETTINGS_LOCKED');

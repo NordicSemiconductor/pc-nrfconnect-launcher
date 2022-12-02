@@ -23,6 +23,7 @@ type OpenPort = {
     renderers: Renderer[];
     settingsLocked: boolean;
     opening: boolean;
+    options: SerialPortOpenOptions<AutoDetectTypes>;
 };
 export const serialPorts = initPlatformSpecificMap<string, OpenPort>();
 
@@ -52,18 +53,26 @@ export const openOrAdd = async (
         if (!alreadyInList) {
             let isDifferentSettings;
             if (existingPort.serialPort) {
-                const currentOptions = existingPort.serialPort.settings;
-                Object.entries(options).every(([key, value]) => {
-                    if (
-                        !(key in currentOptions) ||
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (currentOptions as any)[key] !== value
-                    ) {
-                        isDifferentSettings = true;
-                        return false;
-                    }
-                    return true;
-                });
+                const currentOptions = existingPort.options;
+
+                if (
+                    Object.keys(currentOptions).length ===
+                    Object.keys(options).length
+                ) {
+                    Object.entries(options).every(([key, value]) => {
+                        if (
+                            !(key in currentOptions) ||
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            (currentOptions as any)[key] !== value
+                        ) {
+                            isDifferentSettings = true;
+                            return false;
+                        }
+                        return true;
+                    });
+                } else {
+                    isDifferentSettings = true;
+                }
             }
 
             if (isDifferentSettings) {
@@ -314,6 +323,7 @@ const openNewSerialPort = async (
         renderers: openPort?.renderers ?? [],
         settingsLocked,
         opening: true,
+        options,
     };
     serialPorts.set(path, newOpenPort);
 
