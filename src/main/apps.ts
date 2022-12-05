@@ -307,6 +307,9 @@ const uninstalledAppInfo = (
                 ...app,
                 latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
+                iconPath: ifExists(
+                    path.join(getAppsRootDir(app.source), `${app.name}.svg`)
+                ),
             },
         };
     } catch (error) {

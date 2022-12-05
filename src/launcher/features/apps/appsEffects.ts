@@ -56,19 +56,19 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-const downloadAppIcon =
-    (app: AppSpec, iconUrl: string, iconPath: string) =>
-    (dispatch: AppDispatch) => {
-        // If there is a cached version, use it even before downloading.
-        if (fs.existsSync(iconPath)) {
-            dispatch(setAppIconPath({ app, iconPath }));
-        }
-        downloadToFile(iconUrl, iconPath)
-            .then(() => dispatch(setAppIconPath({ app, iconPath })))
-            .catch(() => {
-                /* Ignore 404 not found. */
-            });
-    };
+const downloadAppIcon = (dispatch: AppDispatch) => (app: DownloadableApp) => {
+    const iconPath = join(
+        `${getAppsRootDir(app.source, mainConfig())}`,
+        `${app.name}.svg`
+    );
+    const iconUrl = `${app.url}.svg`;
+
+    downloadToFile(iconUrl, iconPath)
+        .then(() => dispatch(setAppIconPath({ app, iconPath })))
+        .catch(() => {
+            /* Ignore 404 not found. */
+        });
+};
 
 export const loadLocalApps = () => (dispatch: AppDispatch) => {
     dispatch(loadLocalAppsStarted());
@@ -98,14 +98,9 @@ export const fetchInfoForAllDownloadableApps =
 
         dispatch(setAllDownloadableApps(apps));
 
-        apps.filter(app => !isInstalled(app)).forEach(app => {
-            const iconPath = join(
-                `${getAppsRootDir(app.source, mainConfig())}`,
-                `${app.name}.svg`
-            );
-            const iconUrl = `${app.url}.svg`;
-            dispatch(downloadAppIcon(app, iconUrl, iconPath));
-        });
+        apps.filter(app => !isInstalled(app)).forEach(
+            downloadAppIcon(dispatch)
+        );
 
         apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
 
