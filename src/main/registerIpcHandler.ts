@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import Store from 'electron-store';
+
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
     registerDownloadAllAppsJsonFiles,
@@ -73,6 +75,8 @@ import { addSource, getAllSources, removeSource } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
 
 export default () => {
+    Store.initRenderer();
+
     registerGetAppDetails(getAppDetails);
 
     registerDownloadToFile(downloadToFile);

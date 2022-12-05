@@ -14,6 +14,6 @@ import registerIpcHandler from './registerIpcHandler';
 import storeExecutablePath from './storeExecutablePath';
 
 initializeElectronRemote();
-configureElectronApp();
 registerIpcHandler();
+configureElectronApp();
 storeExecutablePath();

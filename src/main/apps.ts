@@ -5,7 +5,6 @@
  */
 
 import { dialog } from 'electron';
-import Store from 'electron-store';
 import fs from 'fs-extra';
 import path from 'path';
 import type { PackageJson } from 'pc-nrfconnect-shared';
@@ -32,6 +31,7 @@ import {
     getNodeModulesDir,
     getUpdatesJsonPath,
 } from './config';
+import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
 import * as net from './net';
@@ -43,14 +43,6 @@ import {
     initialiseAllSources,
     UpdatesJson,
 } from './sources';
-
-interface AppData {
-    changelog?: string;
-}
-
-const store = new Store<{
-    apps: { [appUrl: string]: AppData };
-}>({ name: 'pc-nrfconnect-launcher' });
 
 const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
 
@@ -455,44 +447,50 @@ export const installDownloadableApp = async (
     };
 };
 
-const migrateStoreIfNeeded = () => {
-    const oldStore = new Store({ name: 'pc-nrfconnect-core' });
-    if (oldStore.size > 0 && store.size === 0) {
-        store.store = JSON.parse(JSON.stringify(oldStore.store));
-    }
-};
-
-const replacePrLinks = (changelog: string, homepage?: string) =>
+const replacePrLinks = (releaseNotes: string, homepage?: string) =>
     homepage == null
-        ? changelog
-        : changelog.replace(
+        ? releaseNotes
+        : releaseNotes.replace(
               /#(\d+)/g,
               (match, pr) => `[${match}](${homepage}/pull/${pr})`
           );
 
-export const downloadReleaseNotes = async ({
-    url,
-    homepage,
-}: {
-    url: string;
-    homepage?: string;
-}) => {
-    migrateStoreIfNeeded();
+const storeReleaseNotesInBackground = (
+    app: DownloadableApp,
+    releaseNotes: string
+) =>
+    fileUtil
+        .createTextFile(
+            path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`),
+            releaseNotes
+        )
+        .catch(reason =>
+            console.warn(
+                `Failed to store release notes: ${describeError(reason)}`
+            )
+        );
 
-    const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
+export const downloadReleaseNotes = async (app: DownloadableApp) => {
     try {
-        const changelog = await net.downloadToString(
-            `${url}-Changelog.md`,
+        const releaseNotes = await net.downloadToString(
+            `${app.url}-Changelog.md`,
             false
         );
-        if (changelog != null) {
-            store.set(appDataPath, {
-                changelog: replacePrLinks(changelog, homepage),
-            });
+        if (releaseNotes != null) {
+            const prettyReleaseNotes = replacePrLinks(
+                releaseNotes,
+                app.homepage
+            );
+            storeReleaseNotesInBackground(app, prettyReleaseNotes);
+
+            return prettyReleaseNotes;
         }
     } catch (e) {
-        // Ignore errors and just return what we have stored before
+        console.debug(
+            'Unable to fetch changelog, ignoring this as non-critical.',
+            describeError(e)
+        );
     }
 
-    return (store.get(appDataPath, {}) as AppData).changelog;
+    return undefined;
 };
