@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { dialog } from 'electron';
 import fs from 'fs-extra';
 
 import { DownloadableAppInfoBase } from '../ipc/apps';
@@ -38,7 +39,12 @@ const loadAllSources = () => {
             return parsed as Record<string, string>;
         }
     } catch (err) {
-        console.error('Could not load sources. Reason: ', err);
+        dialog.showErrorBox(
+            'Could not load list of locally known sources',
+            'No sources besides the official and the local one will be shown. ' +
+                'Also apps from other sources will be hidde.\n\nError: ' +
+                `${describeError(err)}`
+        );
     }
     return {};
 };
@@ -65,7 +71,7 @@ export const getAllSourceNames = () => Object.keys(getAllSources());
 export const initialiseAllSources = () =>
     Promise.all(getAllSourceNames().map(initialise));
 
-export const initialise = (sourceName?: string) =>
+const initialise = (sourceName?: string) =>
     ensureDirExists(getAppsRootDir(sourceName))
         .then(() => ensureDirExists(getNodeModulesDir(sourceName)))
         .then(() => ensureFileExists(getAppsJsonPath(sourceName)))
