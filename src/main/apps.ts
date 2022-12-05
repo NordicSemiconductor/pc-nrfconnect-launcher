@@ -274,6 +274,7 @@ const installedAppInfo = (
             currentVersion: fromInstalledApp.currentVersion,
             latestVersion:
                 availableUpdates[app.name] || fromInstalledApp.currentVersion,
+            releaseNote: readReleaseNotes(app),
         },
     };
 };
@@ -301,6 +302,7 @@ const uninstalledAppInfo = (
                 iconPath: ifExists(
                     path.join(getAppsRootDir(app.source), `${app.name}.svg`)
                 ),
+                releaseNote: readReleaseNotes(app),
             },
         };
     } catch (error) {
@@ -455,20 +457,26 @@ const replacePrLinks = (releaseNotes: string, homepage?: string) =>
               (match, pr) => `[${match}](${homepage}/pull/${pr})`
           );
 
-const storeReleaseNotesInBackground = (
-    app: DownloadableApp,
-    releaseNotes: string
-) =>
+const releaseNotesPath = (app: AppSpec) =>
+    path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
+
+const storeReleaseNotesInBackground = (app: AppSpec, releaseNotes: string) =>
     fileUtil
-        .createTextFile(
-            path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`),
-            releaseNotes
-        )
+        .createTextFile(releaseNotesPath(app), releaseNotes)
         .catch(reason =>
             console.warn(
                 `Failed to store release notes: ${describeError(reason)}`
             )
         );
+
+const readReleaseNotes = (app: DownloadableAppInfo) => {
+    try {
+        return fs.readFileSync(releaseNotesPath(app), 'utf-8');
+    } catch (error) {
+        // We assume an error here means that the release notes just were not downloaded yet.
+        return undefined;
+    }
+};
 
 export const downloadReleaseNotes = async (app: DownloadableApp) => {
     try {
