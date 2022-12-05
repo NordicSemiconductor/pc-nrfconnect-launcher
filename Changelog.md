@@ -4,6 +4,7 @@
 
 -   Install local apps by dragging a file containing an app package and dropping
     it onto the app list.
+-   Add support for Serial Terminal app
 
 ### Changed
 
