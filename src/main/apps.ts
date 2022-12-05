@@ -212,11 +212,11 @@ const shortcutIconExtension = () => {
     return 'png';
 };
 
-const shortcutIconPath = (resourcesPath: string) => {
-    const result = path.join(resourcesPath, `icon.${shortcutIconExtension()}`);
+const ifExists = (filePath: string) =>
+    fs.existsSync(filePath) ? filePath : undefined;
 
-    return fs.existsSync(result) ? result : undefined;
-};
+const shortcutIconPath = (resourcesPath: string) =>
+    ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
 
 const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
@@ -226,7 +226,9 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     );
 
     const resourcesPath = path.join(appPath, 'resources');
-    const iconPath = path.join(resourcesPath, 'icon.png');
+    const iconPath =
+        ifExists(path.join(resourcesPath, 'icon.svg')) ??
+        path.join(resourcesPath, 'icon.png');
 
     return {
         name: packageJson.name,
