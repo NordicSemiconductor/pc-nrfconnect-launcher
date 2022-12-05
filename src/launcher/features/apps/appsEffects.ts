@@ -13,7 +13,7 @@ import {
     AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
-    downloadReleaseNotes,
+    downloadReleaseNotes as downloadReleaseNotesInMain,
     getDownloadableApps,
     getLocalApps,
     installDownloadableApp as installDownloadableAppInMain,
@@ -56,7 +56,7 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-const downloadAppIcon = (dispatch: AppDispatch) => (app: DownloadableApp) => {
+const downloadAppIcon = (app: DownloadableApp) => (dispatch: AppDispatch) => {
     const iconPath = join(
         `${getAppsRootDir(app.source, mainConfig())}`,
         `${app.name}.svg`
@@ -81,15 +81,13 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
         });
 };
 
-const downloadSingleReleaseNotes = async (
-    dispatch: AppDispatch,
-    app: DownloadableApp
-) => {
-    const releaseNote = await downloadReleaseNotes(app);
-    if (releaseNote != null) {
-        dispatch(setAppReleaseNote({ app, releaseNote }));
-    }
-};
+const downloadReleaseNotes =
+    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
+        const releaseNote = await downloadReleaseNotesInMain(app);
+        if (releaseNote != null) {
+            dispatch(setAppReleaseNote({ app, releaseNote }));
+        }
+    };
 
 export const fetchInfoForAllDownloadableApps =
     (checkOnlineForUpdates = true) =>
@@ -100,12 +98,13 @@ export const fetchInfoForAllDownloadableApps =
         dispatch(setAllDownloadableApps(apps));
 
         if (checkOnlineForUpdates) {
-            apps.filter(app => !isInstalled(app)).forEach(
-                downloadAppIcon(dispatch)
-            );
+            apps.forEach(app => {
+                dispatch(downloadReleaseNotes(app));
+                if (!isInstalled(app)) {
+                    dispatch(downloadAppIcon(app));
+                }
+            });
         }
-
-        apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);
