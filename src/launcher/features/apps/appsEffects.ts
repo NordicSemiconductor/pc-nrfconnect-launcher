@@ -92,15 +92,18 @@ const downloadSingleReleaseNotes = async (
 };
 
 export const fetchInfoForAllDownloadableApps =
-    () => async (dispatch: AppDispatch) => {
+    (checkOnlineForUpdates = true) =>
+    async (dispatch: AppDispatch) => {
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(setAllDownloadableApps(apps));
 
-        apps.filter(app => !isInstalled(app)).forEach(
-            downloadAppIcon(dispatch)
-        );
+        if (checkOnlineForUpdates) {
+            apps.filter(app => !isInstalled(app)).forEach(
+                downloadAppIcon(dispatch)
+            );
+        }
 
         apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
 
