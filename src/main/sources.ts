@@ -50,7 +50,10 @@ const loadAllSources = () => {
 };
 
 const saveAllSources = () => {
-    fs.writeFileSync(getConfig().sourcesJsonPath, JSON.stringify(sourcesData));
+    fs.writeFileSync(
+        getConfig().sourcesJsonPath,
+        JSON.stringify(sourcesData, undefined, 2)
+    );
 };
 
 const initialSources = () => ({
