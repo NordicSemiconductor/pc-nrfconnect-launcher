@@ -29,27 +29,17 @@ const reportInstallProgress = (
 
 export type NetError = Error & { statusCode?: number };
 
-interface DownloadResult {
-    buffer: Buffer;
-    etag?: string;
-    statusCode: number;
-}
-
 const downloadToBuffer = (
     url: string,
     enableProxyLogin: boolean,
-    headers: Record<string, string> = {},
     app: AppSpec | undefined = undefined
 ) =>
-    new Promise<DownloadResult>((resolve, reject) => {
+    new Promise<Buffer>((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
-        Object.keys(headers).forEach(key =>
-            request.setHeader(key, headers[key])
-        );
 
         request.on('response', response => {
             const { statusCode } = response;
@@ -63,9 +53,6 @@ const downloadToBuffer = (
                 reject(error);
                 return;
             }
-            const etag = Array.isArray(response.headers.etag)
-                ? response.headers.etag[0]
-                : undefined;
 
             const buffer: Buffer[] = [];
             const addToBuffer = (data: Buffer) => {
@@ -80,13 +67,7 @@ const downloadToBuffer = (
                     reportInstallProgress(app, progress, downloadSize);
                 }
             });
-            response.on('end', () =>
-                resolve({
-                    buffer: Buffer.concat(buffer),
-                    etag,
-                    statusCode,
-                })
-            );
+            response.on('end', () => resolve(Buffer.concat(buffer)));
             response.on('error', (error: Error) =>
                 reject(new Error(`Error when reading ${url}: ${error.message}`))
             );
@@ -103,40 +84,15 @@ const downloadToBuffer = (
         request.end();
     });
 
-/*
- * Download the given url to a string. If a previous etag is provided, then
- * use that in the request.
- *
- * If the server returns a 304 (not modified), return null as response.
- * If the server did not provide an Etag, then property etag will be undefined.
- */
-export const downloadToStringIfChanged = async (
+export const downloadToString = async (
     url: string,
-    previousEtag?: string
-) => {
-    const requestHeaders: Record<string, string> =
-        previousEtag == null ? {} : { 'If-None-Match': previousEtag };
-
-    const { buffer, etag, statusCode } = await downloadToBuffer(
-        url,
-        false,
-        requestHeaders
-    );
-
-    const NOT_MODIFIED = 304;
-    return {
-        etag,
-        response: statusCode === NOT_MODIFIED ? null : buffer.toString(),
-    };
-};
+    enableProxyLogin: boolean
+) => (await downloadToBuffer(url, enableProxyLogin)).toString();
 
 export const downloadToJson = async <T>(
     url: string,
     enableProxyLogin: boolean
-) => {
-    const { buffer } = await downloadToBuffer(url, enableProxyLogin);
-    return <T>JSON.parse(buffer.toString());
-};
+) => <T>JSON.parse(await downloadToString(url, enableProxyLogin));
 
 export const downloadToFile = async (
     url: string,
@@ -144,12 +100,7 @@ export const downloadToFile = async (
     enableProxyLogin: boolean | undefined = false,
     app: AppSpec | undefined = undefined
 ) => {
-    const { buffer } = await downloadToBuffer(
-        url,
-        enableProxyLogin,
-        undefined,
-        app
-    );
+    const buffer = await downloadToBuffer(url, enableProxyLogin, app);
     await fs.writeFile(filePath, buffer);
 };
 

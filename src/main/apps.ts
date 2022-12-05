@@ -46,7 +46,6 @@ import {
 
 interface AppData {
     changelog?: string;
-    etag?: string;
 }
 
 const store = new Store<{
@@ -471,17 +470,6 @@ const replacePrLinks = (changelog: string, homepage?: string) =>
               (match, pr) => `[${match}](${homepage}/pull/${pr})`
           );
 
-interface AppData {
-    changelog?: string;
-    etag?: string;
-}
-
-/*
- * Download release notes.
- *
- * The release notes are also cached in the electron store. If the server did not report changed
- * release notes or was unable to respond, the cached release notes are used.
- */
 export const downloadReleaseNotes = async ({
     url,
     homepage,
@@ -493,18 +481,14 @@ export const downloadReleaseNotes = async ({
 
     const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
     try {
-        const previousAppData = store.get(appDataPath, {}) as AppData;
-
-        const previousEtag = previousAppData.changelog
-            ? previousAppData.etag
-            : undefined;
-        const { response, etag } = await net.downloadToStringIfChanged(
+        const changelog = await net.downloadToString(
             `${url}-Changelog.md`,
-            previousEtag
+            false
         );
-        if (response != null) {
-            const changelog = replacePrLinks(response, homepage);
-            store.set(appDataPath, { etag, changelog });
+        if (changelog != null) {
+            store.set(appDataPath, {
+                changelog: replacePrLinks(changelog, homepage),
+            });
         }
     } catch (e) {
         // Ignore errors and just return what we have stored before
