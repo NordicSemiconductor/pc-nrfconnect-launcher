@@ -28,7 +28,7 @@
 
         <link rel="stylesheet" href="../dist/fonts.css" type="text/css"/>
 
-        <script src="../dist/app/index.js" defer></script>
+        <script src="../dist/app/index-modern.js" defer></script>
 
         <script>
             // We loaded all the assets we needed from the launcher now. 
@@ -39,6 +39,9 @@
             document.write("<base href='" + appPath + "/dist/' />");
             document.write('<link rel="stylesheet" href="bootstrap.css" type="text/css" />');
             document.write('<link rel="stylesheet" href="bundle.css" type="text/css" />');
+            const bundle = document.createElement('script');
+            bundle.setAttribute('src','bundle.js');
+            document.head.appendChild(bundle);
         </script>
 
     </head>

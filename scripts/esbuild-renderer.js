@@ -12,4 +12,11 @@ build({
     sourcemap: false,
 });
 
-build({ entryPoints: ['./src/app', './src/launcher'], format: 'iife' });
+build({
+    entryPoints: [
+        './src/app/index.jsx',
+        './src/app/index-modern.jsx',
+        './src/launcher',
+    ],
+    format: 'iife',
+});

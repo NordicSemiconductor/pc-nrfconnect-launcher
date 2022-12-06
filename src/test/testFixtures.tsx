@@ -32,6 +32,7 @@ export const createLocalTestApp = (
     path: path(appName),
     iconPath: iconPath(appName),
     shortcutIconPath: shortcutIconPath(appName),
+    modern: false,
 
     ...additonalProps,
 });
@@ -52,6 +53,7 @@ export const createDownloadableTestApp = (
     path: path(appName),
     iconPath: iconPath(appName),
     shortcutIconPath: shortcutIconPath(appName),
+    modern: false,
 
     ...additonalProps,
 });

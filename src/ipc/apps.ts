@@ -31,6 +31,7 @@ interface BaseApp {
 export interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
+    modern: boolean;
     shortcutIconPath: string;
     engineVersion?: string;
     repositoryUrl?: string;

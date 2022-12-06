@@ -231,6 +231,7 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
         shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPath,
         engineVersion: packageJson.engines?.nrfconnect,
         repositoryUrl: packageJson.repository?.url,
+        modern: packageJson.modern ?? false,
     } as const;
 };
 

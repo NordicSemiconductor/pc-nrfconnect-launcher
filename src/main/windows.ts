@@ -84,9 +84,13 @@ export const openAppWindow = (app: LaunchableApp) => {
         }
     }
 
+    const template = app.modern ? 'app-modern.html' : 'app.html';
+
     const appWindow = browser.createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
-        url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
+        url: `file://${getElectronResourcesDir()}/${template}?appPath=${
+            app.path
+        }`,
         icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
         x,
         y,

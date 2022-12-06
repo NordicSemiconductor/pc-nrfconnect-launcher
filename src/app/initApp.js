@@ -59,9 +59,10 @@ const ensureDirExists = async dir => {
  * After that initializes the logger, loads the app and returns it.
  *
  * @param {string} appDir the directory of the app to load.
+ * @param {boolean} skipLoading skip loading commonjs module
  * @returns {Promise<object>} Resolving to the loaded app.
  */
-export default async appDir => {
+export default async (appDir, skipLoading = false) => {
     const appBaseName = path.basename(appDir);
     const userDataDir = getUserDataDir();
     const appDataDir = path.join(userDataDir, appBaseName);
@@ -70,6 +71,8 @@ export default async appDir => {
 
     await ensureDirExists(appDataDir);
     await ensureDirExists(appLogDir);
+
+    if (skipLoading) return undefined;
 
     return loadApp(appDir);
 };
