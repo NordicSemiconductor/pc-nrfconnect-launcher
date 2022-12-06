@@ -14,9 +14,9 @@ const logFormat = format.combine(
     format.timestamp(),
     format.printf(
         ({ timestamp, level, message, ...extra }) =>
-            `${timestamp} ${level.toUpperCase()} ${message} ${JSON.stringify(
-                extra
-            )}`
+            `${timestamp} ${level.toUpperCase()} ${message} ${
+                extra.length > 0 ? JSON.stringify(extra) : ''
+            }`
     )
 );
 

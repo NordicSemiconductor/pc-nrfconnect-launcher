@@ -13,4 +13,15 @@ jest.mock('electron', () => ({
                   }
                 : 'Unknown channel used in tests',
     },
+    app: {
+        on: jest.fn(),
+    },
+}));
+
+jest.mock('./../main/log.ts', () => ({
+    logger: {
+        error: jest.fn(),
+        warn: jest.fn(),
+        info: jest.fn(),
+    },
 }));

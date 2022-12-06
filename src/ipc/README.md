@@ -15,7 +15,7 @@ There are a few conventions we follow with the code here in `src/ipc/`:
     channel (e.g. `checkForUpdate`) and another to register a handler for the
     messages on that same channel (e.g. `registerCheckForUpdate`).
 
-    Usually these two functions utelise a shared signature which is defined in a
+    Usually these two functions utilize a shared signature which is defined in a
     type above them. Usually the functions are defined by invoking functions
     from `infrastructure/mainToRenderer.ts` or
     `infrastructure/rendererToMain.ts` which also use that type.
