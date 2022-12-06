@@ -85,6 +85,7 @@ const channel = {
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
     downloadReleaseNotes: 'apps:download-release-notes',
+    downloadAppIcon: 'apps:download-app-icon',
     installDownloadableApp: 'apps:install-downloadable-app',
     installLocalApp: 'apps:install-local-app',
     removeLocalApp: 'apps:remove-local-app',
@@ -130,6 +131,14 @@ export const downloadReleaseNotes = invoke<DownloadReleaseNotes>(
 );
 export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
     channel.downloadReleaseNotes
+);
+
+// downloadAppIcon
+type DownloadAppIcon = (app: DownloadableApp) => string | undefined;
+
+export const downloadAppIcon = invoke<DownloadAppIcon>(channel.downloadAppIcon);
+export const registerDownloadAppIcon = handle<DownloadAppIcon>(
+    channel.downloadAppIcon
 );
 
 // installDownloadableApp

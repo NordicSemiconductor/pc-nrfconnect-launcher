@@ -9,6 +9,7 @@ import Store from 'electron-store';
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
     registerDownloadAllAppsJsonFiles,
+    registerDownloadAppIcon,
     registerDownloadReleaseNotes,
     registerGetDownloadableApps,
     registerGetLocalApps,
@@ -19,7 +20,6 @@ import {
 } from '../ipc/apps';
 import { registerGetConfig } from '../ipc/config';
 import { registerCreateDesktopShortcut } from '../ipc/createDesktopShortcut';
-import { registerDownloadToFile } from '../ipc/downloadToFile';
 import {
     registerCancelUpdate,
     registerCheckForUpdate,
@@ -48,6 +48,7 @@ import {
 } from '../ipc/sources';
 import {
     downloadAllAppsJsonFiles,
+    downloadAppIcon,
     downloadReleaseNotes,
     getDownloadableApps,
     getLocalApps,
@@ -59,7 +60,6 @@ import {
 import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
-import { downloadToFile } from './net';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
 import {
@@ -78,8 +78,6 @@ export default () => {
     Store.initRenderer();
 
     registerGetAppDetails(getAppDetails);
-
-    registerDownloadToFile(downloadToFile);
 
     registerGetConfig(getConfig);
 
@@ -106,6 +104,7 @@ export default () => {
     registerOpenLauncher(openLauncherWindow);
 
     registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
+    registerDownloadAppIcon(downloadAppIcon);
     registerDownloadReleaseNotes(downloadReleaseNotes);
     registerGetDownloadableApps(getDownloadableApps);
     registerGetLocalApps(getLocalApps);

@@ -5,7 +5,6 @@
  */
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
-import { join } from 'path';
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
@@ -13,6 +12,7 @@ import {
     AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
+    downloadAppIcon as downloadAppIconInMain,
     downloadReleaseNotes as downloadReleaseNotesInMain,
     getDownloadableApps,
     getLocalApps,
@@ -23,9 +23,7 @@ import {
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
-import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
-import { getAppsRootDir } from '../../../main/config';
 import type { AppDispatch } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
@@ -56,20 +54,6 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-const downloadAppIcon = (app: DownloadableApp) => (dispatch: AppDispatch) => {
-    const iconPath = join(
-        `${getAppsRootDir(app.source, mainConfig())}`,
-        `${app.name}.svg`
-    );
-    const iconUrl = `${app.url}.svg`;
-
-    downloadToFile(iconUrl, iconPath)
-        .then(() => dispatch(setAppIconPath({ app, iconPath })))
-        .catch(() => {
-            /* Ignore 404 not found. */
-        });
-};
-
 export const loadLocalApps = () => (dispatch: AppDispatch) => {
     dispatch(loadLocalAppsStarted());
 
@@ -80,6 +64,14 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
             dispatch(ErrorDialogActions.showDialog(error.message));
         });
 };
+
+const downloadAppIcon =
+    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
+        const iconPath = await downloadAppIconInMain(app);
+        if (iconPath != null) {
+            dispatch(setAppIconPath({ app, iconPath }));
+        }
+    };
 
 const downloadReleaseNotes =
     (app: DownloadableApp) => async (dispatch: AppDispatch) => {

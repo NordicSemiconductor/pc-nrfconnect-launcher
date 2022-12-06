@@ -299,9 +299,7 @@ const uninstalledAppInfo = (
                 ...app,
                 latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
-                iconPath: ifExists(
-                    path.join(getAppsRootDir(app.source), `${app.name}.svg`)
-                ),
+                iconPath: ifExists(iconPath(app)),
                 releaseNote: readReleaseNotes(app),
             },
         };
@@ -499,6 +497,22 @@ export const downloadReleaseNotes = async (app: DownloadableApp) => {
             describeError(e)
         );
     }
+};
 
-    return undefined;
+const iconPath = (app: AppSpec) =>
+    path.join(getAppsRootDir(app.source), `${app.name}.svg`);
+
+export const downloadAppIcon = async (app: DownloadableApp) => {
+    try {
+        const iconUrl = `${app.url}.svg`;
+
+        await net.downloadToFile(iconUrl, iconPath(app));
+
+        return iconPath(app);
+    } catch (e) {
+        console.debug(
+            'Unable to fetch icon, ignoring this as non-critical.',
+            describeError(e)
+        );
+    }
 };
