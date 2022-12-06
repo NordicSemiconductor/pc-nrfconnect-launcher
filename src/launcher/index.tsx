@@ -52,7 +52,9 @@ render(rootElement, document.getElementById('webapp'), async () => {
     await dispatch(loadSources());
 
     await dispatch(loadLocalApps());
-    await dispatch(fetchInfoForAllDownloadableApps());
+    await dispatch(
+        fetchInfoForAllDownloadableApps(shouldCheckForUpdatesAtStartup)
+    );
 
     dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
     dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));

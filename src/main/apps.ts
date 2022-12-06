@@ -5,7 +5,6 @@
  */
 
 import { dialog } from 'electron';
-import Store from 'electron-store';
 import fs from 'fs-extra';
 import path from 'path';
 import type { PackageJson } from 'pc-nrfconnect-shared';
@@ -32,6 +31,7 @@ import {
     getNodeModulesDir,
     getUpdatesJsonPath,
 } from './config';
+import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
 import * as net from './net';
@@ -43,15 +43,6 @@ import {
     initialiseAllSources,
     UpdatesJson,
 } from './sources';
-
-interface AppData {
-    changelog?: string;
-    etag?: string;
-}
-
-const store = new Store<{
-    apps: { [appUrl: string]: AppData };
-}>({ name: 'pc-nrfconnect-launcher' });
 
 const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
 
@@ -212,11 +203,11 @@ const shortcutIconExtension = () => {
     return 'png';
 };
 
-const shortcutIconPath = (resourcesPath: string) => {
-    const result = path.join(resourcesPath, `icon.${shortcutIconExtension()}`);
+const ifExists = (filePath: string) =>
+    fs.existsSync(filePath) ? filePath : undefined;
 
-    return fs.existsSync(result) ? result : undefined;
-};
+const shortcutIconPath = (resourcesPath: string) =>
+    ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
 
 const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     const appPath = path.join(appParendDir, appName);
@@ -226,7 +217,9 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
     );
 
     const resourcesPath = path.join(appPath, 'resources');
-    const iconPath = path.join(resourcesPath, 'icon.png');
+    const iconPath =
+        ifExists(path.join(resourcesPath, 'icon.svg')) ??
+        path.join(resourcesPath, 'icon.png');
 
     return {
         name: packageJson.name,
@@ -281,6 +274,7 @@ const installedAppInfo = (
             currentVersion: fromInstalledApp.currentVersion,
             latestVersion:
                 availableUpdates[app.name] || fromInstalledApp.currentVersion,
+            releaseNote: readReleaseNotes(app),
         },
     };
 };
@@ -305,6 +299,8 @@ const uninstalledAppInfo = (
                 ...app,
                 latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
+                iconPath: ifExists(iconPath(app)),
+                releaseNote: readReleaseNotes(app),
             },
         };
     } catch (error) {
@@ -451,59 +447,72 @@ export const installDownloadableApp = async (
     };
 };
 
-const migrateStoreIfNeeded = () => {
-    const oldStore = new Store({ name: 'pc-nrfconnect-core' });
-    if (oldStore.size > 0 && store.size === 0) {
-        store.store = JSON.parse(JSON.stringify(oldStore.store));
-    }
-};
-
-const replacePrLinks = (changelog: string, homepage?: string) =>
+const replacePrLinks = (releaseNotes: string, homepage?: string) =>
     homepage == null
-        ? changelog
-        : changelog.replace(
+        ? releaseNotes
+        : releaseNotes.replace(
               /#(\d+)/g,
               (match, pr) => `[${match}](${homepage}/pull/${pr})`
           );
 
-interface AppData {
-    changelog?: string;
-    etag?: string;
-}
+const releaseNotesPath = (app: AppSpec) =>
+    path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
-/*
- * Download release notes.
- *
- * The release notes are also cached in the electron store. If the server did not report changed
- * release notes or was unable to respond, the cached release notes are used.
- */
-export const downloadReleaseNotes = async ({
-    url,
-    homepage,
-}: {
-    url: string;
-    homepage?: string;
-}) => {
-    migrateStoreIfNeeded();
-
-    const appDataPath = `apps.${url.replace(/\./g, '\\.')}`;
-    try {
-        const previousAppData = store.get(appDataPath, {}) as AppData;
-
-        const previousEtag = previousAppData.changelog
-            ? previousAppData.etag
-            : undefined;
-        const { response, etag } = await net.downloadToStringIfChanged(
-            `${url}-Changelog.md`,
-            previousEtag
+const storeReleaseNotesInBackground = (app: AppSpec, releaseNotes: string) =>
+    fileUtil
+        .createTextFile(releaseNotesPath(app), releaseNotes)
+        .catch(reason =>
+            console.warn(
+                `Failed to store release notes: ${describeError(reason)}`
+            )
         );
-        if (response != null) {
-            const changelog = replacePrLinks(response, homepage);
-            store.set(appDataPath, { etag, changelog });
+
+const readReleaseNotes = (app: DownloadableAppInfo) => {
+    try {
+        return fs.readFileSync(releaseNotesPath(app), 'utf-8');
+    } catch (error) {
+        // We assume an error here means that the release notes just were not downloaded yet.
+        return undefined;
+    }
+};
+
+export const downloadReleaseNotes = async (app: DownloadableApp) => {
+    try {
+        const releaseNotes = await net.downloadToString(
+            `${app.url}-Changelog.md`,
+            false
+        );
+        if (releaseNotes != null) {
+            const prettyReleaseNotes = replacePrLinks(
+                releaseNotes,
+                app.homepage
+            );
+            storeReleaseNotesInBackground(app, prettyReleaseNotes);
+
+            return prettyReleaseNotes;
         }
     } catch (e) {
-        // Ignore errors and just return what we have stored before
+        console.debug(
+            'Unable to fetch changelog, ignoring this as non-critical.',
+            describeError(e)
+        );
     }
+};
 
-    return (store.get(appDataPath, {}) as AppData).changelog;
+const iconPath = (app: AppSpec) =>
+    path.join(getAppsRootDir(app.source), `${app.name}.svg`);
+
+export const downloadAppIcon = async (app: DownloadableApp) => {
+    try {
+        const iconUrl = `${app.url}.svg`;
+
+        await net.downloadToFile(iconUrl, iconPath(app));
+
+        return iconPath(app);
+    } catch (e) {
+        console.debug(
+            'Unable to fetch icon, ignoring this as non-critical.',
+            describeError(e)
+        );
+    }
 };

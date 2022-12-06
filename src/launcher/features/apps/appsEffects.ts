@@ -5,7 +5,6 @@
  */
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
-import { join } from 'path';
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
@@ -13,7 +12,8 @@ import {
     AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
-    downloadReleaseNotes,
+    downloadAppIcon as downloadAppIconInMain,
+    downloadReleaseNotes as downloadReleaseNotesInMain,
     getDownloadableApps,
     getLocalApps,
     installDownloadableApp as installDownloadableAppInMain,
@@ -23,9 +23,7 @@ import {
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
-import { downloadToFile } from '../../../ipc/downloadToFile';
 import { openApp } from '../../../ipc/openWindow';
-import { getAppsRootDir } from '../../../main/config';
 import type { AppDispatch } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
@@ -56,20 +54,6 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-const downloadAppIcon =
-    (app: AppSpec, iconUrl: string, iconPath: string) =>
-    (dispatch: AppDispatch) => {
-        // If there is a cached version, use it even before downloading.
-        if (fs.existsSync(iconPath)) {
-            dispatch(setAppIconPath({ app, iconPath }));
-        }
-        downloadToFile(iconUrl, iconPath)
-            .then(() => dispatch(setAppIconPath({ app, iconPath })))
-            .catch(() => {
-                /* Ignore 404 not found. */
-            });
-    };
-
 export const loadLocalApps = () => (dispatch: AppDispatch) => {
     dispatch(loadLocalAppsStarted());
 
@@ -81,33 +65,38 @@ export const loadLocalApps = () => (dispatch: AppDispatch) => {
         });
 };
 
-const downloadSingleReleaseNotes = async (
-    dispatch: AppDispatch,
-    app: DownloadableApp
-) => {
-    const releaseNote = await downloadReleaseNotes(app);
-    if (releaseNote != null) {
-        dispatch(setAppReleaseNote({ app, releaseNote }));
-    }
-};
+const downloadAppIcon =
+    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
+        const iconPath = await downloadAppIconInMain(app);
+        if (iconPath != null) {
+            dispatch(setAppIconPath({ app, iconPath }));
+        }
+    };
+
+const downloadReleaseNotes =
+    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
+        const releaseNote = await downloadReleaseNotesInMain(app);
+        if (releaseNote != null) {
+            dispatch(setAppReleaseNote({ app, releaseNote }));
+        }
+    };
 
 export const fetchInfoForAllDownloadableApps =
-    () => async (dispatch: AppDispatch) => {
+    (checkOnlineForUpdates = true) =>
+    async (dispatch: AppDispatch) => {
         dispatch(loadDownloadableAppsStarted());
         const { apps, appsWithErrors } = await getDownloadableApps();
 
         dispatch(setAllDownloadableApps(apps));
 
-        apps.filter(app => !isInstalled(app)).forEach(app => {
-            const iconPath = join(
-                `${getAppsRootDir(app.source, mainConfig())}`,
-                `${app.name}.svg`
-            );
-            const iconUrl = `${app.url}.svg`;
-            dispatch(downloadAppIcon(app, iconUrl, iconPath));
-        });
-
-        apps.forEach(app => downloadSingleReleaseNotes(dispatch, app));
+        if (checkOnlineForUpdates) {
+            apps.forEach(app => {
+                dispatch(downloadReleaseNotes(app));
+                if (!isInstalled(app)) {
+                    dispatch(downloadAppIcon(app));
+                }
+            });
+        }
 
         if (appsWithErrors.length > 0) {
             handleAppsWithErrors(dispatch, appsWithErrors);

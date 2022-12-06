@@ -59,8 +59,10 @@ let data: Draft<Settings> = load();
 const save = () => {
     fs.writeFileSync(
         getConfig().settingsJsonPath,
-        JSON.stringify(data, (key, value) =>
-            key === 'shownSources' ? [...value] : value
+        JSON.stringify(
+            data,
+            (key, value) => (key === 'shownSources' ? [...value] : value),
+            2
         )
     );
 };

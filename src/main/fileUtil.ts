@@ -167,9 +167,10 @@ const createTextFileIfNotExists = async (filePath: string, text: string) => {
 };
 
 export const createJsonFile = (filePath: string, jsonData: unknown) =>
-    createTextFile(filePath, JSON.stringify(jsonData));
+    createTextFile(filePath, JSON.stringify(jsonData, undefined, 2));
 
 export const createJsonFileIfNotExists = (
     filePath: string,
     jsonData: unknown
-) => createTextFileIfNotExists(filePath, JSON.stringify(jsonData));
+) =>
+    createTextFileIfNotExists(filePath, JSON.stringify(jsonData, undefined, 2));

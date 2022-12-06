@@ -9,6 +9,8 @@
 
 -   Installing or updating an app does not prevent working with other apps in
     the list of apps any longer.
+-   Do not download icons and release notes on startup if “Check for updates at
+    startup” is disabled.
 
 ## 3.12.1 - 2022-09-16
 
