@@ -11,7 +11,8 @@ import type {
 } from '@serialport/bindings-cpp';
 import { Renderer, WebContents } from 'electron';
 import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
-import { SerialPort, SerialPortOpenOptions } from 'serialport';
+import type { SerialPortOpenOptions } from 'serialport';
+import { SerialPort } from 'serialport';
 
 import { logger } from './log';
 import { initPlatformSpecificMap } from './utils/map';
