@@ -11,7 +11,6 @@ require('esbuild')
         entryPoints: ['src/main/index.ts'],
         external: [
             'electron',
-            'serialport',
             /node_modules\/(?!pc-nrfconnect-shared\/)/,
         ],
         logLevel: 'info',
