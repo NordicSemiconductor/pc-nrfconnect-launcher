@@ -7,14 +7,16 @@
 import { MockBinding } from '@serialport/binding-mock';
 import { UpdateOptions } from '@serialport/bindings-cpp';
 import { SerialPortStream as MockSerialPortStream } from '@serialport/stream';
-import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
+import {
+    OverwriteOptions,
+    SERIALPORT_CHANNEL,
+} from 'pc-nrfconnect-shared/main';
 
 import {
     closeSerialPort,
     getSettings,
     isOpen,
     openOrAdd,
-    OverwriteOptions,
     Renderer,
     serialPorts,
     update,
@@ -78,7 +80,7 @@ describe('Single renderer', () => {
     test('writes to a port', async () => {
         await openOrAdd(renderer, defaultOptions, defaultOverwriteOptions);
 
-        writeToSerialport(testPortPath, renderer, 'OK');
+        writeToSerialport(testPortPath, 'OK');
         await flushMacroTaskQueue();
 
         expect(renderer.send).toHaveBeenCalledWith(
@@ -93,7 +95,7 @@ describe('Single renderer', () => {
             defaultOptions,
             defaultOverwriteOptions
         );
-        expect(() => writeToSerialport(testPortPath, renderer, 'Test')).toThrow(
+        expect(() => writeToSerialport(testPortPath, 'Test')).toThrow(
             'PORT_NOT_OPEN'
         );
         // Must wait for the port to actually open, in order to again close it.
@@ -119,21 +121,21 @@ describe('Two renderers', () => {
             openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
         ).resolves.toBeUndefined();
 
-        await closeSerialPort(testPortPath, rendererOne);
+        await closeSerialPort(rendererOne, testPortPath);
 
         // Having closed with one renderer, should still keep port open
         // as long as there are renderers that are subscribed to the port.
         expect(isOpen(testPortPath)).toBe(true);
         // Closing the same serialport several times does nothing...
-        await closeSerialPort(testPortPath, rendererOne);
+        await closeSerialPort(rendererOne, testPortPath);
         expect(isOpen(testPortPath)).toBe(true);
 
-        await closeSerialPort(testPortPath, rendererTwo);
+        await closeSerialPort(rendererTwo, testPortPath);
         // Having closed the port with all renderers, the port should be closed
         expect(() => isOpen(testPortPath)).toThrow('PORT_NOT_FOUND');
         // Closing the same port when it has been deleted throws an error.
         await expect(
-            closeSerialPort(testPortPath, rendererTwo)
+            closeSerialPort(rendererTwo, testPortPath)
         ).rejects.toThrow('PORT_NOT_FOUND');
     });
 
@@ -250,7 +252,7 @@ describe('Two renderers', () => {
         await openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions);
         await openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions);
         const terminalData = 'TestData';
-        writeToSerialport(testPortPath, rendererOne, terminalData);
+        writeToSerialport(testPortPath, terminalData);
 
         await flushMacroTaskQueue();
 
