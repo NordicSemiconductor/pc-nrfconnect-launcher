@@ -8,14 +8,17 @@ import type {
     SetOptions,
     UpdateOptions,
 } from '@serialport/bindings-cpp';
-import { ipcMain, WebContents } from 'electron';
 import {
     OverwriteOptions,
     SERIALPORT_CHANNEL,
 } from 'pc-nrfconnect-shared/main';
 import { SerialPortOpenOptions } from 'serialport';
 
-import { handle, invoke } from './infrastructure/rendererToMain';
+import {
+    handle,
+    handleWithSender,
+    invoke,
+} from './infrastructure/rendererToMain';
 
 const channel = {
     open: SERIALPORT_CHANNEL.OPEN,
@@ -31,25 +34,11 @@ type Open = (
     overwriteOptions: OverwriteOptions
 ) => void;
 export const open = invoke<Open>(channel.open);
-export const registerOpen = (
-    onOpen: (
-        sender: WebContents,
-        options: SerialPortOpenOptions<AutoDetectTypes>,
-        overwriteOptions: OverwriteOptions
-    ) => void
-) => {
-    ipcMain.handle(channel.open, ({ sender }, options, overwriteOptions) =>
-        onOpen(sender, options, overwriteOptions)
-    );
-};
+export const registerOpen = handleWithSender<Open>(channel.open);
 
 type Close = (path: string) => void;
 export const close = invoke<Close>(channel.close);
-export const registerClose = (
-    onClose: (sender: WebContents, path: string) => void
-) => {
-    ipcMain.handle(channel.close, ({ sender }, path) => onClose(sender, path));
-};
+export const registerClose = handleWithSender<Close>(channel.close);
 
 type Write = (path: string, data: string) => void;
 export const write = invoke<Write>(channel.write);

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain, ipcRenderer } from 'electron';
+import { ipcMain, ipcRenderer, WebContents } from 'electron';
 
 // Send
 export const send =
@@ -42,4 +42,20 @@ export const handle =
     ) =>
         ipcMain.handle(channel, (_event, ...args: unknown[]) =>
             handler(...(args as Parameters<T>))
+        );
+
+export const handleWithSender =
+    <T extends (...args: any[]) => any>( // eslint-disable-line @typescript-eslint/no-explicit-any -- We have to explicitly allow any function here
+        channel: string
+    ) =>
+    (
+        handler:
+            | ((sender: WebContents, ...args: Parameters<T>) => ReturnType<T>)
+            | ((
+                  sender: WebContents,
+                  ...args: Parameters<T>
+              ) => Promise<ReturnType<T>>)
+    ) =>
+        ipcMain.handle(channel, ({ sender }, ...args: unknown[]) =>
+            handler(sender, ...(args as Parameters<T>))
         );
