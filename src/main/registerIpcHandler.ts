@@ -134,8 +134,8 @@ export default () => {
     );
 
     // To handle writing to a serialport from renderer
-    ipcMain.handle('serialport:write', ({ sender }, path, data) => {
-        writeToSerialport(path, sender, data);
+    ipcMain.handle('serialport:write', (_event, path, data) => {
+        writeToSerialport(path, data);
     });
 
     // Renderer asks if the serialport is open

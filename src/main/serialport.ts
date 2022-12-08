@@ -125,7 +125,6 @@ export const openOrAdd = async (
 
 export const writeToSerialport = (
     path: string,
-    sender: Renderer,
     data: string | number[] | Buffer
 ) => {
     const openPort = serialPorts.get(path);
