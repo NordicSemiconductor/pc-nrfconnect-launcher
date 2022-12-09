@@ -17,11 +17,10 @@ import {
     getSettings,
     isOpen,
     openOrAdd,
-    Renderer,
-    serialPorts,
     update,
     writeToSerialport,
 } from './serialport';
+import { Renderer, serialPorts } from './serialportMap';
 
 const testPortPath = '/dev/ROBOT';
 

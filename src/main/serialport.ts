@@ -9,7 +9,6 @@ import type {
     SetOptions,
     UpdateOptions,
 } from '@serialport/bindings-cpp';
-import { Renderer, WebContents } from 'electron';
 import {
     OverwriteOptions,
     SERIALPORT_CHANNEL,
@@ -17,18 +16,7 @@ import {
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
 import { logger } from './log';
-import { initPlatformSpecificMap } from './utils/map';
-
-export type Renderer = Pick<WebContents, 'on' | 'send' | 'id'>;
-
-type OpenPort = {
-    serialPort: SerialPort;
-    renderers: Renderer[];
-    settingsLocked: boolean;
-    opening: boolean;
-    options: SerialPortOpenOptions<AutoDetectTypes>;
-};
-export const serialPorts = initPlatformSpecificMap<string, OpenPort>();
+import { OpenPort, Renderer, serialPorts } from './serialportMap';
 
 export const openOrAdd = async (
     sender: Renderer,
