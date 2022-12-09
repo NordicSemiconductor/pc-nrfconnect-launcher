@@ -55,88 +55,93 @@ export const openOrAdd = async (
     const { path } = options;
     const existingPort = serialPorts.get(path);
     if (existingPort) {
-        if (existingPort.opening) {
-            failAddingRenderer(
-                path,
-                sender,
-                'Port is being opened by another renderer',
-                ErrorId.PORT_IS_ALREADY_BEING_OPENED
-            );
-        }
-
-        const alreadyInList = existingPort.renderers.some(
-            renderer => renderer.id === sender.id
-        );
-
-        if (!alreadyInList) {
-            let isDifferentSettings;
-            if (existingPort.serialPort) {
-                const currentOptions = existingPort.options;
-
-                if (
-                    Object.keys(currentOptions).length ===
-                    Object.keys(options).length
-                ) {
-                    Object.entries(options).every(([key, value]) => {
-                        if (
-                            !(key in currentOptions) ||
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            (currentOptions as any)[key] !== value
-                        ) {
-                            isDifferentSettings = true;
-                            return false;
-                        }
-                        return true;
-                    });
-                } else {
-                    isDifferentSettings = true;
-                }
-            }
-
-            if (isDifferentSettings) {
-                if (existingPort.settingsLocked) {
-                    failAddingRenderer(
-                        path,
-                        sender,
-                        'Port is open with different, locked settings',
-                        ErrorId.FAILED_SETTINGS_LOCKED
-                    );
-                }
-                if (!overwrite) {
-                    failAddingRenderer(
-                        path,
-                        sender,
-                        'Port is open with different settings',
-                        ErrorId.FAILED_DIFFERENT_SETTINGS
-                    );
-                }
-
-                const result = await changeOptions(options, settingsLocked);
-                if (result === ErrorId.FAILED) {
-                    throw new Error(ErrorId.FAILED);
-                }
-                serialPorts.broadCast(
-                    path,
-                    SERIALPORT_CHANNEL.ON_CHANGED,
-                    options
-                );
-            }
-            existingPort.renderers.push(sender);
-            addSenderEvents(path, sender);
-            logInfo(path, `Added renderer (${sender.id})`);
-        }
+        await addRenderer(existingPort, sender, options, {
+            overwrite,
+            settingsLocked,
+        });
         return;
     }
 
-    await openNewSerialPort(options, settingsLocked)
-        .then(() => {
-            const openPort = serialPorts.get(path);
-            openPort?.renderers.push(sender);
-            addSenderEvents(path, sender);
-        })
-        .catch(() => {
-            throw new Error(ErrorId.FAILED);
-        });
+    try {
+        const openPort = await openNewSerialPort(options, settingsLocked);
+        addSender(path, sender, openPort);
+    } catch (error) {
+        throw new Error(ErrorId.FAILED);
+    }
+};
+
+const addRenderer = async (
+    existingPort: OpenPort,
+    sender: Renderer,
+    options: SerialPortOpenOptions<AutoDetectTypes>,
+    { overwrite, settingsLocked }: Required<OverwriteOptions>
+) => {
+    const { path } = options;
+    if (existingPort.opening) {
+        failAddingRenderer(
+            path,
+            sender,
+            'Port is being opened by another renderer',
+            ErrorId.PORT_IS_ALREADY_BEING_OPENED
+        );
+    }
+
+    const alreadyInList = existingPort.renderers.some(
+        renderer => renderer.id === sender.id
+    );
+
+    if (!alreadyInList) {
+        let isDifferentSettings;
+        if (existingPort.serialPort) {
+            const currentOptions = existingPort.options;
+
+            if (
+                Object.keys(currentOptions).length ===
+                Object.keys(options).length
+            ) {
+                Object.entries(options).every(([key, value]) => {
+                    if (
+                        !(key in currentOptions) ||
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (currentOptions as any)[key] !== value
+                    ) {
+                        isDifferentSettings = true;
+                        return false;
+                    }
+                    return true;
+                });
+            } else {
+                isDifferentSettings = true;
+            }
+        }
+
+        if (isDifferentSettings) {
+            if (existingPort.settingsLocked) {
+                failAddingRenderer(
+                    path,
+                    sender,
+                    'Port is open with different, locked settings',
+                    ErrorId.FAILED_SETTINGS_LOCKED
+                );
+            }
+            if (!overwrite) {
+                failAddingRenderer(
+                    path,
+                    sender,
+                    'Port is open with different settings',
+                    ErrorId.FAILED_DIFFERENT_SETTINGS
+                );
+            }
+
+            const result = await changeOptions(options, settingsLocked);
+            if (result === ErrorId.FAILED) {
+                throw new Error(ErrorId.FAILED);
+            }
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CHANGED, options);
+        }
+        addSender(path, sender, existingPort);
+        logInfo(path, `Added renderer (${sender.id})`);
+    }
 };
 
 export const writeToSerialport = (path: string, data: string) => {
@@ -330,7 +335,7 @@ const openNewSerialPort = async (
         }
     });
 
-    return new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
         port.open(err => {
             if (err) {
                 fail(path, `Could not open port: ${err.message}`);
@@ -344,6 +349,7 @@ const openNewSerialPort = async (
             }
         });
     });
+    return newOpenPort;
 };
 
 export const changeOptions = (
@@ -362,7 +368,9 @@ export const changeOptions = (
 export const getBaudRate = (path: string): number | void =>
     serialPorts.get(path)?.serialPort.baudRate;
 
-const addSenderEvents = (path: string, sender: Renderer) => {
+const addSender = (path: string, sender: Renderer, openPort: OpenPort) => {
+    openPort.renderers.push(sender);
+
     // Remove renderer if renderer process is destroyed (window is closed).
     sender.on('destroyed', () => {
         logInfo(path, `Removed destroyed renderer (${sender.id})`);
