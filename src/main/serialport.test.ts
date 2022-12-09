@@ -14,7 +14,7 @@ import {
 
 import {
     closeSerialPort,
-    getSettings,
+    getBaudRate,
     isOpen,
     openOrAdd,
     update,
@@ -158,7 +158,7 @@ describe('Two renderers', () => {
                 // eslint-disable-next-line no-await-in-loop
                 await update(testPortPath, { baudRate: rate } as UpdateOptions)
             ).toBeUndefined();
-            expect(getSettings(testPortPath)).toBe(rate);
+            expect(getBaudRate(testPortPath)).toBe(rate);
         }
     });
 
