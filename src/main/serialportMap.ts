@@ -23,18 +23,24 @@ const mapPath = (path: string) =>
 class SerialPortMap {
     map = new Map<string, OpenPort>();
 
-    set = (key: string, value: OpenPort) => {
-        this.map.set(mapPath(key), value);
+    set = (path: string, value: OpenPort) => {
+        this.map.set(mapPath(path), value);
     };
 
-    get = (key: string) => this.map.get(mapPath(key));
+    get = (path: string) => this.map.get(mapPath(path));
 
-    has = (key: string) => this.map.has(mapPath(key));
+    has = (path: string) => this.map.has(mapPath(path));
 
-    delete = (key: string) => this.map.delete(mapPath(key));
+    delete = (path: string) => this.map.delete(mapPath(path));
 
     clear = () => {
         this.map.clear();
+    };
+
+    broadCast = (path: string, channel: string, ...args: unknown[]) => {
+        this.get(path)?.renderers.forEach(renderer => {
+            renderer.send(channel, ...args);
+        });
     };
 }
 

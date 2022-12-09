@@ -83,9 +83,11 @@ export const openOrAdd = async (
                     );
                     throw new Error('FAILED');
                 }
-                existingPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CHANGED, options);
-                });
+                serialPorts.broadCast(
+                    path,
+                    SERIALPORT_CHANNEL.ON_CHANGED,
+                    options
+                );
             }
             existingPort.renderers.push(sender);
             addSenderEvents(path, sender);
@@ -123,9 +125,7 @@ export const writeToSerialport = (path: string, data: string) => {
         throw new Error('PORT_NOT_OPEN');
     }
 
-    openPort.renderers.forEach(renderer =>
-        renderer.send('serialport:on-write', data)
-    );
+    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_WRITE, data);
 
     return new Promise<void>((resolve, reject) => {
         openPort.serialPort.write(data, error => {
@@ -137,13 +137,8 @@ export const writeToSerialport = (path: string, data: string) => {
     });
 };
 
-const onData = (path: string, chunk: unknown) => {
-    const openPort = serialPorts.get(path);
-    if (openPort) {
-        openPort.renderers.forEach(renderer =>
-            renderer.send(SERIALPORT_CHANNEL.ON_DATA, chunk)
-        );
-    }
+const onData = (path: string, data: unknown) => {
+    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_DATA, data);
 };
 
 export const isOpen = (path: string): boolean => {
@@ -224,7 +219,7 @@ export const update = (path: string, options: UpdateOptions) => {
         return;
     }
 
-    const { serialPort, renderers } = openPort;
+    const { serialPort } = openPort;
     return new Promise<void>((resolve, reject) => {
         serialPort.update(options, error => {
             if (error) {
@@ -233,12 +228,11 @@ export const update = (path: string, options: UpdateOptions) => {
                 );
                 reject(error);
             } else {
-                renderers.forEach(renderer => {
-                    renderer.send(
-                        SERIALPORT_CHANNEL.ON_UPDATE,
-                        serialPort.settings
-                    );
-                });
+                serialPorts.broadCast(
+                    path,
+                    SERIALPORT_CHANNEL.ON_UPDATE,
+                    serialPort.settings
+                );
                 logger.info(
                     `SerialPort: Port with path=${path} updated settings: ${JSON.stringify(
                         options
@@ -260,19 +254,23 @@ export const set = (path: string, newOptions: SetOptions) => {
         return;
     }
 
-    const { serialPort, renderers } = openPort;
+    const { serialPort } = openPort;
 
-    serialPort.set(newOptions);
-    logger.info(
-        `SerialPort: Port with path=${path} was set with new settings: ${JSON.stringify(
-            newOptions
-        )}`
-    );
-
-    renderers.forEach(renderer => {
-        // TODO: Review if we actually want to send newOptions?
-        // You also have a get() function, but it's only a subset of SetOptions, called PortStatus
-        renderer.send(SERIALPORT_CHANNEL.ON_SET, newOptions);
+    serialPort.set(newOptions, error => {
+        if (error) {
+            logger.error(
+                `SerialPort: Port with path=${path} was not able to set new options: ${JSON.stringify(
+                    newOptions
+                )}`
+            );
+        } else {
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_SET, newOptions);
+            logger.info(
+                `SerialPort: Port with path=${path} was set with new settings: ${JSON.stringify(
+                    newOptions
+                )}`
+            );
+        }
     });
 };
 
@@ -318,9 +316,7 @@ const openNewSerialPort = async (
             logger.error(
                 `SerialPort: Port with path=${path} was closed due to an error: ${error.message}`
             );
-            newOpenPort.renderers.forEach(renderer => {
-                renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-            });
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
             serialPorts.delete(path);
         } else {
             logger.info(
@@ -335,9 +331,7 @@ const openNewSerialPort = async (
                 logger.error(
                     `SerialPort: Port with path=${path} could not be opened: ${err.message}`
                 );
-                newOpenPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-                });
+                serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
                 serialPorts.delete(path);
                 reject(Error('FAILED'));
             } else {
