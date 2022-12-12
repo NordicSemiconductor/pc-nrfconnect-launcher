@@ -7,39 +7,49 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { SourceName, Sources, SourceUrl } from '../../../ipc/sources';
+import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
 export type State = {
-    sources: Sources;
+    sources: Source[];
     isAddSourceVisible: boolean;
     sourceToRemove: null | SourceName;
 };
 
 const initialState: State = {
-    sources: {},
+    sources: [],
     isAddSourceVisible: false,
     sourceToRemove: null,
 };
+
+const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
+    sources.filter(
+        existingSource => existingSource.name !== sourceNameToBeRemoved
+    );
 
 const slice = createSlice({
     name: 'settings',
     initialState,
     reducers: {
-        setSources(state, { payload: sources }: PayloadAction<Sources>) {
-            state.sources = { ...sources };
+        setSources(state, { payload: sources }: PayloadAction<Source[]>) {
+            state.sources = [...sources];
         },
         addSource(
             state,
-            action: PayloadAction<{
+            {
+                payload: newSource,
+            }: PayloadAction<{
                 name: SourceName;
                 url: SourceUrl;
             }>
         ) {
-            state.sources[action.payload.name] = action.payload.url;
+            state.sources = [
+                ...sourcesWithout(state.sources, newSource.name),
+                newSource,
+            ];
         },
         removeSource(state, { payload: name }: PayloadAction<SourceName>) {
-            delete state.sources[name];
+            state.sources = sourcesWithout(state.sources, name);
         },
         showAddSource(state) {
             state.isAddSourceVisible = true;

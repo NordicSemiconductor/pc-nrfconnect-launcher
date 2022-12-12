@@ -8,7 +8,13 @@ import { dialog } from 'electron';
 import fs from 'fs-extra';
 
 import { DownloadableAppInfoBase } from '../ipc/apps';
-import { allStandardSourceNames } from '../ipc/sources';
+import {
+    allStandardSourceNames,
+    OFFICIAL,
+    Source,
+    SourceName,
+    SourceUrl,
+} from '../ipc/sources';
 import {
     getAppsJsonPath,
     getAppsRootDir,
@@ -22,59 +28,90 @@ import { ensureDirExists } from './mkdir';
 import * as net from './net';
 import { addShownSource, removeShownSource } from './settings';
 
-let sourcesData: Record<string, string> | undefined;
+let sourcesAreLoaded = false;
+let sources: Source[] = [];
 
-export const officialSourceUrl =
-    'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json';
+const officialSource = {
+    name: OFFICIAL,
+    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json',
+};
+
+const convertToOldSourceJsonFormat = (allSources: Source[]) =>
+    Object.fromEntries(allSources.map(source => [source.name, source.url]));
+
+const convertFromOldSourceJsonFormat = (
+    sourceJsonParsed: Record<SourceName, SourceUrl>
+) => Object.entries(sourceJsonParsed).map(([name, url]) => ({ name, url }));
 
 const loadAllSources = () => {
     const filePath = getConfig().sourcesJsonPath;
 
     if (!fs.existsSync(filePath)) {
-        return {};
+        return [];
     }
+    let sourceJsonContent: string | undefined;
     try {
-        const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        if (parsed && typeof parsed === 'object') {
-            return parsed as Record<string, string>;
+        sourceJsonContent = fs.readFileSync(filePath, 'utf-8');
+        const sourceJsonParsed = JSON.parse(sourceJsonContent);
+
+        if (Array.isArray(sourceJsonParsed)) {
+            return sourceJsonParsed;
         }
+        if (sourceJsonParsed != null && typeof sourceJsonParsed === 'object') {
+            return convertFromOldSourceJsonFormat(sourceJsonParsed);
+        }
+
+        throw new Error('Unable to parse `source.json`.');
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
             'No sources besides the official and the local one will be shown. ' +
-                'Also apps from other sources will be hidde.\n\nError: ' +
-                `${describeError(err)}`
+                'Also apps from other sources will be hidden.\n\nError: ' +
+                `${describeError(err)}\n\n` +
+                `Content of \`source.json\`+ \`${sourceJsonContent}\``
         );
     }
-    return {};
+    return [];
 };
 
 const saveAllSources = () => {
+    ensureSourcesAreLoaded();
+
     fs.writeFileSync(
         getConfig().sourcesJsonPath,
-        JSON.stringify(sourcesData, undefined, 2)
+        JSON.stringify(convertToOldSourceJsonFormat(sources), undefined, 2)
     );
 };
 
-const initialSources = () => ({
-    ...loadAllSources(),
-    official: officialSourceUrl,
-});
-
-export const getAllSources = () => {
-    if (sourcesData == null) {
-        sourcesData = initialSources();
-    }
-
-    return sourcesData;
+const removeFromSourceList = (sourceNameToBeRemoved: SourceName) => {
+    sources = sources.filter(source => source.name !== sourceNameToBeRemoved);
 };
 
-export const getAllSourceNames = () => Object.keys(getAllSources());
+const addToSourceList = (sourceToAdd: Source) => {
+    removeFromSourceList(sourceToAdd.name);
+    sources.push(sourceToAdd);
+};
+
+export const ensureSourcesAreLoaded = () => {
+    if (!sourcesAreLoaded) {
+        sourcesAreLoaded = true;
+
+        sources = loadAllSources();
+        addToSourceList(officialSource);
+    }
+};
+
+export const getAllSources = () => sources;
+
+export const getAllSourceNames = () => {
+    ensureSourcesAreLoaded();
+    return sources.map(source => source.name);
+};
 
 export const initialiseAllSources = () =>
     Promise.all(getAllSourceNames().map(initialise));
 
-const initialise = (sourceName?: string) =>
+const initialise = (sourceName?: SourceName) =>
     ensureDirExists(getAppsRootDir(sourceName))
         .then(() => ensureDirExists(getNodeModulesDir(sourceName)))
         .then(() => ensureFileExists(getAppsJsonPath(sourceName)))
@@ -83,16 +120,19 @@ const initialise = (sourceName?: string) =>
 const ensureFileExists = (filename: string) =>
     fileUtil.createJsonFileIfNotExists(filename, {});
 
-export const getSourceUrl = (name: string) => getAllSources()[name];
+export const getSourceUrl = (name: SourceName) => {
+    ensureSourcesAreLoaded();
+    return sources.find(source => source.name === name)?.url;
+};
 
 class FailedToFetchAppsJsonError extends Error {
-    source: { name?: string; url: string };
+    source: { name?: SourceName; url: SourceUrl };
     sourceNotFound: boolean;
     statusCode?: number;
 
     constructor(
         error: unknown,
-        source: { name?: string; url: string },
+        source: { name?: SourceName; url: SourceUrl },
         sourceNotFound: boolean,
         statusCode?: number
     ) {
@@ -119,11 +159,11 @@ export interface UpdatesJson {
 }
 
 export interface AppsJson {
-    _source?: string;
+    _source?: SourceName;
     [app: `pc-nrfconnect-${string}`]: DownloadableAppInfoBase;
 }
 
-const downloadAppsJson = async (url: string, name?: string) => {
+const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
     let appsJson;
     try {
         appsJson = await net.downloadToJson<AppsJson>(url, true);
@@ -139,7 +179,7 @@ const downloadAppsJson = async (url: string, name?: string) => {
 
     // eslint-disable-next-line no-underscore-dangle -- underscore is intentially used in JSON as a meta information
     const sourceName = appsJson._source;
-    const isOfficial = url === officialSourceUrl;
+    const isOfficial = url === officialSource.url;
     if (sourceName == null && !isOfficial) {
         throw new Error('JSON does not contain expected `_source` tag');
     }
@@ -151,29 +191,31 @@ const downloadAppsJson = async (url: string, name?: string) => {
 };
 
 export const downloadAllAppsJson = () => {
-    const sources = getAllSources();
+    ensureSourcesAreLoaded();
 
     const sequence = async (
-        sourceName?: string,
-        ...remainingSourceNames: string[]
+        source?: Source,
+        ...remainingSources: Source[]
     ): Promise<void> => {
-        if (sourceName == null) return;
+        if (source == null) return;
 
-        await downloadAppsJson(sources[sourceName], sourceName);
-        return sequence(...remainingSourceNames);
+        await downloadAppsJson(source.url, source.name);
+        return sequence(...remainingSources);
     };
 
-    return sequence(...Object.keys(sources));
+    return sequence(...sources);
 };
 
-export const addSource = async (url: string) => {
+export const addSource = async (url: SourceUrl) => {
+    ensureSourcesAreLoaded();
+
     const name = await downloadAppsJson(url);
 
     if (name == null) {
         throw new Error('The official source cannot be added.');
     }
 
-    getAllSources()[name] = url;
+    addToSourceList({ name, url });
     saveAllSources();
 
     addShownSource(name);
@@ -181,7 +223,9 @@ export const addSource = async (url: string) => {
     return name;
 };
 
-const isRemovableSource = (sourceName?: string): sourceName is string => {
+const isRemovableSource = (
+    sourceName?: SourceName
+): sourceName is SourceName => {
     if (!sourceName || allStandardSourceNames.includes(sourceName)) {
         throw new Error('The official or local source shall not be removed.');
     }
@@ -189,14 +233,16 @@ const isRemovableSource = (sourceName?: string): sourceName is string => {
     return true;
 };
 
-const removeSourceDirectory = (sourceName: string) =>
+const removeSourceDirectory = (sourceName: SourceName) =>
     fs.remove(getAppsRootDir(sourceName));
 
-export const removeSource = async (sourceName?: string) => {
+export const removeSource = async (sourceName?: SourceName) => {
+    ensureSourcesAreLoaded();
+
     if (isRemovableSource(sourceName)) {
         await removeSourceDirectory(sourceName);
 
-        delete getAllSources()[sourceName];
+        removeFromSourceList(sourceName);
         saveAllSources();
 
         removeShownSource(sourceName);
