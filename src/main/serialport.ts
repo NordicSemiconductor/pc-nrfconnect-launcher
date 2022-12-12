@@ -91,31 +91,7 @@ const addRenderer = async (
     );
 
     if (!alreadyInList) {
-        let isDifferentSettings;
-        if (existingPort.serialPort) {
-            const currentOptions = existingPort.options;
-
-            if (
-                Object.keys(currentOptions).length ===
-                Object.keys(options).length
-            ) {
-                Object.entries(options).every(([key, value]) => {
-                    if (
-                        !(key in currentOptions) ||
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        (currentOptions as any)[key] !== value
-                    ) {
-                        isDifferentSettings = true;
-                        return false;
-                    }
-                    return true;
-                });
-            } else {
-                isDifferentSettings = true;
-            }
-        }
-
-        if (isDifferentSettings) {
+        if (!serialPorts.hasEqualOptions(path, options)) {
             if (existingPort.settingsLocked) {
                 failAddingRenderer(
                     path,

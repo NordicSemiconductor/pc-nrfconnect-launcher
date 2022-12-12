@@ -42,6 +42,30 @@ class SerialPortMap {
             renderer.send(channel, ...args);
         });
     };
+
+    hasEqualOptions = (
+        path: string,
+        options: SerialPortOpenOptions<AutoDetectTypes>
+    ) => {
+        const oldOptions = this.get(path)?.options;
+        if (
+            !oldOptions ||
+            Object.keys(options).length !== Object.keys(oldOptions).length
+        ) {
+            return false;
+        }
+
+        return Object.entries(options).every(([key, value]) => {
+            if (
+                !(key in oldOptions) ||
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (oldOptions as any)[key] !== value
+            ) {
+                return false;
+            }
+            return true;
+        });
+    };
 }
 
 export const serialPorts = new SerialPortMap();
