@@ -25,6 +25,8 @@ const channel = {
     close: SERIALPORT_CHANNEL.CLOSE,
     write: SERIALPORT_CHANNEL.WRITE,
     isOpen: SERIALPORT_CHANNEL.IS_OPEN,
+    // @ts-expect-error --Will be included in the next version of shared.
+    getOptions: SERIALPORT_CHANNEL.GET_OPTIONS ?? 'serialport:get-options',
     update: SERIALPORT_CHANNEL.UPDATE,
     set: SERIALPORT_CHANNEL.SET,
 };
@@ -47,6 +49,12 @@ export const registerWrite = handle<Write>(channel.write);
 type IsOpen = (path: string) => boolean;
 export const isOpen = invoke<IsOpen>(channel.isOpen);
 export const registerIsOpen = handle<IsOpen>(channel.isOpen);
+
+type GetOptions = (
+    path: string
+) => SerialPortOpenOptions<AutoDetectTypes> | undefined;
+export const getOptions = invoke<GetOptions>(channel.getOptions);
+export const registerGetOptions = handle<GetOptions>(channel.getOptions);
 
 type Update = (path: string, options: UpdateOptions) => void;
 export const update = invoke<Update>(channel.update);

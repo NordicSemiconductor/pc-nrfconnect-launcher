@@ -218,6 +218,7 @@ export const update = (path: string, options: UpdateOptions) => {
                 fail(path, `Could not update options: ${error.message}`);
                 reject(error);
             } else {
+                openPort.options = { ...openPort.options, ...options };
                 serialPorts.broadCast(
                     path,
                     SERIALPORT_CHANNEL.ON_UPDATE,
@@ -328,7 +329,7 @@ const openNewSerialPort = async (
     return newOpenPort;
 };
 
-export const changeOptions = (
+const changeOptions = (
     options: SerialPortOpenOptions<AutoDetectTypes>,
     settingsLocked: boolean
 ) => {
@@ -340,6 +341,8 @@ export const changeOptions = (
 
     return openNewSerialPort(options, settingsLocked);
 };
+
+export const getOptions = (path: string) => serialPorts.get(path)?.options;
 
 export const getBaudRate = (path: string): number | void =>
     serialPorts.get(path)?.serialPort.baudRate;

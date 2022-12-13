@@ -34,6 +34,7 @@ import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
 import { registerRequire } from '../ipc/require';
 import {
     registerClose,
+    registerGetOptions,
     registerIsOpen,
     registerOpen,
     registerSet,
@@ -72,6 +73,7 @@ import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
 import {
     closeSerialPort,
+    getOptions,
     isOpen,
     openOrAdd,
     set,
@@ -139,6 +141,7 @@ export default () => {
     registerClose(closeSerialPort);
     registerWrite(writeToSerialport);
     registerIsOpen(isOpen);
+    registerGetOptions(getOptions);
     registerUpdate(update);
     registerSet(set);
 };

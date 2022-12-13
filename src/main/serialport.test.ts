@@ -15,6 +15,7 @@ import {
 import {
     closeSerialPort,
     getBaudRate,
+    getOptions,
     isOpen,
     openOrAdd,
     update,
@@ -263,5 +264,30 @@ describe('Two renderers', () => {
             'serialport:on-write',
             terminalData
         );
+    });
+
+    test('gets the correct options', async () => {
+        expect(getOptions(testPortPath)).toBeUndefined();
+
+        await openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions);
+        expect(getOptions(testPortPath)).toEqual(defaultOptions);
+
+        await update(testPortPath, { baudRate: 9600 });
+        expect(getOptions(testPortPath)).toEqual({
+            ...defaultOptions,
+            baudRate: 9600,
+        });
+
+        const newOptions = { ...defaultOptions, xany: false };
+        await openOrAdd(rendererTwo, newOptions, {
+            ...defaultOverwriteOptions,
+            overwrite: true,
+        });
+        expect(getOptions(testPortPath)).toEqual(newOptions);
+
+        await closeSerialPort(rendererOne, testPortPath);
+        await closeSerialPort(rendererTwo, testPortPath);
+
+        expect(getOptions(testPortPath)).toBeUndefined();
     });
 });
