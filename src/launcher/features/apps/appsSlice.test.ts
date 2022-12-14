@@ -14,9 +14,6 @@ import {
 } from '../../../test/testFixtures';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
-    downloadLatestAppInfoError,
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
@@ -32,6 +29,9 @@ import reducer, {
     showConfirmLaunchDialog,
     State,
     updateDownloadableAppInfo,
+    updateDownloadableAppInfos,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
@@ -259,32 +259,37 @@ describe('appsReducer', () => {
         expect(state.isConfirmLaunchDialogVisible).toEqual(false);
     });
 
-    it('should be downloading latest app info when downloadLatestAppInfoAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [downloadLatestAppInfoStarted()]);
+    it('should be downloading latest app info when updateDownloadableAppInfosStarted has been dispatched', () => {
+        const state = dispatchTo(reducer, [
+            updateDownloadableAppInfosStarted(),
+        ]);
         expect(state.isDownloadingLatestAppInfo).toEqual(true);
     });
 
-    it('should not be downloading latest app info when downloadLatestAppInfoSuccessAction has been dispatched', () => {
+    it('should not be downloading latest app info when updateDownloadableAppInfos has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            downloadLatestAppInfoStarted(),
-            downloadLatestAppInfoSuccess(),
+            updateDownloadableAppInfosStarted(),
+            updateDownloadableAppInfos({ updatedAppInfos: [] }),
         ]);
         expect(state.isDownloadingLatestAppInfo).toEqual(false);
     });
 
-    it('should not be downloading latest app info when downloadLatestAppInfoErrorAction has been dispatched', () => {
+    it('should not be downloading latest app info when updateDownloadableAppInfosFailed has been dispatched', () => {
         const state = dispatchTo(reducer, [
-            downloadLatestAppInfoStarted(),
-            downloadLatestAppInfoError(),
+            updateDownloadableAppInfosStarted(),
+            updateDownloadableAppInfosFailed(),
         ]);
         expect(state.isDownloadingLatestAppInfo).toEqual(false);
     });
 
-    it('should set a last update check date when downloadLatestAppInfoSuccessAction has been dispatched', () => {
+    it('should set a last update check date when updateDownloadableAppInfos has been dispatched', () => {
         const aDate = new Date(1972, 5, 27);
 
         const state = dispatchTo(reducer, [
-            downloadLatestAppInfoSuccess(aDate),
+            updateDownloadableAppInfos({
+                updatedAppInfos: [],
+                updateCheckDate: aDate,
+            }),
         ]);
         expect(state.lastUpdateCheckDate).toEqual(aDate);
     });

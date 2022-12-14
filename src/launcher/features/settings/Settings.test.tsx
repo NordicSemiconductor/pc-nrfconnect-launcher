@@ -9,9 +9,9 @@ import React from 'react';
 import { createDownloadableTestApp } from '../../../test/testFixtures';
 import render from '../../../test/testrenderer';
 import {
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
     setAllDownloadableApps,
+    updateDownloadableAppInfos,
+    updateDownloadableAppInfosStarted,
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
@@ -44,16 +44,18 @@ describe('SettingsView', () => {
 
     it('should render when checking for updates', () => {
         expect(
-            render(<Settings />, [downloadLatestAppInfoStarted()]).baseElement
+            render(<Settings />, [updateDownloadableAppInfosStarted()])
+                .baseElement
         ).toMatchSnapshot();
     });
 
     it('should render with last update check date', () => {
         expect(
             render(<Settings />, [
-                downloadLatestAppInfoSuccess(
-                    new Date(2017, 1, 3, 13, 41, 36, 20)
-                ),
+                updateDownloadableAppInfos({
+                    updatedAppInfos: [],
+                    updateCheckDate: new Date(2017, 1, 3, 13, 41, 36, 20),
+                }),
             ]).baseElement
         ).toMatchSnapshot();
     });
