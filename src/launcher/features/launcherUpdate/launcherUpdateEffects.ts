@@ -145,16 +145,15 @@ export const downloadLatestAppInfoAtStartup =
         }
     };
 
-export const checkForUpdatesManually = () => (dispatch: AppDispatch) =>
-    dispatch(downloadLatestAppInfoDeprecated({ rejectIfError: true }))
-        .then(() => {
-            dispatch(checkForCoreUpdates());
-            dispatch(showUpdateCheckComplete());
-        })
-        .catch(error =>
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Unable to check for updates: ${error.message}`
-                )
-            )
+export const checkForUpdatesManually = () => async (dispatch: AppDispatch) => {
+    try {
+        await dispatch(downloadLatestAppInfos());
+        dispatch(showUpdateCheckComplete());
+
+        dispatch(checkForCoreUpdates());
+    } catch (error) {
+        ErrorDialogActions.showDialog(
+            `Unable to check for updates: ${describeError(error)}`
         );
+    }
+};
