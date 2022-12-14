@@ -6,6 +6,8 @@
 
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 
+import { onReload } from '../ipc/reloadTrigger';
+
 export default () =>
     Menu.buildFromTemplate([
         {
@@ -49,7 +51,12 @@ export default () =>
                     accelerator: 'CmdOrCtrl+R',
                     click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
                         if (focusedWindow) {
-                            focusedWindow.reload();
+                            // onReload(focusedWindow.webContents.id);
+                            console.log('Clicked Ctrl + R');
+                            focusedWindow.webContents.send(
+                                'reload-window',
+                                focusedWindow.webContents.id
+                            );
                         }
                     },
                 },

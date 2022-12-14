@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ipcMain } from 'electron';
+import { BrowserWindow, ipcMain, webContents } from 'electron';
 import Store from 'electron-store';
 
 import { registerGetAppDetails } from '../ipc/appDetails';
@@ -155,4 +155,31 @@ export default () => {
     ipcMain.handle('serialport:set', (_event, path, options) =>
         set(path, options)
     );
+
+    // registerOnReloadCleaned(({ sender: BrowserWindow }) =>
+    //     console.log(
+    //         'SHARED HAS CLEANED UP CONTEXT, YOU MAY NOW RELOAD THE WINDOW!'
+    //     )
+    //     sender.reload();
+    // );
+    ipcMain.on('reload-window-cleaned', (_event, webContentsId) => {
+        console.log(
+            'SHARED HAS CLEANED UP CONTEXT, YOU MAY NOW RELOAD THE WINDOW!'
+        );
+        // Sender is the actual launcher, probably because shared is run by launcher?
+        console.log('WebContentsId: ', webContentsId);
+        const focusedWebContents = webContents.fromId(webContentsId);
+        if (!focusedWebContents) {
+            console.log('Could not find webContents with id: ', webContentsId);
+            return;
+        }
+        const focusedWindow = BrowserWindow.fromWebContents(focusedWebContents);
+        console.log(focusedWindow);
+        if (focusedWindow) {
+            console.log('There is a focused window');
+            focusedWindow.reload();
+        } else {
+            console.log(`There wasn't any focused window`);
+        }
+    });
 };
