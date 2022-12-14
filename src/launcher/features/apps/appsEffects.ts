@@ -53,12 +53,13 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-export const loadLocalApps = () => (dispatch: AppDispatch) =>
-    getLocalApps()
-        .then(apps => dispatch(setAllLocalApps(apps)))
-        .catch(error => {
-            dispatch(ErrorDialogActions.showDialog(error.message));
-        });
+export const loadLocalApps = () => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAllLocalApps(await getLocalApps()));
+    } catch (error) {
+        dispatch(ErrorDialogActions.showDialog(describeError(error)));
+    }
+};
 
 const downloadAppIcon =
     (app: DownloadableApp) => async (dispatch: AppDispatch) => {
