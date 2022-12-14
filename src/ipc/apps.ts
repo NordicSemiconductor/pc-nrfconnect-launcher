@@ -97,7 +97,6 @@ export const updateAvailable = (app: InstalledDownloadableApp) =>
 
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
-    downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
     downloadReleaseNotes: 'apps:download-release-notes',
@@ -120,16 +119,6 @@ export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
 export const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
     channel.downloadLatestAppInfos
 );
-
-// downloadAllAppsJsonFiles
-
-type DownloadAllAppsJsonFiles = () => void;
-
-export const downloadAllAppsJsonFiles = invoke<DownloadAllAppsJsonFiles>(
-    channel.downloadAllAppsJsonFiles
-);
-export const registerDownloadAllAppsJsonFiles =
-    handle<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
 
 // getLocalApps
 

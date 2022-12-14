@@ -39,7 +39,6 @@ import * as net from './net';
 import * as registryApi from './registryApi';
 import {
     AppsJson,
-    downloadAllAppsJson,
     downloadAllSources,
     getAllSourceNames,
     getAppUrls,
@@ -48,30 +47,6 @@ import {
 } from './sources';
 
 const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
-
-/*
- * Create the updates.json file containing the latest available versions for
- * a source. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
- */
-const generateUpdatesJsonFile = async (sourceName: SourceName) => {
-    const fileName = getUpdatesJsonPath(sourceName);
-
-    const latestVersions = await registryApi.getLatestAppVersions(
-        downloadableAppsInAppsJson(sourceName)
-    );
-    await fileUtil.createJsonFile(fileName, latestVersions);
-};
-
-/*
- * Create the updates.json files for all sources
- */
-const generateUpdatesJsonFiles = () =>
-    Promise.all(getAllSourceNames().map(generateUpdatesJsonFile));
-
-export const downloadAllAppsJsonFiles = async () => {
-    await downloadAllAppsJson();
-    await generateUpdatesJsonFiles();
-};
 
 const writeAppInfo = (appInfo: AppInfo) => {
     const filePath = path.join(getAppsRootDir(), `${appInfo.name}.json`);

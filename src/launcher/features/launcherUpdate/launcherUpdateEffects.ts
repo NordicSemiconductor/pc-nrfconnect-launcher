@@ -10,18 +10,11 @@ import {
     logger,
 } from 'pc-nrfconnect-shared';
 
-import {
-    downloadAllAppsJsonFiles,
-    downloadLatestAppInfos as downloadLatestAppInfosInMain,
-} from '../../../ipc/apps';
+import { downloadLatestAppInfos as downloadLatestAppInfosInMain } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppDispatch } from '../../store';
 import mainConfig from '../../util/mainConfig';
-import { fetchInfoForAllDownloadableApps } from '../apps/appsEffects';
 import {
-    downloadLatestAppInfoError,
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
     updateDownloadableAppInfos,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
@@ -98,45 +91,6 @@ const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
         );
     }
 };
-
-const downloadLatestAppInfoDeprecated =
-    (options = { rejectIfError: false }) =>
-    (dispatch: AppDispatch) => {
-        dispatch(downloadLatestAppInfoStarted());
-
-        return downloadAllAppsJsonFiles()
-            .then(() => dispatch(downloadLatestAppInfoSuccess()))
-            .then(() => dispatch(fetchInfoForAllDownloadableApps()))
-            .catch(error => {
-                dispatch(downloadLatestAppInfoError());
-                if (options.rejectIfError) {
-                    throw error;
-                } else if (error.sourceNotFound) {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to retrieve the source “${error.source.name}” from ${error.source.url}. \n\n` +
-                                'This is usually caused by outdated app sources in the settings, ' +
-                                'where the sources files was removed from the server.',
-                            {
-                                'Remove source': () => {
-                                    dispatch(removeSource(error.source.name));
-                                    dispatch(ErrorDialogActions.hideDialog());
-                                },
-                                Cancel: () => {
-                                    dispatch(ErrorDialogActions.hideDialog());
-                                },
-                            }
-                        )
-                    );
-                } else {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to download latest app info: ${error.message}`
-                        )
-                    );
-                }
-            });
-    };
 
 export const downloadLatestAppInfoAtStartup =
     (shouldCheckForUpdatesAtStartup: boolean) => (dispatch: AppDispatch) => {

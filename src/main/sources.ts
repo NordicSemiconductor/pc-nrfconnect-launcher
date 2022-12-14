@@ -238,22 +238,6 @@ export const downloadAllSources = async () => {
     };
 };
 
-export const downloadAllAppsJson = () => {
-    ensureSourcesAreLoaded();
-
-    const sequence = async (
-        source?: Source,
-        ...remainingSources: Source[]
-    ): Promise<void> => {
-        if (source == null) return;
-
-        await downloadAppsJson(source.url, source.name);
-        return sequence(...remainingSources);
-    };
-
-    return sequence(...sources);
-};
-
 export const addSource = async (url: SourceUrl) => {
     ensureSourcesAreLoaded();
 

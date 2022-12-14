@@ -196,23 +196,6 @@ const slice = createSlice({
             state.isLoadingDownloadableApps = false;
         },
 
-        // Download latest app info
-        downloadLatestAppInfoStarted(state) {
-            state.isDownloadingLatestAppInfo = true;
-        },
-        downloadLatestAppInfoSuccess(
-            state,
-            {
-                payload: updateCheckDate = new Date(),
-            }: PayloadAction<Date | undefined>
-        ) {
-            state.isDownloadingLatestAppInfo = false;
-            state.lastUpdateCheckDate = updateCheckDate;
-        },
-        downloadLatestAppInfoError(state) {
-            state.isDownloadingLatestAppInfo = false;
-        },
-
         // Update downloadable app infos
         updateDownloadableAppInfosStarted(state) {
             state.isDownloadingLatestAppInfo = true;
@@ -335,9 +318,6 @@ export default slice.reducer;
 
 export const {
     addLocalApp,
-    downloadLatestAppInfoError,
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
     loadDownloadableAppsError,

@@ -8,7 +8,6 @@ import Store from 'electron-store';
 
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
-    registerDownloadAllAppsJsonFiles,
     registerDownloadAppIcon,
     registerDownloadLatestAppInfos,
     registerDownloadReleaseNotes,
@@ -57,7 +56,6 @@ import {
     registerRemoveSource,
 } from '../ipc/sources';
 import {
-    downloadAllAppsJsonFiles,
     downloadAppIcon,
     downloadLatestAppInfos,
     downloadReleaseNotesDeprecated,
@@ -124,7 +122,6 @@ export default () => {
     registerOpenLauncher(openLauncherWindow);
 
     registerDownloadLatestAppInfos(downloadLatestAppInfos);
-    registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
     registerDownloadAppIcon(downloadAppIcon);
     registerDownloadReleaseNotes(downloadReleaseNotesDeprecated);
     registerGetDownloadableApps(getDownloadableApps);
