@@ -48,7 +48,6 @@ export type State = {
     downloadableApps: DownloadableAppWithProgress[];
     lastUpdateCheckDate?: Date;
     isDownloadingLatestAppInfo: boolean;
-    isLoadingLocalApps: boolean;
     isLoadingDownloadableApps: boolean;
     isConfirmLaunchDialogVisible: boolean;
     confirmLaunchText?: string;
@@ -59,7 +58,6 @@ const initialState: State = {
     localApps: [],
     downloadableApps: [],
     isDownloadingLatestAppInfo: false,
-    isLoadingLocalApps: true,
     isLoadingDownloadableApps: true,
     isConfirmLaunchDialogVisible: false,
 };
@@ -143,23 +141,18 @@ const slice = createSlice({
     name: 'apps',
     initialState,
     reducers: {
-        // Load local apps
-        loadLocalAppsStarted(state) {
-            state.isLoadingLocalApps = true;
-        },
-        loadLocalAppsSuccess(
+        // Local apps
+        setAllLocalApps(
             state,
             { payload: localApps }: PayloadAction<LocalApp[]>
         ) {
             state.localApps = [...localApps];
-            state.isLoadingLocalApps = false;
         },
-        loadLocalAppsError(state) {
-            state.isLoadingLocalApps = false;
-        },
+
         addLocalApp(state, { payload: newApp }: PayloadAction<LocalApp>) {
             state.localApps.push(newApp);
         },
+
         removeLocalApp(state, { payload: appName }: PayloadAction<string>) {
             state.localApps = state.localApps.filter(
                 app => app.name !== appName
@@ -322,23 +315,21 @@ export const {
     installDownloadableAppStarted,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
+    setAllDownloadableApps,
+    setAllLocalApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
-    setAllDownloadableApps,
     updateDownloadableAppInfo,
-    updateInstallProgress,
     updateDownloadableAppInfos,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppStarted,
+    updateInstallProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {

@@ -24,9 +24,9 @@ import {
 } from './appsEffects';
 import {
     installDownloadableAppStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     setAllDownloadableApps,
+    setAllLocalApps,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
@@ -80,7 +80,7 @@ describe('AppList', () => {
                     installedApp,
                     updatableApp,
                 ]),
-                loadLocalAppsSuccess([localApp]),
+                setAllLocalApps([localApp]),
             ]).baseElement
         ).toMatchSnapshot();
     });

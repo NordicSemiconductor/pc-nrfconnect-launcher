@@ -38,14 +38,12 @@ import {
     installDownloadableAppStarted,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
     setAllDownloadableApps,
+    setAllLocalApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
@@ -55,16 +53,12 @@ import {
 
 const fs = remoteRequire('fs-extra');
 
-export const loadLocalApps = () => (dispatch: AppDispatch) => {
-    dispatch(loadLocalAppsStarted());
-
-    return getLocalApps()
-        .then(apps => dispatch(loadLocalAppsSuccess(apps)))
+export const loadLocalApps = () => (dispatch: AppDispatch) =>
+    getLocalApps()
+        .then(apps => dispatch(setAllLocalApps(apps)))
         .catch(error => {
-            dispatch(loadLocalAppsError());
             dispatch(ErrorDialogActions.showDialog(error.message));
         });
-};
 
 const downloadAppIcon =
     (app: DownloadableApp) => async (dispatch: AppDispatch) => {

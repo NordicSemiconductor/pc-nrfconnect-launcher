@@ -19,13 +19,11 @@ import reducer, {
     installDownloadableAppStarted,
     loadDownloadableAppsError,
     loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
     setAllDownloadableApps,
+    setAllLocalApps,
     showConfirmLaunchDialog,
     State,
     updateDownloadableAppInfo,
@@ -68,34 +66,12 @@ describe('appsReducer', () => {
     });
 
     it('should be loading apps in initial state', () => {
-        expect(initialState.isLoadingLocalApps).toEqual(true);
         expect(initialState.isLoadingDownloadableApps).toEqual(true);
     });
 
-    it('should be loading local apps after loadLocalAppsAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [loadLocalAppsStarted()]);
-        expect(state.isLoadingLocalApps).toEqual(true);
-    });
-
-    it('should have local apps when loadLocalAppsSuccess has been dispatched with apps', () => {
-        const state = dispatchTo(reducer, [loadLocalAppsSuccess(localApps)]);
+    it('should have local apps when setAllLocalApps has been dispatched with apps', () => {
+        const state = dispatchTo(reducer, [setAllLocalApps(localApps)]);
         expect(state.localApps).toEqual(localApps);
-    });
-
-    it('should not be loading local apps after loadLocalAppsSuccess has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loadLocalAppsStarted(),
-            loadLocalAppsSuccess(localApps),
-        ]);
-        expect(state.isLoadingLocalApps).toEqual(false);
-    });
-
-    it('should not be loading local apps after loadLocalAppsError has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loadLocalAppsStarted(),
-            loadLocalAppsError(),
-        ]);
-        expect(state.isLoadingLocalApps).toEqual(false);
     });
 
     it('should be loading downloadable apps after loadDownloadableAppsAction has been dispatched', () => {
