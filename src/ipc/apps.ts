@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { AppInfo, AppVersions } from 'pc-nrfconnect-shared';
+
 import { handle, invoke } from './infrastructure/rendererToMain';
-import { LOCAL, SourceName } from './sources';
+import { LOCAL, Source, SourceName } from './sources';
 
 export interface AppSpec {
     name: string;
@@ -17,9 +19,22 @@ export interface DownloadableAppInfoBase {
     description: string;
     url: string;
     homepage?: string;
+    versions?: AppVersions;
 }
 
-export interface DownloadableAppInfo extends AppSpec, DownloadableAppInfoBase {}
+export type DownloadableAppInfo = Omit<
+    AppInfo,
+    'iconUrl' | 'releaseNotesUrl'
+> & {
+    source: SourceName;
+    url: string;
+    iconPath?: string;
+    releaseNote?: string;
+};
+
+export interface DownloadableAppInfoDeprecated
+    extends AppSpec,
+        DownloadableAppInfoBase {}
 
 interface BaseApp {
     name: string;
@@ -42,7 +57,7 @@ export interface LocalApp extends InstalledApp {
 }
 export interface UninstalledDownloadableApp
     extends BaseApp,
-        DownloadableAppInfo {
+        DownloadableAppInfoDeprecated {
     source: SourceName;
     latestVersion: string;
     releaseNote?: string;
@@ -51,7 +66,7 @@ export interface UninstalledDownloadableApp
 
 export interface InstalledDownloadableApp
     extends InstalledApp,
-        DownloadableAppInfo {
+        DownloadableAppInfoDeprecated {
     source: SourceName;
     iconPath: string;
     latestVersion: string;
@@ -81,6 +96,7 @@ export const updateAvailable = (app: InstalledDownloadableApp) =>
     app.currentVersion !== app.latestVersion;
 
 const channel = {
+    downloadLatestAppInfos: 'apps:download-latest-app-infos',
     downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
@@ -91,6 +107,19 @@ const channel = {
     removeLocalApp: 'apps:remove-local-app',
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
+
+// downloadLatestAppInfos
+type DownloadLatestAppInfos = () => {
+    apps: DownloadableAppInfo[];
+    sourcesFailedToDownload: Source[];
+};
+
+export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
+    channel.downloadLatestAppInfos
+);
+export const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
+    channel.downloadLatestAppInfos
+);
 
 // downloadAllAppsJsonFiles
 
@@ -143,7 +172,7 @@ export const registerDownloadAppIcon = handle<DownloadAppIcon>(
 
 // installDownloadableApp
 type InstallDownloadableApp = (
-    app: DownloadableAppInfo,
+    app: DownloadableAppInfoDeprecated,
     version: string
 ) => DownloadableApp;
 

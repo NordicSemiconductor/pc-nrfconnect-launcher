@@ -4,9 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ErrorDialogActions, logger } from 'pc-nrfconnect-shared';
+import {
+    describeError,
+    ErrorDialogActions,
+    logger,
+} from 'pc-nrfconnect-shared';
 
-import { downloadAllAppsJsonFiles } from '../../../ipc/apps';
+import {
+    downloadAllAppsJsonFiles,
+    downloadLatestAppInfos as downloadLatestAppInfosInMain,
+} from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppDispatch } from '../../store';
 import mainConfig from '../../util/mainConfig';
@@ -15,6 +22,9 @@ import {
     downloadLatestAppInfoError,
     downloadLatestAppInfoStarted,
     downloadLatestAppInfoSuccess,
+    updateDownloadableAppInfos,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
 } from '../apps/appsSlice';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { removeSource } from '../sources/sourcesEffects';
@@ -55,7 +65,41 @@ export const cancelDownload = () => (dispatch: AppDispatch) => {
     dispatch(cancelLauncherDownload());
 };
 
-export const downloadLatestAppInfo =
+const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(updateDownloadableAppInfosStarted());
+        const latestAppInfos = await downloadLatestAppInfosInMain();
+        dispatch(
+            updateDownloadableAppInfos({ updatedAppInfos: latestAppInfos.apps })
+        );
+        latestAppInfos.sourcesFailedToDownload.forEach(source => {
+            ErrorDialogActions.showDialog(
+                `Unable to retrieve the source “${source.name}” ` +
+                    `from ${source.url}. \n\n` +
+                    'This is usually caused by outdated app sources in the settings, ' +
+                    'where the sources files was removed from the server.',
+                {
+                    'Remove source': () => {
+                        dispatch(removeSource(source.name));
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                    Cancel: () => {
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                }
+            );
+        });
+    } catch (error) {
+        dispatch(updateDownloadableAppInfosFailed());
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to download latest app info: ${describeError(error)}`
+            )
+        );
+    }
+};
+
+const downloadLatestAppInfoDeprecated =
     (options = { rejectIfError: false }) =>
     (dispatch: AppDispatch) => {
         dispatch(downloadLatestAppInfoStarted());
@@ -97,12 +141,12 @@ export const downloadLatestAppInfo =
 export const downloadLatestAppInfoAtStartup =
     (shouldCheckForUpdatesAtStartup: boolean) => (dispatch: AppDispatch) => {
         if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
-            dispatch(downloadLatestAppInfo());
+            dispatch(downloadLatestAppInfos());
         }
     };
 
 export const checkForUpdatesManually = () => (dispatch: AppDispatch) =>
-    dispatch(downloadLatestAppInfo({ rejectIfError: true }))
+    dispatch(downloadLatestAppInfoDeprecated({ rejectIfError: true }))
         .then(() => {
             dispatch(checkForCoreUpdates());
             dispatch(showUpdateCheckComplete());

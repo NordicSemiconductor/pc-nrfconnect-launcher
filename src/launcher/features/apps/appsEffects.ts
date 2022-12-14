@@ -11,7 +11,7 @@ import {
     AppSpec,
     AppWithError,
     DownloadableApp,
-    DownloadableAppInfo,
+    DownloadableAppInfoDeprecated,
     downloadAppIcon as downloadAppIconInMain,
     downloadReleaseNotes as downloadReleaseNotesInMain,
     getDownloadableApps,
@@ -205,7 +205,8 @@ export const removeDownloadableApp =
     };
 
 export const updateDownloadableApp =
-    (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfoDeprecated, version: string) =>
+    (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
         dispatch(updateDownloadableAppStarted(app));
 

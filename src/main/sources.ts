@@ -6,6 +6,8 @@
 
 import { dialog } from 'electron';
 import fs from 'fs-extra';
+import path from 'path';
+import { SourceJson } from 'pc-nrfconnect-shared';
 
 import { DownloadableAppInfoBase } from '../ipc/apps';
 import {
@@ -33,15 +35,24 @@ let sources: Source[] = [];
 
 const officialSource = {
     name: OFFICIAL,
-    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/apps.json',
+    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
 const convertToOldSourceJsonFormat = (allSources: Source[]) =>
-    Object.fromEntries(allSources.map(source => [source.name, source.url]));
+    Object.fromEntries(
+        allSources.map(source => [
+            source.name,
+            source.url.replace('source.json', 'apps.json'),
+        ])
+    );
 
 const convertFromOldSourceJsonFormat = (
     sourceJsonParsed: Record<SourceName, SourceUrl>
-) => Object.entries(sourceJsonParsed).map(([name, url]) => ({ name, url }));
+) =>
+    Object.entries(sourceJsonParsed).map(([name, url]) => ({
+        name,
+        url: url.replace('apps.json', 'source.json'),
+    }));
 
 const loadAllSources = () => {
     const filePath = getConfig().sourcesJsonPath;
@@ -188,6 +199,43 @@ const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
     await fileUtil.createJsonFile(getAppsJsonPath(sourceName), appsJson);
 
     return sourceName;
+};
+
+const getSourceJsonPath = (source: Source) =>
+    path.join(getAppsRootDir(source.name), 'source.json');
+
+const downloadSourceJson = async (source: Source) => {
+    try {
+        await net.downloadToFile(source.url, getSourceJsonPath(source), true);
+    } catch (error) {
+        throw source;
+    }
+};
+
+const readSourceJson = (source: Source) =>
+    fileUtil.readJsonFile<SourceJson>(getSourceJsonPath(source));
+
+export const getAppUrls = (source: Source) => readSourceJson(source).apps;
+
+export const downloadAllSources = async () => {
+    const successfulSources: Source[] = [];
+    const sourcesFailedToDownload: Source[] = [];
+
+    await Promise.allSettled(
+        sources.map(async source => {
+            try {
+                await downloadSourceJson(source);
+                successfulSources.push(source);
+            } catch (error) {
+                sourcesFailedToDownload.push(source);
+            }
+        })
+    );
+
+    return {
+        successfulSources,
+        sourcesFailedToDownload,
+    };
 };
 
 export const downloadAllAppsJson = () => {

@@ -11,6 +11,7 @@ import {
     App,
     AppSpec,
     DownloadableApp,
+    DownloadableAppInfo,
     isDownloadable,
     isInstalled,
     LaunchableApp,
@@ -94,6 +95,50 @@ const resetProgress = (
     });
 };
 
+const addUninstalledApp = (
+    apps: DownloadableAppWithProgress[],
+    updatedAppInfo: DownloadableAppInfo
+) => {
+    apps.push({
+        ...updatedAppInfo,
+        progress: notInProgress(),
+        currentVersion: undefined,
+    });
+};
+
+const updateInstalledApp = (
+    app: DownloadableAppWithProgress,
+    updatedAppInfo: DownloadableAppInfo
+) => {
+    app.latestVersion = updatedAppInfo.latestVersion;
+    app.versions = updatedAppInfo.versions;
+};
+
+const updateUninstalledApp = (
+    app: DownloadableAppWithProgress,
+    updatedAppInfo: DownloadableAppInfo
+) => {
+    Object.assign(app, updatedAppInfo);
+};
+
+const mergeDownloadedAppInfoIn = (
+    apps: DownloadableAppWithProgress[],
+    updatedAppInfos: DownloadableAppInfo[]
+) => {
+    updatedAppInfos.forEach(updatedAppInfo => {
+        const existingApp = apps.find(equalsSpec(updatedAppInfo));
+
+        const appIsStillUnknown = existingApp == null;
+        if (appIsStillUnknown) {
+            addUninstalledApp(apps, updatedAppInfo);
+        } else if (isInstalled(existingApp)) {
+            updateInstalledApp(existingApp, updatedAppInfo);
+        } else {
+            updateUninstalledApp(existingApp, updatedAppInfo);
+        }
+    });
+};
+
 const slice = createSlice({
     name: 'apps',
     initialState,
@@ -165,6 +210,31 @@ const slice = createSlice({
             state.lastUpdateCheckDate = updateCheckDate;
         },
         downloadLatestAppInfoError(state) {
+            state.isDownloadingLatestAppInfo = false;
+        },
+
+        // Update downloadable app infos
+        updateDownloadableAppInfosStarted(state) {
+            state.isDownloadingLatestAppInfo = true;
+        },
+        updateDownloadableAppInfos(
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                updatedAppInfos: DownloadableAppInfo[];
+                updateCheckDate?: Date;
+            }>
+        ) {
+            mergeDownloadedAppInfoIn(
+                state.downloadableApps,
+                payload.updatedAppInfos
+            );
+
+            state.isDownloadingLatestAppInfo = false;
+            state.lastUpdateCheckDate = payload.updateCheckDate ?? new Date();
+        },
+        updateDownloadableAppInfosFailed(state) {
             state.isDownloadingLatestAppInfo = false;
         },
 
@@ -285,6 +355,9 @@ export const {
     setAllDownloadableApps,
     updateDownloadableAppInfo,
     updateInstallProgress,
+    updateDownloadableAppInfos,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
     updateDownloadableAppStarted,
 } = slice.actions;
 

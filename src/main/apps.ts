@@ -7,7 +7,7 @@
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import type { PackageJson } from 'pc-nrfconnect-shared';
+import type { AppInfo, PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     appExists,
@@ -15,6 +15,7 @@ import {
     DownloadableApp,
     DownloadableAppInfo,
     DownloadableAppInfoBase,
+    DownloadableAppInfoDeprecated,
     failureReadingFile,
     InstallResult,
     LocalApp,
@@ -22,7 +23,7 @@ import {
     UninstalledDownloadableApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { LOCAL, SourceName } from '../ipc/sources';
+import { LOCAL, Source, SourceName } from '../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsJsonPath,
@@ -39,7 +40,9 @@ import * as registryApi from './registryApi';
 import {
     AppsJson,
     downloadAllAppsJson,
+    downloadAllSources,
     getAllSourceNames,
+    getAppUrls,
     initialiseAllSources,
     UpdatesJson,
 } from './sources';
@@ -68,6 +71,111 @@ const generateUpdatesJsonFiles = () =>
 export const downloadAllAppsJsonFiles = async () => {
     await downloadAllAppsJson();
     await generateUpdatesJsonFiles();
+};
+
+const writeAppInfo = (appInfo: AppInfo) => {
+    const filePath = path.join(getAppsRootDir(), `${appInfo.name}.json`);
+
+    const installedInfo = fileUtil.readJsonFile<AppInfo>(filePath).installed;
+
+    const mergedContent = { ...appInfo };
+    if (installedInfo != null) {
+        mergedContent.installed = installedInfo;
+    }
+
+    return fileUtil.createJsonFile(filePath, mergedContent);
+};
+
+const downloadIcon = async (app: AppInfo & AppSpec) => {
+    try {
+        await net.downloadToFile(app.iconUrl, iconPath(app));
+
+        return iconPath(app);
+    } catch (e) {
+        console.debug(
+            'Unable to fetch icon, ignoring this as non-critical.',
+            describeError(e)
+        );
+    }
+};
+
+const downloadReleaseNotes = async (app: AppInfo & AppSpec) => {
+    try {
+        await net.downloadToFile(app.releaseNotesUrl, releaseNotesPath(app));
+
+        return readReleaseNotes(app);
+    } catch (e) {
+        console.debug(
+            'Unable to fetch release notes, ignoring this as non-critical.',
+            describeError(e)
+        );
+    }
+};
+
+const createDownloadableAppInfo = async (
+    source: Source,
+    appUrl: string,
+    appInfo: AppInfo
+): Promise<DownloadableAppInfo> => {
+    const [iconPath, releaseNote] = await Promise.all([
+        downloadIcon({ ...appInfo, source: source.name }),
+        downloadReleaseNotes({ ...appInfo, source: source.name }),
+    ]);
+
+    return {
+        name: appInfo.name,
+        source: source.name,
+
+        displayName: appInfo.displayName,
+        description: appInfo.description,
+
+        iconPath,
+        releaseNote,
+        url: appUrl,
+        homepage: appInfo.homepage,
+        latestVersion: appInfo.latestVersion,
+        versions: appInfo.versions,
+    };
+};
+
+const defined = <X>(item?: X): item is X => item != null;
+
+const downloadAppInfos = async (source: Source) => {
+    const downloadableApps = await Promise.all(
+        getAppUrls(source).map(async appUrl => {
+            const appInfo = await net.downloadToJson<AppInfo>(appUrl, true);
+
+            if (path.basename(appUrl) !== `${appInfo.name}.json`) {
+                showErrorDialog(
+                    `At \`${appUrl}\` an app is found ` +
+                        `by the name \`${appInfo.name}\`, which does ` +
+                        `not match the URL. This app will be ignored.`
+                );
+                return undefined;
+            }
+
+            writeAppInfo(appInfo);
+
+            return createDownloadableAppInfo(source, appUrl, appInfo);
+        })
+    );
+
+    // FIXME: Handle if there are local app info files which do not exist on the server any longer
+
+    return downloadableApps.filter(defined);
+};
+
+export const downloadLatestAppInfos = async () => {
+    const { successfulSources, sourcesFailedToDownload } =
+        await downloadAllSources();
+    const apps = (
+        await Promise.all(successfulSources.map(downloadAppInfos))
+    ).flat();
+
+    return {
+        apps,
+        sourcesFailedToDownload,
+    };
 };
 
 const shouldRemoveExistingApp = (tgzFilePath: string, appPath: string) => {
@@ -236,7 +344,7 @@ const infoFromInstalledApp = (appParendDir: string, appName: string) => {
 
 const downloadableAppsInAppsJson = (
     source: SourceName
-): DownloadableAppInfo[] => {
+): DownloadableAppInfoDeprecated[] => {
     const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
 
     const isAnAppEntry = (
@@ -258,7 +366,7 @@ interface InstalledAppResult {
 }
 
 const installedAppInfo = (
-    app: DownloadableAppInfo,
+    app: DownloadableAppInfoDeprecated,
     availableUpdates: UpdatesJson = getUpdates(app.source)
 ): InstalledAppResult => {
     const fromInstalledApp = infoFromInstalledApp(
@@ -289,7 +397,7 @@ interface InvalidAppResult {
 }
 
 const uninstalledAppInfo = (
-    app: DownloadableAppInfo,
+    app: DownloadableAppInfoDeprecated,
     availableUpdates: UpdatesJson
 ): UninstalledAppResult | InvalidAppResult => {
     try {
@@ -429,7 +537,7 @@ export const removeDownloadableApp = async (app: AppSpec) => {
 };
 
 export const installDownloadableApp = async (
-    app: DownloadableAppInfo,
+    app: DownloadableAppInfoDeprecated,
     version: string
 ) => {
     const { name, source } = app;
@@ -475,16 +583,19 @@ const storeReleaseNotesInBackground = (app: AppSpec, releaseNotes: string) =>
             )
         );
 
-const readReleaseNotes = (app: DownloadableAppInfo) => {
+const readReleaseNotes = (app: AppSpec & { homepage?: string }) => {
     try {
-        return fs.readFileSync(releaseNotesPath(app), 'utf-8');
+        const releaseNotes = fs.readFileSync(releaseNotesPath(app), 'utf-8');
+        const prettyReleaseNotes = replacePrLinks(releaseNotes, app.homepage);
+
+        return prettyReleaseNotes;
     } catch (error) {
         // We assume an error here means that the release notes just were not downloaded yet.
         return undefined;
     }
 };
 
-export const downloadReleaseNotes = async (app: DownloadableApp) => {
+export const downloadReleaseNotesDeprecated = async (app: DownloadableApp) => {
     try {
         const releaseNotes = await net.downloadToString(
             `${app.url}-Changelog.md`,

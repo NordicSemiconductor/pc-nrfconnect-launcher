@@ -10,6 +10,7 @@ import { registerGetAppDetails } from '../ipc/appDetails';
 import {
     registerDownloadAllAppsJsonFiles,
     registerDownloadAppIcon,
+    registerDownloadLatestAppInfos,
     registerDownloadReleaseNotes,
     registerGetDownloadableApps,
     registerGetLocalApps,
@@ -58,7 +59,8 @@ import {
 import {
     downloadAllAppsJsonFiles,
     downloadAppIcon,
-    downloadReleaseNotes,
+    downloadLatestAppInfos,
+    downloadReleaseNotesDeprecated,
     getDownloadableApps,
     getLocalApps,
     installDownloadableApp,
@@ -121,9 +123,10 @@ export default () => {
     registerOpenApp(openAppWindow);
     registerOpenLauncher(openLauncherWindow);
 
+    registerDownloadLatestAppInfos(downloadLatestAppInfos);
     registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
     registerDownloadAppIcon(downloadAppIcon);
-    registerDownloadReleaseNotes(downloadReleaseNotes);
+    registerDownloadReleaseNotes(downloadReleaseNotesDeprecated);
     registerGetDownloadableApps(getDownloadableApps);
     registerGetLocalApps(getLocalApps);
     registerInstallDownloadableApp(installDownloadableApp);
