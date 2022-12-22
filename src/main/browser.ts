@@ -54,6 +54,7 @@ export const createWindow = (options: BrowserWindowOptions) => {
             contextIsolation: false,
             enableRemoteModule: true,
             additionalArguments,
+            backgroundThrottling: false,
         },
         ...options,
     };
