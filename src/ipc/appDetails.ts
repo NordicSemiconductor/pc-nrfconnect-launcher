@@ -7,7 +7,11 @@
 import { ipcMain, WebContents } from 'electron';
 
 import { LaunchableApp } from './apps';
-import { invoke, send } from './infrastructure/rendererToMain';
+import {
+    handleWithSender,
+    invoke,
+    send,
+} from './infrastructure/rendererToMain';
 
 const channel = {
     request: 'get-app-details',
@@ -37,10 +41,7 @@ export const getAppDetailsLegacy = () =>
 export const registerGetAppDetails = (
     onGetAppDetails: (webContents: WebContents) => AppDetails
 ) => {
-    ipcMain.handle(
-        channel.request,
-        (event): AppDetails => onGetAppDetails(event.sender)
-    );
+    handleWithSender<GetAppDetails>(channel.request)(onGetAppDetails);
 
     // This legacy implementation is still needed, because we currently still
     // send the corresponding message in apps.

@@ -9,143 +9,130 @@ import type {
     SetOptions,
     UpdateOptions,
 } from '@serialport/bindings-cpp';
-import { Renderer, WebContents } from 'electron';
-import { SERIALPORT_CHANNEL } from 'pc-nrfconnect-shared/main';
+import {
+    OverwriteOptions,
+    SERIALPORT_CHANNEL,
+} from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
 import { logger } from './log';
-import { initPlatformSpecificMap } from './utils/map';
+import { OpenPort, Renderer, serialPorts } from './serialportMap';
 
-export type Renderer = Pick<WebContents, 'on' | 'send' | 'id'>;
+enum ErrorId {
+    PORT_IS_ALREADY_BEING_OPENED = 'PORT_IS_ALREADY_BEING_OPENED',
+    FAILED_SETTINGS_LOCKED = 'FAILED_SETTINGS_LOCKED',
+    FAILED_DIFFERENT_SETTINGS = 'FAILED_DIFFERENT_SETTINGS',
+    PORT_NOT_FOUND = 'PORT_NOT_FOUND',
+    PORT_NOT_OPEN = 'PORT_NOT_OPEN',
+    FAILED = 'FAILED',
+}
 
-type OpenPort = {
-    serialPort: SerialPort;
-    renderers: Renderer[];
-    settingsLocked: boolean;
-    opening: boolean;
-    options: SerialPortOpenOptions<AutoDetectTypes>;
+const logInfo = (path: string, message: string) => {
+    logger.info(`SerialPort: (${path}) ${message}`);
 };
-export const serialPorts = initPlatformSpecificMap<string, OpenPort>();
 
-export type OverwriteOptions = {
-    overwrite: boolean;
-    settingsLocked: boolean;
+const fail = (path: string, message: string) => {
+    logger.error(`SerialPort: (${path}) ${message}`);
 };
+
+const failAddingRenderer = (
+    path: string,
+    sender: Renderer,
+    message: string,
+    errorId: ErrorId
+) => {
+    logger.warn(
+        `SerialPort: (${path}) Rejected renderer (${sender.id}): ${message}`
+    );
+    throw new Error(errorId);
+};
+
 export const openOrAdd = async (
     sender: Renderer,
     options: SerialPortOpenOptions<AutoDetectTypes>,
-    overwriteOptions: OverwriteOptions
+    { overwrite = false, settingsLocked = false }: OverwriteOptions
 ) => {
     const { path } = options;
     const existingPort = serialPorts.get(path);
     if (existingPort) {
-        if (existingPort.opening) {
-            logger.warn(
-                `SerialPort: Port with path=${path} rejected renderer with id=${sender.id}, because the port is being opened by a different renderer.`
-            );
-            throw new Error('PORT_IS_ALREADY_BEING_OPENED');
-        }
-
-        const alreadyInList = existingPort.renderers.some(
-            renderer => renderer.id === sender.id
-        );
-
-        if (!alreadyInList) {
-            let isDifferentSettings;
-            if (existingPort.serialPort) {
-                const currentOptions = existingPort.options;
-
-                if (
-                    Object.keys(currentOptions).length ===
-                    Object.keys(options).length
-                ) {
-                    Object.entries(options).every(([key, value]) => {
-                        if (
-                            !(key in currentOptions) ||
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            (currentOptions as any)[key] !== value
-                        ) {
-                            isDifferentSettings = true;
-                            return false;
-                        }
-                        return true;
-                    });
-                } else {
-                    isDifferentSettings = true;
-                }
-            }
-
-            if (isDifferentSettings) {
-                if (existingPort.settingsLocked) {
-                    logger.warn(
-                        `SerialPort: Port with path=${path} rejected renderer with id=${sender.id}, because the port is already open with different settings than what the renderer requested, and the settings are locked.`
-                    );
-                    throw new Error('FAILED_SETTINGS_LOCKED');
-                }
-                if (!overwriteOptions.overwrite) {
-                    logger.warn(
-                        `SerialPort: Port with path=${path} rejected renderer with id=${sender.id}, because the port is already open with different settings than what the renderer requested, and the renderer did not request to overwrite settings.`
-                    );
-                    throw new Error('FAILED_DIFFERENT_SETTINGS');
-                }
-
-                const result = await changeOptions(
-                    options,
-                    overwriteOptions.settingsLocked
-                );
-                if (result === 'FAILED') {
-                    logger.error(
-                        `SerialPort: Renderer with id=${sender.id} requested to overwrite settings of port=${path}, but failed.`
-                    );
-                    throw new Error('FAILED');
-                }
-                existingPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CHANGED, options);
-                });
-            }
-            existingPort.renderers.push(sender);
-            addSenderEvents(path, sender);
-            logger.info(
-                `SerialPort: Port with path=${path} added renderer with id=${sender.id} to its list of renderers.`
-            );
-        }
+        await addRenderer(existingPort, sender, options, {
+            overwrite,
+            settingsLocked,
+        });
         return;
     }
 
-    await openNewSerialPort(options, overwriteOptions.settingsLocked)
-        .then(() => {
-            const openPort = serialPorts.get(path);
-            openPort?.renderers.push(sender);
-            addSenderEvents(path, sender);
-        })
-        .catch(() => {
-            throw new Error('FAILED');
-        });
+    try {
+        const openPort = await openNewSerialPort(options, settingsLocked);
+        addSender(path, sender, openPort);
+    } catch (error) {
+        throw new Error(ErrorId.FAILED);
+    }
 };
 
-export const writeToSerialport = (
-    path: string,
+const addRenderer = async (
+    existingPort: OpenPort,
     sender: Renderer,
-    data: string | number[] | Buffer
+    options: SerialPortOpenOptions<AutoDetectTypes>,
+    { overwrite, settingsLocked }: Required<OverwriteOptions>
 ) => {
+    const { path } = options;
+    if (existingPort.opening) {
+        failAddingRenderer(
+            path,
+            sender,
+            'Port is being opened by another renderer',
+            ErrorId.PORT_IS_ALREADY_BEING_OPENED
+        );
+    }
+
+    const alreadyInList = existingPort.renderers.some(
+        renderer => renderer.id === sender.id
+    );
+
+    if (!alreadyInList) {
+        if (!serialPorts.hasEqualOptions(path, options)) {
+            if (existingPort.settingsLocked) {
+                failAddingRenderer(
+                    path,
+                    sender,
+                    'Port is open with different, locked settings',
+                    ErrorId.FAILED_SETTINGS_LOCKED
+                );
+            }
+            if (!overwrite) {
+                failAddingRenderer(
+                    path,
+                    sender,
+                    'Port is open with different settings',
+                    ErrorId.FAILED_DIFFERENT_SETTINGS
+                );
+            }
+
+            const result = await changeOptions(options, settingsLocked);
+            if (result === ErrorId.FAILED) {
+                throw new Error(ErrorId.FAILED);
+            }
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CHANGED, options);
+        }
+        addSender(path, sender, existingPort);
+        logInfo(path, `Added renderer (${sender.id})`);
+    }
+};
+
+export const writeToSerialport = (path: string, data: string) => {
     const openPort = serialPorts.get(path);
     if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${path} could not set new options, because port was not found.`
-        );
-        throw new Error('PORT_NOT_FOUND');
+        fail(path, 'Failed to set new options, port not found');
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
     if (!openPort.serialPort.isOpen) {
-        logger.error(
-            `SerialPort: Port with path=${path} could not set new options, because port is not open.`
-        );
-        throw new Error('PORT_NOT_OPEN');
+        fail(path, 'Failed to set new options, port not open');
+        throw new Error(ErrorId.PORT_NOT_OPEN);
     }
 
-    openPort.renderers.forEach(renderer =>
-        renderer.send('serialport:on-write', data)
-    );
+    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_WRITE, data);
 
     return new Promise<void>((resolve, reject) => {
         openPort.serialPort.write(data, error => {
@@ -157,40 +144,28 @@ export const writeToSerialport = (
     });
 };
 
-const onData = (path: string, chunk: unknown) => {
-    const openPort = serialPorts.get(path);
-    if (openPort) {
-        openPort.renderers.forEach(renderer =>
-            renderer.send(SERIALPORT_CHANNEL.ON_DATA, chunk)
-        );
-    }
+const onData = (path: string, data: unknown) => {
+    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_DATA, data);
 };
 
 export const isOpen = (path: string): boolean => {
     const port = serialPorts.get(path)?.serialPort;
     if (!port) {
-        logger.error(
-            `SerialPort: Port with path=${path} was not found, and could not report if it's open.`
-        );
-        throw new Error('PORT_NOT_FOUND');
+        fail(path, 'Queried port not found');
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
-    logger.info(
-        `SerialPort: Port with path=${path} was asked if it's open, and returned ${port.isOpen}`
-    );
     return port.isOpen;
 };
 
 /* Return true if port is closed, false otherwise */
 export const closeSerialPort = async (
-    path: string,
-    sender: Renderer
+    sender: Renderer,
+    path: string
 ): Promise<void> => {
     const openPort = serialPorts.get(path);
     if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${path} could not set new options, because port was not found.`
-        );
-        throw new Error('PORT_NOT_FOUND');
+        fail(path, 'Cannot close port, was not found');
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
     await removeRenderer(path, sender);
@@ -206,15 +181,11 @@ const removeRenderer = async (
             renderer => renderer.id !== sender.id
         );
         serialPorts.set(path, openPort);
-        logger.info(
-            `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} from its renderers list.`
-        );
+        logInfo(path, `Removed renderer (${sender.id})`);
 
         if (openPort.renderers.length === 0) {
             if (openPort.serialPort.isOpen) {
-                logger.info(
-                    `SerialPort: Port with path=${path} have an empty renderers list and will be closed.`
-                );
+                logInfo(path, `Will close port`);
                 await new Promise<void>(resolve => {
                     openPort.serialPort.close(error => {
                         if (error) {
@@ -228,42 +199,32 @@ const removeRenderer = async (
             serialPorts.delete(path);
         }
     } else {
-        logger.error(
-            `SerialPort: Port with path=${path}: tried to remove renderer with id=${sender.id}, but could not find port.`
-        );
-        throw new Error('PORT_NOT_FOUND');
+        fail(path, `Could not remove renderer (${sender.id}), port not found`);
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 };
 
 export const update = (path: string, options: UpdateOptions) => {
     const openPort = serialPorts.get(path);
     if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${path} could not update options, because port was not found.`
-        );
-        return;
+        fail(path, 'Could not update settings, port not found');
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
-    const { serialPort, renderers } = openPort;
+    const { serialPort } = openPort;
     return new Promise<void>((resolve, reject) => {
         serialPort.update(options, error => {
             if (error) {
-                logger.error(
-                    `SerialPort: Port with path=${path} could not update options: ${error.message}`
-                );
+                fail(path, `Could not update options: ${error.message}`);
                 reject(error);
             } else {
-                renderers.forEach(renderer => {
-                    renderer.send(
-                        SERIALPORT_CHANNEL.ON_UPDATE,
-                        serialPort.settings
-                    );
-                });
-                logger.info(
-                    `SerialPort: Port with path=${path} updated settings: ${JSON.stringify(
-                        options
-                    )}`
+                openPort.options = { ...openPort.options, ...options };
+                serialPorts.broadCast(
+                    path,
+                    SERIALPORT_CHANNEL.ON_UPDATE,
+                    serialPort.settings
                 );
+                logInfo(path, `Updated settings: ${JSON.stringify(options)}`);
                 resolve();
             }
         });
@@ -274,25 +235,35 @@ export const set = (path: string, newOptions: SetOptions) => {
     const openPort = serialPorts.get(path);
 
     if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${path} could not set new options, because port was not found.`
-        );
-        return;
+        fail(path, 'Could not set new options, port not found');
+        throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
-    const { serialPort, renderers } = openPort;
+    const { serialPort } = openPort;
 
-    serialPort.set(newOptions);
-    logger.info(
-        `SerialPort: Port with path=${path} was set with new settings: ${JSON.stringify(
-            newOptions
-        )}`
-    );
-
-    renderers.forEach(renderer => {
-        // TODO: Review if we actually want to send newOptions?
-        // You also have a get() function, but it's only a subset of SetOptions, called PortStatus
-        renderer.send(SERIALPORT_CHANNEL.ON_SET, newOptions);
+    return new Promise<void>((resolve, reject) => {
+        serialPort.set(newOptions, error => {
+            if (error) {
+                fail(
+                    path,
+                    `Could not set new options (${JSON.stringify(
+                        newOptions
+                    )}): ${error.message}`
+                );
+                reject(error);
+            } else {
+                serialPorts.broadCast(
+                    path,
+                    SERIALPORT_CHANNEL.ON_SET,
+                    newOptions
+                );
+                logInfo(
+                    path,
+                    `Have set new options: ${JSON.stringify(newOptions)}`
+                );
+                resolve();
+            }
+        });
     });
 };
 
@@ -303,9 +274,7 @@ const openNewSerialPort = async (
     const { path } = options;
     const openPort = serialPorts.get(path);
     if (openPort && openPort.serialPort.isOpen) {
-        logger.info(
-            `SerialPort: Port with path=${path} is already open, but will be reopened.`
-        );
+        logInfo(path, `Is already open, will be reopened.`);
         await new Promise<void>((resolve, reject) => {
             openPort.serialPort.close(error => {
                 if (error) {
@@ -335,83 +304,61 @@ const openNewSerialPort = async (
 
     port.on('close', (error: Error) => {
         if (error) {
-            logger.error(
-                `SerialPort: Port with path=${path} was closed due to an error: ${error.message}`
-            );
-            newOpenPort.renderers.forEach(renderer => {
-                renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-            });
+            fail(path, `Was closed due to error: ${error.message}`);
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
             serialPorts.delete(path);
         } else {
-            logger.info(
-                `SerialPort: Port with path=${path} was closed quietly.`
-            );
+            logInfo(path, 'Was closed');
         }
     });
 
-    return new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
         port.open(err => {
             if (err) {
-                logger.error(
-                    `SerialPort: Port with path=${path} could not be opened: ${err.message}`
-                );
-                newOpenPort.renderers.forEach(renderer => {
-                    renderer.send(SERIALPORT_CHANNEL.ON_CLOSED);
-                });
+                fail(path, `Could not open port: ${err.message}`);
+                serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
                 serialPorts.delete(path);
-                reject(Error('FAILED'));
+                reject(Error(ErrorId.FAILED));
             } else {
                 newOpenPort.opening = false;
-                logger.info(
-                    `SerialPort: Port with path=${path} has been opened.`
-                );
+                logInfo(path, 'Was opened');
                 resolve();
             }
         });
     });
+    return newOpenPort;
 };
 
-export const changeOptions = async (
+const changeOptions = (
     options: SerialPortOpenOptions<AutoDetectTypes>,
     settingsLocked: boolean
 ) => {
     const openPort = serialPorts.get(options.path);
     if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${options.path} was asked to change settings, but could not be found.`
-        );
-        return 'FAILED';
+        fail(options.path, 'Could not change settings, port not found');
+        return ErrorId.FAILED;
     }
 
-    const result = await openNewSerialPort(options, settingsLocked);
-    return result;
+    return openNewSerialPort(options, settingsLocked);
 };
 
-export const getSettings = (path: string): number | void => {
-    const openPort = serialPorts.get(path);
-    if (!openPort) {
-        logger.error(
-            `SerialPort: Port with path=${path} was not found, and could not report settings.`
-        );
-        return;
-    }
-    return openPort.serialPort.baudRate;
-};
+export const getOptions = (path: string) => serialPorts.get(path)?.options;
 
-const addSenderEvents = (path: string, sender: Renderer) => {
+export const getBaudRate = (path: string): number | void =>
+    serialPorts.get(path)?.serialPort.baudRate;
+
+const addSender = (path: string, sender: Renderer, openPort: OpenPort) => {
+    openPort.renderers.push(sender);
+
     // Remove renderer if renderer process is destroyed (window is closed).
     sender.on('destroyed', () => {
-        logger.info(
-            `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} because renderer was destroyed.`
-        );
+        logInfo(path, `Removed destroyed renderer (${sender.id})`);
         removeRenderer(path, sender);
     });
 
     // Remove renderer if renderer window is reloaded
     sender.on('did-finish-load', () => {
-        logger.info(
-            `SerialPort: Port with path=${path} have removed renderer with id=${sender.id} because renderer reloaded window.`
-        );
+        logInfo(path, `Removed reloaded renderer (${sender.id})`);
         removeRenderer(path, sender);
     });
 };
