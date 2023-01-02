@@ -48,7 +48,6 @@ export type State = {
     downloadableApps: DownloadableAppWithProgress[];
     lastUpdateCheckDate?: Date;
     isDownloadingLatestAppInfo: boolean;
-    isLoadingDownloadableApps: boolean;
     isConfirmLaunchDialogVisible: boolean;
     confirmLaunchText?: string;
     confirmLaunchApp?: LaunchableApp;
@@ -58,7 +57,6 @@ const initialState: State = {
     localApps: [],
     downloadableApps: [],
     isDownloadingLatestAppInfo: false,
-    isLoadingDownloadableApps: true,
     isConfirmLaunchDialogVisible: false,
 };
 
@@ -159,34 +157,27 @@ const slice = createSlice({
             );
         },
 
-        // Load Downloadable apps
-        loadDownloadableAppsStarted(state) {
-            state.isLoadingDownloadableApps = true;
-        },
+        // Downloadable apps
         setAllDownloadableApps(
             state,
             { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
-            state.isLoadingDownloadableApps = false;
             state.downloadableApps = downloadableApps.map(app => ({
                 ...app,
                 progress: notInProgress(),
             }));
         },
+
         updateDownloadableAppInfo(
             state,
             { payload: updatedApp }: PayloadAction<DownloadableApp>
         ) {
-            state.isLoadingDownloadableApps = false;
             state.downloadableApps = state.downloadableApps
                 .filter(notEqualsSpec(updatedApp))
                 .concat({
                     ...updatedApp,
                     progress: notInProgress(),
                 });
-        },
-        loadDownloadableAppsError(state) {
-            state.isLoadingDownloadableApps = false;
         },
 
         // Update downloadable app infos
@@ -313,8 +304,6 @@ export const {
     addLocalApp,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,

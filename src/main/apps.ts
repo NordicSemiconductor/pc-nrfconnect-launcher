@@ -7,16 +7,18 @@
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import type { AppInfo, PackageJson } from 'pc-nrfconnect-shared';
+import type { PackageJson } from 'pc-nrfconnect-shared';
 
 import {
     appExists,
     AppSpec,
+    AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
     DownloadableAppInfoBase,
     DownloadableAppInfoDeprecated,
     failureReadingFile,
+    InstalledDownloadableApp,
     InstallResult,
     LocalApp,
     successfulInstall,
@@ -24,6 +26,7 @@ import {
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
+import { downloadAppInfos, readAppInfos } from './appInfo';
 import {
     getAppsExternalDir,
     getAppsJsonPath,
@@ -39,119 +42,25 @@ import * as net from './net';
 import * as registryApi from './registryApi';
 import {
     AppsJson,
-    downloadAllSources,
+    downloadSourceJson,
     getAllSourceNames,
-    getAppUrls,
+    getAllSources,
     initialiseAllSources,
+    sourceJsonExistsLocally,
     UpdatesJson,
 } from './sources';
 
-const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
-
-const writeAppInfo = (appInfo: AppInfo) => {
-    const filePath = path.join(getAppsRootDir(), `${appInfo.name}.json`);
-
-    const installedInfo = fileUtil.readJsonFile<AppInfo>(filePath).installed;
-
-    const mergedContent = { ...appInfo };
-    if (installedInfo != null) {
-        mergedContent.installed = installedInfo;
-    }
-
-    return fileUtil.createJsonFile(filePath, mergedContent);
-};
-
-const downloadIcon = async (app: AppInfo & AppSpec) => {
-    try {
-        await net.downloadToFile(app.iconUrl, iconPath(app));
-
-        return iconPath(app);
-    } catch (e) {
-        console.debug(
-            'Unable to fetch icon, ignoring this as non-critical.',
-            describeError(e)
-        );
-    }
-};
-
-const downloadReleaseNotes = async (app: AppInfo & AppSpec) => {
-    try {
-        await net.downloadToFile(app.releaseNotesUrl, releaseNotesPath(app));
-
-        return readReleaseNotes(app);
-    } catch (e) {
-        console.debug(
-            'Unable to fetch release notes, ignoring this as non-critical.',
-            describeError(e)
-        );
-    }
-};
-
-const createDownloadableAppInfo = async (
-    source: Source,
-    appUrl: string,
-    appInfo: AppInfo
-): Promise<DownloadableAppInfo> => {
-    const [iconPath, releaseNote] = await Promise.all([
-        downloadIcon({ ...appInfo, source: source.name }),
-        downloadReleaseNotes({ ...appInfo, source: source.name }),
-    ]);
-
-    return {
-        name: appInfo.name,
-        source: source.name,
-
-        displayName: appInfo.displayName,
-        description: appInfo.description,
-
-        iconPath,
-        releaseNote,
-        url: appUrl,
-        homepage: appInfo.homepage,
-        latestVersion: appInfo.latestVersion,
-        versions: appInfo.versions,
-    };
+const installedAppPath = (app: AppSpec) => {
+    const appDir =
+        app.source === LOCAL
+            ? getAppsLocalDir()
+            : getNodeModulesDir(app.source);
+    return path.join(appDir, app.name);
 };
 
 const defined = <X>(item?: X): item is X => item != null;
 
-const downloadAppInfos = async (source: Source) => {
-    const downloadableApps = await Promise.all(
-        getAppUrls(source).map(async appUrl => {
-            const appInfo = await net.downloadToJson<AppInfo>(appUrl, true);
-
-            if (path.basename(appUrl) !== `${appInfo.name}.json`) {
-                showErrorDialog(
-                    `At \`${appUrl}\` an app is found ` +
-                        `by the name \`${appInfo.name}\`, which does ` +
-                        `not match the URL. This app will be ignored.`
-                );
-                return undefined;
-            }
-
-            writeAppInfo(appInfo);
-
-            return createDownloadableAppInfo(source, appUrl, appInfo);
-        })
-    );
-
-    // FIXME: Handle if there are local app info files which do not exist on the server any longer
-
-    return downloadableApps.filter(defined);
-};
-
-export const downloadLatestAppInfos = async () => {
-    const { successfulSources, sourcesFailedToDownload } =
-        await downloadAllSources();
-    const apps = (
-        await Promise.all(successfulSources.map(downloadAppInfos))
-    ).flat();
-
-    return {
-        apps,
-        sourcesFailedToDownload,
-    };
-};
+const isInstalled = (app: AppSpec) => fs.pathExistsSync(installedAppPath(app));
 
 const shouldRemoveExistingApp = (tgzFilePath: string, appPath: string) => {
     const clickedButton = dialog.showMessageBoxSync({
@@ -167,6 +76,11 @@ const shouldRemoveExistingApp = (tgzFilePath: string, appPath: string) => {
     return clickedButton === 0;
 };
 
+const localApp = (appName: string): AppSpec => ({
+    source: LOCAL,
+    name: appName,
+});
+
 export const installLocalApp = async (
     tgzFilePath: string
 ): Promise<InstallResult> => {
@@ -178,10 +92,10 @@ export const installLocalApp = async (
                 `Expected file name format: \`{name}-{version}.tgz.\``
         );
     }
-    const appPath = path.join(getAppsLocalDir(), appName);
+    const appPath = installedAppPath(localApp(appName));
 
     // Check if app exists
-    if (isInstalled(appPath)) {
+    if (isInstalled(localApp(appName))) {
         return appExists(appName, appPath);
     }
 
@@ -212,7 +126,7 @@ export const installLocalApp = async (
 };
 
 export const removeLocalApp = (appName: string) =>
-    fs.remove(path.join(getAppsLocalDir(), appName));
+    fs.remove(installedAppPath(localApp(appName)));
 
 const deleteFileOnSuccess = async (
     result: InstallResult,
@@ -292,8 +206,8 @@ const ifExists = (filePath: string) =>
 const shortcutIconPath = (resourcesPath: string) =>
     ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
 
-const infoFromInstalledApp = (appParendDir: string, appName: string) => {
-    const appPath = path.join(appParendDir, appName);
+const infoFromInstalledApp = (app: AppSpec) => {
+    const appPath = installedAppPath(app);
 
     const packageJson = fileUtil.readJsonFile<PackageJson>(
         path.join(appPath, 'package.json')
@@ -344,10 +258,7 @@ const installedAppInfo = (
     app: DownloadableAppInfoDeprecated,
     availableUpdates: UpdatesJson = getUpdates(app.source)
 ): InstalledAppResult => {
-    const fromInstalledApp = infoFromInstalledApp(
-        getNodeModulesDir(app.source),
-        app.name
-    );
+    const fromInstalledApp = infoFromInstalledApp(app);
 
     return {
         status: 'success',
@@ -357,7 +268,7 @@ const installedAppInfo = (
             currentVersion: fromInstalledApp.currentVersion,
             latestVersion:
                 availableUpdates[app.name] || fromInstalledApp.currentVersion,
-            releaseNote: readReleaseNotes(app),
+            releaseNote: readReleaseNotesDeprecated(app),
         },
     };
 };
@@ -371,7 +282,7 @@ interface InvalidAppResult {
     reason: unknown;
 }
 
-const uninstalledAppInfo = (
+const uninstalledAppInfoDeprecated = (
     app: DownloadableAppInfoDeprecated,
     availableUpdates: UpdatesJson
 ): UninstalledAppResult | InvalidAppResult => {
@@ -382,8 +293,8 @@ const uninstalledAppInfo = (
                 ...app,
                 latestVersion: availableUpdates[app.name],
                 currentVersion: undefined,
-                iconPath: ifExists(iconPath(app)),
-                releaseNote: readReleaseNotes(app),
+                iconPath: ifExists(iconPathDeprecated(app)),
+                releaseNote: readReleaseNotesDeprecated(app),
             },
         };
     } catch (error) {
@@ -428,17 +339,15 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
     const availableUpdates = getUpdates(source);
 
     return apps.map(app => {
-        const filePath = path.join(getNodeModulesDir(source), app.name);
-
         try {
-            return isInstalled(filePath)
+            return isInstalled(app)
                 ? installedAppInfo(app, availableUpdates)
-                : uninstalledAppInfo(app, availableUpdates);
+                : uninstalledAppInfoDeprecated(app, availableUpdates);
         } catch (error) {
             return {
                 status: 'erroneous',
                 reason: error,
-                path: filePath,
+                path: installedAppPath(app),
                 name: app.name,
                 source,
             } as ErroneousAppResult;
@@ -446,7 +355,127 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
     });
 };
 
-export const getDownloadableApps = () => {
+const uninstalledApp = (app: DownloadableAppInfo) => ({
+    ...app,
+    currentVersion: undefined,
+});
+
+const installedApp = (app: DownloadableAppInfo): InstalledDownloadableApp => {
+    const appPath = installedAppPath(app);
+    const resourcesPath = path.join(appPath, 'resources');
+
+    const packageJson = fileUtil.readJsonFile<PackageJson>(
+        path.join(appPath, 'package.json')
+    );
+
+    const iconPathInApp =
+        ifExists(path.join(resourcesPath, 'icon.svg')) ??
+        path.join(resourcesPath, 'icon.png');
+
+    return {
+        name: packageJson.name,
+        source: app.source,
+
+        description: packageJson.description ?? app.description,
+        displayName: packageJson.displayName ?? app.displayName,
+
+        engineVersion: packageJson.engines?.nrfconnect,
+
+        currentVersion: packageJson.version,
+        latestVersion: app.latestVersion,
+        versions: app.versions,
+
+        path: appPath,
+
+        shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPathInApp,
+        iconPath: iconPathInApp,
+
+        homepage: packageJson.homepage ?? app.homepage,
+        repositoryUrl: packageJson.repository?.url,
+
+        releaseNote: app.releaseNote,
+
+        url: app.url,
+    };
+};
+
+const addInformationForInstalledApps = (
+    appInfos: DownloadableAppInfo[],
+    source: Source
+) => {
+    const appsWithErrors: AppWithError[] = [];
+
+    const apps = appInfos.map(appInfo => {
+        const appSpec = { source: source.name, name: appInfo.name };
+        if (!isInstalled(appSpec)) {
+            return uninstalledApp(appInfo);
+        }
+
+        try {
+            return installedApp(appInfo);
+        } catch (error) {
+            appsWithErrors.push({
+                reason: error,
+                path: installedAppPath(appSpec),
+                name: appInfo.name,
+                source: source.name,
+            });
+
+            return undefined;
+        }
+    });
+
+    return {
+        apps: apps.filter(defined),
+        appsWithErrors,
+    };
+};
+
+const getAllAppsInSource = async (source: Source) => {
+    let appInfos: DownloadableAppInfo[];
+
+    if (!sourceJsonExistsLocally(source)) {
+        /* If we never downloaded the meta files for a source,
+           then we must download them at least once, regardless
+           of whether the users selected "Check for updates at startup"
+        */
+
+        await downloadSourceJson(source);
+        appInfos = await downloadAppInfos(source);
+    } else {
+        appInfos = readAppInfos(source);
+    }
+
+    // FIXME later: For the official source use local copies of the meta files instead. Maybe even use copies of the apps.
+
+    return addInformationForInstalledApps(appInfos, source);
+};
+
+export const getDownloadableApps = async () => {
+    const sourcesWithErrors: Source[] = [];
+
+    const results = await Promise.all(
+        getAllSources().map(source => {
+            try {
+                return getAllAppsInSource(source);
+            } catch (error) {
+                sourcesWithErrors.push(source);
+                return {
+                    apps: [],
+                    appsWithErrors: [],
+                };
+            }
+        })
+    );
+
+    return {
+        apps: results.flatMap(result => result.apps),
+        appsWithErrors: results.flatMap(result => result.appsWithErrors),
+        sourcesWithErrors,
+    };
+};
+
+export const getDownloadableAppsDeprecated = () => {
     const appResults = getAllSourceNames().flatMap(
         getDownloadableAppsFromSource
     );
@@ -472,7 +501,7 @@ const consistentAppAndDirectoryName = (app: LocalApp) =>
     app.name === path.basename(app.path);
 
 const getLocalApp = (appName: string): LocalApp => ({
-    ...infoFromInstalledApp(getAppsLocalDir(), appName),
+    ...infoFromInstalledApp(localApp(appName)),
     source: LOCAL,
 });
 
@@ -497,7 +526,7 @@ export const getLocalApps = (consistencyCheck = true) => {
 };
 
 export const removeDownloadableApp = async (app: AppSpec) => {
-    const appPath = path.join(getNodeModulesDir(app.source), app.name);
+    const appPath = installedAppPath(app);
     if (!appPath.includes('node_modules')) {
         throw new Error(
             'Sanity check failed when trying ' +
@@ -515,21 +544,22 @@ export const installDownloadableApp = async (
     app: DownloadableAppInfoDeprecated,
     version: string
 ) => {
-    const { name, source } = app;
-
-    const destinationDir = getAppsRootDir(source);
+    const destinationDir = getAppsRootDir(app.source);
     const tgzFilePath = await registryApi.downloadTarball(
         app,
         version,
         destinationDir
     );
 
-    const appPath = path.join(getNodeModulesDir(source), name);
-
-    if (isInstalled(appPath)) {
+    if (isInstalled(app)) {
         await removeDownloadableApp(app);
     }
-    await fileUtil.extractNpmPackage(name, tgzFilePath, appPath);
+
+    await fileUtil.extractNpmPackage(
+        app.name,
+        tgzFilePath,
+        installedAppPath(app)
+    );
     await fileUtil.deleteFile(tgzFilePath);
 
     return {
@@ -546,21 +576,24 @@ const replacePrLinks = (releaseNotes: string, homepage?: string) =>
               (match, pr) => `[${match}](${homepage}/pull/${pr})`
           );
 
-const releaseNotesPath = (app: AppSpec) =>
+const releaseNotesPathDeprecated = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
 const storeReleaseNotesInBackground = (app: AppSpec, releaseNotes: string) =>
     fileUtil
-        .createTextFile(releaseNotesPath(app), releaseNotes)
+        .createTextFile(releaseNotesPathDeprecated(app), releaseNotes)
         .catch(reason =>
             console.warn(
                 `Failed to store release notes: ${describeError(reason)}`
             )
         );
 
-const readReleaseNotes = (app: AppSpec & { homepage?: string }) => {
+const readReleaseNotesDeprecated = (app: AppSpec & { homepage?: string }) => {
     try {
-        const releaseNotes = fs.readFileSync(releaseNotesPath(app), 'utf-8');
+        const releaseNotes = fs.readFileSync(
+            releaseNotesPathDeprecated(app),
+            'utf-8'
+        );
         const prettyReleaseNotes = replacePrLinks(releaseNotes, app.homepage);
 
         return prettyReleaseNotes;
@@ -593,16 +626,16 @@ export const downloadReleaseNotesDeprecated = async (app: DownloadableApp) => {
     }
 };
 
-const iconPath = (app: AppSpec) =>
+const iconPathDeprecated = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}.svg`);
 
-export const downloadAppIcon = async (app: DownloadableApp) => {
+export const downloadAppIconDeprecated = async (app: DownloadableApp) => {
     try {
         const iconUrl = `${app.url}.svg`;
 
-        await net.downloadToFile(iconUrl, iconPath(app));
+        await net.downloadToFile(iconUrl, iconPathDeprecated(app));
 
-        return iconPath(app);
+        return iconPathDeprecated(app);
     } catch (e) {
         console.debug(
             'Unable to fetch icon, ignoring this as non-critical.',

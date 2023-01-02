@@ -17,8 +17,6 @@ import reducer, {
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
@@ -65,18 +63,9 @@ describe('appsReducer', () => {
         expect(initialState.downloadableApps.length).toEqual(0);
     });
 
-    it('should be loading apps in initial state', () => {
-        expect(initialState.isLoadingDownloadableApps).toEqual(true);
-    });
-
     it('should have local apps when setAllLocalApps has been dispatched with apps', () => {
         const state = dispatchTo(reducer, [setAllLocalApps(localApps)]);
         expect(state.localApps).toEqual(localApps);
-    });
-
-    it('should be loading downloadable apps after loadDownloadableAppsAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [loadDownloadableAppsStarted()]);
-        expect(state.isLoadingDownloadableApps).toEqual(true);
     });
 
     it('should have downloadable apps when loadDownloadableAppsSuccess has been dispatched with apps', () => {
@@ -84,22 +73,6 @@ describe('appsReducer', () => {
             setAllDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
-    });
-
-    it('should not be loading downloadable apps after loadDownloadableAppsSuccess has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loadDownloadableAppsStarted(),
-            setAllDownloadableApps(downloadableApps),
-        ]);
-        expect(state.isLoadingDownloadableApps).toEqual(false);
-    });
-
-    it('should not be loading downloadable apps after loadDownloadableAppsError has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loadDownloadableAppsStarted(),
-            loadDownloadableAppsError(),
-        ]);
-        expect(state.isLoadingDownloadableApps).toEqual(false);
     });
 
     it('should be installing app after installDownloadableAppAction has been dispatched', () => {

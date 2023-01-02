@@ -10,22 +10,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { getSettings } from '../ipc/settings';
-import {
-    fetchInfoForAllDownloadableApps,
-    loadLocalApps,
-} from './features/apps/appsEffects';
-import { initializeFilters } from './features/filter/filterEffects';
-import {
-    checkForCoreUpdatesAtStartup,
-    downloadLatestAppInfoAtStartup,
-} from './features/launcherUpdate/launcherUpdateEffects';
-import { setCheckUpdatesAtStartup } from './features/settings/settingsSlice';
-import { loadSources } from './features/sources/sourcesEffects';
-import {
-    checkUsageDataSetting,
-    sendEnvInfo,
-} from './features/usageData/usageDataEffects';
+import initialiseLauncherState from './features/initialisation/initialiseLauncherState';
 import Root from './Root';
 import store from './store';
 import registerIpcHandler from './util/registerIpcHandler';
@@ -41,22 +26,6 @@ const rootElement = (
     </Provider>
 );
 
-render(rootElement, document.getElementById('webapp'), async () => {
-    dispatch(checkUsageDataSetting());
-
-    const settings = await getSettings();
-    const { shouldCheckForUpdatesAtStartup } = settings;
-    dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
-    dispatch(initializeFilters(settings));
-
-    await dispatch(loadSources());
-
-    await dispatch(loadLocalApps());
-    await dispatch(
-        fetchInfoForAllDownloadableApps(shouldCheckForUpdatesAtStartup)
-    );
-
-    dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
-    dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
-    sendEnvInfo();
+render(rootElement, document.getElementById('webapp'), () => {
+    dispatch(initialiseLauncherState());
 });

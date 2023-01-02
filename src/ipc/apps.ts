@@ -27,7 +27,7 @@ export type DownloadableAppInfo = Omit<
     'iconUrl' | 'releaseNotesUrl'
 > & {
     source: SourceName;
-    url: string;
+    url: string; // FIXME later: Check whether we can remove this
     iconPath?: string;
     releaseNote?: string;
 };
@@ -46,7 +46,7 @@ interface BaseApp {
 interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
-    shortcutIconPath: string;
+    shortcutIconPath: string; // FIXME later: Remove this, determine it instead on demand
     engineVersion?: string;
     repositoryUrl?: string;
 }
@@ -99,6 +99,7 @@ const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
+    getDownloadableAppsDeprecated: 'apps:get-downloadable-apps-deprecated',
     downloadReleaseNotes: 'apps:download-release-notes',
     downloadAppIcon: 'apps:download-app-icon',
     installDownloadableApp: 'apps:install-downloadable-app',
@@ -129,10 +130,13 @@ export const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
 
 // getDownloadableApps
 
-type GetDownloadableApps = () => {
+export type GetDownloadableAppsResult = {
     apps: DownloadableApp[];
     appsWithErrors: AppWithError[];
+    sourcesWithErrors: Source[];
 };
+
+type GetDownloadableApps = () => GetDownloadableAppsResult;
 
 export const getDownloadableApps = invoke<GetDownloadableApps>(
     channel.getDownloadableApps
@@ -140,6 +144,20 @@ export const getDownloadableApps = invoke<GetDownloadableApps>(
 export const registerGetDownloadableApps = handle<GetDownloadableApps>(
     channel.getDownloadableApps
 );
+
+type GetDownloadableAppsDeprecated = () => {
+    apps: DownloadableApp[];
+    appsWithErrors: AppWithError[];
+};
+
+export const getDownloadableAppsDeprecated =
+    invoke<GetDownloadableAppsDeprecated>(
+        channel.getDownloadableAppsDeprecated
+    );
+export const registerGetDownloadableAppsDeprecated =
+    handle<GetDownloadableAppsDeprecated>(
+        channel.getDownloadableAppsDeprecated
+    );
 
 // downloadReleaseNotes
 type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;

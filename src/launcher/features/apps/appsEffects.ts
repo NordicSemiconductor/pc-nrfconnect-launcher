@@ -14,8 +14,7 @@ import {
     DownloadableAppInfoDeprecated,
     downloadAppIcon as downloadAppIconInMain,
     downloadReleaseNotes as downloadReleaseNotesInMain,
-    getDownloadableApps,
-    getLocalApps,
+    getDownloadableAppsDeprecated,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
     isInstalled,
@@ -36,14 +35,11 @@ import {
 import {
     addLocalApp,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
     setAllDownloadableApps,
-    setAllLocalApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
@@ -52,14 +48,6 @@ import {
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
-
-export const loadLocalApps = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAllLocalApps(await getLocalApps()));
-    } catch (error) {
-        dispatch(ErrorDialogActions.showDialog(describeError(error)));
-    }
-};
 
 const downloadAppIcon =
     (app: DownloadableApp) => async (dispatch: AppDispatch) => {
@@ -77,11 +65,10 @@ const downloadReleaseNotes =
         }
     };
 
-export const fetchInfoForAllDownloadableApps =
+export const fetchInfoForAllDownloadableAppsDeprecated =
     (checkOnlineForUpdates = true) =>
     async (dispatch: AppDispatch) => {
-        dispatch(loadDownloadableAppsStarted());
-        const { apps, appsWithErrors } = await getDownloadableApps();
+        const { apps, appsWithErrors } = await getDownloadableAppsDeprecated();
 
         dispatch(setAllDownloadableApps(apps));
 
@@ -94,32 +81,34 @@ export const fetchInfoForAllDownloadableApps =
             });
         }
 
-        if (appsWithErrors.length > 0) {
-            handleAppsWithErrors(dispatch, appsWithErrors);
+        dispatch(handleAppsWithErrors(appsWithErrors));
+    };
+
+export const handleAppsWithErrors =
+    (apps: AppWithError[]) => (dispatch: AppDispatch) => {
+        if (apps.length === 0) {
+            return;
         }
-    };
 
-const handleAppsWithErrors = (dispatch: AppDispatch, apps: AppWithError[]) => {
-    dispatch(loadDownloadableAppsError());
-    apps.forEach(app => {
-        sendLauncherUsageData(
-            EventAction.REPORT_INSTALLATION_ERROR,
-            `${app.source} - ${app.name}`
+        apps.forEach(app => {
+            sendLauncherUsageData(
+                EventAction.REPORT_INSTALLATION_ERROR,
+                `${app.source} - ${app.name}`
+            );
+        });
+
+        const recover = (invalidPaths: string[]) => () => {
+            invalidPaths.forEach(p => fs.remove(p));
+            getCurrentWindow().reload();
+        };
+
+        dispatch(
+            ErrorDialogActions.showDialog(buildErrorMessage(apps), {
+                Recover: recover(apps.map(app => app.path)),
+                Close: () => dispatch(ErrorDialogActions.hideDialog()),
+            })
         );
-    });
-
-    const recover = (invalidPaths: string[]) => () => {
-        invalidPaths.forEach(p => fs.remove(p));
-        getCurrentWindow().reload();
     };
-
-    dispatch(
-        ErrorDialogActions.showDialog(buildErrorMessage(apps), {
-            Recover: recover(apps.map(app => app.path)),
-            Close: () => dispatch(ErrorDialogActions.hideDialog()),
-        })
-    );
-};
 
 const buildErrorMessage = (apps: AppWithError[]) => {
     const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');

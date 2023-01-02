@@ -112,7 +112,7 @@ export const ensureSourcesAreLoaded = () => {
     }
 };
 
-export const getAllSources = () => sources;
+export const getAllSources = () => [...sources];
 
 export const getAllSourceNames = () => {
     ensureSourcesAreLoaded();
@@ -204,7 +204,7 @@ const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
 const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
 
-const downloadSourceJson = async (source: Source) => {
+export const downloadSourceJson = async (source: Source) => {
     try {
         await net.downloadToFile(source.url, getSourceJsonPath(source), true);
     } catch (error) {
@@ -216,6 +216,9 @@ const readSourceJson = (source: Source) =>
     fileUtil.readJsonFile<SourceJson>(getSourceJsonPath(source));
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
+
+export const sourceJsonExistsLocally = (source: Source) =>
+    fs.existsSync(getSourceJsonPath(source));
 
 export const downloadAllSources = async () => {
     const successfulSources: Source[] = [];
