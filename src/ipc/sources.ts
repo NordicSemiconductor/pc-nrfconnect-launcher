@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import type { DownloadableApp } from './apps';
 import { handle, invoke } from './infrastructure/rendererToMain';
 
 export enum StandardSourceNames {
@@ -31,7 +32,10 @@ export const getSources = invoke<GetSources>(channel.get);
 export const registerGetSources = handle<GetSources>(channel.get);
 
 // Add
-type AddSource = (url: SourceUrl) => SourceName;
+type AddSource = (url: SourceUrl) => {
+    source: Source;
+    apps: DownloadableApp[];
+};
 
 export const addSource = invoke<AddSource>(channel.add);
 export const registerAddSource = handle<AddSource>(channel.add);

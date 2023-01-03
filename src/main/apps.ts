@@ -42,8 +42,8 @@ import * as net from './net';
 import * as registryApi from './registryApi';
 import {
     AppsJson,
-    downloadSourceJson,
-    getAllSourceNames,
+    downloadSourceJsonToFile,
+    getAllSourceNamesDeprecated,
     getAllSources,
     initialiseAllSources,
     sourceJsonExistsLocally,
@@ -399,7 +399,7 @@ const installedApp = (app: DownloadableAppInfo): InstalledDownloadableApp => {
     };
 };
 
-const addInformationForInstalledApps = (
+export const addInformationForInstalledApps = (
     appInfos: DownloadableAppInfo[],
     source: Source
 ) => {
@@ -440,7 +440,7 @@ const getAllAppsInSource = async (source: Source) => {
            of whether the users selected "Check for updates at startup"
         */
 
-        await downloadSourceJson(source);
+        await downloadSourceJsonToFile(source);
         appInfos = await downloadAppInfos(source);
     } else {
         appInfos = readAppInfos(source);
@@ -476,7 +476,7 @@ export const getDownloadableApps = async () => {
 };
 
 export const getDownloadableAppsDeprecated = () => {
-    const appResults = getAllSourceNames().flatMap(
+    const appResults = getAllSourceNamesDeprecated().flatMap(
         getDownloadableAppsFromSource
     );
 

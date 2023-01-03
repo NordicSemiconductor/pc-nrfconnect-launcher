@@ -14,6 +14,7 @@ import {
 } from '../../../test/testFixtures';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
+    addDownloadableApps,
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
@@ -74,6 +75,32 @@ describe('appsReducer', () => {
             setAllDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
+    });
+
+    it('can add downloadable apps', () => {
+        const appOfSourceA = createDownloadableTestApp('app 1', {
+            source: 'A',
+        });
+        const anotherAppOfSourceA = createDownloadableTestApp('app 2', {
+            source: 'A',
+        });
+        const appOfSourceB = createDownloadableTestApp('app 1', {
+            source: 'B',
+        });
+        const anotherAppOfSourceB = createDownloadableTestApp('app 2', {
+            source: 'B',
+        });
+
+        const state = dispatchTo(reducer, [
+            setAllDownloadableApps([appOfSourceA, anotherAppOfSourceA]),
+            addDownloadableApps([appOfSourceB, anotherAppOfSourceB]),
+        ]);
+        expect(state.downloadableApps).toMatchObject([
+            appOfSourceA,
+            anotherAppOfSourceA,
+            appOfSourceB,
+            anotherAppOfSourceB,
+        ]);
     });
 
     it('can remove all apps of a source', () => {

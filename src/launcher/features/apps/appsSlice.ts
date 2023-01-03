@@ -37,6 +37,11 @@ const notInProgress = (): AppProgess => ({
     fraction: 0,
 });
 
+const appNotInProgress = <X>(app: X) => ({
+    ...app,
+    progress: notInProgress(),
+});
+
 type DownloadableAppWithProgress = DownloadableApp & {
     progress: AppProgess;
 };
@@ -96,8 +101,7 @@ const addUninstalledApp = (
     updatedAppInfo: DownloadableAppInfo
 ) => {
     apps.push({
-        ...updatedAppInfo,
-        progress: notInProgress(),
+        ...appNotInProgress(updatedAppInfo),
         currentVersion: undefined,
     });
 };
@@ -158,14 +162,21 @@ const slice = createSlice({
         },
 
         // Downloadable apps
+        // FIXME: Replace the next action by addDownloadableApps
         setAllDownloadableApps(
             state,
             { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
         ) {
-            state.downloadableApps = downloadableApps.map(app => ({
-                ...app,
-                progress: notInProgress(),
-            }));
+            state.downloadableApps = downloadableApps.map(appNotInProgress);
+        },
+
+        addDownloadableApps(
+            state,
+            { payload: additionalApps }: PayloadAction<DownloadableApp[]>
+        ) {
+            state.downloadableApps.push(
+                ...additionalApps.map(appNotInProgress)
+            );
         },
 
         updateDownloadableAppInfo(
@@ -310,6 +321,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
+    addDownloadableApps,
     addLocalApp,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,

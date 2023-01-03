@@ -16,9 +16,8 @@ import {
     SourceUrl,
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../../store';
-import { fetchInfoForAllDownloadableAppsDeprecated } from '../apps/appsEffects';
-import { removeAppsOfSource } from '../apps/appsSlice';
-import { hideSource } from '../filter/filterSlice';
+import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
+import { hideSource, showSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
@@ -26,9 +25,10 @@ import {
 
 export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
     addSourceInMain(url)
-        .then(name => {
-            dispatch(addSourceAction({ name, url }));
-            dispatch(hideSource(name));
+        .then(({ source, apps }) => {
+            dispatch(addSourceAction(source));
+            dispatch(showSource(source.name));
+            dispatch(addDownloadableApps(apps));
         })
         .catch(error =>
             dispatch(
@@ -39,8 +39,7 @@ export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
                     )
                 )
             )
-        )
-        .then(() => dispatch(fetchInfoForAllDownloadableAppsDeprecated()));
+        );
 };
 
 export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {

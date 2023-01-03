@@ -10,13 +10,7 @@ import path from 'path';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
 import { DownloadableAppInfoBase } from '../ipc/apps';
-import {
-    allStandardSourceNames,
-    OFFICIAL,
-    Source,
-    SourceName,
-    SourceUrl,
-} from '../ipc/sources';
+import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
 import {
     getAppsJsonPath,
     getAppsRootDir,
@@ -25,10 +19,13 @@ import {
     getUpdatesJsonPath,
 } from './config';
 import describeError from './describeError';
-import * as fileUtil from './fileUtil';
+import {
+    createJsonFile,
+    createJsonFileIfNotExists,
+    readJsonFile,
+} from './fileUtil';
 import { ensureDirExists } from './mkdir';
-import * as net from './net';
-import { addShownSource, removeShownSource } from './settings';
+import { downloadToJson, isResourceNotFound, NetError } from './net';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
@@ -94,13 +91,26 @@ const saveAllSources = () => {
     );
 };
 
-const removeFromSourceList = (sourceNameToBeRemoved: SourceName) => {
+export const removeFromSourceList = (
+    sourceNameToBeRemoved: SourceName,
+    doSave = true
+) => {
+    ensureSourcesAreLoaded();
+
     sources = sources.filter(source => source.name !== sourceNameToBeRemoved);
+
+    if (doSave) {
+        saveAllSources();
+    }
 };
 
-const addToSourceList = (sourceToAdd: Source) => {
-    removeFromSourceList(sourceToAdd.name);
+export const addToSourceList = (sourceToAdd: Source, doSave = true) => {
+    removeFromSourceList(sourceToAdd.name, doSave);
     sources.push(sourceToAdd);
+
+    if (doSave) {
+        saveAllSources();
+    }
 };
 
 export const ensureSourcesAreLoaded = () => {
@@ -108,28 +118,30 @@ export const ensureSourcesAreLoaded = () => {
         sourcesAreLoaded = true;
 
         sources = loadAllSources();
-        addToSourceList(officialSource);
+        addToSourceList(officialSource, false);
     }
 };
 
 export const getAllSources = () => [...sources];
 
-export const getAllSourceNames = () => {
+export const getAllSourceNamesDeprecated = () => {
     ensureSourcesAreLoaded();
     return sources.map(source => source.name);
 };
 
-export const initialiseAllSources = () =>
-    Promise.all(getAllSourceNames().map(initialise));
+export const initialiseAllSources = () => {
+    ensureSourcesAreLoaded();
+    Promise.all(sources.map(initialise));
+};
 
-const initialise = (sourceName?: SourceName) =>
-    ensureDirExists(getAppsRootDir(sourceName))
-        .then(() => ensureDirExists(getNodeModulesDir(sourceName)))
-        .then(() => ensureFileExists(getAppsJsonPath(sourceName)))
-        .then(() => ensureFileExists(getUpdatesJsonPath(sourceName)));
+export const initialise = (source: Source) =>
+    ensureDirExists(getAppsRootDir(source.name))
+        .then(() => ensureDirExists(getNodeModulesDir(source.name)))
+        .then(() => ensureFileExists(getAppsJsonPath(source.name)))
+        .then(() => ensureFileExists(getUpdatesJsonPath(source.name)));
 
 const ensureFileExists = (filename: string) =>
-    fileUtil.createJsonFileIfNotExists(filename, {});
+    createJsonFileIfNotExists(filename, {});
 
 export const getSourceUrl = (name: SourceName) => {
     ensureSourcesAreLoaded();
@@ -174,16 +186,19 @@ export interface AppsJson {
     [app: `pc-nrfconnect-${string}`]: DownloadableAppInfoBase;
 }
 
-const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
+export const downloadAppsJsonDeprecated = async (
+    url: SourceUrl,
+    name?: SourceName
+) => {
     let appsJson;
     try {
-        appsJson = await net.downloadToJson<AppsJson>(url, true);
+        appsJson = await downloadToJson<AppsJson>(url, true);
     } catch (error) {
-        const netError = error as net.NetError;
+        const netError = error as NetError;
         throw new FailedToFetchAppsJsonError(
             netError,
             { name, url },
-            net.isResourceNotFound(netError),
+            isResourceNotFound(netError),
             netError.statusCode
         );
     }
@@ -195,8 +210,9 @@ const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
         throw new Error('JSON does not contain expected `_source` tag');
     }
 
-    await initialise(sourceName);
-    await fileUtil.createJsonFile(getAppsJsonPath(sourceName), appsJson);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    await initialise({ name: sourceName!, url });
+    await createJsonFile(getAppsJsonPath(sourceName), appsJson);
 
     return sourceName;
 };
@@ -204,16 +220,25 @@ const downloadAppsJson = async (url: SourceUrl, name?: SourceName) => {
 const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
 
-export const downloadSourceJson = async (source: Source) => {
+export const downloadSourceJson = (sourceUrl: SourceUrl) =>
+    downloadToJson<SourceJson>(sourceUrl, true);
+
+export const downloadSourceJsonToFile = async (source: Source) => {
     try {
-        await net.downloadToFile(source.url, getSourceJsonPath(source), true);
+        createJsonFile(
+            getSourceJsonPath(source),
+            await downloadSourceJson(source.url)
+        );
     } catch (error) {
         throw source;
     }
 };
 
 const readSourceJson = (source: Source) =>
-    fileUtil.readJsonFile<SourceJson>(getSourceJsonPath(source));
+    readJsonFile<SourceJson>(getSourceJsonPath(source));
+
+export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
+    createJsonFile(getSourceJsonPath(source), sourceJson);
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
@@ -227,7 +252,7 @@ export const downloadAllSources = async () => {
     await Promise.allSettled(
         sources.map(async source => {
             try {
-                await downloadSourceJson(source);
+                await downloadSourceJsonToFile(source);
                 successfulSources.push(source);
             } catch (error) {
                 sourcesFailedToDownload.push(source);
@@ -239,47 +264,4 @@ export const downloadAllSources = async () => {
         successfulSources,
         sourcesFailedToDownload,
     };
-};
-
-export const addSource = async (url: SourceUrl) => {
-    ensureSourcesAreLoaded();
-
-    const name = await downloadAppsJson(url);
-
-    if (name == null) {
-        throw new Error('The official source cannot be added.');
-    }
-
-    addToSourceList({ name, url });
-    saveAllSources();
-
-    addShownSource(name);
-
-    return name;
-};
-
-const isRemovableSource = (
-    sourceName?: SourceName
-): sourceName is SourceName => {
-    if (!sourceName || allStandardSourceNames.includes(sourceName)) {
-        throw new Error('The official or local source shall not be removed.');
-    }
-
-    return true;
-};
-
-const removeSourceDirectory = (sourceName: SourceName) =>
-    fs.remove(getAppsRootDir(sourceName));
-
-export const removeSource = async (sourceName?: SourceName) => {
-    ensureSourcesAreLoaded();
-
-    if (isRemovableSource(sourceName)) {
-        await removeSourceDirectory(sourceName);
-
-        removeFromSourceList(sourceName);
-        saveAllSources();
-
-        removeShownSource(sourceName);
-    }
 };

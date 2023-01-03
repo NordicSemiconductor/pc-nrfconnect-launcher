@@ -91,7 +91,8 @@ import {
     setNameFilter,
     setShownStates,
 } from './settings';
-import { addSource, getAllSources, removeSource } from './sources';
+import { addSource, removeSource } from './sourceChanges';
+import { getAllSources } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
 
 export default () => {
