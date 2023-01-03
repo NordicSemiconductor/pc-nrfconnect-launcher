@@ -113,7 +113,7 @@ export const installDownloadableApp =
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         dispatch(installDownloadableAppStarted(app));
 
-        installDownloadableAppInMain(app, app.latestVersion)
+        installDownloadableAppInMain(app)
             .then(installedApp => {
                 dispatch(updateDownloadableAppInfo(installedApp));
             })
@@ -146,12 +146,11 @@ export const removeDownloadableApp =
     };
 
 export const updateDownloadableApp =
-    (app: DownloadableAppInfoDeprecated, version: string) =>
-    (dispatch: AppDispatch) => {
+    (app: DownloadableAppInfoDeprecated) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
         dispatch(updateDownloadableAppStarted(app));
 
-        return installDownloadableAppInMain(app, version)
+        return installDownloadableAppInMain(app)
             .then(installedApp => {
                 dispatch(updateDownloadableAppInfo(installedApp));
             })

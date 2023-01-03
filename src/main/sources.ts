@@ -9,10 +9,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
-import { DownloadableAppInfoBase } from '../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
 import {
-    getAppsJsonPath,
     getAppsRootDir,
     getConfig,
     getNodeModulesDir,
@@ -132,7 +130,6 @@ export const initialiseAllSources = () => {
 export const initialise = (source: Source) =>
     ensureDirExists(getAppsRootDir(source.name))
         .then(() => ensureDirExists(getNodeModulesDir(source.name)))
-        .then(() => ensureFileExists(getAppsJsonPath(source.name)))
         .then(() => ensureFileExists(getUpdatesJsonPath(source.name)));
 
 const ensureFileExists = (filename: string) =>
@@ -145,11 +142,6 @@ export const getSourceUrl = (name: SourceName) => {
 
 export interface UpdatesJson {
     [app: string]: string;
-}
-
-export interface AppsJson {
-    _source?: SourceName;
-    [app: `pc-nrfconnect-${string}`]: DownloadableAppInfoBase;
 }
 
 const getSourceJsonPath = (source: Source) =>

@@ -16,9 +16,7 @@ export default () => {
     const updatableApps = useLauncherSelector(getUpdatableVisibleApps);
 
     const updateAllApps = () =>
-        updatableApps.forEach(app =>
-            dispatch(updateDownloadableApp(app, app.latestVersion))
-        );
+        updatableApps.forEach(app => dispatch(updateDownloadableApp(app)));
 
     if (updatableApps.length === 0) return null;
 

@@ -35,11 +35,11 @@ const getAppInfo = (app: AppSpec) => {
     return downloadToJson<AppInfo>(appUrl, true);
 };
 
-const getDistInfo = async (app: AppSpec, version: string) => {
+const getDistInfo = async (app: AppSpec, version?: string) => {
     const appInfo = await getAppInfo(app);
 
     const versionToInstall =
-        version === 'latest' ? appInfo['dist-tags'].latest : version;
+        version == null ? appInfo['dist-tags'].latest : version;
 
     return appInfo.versions[versionToInstall].dist;
 };
@@ -65,8 +65,8 @@ const verifyShasum = async (filePath: string, expectedShasum: string) => {
 
 export const downloadTarball = async (
     app: AppSpec,
-    version: string,
-    destinationDir: string
+    destinationDir: string,
+    version?: string
 ) => {
     const distInfo = await getDistInfo(app, version);
     if (!distInfo.tarball) {

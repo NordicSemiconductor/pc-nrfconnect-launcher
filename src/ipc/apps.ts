@@ -14,14 +14,6 @@ export interface AppSpec {
     source: SourceName;
 }
 
-export interface DownloadableAppInfoBase {
-    displayName: string;
-    description: string;
-    url: string;
-    homepage?: string;
-    versions?: AppVersions;
-}
-
 export type DownloadableAppInfo = Omit<
     AppInfo,
     'iconUrl' | 'releaseNotesUrl'
@@ -32,9 +24,13 @@ export type DownloadableAppInfo = Omit<
     releaseNotes?: string;
 };
 
-export interface DownloadableAppInfoDeprecated
-    extends AppSpec,
-        DownloadableAppInfoBase {}
+export interface DownloadableAppInfoDeprecated extends AppSpec {
+    displayName: string;
+    description: string;
+    url: string;
+    homepage?: string;
+    versions?: AppVersions;
+}
 
 interface BaseApp {
     name: string;
@@ -145,7 +141,7 @@ export const registerGetDownloadableApps = handle<GetDownloadableApps>(
 // installDownloadableApp
 type InstallDownloadableApp = (
     app: DownloadableAppInfoDeprecated,
-    version: string
+    version?: string
 ) => DownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(

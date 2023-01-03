@@ -59,9 +59,7 @@ export default () => {
                     <Button
                         variant="primary"
                         onClick={() => {
-                            dispatch(
-                                updateDownloadableApp(app, app.latestVersion)
-                            );
+                            dispatch(updateDownloadableApp(app));
                             hideDialog();
                         }}
                     >

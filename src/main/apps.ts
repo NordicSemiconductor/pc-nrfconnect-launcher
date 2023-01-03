@@ -430,10 +430,10 @@ export const removeDownloadableApp = async (app: AppSpec) => {
 
 export const installDownloadableApp = async (
     app: DownloadableAppInfoDeprecated,
-    version: string
+    version?: string
 ) => {
     const destinationDir = getAppsRootDir(app.source);
-    const tgzFilePath = await downloadTarball(app, version, destinationDir);
+    const tgzFilePath = await downloadTarball(app, destinationDir, version);
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
