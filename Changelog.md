@@ -13,7 +13,7 @@
 -   Do not download icons and release notes on startup if “Check for updates at
     startup” is disabled.
 
-## Fixed
+### Fixed
 
 -   Apps were unable to load in the case of special characters in the path.
 
