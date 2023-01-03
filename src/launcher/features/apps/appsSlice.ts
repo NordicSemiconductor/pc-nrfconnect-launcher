@@ -180,6 +180,15 @@ const slice = createSlice({
                 });
         },
 
+        removeAppsOfSource(
+            state,
+            { payload: sourceName }: PayloadAction<SourceName>
+        ) {
+            state.downloadableApps = state.downloadableApps.filter(
+                app => app.source !== sourceName
+            );
+        },
+
         // Update downloadable app infos
         updateDownloadableAppInfosStarted(state) {
             state.isDownloadingLatestAppInfo = true;
@@ -304,6 +313,7 @@ export const {
     addLocalApp,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
+    removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,

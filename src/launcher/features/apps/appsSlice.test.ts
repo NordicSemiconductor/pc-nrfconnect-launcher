@@ -17,6 +17,7 @@ import reducer, {
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
+    removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
@@ -73,6 +74,35 @@ describe('appsReducer', () => {
             setAllDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
+    });
+
+    it('can remove all apps of a source', () => {
+        const appOfSourceA = createDownloadableTestApp('app 1', {
+            source: 'A',
+        });
+        const anotherAppOfSourceA = createDownloadableTestApp('app 2', {
+            source: 'A',
+        });
+        const appOfSourceB = createDownloadableTestApp('app 1', {
+            source: 'B',
+        });
+        const anotherAppOfSourceB = createDownloadableTestApp('app 2', {
+            source: 'B',
+        });
+
+        const state = dispatchTo(reducer, [
+            setAllDownloadableApps([
+                appOfSourceA,
+                anotherAppOfSourceA,
+                appOfSourceB,
+                anotherAppOfSourceB,
+            ]),
+            removeAppsOfSource('B'),
+        ]);
+        expect(state.downloadableApps).toMatchObject([
+            appOfSourceA,
+            anotherAppOfSourceA,
+        ]);
     });
 
     it('signals when an app is being installed', () => {
