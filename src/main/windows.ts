@@ -18,10 +18,10 @@ import { AppDetails } from '../ipc/appDetails';
 import { isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import { getDownloadableApps, getLocalApps } from './apps';
-import * as browser from './browser';
+import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
-import * as settings from './settings';
+import { get as getSetting, setLastWindowState } from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
 const appWindows: {
@@ -46,7 +46,7 @@ export const openLauncherWindow = () => {
     if (launcherWindow) {
         launcherWindow.show();
     } else {
-        launcherWindow = browser.createWindow({
+        launcherWindow = createWindow({
             title: `nRF Connect for Desktop v${getConfig().version}`,
             url: `file://${getElectronResourcesDir()}/launcher.html`,
             icon: getDefaultIconPath(),
@@ -72,7 +72,7 @@ export const hideLauncherWindow = () => {
 };
 
 export const openAppWindow = (app: LaunchableApp) => {
-    const { lastWindowState } = settings.get();
+    const { lastWindowState } = getSetting();
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
@@ -92,7 +92,7 @@ export const openAppWindow = (app: LaunchableApp) => {
         }
     }
 
-    const appWindow = browser.createWindow({
+    const appWindow = createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
         url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
         icon: getAppIcon(app),
@@ -119,7 +119,7 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     appWindow.on('close', () => {
         const bounds = appWindow.getBounds();
-        settings.setLastWindowState({
+        setLastWindowState({
             x: bounds.x,
             y: bounds.y,
             width: bounds.width,

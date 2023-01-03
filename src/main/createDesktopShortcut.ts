@@ -15,7 +15,7 @@ import { uuid } from 'short-uuid';
 import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
-import * as fileUtil from './fileUtil';
+import { chmodDir, copy, createTextFile, untar } from './fileUtil';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
 
@@ -140,8 +140,8 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
     try {
         // Untar template
-        await fileUtil.untar(appTemplateTarPath, tmpAppTemplatePath, 1);
-        await fileUtil.chmodDir(tmpAppTemplatePath, mode);
+        await untar(appTemplateTarPath, tmpAppTemplatePath, 1);
+        await chmodDir(tmpAppTemplatePath, mode);
 
         // Create Info.plist
         const infoTmpPath = path.join(
@@ -179,22 +179,22 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             wflowContentData
         );
 
-        await fileUtil.createTextFile(infoTmpPath, infoContent);
-        await fileUtil.createTextFile(wflowTmpPath, wflowContent);
-        await fileUtil.copy(app.shortcutIconPath, icnsPath);
+        await createTextFile(infoTmpPath, infoContent);
+        await createTextFile(wflowTmpPath, wflowContent);
+        await copy(app.shortcutIconPath, icnsPath);
 
         // Copy to Desktop
-        await fileUtil.copy(tmpAppTemplatePath, filePath);
+        await copy(tmpAppTemplatePath, filePath);
 
         // Copy to Applications
         filePath = path.join(
             electronApp.getPath('home'),
             `/Applications/${fileName}.app/`
         );
-        await fileUtil.copy(tmpAppTemplatePath, filePath);
+        await copy(tmpAppTemplatePath, filePath);
 
         // Change mode
-        await fileUtil.chmodDir(appExecPath, mode);
+        await chmodDir(appExecPath, mode);
     } catch (error) {
         showErrorDialog(
             `Error occured while creating desktop shortcut on MacOS with error: ${error}`

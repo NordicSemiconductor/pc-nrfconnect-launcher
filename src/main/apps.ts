@@ -32,9 +32,17 @@ import {
     getNodeModulesDir,
     getUpdatesJsonPath,
 } from './config';
-import * as fileUtil from './fileUtil';
+import {
+    deleteFile,
+    extractNpmPackage,
+    getNameFromNpmPackage,
+    getTmpFilename,
+    listDirectories,
+    listFiles,
+    readJsonFile,
+} from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
-import * as registryApi from './registryApi';
+import { downloadTarball } from './registryApi';
 import {
     downloadSourceJsonToFile,
     getAllSources,
@@ -78,7 +86,7 @@ export const installLocalApp = async (
     tgzFilePath: string
 ): Promise<InstallResult> => {
     // Determine app name and path
-    const appName = fileUtil.getNameFromNpmPackage(tgzFilePath);
+    const appName = getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
         return failureReadingFile(
             `Unable to get app name from archive: \`${tgzFilePath}\`. ` +
@@ -95,7 +103,7 @@ export const installLocalApp = async (
     // Extract app package
     await mkdir(appPath);
     try {
-        await fileUtil.extractNpmPackage(appName, tgzFilePath, appPath);
+        await extractNpmPackage(appName, tgzFilePath, appPath);
     } catch (error) {
         await fs.remove(appPath);
         return failureReadingFile(
@@ -126,7 +134,7 @@ const deleteFileOnSuccess = async (
     tgzFilePath: string
 ) => {
     if (result.type === 'success') {
-        await fileUtil.deleteFile(tgzFilePath);
+        await deleteFile(tgzFilePath);
     }
 };
 
@@ -152,13 +160,13 @@ const confirmOverwritingOnExistingApp = async (
         const resultOfRetry = await installLocalApp(tgzFilePath);
 
         if (resultOfRetry.type === 'success') {
-            await fileUtil.deleteFile(tgzFilePath);
+            await deleteFile(tgzFilePath);
         }
     }
 };
 
 const installAllLocalAppArchives = () => {
-    const tgzFiles = fileUtil.listFiles(getAppsLocalDir(), /\.tgz$/);
+    const tgzFiles = listFiles(getAppsLocalDir(), /\.tgz$/);
     return tgzFiles.reduce(
         (prev, tgzFile) =>
             prev.then(async () => {
@@ -202,7 +210,7 @@ const shortcutIconPath = (resourcesPath: string) =>
 const infoFromInstalledApp = (app: AppSpec) => {
     const appPath = installedAppPath(app);
 
-    const packageJson = fileUtil.readJsonFile<PackageJson>(
+    const packageJson = readJsonFile<PackageJson>(
         path.join(appPath, 'package.json')
     );
 
@@ -250,7 +258,7 @@ const installedAppInfoDeprecated = (
 
 const getUpdates = (source: SourceName) => {
     try {
-        return fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
+        return readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
     } catch (error) {
         console.log(
             `Failed to read updates file for source \`${source}\`. Falling back to assuming no updates.`
@@ -268,7 +276,7 @@ const installedApp = (app: DownloadableAppInfo): InstalledDownloadableApp => {
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
 
-    const packageJson = fileUtil.readJsonFile<PackageJson>(
+    const packageJson = readJsonFile<PackageJson>(
         path.join(appPath, 'package.json')
     );
 
@@ -388,9 +396,7 @@ const getLocalApp = (appName: string): LocalApp => ({
 });
 
 export const getLocalApps = (consistencyCheck = true) => {
-    const localApps = fileUtil
-        .listDirectories(getAppsLocalDir())
-        .map(getLocalApp);
+    const localApps = listDirectories(getAppsLocalDir()).map(getLocalApp);
 
     if (consistencyCheck) {
         localApps
@@ -417,7 +423,7 @@ export const removeDownloadableApp = async (app: AppSpec) => {
         );
     }
 
-    const tmpDir = fileUtil.getTmpFilename(app.name);
+    const tmpDir = getTmpFilename(app.name);
     await fs.move(appPath, tmpDir);
     return fs.remove(tmpDir);
 };
@@ -427,22 +433,14 @@ export const installDownloadableApp = async (
     version: string
 ) => {
     const destinationDir = getAppsRootDir(app.source);
-    const tgzFilePath = await registryApi.downloadTarball(
-        app,
-        version,
-        destinationDir
-    );
+    const tgzFilePath = await downloadTarball(app, version, destinationDir);
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
     }
 
-    await fileUtil.extractNpmPackage(
-        app.name,
-        tgzFilePath,
-        installedAppPath(app)
-    );
-    await fileUtil.deleteFile(tgzFilePath);
+    await extractNpmPackage(app.name, tgzFilePath, installedAppPath(app));
+    await deleteFile(tgzFilePath);
 
     return {
         ...app,

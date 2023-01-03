@@ -13,8 +13,8 @@ import { showErrorDialog } from '../ipc/showErrorDialog';
 import { Source, SourceName } from '../ipc/sources';
 import { getAppsRootDir } from './config';
 import describeError from './describeError';
-import * as fileUtil from './fileUtil';
-import * as net from './net';
+import { createJsonFile, readJsonFile } from './fileUtil';
+import { downloadToFile, downloadToJson } from './net';
 import { downloadAllSources, getAppUrls } from './sources';
 
 const iconPath = (app: AppSpec) =>
@@ -24,7 +24,7 @@ const releaseNotesPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
 const readAppInfo = (source: Source) => (filePath: string) => {
-    const appInfo = fileUtil.readJsonFile<AppInfo>(filePath);
+    const appInfo = readJsonFile<AppInfo>(filePath);
     const appUrl = `${path.dirname(source.url)}/${appInfo.name}.json`;
 
     return createDownloadableAppInfo(source, appUrl, appInfo);
@@ -33,19 +33,19 @@ const readAppInfo = (source: Source) => (filePath: string) => {
 const writeAppInfo = (appInfo: AppInfo) => {
     const filePath = path.join(getAppsRootDir(), `${appInfo.name}.json`);
 
-    const installedInfo = fileUtil.readJsonFile<AppInfo>(filePath).installed;
+    const installedInfo = readJsonFile<AppInfo>(filePath).installed;
 
     const mergedContent = { ...appInfo };
     if (installedInfo != null) {
         mergedContent.installed = installedInfo;
     }
 
-    return fileUtil.createJsonFile(filePath, mergedContent);
+    return createJsonFile(filePath, mergedContent);
 };
 
 const downloadResource = async (url: string, filePath: string) => {
     try {
-        await net.downloadToFile(url, filePath);
+        await downloadToFile(url, filePath);
     } catch (e) {
         console.debug(
             'Unable to fetch resource, ignoring this as non-critical.',
@@ -109,7 +109,7 @@ const defined = <X>(item?: X): item is X => item != null;
 export const downloadAppInfos = async (source: Source) => {
     const downloadableApps = await Promise.all(
         getAppUrls(source).map(async appUrl => {
-            const appInfo = await net.downloadToJson<AppInfo>(appUrl, true);
+            const appInfo = await downloadToJson<AppInfo>(appUrl, true);
 
             if (path.basename(appUrl) !== `${appInfo.name}.json`) {
                 showErrorDialog(

@@ -10,7 +10,7 @@ import shasum from 'shasum';
 import url from 'url';
 
 import { AppSpec } from '../ipc/apps';
-import * as net from './net';
+import { downloadToFile, downloadToJson } from './net';
 import { getSourceUrl } from './sources';
 
 interface AppInfo {
@@ -32,7 +32,7 @@ const getAppInfo = (app: AppSpec) => {
 
     const appUrl = new URL(app.name, sourceUrl).href;
 
-    return net.downloadToJson<AppInfo>(appUrl, true);
+    return downloadToJson<AppInfo>(appUrl, true);
 };
 
 const getDistInfo = async (app: AppSpec, version: string) => {
@@ -80,7 +80,7 @@ export const downloadTarball = async (
     const fileName = path.basename(parsedUrl.pathname!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     const tarballFile = path.join(destinationDir, fileName);
 
-    await net.downloadToFile(tarballUrl, tarballFile, true, app);
+    await downloadToFile(tarballUrl, tarballFile, true, app);
     await verifyShasum(tarballFile, distInfo.shasum);
 
     return tarballFile;
