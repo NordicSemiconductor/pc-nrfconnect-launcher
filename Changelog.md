@@ -13,6 +13,10 @@
 -   Do not download icons and release notes on startup if “Check for updates at
     startup” is disabled.
 
+## Fixed
+
+-   Apps were unable to load in the case of special characters in the path.
+
 ## 3.12.1 - 2022-09-16
 
 This version is released only for macOS.
