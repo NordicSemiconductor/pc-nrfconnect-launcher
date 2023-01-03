@@ -218,7 +218,7 @@ const slice = createSlice({
         },
 
         // Update progress
-        updateInstallProgress(state, { payload }: PayloadAction<Progress>) {
+        updateAppProgress(state, { payload }: PayloadAction<Progress>) {
             updateApp(payload.app, state.downloadableApps, app => {
                 app.progress.fraction = payload.progressFraction;
             });
@@ -304,7 +304,7 @@ export const {
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppStarted,
-    updateInstallProgress,
+    updateAppProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {

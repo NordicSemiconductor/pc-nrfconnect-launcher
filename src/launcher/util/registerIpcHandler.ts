@@ -14,7 +14,7 @@ import {
 } from '../../ipc/launcherUpdateProgress';
 import { registerRequestProxyLogin } from '../../ipc/proxyLogin';
 import { registerShowErrorDialog } from '../../ipc/showErrorDialog';
-import { updateInstallProgress } from '../features/apps/appsSlice';
+import { updateAppProgress } from '../features/apps/appsSlice';
 import {
     reset,
     startDownload,
@@ -25,7 +25,7 @@ import type { AppDispatch } from '../store';
 
 export default (dispatch: AppDispatch) => {
     registerDownloadProgress(progress => {
-        dispatch(updateInstallProgress(progress));
+        dispatch(updateAppProgress(progress));
     });
 
     registerShowErrorDialog(errorMessage => {
