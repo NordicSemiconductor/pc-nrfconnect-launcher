@@ -22,7 +22,6 @@ import reducer, {
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
-    setAllDownloadableApps,
     setAllLocalApps,
     showConfirmLaunchDialog,
     State,
@@ -72,7 +71,7 @@ describe('appsReducer', () => {
 
     it('has downloadable apps', () => {
         const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
     });
@@ -92,7 +91,7 @@ describe('appsReducer', () => {
         });
 
         const state = dispatchTo(reducer, [
-            setAllDownloadableApps([appOfSourceA, anotherAppOfSourceA]),
+            addDownloadableApps([appOfSourceA, anotherAppOfSourceA]),
             addDownloadableApps([appOfSourceB, anotherAppOfSourceB]),
         ]);
         expect(state.downloadableApps).toMatchObject([
@@ -118,7 +117,7 @@ describe('appsReducer', () => {
         });
 
         const state = dispatchTo(reducer, [
-            setAllDownloadableApps([
+            addDownloadableApps([
                 appOfSourceA,
                 anotherAppOfSourceA,
                 appOfSourceB,
@@ -137,7 +136,7 @@ describe('appsReducer', () => {
             findApp(downloadableApp1, state).progress.isInstalling;
 
         const initialState = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps(downloadableApps),
         ]);
         expect(appIsInstalling(initialState)).toBe(false);
 
@@ -165,7 +164,7 @@ describe('appsReducer', () => {
             findApp(downloadableApp1, state).progress.isRemoving;
 
         const initialState = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps(downloadableApps),
         ]);
         expect(appIsBeingRemoved(initialState)).toBe(false);
 
@@ -193,7 +192,7 @@ describe('appsReducer', () => {
             findApp(downloadableApp1, state).progress.isUpdating;
 
         const initialState = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps(downloadableApps),
         ]);
         expect(appIsBeingUpdated(initialState)).toBe(false);
 
@@ -300,7 +299,7 @@ test('sortedSources sorts the sources into official, local and then the rest in 
             getDefaultMiddleware({ serializableCheck: false }),
     });
     store.dispatch(
-        setAllDownloadableApps([
+        addDownloadableApps([
             { ...downloadableApp1, source: 'OtherB' },
             { ...downloadableApp1, source: 'official' },
             { ...downloadableApp1, source: 'OtherA' },

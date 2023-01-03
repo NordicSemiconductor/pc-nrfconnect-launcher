@@ -11,7 +11,7 @@ import {
     createUninstalledTestApp,
 } from '../../../test/testFixtures';
 import render from '../../../test/testrenderer';
-import { setAllDownloadableApps } from '../apps/appsSlice';
+import { addDownloadableApps } from '../apps/appsSlice';
 import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';
 
@@ -33,7 +33,7 @@ describe('ReleaseNotesDialog', () => {
     it('is initially invisible', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                setAllDownloadableApps(downloadableApps),
+                addDownloadableApps(downloadableApps),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -41,7 +41,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an uninstalled app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                setAllDownloadableApps(downloadableApps),
+                addDownloadableApps(downloadableApps),
                 show(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -50,7 +50,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an up-to-date installed app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                setAllDownloadableApps(downloadableApps),
+                addDownloadableApps(downloadableApps),
                 show(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -59,7 +59,7 @@ describe('ReleaseNotesDialog', () => {
     it('is displayed for an updatable app', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                setAllDownloadableApps(downloadableApps),
+                addDownloadableApps(downloadableApps),
                 show(updatableApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -68,7 +68,7 @@ describe('ReleaseNotesDialog', () => {
     it('is hidden again after closing the dialog', () => {
         expect(
             render(<ReleaseNotesDialog />, [
-                setAllDownloadableApps(downloadableApps),
+                addDownloadableApps(downloadableApps),
                 show(uninstalledApp),
                 hide(),
             ]).baseElement

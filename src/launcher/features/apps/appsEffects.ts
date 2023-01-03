@@ -33,13 +33,13 @@ import {
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
+    addDownloadableApps,
     addLocalApp,
     installDownloadableAppStarted,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    setAllDownloadableApps,
     setAppIconPath,
     setAppReleaseNote,
     showConfirmLaunchDialog,
@@ -70,7 +70,7 @@ export const fetchInfoForAllDownloadableAppsDeprecated =
     async (dispatch: AppDispatch) => {
         const { apps, appsWithErrors } = await getDownloadableAppsDeprecated();
 
-        dispatch(setAllDownloadableApps(apps));
+        dispatch(addDownloadableApps(apps));
 
         if (checkOnlineForUpdates) {
             apps.forEach(app => {

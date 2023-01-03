@@ -12,7 +12,7 @@ import { getSources } from '../../../ipc/sources';
 import type { AppDispatch } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import { handleAppsWithErrors } from '../apps/appsEffects';
-import { setAllDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
+import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import {
     setAllShownSources,
     setNameFilter,
@@ -55,7 +55,7 @@ export const loadApps = () => async (dispatch: AppDispatch) => {
         const { apps, appsWithErrors, sourcesWithErrors } =
             await getDownloadableApps();
 
-        dispatch(setAllDownloadableApps(apps));
+        dispatch(addDownloadableApps(apps));
         dispatch(handleAppsWithErrors(appsWithErrors));
         dispatch(handleSourcesWithErrors(sourcesWithErrors));
     } catch (error) {

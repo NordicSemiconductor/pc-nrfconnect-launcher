@@ -162,14 +162,6 @@ const slice = createSlice({
         },
 
         // Downloadable apps
-        // FIXME: Replace the next action by addDownloadableApps
-        setAllDownloadableApps(
-            state,
-            { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
-        ) {
-            state.downloadableApps = downloadableApps.map(appNotInProgress);
-        },
-
         addDownloadableApps(
             state,
             { payload: additionalApps }: PayloadAction<DownloadableApp[]>
@@ -330,7 +322,6 @@ export const {
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    setAllDownloadableApps,
     setAllLocalApps,
     setAppIconPath,
     setAppReleaseNote,

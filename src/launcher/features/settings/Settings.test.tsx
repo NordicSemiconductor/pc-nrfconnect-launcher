@@ -9,7 +9,7 @@ import React from 'react';
 import { createDownloadableTestApp } from '../../../test/testFixtures';
 import render from '../../../test/testrenderer';
 import {
-    setAllDownloadableApps,
+    addDownloadableApps,
     updateDownloadableAppInfos,
     updateDownloadableAppInfosStarted,
 } from '../apps/appsSlice';
@@ -64,7 +64,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                setAllDownloadableApps([
+                addDownloadableApps([
                     createDownloadableTestApp(undefined, {
                         currentVersion: '1.0.0',
                         latestVersion: '1.2.3',
@@ -78,7 +78,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 showUpdateCheckComplete(),
-                setAllDownloadableApps([createDownloadableTestApp()]),
+                addDownloadableApps([createDownloadableTestApp()]),
             ]).baseElement
         ).toMatchSnapshot();
     });
