@@ -217,38 +217,13 @@ const slice = createSlice({
             state.isDownloadingLatestAppInfo = false;
         },
 
-        // Set app specific properties
-        setAppIconPath(
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                app: AppSpec;
-                iconPath: string;
-            }>
-        ) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                app.iconPath = payload.iconPath;
-            });
-        },
-        setAppReleaseNote(
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                app: AppSpec;
-                releaseNote: string;
-            }>
-        ) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                app.releaseNote = payload.releaseNote;
-            });
-        },
+        // Update progress
         updateInstallProgress(state, { payload }: PayloadAction<Progress>) {
             updateApp(payload.app, state.downloadableApps, app => {
                 app.progress.fraction = payload.progressFraction;
             });
         },
+
         resetAppProgress(state, { payload: app }: PayloadAction<AppSpec>) {
             resetProgress(app, state.downloadableApps);
         },
@@ -323,8 +298,6 @@ export const {
     removeLocalApp,
     resetAppProgress,
     setAllLocalApps,
-    setAppIconPath,
-    setAppReleaseNote,
     showConfirmLaunchDialog,
     updateDownloadableAppInfo,
     updateDownloadableAppInfos,

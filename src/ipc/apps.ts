@@ -99,9 +99,6 @@ const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
-    getDownloadableAppsDeprecated: 'apps:get-downloadable-apps-deprecated',
-    downloadReleaseNotes: 'apps:download-release-notes',
-    downloadAppIcon: 'apps:download-app-icon',
     installDownloadableApp: 'apps:install-downloadable-app',
     installLocalApp: 'apps:install-local-app',
     removeLocalApp: 'apps:remove-local-app',
@@ -143,38 +140,6 @@ export const getDownloadableApps = invoke<GetDownloadableApps>(
 );
 export const registerGetDownloadableApps = handle<GetDownloadableApps>(
     channel.getDownloadableApps
-);
-
-type GetDownloadableAppsDeprecated = () => {
-    apps: DownloadableApp[];
-    appsWithErrors: AppWithError[];
-};
-
-export const getDownloadableAppsDeprecated =
-    invoke<GetDownloadableAppsDeprecated>(
-        channel.getDownloadableAppsDeprecated
-    );
-export const registerGetDownloadableAppsDeprecated =
-    handle<GetDownloadableAppsDeprecated>(
-        channel.getDownloadableAppsDeprecated
-    );
-
-// downloadReleaseNotes
-type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
-
-export const downloadReleaseNotes = invoke<DownloadReleaseNotes>(
-    channel.downloadReleaseNotes
-);
-export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
-    channel.downloadReleaseNotes
-);
-
-// downloadAppIcon
-type DownloadAppIcon = (app: DownloadableApp) => string | undefined;
-
-export const downloadAppIcon = invoke<DownloadAppIcon>(channel.downloadAppIcon);
-export const registerDownloadAppIcon = handle<DownloadAppIcon>(
-    channel.downloadAppIcon
 );
 
 // installDownloadableApp

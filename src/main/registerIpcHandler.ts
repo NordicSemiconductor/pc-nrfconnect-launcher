@@ -8,11 +8,8 @@ import Store from 'electron-store';
 
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
-    registerDownloadAppIcon,
     registerDownloadLatestAppInfos,
-    registerDownloadReleaseNotes,
     registerGetDownloadableApps,
-    registerGetDownloadableAppsDeprecated,
     registerGetLocalApps,
     registerInstallDownloadableApp,
     registerInstallLocalApp,
@@ -58,10 +55,7 @@ import {
 } from '../ipc/sources';
 import { downloadLatestAppInfos } from './appInfo';
 import {
-    downloadAppIconDeprecated,
-    downloadReleaseNotesDeprecated,
     getDownloadableApps,
-    getDownloadableAppsDeprecated,
     getLocalApps,
     installDownloadableApp,
     installLocalApp,
@@ -125,9 +119,6 @@ export default () => {
     registerOpenLauncher(openLauncherWindow);
 
     registerDownloadLatestAppInfos(downloadLatestAppInfos);
-    registerDownloadAppIcon(downloadAppIconDeprecated);
-    registerDownloadReleaseNotes(downloadReleaseNotesDeprecated);
-    registerGetDownloadableAppsDeprecated(getDownloadableAppsDeprecated);
     registerGetDownloadableApps(getDownloadableApps);
     registerGetLocalApps(getLocalApps);
     registerInstallDownloadableApp(installDownloadableApp);

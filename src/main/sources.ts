@@ -25,7 +25,7 @@ import {
     readJsonFile,
 } from './fileUtil';
 import { ensureDirExists } from './mkdir';
-import { downloadToJson, isResourceNotFound, NetError } from './net';
+import { downloadToJson } from './net';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
@@ -124,11 +124,6 @@ export const ensureSourcesAreLoaded = () => {
 
 export const getAllSources = () => [...sources];
 
-export const getAllSourceNamesDeprecated = () => {
-    ensureSourcesAreLoaded();
-    return sources.map(source => source.name);
-};
-
 export const initialiseAllSources = () => {
     ensureSourcesAreLoaded();
     Promise.all(sources.map(initialise));
@@ -148,35 +143,6 @@ export const getSourceUrl = (name: SourceName) => {
     return sources.find(source => source.name === name)?.url;
 };
 
-class FailedToFetchAppsJsonError extends Error {
-    source: { name?: SourceName; url: SourceUrl };
-    sourceNotFound: boolean;
-    statusCode?: number;
-
-    constructor(
-        error: unknown,
-        source: { name?: SourceName; url: SourceUrl },
-        sourceNotFound: boolean,
-        statusCode?: number
-    ) {
-        super(
-            `Unable to download apps list: ${describeError(error)}. If you ` +
-                'are using a proxy server, you may need to configure it as described on ' +
-                'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher'
-        );
-
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, FailedToFetchAppsJsonError);
-        }
-
-        this.name = 'FailedToFetchAppsJsonError';
-
-        this.source = source;
-        this.statusCode = statusCode;
-        this.sourceNotFound = sourceNotFound;
-    }
-}
-
 export interface UpdatesJson {
     [app: string]: string;
 }
@@ -185,37 +151,6 @@ export interface AppsJson {
     _source?: SourceName;
     [app: `pc-nrfconnect-${string}`]: DownloadableAppInfoBase;
 }
-
-export const downloadAppsJsonDeprecated = async (
-    url: SourceUrl,
-    name?: SourceName
-) => {
-    let appsJson;
-    try {
-        appsJson = await downloadToJson<AppsJson>(url, true);
-    } catch (error) {
-        const netError = error as NetError;
-        throw new FailedToFetchAppsJsonError(
-            netError,
-            { name, url },
-            isResourceNotFound(netError),
-            netError.statusCode
-        );
-    }
-
-    // eslint-disable-next-line no-underscore-dangle -- underscore is intentially used in JSON as a meta information
-    const sourceName = appsJson._source;
-    const isOfficial = url === officialSource.url;
-    if (sourceName == null && !isOfficial) {
-        throw new Error('JSON does not contain expected `_source` tag');
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    await initialise({ name: sourceName!, url });
-    await createJsonFile(getAppsJsonPath(sourceName), appsJson);
-
-    return sourceName;
-};
 
 const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');

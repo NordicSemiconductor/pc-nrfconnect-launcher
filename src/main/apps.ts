@@ -15,35 +15,28 @@ import {
     AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
-    DownloadableAppInfoBase,
     DownloadableAppInfoDeprecated,
     failureReadingFile,
     InstalledDownloadableApp,
     InstallResult,
     LocalApp,
     successfulInstall,
-    UninstalledDownloadableApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
 import { downloadAppInfos, readAppInfos } from './appInfo';
 import {
     getAppsExternalDir,
-    getAppsJsonPath,
     getAppsLocalDir,
     getAppsRootDir,
     getNodeModulesDir,
     getUpdatesJsonPath,
 } from './config';
-import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
-import * as net from './net';
 import * as registryApi from './registryApi';
 import {
-    AppsJson,
     downloadSourceJsonToFile,
-    getAllSourceNamesDeprecated,
     getAllSources,
     initialiseAllSources,
     sourceJsonExistsLocally,
@@ -231,30 +224,12 @@ const infoFromInstalledApp = (app: AppSpec) => {
     } as const;
 };
 
-const downloadableAppsInAppsJson = (
-    source: SourceName
-): DownloadableAppInfoDeprecated[] => {
-    const appsJson = fileUtil.readJsonFile<AppsJson>(getAppsJsonPath(source));
-
-    const isAnAppEntry = (
-        entry: [string, unknown]
-    ): entry is [string, DownloadableAppInfoBase] => entry[0] !== '_source';
-
-    return Object.entries(appsJson)
-        .filter(isAnAppEntry)
-        .map(([name, app]) => ({
-            name,
-            source,
-            ...app,
-        }));
-};
-
 interface InstalledAppResult {
     status: 'success';
     value: DownloadableApp;
 }
 
-const installedAppInfo = (
+const installedAppInfoDeprecated = (
     app: DownloadableAppInfoDeprecated,
     availableUpdates: UpdatesJson = getUpdates(app.source)
 ): InstalledAppResult => {
@@ -273,56 +248,6 @@ const installedAppInfo = (
     };
 };
 
-interface UninstalledAppResult {
-    status: 'success';
-    value: UninstalledDownloadableApp;
-}
-interface InvalidAppResult {
-    status: 'invalid';
-    reason: unknown;
-}
-
-const uninstalledAppInfoDeprecated = (
-    app: DownloadableAppInfoDeprecated,
-    availableUpdates: UpdatesJson
-): UninstalledAppResult | InvalidAppResult => {
-    try {
-        return {
-            status: 'success',
-            value: {
-                ...app,
-                latestVersion: availableUpdates[app.name],
-                currentVersion: undefined,
-                iconPath: ifExists(iconPathDeprecated(app)),
-                releaseNote: readReleaseNotesDeprecated(app),
-            },
-        };
-    } catch (error) {
-        return {
-            status: 'invalid',
-            reason: error,
-        };
-    }
-};
-
-interface ErroneousAppResult {
-    status: 'erroneous';
-    reason: unknown;
-    path: string;
-    name: string;
-    source: string;
-}
-
-type SuccessfulAppResult = UninstalledAppResult | InstalledAppResult;
-
-type AppResult = SuccessfulAppResult | ErroneousAppResult | InvalidAppResult;
-
-const isErroneous = (result: AppResult): result is ErroneousAppResult =>
-    result.status === 'erroneous';
-
-const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
-    result.status === 'success';
-
 const getUpdates = (source: SourceName) => {
     try {
         return fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
@@ -332,27 +257,6 @@ const getUpdates = (source: SourceName) => {
         );
         return {};
     }
-};
-
-const getDownloadableAppsFromSource = (source: SourceName) => {
-    const apps = downloadableAppsInAppsJson(source);
-    const availableUpdates = getUpdates(source);
-
-    return apps.map(app => {
-        try {
-            return isInstalled(app)
-                ? installedAppInfo(app, availableUpdates)
-                : uninstalledAppInfoDeprecated(app, availableUpdates);
-        } catch (error) {
-            return {
-                status: 'erroneous',
-                reason: error,
-                path: installedAppPath(app),
-                name: app.name,
-                source,
-            } as ErroneousAppResult;
-        }
-    });
 };
 
 const uninstalledApp = (app: DownloadableAppInfo) => ({
@@ -475,28 +379,6 @@ export const getDownloadableApps = async () => {
     };
 };
 
-export const getDownloadableAppsDeprecated = () => {
-    const appResults = getAllSourceNamesDeprecated().flatMap(
-        getDownloadableAppsFromSource
-    );
-
-    appResults.forEach(result => {
-        if (result.status === 'invalid') {
-            // this can happen if for example the apps.json for a source
-            // is not properly updated so that there is a mismatch
-            // between what is claims is there and what is actually there.
-            // In this case we want to hide the error to the user as they
-            // cannot do anything to prevent this besides removing the source.
-            console.debug(result.reason);
-        }
-    });
-
-    return {
-        apps: appResults.filter(isSuccessful).map(result => result.value),
-        appsWithErrors: appResults.filter(isErroneous),
-    };
-};
-
 const consistentAppAndDirectoryName = (app: LocalApp) =>
     app.name === path.basename(app.path);
 
@@ -564,7 +446,7 @@ export const installDownloadableApp = async (
 
     return {
         ...app,
-        ...installedAppInfo(app).value,
+        ...installedAppInfoDeprecated(app).value,
     };
 };
 
@@ -579,15 +461,6 @@ const replacePrLinks = (releaseNotes: string, homepage?: string) =>
 const releaseNotesPathDeprecated = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
-const storeReleaseNotesInBackground = (app: AppSpec, releaseNotes: string) =>
-    fileUtil
-        .createTextFile(releaseNotesPathDeprecated(app), releaseNotes)
-        .catch(reason =>
-            console.warn(
-                `Failed to store release notes: ${describeError(reason)}`
-            )
-        );
-
 const readReleaseNotesDeprecated = (app: AppSpec & { homepage?: string }) => {
     try {
         const releaseNotes = fs.readFileSync(
@@ -600,46 +473,5 @@ const readReleaseNotesDeprecated = (app: AppSpec & { homepage?: string }) => {
     } catch (error) {
         // We assume an error here means that the release notes just were not downloaded yet.
         return undefined;
-    }
-};
-
-export const downloadReleaseNotesDeprecated = async (app: DownloadableApp) => {
-    try {
-        const releaseNotes = await net.downloadToString(
-            `${app.url}-Changelog.md`,
-            false
-        );
-        if (releaseNotes != null) {
-            const prettyReleaseNotes = replacePrLinks(
-                releaseNotes,
-                app.homepage
-            );
-            storeReleaseNotesInBackground(app, prettyReleaseNotes);
-
-            return prettyReleaseNotes;
-        }
-    } catch (e) {
-        console.debug(
-            'Unable to fetch changelog, ignoring this as non-critical.',
-            describeError(e)
-        );
-    }
-};
-
-const iconPathDeprecated = (app: AppSpec) =>
-    path.join(getAppsRootDir(app.source), `${app.name}.svg`);
-
-export const downloadAppIconDeprecated = async (app: DownloadableApp) => {
-    try {
-        const iconUrl = `${app.url}.svg`;
-
-        await net.downloadToFile(iconUrl, iconPathDeprecated(app));
-
-        return iconPathDeprecated(app);
-    } catch (e) {
-        console.debug(
-            'Unable to fetch icon, ignoring this as non-critical.',
-            describeError(e)
-        );
     }
 };

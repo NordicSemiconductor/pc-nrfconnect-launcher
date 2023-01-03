@@ -17,7 +17,7 @@ import path from 'path';
 import { AppDetails } from '../ipc/appDetails';
 import { isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
-import { getDownloadableAppsDeprecated, getLocalApps } from './apps';
+import { getDownloadableApps, getLocalApps } from './apps';
 import * as browser from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
@@ -144,11 +144,11 @@ export const openAppWindow = (app: LaunchableApp) => {
     });
 };
 
-export const openDownloadableAppWindow = (
+export const openDownloadableAppWindow = async (
     appName: string,
     sourceName: string
 ) => {
-    const downloadableApp = getDownloadableAppsDeprecated().apps.find(
+    const downloadableApp = (await getDownloadableApps()).apps.find(
         app => app.name === appName && app.source === sourceName
     );
 

@@ -10,14 +10,9 @@ import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 import {
     AppSpec,
     AppWithError,
-    DownloadableApp,
     DownloadableAppInfoDeprecated,
-    downloadAppIcon as downloadAppIconInMain,
-    downloadReleaseNotes as downloadReleaseNotesInMain,
-    getDownloadableAppsDeprecated,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
-    isInstalled,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
@@ -33,56 +28,18 @@ import {
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
-    addDownloadableApps,
     addLocalApp,
     installDownloadableAppStarted,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    setAppIconPath,
-    setAppReleaseNote,
     showConfirmLaunchDialog,
     updateDownloadableAppInfo,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
-
-const downloadAppIcon =
-    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
-        const iconPath = await downloadAppIconInMain(app);
-        if (iconPath != null) {
-            dispatch(setAppIconPath({ app, iconPath }));
-        }
-    };
-
-const downloadReleaseNotes =
-    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
-        const releaseNote = await downloadReleaseNotesInMain(app);
-        if (releaseNote != null) {
-            dispatch(setAppReleaseNote({ app, releaseNote }));
-        }
-    };
-
-export const fetchInfoForAllDownloadableAppsDeprecated =
-    (checkOnlineForUpdates = true) =>
-    async (dispatch: AppDispatch) => {
-        const { apps, appsWithErrors } = await getDownloadableAppsDeprecated();
-
-        dispatch(addDownloadableApps(apps));
-
-        if (checkOnlineForUpdates) {
-            apps.forEach(app => {
-                dispatch(downloadReleaseNotes(app));
-                if (!isInstalled(app)) {
-                    dispatch(downloadAppIcon(app));
-                }
-            });
-        }
-
-        dispatch(handleAppsWithErrors(appsWithErrors));
-    };
 
 export const handleAppsWithErrors =
     (apps: AppWithError[]) => (dispatch: AppDispatch) => {

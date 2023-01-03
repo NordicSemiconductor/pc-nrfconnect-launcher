@@ -103,8 +103,3 @@ export const downloadToFile = async (
     const buffer = await downloadToBuffer(url, enableProxyLogin, app);
     await fs.writeFile(filePath, buffer);
 };
-
-/*
- * Does this error mean, that a resource was not found on the server?
- */
-export const isResourceNotFound = (error: NetError) => error.statusCode === 404;

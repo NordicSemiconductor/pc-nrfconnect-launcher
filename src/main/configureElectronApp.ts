@@ -27,7 +27,7 @@ const openInitialWindow = async () => {
     }
 
     if (startupApp.local) {
-        await openLocalAppWindow(startupApp.name);
+        openLocalAppWindow(startupApp.name);
     } else {
         await openDownloadableAppWindow(startupApp.name, startupApp.sourceName);
     }
