@@ -16,13 +16,13 @@ import ReleaseNotesDialog from './ReleaseNotesDialog';
 import { hide, show } from './releaseNotesDialogSlice';
 
 const uninstalledApp = createUninstalledTestApp('one', {
-    releaseNote: 'Release notes for one uninstalled app',
+    releaseNotes: 'Release notes for one uninstalled app',
 });
 const installedApp = createDownloadableTestApp('another', {
-    releaseNote: 'Release notes for another installed app',
+    releaseNotes: 'Release notes for another installed app',
 });
 const updatableApp = createDownloadableTestApp('third', {
-    releaseNote: 'Release notes for a third updatable app',
+    releaseNotes: 'Release notes for a third updatable app',
     currentVersion: '2.0.0',
     latestVersion: '2.1.0',
 });

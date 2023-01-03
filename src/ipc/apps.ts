@@ -29,7 +29,7 @@ export type DownloadableAppInfo = Omit<
     source: SourceName;
     url: string; // FIXME later: Check whether we can remove this
     iconPath?: string;
-    releaseNote?: string;
+    releaseNotes?: string;
 };
 
 export interface DownloadableAppInfoDeprecated
@@ -60,7 +60,7 @@ export interface UninstalledDownloadableApp
         DownloadableAppInfoDeprecated {
     source: SourceName;
     latestVersion: string;
-    releaseNote?: string;
+    releaseNotes?: string;
     currentVersion: undefined;
 }
 
@@ -70,7 +70,7 @@ export interface InstalledDownloadableApp
     source: SourceName;
     iconPath: string;
     latestVersion: string;
-    releaseNote?: string;
+    releaseNotes?: string;
 }
 
 export type DownloadableApp =

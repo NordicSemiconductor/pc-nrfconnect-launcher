@@ -94,7 +94,7 @@ const createDownloadableAppInfo = (
     description: appInfo.description,
 
     iconPath: iconPath({ name: appInfo.name, source: source.name }),
-    releaseNote: readReleaseNotes({
+    releaseNotes: readReleaseNotes({
         name: appInfo.name,
         source: source.name,
     }),

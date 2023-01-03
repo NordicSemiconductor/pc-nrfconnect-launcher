@@ -50,7 +50,7 @@ export default () => {
             </Modal.Header>
             <Modal.Body className="release-notes">
                 <ReactMarkdown
-                    source={app?.releaseNote ?? ''}
+                    source={app?.releaseNotes ?? ''}
                     linkTarget="_blank"
                 />
             </Modal.Body>

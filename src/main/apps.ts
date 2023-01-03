@@ -243,7 +243,7 @@ const installedAppInfoDeprecated = (
             currentVersion: fromInstalledApp.currentVersion,
             latestVersion:
                 availableUpdates[app.name] || fromInstalledApp.currentVersion,
-            releaseNote: readReleaseNotesDeprecated(app),
+            releaseNotes: readReleaseNotesDeprecated(app),
         },
     };
 };
@@ -297,7 +297,7 @@ const installedApp = (app: DownloadableAppInfo): InstalledDownloadableApp => {
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
 
-        releaseNote: app.releaseNote,
+        releaseNotes: app.releaseNotes,
 
         url: app.url,
     };
