@@ -6,14 +6,14 @@
 
 import { inspect } from 'util';
 
-import { InstalledApp } from '../../ipc/apps';
+import { LaunchableApp } from '../../ipc/apps';
 import { createDownloadableTestApp } from '../../test/testFixtures';
 import appCompatibilityWarning, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,
 } from './appCompatibilityWarning';
 
-const requiringEngine = (engineVersion?: string): InstalledApp =>
+const requiringEngine = (engineVersion?: string): LaunchableApp =>
     createDownloadableTestApp(undefined, { engineVersion });
 
 const failingCheck = {
@@ -108,6 +108,18 @@ describe('check compatibility of an app with the launcher', () => {
                     });
                 }
             );
+
+            it('The app version is too old according to the list of minimal required versions', () => {
+                const compatibilityWarning = appCompatibilityWarning(
+                    createDownloadableTestApp('pc-nrfconnect-dtm', {
+                        currentVersion: '2.0.3',
+                        engineVersion: '1.0.0',
+                    }),
+                    '1.0.0'
+                );
+                expect(compatibilityWarning?.warning).toBeDefined();
+                expect(compatibilityWarning?.longWarning).toBeDefined();
+            });
         });
 
         describe('all checks are successful if', () => {

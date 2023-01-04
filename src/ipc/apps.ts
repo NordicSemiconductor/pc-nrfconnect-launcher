@@ -28,7 +28,7 @@ interface BaseApp {
     iconPath?: string;
 }
 
-export interface InstalledApp extends BaseApp {
+interface InstalledApp extends BaseApp {
     currentVersion: string;
     path: string;
     shortcutIconPath: string;
