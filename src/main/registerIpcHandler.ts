@@ -53,15 +53,14 @@ import {
     registerGetSources,
     registerRemoveSource,
 } from '../ipc/sources';
-import { downloadLatestAppInfos } from './appInfo';
 import {
-    getDownloadableApps,
-    getLocalApps,
     installDownloadableApp,
     installLocalApp,
     removeDownloadableApp,
     removeLocalApp,
-} from './apps';
+} from './appChanges';
+import { downloadLatestAppInfos } from './appInfo';
+import { getDownloadableApps, getLocalApps } from './apps';
 import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';

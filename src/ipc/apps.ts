@@ -57,7 +57,7 @@ export interface UninstalledDownloadableApp
     source: SourceName;
     latestVersion: string;
     releaseNotes?: string;
-    currentVersion: undefined;
+    currentVersion: undefined; // FIXME later: Check whether we can remove this
 }
 
 export interface InstalledDownloadableApp

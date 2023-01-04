@@ -6,17 +6,34 @@
 
 import { app, dialog, Menu } from 'electron';
 
-import { initAppsDirectory } from './apps';
-import { getConfig } from './config';
+import { installAllLocalAppArchives } from './appChanges';
+import {
+    getAppsExternalDir,
+    getAppsLocalDir,
+    getAppsRootDir,
+    getConfig,
+    getNodeModulesDir,
+} from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
 import { logger } from './log';
 import menu from './menu';
+import { ensureDirExists } from './mkdir';
+import { initialiseAllSources } from './sources';
 import {
     openDownloadableAppWindow,
     openLauncherWindow,
     openLocalAppWindow,
 } from './windows';
+
+const initAppsDirectory = async () => {
+    ensureDirExists(getAppsRootDir());
+    ensureDirExists(getAppsLocalDir());
+    ensureDirExists(getAppsExternalDir());
+    ensureDirExists(getNodeModulesDir());
+    initialiseAllSources();
+    await installAllLocalAppArchives();
+};
 
 const openInitialWindow = async () => {
     const { startupApp } = getConfig();
