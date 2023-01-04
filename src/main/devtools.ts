@@ -37,7 +37,6 @@ const installDevtools = async (
 
 const extensionPath = (extension: ExtensionReference) =>
     path.join(
-        // @ts-expect-error -- getStoragePath returns string|null, the type definition is wrong and fixed in later versions: https://github.com/electron/electron/issues/35255
         session.defaultSession.getStoragePath() as string,
         'extensions',
         extension.id

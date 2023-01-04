@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { enable } from '@electron/remote/main';
 import {
     BrowserWindow,
     BrowserWindowConstructorOptions,
@@ -36,6 +37,8 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
         splashScreen = null;
     });
     splashScreen.show();
+    enable(splashScreen.webContents);
+
     return splashScreen;
 };
 
@@ -51,6 +54,7 @@ export const createWindow = (options: BrowserWindowOptions) => {
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
+            sandbox: false,
             contextIsolation: false,
             enableRemoteModule: true,
             additionalArguments,
@@ -75,9 +79,9 @@ export const createWindow = (options: BrowserWindowOptions) => {
 
     // Open target=_blank link in default browser instead of a
     // new electron window.
-    browserWindow.webContents.on('new-window', (event, url) => {
+    browserWindow.webContents.setWindowOpenHandler(({ url }) => {
         shell.openExternal(url);
-        event.preventDefault();
+        return { action: 'allow' };
     });
 
     browserWindow.once('ready-to-show', () => {
@@ -87,5 +91,6 @@ export const createWindow = (options: BrowserWindowOptions) => {
         }
     });
 
+    enable(browserWindow.webContents);
     return browserWindow;
 };

@@ -29,9 +29,8 @@ hostedModules['serialport'] = require('serialport');
 
 hostedModules['electron'] = require('electron');
 hostedModules['@electron/remote'] = require('@electron/remote');
-hostedModules[
-    '@nordicsemiconductor/nrf-device-lib-js'
-] = require('@nordicsemiconductor/nrf-device-lib-js');
+hostedModules['@nordicsemiconductor/nrf-device-lib-js'] =
+    require('./device-lib-js').default;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
 hostedModules['react-dom'] = require('react-dom');
 hostedModules['react-redux'] = require('react-redux');
