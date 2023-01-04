@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { dialog } from 'electron';
+import { app as electronApp, dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
+import shasum from 'shasum';
+import { uuid } from 'short-uuid';
 
 import {
     appExists,
@@ -17,7 +19,7 @@ import {
     InstallResult,
     successfulInstall,
 } from '../ipc/apps';
-import { readAppInfo } from './appInfo';
+import { readAppInfo, readAppInfoFile } from './appInfo';
 import {
     getLocalApp,
     installedApp,
@@ -25,16 +27,37 @@ import {
     isInstalled,
     localApp,
 } from './apps';
-import { getAppsLocalDir } from './config';
-import {
-    deleteFile,
-    extractNpmPackage,
-    getNameFromNpmPackage,
-    getTmpFilename,
-    listFiles,
-} from './fileUtil';
+import { getAppsLocalDir, getAppsRootDir } from './config';
+import { deleteFile, listFiles, untar } from './fileUtil';
 import { mkdir } from './mkdir';
-import { downloadTarball } from './registryApi';
+import { downloadToFile } from './net';
+
+const getTmpFilename = (basename: string) =>
+    path.join(electronApp.getPath('temp'), `${basename}-${uuid()}`);
+
+const extractNpmPackage = async (
+    appName: string,
+    tgzFile: string,
+    destinationDir: string
+) => {
+    const tmpDir = getTmpFilename(appName);
+
+    await untar(tgzFile, tmpDir, 1);
+    await fs.move(tmpDir, destinationDir, { overwrite: true });
+};
+
+/*
+ * Get the app name from the given *.tgz archive file. Expects the
+ * file name to be on the form "{name}-{version}.tgz".
+ */
+export const getNameFromNpmPackage = (tgzFile: string) => {
+    const fileName = path.basename(tgzFile);
+    const lastDash = fileName.lastIndexOf('-');
+    if (lastDash > 0) {
+        return fileName.substring(0, lastDash);
+    }
+    return null;
+};
 
 export const installLocalApp = async (
     tgzFilePath: string
@@ -163,6 +186,46 @@ export const removeDownloadableApp = async (app: AppSpec) => {
     const tmpDir = getTmpFilename(app.name);
     await fs.move(appPath, tmpDir);
     return fs.remove(tmpDir);
+};
+
+const verifyShasum = async (filePath: string, expectedShasum: string) => {
+    let buffer;
+    try {
+        buffer = await fs.readFile(filePath);
+    } catch (error) {
+        throw new Error(
+            `Unable to read file when verifying shasum: ${filePath}`
+        );
+    }
+
+    const computedShasum = shasum(buffer);
+    if (expectedShasum !== computedShasum) {
+        throw new Error(
+            `Shasum verification failed for ${filePath}. Expected ` +
+                `'${expectedShasum}', but got '${computedShasum}'.`
+        );
+    }
+};
+
+const downloadTarball = async (app: AppSpec, version?: string) => {
+    const appInfo = readAppInfoFile(app);
+    const versionToInstall = appInfo.versions[appInfo.latestVersion];
+
+    if (versionToInstall == null) {
+        return Promise.reject(
+            new Error(`No tarball found for ${app.name}@${version}`)
+        );
+    }
+
+    const tarballUrl = versionToInstall.tarballUrl;
+
+    const fileName = path.basename(tarballUrl);
+    const tarballFile = path.join(getAppsRootDir(app.source), fileName);
+
+    await downloadToFile(tarballUrl, tarballFile, true, app);
+    await verifyShasum(tarballFile, versionToInstall.shasum);
+
+    return tarballFile;
 };
 
 export const installDownloadableApp = async (

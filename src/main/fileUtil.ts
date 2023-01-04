@@ -5,10 +5,8 @@
  */
 
 import chmodr from 'chmodr';
-import { app } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { uuid } from 'short-uuid';
 import targz from 'targz';
 
 import describeError from './describeError';
@@ -116,38 +114,6 @@ export const chmodDir = (src: string, mode: string | number) =>
             }
         });
     });
-
-/*
- * Create a unique name for a temporary file or folder. The file is not
- * created, this just generates an absolute name for it in the directory
- * for temporary files.
- */
-export const getTmpFilename = (basename: string) =>
-    path.join(app.getPath('temp'), `${basename}-${uuid()}`);
-
-export const extractNpmPackage = async (
-    appName: string,
-    tgzFile: string,
-    destinationDir: string
-) => {
-    const tmpDir = getTmpFilename(appName);
-
-    await untar(tgzFile, tmpDir, 1);
-    await fs.move(tmpDir, destinationDir, { overwrite: true });
-};
-
-/*
- * Get the app name from the given *.tgz archive file. Expects the
- * file name to be on the form "{name}-{version}.tgz".
- */
-export const getNameFromNpmPackage = (tgzFile: string) => {
-    const fileName = path.basename(tgzFile);
-    const lastDash = fileName.lastIndexOf('-');
-    if (lastDash > 0) {
-        return fileName.substring(0, lastDash);
-    }
-    return null;
-};
 
 export const createTextFile = async (filePath: string, text: string) => {
     try {

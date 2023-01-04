@@ -1,14 +1,10 @@
 /*
- * Copyright (c) 2015 Nordic Semiconductor ASA
+ * Copyright (c) 2023 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable import/first */
-
-jest.mock('fs-extra', () => ({}));
-
-import { getNameFromNpmPackage } from './fileUtil';
+import { getNameFromNpmPackage } from './appChanges';
 
 describe('getNameFromNpmPackage', () => {
     it('should return null if path is invalid', () => {
