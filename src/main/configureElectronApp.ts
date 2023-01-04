@@ -46,8 +46,6 @@ const fatalError = (error: unknown) => {
 };
 
 export default () => {
-    app.allowRendererProcessReuse = false;
-
     app.on('ready', async () => {
         await loadDevtools();
 

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2015 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
 import * as deviceLib from '@nordicsemiconductor/nrf-device-lib-js';
 
 const hotplug = new Proxy(deviceLib.startHotplugEvents, {
