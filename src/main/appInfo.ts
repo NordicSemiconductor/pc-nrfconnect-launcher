@@ -15,7 +15,7 @@ import { getAppsRootDir } from './config';
 import describeError from './describeError';
 import { createJsonFile, readJsonFile } from './fileUtil';
 import { downloadToFile, downloadToJson } from './net';
-import { downloadAllSources, getAppUrls } from './sources';
+import { downloadAllSources, getAppUrls, getSource } from './sources';
 
 const iconPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}.svg`);
@@ -23,24 +23,45 @@ const iconPath = (app: AppSpec) =>
 const releaseNotesPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
-const readAppInfo = (source: Source) => (filePath: string) => {
-    const appInfo = readJsonFile<AppInfo>(filePath);
+const appInfoFile = (appSpec: AppSpec) =>
+    path.join(getAppsRootDir(appSpec.source), `${appSpec.name}.json`);
+
+export const readAppInfoFile = (appSpec: AppSpec) =>
+    readJsonFile<AppInfo>(appInfoFile(appSpec));
+
+export const readAppInfoFileIfExists = (appSpec: AppSpec) => {
+    try {
+        return readJsonFile<AppInfo>(appInfoFile(appSpec));
+    } catch (error) {
+        return undefined;
+    }
+};
+
+export const readAppInfo = (appSpec: AppSpec) => {
+    const source = getSource(appSpec.source);
+    if (source == null) {
+        throw new Error(
+            `Unable to find source \`${appSpec.source}\` for app \`${appSpec.name}\``
+        );
+    }
+
+    const appInfo = readAppInfoFile(appSpec);
     const appUrl = `${path.dirname(source.url)}/${appInfo.name}.json`;
 
     return createDownloadableAppInfo(source, appUrl, appInfo);
 };
 
-const writeAppInfo = (appInfo: AppInfo) => {
-    const filePath = path.join(getAppsRootDir(), `${appInfo.name}.json`);
+const writeAppInfo = (appInfo: AppInfo, source: Source) => {
+    const appSpec = { name: appInfo.name, source: source.name };
 
-    const installedInfo = readJsonFile<AppInfo>(filePath).installed;
+    const installedInfo = readAppInfoFileIfExists(appSpec)?.installed;
 
     const mergedContent = { ...appInfo };
     if (installedInfo != null) {
         mergedContent.installed = installedInfo;
     }
 
-    return createJsonFile(filePath, mergedContent);
+    return createJsonFile(appInfoFile(appSpec), mergedContent);
 };
 
 const downloadResource = async (url: string, filePath: string) => {
@@ -120,7 +141,7 @@ export const downloadAppInfos = async (source: Source) => {
                 return undefined;
             }
 
-            writeAppInfo(appInfo);
+            writeAppInfo(appInfo, source);
 
             await downloadIconAndReleaseNotes(appInfo, source.name);
 
@@ -146,14 +167,16 @@ export const downloadLatestAppInfos = async () => {
     };
 };
 
-const getAllAppInfoFiles = (source: Source) => {
+const getAllAppSpecs = (source: Source): AppSpec[] => {
     const filesToExclude = ['source.json', 'apps.json', 'updates.json'];
 
     return fs
         .readdirSync(getAppsRootDir(source.name))
+        .filter(name => !filesToExclude.includes(name))
         .filter(name => name.endsWith('.json'))
-        .filter(name => !filesToExclude.includes(name));
+        .map(name => name.replace(/\.json$/, ''))
+        .map(name => ({ name, source: source.name }));
 };
 
 export const readAppInfos = (source: Source) =>
-    getAllAppInfoFiles(source).map(readAppInfo(source));
+    getAllAppSpecs(source).map(readAppInfo);

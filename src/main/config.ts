@@ -117,6 +117,3 @@ export const getElectronResourcesDir = () =>
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');
-
-export const getUpdatesJsonPath = (sourceName?: string) =>
-    path.join(getAppsRootDir(sourceName), 'updates.json');

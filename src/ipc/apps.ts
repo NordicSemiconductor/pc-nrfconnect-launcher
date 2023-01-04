@@ -140,9 +140,9 @@ export const registerGetDownloadableApps = handle<GetDownloadableApps>(
 
 // installDownloadableApp
 type InstallDownloadableApp = (
-    app: DownloadableAppInfoDeprecated,
+    app: DownloadableApp,
     version?: string
-) => DownloadableApp;
+) => InstalledDownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(
     channel.installDownloadableApp

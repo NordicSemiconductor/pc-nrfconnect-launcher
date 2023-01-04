@@ -15,7 +15,6 @@ import {
     AppWithError,
     DownloadableApp,
     DownloadableAppInfo,
-    DownloadableAppInfoDeprecated,
     failureReadingFile,
     InstalledDownloadableApp,
     InstallResult,
@@ -23,14 +22,13 @@ import {
     successfulInstall,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { LOCAL, Source, SourceName } from '../ipc/sources';
-import { downloadAppInfos, readAppInfos } from './appInfo';
+import { LOCAL, Source } from '../ipc/sources';
+import { downloadAppInfos, readAppInfo, readAppInfos } from './appInfo';
 import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
     getNodeModulesDir,
-    getUpdatesJsonPath,
 } from './config';
 import {
     deleteFile,
@@ -41,14 +39,13 @@ import {
     listFiles,
     readJsonFile,
 } from './fileUtil';
-import { mkdir, mkdirIfNotExists } from './mkdir';
+import { ensureDirExists, mkdir } from './mkdir';
 import { downloadTarball } from './registryApi';
 import {
     downloadSourceJsonToFile,
     getAllSources,
     initialiseAllSources,
     sourceJsonExistsLocally,
-    UpdatesJson,
 } from './sources';
 
 const installedAppPath = (app: AppSpec) => {
@@ -101,7 +98,7 @@ export const installLocalApp = async (
     }
 
     // Extract app package
-    await mkdir(appPath);
+    mkdir(appPath);
     try {
         await extractNpmPackage(appName, tgzFilePath, appPath);
     } catch (error) {
@@ -183,11 +180,11 @@ const installAllLocalAppArchives = () => {
 };
 
 export const initAppsDirectory = async () => {
-    await mkdirIfNotExists(getAppsRootDir());
-    await mkdirIfNotExists(getAppsLocalDir());
-    await mkdirIfNotExists(getAppsExternalDir());
-    await mkdirIfNotExists(getNodeModulesDir());
-    await initialiseAllSources();
+    ensureDirExists(getAppsRootDir());
+    ensureDirExists(getAppsLocalDir());
+    ensureDirExists(getAppsExternalDir());
+    ensureDirExists(getNodeModulesDir());
+    initialiseAllSources();
     await installAllLocalAppArchives();
 };
 
@@ -207,6 +204,7 @@ const ifExists = (filePath: string) =>
 const shortcutIconPath = (resourcesPath: string) =>
     ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
 
+// FIXME later: Inline this into use for local apps
 const infoFromInstalledApp = (app: AppSpec) => {
     const appPath = installedAppPath(app);
 
@@ -230,41 +228,6 @@ const infoFromInstalledApp = (app: AppSpec) => {
         engineVersion: packageJson.engines?.nrfconnect,
         repositoryUrl: packageJson.repository?.url,
     } as const;
-};
-
-interface InstalledAppResult {
-    status: 'success';
-    value: DownloadableApp;
-}
-
-const installedAppInfoDeprecated = (
-    app: DownloadableAppInfoDeprecated,
-    availableUpdates: UpdatesJson = getUpdates(app.source)
-): InstalledAppResult => {
-    const fromInstalledApp = infoFromInstalledApp(app);
-
-    return {
-        status: 'success',
-        value: {
-            ...fromInstalledApp,
-            ...app,
-            currentVersion: fromInstalledApp.currentVersion,
-            latestVersion:
-                availableUpdates[app.name] || fromInstalledApp.currentVersion,
-            releaseNotes: readReleaseNotesDeprecated(app),
-        },
-    };
-};
-
-const getUpdates = (source: SourceName) => {
-    try {
-        return readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
-    } catch (error) {
-        console.log(
-            `Failed to read updates file for source \`${source}\`. Falling back to assuming no updates.`
-        );
-        return {};
-    }
 };
 
 const uninstalledApp = (app: DownloadableAppInfo) => ({
@@ -311,7 +274,7 @@ const installedApp = (app: DownloadableAppInfo): InstalledDownloadableApp => {
     };
 };
 
-export const addInformationForInstalledApps = (
+const addInformationForInstalledApps = (
     appInfos: DownloadableAppInfo[],
     source: Source
 ) => {
@@ -429,11 +392,10 @@ export const removeDownloadableApp = async (app: AppSpec) => {
 };
 
 export const installDownloadableApp = async (
-    app: DownloadableAppInfoDeprecated,
+    app: DownloadableApp,
     version?: string
-) => {
-    const destinationDir = getAppsRootDir(app.source);
-    const tgzFilePath = await downloadTarball(app, destinationDir, version);
+): Promise<InstalledDownloadableApp> => {
+    const tgzFilePath = await downloadTarball(app, version);
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
@@ -442,34 +404,5 @@ export const installDownloadableApp = async (
     await extractNpmPackage(app.name, tgzFilePath, installedAppPath(app));
     await deleteFile(tgzFilePath);
 
-    return {
-        ...app,
-        ...installedAppInfoDeprecated(app).value,
-    };
-};
-
-const replacePrLinks = (releaseNotes: string, homepage?: string) =>
-    homepage == null
-        ? releaseNotes
-        : releaseNotes.replace(
-              /#(\d+)/g,
-              (match, pr) => `[${match}](${homepage}/pull/${pr})`
-          );
-
-const releaseNotesPathDeprecated = (app: AppSpec) =>
-    path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
-
-const readReleaseNotesDeprecated = (app: AppSpec & { homepage?: string }) => {
-    try {
-        const releaseNotes = fs.readFileSync(
-            releaseNotesPathDeprecated(app),
-            'utf-8'
-        );
-        const prettyReleaseNotes = replacePrLinks(releaseNotes, app.homepage);
-
-        return prettyReleaseNotes;
-    } catch (error) {
-        // We assume an error here means that the release notes just were not downloaded yet.
-        return undefined;
-    }
+    return installedApp(readAppInfo(app));
 };

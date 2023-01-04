@@ -4,28 +4,24 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import fs from 'fs-extra';
+import { existsSync, mkdirSync } from 'fs';
 
-export const mkdir = async (dirPath: fs.PathLike) => {
+import describeError from './describeError';
+
+export const mkdir = (dirPath: string) => {
     try {
-        await fs.mkdir(dirPath, 0o775);
+        mkdirSync(dirPath, { recursive: true, mode: 0o775 });
     } catch (error) {
-        if (error) {
-            throw new Error(
-                `Unable to create ${dirPath}: ${(error as Error).message}`
-            );
-        }
+        throw new Error(`Unable to create ${dirPath}: ${describeError(error)}`);
     }
 };
 
-export const mkdirIfNotExists = async (dirPath: fs.PathLike) => {
+export const ensureDirExists = (dirPath: string) => {
     try {
-        await fs.stat(dirPath);
+        existsSync(dirPath);
     } catch (error) {
         if (error) {
-            await mkdir(dirPath);
+            mkdir(dirPath);
         }
     }
 };
-
-export const ensureDirExists = mkdirIfNotExists;

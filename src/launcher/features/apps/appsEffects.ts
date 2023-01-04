@@ -10,13 +10,12 @@ import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 import {
     AppSpec,
     AppWithError,
-    DownloadableAppInfoDeprecated,
+    DownloadableApp,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
-    UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { openApp } from '../../../ipc/openWindow';
 import type { AppDispatch } from '../../store';
@@ -109,7 +108,7 @@ export const installLocalApp =
     };
 
 export const installDownloadableApp =
-    (app: UninstalledDownloadableApp) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         dispatch(installDownloadableAppStarted(app));
 
@@ -146,7 +145,7 @@ export const removeDownloadableApp =
     };
 
 export const updateDownloadableApp =
-    (app: DownloadableAppInfoDeprecated) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
         dispatch(updateDownloadableAppStarted(app));
 

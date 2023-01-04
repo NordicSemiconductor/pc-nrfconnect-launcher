@@ -7,42 +7,11 @@
 import fs from 'fs-extra';
 import path from 'path';
 import shasum from 'shasum';
-import url from 'url';
 
 import { AppSpec } from '../ipc/apps';
-import { downloadToFile, downloadToJson } from './net';
-import { getSourceUrl } from './sources';
-
-interface AppInfo {
-    ['dist-tags']: {
-        latest: string;
-    };
-    versions: {
-        [version: string]: {
-            dist: {
-                tarball: string;
-                shasum: string;
-            };
-        };
-    };
-}
-
-const getAppInfo = (app: AppSpec) => {
-    const sourceUrl = getSourceUrl(app.source);
-
-    const appUrl = new URL(app.name, sourceUrl).href;
-
-    return downloadToJson<AppInfo>(appUrl, true);
-};
-
-const getDistInfo = async (app: AppSpec, version?: string) => {
-    const appInfo = await getAppInfo(app);
-
-    const versionToInstall =
-        version == null ? appInfo['dist-tags'].latest : version;
-
-    return appInfo.versions[versionToInstall].dist;
-};
+import { readAppInfoFile } from './appInfo';
+import { getAppsRootDir } from './config';
+import { downloadToFile } from './net';
 
 const verifyShasum = async (filePath: string, expectedShasum: string) => {
     let buffer;
@@ -63,25 +32,23 @@ const verifyShasum = async (filePath: string, expectedShasum: string) => {
     }
 };
 
-export const downloadTarball = async (
-    app: AppSpec,
-    destinationDir: string,
-    version?: string
-) => {
-    const distInfo = await getDistInfo(app, version);
-    if (!distInfo.tarball) {
+export const downloadTarball = async (app: AppSpec, version?: string) => {
+    const appInfo = readAppInfoFile(app);
+    const versionToInstall = appInfo.versions[appInfo.latestVersion];
+
+    if (versionToInstall == null) {
         return Promise.reject(
             new Error(`No tarball found for ${app.name}@${version}`)
         );
     }
 
-    const tarballUrl = distInfo.tarball;
-    const parsedUrl = url.parse(tarballUrl);
-    const fileName = path.basename(parsedUrl.pathname!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-    const tarballFile = path.join(destinationDir, fileName);
+    const tarballUrl = versionToInstall.tarballUrl;
+
+    const fileName = path.basename(tarballUrl);
+    const tarballFile = path.join(getAppsRootDir(app.source), fileName);
 
     await downloadToFile(tarballUrl, tarballFile, true, app);
-    await verifyShasum(tarballFile, distInfo.shasum);
+    await verifyShasum(tarballFile, versionToInstall.shasum);
 
     return tarballFile;
 };

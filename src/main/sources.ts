@@ -10,18 +10,9 @@ import path from 'path';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
-import {
-    getAppsRootDir,
-    getConfig,
-    getNodeModulesDir,
-    getUpdatesJsonPath,
-} from './config';
+import { getAppsRootDir, getConfig, getNodeModulesDir } from './config';
 import describeError from './describeError';
-import {
-    createJsonFile,
-    createJsonFileIfNotExists,
-    readJsonFile,
-} from './fileUtil';
+import { createJsonFile, readJsonFile } from './fileUtil';
 import { ensureDirExists } from './mkdir';
 import { downloadToJson } from './net';
 
@@ -122,27 +113,18 @@ export const ensureSourcesAreLoaded = () => {
 
 export const getAllSources = () => [...sources];
 
+export const initialise = (source: Source) =>
+    ensureDirExists(getNodeModulesDir(source.name));
+
 export const initialiseAllSources = () => {
     ensureSourcesAreLoaded();
-    Promise.all(sources.map(initialise));
+    sources.forEach(initialise);
 };
 
-export const initialise = (source: Source) =>
-    ensureDirExists(getAppsRootDir(source.name))
-        .then(() => ensureDirExists(getNodeModulesDir(source.name)))
-        .then(() => ensureFileExists(getUpdatesJsonPath(source.name)));
-
-const ensureFileExists = (filename: string) =>
-    createJsonFileIfNotExists(filename, {});
-
-export const getSourceUrl = (name: SourceName) => {
+export const getSource = (name: SourceName) => {
     ensureSourcesAreLoaded();
-    return sources.find(source => source.name === name)?.url;
+    return sources.find(source => source.name === name);
 };
-
-export interface UpdatesJson {
-    [app: string]: string;
-}
 
 const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
