@@ -194,6 +194,7 @@ export const getLocalApp = (appName: string): LocalApp => ({
         versions: {},
         latestVersion: '',
         url: '',
+        iconPath: '',
     }),
     source: LOCAL,
 });

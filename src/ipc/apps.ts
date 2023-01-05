@@ -20,26 +20,25 @@ export type DownloadableAppInfo = Omit<
 > & {
     source: SourceName;
     url: string; // FIXME later: Check whether we can remove this
-    iconPath?: string;
+    iconPath: string;
     releaseNotes?: string;
 };
-
-export interface DownloadableAppInfoDeprecated extends AppSpec {
-    displayName: string;
-    description: string;
-    url: string;
-    homepage?: string;
-    versions?: AppVersions;
-}
 
 interface BaseApp {
     name: string;
     displayName: string;
     description: string;
-    iconPath?: string;
+    iconPath: string;
 }
 
-interface InstalledApp extends BaseApp {
+interface Downloadable {
+    source: SourceName;
+    url: string;
+    homepage?: string;
+    versions?: AppVersions;
+}
+
+interface Installed {
     currentVersion: string;
     path: string;
     shortcutIconPath: string; // FIXME later: Remove this, determine it instead on demand
@@ -47,24 +46,26 @@ interface InstalledApp extends BaseApp {
     repositoryUrl?: string;
 }
 
-export interface LocalApp extends InstalledApp {
-    source: typeof LOCAL;
-    iconPath: string;
-}
-export interface UninstalledDownloadableApp
-    extends BaseApp,
-        DownloadableAppInfoDeprecated {
-    source: SourceName;
-    latestVersion: string;
-    releaseNotes?: string;
+interface Uninstalled {
     currentVersion: undefined; // FIXME later: Check whether we can remove this
 }
 
+export interface LocalApp extends Installed, BaseApp {
+    source: typeof LOCAL;
+}
+
 export interface InstalledDownloadableApp
-    extends InstalledApp,
-        DownloadableAppInfoDeprecated {
-    source: SourceName;
-    iconPath: string;
+    extends BaseApp,
+        Installed,
+        Downloadable {
+    latestVersion: string;
+    releaseNotes?: string;
+}
+
+export interface UninstalledDownloadableApp
+    extends BaseApp,
+        Uninstalled,
+        Downloadable {
     latestVersion: string;
     releaseNotes?: string;
 }
@@ -103,7 +104,7 @@ const channel = {
 
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
-    apps: DownloadableAppInfo[];
+    apps: DownloadableAppInfo[]; // FIXME later: Make this return DownloadableApp and maybe remove type DownloadableAppInfo
     sourcesFailedToDownload: Source[];
 };
 
