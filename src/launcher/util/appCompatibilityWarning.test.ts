@@ -52,6 +52,12 @@ describe('check compatibility of an app with the launcher', () => {
             ).toMatchObject(undecidedCheck);
         });
 
+        it('treats caret ranges as greater-equal', () => {
+            expect(
+                checkEngineIsSupported(requiringEngine('^1.0.0'), '2.0.0')
+            ).toMatchObject(undecidedCheck);
+        });
+
         it('is undecided if the app requires the same version', () => {
             expect(
                 checkEngineIsSupported(requiringEngine('^1.2.3'), '1.2.3')

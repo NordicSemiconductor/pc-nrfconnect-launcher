@@ -38,13 +38,18 @@ export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
                   'engines.nrfconnect definition to package.json.'
           );
 
+const replaceCaretWithGreaterEqual = (engineVersion: string) =>
+    engineVersion.startsWith('^')
+        ? engineVersion.replace('^', '>=')
+        : engineVersion;
+
 export const checkEngineIsSupported: AppCompatibilityChecker = (
     app,
     providedVersionOfEngine
 ) => {
     const isSupportedEngine = semver.satisfies(
         semver.coerce(providedVersionOfEngine) ?? '0.0.0',
-        app.engineVersion! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
+        replaceCaretWithGreaterEqual(app.engineVersion!) // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
