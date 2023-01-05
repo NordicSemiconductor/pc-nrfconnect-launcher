@@ -11,4 +11,5 @@ export default {
     'pc-nrfconnect-rssi': '1.4.3',
     'pc-nrfconnect-tracecollector-preview': '0.4.0',
     'pc-nrfconnect-tracecollector': '1.1.4',
+    'pc-nrfconnect-programmer': '3.0.5',
 } as Record<string, string>;
