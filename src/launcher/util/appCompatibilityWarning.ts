@@ -6,8 +6,9 @@
 
 import semver from 'semver';
 
-import { InstalledApp } from '../../ipc/apps';
+import { isDownloadable, LaunchableApp } from '../../ipc/apps';
 import mainConfig from './mainConfig';
+import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
 const undecided = { isDecided: false } as const;
 const incompatible = (warning: string, longWarning: string) =>
@@ -22,7 +23,7 @@ type Undecided = typeof undecided;
 type Incompatible = ReturnType<typeof incompatible>;
 
 type AppCompatibilityChecker = (
-    app: InstalledApp,
+    app: LaunchableApp,
     providedVersionOfEngine: string
 ) => Undecided | Incompatible;
 
@@ -37,13 +38,18 @@ export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
                   'engines.nrfconnect definition to package.json.'
           );
 
+const replaceCaretWithGreaterEqual = (engineVersion: string) =>
+    engineVersion.startsWith('^')
+        ? engineVersion.replace('^', '>=')
+        : engineVersion;
+
 export const checkEngineIsSupported: AppCompatibilityChecker = (
     app,
     providedVersionOfEngine
 ) => {
     const isSupportedEngine = semver.satisfies(
         semver.coerce(providedVersionOfEngine) ?? '0.0.0',
-        app.engineVersion! // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
+        replaceCaretWithGreaterEqual(app.engineVersion!) // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
@@ -58,12 +64,45 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
           );
 };
 
+const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
+    const appIsRecentEnough =
+        minimalRequiredAppVersions[app.name] == null ||
+        semver.gte(app.currentVersion, minimalRequiredAppVersions[app.name]);
+
+    const fittingVersionExists =
+        minimalRequiredAppVersions[app.name] != null &&
+        isDownloadable(app) &&
+        app.latestVersion != null &&
+        semver.gte(app.latestVersion, minimalRequiredAppVersions[app.name]);
+
+    return appIsRecentEnough
+        ? undecided
+        : incompatible(
+              'This versions of nRF Connect for Desktop does not support ' +
+                  `the version ${app.currentVersion} of this app. You ` +
+                  `need at least version ` +
+                  `${minimalRequiredAppVersions[app.name]} of this app.`,
+              `This versions of nRF Connect for Desktop does not support ` +
+                  `the version ${app.currentVersion} of the app ` +
+                  `"${app.displayName}". You need at least version ` +
+                  `${minimalRequiredAppVersions[app.name]} of this app.${
+                      fittingVersionExists
+                          ? ' Download the latest available version of this app.'
+                          : ''
+                  } Running the currently installed version of this app might not work as expected.`
+          );
+};
+
 export default (
-    app: InstalledApp,
+    app: LaunchableApp,
     providedVersionOfEngine = mainConfig().version
 ): undefined | { warning: string; longWarning: string } => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
-    for (const check of [checkEngineVersionIsSet, checkEngineIsSupported]) {
+    for (const check of [
+        checkEngineVersionIsSet,
+        checkEngineIsSupported,
+        checkMinimalRequiredAppVersions,
+    ]) {
         const result = check(app, providedVersionOfEngine);
         if (result.isDecided) {
             return { warning: result.warning, longWarning: result.longWarning };
