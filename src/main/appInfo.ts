@@ -61,7 +61,7 @@ const writeAppInfo = (appInfo: AppInfo, source: Source) => {
         mergedContent.installed = installedInfo;
     }
 
-    return createJsonFile(appInfoFile(appSpec), mergedContent);
+    createJsonFile(appInfoFile(appSpec), mergedContent);
 };
 
 const downloadResource = async (url: string, filePath: string) => {

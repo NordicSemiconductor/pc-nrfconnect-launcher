@@ -8,6 +8,8 @@ import { existsSync, mkdirSync } from 'fs';
 
 import describeError from './describeError';
 
+// FIXME later: Fold this into fileUtil.ts as soon as this is not used from initApp.js any longer
+
 export const mkdir = (dirPath: string) => {
     try {
         mkdirSync(dirPath, { recursive: true, mode: 0o775 });

@@ -179,8 +179,8 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             wflowContentData
         );
 
-        await createTextFile(infoTmpPath, infoContent);
-        await createTextFile(wflowTmpPath, wflowContent);
+        createTextFile(infoTmpPath, infoContent);
+        createTextFile(wflowTmpPath, wflowContent);
         await copy(app.shortcutIconPath, icnsPath);
 
         // Copy to Desktop

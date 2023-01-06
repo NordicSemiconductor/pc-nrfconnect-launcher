@@ -115,9 +115,9 @@ export const chmodDir = (src: string, mode: string | number) =>
         });
     });
 
-export const createTextFile = async (filePath: string, text: string) => {
+export const createTextFile = (filePath: string, text: string) => {
     try {
-        await fs.writeFile(filePath, text);
+        fs.writeFileSync(filePath, text);
     } catch (error) {
         throw new Error(
             `Unable to initialize ${filePath}: ${describeError(error)}`
@@ -125,19 +125,5 @@ export const createTextFile = async (filePath: string, text: string) => {
     }
 };
 
-const createTextFileIfNotExists = async (filePath: string, text: string) => {
-    try {
-        await fs.stat(filePath);
-    } catch (error) {
-        await createTextFile(filePath, text);
-    }
-};
-
 export const createJsonFile = (filePath: string, jsonData: unknown) =>
     createTextFile(filePath, JSON.stringify(jsonData, undefined, 2));
-
-export const createJsonFileIfNotExists = (
-    filePath: string,
-    jsonData: unknown
-) =>
-    createTextFileIfNotExists(filePath, JSON.stringify(jsonData, undefined, 2));

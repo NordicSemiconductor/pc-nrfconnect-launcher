@@ -55,6 +55,7 @@ export default appDir => {
     const appLogDir = path.join(appDataDir, 'logs');
     setAppDirs(appDir, appDataDir, appLogDir);
 
+    // FIXME later: Do this in the main process before launching an app
     ensureDirExists(appDataDir);
     ensureDirExists(appLogDir);
 

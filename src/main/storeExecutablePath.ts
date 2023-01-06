@@ -7,6 +7,7 @@
 import { app } from 'electron';
 import { join } from 'path';
 
+import describeError from './describeError';
 import { createTextFile } from './fileUtil';
 
 /*
@@ -16,11 +17,15 @@ import { createTextFile } from './fileUtil';
  */
 export default () => {
     if (app.isPackaged) {
-        createTextFile(
-            join(app.getPath('userData'), 'execPath'),
-            process.platform === 'linux' && process.env.APPIMAGE
-                ? process.env.APPIMAGE
-                : process.execPath
-        ).catch(err => console.log(err.message));
+        try {
+            createTextFile(
+                join(app.getPath('userData'), 'execPath'),
+                process.platform === 'linux' && process.env.APPIMAGE
+                    ? process.env.APPIMAGE
+                    : process.execPath
+            );
+        } catch (error) {
+            console.log(describeError(error));
+        }
     }
 };

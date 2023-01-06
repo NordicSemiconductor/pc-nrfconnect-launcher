@@ -74,6 +74,11 @@ const loadAllSources = () => {
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
+    createJsonFile(
+        getConfig().sourcesJsonPath,
+        convertToOldSourceJsonFormat(sources)
+    );
+
     fs.writeFileSync(
         getConfig().sourcesJsonPath,
         JSON.stringify(convertToOldSourceJsonFormat(sources), undefined, 2)
