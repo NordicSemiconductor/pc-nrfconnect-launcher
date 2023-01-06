@@ -11,6 +11,7 @@ import {
     screen,
     WebContents,
 } from 'electron';
+import fs from 'fs';
 import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
@@ -33,6 +34,13 @@ const getDefaultIconPath = () =>
         getElectronResourcesDir(),
         process.platform === 'win32' ? 'icon.ico' : 'icon.png'
     );
+
+export const ifExists = (filePath: string) =>
+    fs.existsSync(filePath) ? filePath : undefined;
+
+const getAppIcon = (app: LaunchableApp) =>
+    ifExists(path.join(app.path, 'resources', 'icon.png')) ??
+    getDefaultIconPath();
 
 export const openLauncherWindow = () => {
     if (launcherWindow) {
@@ -87,7 +95,7 @@ export const openAppWindow = (app: LaunchableApp) => {
     const appWindow = browser.createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
         url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
-        icon: app.iconPath ? app.iconPath : getDefaultIconPath(),
+        icon: getAppIcon(app),
         x,
         y,
         width,
