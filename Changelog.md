@@ -1,10 +1,11 @@
-## Unreleased
+## 4.0.0-pre1 - 2023-01-04
 
 ### Added
 
 -   Install local apps by dragging a file containing an app package and dropping
     it onto the app list.
--   Add support for Serial Terminal app
+-   Support for Serial Terminal app.
+-   Warn about outdated app versions.
 
 ### Changed
 
