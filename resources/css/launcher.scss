@@ -17,14 +17,15 @@ $theme-colors: (
 );
 
 @import 'pc-nrfconnect-shared/styles';
-$custom-control-indicator-checked-border-color: $primary;
-$custom-control-indicator-active-bg: $primary;
+$custom-control-indicator-checked-bg: $primary;
+$custom-control-indicator-bg: $white;
 @import 'bootstrap/scss/bootstrap';
 
 body {
     -webkit-user-select: none;
     -webkit-app-region: drag;
     cursor: default;
+    font-family: 'Roboto';
 }
 
 #webapp {
