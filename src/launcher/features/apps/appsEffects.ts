@@ -4,13 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import {
     AppSpec,
-    AppWithError,
     DownloadableApp,
+    downloadLatestAppInfos as downloadLatestAppInfosInMain,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
     LaunchableApp,
@@ -21,11 +20,8 @@ import { openApp } from '../../../ipc/openWindow';
 import type { AppDispatch } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
-import {
-    EventAction,
-    sendAppUsageData,
-    sendLauncherUsageData,
-} from '../usageData/usageDataEffects';
+import { handleSourcesWithErrors } from '../sources/sourcesEffects';
+import { EventAction, sendAppUsageData } from '../usageData/usageDataEffects';
 import {
     addLocalApp,
     installDownloadableAppStarted,
@@ -35,41 +31,28 @@ import {
     resetAppProgress,
     showConfirmLaunchDialog,
     updateDownloadableAppInfo,
+    updateDownloadableAppInfos,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
-const fs = remoteRequire('fs-extra');
-
-export const handleAppsWithErrors =
-    (apps: AppWithError[]) => (dispatch: AppDispatch) => {
-        if (apps.length === 0) {
-            return;
-        }
-
-        apps.forEach(app => {
-            sendLauncherUsageData(
-                EventAction.REPORT_INSTALLATION_ERROR,
-                `${app.source} - ${app.name}`
-            );
-        });
-
-        const recover = (invalidPaths: string[]) => () => {
-            invalidPaths.forEach(p => fs.remove(p));
-            getCurrentWindow().reload();
-        };
-
+export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(updateDownloadableAppInfosStarted());
+        const latestAppInfos = await downloadLatestAppInfosInMain();
         dispatch(
-            ErrorDialogActions.showDialog(buildErrorMessage(apps), {
-                Recover: recover(apps.map(app => app.path)),
-                Close: () => dispatch(ErrorDialogActions.hideDialog()),
-            })
+            updateDownloadableAppInfos({ updatedAppInfos: latestAppInfos.apps })
         );
-    };
-
-const buildErrorMessage = (apps: AppWithError[]) => {
-    const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');
-    const paths = apps.map(app => `* *${app.path}*\n\n`).join('');
-    return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
+        handleSourcesWithErrors(latestAppInfos.sourcesFailedToDownload);
+    } catch (error) {
+        dispatch(updateDownloadableAppInfosFailed());
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to download latest app info: ${describeError(error)}`
+            )
+        );
+    }
 };
 
 export const installLocalApp =

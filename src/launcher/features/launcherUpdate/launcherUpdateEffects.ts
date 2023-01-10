@@ -10,16 +10,10 @@ import {
     logger,
 } from 'pc-nrfconnect-shared';
 
-import { downloadLatestAppInfos as downloadLatestAppInfosInMain } from '../../../ipc/apps';
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppDispatch } from '../../store';
-import {
-    updateDownloadableAppInfos,
-    updateDownloadableAppInfosFailed,
-    updateDownloadableAppInfosStarted,
-} from '../apps/appsSlice';
+import { downloadLatestAppInfos } from '../apps/appsEffects';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
-import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
     cancelDownload as cancelLauncherDownload,
     reset,
@@ -43,24 +37,6 @@ export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
 export const cancelDownload = () => (dispatch: AppDispatch) => {
     cancelUpdate();
     dispatch(cancelLauncherDownload());
-};
-
-export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(updateDownloadableAppInfosStarted());
-        const latestAppInfos = await downloadLatestAppInfosInMain();
-        dispatch(
-            updateDownloadableAppInfos({ updatedAppInfos: latestAppInfos.apps })
-        );
-        handleSourcesWithErrors(latestAppInfos.sourcesFailedToDownload);
-    } catch (error) {
-        dispatch(updateDownloadableAppInfosFailed());
-        dispatch(
-            ErrorDialogActions.showDialog(
-                `Unable to download latest app info: ${describeError(error)}`
-            )
-        );
-    }
 };
 
 export const checkForUpdatesManually = () => async (dispatch: AppDispatch) => {

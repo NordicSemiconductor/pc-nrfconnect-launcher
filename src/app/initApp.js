@@ -27,6 +27,7 @@ function setAppDirs(newAppDir, newAppDataDir, newAppLogDir) {
 const loadApp = appDir => {
     const moduleManifest = path.join(appDir, 'package.json');
 
+    // FIXME later: Do not do a file operation in the renderer process
     if (!fs.existsSync(moduleManifest)) {
         console.log(
             `Trying to load module, but package.json is missing in ${appDir}.`
