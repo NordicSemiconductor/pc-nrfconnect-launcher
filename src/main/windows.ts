@@ -11,7 +11,6 @@ import {
     screen,
     WebContents,
 } from 'electron';
-import fs from 'fs';
 import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
@@ -21,6 +20,7 @@ import { getDownloadableApps, getLocalApps } from './apps';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
+import { ifExists } from './fileUtil';
 import { get as getSetting, setLastWindowState } from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -34,9 +34,6 @@ const getDefaultIconPath = () =>
         getElectronResourcesDir(),
         process.platform === 'win32' ? 'icon.ico' : 'icon.png'
     );
-
-export const ifExists = (filePath: string) =>
-    fs.existsSync(filePath) ? filePath : undefined;
 
 const getAppIcon = (app: LaunchableApp) =>
     ifExists(path.join(app.path, 'resources', 'icon.png')) ??

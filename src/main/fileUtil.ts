@@ -11,6 +11,9 @@ import targz from 'targz';
 
 import describeError from './describeError';
 
+export const ifExists = (filePath: string) =>
+    fs.existsSync(filePath) ? filePath : undefined;
+
 const readFile = (filePath: string) => {
     try {
         return fs.readFileSync(filePath, 'utf8');

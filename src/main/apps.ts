@@ -19,7 +19,7 @@ import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source } from '../ipc/sources';
 import { downloadAppInfos, readAppInfos } from './appInfo';
 import { getAppsLocalDir, getNodeModulesDir } from './config';
-import { listDirectories, readJsonFile } from './fileUtil';
+import { ifExists, listDirectories, readJsonFile } from './fileUtil';
 import {
     downloadSourceJsonToFile,
     getAllSources,
@@ -53,9 +53,6 @@ const shortcutIconExtension = () => {
     }
     return 'png';
 };
-
-const ifExists = (filePath: string) =>
-    fs.existsSync(filePath) ? filePath : undefined;
 
 const shortcutIconPath = (resourcesPath: string) =>
     ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
