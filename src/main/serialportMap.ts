@@ -39,7 +39,7 @@ class SerialPortMap {
 
     broadCast = (path: string, channel: string, ...args: unknown[]) => {
         this.get(path)?.renderers.forEach(renderer => {
-            renderer.send(channel, ...args);
+            renderer.send(`${channel}_${path}`, ...args);
         });
     };
 
