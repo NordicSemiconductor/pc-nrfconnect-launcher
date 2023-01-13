@@ -84,7 +84,7 @@ describe('Single renderer', () => {
         await flushMacroTaskQueue();
 
         expect(renderer.send).toHaveBeenCalledWith(
-            SERIALPORT_CHANNEL.ON_DATA,
+            `${SERIALPORT_CHANNEL.ON_DATA}_${defaultOptions.path}`,
             Buffer.from('OK')
         );
     });
@@ -257,11 +257,11 @@ describe('Two renderers', () => {
         await flushMacroTaskQueue();
 
         expect(rendererOne.send).toHaveBeenCalledWith(
-            'serialport:on-write',
+            `serialport:on-write_${defaultOptions.path}`,
             terminalData
         );
         expect(rendererTwo.send).toHaveBeenCalledWith(
-            'serialport:on-write',
+            `serialport:on-write_${defaultOptions.path}`,
             terminalData
         );
     });
