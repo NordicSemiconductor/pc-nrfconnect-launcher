@@ -14,10 +14,10 @@ import StateFilter from './StateFilter';
 import UpdateAllApps from './UpdateAllApps';
 
 const FilterDropdown = () => {
-    const [active, toggleActive] = useState(false);
+    const [active, setActive] = useState(false);
 
     return (
-        <Dropdown onToggle={() => toggleActive(!active)}>
+        <Dropdown onToggle={isOpen => setActive(isOpen)}>
             <Dropdown.Toggle variant="outline-secondary" active={active}>
                 <span className="mdi mdi-tune" />
                 Filter
