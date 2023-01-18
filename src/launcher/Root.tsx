@@ -7,7 +7,7 @@
 import React, { useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
-import { ErrorDialog, Logo } from 'pc-nrfconnect-shared';
+import { RootErrorDialog } from 'pc-nrfconnect-shared';
 
 import About from './features/about/About';
 import AppList from './features/apps/AppList';
@@ -63,7 +63,6 @@ export default () => {
                         <Nav.Link accessKey="3" eventKey="about">
                             about
                         </Nav.Link>
-                        <Logo changeWithDeviceState={false} />
                     </Nav>
                     <Tab.Content>
                         <Tab.Pane eventKey="apps">
@@ -79,7 +78,7 @@ export default () => {
                 </Tab.Container>
             </DropZoneForLocalApps>
 
-            <ErrorDialog />
+            <RootErrorDialog />
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
             <UsageDataDialog />

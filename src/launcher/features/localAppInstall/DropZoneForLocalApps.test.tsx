@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { ErrorDialog } from 'pc-nrfconnect-shared';
+import { RootErrorDialog } from 'pc-nrfconnect-shared';
 
 import { installLocalApp } from '../../../ipc/apps';
 import { createLocalTestApp } from '../../../test/testFixtures';
@@ -93,7 +93,7 @@ describe('DropZoneForLocalApps', () => {
         testrenderer(
             <>
                 <DropZoneForLocalApps />
-                <ErrorDialog />
+                <RootErrorDialog />
             </>
         );
 
@@ -111,7 +111,7 @@ describe('DropZoneForLocalApps', () => {
         testrenderer(
             <>
                 <DropZoneForLocalApps />
-                <ErrorDialog />
+                <RootErrorDialog />
             </>
         );
 

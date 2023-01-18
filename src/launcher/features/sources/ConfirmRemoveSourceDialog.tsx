@@ -24,14 +24,16 @@ export default () => {
         <ConfirmationDialog
             isVisible={isVisible}
             title="Remove app source"
-            text={`Are you sure to remove "${sourceToRemove}" source along with any apps installed from it?`}
-            okButtonText="Yes, remove"
-            cancelButtonText="Cancel"
-            onOk={() => {
+            confirmLabel="Yes, remove"
+            cancelLabel="Cancel"
+            onConfirm={() => {
                 dispatch(hideRemoveSource());
                 dispatch(removeSource(sourceToRemove!)); // eslint-disable-line @typescript-eslint/no-non-null-assertion
             }}
             onCancel={() => dispatch(hideRemoveSource())}
-        />
+        >
+            Are you sure to remove {sourceToRemove} source along with any apps
+            installed from it?
+        </ConfirmationDialog>
     );
 };

@@ -22,9 +22,9 @@ export default () => {
         <ConfirmationDialog
             isVisible={isVisible}
             title="Help us improve nRF Connect for Desktop"
-            okButtonText="Accept"
-            cancelButtonText="Decline"
-            onOk={() => dispatch(confirmSendingUsageData())}
+            confirmLabel="Accept"
+            cancelLabel="Decline"
+            onConfirm={() => dispatch(confirmSendingUsageData())}
             onCancel={() => dispatch(cancelSendingUsageData())}
         >
             <div className="user-data-policy">

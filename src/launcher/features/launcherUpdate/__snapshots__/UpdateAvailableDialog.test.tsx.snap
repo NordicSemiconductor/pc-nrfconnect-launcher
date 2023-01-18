@@ -19,14 +19,14 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -34,29 +34,11 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-            data-testid="title"
-          >
-            <h3>
+          <p>
+            <b>
               Update available
-            </h3>
-          </div>
-          <button
-            class="close"
-            type="button"
-          >
-            <span
-              aria-hidden="true"
-            >
-              ×
-            </span>
-            <span
-              class="sr-only"
-            >
-              Close
-            </span>
-          </button>
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -76,15 +58,14 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
         <div
           class="modal-footer"
         >
-           
           <button
-            class="btn btn-primary"
+            class="undefined btn-primary"
             type="button"
           >
             Yes
           </button>
           <button
-            class="btn btn-outline-primary"
+            class="undefined btn-secondary"
             type="button"
           >
             No

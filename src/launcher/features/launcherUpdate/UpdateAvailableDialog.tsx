@@ -25,13 +25,9 @@ export default () => {
         <ConfirmationDialog
             isVisible={isVisible}
             title="Update available"
-            text={
-                `A new version (${version}) of nRF Connect for Desktop is available. ` +
-                'Would you like to update now?'
-            }
-            okButtonText="Yes"
-            cancelButtonText="No"
-            onOk={startUpdate}
+            confirmLabel="Yes"
+            cancelLabel="No"
+            onConfirm={startUpdate}
             onCancel={() => dispatch(reset())}
         >
             <p>

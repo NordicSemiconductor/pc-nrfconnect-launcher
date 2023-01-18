@@ -20,14 +20,15 @@ export default () => {
         <ConfirmationDialog
             isVisible={isDialogVisible}
             title="Version problem"
-            text={text}
-            okButtonText="Launch anyway"
-            cancelButtonText="Cancel"
-            onOk={() => {
+            confirmLabel="Launch anyway"
+            cancelLabel="Cancel"
+            onConfirm={() => {
                 dispatch(hideConfirmLaunchDialog());
                 launch(app!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
             }}
             onCancel={() => dispatch(hideConfirmLaunchDialog())}
-        />
+        >
+            {text}
+        </ConfirmationDialog>
     );
 };

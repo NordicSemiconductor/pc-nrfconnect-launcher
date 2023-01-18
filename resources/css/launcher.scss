@@ -182,10 +182,6 @@ body {
     border-top: none;
 }
 
-.modal-content {
-    padding: 1rem;
-}
-
 .text-muted-more {
     @extend .text-muted;
     color: lighten($color: $text-muted, $amount: 30%) !important;
