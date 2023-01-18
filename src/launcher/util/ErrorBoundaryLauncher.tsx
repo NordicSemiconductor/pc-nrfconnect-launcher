@@ -26,7 +26,6 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
 
     return (
         <ErrorBoundary
-            // @ts-expect-error: ErrorBoundary is not typed correctly yet in shared
             appName="Launcher"
             restoreDefaults={restoreDefaults}
             sendUsageData={sendUsageData}

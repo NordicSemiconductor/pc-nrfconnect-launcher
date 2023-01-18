@@ -62,6 +62,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
                   >
                     <input
                       aria-checked="true"
@@ -147,6 +148,7 @@ exports[`SettingsView should render check for updates completed, with everything
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -155,6 +157,7 @@ exports[`SettingsView should render check for updates completed, with everything
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
@@ -286,6 +289,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
                   >
                     <input
                       aria-checked="true"
@@ -371,6 +375,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -379,6 +384,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
@@ -506,6 +512,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
                   >
                     <input
                       aria-checked="true"
@@ -591,6 +598,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -599,6 +607,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
@@ -681,6 +690,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
+                    style="background-color: rgb(69, 90, 100);"
                   >
                     <input
                       aria-checked="false"
@@ -689,6 +699,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                     />
                     <span
                       class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
                     />
                   </div>
                 </label>
@@ -765,6 +776,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -773,6 +785,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
@@ -855,6 +868,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
                   >
                     <input
                       aria-checked="true"
@@ -940,6 +954,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -948,6 +963,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
@@ -1034,6 +1050,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
                   >
                     <input
                       aria-checked="true"
@@ -1119,6 +1136,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                       </span>
                       <div
                         class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
                       >
                         <input
                           aria-checked="false"
@@ -1127,6 +1145,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                         />
                         <span
                           class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
                         />
                       </div>
                     </label>
