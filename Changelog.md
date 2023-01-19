@@ -6,6 +6,7 @@
     it onto the app list.
 -   Support for Serial Terminal app.
 -   Warn about outdated app versions.
+-   Hotkey Ctrl-W or Cmd-W closes current window.
 
 ### Changed
 

@@ -18,6 +18,13 @@ export default () =>
                         app.quit();
                     },
                 },
+                {
+                    label: '&Close',
+                    accelerator: 'CmdOrCtrl+W',
+                    click: (_, browserWindow) => {
+                        browserWindow?.close();
+                    },
+                },
             ],
         },
         {
