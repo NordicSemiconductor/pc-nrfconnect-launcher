@@ -12,14 +12,14 @@ export default () =>
             label: '&File',
             submenu: [
                 {
-                    label: '&Quit',
+                    label: '&Quit nRF Connect for Desktop',
                     accelerator: 'CmdOrCtrl+Q',
                     click: () => {
                         app.quit();
                     },
                 },
                 {
-                    label: '&Close',
+                    label: '&Close Window',
                     accelerator: 'CmdOrCtrl+W',
                     click: (_, browserWindow) => {
                         browserWindow?.close();
