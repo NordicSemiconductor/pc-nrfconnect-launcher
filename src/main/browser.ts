@@ -47,7 +47,7 @@ export const createWindow = (options: BrowserWindowOptions) => {
     const additionalArguments =
         appArgumentsIndex === -1 ? [] : process.argv.slice(appArgumentsIndex);
 
-    const mergedOptions = {
+    const mergedOptions: BrowserWindowOptions = {
         minWidth: 308,
         minHeight: 499,
         show: false,
@@ -56,7 +56,6 @@ export const createWindow = (options: BrowserWindowOptions) => {
             nodeIntegration: true,
             sandbox: false,
             contextIsolation: false,
-            enableRemoteModule: true,
             additionalArguments,
             backgroundThrottling: false,
         },
@@ -81,7 +80,7 @@ export const createWindow = (options: BrowserWindowOptions) => {
     // new electron window.
     browserWindow.webContents.setWindowOpenHandler(({ url }) => {
         shell.openExternal(url);
-        return { action: 'allow' };
+        return { action: 'deny' };
     });
 
     browserWindow.once('ready-to-show', () => {
