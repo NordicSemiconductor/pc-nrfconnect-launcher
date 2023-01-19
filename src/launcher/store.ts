@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
 import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 
@@ -21,11 +21,6 @@ import usageData from './features/usageData/usageDataSlice';
 enableMapSet();
 
 export const reducer = {
-    device: createSlice({
-        name: 'device',
-        initialState: { devices: {}, selectedSerialNumber: null },
-        reducers: {},
-    }).reducer,
     apps,
     errorDialog,
     filter,
