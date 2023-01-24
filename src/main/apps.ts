@@ -329,8 +329,16 @@ const isErroneous = (result: AppResult): result is ErroneousAppResult =>
 const isSuccessful = (result: AppResult): result is SuccessfulAppResult =>
     result.status === 'success';
 
-const getUpdates = (source: SourceName) =>
-    fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
+const getUpdates = (source: SourceName) => {
+    try {
+        return fileUtil.readJsonFile<UpdatesJson>(getUpdatesJsonPath(source));
+    } catch (error) {
+        console.log(
+            `Failed to read updates file for source \`${source}\`. Falling back to assuming no updates.`
+        );
+        return {};
+    }
+};
 
 const getDownloadableAppsFromSource = (source: SourceName) => {
     const apps = downloadableAppsInAppsJson(source);
