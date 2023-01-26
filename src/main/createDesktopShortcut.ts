@@ -16,6 +16,7 @@ import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
 import { chmodDir, copy, createTextFile, untar } from './fileUtil';
+import { getShortcutIcon } from './icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
 
@@ -55,11 +56,12 @@ const getArgs = (app: LaunchableApp) =>
 const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
     const filePath = path.join(getDesktopDir(), `${fileName}.lnk`);
-    if (app.shortcutIconPath) {
+    const icon = getShortcutIcon(app);
+    if (icon) {
         const shortcutStatus = shell.writeShortcutLink(filePath, {
             target: getElectronExePath(),
             args: getArgs(app),
-            icon: app.shortcutIconPath,
+            icon,
             // iconIndex has to be set to change icon
             iconIndex: 0,
         });
@@ -67,7 +69,7 @@ const createShortcutForWindows = (app: LaunchableApp) => {
             showErrorDialog('Fail with shell.writeShortcutLink');
         }
     } else {
-        showErrorDialog('Fail to create desktop since app.iconPath is not set');
+        showErrorDialog('Fail to create desktop: Unable to determine an icon');
     }
 };
 
@@ -83,7 +85,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
     );
 
     const args = getArgs(app);
-    const { iconPath, shortcutIconPath } = app;
+    const icon = getShortcutIcon(app);
 
     const shortcutContent = [
         '[Desktop Entry]',
@@ -92,7 +94,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         `Name=${fileName}`,
         `Exec=${getElectronExePath()} ${args}`,
         'Terminal=false',
-        `Icon=${shortcutIconPath || iconPath}`,
+        `Icon=${icon}`,
         'Type=Application',
         '',
     ].join('\n');
@@ -181,7 +183,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
         createTextFile(infoTmpPath, infoContent);
         createTextFile(wflowTmpPath, wflowContent);
-        await copy(app.shortcutIconPath, icnsPath);
+        await copy(getShortcutIcon(app), icnsPath);
 
         // Copy to Desktop
         await copy(tmpAppTemplatePath, filePath);

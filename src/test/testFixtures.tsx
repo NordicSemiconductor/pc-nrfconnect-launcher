@@ -16,7 +16,6 @@ import { LOCAL, OFFICIAL } from '../ipc/sources';
 const url = (appName: string) => `http://example.org/apps/${appName}.json`;
 const path = (appName: string) => `/path/to/${appName}`;
 const iconPath = (appName: string) => `/path/to/${appName}/icon.png`;
-const shortcutIconPath = (appName: string) => `/path/to/${appName}/icon.ico`;
 
 export const createLocalTestApp = (
     appName = 'dummy',
@@ -31,7 +30,6 @@ export const createLocalTestApp = (
 
     path: path(appName),
     iconPath: iconPath(appName),
-    shortcutIconPath: shortcutIconPath(appName),
 
     ...additonalProps,
 });
@@ -51,7 +49,6 @@ export const createDownloadableTestApp = (
     url: url(appName),
     path: path(appName),
     iconPath: iconPath(appName),
-    shortcutIconPath: shortcutIconPath(appName),
 
     ...additonalProps,
 });

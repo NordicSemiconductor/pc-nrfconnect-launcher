@@ -41,7 +41,6 @@ interface Downloadable {
 interface Installed {
     currentVersion: string;
     path: string;
-    shortcutIconPath: string; // FIXME later: Remove this, determine it instead on demand
     engineVersion?: string;
     repositoryUrl?: string;
 }

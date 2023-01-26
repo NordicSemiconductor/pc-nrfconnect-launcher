@@ -44,19 +44,6 @@ export const localApp = (appName: string): AppSpec => ({
     name: appName,
 });
 
-const shortcutIconExtension = () => {
-    if (process.platform === 'win32') {
-        return 'ico';
-    }
-    if (process.platform === 'darwin') {
-        return 'icns';
-    }
-    return 'png';
-};
-
-const shortcutIconPath = (resourcesPath: string) =>
-    ifExists(path.join(resourcesPath, `icon.${shortcutIconExtension()}`));
-
 const uninstalledApp = (app: DownloadableAppInfo) => ({
     ...app,
     currentVersion: undefined,
@@ -72,10 +59,6 @@ export const installedApp = (
         path.join(appPath, 'package.json')
     );
 
-    const iconPathInApp =
-        ifExists(path.join(resourcesPath, 'icon.svg')) ??
-        path.join(resourcesPath, 'icon.png');
-
     return {
         name: packageJson.name,
         source: app.source,
@@ -90,9 +73,9 @@ export const installedApp = (
         versions: app.versions,
 
         path: appPath,
-
-        shortcutIconPath: shortcutIconPath(resourcesPath) ?? iconPathInApp,
-        iconPath: iconPathInApp,
+        iconPath:
+            ifExists(path.join(resourcesPath, 'icon.svg')) ??
+            path.join(resourcesPath, 'icon.png'),
 
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
