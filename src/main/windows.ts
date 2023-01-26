@@ -11,7 +11,6 @@ import {
     screen,
     WebContents,
 } from 'electron';
-import path from 'path';
 
 import { AppDetails } from '../ipc/appDetails';
 import { isInstalled, LaunchableApp } from '../ipc/apps';
@@ -20,7 +19,7 @@ import { getDownloadableApps, getLocalApps } from './apps';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
-import { ifExists } from './fileUtil';
+import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
 import { get as getSetting, setLastWindowState } from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -29,16 +28,6 @@ const appWindows: {
     app: LaunchableApp;
 }[] = [];
 
-const getDefaultIconPath = () =>
-    path.join(
-        getElectronResourcesDir(),
-        process.platform === 'win32' ? 'icon.ico' : 'icon.png'
-    );
-
-const getAppIcon = (app: LaunchableApp) =>
-    ifExists(path.join(app.path, 'resources', 'icon.png')) ??
-    getDefaultIconPath();
-
 export const openLauncherWindow = () => {
     if (launcherWindow) {
         launcherWindow.show();
@@ -46,7 +35,7 @@ export const openLauncherWindow = () => {
         launcherWindow = createWindow({
             title: `nRF Connect for Desktop v${getConfig().version}`,
             url: `file://${getElectronResourcesDir()}/launcher.html`,
-            icon: getDefaultIconPath(),
+            icon: getNrfConnectForDesktopIcon(),
             width: 760,
             height: 600,
             center: true,
