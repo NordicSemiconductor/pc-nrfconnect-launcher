@@ -19,5 +19,12 @@ export const getNrfConnectForDesktopIcon = () =>
 const resourceFile = (app: LaunchableApp, filename: string) =>
     path.join(app.path, 'resources', filename);
 
+const ifExistsAndOnWindowsIcoFile = (app: LaunchableApp) =>
+    process.platform !== 'win32'
+        ? undefined
+        : ifExists(resourceFile(app, 'icon.ico'));
+
 export const getAppIcon = (app: LaunchableApp) =>
-    ifExists(resourceFile(app, 'icon.png')) ?? getNrfConnectForDesktopIcon();
+    ifExistsAndOnWindowsIcoFile(app) ??
+    ifExists(resourceFile(app, 'icon.png')) ??
+    getNrfConnectForDesktopIcon();
