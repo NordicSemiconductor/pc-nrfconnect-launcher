@@ -61,7 +61,6 @@ export const createUninstalledTestApp = (
     description: `The uninstalled ${lowerCase(appName)} test app`,
 
     latestVersion: '7.8.9',
-    currentVersion: undefined,
 
     iconPath: iconPath(appName),
 

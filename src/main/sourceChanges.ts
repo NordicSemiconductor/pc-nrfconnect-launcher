@@ -38,10 +38,7 @@ export const addSource = async (url: SourceUrl) => {
 
     addShownSource(source.name);
 
-    const apps = (await downloadAppInfos(source)).map(app => ({
-        ...app,
-        currentVersion: undefined,
-    }));
+    const apps = await downloadAppInfos(source);
 
     return {
         source,

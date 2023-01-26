@@ -44,11 +44,6 @@ export const localApp = (appName: string): AppSpec => ({
     name: appName,
 });
 
-const uninstalledApp = (app: DownloadableAppInfo) => ({
-    ...app,
-    currentVersion: undefined,
-});
-
 export const installedApp = (
     app: DownloadableAppInfo
 ): InstalledDownloadableApp => {
@@ -93,7 +88,7 @@ const addInformationForInstalledApps = (
     const apps = appInfos.map(appInfo => {
         const appSpec = { source: source.name, name: appInfo.name };
         if (!isInstalled(appSpec)) {
-            return uninstalledApp(appInfo);
+            return appInfo;
         }
 
         try {

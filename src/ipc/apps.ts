@@ -43,10 +43,6 @@ interface Installed {
     repositoryUrl?: string;
 }
 
-interface Uninstalled {
-    currentVersion: undefined; // FIXME later: Check whether we can remove this
-}
-
 export interface LocalApp extends Installed, BaseApp {
     source: typeof LOCAL;
 }
@@ -59,10 +55,7 @@ export interface InstalledDownloadableApp
     releaseNotes?: string;
 }
 
-export interface UninstalledDownloadableApp
-    extends BaseApp,
-        Uninstalled,
-        Downloadable {
+export interface UninstalledDownloadableApp extends BaseApp, Downloadable {
     latestVersion: string;
     releaseNotes?: string;
 }
@@ -84,7 +77,7 @@ export const isDownloadable = (app: App): app is DownloadableApp =>
     app.source !== LOCAL;
 
 export const isInstalled = (app: App): app is LaunchableApp =>
-    app.currentVersion != null;
+    'currentVersion' in app && app.currentVersion != null;
 
 export const updateAvailable = (app: InstalledDownloadableApp) =>
     app.currentVersion !== app.latestVersion;
