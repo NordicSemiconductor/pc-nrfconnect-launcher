@@ -13,7 +13,6 @@ import {
 } from '../ipc/apps';
 import { LOCAL, OFFICIAL } from '../ipc/sources';
 
-const url = (appName: string) => `http://example.org/apps/${appName}.json`;
 const path = (appName: string) => `/path/to/${appName}`;
 const iconPath = (appName: string) => `/path/to/${appName}/icon.png`;
 
@@ -46,7 +45,6 @@ export const createDownloadableTestApp = (
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
 
-    url: url(appName),
     path: path(appName),
     iconPath: iconPath(appName),
 
@@ -65,7 +63,6 @@ export const createUninstalledTestApp = (
     latestVersion: '7.8.9',
     currentVersion: undefined,
 
-    url: url(appName),
     iconPath: iconPath(appName),
 
     ...additonalProps,

@@ -81,8 +81,6 @@ export const installedApp = (
         repositoryUrl: packageJson.repository?.url,
 
         releaseNotes: app.releaseNotes,
-
-        url: app.url,
     };
 };
 
@@ -173,7 +171,6 @@ export const getLocalApp = (appName: string): LocalApp => ({
         description: '',
         versions: {},
         latestVersion: '',
-        url: '',
         iconPath: '',
     }),
     source: LOCAL,

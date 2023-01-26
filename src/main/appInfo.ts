@@ -46,9 +46,8 @@ export const readAppInfo = (appSpec: AppSpec) => {
     }
 
     const appInfo = readAppInfoFile(appSpec);
-    const appUrl = `${path.dirname(source.url)}/${appInfo.name}.json`;
 
-    return createDownloadableAppInfo(source, appUrl, appInfo);
+    return createDownloadableAppInfo(source, appInfo);
 };
 
 const writeAppInfo = (appInfo: AppInfo, source: Source) => {
@@ -105,7 +104,6 @@ const downloadIconAndReleaseNotes = (appInfo: AppInfo, source: SourceName) => {
 
 const createDownloadableAppInfo = (
     source: Source,
-    appUrl: string,
     appInfo: AppInfo
 ): DownloadableAppInfo => ({
     name: appInfo.name,
@@ -119,7 +117,6 @@ const createDownloadableAppInfo = (
         name: appInfo.name,
         source: source.name,
     }),
-    url: appUrl,
     homepage: appInfo.homepage,
     latestVersion: appInfo.latestVersion,
     versions: appInfo.versions,
@@ -145,7 +142,7 @@ export const downloadAppInfos = async (source: Source) => {
 
             await downloadIconAndReleaseNotes(appInfo, source.name);
 
-            return createDownloadableAppInfo(source, appUrl, appInfo);
+            return createDownloadableAppInfo(source, appInfo);
         })
     );
 

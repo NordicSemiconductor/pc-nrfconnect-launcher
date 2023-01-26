@@ -19,7 +19,6 @@ export type DownloadableAppInfo = Omit<
     'iconUrl' | 'releaseNotesUrl'
 > & {
     source: SourceName;
-    url: string; // FIXME later: Check whether we can remove this
     iconPath: string;
     releaseNotes?: string;
 };
@@ -33,7 +32,6 @@ interface BaseApp {
 
 interface Downloadable {
     source: SourceName;
-    url: string;
     homepage?: string;
     versions?: AppVersions;
 }
