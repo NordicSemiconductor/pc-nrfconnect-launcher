@@ -34,7 +34,7 @@ export const listDirectories = (dirPath: string): string[] =>
         ? []
         : fs
               .readdirSync(dirPath, { withFileTypes: true })
-              .filter(file => file.isDirectory())
+              .filter(file => file.isDirectory() && !file.name.startsWith('.'))
               .map(file => file.name);
 
 const isFile = (dirPath: string, file: string) => {
