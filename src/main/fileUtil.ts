@@ -29,13 +29,16 @@ export const readJsonFile = <T>(filePath: string) => {
     }
 };
 
+const isDirectory = (dirPath: string) => (file: string) => {
+    const fileStats = fs.statSync(path.join(dirPath, file));
+
+    return fileStats.isDirectory() && !file.startsWith('.');
+};
+
 export const listDirectories = (dirPath: string): string[] =>
     !fs.existsSync(dirPath)
         ? []
-        : fs
-              .readdirSync(dirPath, { withFileTypes: true })
-              .filter(file => file.isDirectory() && !file.name.startsWith('.'))
-              .map(file => file.name);
+        : fs.readdirSync(dirPath).filter(isDirectory(dirPath));
 
 const isFile = (dirPath: string, file: string) => {
     const fileStats = fs.statSync(path.join(dirPath, file));
