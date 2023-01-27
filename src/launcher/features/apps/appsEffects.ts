@@ -22,6 +22,7 @@ import {
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
+    UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { openApp } from '../../../ipc/openWindow';
 import type { AppDispatch } from '../../store';
@@ -167,11 +168,11 @@ export const installLocalApp =
     };
 
 export const installDownloadableApp =
-    (app: DownloadableAppInfo) => (dispatch: AppDispatch) => {
+    (app: UninstalledDownloadableApp) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         dispatch(installDownloadableAppStarted(app));
 
-        installDownloadableAppInMain(app, 'latest')
+        installDownloadableAppInMain(app, app.latestVersion)
             .then(installedApp => {
                 dispatch(updateDownloadableAppInfo(installedApp));
             })
