@@ -44,7 +44,7 @@ export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
         dispatch(
             updateDownloadableAppInfos({ updatedApps: latestAppInfos.apps })
         );
-        handleSourcesWithErrors(latestAppInfos.sourcesFailedToDownload);
+        handleSourcesWithErrors(latestAppInfos.sourcesWithErrors);
     } catch (error) {
         dispatch(updateDownloadableAppInfosFailed());
         dispatch(

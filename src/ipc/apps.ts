@@ -86,7 +86,7 @@ const channel = {
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
     apps: DownloadableApp[];
-    sourcesFailedToDownload: Source[];
+    sourcesWithErrors: Source[];
 };
 
 export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(

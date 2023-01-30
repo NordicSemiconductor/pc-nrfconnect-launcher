@@ -152,15 +152,12 @@ export const downloadAppInfos = async (source: Source) => {
 };
 
 export const downloadLatestAppInfos = async () => {
-    const { successfulSources, sourcesFailedToDownload } =
-        await downloadAllSources();
-    const apps = (
-        await Promise.all(successfulSources.map(downloadAppInfos))
-    ).flat();
+    const { sources, sourcesWithErrors } = await downloadAllSources();
+    const apps = await Promise.all(sources.map(downloadAppInfos));
 
     return {
-        apps,
-        sourcesFailedToDownload,
+        apps: apps.flat(),
+        sourcesWithErrors,
     };
 };
 

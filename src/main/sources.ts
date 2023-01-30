@@ -160,22 +160,22 @@ export const sourceJsonExistsLocally = (source: Source) =>
     fs.existsSync(getSourceJsonPath(source));
 
 export const downloadAllSources = async () => {
-    const successfulSources: Source[] = [];
-    const sourcesFailedToDownload: Source[] = [];
+    const successful: Source[] = [];
+    const erroneos: Source[] = [];
 
     await Promise.allSettled(
         sources.map(async source => {
             try {
                 await downloadSourceJsonToFile(source);
-                successfulSources.push(source);
+                successful.push(source);
             } catch (error) {
-                sourcesFailedToDownload.push(source);
+                erroneos.push(source);
             }
         })
     );
 
     return {
-        successfulSources,
-        sourcesFailedToDownload,
+        sources: successful,
+        sourcesWithErrors: erroneos,
     };
 };
