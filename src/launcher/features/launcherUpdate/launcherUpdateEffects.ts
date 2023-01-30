@@ -52,7 +52,7 @@ export const checkForCoreUpdatesAtStartup =
 
 export const cancelDownload = () => (dispatch: AppDispatch) => {
     cancelUpdate();
-    dispatch(cancelLauncherDownload());
+    dispatch(reset());
 };
 
 export const downloadLatestAppInfo =
