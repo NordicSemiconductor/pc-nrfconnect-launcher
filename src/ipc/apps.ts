@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppInfo, AppVersions } from 'pc-nrfconnect-shared';
+import { AppVersions } from 'pc-nrfconnect-shared';
 
 import { handle, invoke } from './infrastructure/rendererToMain';
 import { LOCAL, Source, SourceName } from './sources';
@@ -13,15 +13,6 @@ export interface AppSpec {
     name: string;
     source: SourceName;
 }
-
-export type DownloadableAppInfo = Omit<
-    AppInfo,
-    'iconUrl' | 'releaseNotesUrl'
-> & {
-    source: SourceName;
-    iconPath: string;
-    releaseNotes?: string;
-};
 
 interface BaseApp {
     name: string;
@@ -94,7 +85,7 @@ const channel = {
 
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
-    apps: DownloadableAppInfo[]; // FIXME later: Make this return DownloadableApp and maybe remove type DownloadableAppInfo
+    apps: DownloadableApp[];
     sourcesFailedToDownload: Source[];
 };
 

@@ -42,7 +42,7 @@ export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
         dispatch(updateDownloadableAppInfosStarted());
         const latestAppInfos = await downloadLatestAppInfosInMain();
         dispatch(
-            updateDownloadableAppInfos({ updatedAppInfos: latestAppInfos.apps })
+            updateDownloadableAppInfos({ updatedApps: latestAppInfos.apps })
         );
         handleSourcesWithErrors(latestAppInfos.sourcesFailedToDownload);
     } catch (error) {

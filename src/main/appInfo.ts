@@ -8,7 +8,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import type { AppInfo } from 'pc-nrfconnect-shared';
 
-import { AppSpec, DownloadableAppInfo } from '../ipc/apps';
+import { AppSpec, DownloadableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { Source, SourceName } from '../ipc/sources';
 import { getAppsRootDir } from './config';
@@ -47,7 +47,7 @@ export const readAppInfo = (appSpec: AppSpec) => {
 
     const appInfo = readAppInfoFile(appSpec);
 
-    return createDownloadableAppInfo(source, appInfo);
+    return createDownloadableApp(source, appInfo);
 };
 
 const writeAppInfo = (appInfo: AppInfo, source: Source) => {
@@ -102,10 +102,10 @@ const downloadIconAndReleaseNotes = (appInfo: AppInfo, source: SourceName) => {
     ]);
 };
 
-const createDownloadableAppInfo = (
+const createDownloadableApp = (
     source: Source,
     appInfo: AppInfo
-): DownloadableAppInfo => ({
+): DownloadableApp => ({
     name: appInfo.name,
     source: source.name,
 
@@ -142,7 +142,7 @@ export const downloadAppInfos = async (source: Source) => {
 
             await downloadIconAndReleaseNotes(appInfo, source.name);
 
-            return createDownloadableAppInfo(source, appInfo);
+            return createDownloadableApp(source, appInfo);
         })
     );
 

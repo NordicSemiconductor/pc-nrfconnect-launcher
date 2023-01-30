@@ -227,7 +227,7 @@ describe('appsReducer', () => {
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            updateDownloadableAppInfos({ updatedAppInfos: [] })
+            updateDownloadableAppInfos({ updatedApps: [] })
         );
         expect(afterFinishingUpdating.isDownloadingLatestAppInfo).toBe(false);
 
@@ -243,7 +243,7 @@ describe('appsReducer', () => {
 
         const state = dispatchTo(reducer, [
             updateDownloadableAppInfos({
-                updatedAppInfos: [],
+                updatedApps: [],
                 updateCheckDate: aDate,
             }),
         ]);

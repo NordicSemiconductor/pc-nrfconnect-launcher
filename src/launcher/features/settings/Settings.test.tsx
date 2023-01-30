@@ -53,7 +53,7 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 updateDownloadableAppInfos({
-                    updatedAppInfos: [],
+                    updatedApps: [],
                     updateCheckDate: new Date(2017, 1, 3, 13, 41, 36, 20),
                 }),
             ]).baseElement

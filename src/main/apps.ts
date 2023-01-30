@@ -11,7 +11,7 @@ import type { PackageJson } from 'pc-nrfconnect-shared';
 import {
     AppSpec,
     AppWithError,
-    DownloadableAppInfo,
+    DownloadableApp,
     InstalledDownloadableApp,
     LocalApp,
 } from '../ipc/apps';
@@ -45,7 +45,7 @@ export const localApp = (appName: string): AppSpec => ({
 });
 
 export const installedApp = (
-    app: DownloadableAppInfo
+    app: DownloadableApp
 ): InstalledDownloadableApp => {
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
@@ -79,26 +79,22 @@ export const installedApp = (
     };
 };
 
-const addInformationForInstalledApps = (
-    appInfos: DownloadableAppInfo[],
-    source: Source
-) => {
+const addInformationForInstalledApps = (apps: DownloadableApp[]) => {
     const appsWithErrors: AppWithError[] = [];
 
-    const apps = appInfos.map(appInfo => {
-        const appSpec = { source: source.name, name: appInfo.name };
-        if (!isInstalled(appSpec)) {
-            return appInfo;
+    const appsWithInstallInfos = apps.map(app => {
+        if (!isInstalled(app)) {
+            return app;
         }
 
         try {
-            return installedApp(appInfo);
+            return installedApp(app);
         } catch (error) {
             appsWithErrors.push({
                 reason: error,
-                path: installedAppPath(appSpec),
-                name: appInfo.name,
-                source: source.name,
+                path: installedAppPath(app),
+                name: app.name,
+                source: app.source,
             });
 
             return undefined;
@@ -106,38 +102,35 @@ const addInformationForInstalledApps = (
     });
 
     return {
-        apps: apps.filter(defined),
+        apps: appsWithInstallInfos.filter(defined),
         appsWithErrors,
     };
 };
 
 const getAllAppsInSource = async (source: Source) => {
-    let appInfos: DownloadableAppInfo[];
-
     if (!sourceJsonExistsLocally(source)) {
         /* If we never downloaded the meta files for a source,
            then we must download them at least once, regardless
            of whether the users selected "Check for updates at startup"
         */
 
+        // FIXME later: For the official source use local copies of the meta files instead. Maybe even use copies of the apps.
         await downloadSourceJsonToFile(source);
-        appInfos = await downloadAppInfos(source);
-    } else {
-        appInfos = readAppInfos(source);
+        return downloadAppInfos(source);
     }
 
-    // FIXME later: For the official source use local copies of the meta files instead. Maybe even use copies of the apps.
-
-    return addInformationForInstalledApps(appInfos, source);
+    return readAppInfos(source);
 };
 
 export const getDownloadableApps = async () => {
     const sourcesWithErrors: Source[] = [];
 
     const results = await Promise.all(
-        getAllSources().map(source => {
+        getAllSources().map(async source => {
             try {
-                return getAllAppsInSource(source);
+                const apps = await getAllAppsInSource(source);
+
+                return addInformationForInstalledApps(apps);
             } catch (error) {
                 sourcesWithErrors.push(source);
                 return {

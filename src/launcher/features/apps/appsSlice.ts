@@ -11,7 +11,6 @@ import {
     App,
     AppSpec,
     DownloadableApp,
-    DownloadableAppInfo,
     isDownloadable,
     isInstalled,
     LaunchableApp,
@@ -98,31 +97,31 @@ const resetProgress = (
 
 const addUninstalledApp = (
     apps: DownloadableAppWithProgress[],
-    updatedAppInfo: DownloadableAppInfo
+    updatedApp: DownloadableApp
 ) => {
-    apps.push(appNotInProgress(updatedAppInfo));
+    apps.push(appNotInProgress(updatedApp));
 };
 
 const updateInstalledApp = (
     app: DownloadableAppWithProgress,
-    updatedAppInfo: DownloadableAppInfo
+    updatedApp: DownloadableApp
 ) => {
-    app.latestVersion = updatedAppInfo.latestVersion;
-    app.versions = updatedAppInfo.versions;
+    app.latestVersion = updatedApp.latestVersion;
+    app.versions = updatedApp.versions;
 };
 
 const updateUninstalledApp = (
     app: DownloadableAppWithProgress,
-    updatedAppInfo: DownloadableAppInfo
+    updatedApp: DownloadableApp
 ) => {
-    Object.assign(app, updatedAppInfo);
+    Object.assign(app, updatedApp);
 };
 
 const mergeDownloadedAppInfoIn = (
     apps: DownloadableAppWithProgress[],
-    updatedAppInfos: DownloadableAppInfo[]
+    updatedApps: DownloadableApp[]
 ) => {
-    updatedAppInfos.forEach(updatedAppInfo => {
+    updatedApps.forEach(updatedAppInfo => {
         const existingApp = apps.find(equalsSpec(updatedAppInfo));
 
         const appIsStillUnknown = existingApp == null;
@@ -198,13 +197,13 @@ const slice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                updatedAppInfos: DownloadableAppInfo[];
+                updatedApps: DownloadableApp[];
                 updateCheckDate?: Date;
             }>
         ) {
             mergeDownloadedAppInfoIn(
                 state.downloadableApps,
-                payload.updatedAppInfos
+                payload.updatedApps
             );
 
             state.isDownloadingLatestAppInfo = false;
