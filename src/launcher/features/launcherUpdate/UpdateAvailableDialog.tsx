@@ -27,7 +27,7 @@ export default () => {
             title="Update available"
             confirmLabel="Yes"
             cancelLabel="No"
-            onConfirm={startUpdate}
+            onConfirm={() => startUpdate()}
             onCancel={() => dispatch(reset())}
         >
             <p>
