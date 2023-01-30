@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { ProgressInfo } from 'builder-util-runtime';
 import { app } from 'electron';
 import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
@@ -63,8 +64,8 @@ export const startUpdate = () => {
 
     updateStarted();
 
-    autoUpdater.on('download-progress', progressObj => {
-        updateProgress(progressObj.percentage);
+    autoUpdater.on('download-progress', (progressObj: ProgressInfo) => {
+        updateProgress(progressObj.percent);
     });
 
     autoUpdater.on('update-downloaded', () => {
