@@ -18,11 +18,7 @@ import {
 } from '../apps/appsSlice';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { removeSource } from '../sources/sourcesEffects';
-import {
-    cancelDownload as cancelLauncherDownload,
-    reset,
-    updateAvailable,
-} from './launcherUpdateSlice';
+import { reset, updateAvailable } from './launcherUpdateSlice';
 
 export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
     try {
