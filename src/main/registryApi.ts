@@ -11,7 +11,7 @@ import url from 'url';
 
 import { AppSpec } from '../ipc/apps';
 import * as net from './net';
-import { getSourceUrl } from './sources';
+import { getSourceUrl } from './sources'; // eslint-disable-line import/no-cycle -- Because this causes no problems and is temporary anyhow
 
 interface AppInfo {
     ['dist-tags']: {

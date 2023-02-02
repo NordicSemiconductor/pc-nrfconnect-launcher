@@ -16,7 +16,7 @@ import {
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../../store';
 import { fetchInfoForAllDownloadableApps } from '../apps/appsEffects';
-import { hideSource } from '../filter/filterSlice';
+import { hideSource, showSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
@@ -39,7 +39,7 @@ export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
     addSourceInMain(url)
         .then(name => {
             dispatch(addSourceAction({ name, url }));
-            dispatch(hideSource(name));
+            dispatch(showSource(name));
         })
         .catch(error =>
             dispatch(
