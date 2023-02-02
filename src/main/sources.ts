@@ -9,6 +9,7 @@ import fs from 'fs-extra';
 
 import { DownloadableAppInfoBase } from '../ipc/apps';
 import { allStandardSourceNames } from '../ipc/sources';
+import { generateUpdatesJsonFile } from './apps'; // eslint-disable-line import/no-cycle -- Because this causes no problems and is temporary anyhow
 import {
     getAppsJsonPath,
     getAppsRootDir,
@@ -177,6 +178,8 @@ export const addSource = async (url: string) => {
     saveAllSources();
 
     addShownSource(name);
+
+    await generateUpdatesJsonFile(name);
 
     return name;
 };

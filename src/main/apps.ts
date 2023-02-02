@@ -35,7 +35,8 @@ import describeError from './describeError';
 import * as fileUtil from './fileUtil';
 import { mkdir, mkdirIfNotExists } from './mkdir';
 import * as net from './net';
-import * as registryApi from './registryApi';
+import * as registryApi from './registryApi'; // eslint-disable-line import/no-cycle -- Because this causes no problems and is temporary anyhow
+// eslint-disable-next-line import/no-cycle -- Because this causes no problems and is temporary anyhow
 import {
     AppsJson,
     downloadAllAppsJson,
@@ -50,7 +51,7 @@ const isInstalled = (appPath: string) => fs.pathExistsSync(appPath);
  * Create the updates.json file containing the latest available versions for
  * a source. Format: { "foo": "x.y.z", "bar: "x.y.z" }.
  */
-const generateUpdatesJsonFile = async (sourceName: SourceName) => {
+export const generateUpdatesJsonFile = async (sourceName: SourceName) => {
     const fileName = getUpdatesJsonPath(sourceName);
 
     const latestVersions = await registryApi.getLatestAppVersions(
