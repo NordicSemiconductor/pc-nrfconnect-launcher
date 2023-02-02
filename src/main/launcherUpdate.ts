@@ -54,7 +54,7 @@ export const checkForUpdate = async () => {
 };
 
 export const startUpdate = () => {
-    if (installCancellationToken != null) {
+    if (installCancellationToken !== undefined) {
         showErrorDialog(
             'Download was requested but another download operation is ' +
                 'already in progress.'
@@ -89,8 +89,9 @@ export const startUpdate = () => {
 };
 
 export const cancelUpdate = () => {
-    if (installCancellationToken != null) {
+    if (installCancellationToken !== undefined) {
         installCancellationToken.cancel();
+        installCancellationToken = undefined;
     } else {
         showErrorDialog('Unable to cancel. No download is in progress.');
     }
