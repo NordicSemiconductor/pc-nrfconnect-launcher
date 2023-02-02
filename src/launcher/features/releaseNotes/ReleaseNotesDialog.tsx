@@ -14,6 +14,7 @@ import {
     DownloadableApp,
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     updateAvailable,
 } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -30,6 +31,10 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
     const app = useLauncherSelector(getDownloadableApp(appToDisplay));
+
+    if (app != null && isWithdrawn(app)) {
+        return null;
+    }
 
     const isVisible = appToDisplay.name != null;
 

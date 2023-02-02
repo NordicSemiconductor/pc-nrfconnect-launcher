@@ -14,6 +14,7 @@ import Row from 'react-bootstrap/Row';
 import {
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     updateAvailable,
 } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
@@ -41,11 +42,15 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                     {isInstalled(app) && <>, v{app.currentVersion}</>}
                     {isInstalled(app) &&
                         isDownloadable(app) &&
+                        !isWithdrawn(app) &&
                         updateAvailable(app) && (
                             <> (v{app.latestVersion} available)</>
                         )}
-                    {!isInstalled(app) && app.latestVersion && (
-                        <>, v{app.latestVersion}</>
+                    {!isInstalled(app) &&
+                        !isWithdrawn(app) &&
+                        app.latestVersion && <>, v{app.latestVersion}</>}
+                    {isWithdrawn(app) && (
+                        <>, not available for download any more</>
                     )}
                 </div>
             </Col>

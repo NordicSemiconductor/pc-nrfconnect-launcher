@@ -17,9 +17,11 @@ import {
     DownloadableAppInfoBase,
     failureReadingFile,
     InstallResult,
+    isWithdrawn,
     LocalApp,
     successfulInstall,
     UninstalledDownloadableApp,
+    WithdrawnApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, SourceName } from '../ipc/sources';
@@ -341,11 +343,53 @@ const getUpdates = (source: SourceName) => {
     }
 };
 
+const getWithdrawnApp = (
+    appPath: string,
+    source: SourceName
+): WithdrawnApp => ({
+    source,
+    url: '',
+    ...infoFromInstalledApp(path.dirname(appPath), path.basename(appPath)),
+});
+
+const getWithdrawnApps = (
+    source: SourceName,
+    availableApps: DownloadableAppInfo[]
+): (InstalledAppResult | ErroneousAppResult)[] => {
+    const availableAppsPaths = availableApps.map(app =>
+        path.join(getNodeModulesDir(source), app.name)
+    );
+    const installedAppsPaths = fileUtil
+        .listDirectories(getNodeModulesDir(source))
+        .map(appPath => path.join(getNodeModulesDir(source), appPath));
+
+    const withdrawnAppsPaths = installedAppsPaths.filter(
+        appPath => !availableAppsPaths.includes(appPath)
+    );
+
+    return withdrawnAppsPaths.map(withdrawnAppPath => {
+        try {
+            return {
+                status: 'success',
+                value: getWithdrawnApp(withdrawnAppPath, source),
+            };
+        } catch (error) {
+            return {
+                status: 'erroneous',
+                reason: error,
+                path: withdrawnAppPath,
+                name: path.basename(withdrawnAppPath),
+                source,
+            } as ErroneousAppResult;
+        }
+    });
+};
+
 const getDownloadableAppsFromSource = (source: SourceName) => {
     const apps = downloadableAppsInAppsJson(source);
     const availableUpdates = getUpdates(source);
 
-    return apps.map(app => {
+    const downloadableApps = apps.map(app => {
         const filePath = path.join(getNodeModulesDir(source), app.name);
 
         try {
@@ -362,6 +406,10 @@ const getDownloadableAppsFromSource = (source: SourceName) => {
             } as ErroneousAppResult;
         }
     });
+
+    const withdrawnApps = getWithdrawnApps(source, apps);
+
+    return downloadableApps.concat(withdrawnApps);
 };
 
 export const getDownloadableApps = () => {
@@ -486,6 +534,10 @@ const readReleaseNotes = (app: DownloadableAppInfo) => {
 };
 
 export const downloadReleaseNotes = async (app: DownloadableApp) => {
+    if (isWithdrawn(app)) {
+        return;
+    }
+
     try {
         const releaseNotes = await net.downloadToString(
             `${app.url}-Changelog.md`,
@@ -512,6 +564,10 @@ const iconPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}.svg`);
 
 export const downloadAppIcon = async (app: DownloadableApp) => {
+    if (isWithdrawn(app)) {
+        return;
+    }
+
     try {
         const iconUrl = `${app.url}.svg`;
 

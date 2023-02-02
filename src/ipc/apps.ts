@@ -58,9 +58,16 @@ export interface InstalledDownloadableApp
     releaseNote?: string;
 }
 
+export interface WithdrawnApp extends InstalledApp, DownloadableAppInfo {
+    url: '';
+    source: SourceName;
+    iconPath: string;
+}
+
 export type DownloadableApp =
     | InstalledDownloadableApp
-    | UninstalledDownloadableApp;
+    | UninstalledDownloadableApp
+    | WithdrawnApp;
 
 export type LaunchableApp = LocalApp | InstalledDownloadableApp;
 
@@ -76,6 +83,9 @@ export const isDownloadable = (app: App): app is DownloadableApp =>
 
 export const isInstalled = (app: App): app is LaunchableApp =>
     app.currentVersion != null;
+
+export const isWithdrawn = (app: App): app is WithdrawnApp =>
+    isDownloadable(app) && !('latestVersion' in app);
 
 export const updateAvailable = (app: InstalledDownloadableApp) =>
     app.currentVersion !== app.latestVersion;
