@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import {
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     updateAvailable,
 } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
@@ -19,7 +20,12 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!isInstalled(app) || !isDownloadable(app) || !updateAvailable(app))
+    if (
+        isWithdrawn(app) ||
+        !isInstalled(app) ||
+        !isDownloadable(app) ||
+        !updateAvailable(app)
+    )
         return null;
 
     return (

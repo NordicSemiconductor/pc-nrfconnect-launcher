@@ -7,6 +7,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
+import { isWithdrawn } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getUpdatableVisibleApps } from '../apps/appsSlice';
@@ -16,9 +17,11 @@ export default () => {
     const updatableApps = useLauncherSelector(getUpdatableVisibleApps);
 
     const updateAllApps = () =>
-        updatableApps.forEach(app =>
-            dispatch(updateDownloadableApp(app, app.latestVersion))
-        );
+        updatableApps.forEach(app => {
+            if (!isWithdrawn(app)) {
+                dispatch(updateDownloadableApp(app, app.latestVersion));
+            }
+        });
 
     if (updatableApps.length === 0) return null;
 

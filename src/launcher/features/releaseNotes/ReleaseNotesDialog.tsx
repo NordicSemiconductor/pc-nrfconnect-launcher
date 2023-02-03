@@ -14,6 +14,7 @@ import {
     DownloadableApp,
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     updateAvailable,
 } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -23,6 +24,7 @@ import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
     app != null &&
+    !isWithdrawn(app) &&
     isDownloadable(app) &&
     (!isInstalled(app) || updateAvailable(app));
 
@@ -30,6 +32,10 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
     const app = useLauncherSelector(getDownloadableApp(appToDisplay));
+
+    if (app != null && isWithdrawn(app)) {
+        return null;
+    }
 
     const isVisible = appToDisplay.name != null;
 

@@ -13,6 +13,7 @@ import {
     DownloadableApp,
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     LaunchableApp,
     LocalApp,
     updateAvailable,
@@ -192,7 +193,9 @@ const slice = createSlice({
             }>
         ) {
             updateApp(payload.app, state.downloadableApps, app => {
-                app.releaseNote = payload.releaseNote;
+                if (!isWithdrawn(app)) {
+                    app.releaseNote = payload.releaseNote;
+                }
             });
         },
         updateInstallProgress(state, { payload }: PayloadAction<Progress>) {
@@ -237,11 +240,20 @@ const slice = createSlice({
             state,
             { payload: removedApp }: PayloadAction<AppSpec>
         ) {
-            resetProgress(removedApp, state.downloadableApps);
+            const appToBeRemoved = state.downloadableApps.find(
+                equalsSpec(removedApp)
+            );
+            if (appToBeRemoved != null && isWithdrawn(appToBeRemoved)) {
+                state.downloadableApps = state.downloadableApps.filter(
+                    notEqualsSpec(removedApp)
+                );
+            } else {
+                resetProgress(removedApp, state.downloadableApps);
 
-            updateApp(removedApp, state.downloadableApps, app => {
-                app.currentVersion = undefined;
-            });
+                updateApp(removedApp, state.downloadableApps, app => {
+                    app.currentVersion = undefined;
+                });
+            }
         },
 
         // Confirm launch dialog
@@ -318,7 +330,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => isInstalled(app) && updateAvailable(app)
+        app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -329,7 +341,9 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => isInstalled(app) && updateAvailable(app));
+        .filter(
+            app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
+        );
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
