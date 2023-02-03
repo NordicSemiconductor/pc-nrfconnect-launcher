@@ -11,12 +11,12 @@ import {
     App,
     AppSpec,
     DownloadableApp,
+    InstalledDownloadableApp,
     isDownloadable,
-    isInstalled,
+    isUpdatable,
     isWithdrawn,
     LaunchableApp,
     LocalApp,
-    updateAvailable,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
@@ -309,21 +309,20 @@ export const getDownloadableApp =
         );
 
 export const isAppUpdateAvailable = (state: RootState) =>
-    state.apps.downloadableApps.find(
-        app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
-    ) != null;
+    state.apps.downloadableApps.some(isUpdatable);
 
 export const getUpdateCheckStatus = (state: RootState) => ({
     isCheckingForUpdates: state.apps.isDownloadingLatestAppInfo,
     lastUpdateCheckDate: state.apps.lastUpdateCheckDate,
 });
 
-export const getUpdatableVisibleApps = (state: RootState) =>
+export const getUpdatableVisibleApps = (
+    state: RootState
+): InstalledDownloadableApp[] =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(
-            app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
-        );
+        .map((app: App) => app) // Narrowing the type, so that the final type is just InstalledDownloadableApp[]
+        .filter(isUpdatable);
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

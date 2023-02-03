@@ -77,7 +77,10 @@ export const isInstalled = (app?: App): app is LaunchableApp =>
 export const isWithdrawn = (app?: App): app is WithdrawnApp =>
     isDownloadable(app) && !('latestVersion' in app);
 
-export const updateAvailable = (app: InstalledDownloadableApp) =>
+export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
+    !isWithdrawn(app) &&
+    isInstalled(app) &&
+    isDownloadable(app) &&
     app.currentVersion !== app.latestVersion;
 
 const channel = {

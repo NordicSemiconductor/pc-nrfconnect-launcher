@@ -11,21 +11,22 @@ import ReactMarkdown from 'react-markdown';
 
 import {
     App,
-    DownloadableApp,
+    InstalledDownloadableApp,
     isDownloadable,
     isInstalled,
+    isUpdatable,
     isWithdrawn,
-    updateAvailable,
+    UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
-const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
-    !isWithdrawn(app) &&
-    isDownloadable(app) &&
-    (!isInstalled(app) || updateAvailable(app));
+const canBeInstalledOrUpdated = (
+    app?: App
+): app is InstalledDownloadableApp | UninstalledDownloadableApp =>
+    isDownloadable(app) && (!isInstalled(app) || isUpdatable(app));
 
 export default () => {
     const dispatch = useLauncherDispatch();
