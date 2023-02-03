@@ -21,10 +21,10 @@ const UpdateApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
     if (
+        isWithdrawn(app) ||
         !isInstalled(app) ||
         !isDownloadable(app) ||
-        !updateAvailable(app) ||
-        isWithdrawn(app)
+        !updateAvailable(app)
     )
         return null;
 

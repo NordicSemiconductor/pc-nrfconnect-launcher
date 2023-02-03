@@ -24,6 +24,7 @@ import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
     app != null &&
+    !isWithdrawn(app) &&
     isDownloadable(app) &&
     (!isInstalled(app) || updateAvailable(app));
 

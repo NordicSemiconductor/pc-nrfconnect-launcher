@@ -69,7 +69,7 @@ export type DownloadableApp =
     | UninstalledDownloadableApp
     | WithdrawnApp;
 
-export type LaunchableApp = LocalApp | InstalledDownloadableApp;
+export type LaunchableApp = LocalApp | InstalledDownloadableApp | WithdrawnApp;
 
 export type App = LocalApp | DownloadableApp;
 

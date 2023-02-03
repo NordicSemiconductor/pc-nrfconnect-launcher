@@ -330,7 +330,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => isInstalled(app) && updateAvailable(app)
+        app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -341,7 +341,9 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => isInstalled(app) && updateAvailable(app));
+        .filter(
+            app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
+        );
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
