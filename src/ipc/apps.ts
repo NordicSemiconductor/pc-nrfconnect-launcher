@@ -68,13 +68,13 @@ export interface AppWithError extends AppSpec {
     path: string;
 }
 
-export const isDownloadable = (app: App): app is DownloadableApp =>
-    app.source !== LOCAL;
+export const isDownloadable = (app?: App): app is DownloadableApp =>
+    app != null && app?.source !== LOCAL;
 
-export const isInstalled = (app: App): app is LaunchableApp =>
-    'currentVersion' in app && app.currentVersion != null;
+export const isInstalled = (app?: App): app is LaunchableApp =>
+    app != null && 'currentVersion' in app && app.currentVersion != null;
 
-export const isWithdrawn = (app: App): app is WithdrawnApp =>
+export const isWithdrawn = (app?: App): app is WithdrawnApp =>
     isDownloadable(app) && !('latestVersion' in app);
 
 export const updateAvailable = (app: InstalledDownloadableApp) =>

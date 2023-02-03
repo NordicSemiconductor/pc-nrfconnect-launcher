@@ -23,7 +23,6 @@ import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
-    app != null &&
     !isWithdrawn(app) &&
     isDownloadable(app) &&
     (!isInstalled(app) || updateAvailable(app));
@@ -33,7 +32,7 @@ export default () => {
     const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
     const app = useLauncherSelector(getDownloadableApp(appToDisplay));
 
-    if (app != null && isWithdrawn(app)) {
+    if (isWithdrawn(app)) {
         return null;
     }
 
