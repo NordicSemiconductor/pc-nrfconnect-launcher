@@ -64,6 +64,11 @@ export const openLauncherWindow = () => {
                 launcherWindow?.hide();
             }
         });
+
+        // @ts-expect-error Custom event
+        launcherWindow.on('restart-window', () => {
+            launcherWindow?.reload();
+        });
     }
 };
 
@@ -141,6 +146,14 @@ export const openAppWindow = (app: LaunchableApp) => {
         ) {
             electronApp.quit();
         }
+    });
+
+    // @ts-expect-error Custom event
+    appWindow.once('restart-window', () => {
+        appWindow.close();
+        appWindow.once('closed', () => {
+            openAppWindow(app);
+        });
     });
 };
 

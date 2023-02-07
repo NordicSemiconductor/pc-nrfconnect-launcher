@@ -7,6 +7,7 @@
 -   Support for Serial Terminal app.
 -   Warn about outdated app versions.
 -   Hotkey Ctrl-W or Cmd-W closes current window.
+-   Hotkey Ctrl-R or Cmd-R restarts current window instead of reloading.
 
 ### Changed
 

@@ -56,7 +56,7 @@ export default () =>
                     accelerator: 'CmdOrCtrl+R',
                     click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
                         if (focusedWindow) {
-                            focusedWindow.reload();
+                            focusedWindow.emit('restart-window');
                         }
                     },
                 },
