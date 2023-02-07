@@ -86,6 +86,7 @@ const channel = {
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
     apps: DownloadableApp[];
+    appsWithErrors: AppWithError[];
     sourcesWithErrors: Source[];
 };
 

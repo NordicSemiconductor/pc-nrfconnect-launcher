@@ -67,8 +67,20 @@ const initialState: State = {
 const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
     app.source === specOfSoughtApp.source && app.name === specOfSoughtApp.name;
 
-const notEqualsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
-    !equalsSpec(specOfSoughtApp)(app);
+const addApp = (apps: DownloadableAppWithProgress[], app: DownloadableApp) => {
+    apps.push(appNotInProgress(app));
+};
+
+const overwriteApp = (
+    apps: DownloadableAppWithProgress[],
+    app: DownloadableApp
+) => {
+    const existingAppIndex = apps.findIndex(equalsSpec(app));
+    apps[existingAppIndex] = {
+        ...app,
+        progress: apps[existingAppIndex].progress,
+    };
+};
 
 const updateApp = <AppType extends App>(
     specOfAppToUpdate: AppSpec,
@@ -92,46 +104,6 @@ const resetProgress = (
 ) => {
     updateApp(specOfAppToUpdate, apps, app => {
         app.progress = notInProgress();
-    });
-};
-
-const addUninstalledApp = (
-    apps: DownloadableAppWithProgress[],
-    updatedApp: DownloadableApp
-) => {
-    apps.push(appNotInProgress(updatedApp));
-};
-
-const updateInstalledApp = (
-    app: DownloadableAppWithProgress,
-    updatedApp: DownloadableApp
-) => {
-    app.latestVersion = updatedApp.latestVersion;
-    app.versions = updatedApp.versions;
-};
-
-const updateUninstalledApp = (
-    app: DownloadableAppWithProgress,
-    updatedApp: DownloadableApp
-) => {
-    Object.assign(app, updatedApp);
-};
-
-const mergeDownloadedAppInfoIn = (
-    apps: DownloadableAppWithProgress[],
-    updatedApps: DownloadableApp[]
-) => {
-    updatedApps.forEach(updatedAppInfo => {
-        const existingApp = apps.find(equalsSpec(updatedAppInfo));
-
-        const appIsStillUnknown = existingApp == null;
-        if (appIsStillUnknown) {
-            addUninstalledApp(apps, updatedAppInfo);
-        } else if (isInstalled(existingApp)) {
-            updateInstalledApp(existingApp, updatedAppInfo);
-        } else {
-            updateUninstalledApp(existingApp, updatedAppInfo);
-        }
     });
 };
 
@@ -160,23 +132,17 @@ const slice = createSlice({
         // Downloadable apps
         addDownloadableApps(
             state,
-            { payload: additionalApps }: PayloadAction<DownloadableApp[]>
+            { payload: apps }: PayloadAction<DownloadableApp[]>
         ) {
-            state.downloadableApps.push(
-                ...additionalApps.map(appNotInProgress)
-            );
-        },
+            apps.forEach(app => {
+                const appIsKnown = state.downloadableApps.some(equalsSpec(app));
 
-        updateDownloadableAppInfo(
-            state,
-            { payload: updatedApp }: PayloadAction<DownloadableApp>
-        ) {
-            state.downloadableApps = state.downloadableApps
-                .filter(notEqualsSpec(updatedApp))
-                .concat({
-                    ...updatedApp,
-                    progress: notInProgress(),
-                });
+                if (appIsKnown) {
+                    overwriteApp(state.downloadableApps, app);
+                } else {
+                    addApp(state.downloadableApps, app);
+                }
+            });
         },
 
         removeAppsOfSource(
@@ -192,31 +158,27 @@ const slice = createSlice({
         updateDownloadableAppInfosStarted(state) {
             state.isDownloadingLatestAppInfo = true;
         },
-        updateDownloadableAppInfos(
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                updatedApps: DownloadableApp[];
-                updateCheckDate?: Date;
-            }>
-        ) {
-            mergeDownloadedAppInfoIn(
-                state.downloadableApps,
-                payload.updatedApps
-            );
 
-            state.isDownloadingLatestAppInfo = false;
-            state.lastUpdateCheckDate = payload.updateCheckDate ?? new Date();
+        updateDownloadableAppInfosSuccess: {
+            reducer(state, { payload: updateCheckDate }: PayloadAction<Date>) {
+                state.isDownloadingLatestAppInfo = false;
+                state.lastUpdateCheckDate = updateCheckDate;
+            },
+            prepare(updateCheckDate: Date = new Date()) {
+                return { payload: updateCheckDate };
+            },
         },
         updateDownloadableAppInfosFailed(state) {
             state.isDownloadingLatestAppInfo = false;
         },
 
         // Update progress
-        updateAppProgress(state, { payload }: PayloadAction<Progress>) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                app.progress.fraction = payload.progressFraction;
+        updateAppProgress(
+            state,
+            { payload: progress }: PayloadAction<Progress>
+        ) {
+            updateApp(progress.app, state.downloadableApps, app => {
+                app.progress.fraction = progress.progressFraction;
             });
         },
 
@@ -298,10 +260,9 @@ export const {
     resetAppProgress,
     setAllLocalApps,
     showConfirmLaunchDialog,
-    updateDownloadableAppInfo,
-    updateDownloadableAppInfos,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
     updateAppProgress,
 } = slice.actions;

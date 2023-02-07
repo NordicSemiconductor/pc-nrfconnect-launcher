@@ -25,10 +25,9 @@ import reducer, {
     setAllLocalApps,
     showConfirmLaunchDialog,
     State,
-    updateDownloadableAppInfo,
-    updateDownloadableAppInfos,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
@@ -102,6 +101,34 @@ describe('appsReducer', () => {
         ]);
     });
 
+    it('can update downloadable apps', () => {
+        const app = createDownloadableTestApp('app 1', {
+            description: 'Old description',
+        });
+        const updatedApp = createDownloadableTestApp('app 1', {
+            description: 'New description',
+        });
+
+        const state = dispatchTo(reducer, [
+            addDownloadableApps([app]),
+            addDownloadableApps([updatedApp]),
+        ]);
+        expect(state.downloadableApps).toMatchObject([updatedApp]);
+    });
+
+    it('keeps the progress when updating downloadable apps', () => {
+        const app = createDownloadableTestApp('app 1', {
+            description: 'Old description',
+        });
+
+        const state = dispatchTo(reducer, [
+            addDownloadableApps([app]),
+            installDownloadableAppStarted(app),
+            addDownloadableApps([app]),
+        ]);
+        expect(state.downloadableApps[0].progress.isInstalling).toBe(true);
+    });
+
     it('can remove all apps of a source', () => {
         const appOfSourceA = createDownloadableTestApp('app 1', {
             source: 'A',
@@ -148,15 +175,9 @@ describe('appsReducer', () => {
 
         const afterFinishingInstalling = reducer(
             whileInstalling,
-            updateDownloadableAppInfo(downloadableApp1)
-        );
-        expect(appIsInstalling(afterFinishingInstalling)).toBe(false);
-
-        const afterAbortingInstalling = reducer(
-            whileInstalling,
             resetAppProgress(downloadableApp1)
         );
-        expect(appIsInstalling(afterAbortingInstalling)).toBe(false);
+        expect(appIsInstalling(afterFinishingInstalling)).toBe(false);
     });
 
     it('signals when an app is being removed', () => {
@@ -204,15 +225,9 @@ describe('appsReducer', () => {
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            updateDownloadableAppInfo(downloadableApp1)
-        );
-        expect(appIsBeingUpdated(afterFinishingUpdating)).toBe(false);
-
-        const afterAbortingUpdating = reducer(
-            whileUpdating,
             resetAppProgress(downloadableApp1)
         );
-        expect(appIsBeingUpdated(afterAbortingUpdating)).toBe(false);
+        expect(appIsBeingUpdated(afterFinishingUpdating)).toBe(false);
     });
 
     it('signals when the latest app info are downloaded', () => {
@@ -227,7 +242,7 @@ describe('appsReducer', () => {
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            updateDownloadableAppInfos({ updatedApps: [] })
+            updateDownloadableAppInfosSuccess()
         );
         expect(afterFinishingUpdating.isDownloadingLatestAppInfo).toBe(false);
 
@@ -242,10 +257,7 @@ describe('appsReducer', () => {
         const aDate = new Date(1972, 5, 27);
 
         const state = dispatchTo(reducer, [
-            updateDownloadableAppInfos({
-                updatedApps: [],
-                updateCheckDate: aDate,
-            }),
+            updateDownloadableAppInfosSuccess(aDate),
         ]);
         expect(state.lastUpdateCheckDate).toEqual(aDate);
     });

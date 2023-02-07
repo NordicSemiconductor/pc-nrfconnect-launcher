@@ -19,18 +19,25 @@ import {
     InstallResult,
     successfulInstall,
 } from '../ipc/apps';
-import { readAppInfo, readAppInfoFile } from './appInfo';
+import { LOCAL } from '../ipc/sources';
 import {
+    createDownloadableApp,
+    getInstalledApp,
     getLocalApp,
-    installedApp,
     installedAppPath,
     isInstalled,
-    localApp,
-} from './apps';
+    readAppInfo,
+    readAppInfoFile,
+} from './appInfo';
 import { getAppsLocalDir, getAppsRootDir } from './config';
 import { deleteFile, listFiles, untar } from './fileUtil';
 import { mkdir } from './mkdir';
 import { downloadToFile } from './net';
+
+const localApp = (appName: string): AppSpec => ({
+    source: LOCAL,
+    name: appName,
+});
 
 const getTmpFilename = (basename: string) =>
     path.join(electronApp.getPath('temp'), `${basename}-${uuid()}`);
@@ -241,5 +248,5 @@ export const installDownloadableApp = async (
     await extractNpmPackage(app.name, tgzFilePath, installedAppPath(app));
     await deleteFile(tgzFilePath);
 
-    return installedApp(readAppInfo(app));
+    return getInstalledApp(createDownloadableApp(app.source)(readAppInfo(app)));
 };

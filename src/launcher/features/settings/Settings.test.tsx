@@ -10,8 +10,8 @@ import { createDownloadableTestApp } from '../../../test/testFixtures';
 import render from '../../../test/testrenderer';
 import {
     addDownloadableApps,
-    updateDownloadableAppInfos,
     updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
@@ -52,10 +52,9 @@ describe('SettingsView', () => {
     it('should render with last update check date', () => {
         expect(
             render(<Settings />, [
-                updateDownloadableAppInfos({
-                    updatedApps: [],
-                    updateCheckDate: new Date(2017, 1, 3, 13, 41, 36, 20),
-                }),
+                updateDownloadableAppInfosSuccess(
+                    new Date(2017, 1, 3, 13, 41, 36)
+                ),
             ]).baseElement
         ).toMatchSnapshot();
     });

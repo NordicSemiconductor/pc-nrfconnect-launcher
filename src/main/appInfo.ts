@@ -6,16 +6,35 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import type { AppInfo } from 'pc-nrfconnect-shared';
+import type { AppInfo, PackageJson } from 'pc-nrfconnect-shared';
 
-import { AppSpec, DownloadableApp } from '../ipc/apps';
+import {
+    AppSpec,
+    AppWithError,
+    DownloadableApp,
+    InstalledDownloadableApp,
+    LocalApp,
+} from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { Source, SourceName } from '../ipc/sources';
-import { getAppsRootDir } from './config';
+import { LOCAL, Source, SourceName } from '../ipc/sources';
+import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
 import describeError from './describeError';
-import { createJsonFile, readJsonFile } from './fileUtil';
+import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
 import { downloadToFile, downloadToJson } from './net';
 import { downloadAllSources, getAppUrls, getSource } from './sources';
+
+export const installedAppPath = (app: AppSpec) => {
+    const appDir =
+        app.source === LOCAL
+            ? getAppsLocalDir()
+            : getNodeModulesDir(app.source);
+    return path.join(appDir, app.name);
+};
+
+const defined = <X>(item?: X): item is X => item != null;
+
+export const isInstalled = (app: AppSpec) =>
+    fs.pathExistsSync(installedAppPath(app));
 
 const iconPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}.svg`);
@@ -45,9 +64,7 @@ export const readAppInfo = (appSpec: AppSpec) => {
         );
     }
 
-    const appInfo = readAppInfoFile(appSpec);
-
-    return createDownloadableApp(source, appInfo);
+    return readAppInfoFile(appSpec);
 };
 
 const writeAppInfo = (appInfo: AppInfo, source: Source) => {
@@ -102,27 +119,24 @@ const downloadIconAndReleaseNotes = (appInfo: AppInfo, source: SourceName) => {
     ]);
 };
 
-const createDownloadableApp = (
-    source: Source,
-    appInfo: AppInfo
-): DownloadableApp => ({
-    name: appInfo.name,
-    source: source.name,
-
-    displayName: appInfo.displayName,
-    description: appInfo.description,
-
-    iconPath: iconPath({ name: appInfo.name, source: source.name }),
-    releaseNotes: readReleaseNotes({
+export const createDownloadableApp =
+    (source: SourceName) =>
+    (appInfo: AppInfo): DownloadableApp => ({
         name: appInfo.name,
-        source: source.name,
-    }),
-    homepage: appInfo.homepage,
-    latestVersion: appInfo.latestVersion,
-    versions: appInfo.versions,
-});
+        source,
 
-const defined = <X>(item?: X): item is X => item != null;
+        displayName: appInfo.displayName,
+        description: appInfo.description,
+
+        iconPath: iconPath({ name: appInfo.name, source }),
+        releaseNotes: readReleaseNotes({
+            name: appInfo.name,
+            source,
+        }),
+        homepage: appInfo.homepage,
+        latestVersion: appInfo.latestVersion,
+        versions: appInfo.versions,
+    });
 
 export const downloadAppInfos = async (source: Source) => {
     const downloadableApps = await Promise.all(
@@ -142,7 +156,7 @@ export const downloadAppInfos = async (source: Source) => {
 
             await downloadIconAndReleaseNotes(appInfo, source.name);
 
-            return createDownloadableApp(source, appInfo);
+            return appInfo;
         })
     );
 
@@ -151,12 +165,98 @@ export const downloadAppInfos = async (source: Source) => {
     return downloadableApps.filter(defined);
 };
 
-export const downloadLatestAppInfos = async () => {
-    const { sources, sourcesWithErrors } = await downloadAllSources();
-    const apps = await Promise.all(sources.map(downloadAppInfos));
+export const getInstalledApp = (
+    app: DownloadableApp
+): InstalledDownloadableApp => {
+    const appPath = installedAppPath(app);
+    const resourcesPath = path.join(appPath, 'resources');
+
+    const packageJson = readJsonFile<PackageJson>(
+        path.join(appPath, 'package.json')
+    );
 
     return {
-        apps: apps.flat(),
+        name: packageJson.name,
+        source: app.source,
+
+        description: packageJson.description ?? app.description,
+        displayName: packageJson.displayName ?? app.displayName,
+
+        engineVersion: packageJson.engines?.nrfconnect,
+
+        currentVersion: packageJson.version,
+        latestVersion: app.latestVersion,
+        versions: app.versions,
+
+        path: appPath,
+        iconPath:
+            ifExists(path.join(resourcesPath, 'icon.svg')) ??
+            path.join(resourcesPath, 'icon.png'),
+
+        homepage: packageJson.homepage ?? app.homepage,
+        repositoryUrl: packageJson.repository?.url,
+
+        releaseNotes: app.releaseNotes,
+    };
+};
+
+export const getLocalApp = (appName: string): LocalApp => ({
+    ...getInstalledApp({
+        name: appName,
+        source: LOCAL,
+        displayName: appName,
+        description: '',
+        versions: {},
+        latestVersion: '',
+        iconPath: '',
+    }),
+    source: LOCAL,
+});
+
+export const addInformationForInstalledApps = (apps: DownloadableApp[]) => {
+    const appsWithErrors: AppWithError[] = [];
+
+    const appsWithInstallInfos = apps.map(app => {
+        if (!isInstalled(app)) {
+            return app;
+        }
+
+        try {
+            return getInstalledApp(app);
+        } catch (error) {
+            appsWithErrors.push({
+                reason: error,
+                path: installedAppPath(app),
+                name: app.name,
+                source: app.source,
+            });
+
+            return undefined;
+        }
+    });
+
+    return {
+        apps: appsWithInstallInfos.filter(defined),
+        appsWithErrors,
+    };
+};
+
+export const downloadLatestAppInfos = async () => {
+    const { sources, sourcesWithErrors } = await downloadAllSources();
+
+    const downloadableAppsPromises = sources.map(async source =>
+        (await downloadAppInfos(source)).map(createDownloadableApp(source.name))
+    );
+    const downloadableApps = (
+        await Promise.all(downloadableAppsPromises)
+    ).flat();
+
+    const { apps, appsWithErrors } =
+        addInformationForInstalledApps(downloadableApps);
+
+    return {
+        apps,
+        appsWithErrors,
         sourcesWithErrors,
     };
 };
