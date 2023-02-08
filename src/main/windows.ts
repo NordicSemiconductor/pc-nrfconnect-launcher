@@ -46,30 +46,34 @@ export const openLauncherWindow = () => {
     if (launcherWindow) {
         launcherWindow.show();
     } else {
-        launcherWindow = browser.createWindow({
-            title: `nRF Connect for Desktop v${getConfig().version}`,
-            url: `file://${getElectronResourcesDir()}/launcher.html`,
-            icon: getDefaultIconPath(),
-            width: 760,
-            height: 600,
-            center: true,
-            splashScreen: !getConfig().isSkipSplashScreen,
-        });
-
-        registerLauncherWindow(launcherWindow);
-
-        launcherWindow.on('close', event => {
-            if (appWindows.length > 0) {
-                event.preventDefault();
-                launcherWindow?.hide();
-            }
-        });
-
-        // @ts-expect-error Custom event
-        launcherWindow.on('restart-window', () => {
-            launcherWindow?.reload();
-        });
+        launcherWindow = createLauncherWindow();
     }
+};
+
+const createLauncherWindow = () => {
+    const window = browser.createWindow({
+        title: `nRF Connect for Desktop v${getConfig().version}`,
+        url: `file://${getElectronResourcesDir()}/launcher.html`,
+        icon: getDefaultIconPath(),
+        width: 760,
+        height: 600,
+        center: true,
+        splashScreen: !getConfig().isSkipSplashScreen,
+    });
+
+    registerLauncherWindow(window);
+
+    window.on('close', event => {
+        if (appWindows.length > 0) {
+            event.preventDefault();
+            window.hide();
+        }
+    });
+
+    // @ts-expect-error Custom event
+    window.on('restart-window', () => window.reload());
+
+    return window;
 };
 
 export const hideLauncherWindow = () => {
