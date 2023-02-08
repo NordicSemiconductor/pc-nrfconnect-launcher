@@ -133,6 +133,8 @@ export const openAppWindow = (app: LaunchableApp) => {
         });
     });
 
+    let reloading = false;
+
     appWindow.on('closed', () => {
         const index = appWindows.findIndex(
             appWin => appWin.browserWindow === appWindow
@@ -142,7 +144,8 @@ export const openAppWindow = (app: LaunchableApp) => {
         }
         if (
             appWindows.length === 0 &&
-            !(launcherWindow && launcherWindow.isVisible())
+            !launcherWindow?.isVisible() &&
+            !reloading
         ) {
             electronApp.quit();
         }
@@ -150,9 +153,11 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     // @ts-expect-error Custom event
     appWindow.once('restart-window', () => {
+        reloading = true;
         appWindow.close();
         appWindow.once('closed', () => {
             openAppWindow(app);
+            reloading = false;
         });
     });
 };
