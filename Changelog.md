@@ -2,14 +2,16 @@
 
 ### Added
 
--   Drag and drop an app package file onto the app list in order to install a local app.
+-   Drag and drop an app package file onto the app list in order to install a
+    local app.
 -   Warn about outdated app versions.
 -   Hotkey `Ctrl+W` or `Cmd+W` closes the current window.
 
 ### Changed
 
 -   Installing and updating apps does not block the app list.
--   Only download icons and release notes on startup if “Check for updates at startup” is enabled.
+-   Only download icons and release notes on startup if “Check for updates at
+    startup” is enabled.
 
 ### Fixed
 
