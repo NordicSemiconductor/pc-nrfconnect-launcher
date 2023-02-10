@@ -1,19 +1,15 @@
-## 4.0.0-pre1 - 2023-01-04
+## 4.0.0 - 2023-02-13
 
 ### Added
 
--   Install local apps by dragging a file containing an app package and dropping
-    it onto the app list.
--   Support for Serial Terminal app.
+-   Drag and drop an app package file onto the app list in order to install a local app.
 -   Warn about outdated app versions.
--   Hotkey Ctrl-W or Cmd-W closes current window.
+-   Hotkey `Ctrl+W` or `Cmd+W` closes the current window.
 
 ### Changed
 
--   Installing or updating an app does not prevent working with other apps in
-    the list of apps any longer.
--   Do not download icons and release notes on startup if “Check for updates at
-    startup” is disabled.
+-   Installing and updating apps does not block the app list.
+-   Only download icons and release notes on startup if “Check for updates at startup” is enabled.
 
 ### Fixed
 
