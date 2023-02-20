@@ -20,8 +20,8 @@ import {
 } from '../ipc/apps';
 import { LOCAL } from '../ipc/sources';
 import {
-    createDownloadableApp,
-    getInstalledApp,
+    addDownloadAppData,
+    addInstalledAppData,
     getLocalApp,
     installedAppPath,
     isInstalled,
@@ -247,5 +247,7 @@ export const installDownloadableApp = async (
     await extractNpmPackage(app.name, tgzFilePath, installedAppPath(app));
     await deleteFile(tgzFilePath);
 
-    return getInstalledApp(createDownloadableApp(app.source)(readAppInfo(app)));
+    return addInstalledAppData(
+        addDownloadAppData(app.source)(readAppInfo(app))
+    );
 };

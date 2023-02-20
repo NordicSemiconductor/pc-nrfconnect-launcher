@@ -12,7 +12,7 @@ import {
     SourceName,
     SourceUrl,
 } from '../ipc/sources';
-import { createDownloadableApp, downloadAppInfos } from './appInfo';
+import { addDownloadAppData, downloadAppInfos } from './appInfo';
 import { getAppsRootDir } from './config';
 import { addShownSource, removeShownSource } from './settings';
 import {
@@ -39,7 +39,7 @@ export const addSource = async (url: SourceUrl) => {
     addShownSource(source.name);
 
     const apps = (await downloadAppInfos(source)).map(
-        createDownloadableApp(source.name)
+        addDownloadAppData(source.name)
     );
 
     return {

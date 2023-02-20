@@ -59,8 +59,11 @@ import {
     removeDownloadableApp,
     removeLocalApp,
 } from './appChanges';
-import { downloadLatestAppInfos } from './appInfo';
-import { getDownloadableApps, getLocalApps } from './apps';
+import {
+    downloadLatestAppInfos,
+    getDownloadableApps,
+    getLocalApps,
+} from './apps';
 import { getConfig } from './config';
 import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';

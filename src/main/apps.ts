@@ -4,23 +4,25 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import fs from 'fs-extra';
 import path from 'path';
 
 import { AppSpec, AppWithError, DownloadableApp, LocalApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { Source, SourceName } from '../ipc/sources';
 import {
-    addInformationForInstalledApps,
-    createDownloadableApp,
+    addDownloadAppData,
+    addInstalledAppData,
     downloadAppInfos,
-    getInstalledApp,
     getLocalApp,
+    installedAppPath,
+    isInstalled,
     readAppInfo,
-    readAppInfos,
 } from './appInfo';
-import { getAppsLocalDir, getNodeModulesDir } from './config';
+import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
 import { listDirectories } from './fileUtil';
 import {
+    downloadAllSources,
     downloadSourceJsonToFile,
     getAllSources,
     sourceJsonExistsLocally,
@@ -69,8 +71,8 @@ const getWithdrawnApps = (
 
         try {
             apps.push(
-                getInstalledApp(
-                    createDownloadableApp(app.source)(readAppInfo(app))
+                addInstalledAppData(
+                    addDownloadAppData(app.source)(readAppInfo(app))
                 )
             );
         } catch (error) {
@@ -78,6 +80,31 @@ const getWithdrawnApps = (
                 ...app,
                 reason: error,
                 path: withdrawnAppPath,
+            });
+        }
+    });
+
+    return { apps, appsWithErrors };
+};
+
+export const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
+    const appsWithErrors: AppWithError[] = [];
+    const apps: DownloadableApp[] = [];
+
+    downloadableApps.forEach(app => {
+        if (!isInstalled(app)) {
+            apps.push(app);
+            return;
+        }
+
+        try {
+            apps.push(addInstalledAppData(app));
+        } catch (error) {
+            appsWithErrors.push({
+                reason: error,
+                path: installedAppPath(app),
+                name: app.name,
+                source: app.source,
             });
         }
     });
@@ -95,7 +122,7 @@ export const getDownloadableApps = async () => {
             try {
                 const downloadableApps = (
                     await getAllAppInfosInSource(source)
-                ).map(createDownloadableApp(source.name));
+                ).map(addDownloadAppData(source.name));
 
                 const {
                     apps: withdrawnApps,
@@ -105,7 +132,7 @@ export const getDownloadableApps = async () => {
                 const {
                     apps: downloadableInstalledApps,
                     appsWithErrors: downloadableInstalledAppsWithErrors,
-                } = addInformationForInstalledApps(downloadableApps);
+                } = addInstalledAppDatas(downloadableApps);
 
                 apps.push(...withdrawnApps, ...downloadableInstalledApps);
                 appsWithErrors.push(
@@ -141,3 +168,36 @@ export const getLocalApps = (consistencyCheck = true) => {
 
     return localApps.filter(consistentAppAndDirectoryName);
 };
+
+export const downloadLatestAppInfos = async () => {
+    const { sources, sourcesWithErrors } = await downloadAllSources();
+
+    const downloadableAppsPromises = sources.map(async source =>
+        (await downloadAppInfos(source)).map(addDownloadAppData(source.name))
+    );
+    const downloadableApps = (
+        await Promise.all(downloadableAppsPromises)
+    ).flat();
+
+    const { apps, appsWithErrors } = addInstalledAppDatas(downloadableApps);
+
+    return {
+        apps,
+        appsWithErrors,
+        sourcesWithErrors,
+    };
+};
+
+const getAllAppSpecs = (source: Source): AppSpec[] => {
+    const filesToExclude = ['source.json', 'apps.json', 'updates.json'];
+
+    return fs
+        .readdirSync(getAppsRootDir(source.name))
+        .filter(name => !filesToExclude.includes(name))
+        .filter(name => name.endsWith('.json'))
+        .map(name => name.replace(/\.json$/, ''))
+        .map(name => ({ name, source: source.name }));
+};
+
+export const readAppInfos = (source: Source) =>
+    getAllAppSpecs(source).map(readAppInfo);
