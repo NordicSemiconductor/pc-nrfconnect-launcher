@@ -52,11 +52,11 @@ export default () =>
             label: '&View',
             submenu: [
                 {
-                    label: '&Reload',
+                    label: '&Restart Window',
                     accelerator: 'CmdOrCtrl+R',
                     click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
                         if (focusedWindow) {
-                            focusedWindow.reload();
+                            focusedWindow.emit('restart-window');
                         }
                     },
                 },

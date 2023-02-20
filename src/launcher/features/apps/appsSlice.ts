@@ -13,6 +13,7 @@ import {
     DownloadableApp,
     isDownloadable,
     isInstalled,
+    isWithdrawn,
     LaunchableApp,
     LocalApp,
     updateAvailable,
@@ -66,6 +67,9 @@ const initialState: State = {
 
 const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
     app.source === specOfSoughtApp.source && app.name === specOfSoughtApp.name;
+
+const notEqualsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
+    !equalsSpec(specOfSoughtApp)(app);
 
 const addApp = (apps: DownloadableAppWithProgress[], app: DownloadableApp) => {
     apps.push(appNotInProgress(app));
@@ -219,14 +223,23 @@ const slice = createSlice({
             state,
             { payload: removedApp }: PayloadAction<AppSpec>
         ) {
-            resetProgress(removedApp, state.downloadableApps);
+            const appToBeRemoved = state.downloadableApps.find(
+                equalsSpec(removedApp)
+            );
+            if (appToBeRemoved != null && isWithdrawn(appToBeRemoved)) {
+                state.downloadableApps = state.downloadableApps.filter(
+                    notEqualsSpec(removedApp)
+                );
+            } else {
+                resetProgress(removedApp, state.downloadableApps);
 
-            updateApp(removedApp, state.downloadableApps, (app: object) => {
-                if ('currentVersion' in app) {
-                    // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.currentVersion here
-                    delete app.currentVersion;
-                }
-            });
+                updateApp(removedApp, state.downloadableApps, (app: object) => {
+                    if ('currentVersion' in app) {
+                        // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.currentVersion here
+                        delete app.currentVersion;
+                    }
+                });
+            }
         },
 
         // Confirm launch dialog
@@ -297,7 +310,7 @@ export const getDownloadableApp =
 
 export const isAppUpdateAvailable = (state: RootState) =>
     state.apps.downloadableApps.find(
-        app => isInstalled(app) && updateAvailable(app)
+        app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
     ) != null;
 
 export const getUpdateCheckStatus = (state: RootState) => ({
@@ -308,7 +321,9 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 export const getUpdatableVisibleApps = (state: RootState) =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(app => isInstalled(app) && updateAvailable(app));
+        .filter(
+            app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
+        );
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

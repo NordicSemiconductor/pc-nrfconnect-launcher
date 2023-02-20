@@ -6,7 +6,7 @@
 
 import semver from 'semver';
 
-import { isDownloadable, LaunchableApp } from '../../ipc/apps';
+import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
 import mainConfig from './mainConfig';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
@@ -72,6 +72,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
     const fittingVersionExists =
         minimalRequiredAppVersions[app.name] != null &&
         isDownloadable(app) &&
+        !isWithdrawn(app) &&
         app.latestVersion != null &&
         semver.gte(app.latestVersion, minimalRequiredAppVersions[app.name]);
 

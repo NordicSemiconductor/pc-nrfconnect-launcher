@@ -14,11 +14,7 @@ import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppDispatch } from '../../store';
 import { downloadLatestAppInfos } from '../apps/appsEffects';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
-import {
-    cancelDownload as cancelLauncherDownload,
-    reset,
-    updateAvailable,
-} from './launcherUpdateSlice';
+import { reset, updateAvailable } from './launcherUpdateSlice';
 
 export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
     try {
@@ -36,7 +32,7 @@ export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
 
 export const cancelDownload = () => (dispatch: AppDispatch) => {
     cancelUpdate();
-    dispatch(cancelLauncherDownload());
+    dispatch(reset());
 };
 
 export const checkForUpdatesManually = () => async (dispatch: AppDispatch) => {

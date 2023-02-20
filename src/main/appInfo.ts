@@ -14,6 +14,7 @@ import {
     DownloadableApp,
     InstalledDownloadableApp,
     LocalApp,
+    WithdrawnApp,
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
@@ -158,16 +159,16 @@ export const downloadAppInfos = async (source: Source) => {
 
             return appInfo;
         })
-    );
 
-    // FIXME later: Handle if there are local app info files which do not exist on the server any longer
+        // FIXME later: Also return, which apps could not be downloaded any longer, so are now withdrawn
+    );
 
     return downloadableApps.filter(defined);
 };
 
 export const getInstalledApp = (
     app: DownloadableApp
-): InstalledDownloadableApp => {
+): InstalledDownloadableApp | WithdrawnApp => {
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
 

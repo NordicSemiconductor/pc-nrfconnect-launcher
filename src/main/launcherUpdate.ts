@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { ProgressInfo } from 'builder-util-runtime';
 import { app } from 'electron';
 import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
@@ -53,7 +54,7 @@ export const checkForUpdate = async () => {
 };
 
 export const startUpdate = () => {
-    if (installCancellationToken != null) {
+    if (installCancellationToken !== undefined) {
         showErrorDialog(
             'Download was requested but another download operation is ' +
                 'already in progress.'
@@ -63,8 +64,8 @@ export const startUpdate = () => {
 
     updateStarted();
 
-    autoUpdater.on('download-progress', progressObj => {
-        updateProgress(progressObj.percentage);
+    autoUpdater.on('download-progress', (progressObj: ProgressInfo) => {
+        updateProgress(progressObj.percent);
     });
 
     autoUpdater.on('update-downloaded', () => {
@@ -88,8 +89,9 @@ export const startUpdate = () => {
 };
 
 export const cancelUpdate = () => {
-    if (installCancellationToken != null) {
+    if (installCancellationToken !== undefined) {
         installCancellationToken.cancel();
+        installCancellationToken = undefined;
     } else {
         showErrorDialog('Unable to cancel. No download is in progress.');
     }

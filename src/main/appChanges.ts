@@ -15,7 +15,6 @@ import {
     AppSpec,
     DownloadableApp,
     failureReadingFile,
-    InstalledDownloadableApp,
     InstallResult,
     successfulInstall,
 } from '../ipc/apps';
@@ -238,7 +237,7 @@ const downloadTarball = async (app: AppSpec, version?: string) => {
 export const installDownloadableApp = async (
     app: DownloadableApp,
     version?: string
-): Promise<InstalledDownloadableApp> => {
+): Promise<DownloadableApp> => {
     const tgzFilePath = await downloadTarball(app, version);
 
     if (isInstalled(app)) {

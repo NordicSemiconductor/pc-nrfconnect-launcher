@@ -25,6 +25,7 @@ interface Downloadable {
     source: SourceName;
     homepage?: string;
     versions?: AppVersions;
+    releaseNotes?: string;
 }
 
 interface Installed {
@@ -43,19 +44,22 @@ export interface InstalledDownloadableApp
         Installed,
         Downloadable {
     latestVersion: string;
-    releaseNotes?: string;
 }
 
 export interface UninstalledDownloadableApp extends BaseApp, Downloadable {
     latestVersion: string;
-    releaseNotes?: string;
+}
+
+export interface WithdrawnApp extends BaseApp, Installed, Downloadable {
+    latestVersion: undefined;
 }
 
 export type DownloadableApp =
     | InstalledDownloadableApp
-    | UninstalledDownloadableApp;
+    | UninstalledDownloadableApp
+    | WithdrawnApp;
 
-export type LaunchableApp = LocalApp | InstalledDownloadableApp;
+export type LaunchableApp = LocalApp | InstalledDownloadableApp | WithdrawnApp;
 
 export type App = LocalApp | DownloadableApp;
 
@@ -69,6 +73,9 @@ export const isDownloadable = (app: App): app is DownloadableApp =>
 
 export const isInstalled = (app: App): app is LaunchableApp =>
     'currentVersion' in app && app.currentVersion != null;
+
+export const isWithdrawn = (app: App): app is WithdrawnApp =>
+    isDownloadable(app) && !('latestVersion' in app);
 
 export const updateAvailable = (app: InstalledDownloadableApp) =>
     app.currentVersion !== app.latestVersion;
@@ -125,7 +132,7 @@ export const registerGetDownloadableApps = handle<GetDownloadableApps>(
 type InstallDownloadableApp = (
     app: DownloadableApp,
     version?: string
-) => InstalledDownloadableApp;
+) => DownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(
     channel.installDownloadableApp

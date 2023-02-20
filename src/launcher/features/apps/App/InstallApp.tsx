@@ -7,14 +7,14 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-import { isInstalled } from '../../../../ipc/apps';
+import { isInstalled, isWithdrawn } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
 import { installDownloadableApp } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
-    if (isInstalled(app)) return null;
+    if (isInstalled(app) || isWithdrawn(app)) return null;
 
     return (
         <Button

@@ -6,17 +6,19 @@
 
 import path from 'path';
 
-import { LocalApp } from '../ipc/apps';
+import { AppSpec, AppWithError, DownloadableApp, LocalApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
-import { Source } from '../ipc/sources';
+import { Source, SourceName } from '../ipc/sources';
 import {
     addInformationForInstalledApps,
     createDownloadableApp,
     downloadAppInfos,
+    getInstalledApp,
     getLocalApp,
+    readAppInfo,
     readAppInfos,
 } from './appInfo';
-import { getAppsLocalDir } from './config';
+import { getAppsLocalDir, getNodeModulesDir } from './config';
 import { listDirectories } from './fileUtil';
 import {
     downloadSourceJsonToFile,
@@ -39,32 +41,84 @@ const getAllAppInfosInSource = async (source: Source) => {
     return readAppInfos(source);
 };
 
+const getWithdrawnApps = (
+    sourceName: SourceName,
+    availableApps: DownloadableApp[]
+) => {
+    const sourceDir = getNodeModulesDir(sourceName);
+
+    const availableAppsPaths = availableApps.map(app =>
+        path.join(sourceDir, app.name)
+    );
+    const installedAppsPaths = listDirectories(sourceDir).map(appPath =>
+        path.join(sourceDir, appPath)
+    );
+
+    const withdrawnAppsPaths = installedAppsPaths.filter(
+        appPath => !availableAppsPaths.includes(appPath)
+    );
+
+    const apps: DownloadableApp[] = [];
+    const appsWithErrors: AppWithError[] = [];
+
+    withdrawnAppsPaths.forEach(withdrawnAppPath => {
+        const app: AppSpec = {
+            name: path.basename(withdrawnAppPath),
+            source: sourceName,
+        };
+
+        try {
+            apps.push(
+                getInstalledApp(
+                    createDownloadableApp(app.source)(readAppInfo(app))
+                )
+            );
+        } catch (error) {
+            appsWithErrors.push({
+                ...app,
+                reason: error,
+                path: withdrawnAppPath,
+            });
+        }
+    });
+
+    return { apps, appsWithErrors };
+};
+
 export const getDownloadableApps = async () => {
     const sourcesWithErrors: Source[] = [];
+    const apps: DownloadableApp[] = [];
+    const appsWithErrors: AppWithError[] = [];
 
-    const results = await Promise.all(
+    await Promise.all(
         getAllSources().map(async source => {
             try {
-                const apps = (await getAllAppInfosInSource(source)).map(
-                    createDownloadableApp(source.name)
-                );
+                const downloadableApps = (
+                    await getAllAppInfosInSource(source)
+                ).map(createDownloadableApp(source.name));
 
-                return addInformationForInstalledApps(apps);
+                const {
+                    apps: withdrawnApps,
+                    appsWithErrors: withdrawnAppsWithErrors,
+                } = getWithdrawnApps(source.name, downloadableApps);
+
+                const {
+                    apps: downloadableInstalledApps,
+                    appsWithErrors: downloadableInstalledAppsWithErrors,
+                } = addInformationForInstalledApps(downloadableApps);
+
+                apps.push(...withdrawnApps, ...downloadableInstalledApps);
+                appsWithErrors.push(
+                    ...withdrawnAppsWithErrors,
+                    ...downloadableInstalledAppsWithErrors
+                );
             } catch (error) {
                 sourcesWithErrors.push(source);
-                return {
-                    apps: [],
-                    appsWithErrors: [],
-                };
             }
         })
     );
 
-    return {
-        apps: results.flatMap(result => result.apps),
-        appsWithErrors: results.flatMap(result => result.appsWithErrors),
-        sourcesWithErrors,
-    };
+    return { apps, appsWithErrors, sourcesWithErrors };
 };
 
 const consistentAppAndDirectoryName = (app: LocalApp) =>
