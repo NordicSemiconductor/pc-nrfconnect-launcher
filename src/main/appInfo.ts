@@ -214,16 +214,20 @@ export const getLocalApp = (appName: string): LocalApp => ({
     source: LOCAL,
 });
 
-export const addInformationForInstalledApps = (apps: DownloadableApp[]) => {
+export const addInformationForInstalledApps = (
+    downloadableApps: DownloadableApp[]
+) => {
     const appsWithErrors: AppWithError[] = [];
+    const apps: DownloadableApp[] = [];
 
-    const appsWithInstallInfos = apps.map(app => {
+    downloadableApps.forEach(app => {
         if (!isInstalled(app)) {
-            return app;
+            apps.push(app);
+            return;
         }
 
         try {
-            return getInstalledApp(app);
+            apps.push(getInstalledApp(app));
         } catch (error) {
             appsWithErrors.push({
                 reason: error,
@@ -231,15 +235,10 @@ export const addInformationForInstalledApps = (apps: DownloadableApp[]) => {
                 name: app.name,
                 source: app.source,
             });
-
-            return undefined;
         }
     });
 
-    return {
-        apps: appsWithInstallInfos.filter(defined),
-        appsWithErrors,
-    };
+    return { apps, appsWithErrors };
 };
 
 export const downloadLatestAppInfos = async () => {
