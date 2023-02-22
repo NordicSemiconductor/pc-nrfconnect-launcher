@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { OpenAppOptions } from '../main/windows';
 import { LaunchableApp } from './apps';
 import { on, send } from './infrastructure/rendererToMain';
 
@@ -13,7 +14,7 @@ const channel = {
 };
 
 // open app
-type OpenApp = (app: LaunchableApp) => void;
+type OpenApp = (app: LaunchableApp, openAppOptions?: OpenAppOptions) => void;
 
 export const openApp = send<OpenApp>(channel.app);
 export const registerOpenApp = on<OpenApp>(channel.app);
