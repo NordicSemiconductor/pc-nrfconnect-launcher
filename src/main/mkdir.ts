@@ -19,11 +19,7 @@ export const mkdir = (dirPath: string) => {
 };
 
 export const ensureDirExists = (dirPath: string) => {
-    try {
-        existsSync(dirPath);
-    } catch (error) {
-        if (error) {
-            mkdir(dirPath);
-        }
+    if (!existsSync(dirPath)) {
+        mkdir(dirPath);
     }
 };
