@@ -22,10 +22,14 @@ const readFile = (filePath: string) => {
     }
 };
 
-export const readJsonFile = <T>(filePath: string) => {
+export const readJsonFile = <T>(filePath: string, defaultValue?: T) => {
     try {
         return <T>JSON.parse(readFile(filePath));
     } catch (error) {
+        if (defaultValue !== undefined) {
+            return defaultValue;
+        }
+
         throw new Error(`Unable to parse ${filePath}: ${describeError(error)}`);
     }
 };

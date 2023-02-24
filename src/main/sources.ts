@@ -137,7 +137,7 @@ const getSourceJsonPath = (source: Source) =>
 export const downloadSourceJson = (sourceUrl: SourceUrl) =>
     downloadToJson<SourceJson>(sourceUrl, true);
 
-export const downloadSourceJsonToFile = async (source: Source) => {
+const downloadSourceJsonToFile = async (source: Source) => {
     try {
         createJsonFile(
             getSourceJsonPath(source),

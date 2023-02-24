@@ -22,23 +22,21 @@ import {
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
 import { listDirectories } from './fileUtil';
 import {
+    legacyMetaFilesExist,
+    migrateLegacyMetaFiles,
+} from './legacyMetaFiles';
+import {
     downloadAllSources,
-    downloadSourceJsonToFile,
     getAllSources,
     sourceJsonExistsLocally,
 } from './sources';
 
-const getAllAppInfosInSource = async (source: Source) => {
-    if (!sourceJsonExistsLocally(source)) {
-        /* If we never downloaded the meta files for a source,
-           then we must download them at least once, regardless
-           of whether the users selected "Check for updates at startup"
-        */
-
-        // FIXME later: For the official source use local copies of the meta files instead. Maybe even use copies of the apps.
-        await downloadSourceJsonToFile(source);
-        return downloadAppInfos(source);
+const getAllAppInfos = (source: Source) => {
+    if (!sourceJsonExistsLocally(source) && legacyMetaFilesExist(source)) {
+        migrateLegacyMetaFiles(source);
     }
+
+    // FIXME later: For the official source use local copies of the meta files. Maybe even use copies of the apps.
 
     return readAppInfos(source);
 };
@@ -112,38 +110,36 @@ export const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
     return { apps, appsWithErrors };
 };
 
-export const getDownloadableApps = async () => {
+export const getDownloadableApps = () => {
     const sourcesWithErrors: Source[] = [];
     const apps: DownloadableApp[] = [];
     const appsWithErrors: AppWithError[] = [];
 
-    await Promise.all(
-        getAllSources().map(async source => {
-            try {
-                const downloadableApps = (
-                    await getAllAppInfosInSource(source)
-                ).map(addDownloadAppData(source.name));
+    getAllSources().forEach(source => {
+        try {
+            const downloadableApps = getAllAppInfos(source).map(
+                addDownloadAppData(source.name)
+            );
 
-                const {
-                    apps: withdrawnApps,
-                    appsWithErrors: withdrawnAppsWithErrors,
-                } = getWithdrawnApps(source.name, downloadableApps);
+            const {
+                apps: withdrawnApps,
+                appsWithErrors: withdrawnAppsWithErrors,
+            } = getWithdrawnApps(source.name, downloadableApps);
 
-                const {
-                    apps: downloadableInstalledApps,
-                    appsWithErrors: downloadableInstalledAppsWithErrors,
-                } = addInstalledAppDatas(downloadableApps);
+            const {
+                apps: downloadableInstalledApps,
+                appsWithErrors: downloadableInstalledAppsWithErrors,
+            } = addInstalledAppDatas(downloadableApps);
 
-                apps.push(...withdrawnApps, ...downloadableInstalledApps);
-                appsWithErrors.push(
-                    ...withdrawnAppsWithErrors,
-                    ...downloadableInstalledAppsWithErrors
-                );
-            } catch (error) {
-                sourcesWithErrors.push(source);
-            }
-        })
-    );
+            apps.push(...withdrawnApps, ...downloadableInstalledApps);
+            appsWithErrors.push(
+                ...withdrawnAppsWithErrors,
+                ...downloadableInstalledAppsWithErrors
+            );
+        } catch (error) {
+            sourcesWithErrors.push(source);
+        }
+    });
 
     return { apps, appsWithErrors, sourcesWithErrors };
 };

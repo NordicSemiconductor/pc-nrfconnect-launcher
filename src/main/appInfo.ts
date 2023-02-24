@@ -67,7 +67,7 @@ export const readAppInfo = (appSpec: AppSpec) => {
     return readAppInfoFile(appSpec);
 };
 
-const writeAppInfo = (appInfo: AppInfo, source: Source) => {
+export const writeAppInfo = (appInfo: AppInfo, source: Source) => {
     const appSpec = { name: appInfo.name, source: source.name };
 
     const installedInfo = readAppInfoFileIfExists(appSpec)?.installed;

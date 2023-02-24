@@ -152,11 +152,11 @@ export const openAppWindow = (app: LaunchableApp) => {
     });
 };
 
-export const openDownloadableAppWindow = async (
+export const openDownloadableAppWindow = (
     appName: string,
     sourceName: string
 ) => {
-    const downloadableApp = (await getDownloadableApps()).apps.find(
+    const downloadableApp = getDownloadableApps().apps.find(
         app => app.name === appName && app.source === sourceName
     );
 

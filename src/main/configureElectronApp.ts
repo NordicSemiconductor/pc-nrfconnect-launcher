@@ -35,7 +35,7 @@ const initAppsDirectory = async () => {
     await installAllLocalAppArchives();
 };
 
-const openInitialWindow = async () => {
+const openInitialWindow = () => {
     const { startupApp } = getConfig();
 
     if (startupApp == null) {
@@ -46,7 +46,7 @@ const openInitialWindow = async () => {
     if (startupApp.local) {
         openLocalAppWindow(startupApp.name);
     } else {
-        await openDownloadableAppWindow(startupApp.name, startupApp.sourceName);
+        openDownloadableAppWindow(startupApp.name, startupApp.sourceName);
     }
 };
 
@@ -70,7 +70,7 @@ export default () => {
 
         try {
             await initAppsDirectory();
-            await openInitialWindow();
+            openInitialWindow();
         } catch (error) {
             fatalError(error);
         }
