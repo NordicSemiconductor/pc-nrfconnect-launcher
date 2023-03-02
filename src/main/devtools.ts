@@ -5,21 +5,17 @@
  */
 
 import { app, session } from 'electron';
-import type installExtension from 'electron-devtools-installer';
 import type { REDUX_DEVTOOLS } from 'electron-devtools-installer';
+import installExtension from 'electron-devtools-installer';
 import fs from 'fs';
 import path from 'path';
 import { exit } from 'process';
 
 type ExtensionReference = typeof REDUX_DEVTOOLS;
-type InstallExtension = typeof installExtension;
 
 type Extensions = Record<string, ExtensionReference>;
 
-const installDevtools = async (
-    extensions: Extensions,
-    installExtension: InstallExtension
-) => {
+const installDevtools = async (extensions: Extensions) => {
     try {
         // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const extensionName in extensions) {
@@ -87,17 +83,12 @@ export default async () => {
         return;
     }
 
-    const {
-        REDUX_DEVTOOLS,
-        REACT_DEVELOPER_TOOLS,
-        // @ts-expect-error: installExtension really is nested like this
-        default: { default: installExtension },
-    } = devToolsInstaller;
+    const { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS } = devToolsInstaller;
 
     const extensions = { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS };
 
     if (process.argv.includes('--install-devtools')) {
-        await installDevtools(extensions, installExtension);
+        await installDevtools(extensions);
     } else if (process.argv.includes('--remove-devtools')) {
         removeDevtools(extensions);
     } else {
