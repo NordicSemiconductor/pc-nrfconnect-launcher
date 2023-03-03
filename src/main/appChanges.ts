@@ -194,7 +194,7 @@ export const removeDownloadableApp = async (app: AppSpec) => {
     return fs.remove(tmpDir);
 };
 
-const verifyShasum = async (filePath: string, expectedShasum: string) => {
+const verifyShasum = async (filePath: string, expectedShasum?: string) => {
     let buffer;
     try {
         buffer = await fs.readFile(filePath);
@@ -205,7 +205,7 @@ const verifyShasum = async (filePath: string, expectedShasum: string) => {
     }
 
     const computedShasum = shasum(buffer);
-    if (expectedShasum !== computedShasum) {
+    if (expectedShasum != null && expectedShasum !== computedShasum) {
         throw new Error(
             `Shasum verification failed for ${filePath}. Expected ` +
                 `'${expectedShasum}', but got '${computedShasum}'.`

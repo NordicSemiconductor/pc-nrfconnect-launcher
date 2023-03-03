@@ -1,3 +1,9 @@
+## 4.0.1 - 2023-03-06
+
+### Fixed
+
+-   nRF53DK programming failed due to timeout.
+
 ## 4.0.0 - 2023-02-13
 
 ### Added
