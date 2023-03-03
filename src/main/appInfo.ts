@@ -159,8 +159,6 @@ export const downloadAppInfos = async (source: Source) => {
 
             return appInfo;
         })
-
-        // FIXME later: Also return, which apps could not be downloaded any longer, so are now withdrawn
     );
 
     return downloadableApps.filter(defined);
