@@ -102,13 +102,13 @@
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.18.1",
+        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v15",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
         "@electron/remote": "2.0.8",
-        "@nordicsemiconductor/nrf-device-lib-js": "0.5.0-pre9",
+        "@nordicsemiconductor/nrf-device-lib-js": "^0.5.0",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.0.1",
