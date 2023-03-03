@@ -23,6 +23,7 @@ import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
 import { downloadToFile, downloadToJson } from './net';
 import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
+// FIXME later: Check all usages of this function and whether the app's meta data can rather be used
 export const installedAppPath = (app: AppSpec) => {
     const appDir =
         app.source === LOCAL
@@ -68,14 +69,20 @@ export const readAppInfo = (appSpec: AppSpec) => {
     return readAppInfoFile(appSpec);
 };
 
-export const writeAppInfo = (appInfo: AppInfo, source: Source) => {
+export const writeAppInfo = (
+    appInfo: AppInfo,
+    source: Source,
+    { keepInstallInfo = false } = {}
+) => {
     const appSpec = { name: appInfo.name, source: source.name };
-
-    const installedInfo = readAppInfoFileIfExists(appSpec)?.installed;
-
     const mergedContent = { ...appInfo };
-    if (installedInfo != null) {
-        mergedContent.installed = installedInfo;
+
+    if (keepInstallInfo) {
+        const installedInfo = readAppInfoFileIfExists(appSpec)?.installed;
+
+        if (installedInfo != null) {
+            mergedContent.installed = installedInfo;
+        }
     }
 
     createJsonFile(appInfoFile(appSpec), mergedContent);
@@ -153,7 +160,7 @@ export const downloadAppInfos = async (source: Source) => {
                 return undefined;
             }
 
-            writeAppInfo(appInfo, source);
+            writeAppInfo(appInfo, source, { keepInstallInfo: true });
 
             await downloadIconAndReleaseNotes(appInfo, source.name);
 

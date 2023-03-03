@@ -27,11 +27,13 @@ import {
     isInstalled,
     readAppInfo,
     readAppInfoFile,
+    writeAppInfo,
 } from './appInfo';
 import { getAppsLocalDir, getAppsRootDir } from './config';
 import { deleteFile, listFiles, untar } from './fileUtil';
 import { mkdir } from './mkdir';
 import { downloadToFile } from './net';
+import { getSource } from './sources';
 
 const localApp = (appName: string): AppSpec => ({
     source: LOCAL,
@@ -179,6 +181,16 @@ export const installAllLocalAppArchives = () => {
     );
 };
 
+const removeInstallMetaData = (app: AppSpec) => {
+    const appInfo = readAppInfo(app);
+    delete appInfo.installed;
+
+    writeAppInfo(
+        appInfo,
+        getSource(app.source)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    );
+};
+
 export const removeDownloadableApp = async (app: AppSpec) => {
     const appPath = installedAppPath(app);
     if (!appPath.includes('node_modules')) {
@@ -188,6 +200,8 @@ export const removeDownloadableApp = async (app: AppSpec) => {
                 'have node_modules in its path.'
         );
     }
+
+    removeInstallMetaData(app);
 
     const tmpDir = getTmpFilename(app.name);
     await fs.move(appPath, tmpDir);
@@ -226,26 +240,43 @@ const downloadTarball = async (app: AppSpec, version?: string) => {
     const tarballUrl = versionToInstall.tarballUrl;
 
     const fileName = path.basename(tarballUrl);
-    const tarballFile = path.join(getAppsRootDir(app.source), fileName);
+    const packageFilePath = path.join(getAppsRootDir(app.source), fileName);
 
-    await downloadToFile(tarballUrl, tarballFile, true, app);
-    await verifyShasum(tarballFile, versionToInstall.shasum);
+    await downloadToFile(tarballUrl, packageFilePath, true, app);
+    await verifyShasum(packageFilePath, versionToInstall.shasum);
 
-    return tarballFile;
+    return { packageFilePath, checksum: versionToInstall.shasum };
+};
+
+const addInstallMetaData = (
+    app: AppSpec,
+    appPath: string,
+    checksum?: string
+) => {
+    writeAppInfo(
+        {
+            ...readAppInfo(app),
+            installed: { path: appPath, shasum: checksum },
+        },
+        getSource(app.source)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    );
 };
 
 export const installDownloadableApp = async (
     app: DownloadableApp,
     version?: string
 ): Promise<DownloadableApp> => {
-    const tgzFilePath = await downloadTarball(app, version);
+    const { packageFilePath, checksum } = await downloadTarball(app, version);
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
     }
 
-    await extractNpmPackage(app.name, tgzFilePath, installedAppPath(app));
-    await deleteFile(tgzFilePath);
+    const appPath = installedAppPath(app);
+    await extractNpmPackage(app.name, packageFilePath, appPath);
+    await deleteFile(packageFilePath);
+
+    addInstallMetaData(app, appPath, checksum);
 
     return addInstalledAppData(
         addDownloadAppData(app.source)(readAppInfo(app))
