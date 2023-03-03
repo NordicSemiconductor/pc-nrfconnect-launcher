@@ -12,7 +12,11 @@ import { Source } from '../ipc/sources';
 import { installedAppPath, writeAppInfo } from './appInfo';
 import { getAppsRootDir, getNodeModulesDir } from './config';
 import { readJsonFile } from './fileUtil';
-import { writeSourceJson, writeWithdrawnJson } from './sources';
+import {
+    sourceJsonExistsLocally,
+    writeSourceJson,
+    writeWithdrawnJson,
+} from './sources';
 
 type AppName = `pc-nrfconnect-${string}`;
 
@@ -38,7 +42,7 @@ const updatesJsonFile = (source: Source) =>
 const appsJsonFile = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'apps.json');
 
-export const legacyMetaFilesExist = (source: Source) =>
+const legacyMetaFilesExist = (source: Source) =>
     fs.existsSync(appsJsonFile(source));
 
 const getSource = (appsJson: AppsJson) => appsJson._source ?? 'official'; // eslint-disable-line no-underscore-dangle
@@ -98,7 +102,7 @@ export const createNewAppInfoForWithdrawnApp = (
     iconUrl: `${oldAppUrl}.svg`,
     releaseNotesUrl: `${oldAppUrl}-Changelog.md`,
     versions: {},
-    latestVersion: undefined,
+    latestVersion: packageJson.version,
     installed: {
         path: installedAppPath({
             name: appName,
@@ -122,8 +126,6 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     const packageJson = readJsonFile<PackageJson>(packageJsonFile);
 
     writeAppInfo(
-        // FIXME: Fix shared as described below
-        // @ts-expect-error -- Shared neeeds to be changed and mark the property `latestVersion` on AppInfo optional
         createNewAppInfoForWithdrawnApp(
             source,
             withdrawnAppName,
@@ -134,7 +136,7 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     );
 };
 
-export const migrateLegacyMetaFiles = (source: Source) => {
+const migrateLegacyMetaFiles = (source: Source) => {
     const appsJson = readJsonFile<AppsJson>(appsJsonFile(source));
     const updatesJson = readJsonFile<UpdatesJson>(updatesJsonFile(source), {});
 
@@ -158,4 +160,10 @@ export const migrateLegacyMetaFiles = (source: Source) => {
     });
 
     createWithDrawnAppFiles('pc-nrfconnect-gettingstarted', source);
+};
+
+export const maybeMigrateLegacyMetaFiles = (source: Source) => {
+    if (!sourceJsonExistsLocally(source) && legacyMetaFilesExist(source)) {
+        migrateLegacyMetaFiles(source);
+    }
 };

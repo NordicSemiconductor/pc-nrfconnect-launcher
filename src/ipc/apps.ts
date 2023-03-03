@@ -26,6 +26,7 @@ interface Downloadable {
     homepage?: string;
     versions?: AppVersions;
     releaseNotes?: string;
+    latestVersion: string;
 }
 
 interface Installed {
@@ -43,15 +44,15 @@ export interface InstalledDownloadableApp
     extends BaseApp,
         Installed,
         Downloadable {
-    latestVersion: string;
+    isWithdrawn: false;
 }
 
 export interface UninstalledDownloadableApp extends BaseApp, Downloadable {
-    latestVersion: string;
+    isWithdrawn: false;
 }
 
 export interface WithdrawnApp extends BaseApp, Installed, Downloadable {
-    latestVersion: undefined;
+    isWithdrawn: true;
 }
 
 export type DownloadableApp =
@@ -75,7 +76,7 @@ export const isInstalled = (app?: App): app is LaunchableApp =>
     app != null && 'currentVersion' in app && app.currentVersion != null;
 
 export const isWithdrawn = (app?: App): app is WithdrawnApp =>
-    isDownloadable(app) && !('latestVersion' in app);
+    isDownloadable(app) && app.isWithdrawn;
 
 export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
     !isWithdrawn(app) &&

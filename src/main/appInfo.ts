@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs-extra';
-import path from 'path';
+import path, { basename } from 'path';
 import type { AppInfo, PackageJson } from 'pc-nrfconnect-shared';
 
 import {
@@ -21,7 +21,7 @@ import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
 import describeError from './describeError';
 import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
 import { downloadToFile, downloadToJson } from './net';
-import { getAppUrls, getSource } from './sources';
+import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
 export const installedAppPath = (app: AppSpec) => {
     const appDir =
@@ -42,6 +42,7 @@ const iconPath = (app: AppSpec) =>
 const releaseNotesPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
+// FIXME later: This should not be needed anymore. Remove it.
 const appInfoFile = (appSpec: AppSpec) =>
     path.join(getAppsRootDir(appSpec.source), `${appSpec.name}.json`);
 
@@ -120,17 +121,23 @@ const downloadIconAndReleaseNotes = (appInfo: AppInfo, source: SourceName) => {
 };
 
 export const addDownloadAppData =
-    (source: SourceName) =>
-    (appInfo: AppInfo): DownloadableApp => ({
-        ...appInfo,
+    (source: SourceName) => (appInfo: AppInfo) => {
+        const appSpec = { name: appInfo.name, source };
+        return {
+            ...appInfo,
 
-        source,
-        iconPath: iconPath({ name: appInfo.name, source }),
-        releaseNotes: readReleaseNotes({
-            name: appInfo.name,
             source,
-        }),
-    });
+            iconPath: iconPath(appSpec),
+            releaseNotes: readReleaseNotes({
+                name: appInfo.name,
+                source,
+            }),
+            isWithdrawn: isInListOfWithdrawnApps(
+                source,
+                basename(appInfoFile(appSpec))
+            ),
+        } as DownloadableApp;
+    };
 
 export const downloadAppInfos = async (source: Source) => {
     const downloadableApps = await Promise.all(
@@ -200,6 +207,7 @@ export const getLocalApp = (appName: string): LocalApp => ({
         versions: {},
         latestVersion: '',
         iconPath: '',
+        isWithdrawn: false,
     }),
     source: LOCAL,
 });

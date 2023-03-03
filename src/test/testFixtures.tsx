@@ -44,6 +44,7 @@ export const createDownloadableTestApp = (
 
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
+    isWithdrawn: false,
 
     path: path(appName),
     iconPath: iconPath(appName),
@@ -61,6 +62,7 @@ export const createUninstalledTestApp = (
     description: `The uninstalled ${lowerCase(appName)} test app`,
 
     latestVersion: '7.8.9',
+    isWithdrawn: false,
 
     iconPath: iconPath(appName),
 

@@ -159,6 +159,11 @@ export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
+export const getAllAppUrls = (source: Source) => [
+    ...readSourceJson(source).apps,
+    ...readWithdrawnJson(source),
+];
+
 export const sourceJsonExistsLocally = (source: Source) =>
     fs.existsSync(getSourceJsonPath(source));
 
@@ -172,6 +177,15 @@ export const writeWithdrawnJson = (
     source: Source,
     withdrawnJson: WithdrawnJson
 ) => createJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+
+export const isInListOfWithdrawnApps = (
+    source: SourceName,
+    appinfoFilename: string
+) =>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    readWithdrawnJson(getSource(source)!).find(appUrl =>
+        appUrl.endsWith(`/${appinfoFilename}`)
+    ) != null;
 
 const without = <T>(arr1: T[], arr2: T[]) =>
     arr1.filter(element => !arr2.includes(element));
