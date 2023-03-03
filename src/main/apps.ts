@@ -92,7 +92,7 @@ export const getDownloadableApps = () => {
 };
 
 const consistentAppAndDirectoryName = (app: LocalApp) =>
-    app.name === path.basename(app.path);
+    app.name === path.basename(app.installed.path);
 
 export const getLocalApps = (consistencyCheck = true) => {
     const localApps = listDirectories(getAppsLocalDir()).map(getLocalApp);
@@ -102,7 +102,7 @@ export const getLocalApps = (consistencyCheck = true) => {
             .filter(app => !consistentAppAndDirectoryName(app))
             .forEach(app => {
                 showErrorDialog(
-                    `The local app at the path \`${app.path}\` has the name ` +
+                    `The local app at the path \`${app.installed.path}\` has the name ` +
                         `\`${app.name}\`, which does not match the directory. ` +
                         `Not showing this app.`
                 );

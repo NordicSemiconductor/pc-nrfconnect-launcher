@@ -27,8 +27,11 @@ export const createLocalTestApp = (
 
     currentVersion: '1.2.3',
 
-    path: path(appName),
     iconPath: iconPath(appName),
+
+    installed: {
+        path: path(appName),
+    },
 
     ...additonalProps,
 });
@@ -46,8 +49,11 @@ export const createDownloadableTestApp = (
     latestVersion: '4.5.6',
     isWithdrawn: false,
 
-    path: path(appName),
     iconPath: iconPath(appName),
+
+    installed: {
+        path: path(appName),
+    },
 
     ...additonalProps,
 });

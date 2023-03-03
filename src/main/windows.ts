@@ -89,7 +89,9 @@ export const openAppWindow = (app: LaunchableApp) => {
 
     const appWindow = createWindow({
         title: `${app.displayName || app.name} v${app.currentVersion}`,
-        url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
+        url: `file://${getElectronResourcesDir()}/app.html?appPath=${
+            app.installed.path
+        }`,
         icon: getAppIcon(app),
         x,
         y,

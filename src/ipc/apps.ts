@@ -31,9 +31,12 @@ interface Downloadable {
 
 interface Installed {
     currentVersion: string;
-    path: string;
     engineVersion?: string;
     repositoryUrl?: string;
+    installed: {
+        path: string;
+        shasum?: string;
+    };
 }
 
 export interface LocalApp extends Installed, BaseApp {

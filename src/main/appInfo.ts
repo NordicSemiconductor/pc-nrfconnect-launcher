@@ -23,6 +23,11 @@ import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
 import { downloadToFile, downloadToJson } from './net';
 import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
+export const localApp = (appName: string): AppSpec => ({
+    source: LOCAL,
+    name: appName,
+});
+
 // FIXME later: Check all usages of this function and whether the app's meta data can rather be used
 export const installedAppPath = (app: AppSpec) => {
     const appDir =
@@ -34,7 +39,9 @@ export const installedAppPath = (app: AppSpec) => {
 
 const defined = <X>(item?: X): item is X => item != null;
 
-export const isInstalled = (app: AppSpec) =>
+export const isInstalled = (
+    app: DownloadableApp
+): app is InstalledDownloadableApp | WithdrawnApp =>
     fs.pathExistsSync(installedAppPath(app));
 
 const iconPath = (app: AppSpec) =>
@@ -172,7 +179,10 @@ export const downloadAppInfos = async (source: Source) => {
 };
 
 export const addInstalledAppData = (
-    app: DownloadableApp
+    app: Omit<
+        InstalledDownloadableApp | WithdrawnApp,
+        'currentVersion' | 'path' | 'iconPath'
+    >
 ): InstalledDownloadableApp | WithdrawnApp => {
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
@@ -193,7 +203,6 @@ export const addInstalledAppData = (
 
         currentVersion: packageJson.version,
 
-        path: appPath,
         iconPath:
             ifExists(path.join(resourcesPath, 'icon.svg')) ??
             path.join(resourcesPath, 'icon.png'),
@@ -211,7 +220,9 @@ export const getLocalApp = (appName: string): LocalApp => ({
         description: '',
         versions: {},
         latestVersion: '',
-        iconPath: '',
+        installed: {
+            path: installedAppPath(localApp(appName)),
+        },
         isWithdrawn: false,
     }),
     source: LOCAL,

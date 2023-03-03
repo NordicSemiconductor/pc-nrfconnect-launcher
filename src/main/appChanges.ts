@@ -18,13 +18,13 @@ import {
     InstallResult,
     successfulInstall,
 } from '../ipc/apps';
-import { LOCAL } from '../ipc/sources';
 import {
     addDownloadAppData,
     addInstalledAppData,
     getLocalApp,
     installedAppPath,
     isInstalled,
+    localApp,
     readAppInfo,
     readAppInfoFile,
     writeAppInfo,
@@ -34,11 +34,6 @@ import { deleteFile, listFiles, untar } from './fileUtil';
 import { mkdir } from './mkdir';
 import { downloadToFile } from './net';
 import { getSource } from './sources';
-
-const localApp = (appName: string): AppSpec => ({
-    source: LOCAL,
-    name: appName,
-});
 
 const getTmpFilename = (basename: string) =>
     path.join(electronApp.getPath('temp'), `${basename}-${uuid()}`);
@@ -81,7 +76,7 @@ export const installLocalApp = async (
     const appPath = installedAppPath(localApp(appName));
 
     // Check if app exists
-    if (isInstalled(localApp(appName))) {
+    if (fs.pathExistsSync(appPath)) {
         return appExists(appName, appPath);
     }
 
@@ -279,6 +274,7 @@ export const installDownloadableApp = async (
     addInstallMetaData(app, appPath, checksum);
 
     return addInstalledAppData(
+        // @ts-expect-error -- Because the property `installed` was added above it must be there, I just do not know yet how to convince TypeScript of that
         addDownloadAppData(app.source)(readAppInfo(app))
     );
 };

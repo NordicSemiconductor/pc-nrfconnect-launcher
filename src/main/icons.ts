@@ -17,7 +17,7 @@ export const getNrfConnectForDesktopIcon = () =>
     );
 
 const resourceFile = (app: LaunchableApp, filename: string) =>
-    path.join(app.path, 'resources', filename);
+    path.join(app.installed.path, 'resources', filename);
 
 const ifExistsAndOnWindowsIcoFile = (app: LaunchableApp) =>
     process.platform !== 'win32'
