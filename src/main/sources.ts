@@ -19,6 +19,9 @@ import { downloadToJson } from './net';
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
 
+type UrlString = string;
+type WithdrawnJson = UrlString[]; // FIXME later: Move this to shared
+
 const officialSource = {
     name: OFFICIAL,
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
@@ -139,10 +142,10 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
 
 const downloadSourceJsonToFile = async (source: Source) => {
     try {
-        createJsonFile(
-            getSourceJsonPath(source),
-            await downloadSourceJson(source.url)
-        );
+        const sourceJson = await downloadSourceJson(source.url);
+        createJsonFile(getSourceJsonPath(source), sourceJson);
+
+        return sourceJson;
     } catch (error) {
         throw source;
     }
@@ -159,6 +162,37 @@ export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 export const sourceJsonExistsLocally = (source: Source) =>
     fs.existsSync(getSourceJsonPath(source));
 
+const getWithdrawnJsonPath = (source: Source) =>
+    path.join(getAppsRootDir(source.name), 'withdrawn.json');
+
+const readWithdrawnJson = (source: Source) =>
+    readJsonFile<WithdrawnJson>(getWithdrawnJsonPath(source), []);
+
+const writeWithdrawnJson = (source: Source, withdrawnJson: WithdrawnJson) =>
+    createJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+
+const without = <T>(arr1: T[], arr2: T[]) =>
+    arr1.filter(element => !arr2.includes(element));
+
+const stillWithdrawnApps = (
+    oldWithdrawnJson: WithdrawnJson,
+    newSourceJson: SourceJson
+) => without(oldWithdrawnJson, newSourceJson.apps);
+
+const freshlyWithdrawnApps = (
+    oldSourceJson: SourceJson,
+    newSourceJson: SourceJson
+) => without(oldSourceJson.apps, newSourceJson.apps);
+
+export const newWithdrawnJson = (
+    oldWithdrawnJson: WithdrawnJson,
+    oldSourceJson: SourceJson,
+    newSourceJson: SourceJson
+) => [
+    ...stillWithdrawnApps(oldWithdrawnJson, newSourceJson),
+    ...freshlyWithdrawnApps(oldSourceJson, newSourceJson),
+];
+
 export const downloadAllSources = async () => {
     const successful: Source[] = [];
     const erroneos: Source[] = [];
@@ -166,7 +200,20 @@ export const downloadAllSources = async () => {
     await Promise.allSettled(
         sources.map(async source => {
             try {
-                await downloadSourceJsonToFile(source);
+                const oldWithdrawnJson = readWithdrawnJson(source);
+                const oldSourceJson = readSourceJson(source);
+
+                const newSourceJson = await downloadSourceJsonToFile(source);
+
+                writeWithdrawnJson(
+                    source,
+                    newWithdrawnJson(
+                        oldWithdrawnJson,
+                        oldSourceJson,
+                        newSourceJson
+                    )
+                );
+
                 successful.push(source);
             } catch (error) {
                 erroneos.push(source);
