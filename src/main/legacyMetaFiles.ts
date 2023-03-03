@@ -12,7 +12,7 @@ import { Source } from '../ipc/sources';
 import { installedAppPath, writeAppInfo } from './appInfo';
 import { getAppsRootDir, getNodeModulesDir } from './config';
 import { readJsonFile } from './fileUtil';
-import { writeSourceJson } from './sources';
+import { writeSourceJson, writeWithdrawnJson } from './sources';
 
 type AppName = `pc-nrfconnect-${string}`;
 
@@ -85,6 +85,55 @@ export const createNewAppInfo = (
     };
 };
 
+export const createNewAppInfoForWithdrawnApp = (
+    source: Source,
+    appName: AppName,
+    packageJson: PackageJson,
+    oldAppUrl: string
+) => ({
+    name: appName,
+    displayName: packageJson.displayName || '',
+    description: packageJson.description || '',
+    homepage: packageJson.homepage,
+    iconUrl: `${oldAppUrl}.svg`,
+    releaseNotesUrl: `${oldAppUrl}-Changelog.md`,
+    versions: {},
+    latestVersion: undefined,
+    installed: {
+        path: installedAppPath({
+            name: appName,
+            source: source.name,
+        }),
+    },
+});
+
+const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
+    const packageJsonFile = path.join(
+        installedAppPath({ name: withdrawnAppName, source: source.name }),
+        'package.json'
+    );
+    if (!fs.existsSync(path.join(packageJsonFile))) {
+        return;
+    }
+
+    const oldAppUrl = `${path.dirname(source.url)}/${withdrawnAppName}`;
+    writeWithdrawnJson(source, [`${oldAppUrl}.json`]);
+
+    const packageJson = readJsonFile<PackageJson>(packageJsonFile);
+
+    writeAppInfo(
+        // FIXME: Fix shared as described below
+        // @ts-expect-error -- Shared neeeds to be changed and mark the property `latestVersion` on AppInfo optional
+        createNewAppInfoForWithdrawnApp(
+            source,
+            withdrawnAppName,
+            packageJson,
+            oldAppUrl
+        ),
+        source
+    );
+};
+
 export const migrateLegacyMetaFiles = (source: Source) => {
     const appsJson = readJsonFile<AppsJson>(appsJsonFile(source));
     const updatesJson = readJsonFile<UpdatesJson>(updatesJsonFile(source), {});
@@ -108,5 +157,5 @@ export const migrateLegacyMetaFiles = (source: Source) => {
         );
     });
 
-    // FIXME later: Also support the withdrawn app pc-nrfconnect-gettingstarted
+    createWithDrawnAppFiles('pc-nrfconnect-gettingstarted', source);
 };

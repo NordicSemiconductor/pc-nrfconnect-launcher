@@ -168,8 +168,10 @@ const getWithdrawnJsonPath = (source: Source) =>
 const readWithdrawnJson = (source: Source) =>
     readJsonFile<WithdrawnJson>(getWithdrawnJsonPath(source), []);
 
-const writeWithdrawnJson = (source: Source, withdrawnJson: WithdrawnJson) =>
-    createJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+export const writeWithdrawnJson = (
+    source: Source,
+    withdrawnJson: WithdrawnJson
+) => createJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
 
 const without = <T>(arr1: T[], arr2: T[]) =>
     arr1.filter(element => !arr2.includes(element));
