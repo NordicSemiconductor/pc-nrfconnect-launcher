@@ -5,10 +5,8 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Spinner } from 'pc-nrfconnect-shared';
+import { Dialog, DialogButton, Spinner } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { cancelDownload } from './launcherUpdateEffects';
@@ -26,11 +24,9 @@ export default () => {
     } = useLauncherSelector(getLauncherUpdate);
 
     return (
-        <Modal show={isVisible} backdrop>
-            <Modal.Header closeButton={false}>
-                <Modal.Title>Downloading update</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+        <Dialog isVisible={isVisible} closeOnUnfocus={false}>
+            <Dialog.Header title="Downloading update" />
+            <Dialog.Body>
                 <p>Downloading nRF Connect for Desktop {version}...</p>
                 {isProgressSupported && (
                     <ProgressBar
@@ -42,18 +38,19 @@ export default () => {
                     This might take a few minutes. The application will restart
                     and update once the download is complete.
                 </p>
-            </Modal.Body>
-            <Modal.Footer>
+            </Dialog.Body>
+            <Dialog.Footer>
                 {!isProgressSupported && <Spinner />}
                 {isCancelSupported && (
-                    <Button
+                    <DialogButton
                         onClick={() => dispatch(cancelDownload())}
                         disabled={isCancelling || percentDownloaded === 100}
+                        variant="primary"
                     >
                         Cancel
-                    </Button>
+                    </DialogButton>
                 )}
-            </Modal.Footer>
-        </Modal>
+            </Dialog.Footer>
+        </Dialog>
     );
 };
