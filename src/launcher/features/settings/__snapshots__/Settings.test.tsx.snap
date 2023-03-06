@@ -185,14 +185,14 @@ exports[`SettingsView should render check for updates completed, with everything
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -200,11 +200,11 @@ exports[`SettingsView should render check for updates completed, with everything
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Update check completed
-          </div>
+          <p>
+            <b>
+              Update check completed
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -215,7 +215,7 @@ exports[`SettingsView should render check for updates completed, with everything
           class="modal-footer"
         >
           <button
-            class="btn btn-outline-primary"
+            class="undefined btn-secondary"
             type="button"
           >
             Got it
@@ -412,14 +412,14 @@ exports[`SettingsView should render check for updates completed, with updates av
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -427,11 +427,11 @@ exports[`SettingsView should render check for updates completed, with updates av
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Update check completed
-          </div>
+          <p>
+            <b>
+              Update check completed
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -442,7 +442,7 @@ exports[`SettingsView should render check for updates completed, with updates av
           class="modal-footer"
         >
           <button
-            class="btn btn-outline-primary"
+            class="undefined btn-secondary"
             type="button"
           >
             Got it
