@@ -4,6 +4,11 @@
 
 -   nRF53DK programming failed due to timeout.
 
+### Changed
+
+-   Updated styles for `Update nRF Connect Launcher` and `Check for Updates`
+    dialogs.
+
 ## 4.0.0 - 2023-02-13
 
 ### Added
