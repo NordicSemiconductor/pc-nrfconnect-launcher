@@ -57,13 +57,8 @@ const appInfoFile = (appSpec: AppSpec) =>
 export const readAppInfoFile = (appSpec: AppSpec) =>
     readJsonFile<AppInfo>(appInfoFile(appSpec));
 
-export const readAppInfoFileIfExists = (appSpec: AppSpec) => {
-    try {
-        return readJsonFile<AppInfo>(appInfoFile(appSpec));
-    } catch (error) {
-        return undefined;
-    }
-};
+export const readAppInfoFileIfExists = (appSpec: AppSpec) =>
+    readJsonFile<AppInfo | null>(appInfoFile(appSpec), null);
 
 export const readAppInfo = (appSpec: AppSpec) => {
     const source = getSource(appSpec.source);
