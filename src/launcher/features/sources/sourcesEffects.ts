@@ -61,30 +61,31 @@ export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
         );
 };
 
-const showProblemWithOfficialSource = (source: Source) => {
+const showProblemWithOfficialSource = (source: Source) =>
     ErrorDialogActions.showDialog(
         `Unable to retrieve the official source from ${source.url}.\n\n` +
             'This is usually caused by a missing internet connection. ' +
             'Without retrieving that file, official apps cannot be installed. '
     );
-};
 
 const showProblemWithExtraSource =
     (source: Source) => (dispatch: AppDispatch) => {
-        ErrorDialogActions.showDialog(
-            `Unable to retrieve the source “${source.name}” ` +
-                `from ${source.url}. \n\n` +
-                'This is usually caused by outdated app sources in the settings, ' +
-                'where the sources files was removed from the server.',
-            {
-                'Remove source': () => {
-                    dispatch(removeSource(source.name));
-                    dispatch(ErrorDialogActions.hideDialog());
-                },
-                Cancel: () => {
-                    dispatch(ErrorDialogActions.hideDialog());
-                },
-            }
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to retrieve the source “${source.name}” ` +
+                    `from ${source.url}. \n\n` +
+                    'This is usually caused by outdated app sources in the settings, ' +
+                    'where the sources files was removed from the server.',
+                {
+                    'Remove source': () => {
+                        dispatch(removeSource(source.name));
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                    Cancel: () => {
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                }
+            )
         );
     };
 
@@ -92,7 +93,7 @@ export const handleSourcesWithErrors =
     (sources: Source[]) => (dispatch: AppDispatch) => {
         sources.forEach(source => {
             if (source.name === OFFICIAL) {
-                showProblemWithOfficialSource(source);
+                dispatch(showProblemWithOfficialSource(source));
             } else {
                 dispatch(showProblemWithExtraSource(source));
             }
