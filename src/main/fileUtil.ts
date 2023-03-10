@@ -122,15 +122,13 @@ export const chmodDir = (src: string, mode: string | number) =>
         });
     });
 
-export const createTextFile = (filePath: string, text: string) => {
+export const writeFile = (filePath: string, data: string) => {
     try {
-        fs.writeFileSync(filePath, text);
+        fs.writeFileSync(filePath, data);
     } catch (error) {
-        throw new Error(
-            `Unable to initialize ${filePath}: ${describeError(error)}`
-        );
+        throw new Error(`Unable to write ${filePath}: ${describeError(error)}`);
     }
 };
 
 export const createJsonFile = (filePath: string, jsonData: unknown) =>
-    createTextFile(filePath, JSON.stringify(jsonData, undefined, 2));
+    writeFile(filePath, JSON.stringify(jsonData, undefined, 2));

@@ -15,7 +15,7 @@ import { uuid } from 'short-uuid';
 import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
-import { chmodDir, copy, createTextFile, readFile, untar } from './fileUtil';
+import { chmodDir, copy, readFile, untar, writeFile } from './fileUtil';
 import { getShortcutIcon } from './icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
@@ -100,9 +100,9 @@ const createShortcutForLinux = (app: LaunchableApp) => {
     ].join('\n');
 
     try {
-        fs.writeFileSync(desktopFilePath, shortcutContent);
+        writeFile(desktopFilePath, shortcutContent);
         fs.chmodSync(desktopFilePath, mode);
-        fs.writeFileSync(applicationsFilePath, shortcutContent);
+        writeFile(applicationsFilePath, shortcutContent);
         fs.chmodSync(applicationsFilePath, mode);
     } catch (err) {
         showErrorDialog(
@@ -181,8 +181,8 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             wflowContentData
         );
 
-        createTextFile(infoTmpPath, infoContent);
-        createTextFile(wflowTmpPath, wflowContent);
+        writeFile(infoTmpPath, infoContent);
+        writeFile(wflowTmpPath, wflowContent);
         await copy(getShortcutIcon(app), icnsPath);
 
         // Copy to Desktop
