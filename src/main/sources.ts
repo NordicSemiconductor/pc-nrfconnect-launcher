@@ -81,11 +81,6 @@ const saveAllSources = () => {
         getConfig().sourcesJsonPath,
         convertToOldSourceJsonFormat(sources)
     );
-
-    fs.writeFileSync(
-        getConfig().sourcesJsonPath,
-        JSON.stringify(convertToOldSourceJsonFormat(sources), undefined, 2)
-    );
 };
 
 export const removeFromSourceList = (
