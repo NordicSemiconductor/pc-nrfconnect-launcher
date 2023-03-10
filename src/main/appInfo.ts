@@ -17,10 +17,10 @@ import {
 } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
+import { appResourceProperties, downloadAppResources } from './appResource';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
-import describeError from './describeError';
 import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
-import { downloadToFile, downloadToJson } from './net';
+import { downloadToJson } from './net';
 import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
 export const localApp = (appName: string): AppSpec => ({
@@ -43,12 +43,6 @@ export const isInstalled = (
     app: DownloadableApp
 ): app is InstalledDownloadableApp | WithdrawnApp =>
     fs.pathExistsSync(installedAppPath(app));
-
-const iconPath = (app: AppSpec) =>
-    path.join(getAppsRootDir(app.source), `${app.name}.svg`);
-
-const releaseNotesPath = (app: AppSpec) =>
-    path.join(getAppsRootDir(app.source), `${app.name}-Changelog.md`);
 
 // FIXME later: This should not be needed anymore. Remove it.
 const appInfoFile = (appSpec: AppSpec) =>
@@ -90,57 +84,14 @@ export const writeAppInfo = (
     createJsonFile(appInfoFile(appSpec), mergedContent);
 };
 
-const downloadResource = async (url: string, filePath: string) => {
-    try {
-        await downloadToFile(url, filePath);
-    } catch (e) {
-        console.debug(
-            'Unable to fetch resource, ignoring this as non-critical.',
-            describeError(e)
-        );
-    }
-};
-
-const replacePrLinks = (releaseNotes: string, homepage?: string) =>
-    homepage == null
-        ? releaseNotes
-        : releaseNotes.replace(
-              /#(\d+)/g,
-              (match, pr) => `[${match}](${homepage}/pull/${pr})`
-          );
-
-const readReleaseNotes = (app: AppSpec & { homepage?: string }) => {
-    try {
-        const releaseNotes = fs.readFileSync(releaseNotesPath(app), 'utf-8');
-        const prettyReleaseNotes = replacePrLinks(releaseNotes, app.homepage);
-
-        return prettyReleaseNotes;
-    } catch (error) {
-        // We assume an error here means that the release notes just were not downloaded yet.
-        return undefined;
-    }
-};
-
-const downloadIconAndReleaseNotes = (appInfo: AppInfo, source: SourceName) => {
-    const appSpec = { name: appInfo.name, source };
-    return Promise.all([
-        downloadResource(appInfo.iconUrl, iconPath(appSpec)),
-        downloadResource(appInfo.releaseNotesUrl, releaseNotesPath(appSpec)),
-    ]);
-};
-
 export const addDownloadAppData =
     (source: SourceName) => (appInfo: AppInfo) => {
         const appSpec = { name: appInfo.name, source };
         return {
             ...appInfo,
+            ...appResourceProperties(appSpec, appInfo.homepage),
 
             source,
-            iconPath: iconPath(appSpec),
-            releaseNotes: readReleaseNotes({
-                name: appInfo.name,
-                source,
-            }),
             isWithdrawn: isInListOfWithdrawnApps(
                 source,
                 basename(appInfoFile(appSpec))
@@ -164,7 +115,7 @@ export const downloadAppInfos = async (source: Source) => {
 
             writeAppInfo(appInfo, source, { keepInstallInfo: true });
 
-            await downloadIconAndReleaseNotes(appInfo, source.name);
+            await downloadAppResources(appInfo, source.name);
 
             return appInfo;
         })

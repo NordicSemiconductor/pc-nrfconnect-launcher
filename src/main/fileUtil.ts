@@ -14,7 +14,7 @@ import describeError from './describeError';
 export const ifExists = (filePath: string) =>
     fs.existsSync(filePath) ? filePath : undefined;
 
-const readFile = (filePath: string) => {
+export const readFile = (filePath: string) => {
     try {
         return fs.readFileSync(filePath, 'utf8');
     } catch (error) {
@@ -24,7 +24,7 @@ const readFile = (filePath: string) => {
 
 export const readJsonFile = <T>(filePath: string, defaultValue?: T) => {
     try {
-        return <T>JSON.parse(readFile(filePath));
+        return <T>JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (error) {
         if (defaultValue !== undefined) {
             return defaultValue;
