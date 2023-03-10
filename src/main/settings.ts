@@ -57,14 +57,15 @@ const load = () => {
 let data: Draft<Settings> = load();
 
 const save = () => {
-    fs.writeFileSync(
-        getConfig().settingsJsonPath,
-        JSON.stringify(
-            data,
-            (key, value) => (key === 'shownSources' ? [...value] : value),
-            2
-        )
-    );
+    const dataToSave = {
+        ...data,
+        appFilter: {
+            ...data.appFilter,
+            shownSources: [...data.appFilter.shownSources],
+        },
+    };
+
+    createJsonFile(getConfig().settingsJsonPath, dataToSave);
 };
 
 export const resetSettings = () => {
