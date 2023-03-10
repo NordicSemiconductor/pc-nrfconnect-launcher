@@ -15,7 +15,7 @@ import { uuid } from 'short-uuid';
 import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
-import { chmodDir, copy, createTextFile, untar } from './fileUtil';
+import { chmodDir, copy, createTextFile, readFile, untar } from './fileUtil';
 import { getShortcutIcon } from './icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
@@ -153,7 +153,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
             isDownloadable(app) ? '' : '-local'
         }`;
-        const infoContentSource = fs.readFileSync(infoTmpPath, 'utf-8');
+        const infoContentSource = readFile(infoTmpPath);
         Mustache.parse(infoContentSource);
         const infoContentData = {
             identifier,
@@ -171,7 +171,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             / /g,
             '\\ '
         )} ${getArgs(app)}`;
-        const wflowContentSource = fs.readFileSync(wflowTmpPath, 'utf-8');
+        const wflowContentSource = readFile(wflowTmpPath);
         Mustache.parse(wflowContentSource);
         const wflowContentData = {
             shortcutCMD,

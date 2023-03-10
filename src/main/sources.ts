@@ -12,7 +12,7 @@ import { SourceJson } from 'pc-nrfconnect-shared';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
 import { getAppsRootDir, getConfig, getNodeModulesDir } from './config';
 import describeError from './describeError';
-import { createJsonFile, readJsonFile } from './fileUtil';
+import { createJsonFile, readFile, readJsonFile } from './fileUtil';
 import { ensureDirExists } from './mkdir';
 import { downloadToJson } from './net';
 
@@ -51,7 +51,7 @@ const loadAllSources = () => {
     }
     let sourceJsonContent: string | undefined;
     try {
-        sourceJsonContent = fs.readFileSync(filePath, 'utf-8');
+        sourceJsonContent = readFile(filePath);
         const sourceJsonParsed = JSON.parse(sourceJsonContent);
 
         if (Array.isArray(sourceJsonParsed)) {
