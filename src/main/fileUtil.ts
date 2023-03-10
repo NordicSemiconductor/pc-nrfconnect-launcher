@@ -105,6 +105,10 @@ export const untar = (src: string, dest: string, stripComponents: number) => {
     });
 };
 
+export const chmod = (filePath: string, mode: fs.Mode) => {
+    fs.chmodSync(filePath, mode);
+};
+
 export const chmodDir = (src: string, mode: string | number) =>
     new Promise<void>((resolve, reject) => {
         chmodr(src, mode, error => {

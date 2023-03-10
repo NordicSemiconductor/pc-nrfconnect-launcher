@@ -101,9 +101,9 @@ const createShortcutForLinux = (app: LaunchableApp) => {
 
     try {
         writeFile(desktopFilePath, shortcutContent);
-        fs.chmodSync(desktopFilePath, mode);
+        chmod(desktopFilePath, mode);
         writeFile(applicationsFilePath, shortcutContent);
-        fs.chmodSync(applicationsFilePath, mode);
+        chmod(applicationsFilePath, mode);
     } catch (err) {
         showErrorDialog(
             `Fail to create desktop shortcut on Linux with error: ${err}`
