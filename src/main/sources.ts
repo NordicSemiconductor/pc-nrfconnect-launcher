@@ -12,7 +12,7 @@ import { SourceJson } from 'pc-nrfconnect-shared';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
 import { getAppsRootDir, getConfig, getNodeModulesDir } from './config';
 import describeError from './describeError';
-import { writeJsonFile, readFile, readJsonFile } from './fileUtil';
+import { readFile, readJsonFile, writeJsonFile } from './fileUtil';
 import { ensureDirExists } from './mkdir';
 import { downloadToJson } from './net';
 

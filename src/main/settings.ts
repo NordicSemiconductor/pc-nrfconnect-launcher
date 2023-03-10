@@ -11,7 +11,7 @@ import merge from 'lodash.merge';
 import type { Settings, ShownStates, WindowState } from '../ipc/settings';
 import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
-import { writeJsonFile, readFile } from './fileUtil';
+import { readFile, writeJsonFile } from './fileUtil';
 
 const defaultWindowSize = {
     width: 1024,

@@ -4,10 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable no-bitwise */
-
 import { app as electronApp, shell } from 'electron';
-import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';
 import { uuid } from 'short-uuid';
@@ -15,20 +12,13 @@ import { uuid } from 'short-uuid';
 import { isDownloadable, LaunchableApp } from '../ipc/apps';
 import { showErrorDialog } from '../ipc/showErrorDialog';
 import { OFFICIAL } from '../ipc/sources';
-import { chmodDir, copy, readFile, untar, writeFile } from './fileUtil';
+import { chmod, chmodDir, copy, readFile, untar, writeFile } from './fileUtil';
 import { getShortcutIcon } from './icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
 
 const getElectronExePath = () =>
     process.env.APPIMAGE || electronApp.getPath('exe');
-
-const mode =
-    fs.constants.S_IRWXU |
-    fs.constants.S_IRGRP |
-    fs.constants.S_IXGRP |
-    fs.constants.S_IROTH |
-    fs.constants.S_IXOTH;
 
 const sourceName = (app: LaunchableApp) => {
     if (isDownloadable(app)) {
@@ -101,9 +91,9 @@ const createShortcutForLinux = (app: LaunchableApp) => {
 
     try {
         writeFile(desktopFilePath, shortcutContent);
-        chmod(desktopFilePath, mode);
+        chmod(desktopFilePath);
         writeFile(applicationsFilePath, shortcutContent);
-        chmod(applicationsFilePath, mode);
+        chmod(applicationsFilePath);
     } catch (err) {
         showErrorDialog(
             `Fail to create desktop shortcut on Linux with error: ${err}`
@@ -143,7 +133,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
     try {
         // Untar template
         await untar(appTemplateTarPath, tmpAppTemplatePath, 1);
-        await chmodDir(tmpAppTemplatePath, mode);
+        await chmodDir(tmpAppTemplatePath);
 
         // Create Info.plist
         const infoTmpPath = path.join(
@@ -196,7 +186,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         await copy(tmpAppTemplatePath, filePath);
 
         // Change mode
-        await chmodDir(appExecPath, mode);
+        await chmodDir(appExecPath);
     } catch (error) {
         showErrorDialog(
             `Error occured while creating desktop shortcut on MacOS with error: ${error}`

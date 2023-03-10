@@ -105,11 +105,18 @@ export const untar = (src: string, dest: string, stripComponents: number) => {
     });
 };
 
-export const chmod = (filePath: string, mode: fs.Mode) => {
+const defaultMode =
+    fs.constants.S_IRWXU | // eslint-disable-line no-bitwise
+    fs.constants.S_IRGRP |
+    fs.constants.S_IXGRP |
+    fs.constants.S_IROTH |
+    fs.constants.S_IXOTH;
+
+export const chmod = (filePath: string, mode: fs.Mode = defaultMode) => {
     fs.chmodSync(filePath, mode);
 };
 
-export const chmodDir = (src: string, mode: string | number) =>
+export const chmodDir = (src: string, mode: fs.Mode = defaultMode) =>
     new Promise<void>((resolve, reject) => {
         chmodr(src, mode, error => {
             if (error) {

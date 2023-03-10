@@ -19,7 +19,7 @@ import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
 import { appResourceProperties, downloadAppResources } from './appResource';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
-import { writeJsonFile, ifExists, readJsonFile } from './fileUtil';
+import { ifExists, readJsonFile, writeJsonFile } from './fileUtil';
 import { downloadToJson } from './net';
 import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
