@@ -58,14 +58,16 @@ import {
     installLocalApp,
     removeDownloadableApp,
     removeLocalApp,
-} from './appChanges';
+} from './apps/appChanges';
 import {
     downloadLatestAppInfos,
     getDownloadableApps,
     getLocalApps,
-} from './apps';
+} from './apps/apps';
+import createDesktopShortcut from './apps/createDesktopShortcut';
+import { addSource, removeSource } from './apps/sourceChanges';
+import { getAllSources } from './apps/sources';
 import { getConfig } from './config';
-import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
@@ -87,8 +89,6 @@ import {
     setNameFilter,
     setShownStates,
 } from './settings';
-import { addSource, removeSource } from './sourceChanges';
-import { getAllSources } from './sources';
 import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
 
 export default () => {

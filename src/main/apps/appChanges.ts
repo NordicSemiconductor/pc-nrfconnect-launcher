@@ -17,7 +17,11 @@ import {
     failureReadingFile,
     InstallResult,
     successfulInstall,
-} from '../ipc/apps';
+} from '../../ipc/apps';
+import { getAppsLocalDir, getAppsRootDir } from '../config';
+import { deleteFile, listFiles, untar } from '../fileUtil';
+import { mkdir } from '../mkdir';
+import { downloadToFile } from '../net';
 import {
     addDownloadAppData,
     addInstalledAppData,
@@ -28,11 +32,7 @@ import {
     readAppInfo,
     readAppInfoFile,
     writeAppInfo,
-} from './appInfo';
-import { getAppsLocalDir, getAppsRootDir } from './config';
-import { deleteFile, listFiles, untar } from './fileUtil';
-import { mkdir } from './mkdir';
-import { downloadToFile } from './net';
+} from './app';
 import { getSource } from './sources';
 
 const getTmpFilename = (basename: string) =>

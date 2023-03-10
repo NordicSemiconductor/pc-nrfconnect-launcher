@@ -15,7 +15,7 @@ import {
 import { AppDetails } from '../ipc/appDetails';
 import { isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
-import { getDownloadableApps, getLocalApps } from './apps';
+import { getDownloadableApps, getLocalApps } from './apps/apps';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';

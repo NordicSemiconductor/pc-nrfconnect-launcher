@@ -12,7 +12,7 @@ import {
     createNewAppInfo,
 } from './legacyMetaFiles';
 
-jest.mock('./config', () => {
+jest.mock('../config', () => {
     const { join } = jest.requireActual('path');
     const { homedir } = jest.requireActual('os');
     return {

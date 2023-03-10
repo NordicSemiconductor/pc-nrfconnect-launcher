@@ -5,28 +5,38 @@
  */
 
 import path, { basename } from 'path';
+import type { AppInfo } from 'pc-nrfconnect-shared';
 
 import {
     AppWithError,
     DownloadableApp,
     isWithdrawn,
     LocalApp,
-} from '../ipc/apps';
-import { showErrorDialog } from '../ipc/showErrorDialog';
-import { Source } from '../ipc/sources';
+} from '../../ipc/apps';
+import { showErrorDialog } from '../../ipc/showErrorDialog';
+import { Source } from '../../ipc/sources';
+import { getAppsLocalDir } from '../config';
+import { listDirectories } from '../fileUtil';
+import { downloadToJson } from '../net';
 import {
     addDownloadAppData,
     addInstalledAppData,
-    downloadAppInfos,
     getLocalApp,
     installedAppPath,
     isInstalled,
     readAppInfo,
-} from './appInfo';
-import { getAppsLocalDir } from './config';
-import { listDirectories } from './fileUtil';
+    writeAppInfo,
+} from './app';
+import { downloadAppResources } from './appResource';
 import { maybeMigrateLegacyMetaFiles } from './legacyMetaFiles';
-import { downloadAllSources, getAllAppUrls, getAllSources } from './sources';
+import {
+    downloadAllSources,
+    getAllAppUrls,
+    getAllSources,
+    getAppUrls,
+} from './sources';
+
+const defined = <X>(item?: X): item is X => item != null;
 
 const getAppSpec = (source: Source) => (appUrl: string) => ({
     name: basename(appUrl, '.json'),
@@ -129,4 +139,29 @@ export const downloadLatestAppInfos = async () => {
         appsWithErrors,
         sourcesWithErrors,
     };
+};
+
+export const downloadAppInfos = async (source: Source) => {
+    const downloadableApps = await Promise.all(
+        getAppUrls(source).map(async appUrl => {
+            const appInfo = await downloadToJson<AppInfo>(appUrl, true);
+
+            if (path.basename(appUrl) !== `${appInfo.name}.json`) {
+                showErrorDialog(
+                    `At \`${appUrl}\` an app is found ` +
+                        `by the name \`${appInfo.name}\`, which does ` +
+                        `not match the URL. This app will be ignored.`
+                );
+                return undefined;
+            }
+
+            writeAppInfo(appInfo, source, { keepInstallInfo: true });
+
+            await downloadAppResources(appInfo, source.name);
+
+            return appInfo;
+        })
+    );
+
+    return downloadableApps.filter(defined);
 };

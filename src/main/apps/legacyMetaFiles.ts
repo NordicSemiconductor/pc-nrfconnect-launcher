@@ -8,10 +8,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import { PackageJson } from 'pc-nrfconnect-shared';
 
-import { Source } from '../ipc/sources';
-import { installedAppPath, writeAppInfo } from './appInfo';
-import { getAppsRootDir, getNodeModulesDir } from './config';
-import { readJsonFile } from './fileUtil';
+import { Source } from '../../ipc/sources';
+import { getAppsRootDir, getNodeModulesDir } from '../config';
+import { readJsonFile } from '../fileUtil';
+import { installedAppPath, writeAppInfo } from './app';
 import {
     sourceJsonExistsLocally,
     writeSourceJson,

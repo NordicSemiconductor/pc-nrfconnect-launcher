@@ -9,12 +9,12 @@ import fs from 'fs-extra';
 import path from 'path';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
-import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
-import { getAppsRootDir, getConfig, getNodeModulesDir } from './config';
-import describeError from './describeError';
-import { readFile, readJsonFile, writeJsonFile } from './fileUtil';
-import { ensureDirExists } from './mkdir';
-import { downloadToJson } from './net';
+import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
+import { getAppsRootDir, getConfig, getNodeModulesDir } from '../config';
+import describeError from '../describeError';
+import { readFile, readJsonFile, writeJsonFile } from '../fileUtil';
+import { ensureDirExists } from '../mkdir';
+import { downloadToJson } from '../net';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];

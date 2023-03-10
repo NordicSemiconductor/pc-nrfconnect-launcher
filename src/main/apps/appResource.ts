@@ -7,12 +7,12 @@
 import path from 'path';
 import type { AppInfo } from 'pc-nrfconnect-shared';
 
-import { AppSpec } from '../ipc/apps';
-import { SourceName } from '../ipc/sources';
-import { getAppsRootDir } from './config';
-import describeError from './describeError';
-import { readFile } from './fileUtil';
-import { downloadToFile } from './net';
+import { AppSpec } from '../../ipc/apps';
+import { SourceName } from '../../ipc/sources';
+import { getAppsRootDir } from '../config';
+import describeError from '../describeError';
+import { readFile } from '../fileUtil';
+import { downloadToFile } from '../net';
 
 const iconPath = (app: AppSpec) =>
     path.join(getAppsRootDir(app.source), `${app.name}.svg`);

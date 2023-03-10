@@ -11,10 +11,11 @@ import {
     Source,
     SourceName,
     SourceUrl,
-} from '../ipc/sources';
-import { addDownloadAppData, downloadAppInfos } from './appInfo';
-import { getAppsRootDir } from './config';
-import { addShownSource, removeShownSource } from './settings';
+} from '../../ipc/sources';
+import { getAppsRootDir } from '../config';
+import { addShownSource, removeShownSource } from '../settings';
+import { addDownloadAppData } from './app';
+import { downloadAppInfos } from './apps';
 import {
     addToSourceList,
     downloadSourceJson,

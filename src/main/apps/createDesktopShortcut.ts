@@ -9,11 +9,11 @@ import Mustache from 'mustache';
 import path from 'path';
 import { uuid } from 'short-uuid';
 
-import { isDownloadable, LaunchableApp } from '../ipc/apps';
-import { showErrorDialog } from '../ipc/showErrorDialog';
-import { OFFICIAL } from '../ipc/sources';
-import { chmod, chmodDir, copy, readFile, untar, writeFile } from './fileUtil';
-import { getShortcutIcon } from './icons';
+import { isDownloadable, LaunchableApp } from '../../ipc/apps';
+import { showErrorDialog } from '../../ipc/showErrorDialog';
+import { OFFICIAL } from '../../ipc/sources';
+import { chmod, chmodDir, copy, readFile, untar, writeFile } from '../fileUtil';
+import { getShortcutIcon } from '../icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
 

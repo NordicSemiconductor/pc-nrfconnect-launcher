@@ -6,7 +6,8 @@
 
 import { app, dialog, Menu } from 'electron';
 
-import { installAllLocalAppArchives } from './appChanges';
+import { installAllLocalAppArchives } from './apps/appChanges';
+import { initialiseAllSources } from './apps/sources';
 import {
     getAppsExternalDir,
     getAppsLocalDir,
@@ -19,7 +20,6 @@ import loadDevtools from './devtools';
 import { logger } from './log';
 import menu from './menu';
 import { ensureDirExists } from './mkdir';
-import { initialiseAllSources } from './sources';
 import {
     openDownloadableAppWindow,
     openLauncherWindow,

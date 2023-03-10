@@ -14,14 +14,12 @@ import {
     InstalledDownloadableApp,
     LocalApp,
     WithdrawnApp,
-} from '../ipc/apps';
-import { showErrorDialog } from '../ipc/showErrorDialog';
-import { LOCAL, Source, SourceName } from '../ipc/sources';
-import { appResourceProperties, downloadAppResources } from './appResource';
-import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
-import { ifExists, readJsonFile, writeJsonFile } from './fileUtil';
-import { downloadToJson } from './net';
-import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
+} from '../../ipc/apps';
+import { LOCAL, Source, SourceName } from '../../ipc/sources';
+import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from '../config';
+import { ifExists, readJsonFile, writeJsonFile } from '../fileUtil';
+import { appResourceProperties } from './appResource';
+import { getSource, isInListOfWithdrawnApps } from './sources';
 
 export const localApp = (appName: string): AppSpec => ({
     source: LOCAL,
@@ -36,8 +34,6 @@ export const installedAppPath = (app: AppSpec) => {
             : getNodeModulesDir(app.source);
     return path.join(appDir, app.name);
 };
-
-const defined = <X>(item?: X): item is X => item != null;
 
 export const isInstalled = (
     app: DownloadableApp
@@ -98,31 +94,6 @@ export const addDownloadAppData =
             ),
         } as DownloadableApp;
     };
-
-export const downloadAppInfos = async (source: Source) => {
-    const downloadableApps = await Promise.all(
-        getAppUrls(source).map(async appUrl => {
-            const appInfo = await downloadToJson<AppInfo>(appUrl, true);
-
-            if (path.basename(appUrl) !== `${appInfo.name}.json`) {
-                showErrorDialog(
-                    `At \`${appUrl}\` an app is found ` +
-                        `by the name \`${appInfo.name}\`, which does ` +
-                        `not match the URL. This app will be ignored.`
-                );
-                return undefined;
-            }
-
-            writeAppInfo(appInfo, source, { keepInstallInfo: true });
-
-            await downloadAppResources(appInfo, source.name);
-
-            return appInfo;
-        })
-    );
-
-    return downloadableApps.filter(defined);
-};
 
 export const addInstalledAppData = (
     app: Omit<
