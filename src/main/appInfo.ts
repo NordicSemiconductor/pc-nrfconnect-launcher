@@ -19,7 +19,7 @@ import { showErrorDialog } from '../ipc/showErrorDialog';
 import { LOCAL, Source, SourceName } from '../ipc/sources';
 import { appResourceProperties, downloadAppResources } from './appResource';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from './config';
-import { createJsonFile, ifExists, readJsonFile } from './fileUtil';
+import { writeJsonFile, ifExists, readJsonFile } from './fileUtil';
 import { downloadToJson } from './net';
 import { getAppUrls, getSource, isInListOfWithdrawnApps } from './sources';
 
@@ -81,7 +81,7 @@ export const writeAppInfo = (
         }
     }
 
-    createJsonFile(appInfoFile(appSpec), mergedContent);
+    writeJsonFile(appInfoFile(appSpec), mergedContent);
 };
 
 export const addDownloadAppData =

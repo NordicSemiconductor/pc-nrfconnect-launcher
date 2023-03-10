@@ -130,5 +130,5 @@ export const writeFile = (filePath: string, data: string) => {
     }
 };
 
-export const createJsonFile = (filePath: string, jsonData: unknown) =>
+export const writeJsonFile = (filePath: string, jsonData: unknown) =>
     writeFile(filePath, JSON.stringify(jsonData, undefined, 2));

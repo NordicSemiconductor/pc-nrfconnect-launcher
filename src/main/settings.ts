@@ -11,7 +11,7 @@ import merge from 'lodash.merge';
 import type { Settings, ShownStates, WindowState } from '../ipc/settings';
 import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
-import { createJsonFile, readFile } from './fileUtil';
+import { writeJsonFile, readFile } from './fileUtil';
 
 const defaultWindowSize = {
     width: 1024,
@@ -66,7 +66,7 @@ const save = () => {
         },
     };
 
-    createJsonFile(getConfig().settingsJsonPath, dataToSave);
+    writeJsonFile(getConfig().settingsJsonPath, dataToSave);
 };
 
 export const resetSettings = () => {

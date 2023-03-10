@@ -12,7 +12,7 @@ import { SourceJson } from 'pc-nrfconnect-shared';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../ipc/sources';
 import { getAppsRootDir, getConfig, getNodeModulesDir } from './config';
 import describeError from './describeError';
-import { createJsonFile, readFile, readJsonFile } from './fileUtil';
+import { writeJsonFile, readFile, readJsonFile } from './fileUtil';
 import { ensureDirExists } from './mkdir';
 import { downloadToJson } from './net';
 
@@ -77,7 +77,7 @@ const loadAllSources = () => {
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
-    createJsonFile(
+    writeJsonFile(
         getConfig().sourcesJsonPath,
         convertToOldSourceJsonFormat(sources)
     );
@@ -138,7 +138,7 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
 const downloadSourceJsonToFile = async (source: Source) => {
     try {
         const sourceJson = await downloadSourceJson(source.url);
-        createJsonFile(getSourceJsonPath(source), sourceJson);
+        writeJsonFile(getSourceJsonPath(source), sourceJson);
 
         return sourceJson;
     } catch (error) {
@@ -150,7 +150,7 @@ const readSourceJson = (source: Source) =>
     readJsonFile<SourceJson>(getSourceJsonPath(source));
 
 export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
-    createJsonFile(getSourceJsonPath(source), sourceJson);
+    writeJsonFile(getSourceJsonPath(source), sourceJson);
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
@@ -171,7 +171,7 @@ const readWithdrawnJson = (source: Source) =>
 export const writeWithdrawnJson = (
     source: Source,
     withdrawnJson: WithdrawnJson
-) => createJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+) => writeJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
 
 export const isInListOfWithdrawnApps = (
     source: SourceName,
