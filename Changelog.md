@@ -1,8 +1,8 @@
-## 4.0.1 - 2023-03-06
+## 4.0.1 - Unreleased
 
 ### Fixed
 
--   nRF53DK programming failed due to timeout.
+-   Older Thingy53 devices programming failed due to timeout.
 
 ## 4.0.0 - 2023-02-13
 
