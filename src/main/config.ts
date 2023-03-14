@@ -29,13 +29,13 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
         };
     }
 
-    const sourceName = argv.source || OFFICIAL;
+    const source = argv.source || OFFICIAL;
 
     const downloadableApp = argv['open-downloadable-app'];
     if (downloadableApp != null) {
         return {
             local: false,
-            sourceName,
+            source,
             name: downloadableApp,
         };
     }
@@ -49,7 +49,7 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
 
         return {
             local: false,
-            sourceName,
+            source,
             name: officialApp,
         };
     }

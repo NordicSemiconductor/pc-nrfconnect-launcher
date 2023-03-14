@@ -13,10 +13,12 @@ import {
 } from 'electron';
 import fs from 'fs';
 import path from 'path';
+import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
 
 import { AppDetails } from '../ipc/appDetails';
-import { isInstalled, LaunchableApp } from '../ipc/apps';
+import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
+import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps';
 import * as browser from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
@@ -80,7 +82,10 @@ export const hideLauncherWindow = () => {
     launcherWindow?.hide();
 };
 
-export const openAppWindow = (app: LaunchableApp) => {
+export const openAppWindow = (
+    app: LaunchableApp,
+    openAppOptions: OpenAppOptions = {}
+) => {
     const { lastWindowState } = settings.get();
 
     let { x, y } = lastWindowState;
@@ -101,19 +106,34 @@ export const openAppWindow = (app: LaunchableApp) => {
         }
     }
 
-    const appWindow = browser.createWindow({
-        title: `${app.displayName || app.name} v${app.currentVersion}`,
-        url: `file://${getElectronResourcesDir()}/app.html?appPath=${app.path}`,
-        icon: getAppIcon(app),
-        x,
-        y,
-        width,
-        height,
-        minHeight: 500,
-        minWidth: 760,
-        show: true,
-        backgroundColor: '#fff',
-    });
+    const { device } = openAppOptions;
+    const additionalArguments: string[] = [];
+    if (device != null) {
+        additionalArguments.push('--deviceSerial', device.serialNumber);
+
+        if (device.serialPortPath != null) {
+            additionalArguments.push('--comPort', device.serialPortPath);
+        }
+    }
+
+    const appWindow = browser.createWindow(
+        {
+            title: `${app.displayName || app.name} v${app.currentVersion}`,
+            url: `file://${getElectronResourcesDir()}/app.html?appPath=${
+                app.path
+            }`,
+            icon: getAppIcon(app),
+            x,
+            y,
+            width,
+            height,
+            minHeight: 500,
+            minWidth: 760,
+            show: true,
+            backgroundColor: '#fff',
+        },
+        additionalArguments
+    );
 
     appWindows.push({
         browserWindow: appWindow,
@@ -166,28 +186,39 @@ export const openAppWindow = (app: LaunchableApp) => {
     });
 };
 
+export const openApp = (app: AppSpec, openAppOptions?: OpenAppOptions) => {
+    if (app.source === LOCAL) {
+        openLocalAppWindow(app.name, openAppOptions);
+    } else {
+        openDownloadableAppWindow(app, openAppOptions);
+    }
+};
+
 export const openDownloadableAppWindow = (
-    appName: string,
-    sourceName: string
+    appSpec: AppSpec,
+    openAppOptions?: OpenAppOptions
 ) => {
     const downloadableApp = getDownloadableApps().apps.find(
-        app => app.name === appName && app.source === sourceName
+        app => app.name === appSpec.name && app.source === appSpec.source
     );
 
     if (downloadableApp != null && isInstalled(downloadableApp)) {
-        openAppWindow(downloadableApp);
+        openAppWindow(downloadableApp, openAppOptions);
     } else {
         throw new Error(
-            `Tried to open app ${appName} from source ${sourceName}, but it is not installed`
+            `Tried to open app ${appSpec.name} from source ${appSpec.source}, but it is not installed`
         );
     }
 };
 
-export const openLocalAppWindow = (appName: string) => {
+export const openLocalAppWindow = (
+    appName: string,
+    openAppOptions?: OpenAppOptions
+) => {
     const localApp = getLocalApps(false).find(app => app.name === appName);
 
     if (localApp) {
-        openAppWindow(localApp);
+        openAppWindow(localApp, openAppOptions);
     } else {
         throw new Error(
             `Tried to open local app ${appName}, but it is not installed`

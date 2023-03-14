@@ -14,7 +14,7 @@ export type StartupApp =
     | {
           local: false;
           name: string;
-          sourceName: string;
+          source: string;
       };
 
 export interface Configuration {

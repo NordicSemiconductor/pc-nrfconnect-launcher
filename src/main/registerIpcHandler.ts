@@ -90,7 +90,7 @@ import {
     setShownStates,
 } from './settings';
 import { addSource, getAllSources, removeSource } from './sources';
-import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
+import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
     Store.initRenderer();
@@ -118,7 +118,7 @@ export default () => {
     registerStartUpdate(startUpdate);
     registerCancelUpdate(cancelUpdate);
 
-    registerOpenApp(openAppWindow);
+    registerOpenApp(openApp);
     registerOpenLauncher(openLauncherWindow);
 
     registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
