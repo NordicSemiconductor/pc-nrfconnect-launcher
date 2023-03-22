@@ -24,13 +24,19 @@ import {
     writeSourceJson,
 } from './sources';
 
-export const addSource = async (url: SourceUrl) => {
+const downloadSource = async (url: SourceUrl) => {
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
 
     if (source.name == null) {
         throw new Error('The official source cannot be added.');
     }
+
+    return { source, sourceJson };
+};
+
+export const addSource = async (url: SourceUrl) => {
+    const { source, sourceJson } = await downloadSource(url);
 
     initialise(source);
     writeSourceJson(source, sourceJson);
