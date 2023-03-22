@@ -28,7 +28,7 @@ const downloadSource = async (url: SourceUrl) => {
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
 
-    if (source.name == null) {
+    if (source.name === OFFICIAL) {
         throw new Error('The official source cannot be added.');
     }
 
