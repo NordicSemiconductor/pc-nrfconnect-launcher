@@ -5,9 +5,11 @@
  */
 
 import fs from 'fs-extra';
+import { SourceJson } from 'pc-nrfconnect-shared';
 
 import {
     allStandardSourceNames,
+    OFFICIAL,
     Source,
     SourceName,
     SourceUrl,
@@ -24,12 +26,19 @@ import {
     writeSourceJson,
 } from './sources';
 
-const downloadSource = async (url: SourceUrl) => {
+const downloadSource = async (
+    url: SourceUrl
+): Promise<{ source: Source; sourceJson: SourceJson }> => {
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
 
     if (source.name === OFFICIAL) {
         throw new Error('The official source cannot be added.');
+    }
+
+    const isLegacyUrl = url.endsWith('/apps.json') && sourceJson.apps == null;
+    if (isLegacyUrl) {
+        return downloadSource(url.replace(/apps.json$/, 'source.json'));
     }
 
     return { source, sourceJson };
@@ -49,10 +58,7 @@ export const addSource = async (url: SourceUrl) => {
         addDownloadAppData(source.name)
     );
 
-    return {
-        source,
-        apps,
-    };
+    return { source, apps };
 };
 
 const isRemovableSource = (
