@@ -3,7 +3,7 @@
 ### Fixed
 
 -   Older Thingy53 devices programming failed due to timeout.
--   External J-Link debugger not showwing up when not connected to device.
+-   External J-Link programmer not showwing up when not connected to device.
 
 ## 4.0.0 - 2023-02-13
 
