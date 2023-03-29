@@ -42,11 +42,25 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
     return splashScreen;
 };
 
-export const createWindow = (options: BrowserWindowOptions) => {
+const mergeAdditionalArguments = (nonCommandlineArguments: string[]) => {
+    // Index of command line started arguments
     const appArgumentsIndex = process.argv.indexOf('--');
     const additionalArguments =
-        appArgumentsIndex === -1 ? [] : process.argv.slice(appArgumentsIndex);
+        appArgumentsIndex === -1
+            ? []
+            : process.argv.slice(appArgumentsIndex + 1);
 
+    if (appArgumentsIndex === -1 && nonCommandlineArguments.length === 0) {
+        return [];
+    }
+
+    return ['--', ...nonCommandlineArguments, ...additionalArguments];
+};
+
+export const createWindow = (
+    options: BrowserWindowOptions,
+    nonCommandlineArguments: string[] = []
+) => {
     const mergedOptions: BrowserWindowOptions = {
         minWidth: 308,
         minHeight: 499,
@@ -56,7 +70,9 @@ export const createWindow = (options: BrowserWindowOptions) => {
             nodeIntegration: true,
             sandbox: false,
             contextIsolation: false,
-            additionalArguments,
+            additionalArguments: mergeAdditionalArguments(
+                nonCommandlineArguments
+            ),
             backgroundThrottling: false,
         },
         ...options,

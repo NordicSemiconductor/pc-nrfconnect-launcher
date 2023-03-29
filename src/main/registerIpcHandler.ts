@@ -89,7 +89,7 @@ import {
     setNameFilter,
     setShownStates,
 } from './settings';
-import { getAppDetails, openAppWindow, openLauncherWindow } from './windows';
+import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
     Store.initRenderer();
@@ -117,7 +117,7 @@ export default () => {
     registerStartUpdate(startUpdate);
     registerCancelUpdate(cancelUpdate);
 
-    registerOpenApp(openAppWindow);
+    registerOpenApp(openApp);
     registerOpenLauncher(openLauncherWindow);
 
     registerDownloadLatestAppInfos(downloadLatestAppInfos);

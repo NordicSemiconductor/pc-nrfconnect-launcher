@@ -46,7 +46,7 @@ const openInitialWindow = () => {
     if (startupApp.local) {
         openLocalAppWindow(startupApp.name);
     } else {
-        openDownloadableAppWindow(startupApp.name, startupApp.sourceName);
+        openDownloadableAppWindow(startupApp);
     }
 };
 
