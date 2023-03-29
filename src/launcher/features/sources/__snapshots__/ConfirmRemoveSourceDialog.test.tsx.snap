@@ -51,13 +51,13 @@ exports[`ConfirmRemoveSourceDialog shows the new version if one becomes availabl
           class="modal-footer"
         >
           <button
-            class="undefined btn-primary"
+            class=""
             type="button"
           >
             Yes, remove
           </button>
           <button
-            class="undefined btn-secondary"
+            class=""
             type="button"
           >
             Cancel

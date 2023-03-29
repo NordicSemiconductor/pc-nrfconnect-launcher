@@ -59,13 +59,13 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
           class="modal-footer"
         >
           <button
-            class="undefined btn-primary"
+            class=""
             type="button"
           >
             Yes
           </button>
           <button
-            class="undefined btn-secondary"
+            class=""
             type="button"
           >
             No
