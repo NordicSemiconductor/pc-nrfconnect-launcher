@@ -155,11 +155,13 @@ export const downloadAppInfos = async (source: Source) => {
                 return undefined;
             }
 
-            writeAppInfo(appInfo, source, { keepInstallInfo: true });
+            const mergedAppinfo = writeAppInfo(appInfo, source, {
+                keepInstallInfo: true,
+            });
 
             await downloadAppResources(appInfo, source.name);
 
-            return appInfo;
+            return mergedAppinfo;
         })
     );
 

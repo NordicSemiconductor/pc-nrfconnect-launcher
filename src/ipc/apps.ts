@@ -76,7 +76,7 @@ export const isDownloadable = (app?: App): app is DownloadableApp =>
     app != null && app?.source !== LOCAL;
 
 export const isInstalled = (app?: App): app is LaunchableApp =>
-    app != null && 'currentVersion' in app && app.currentVersion != null;
+    app != null && 'installed' in app;
 
 export const isWithdrawn = (app?: App): app is WithdrawnApp =>
     isDownloadable(app) && app.isWithdrawn;

@@ -78,6 +78,8 @@ export const writeAppInfo = (
     }
 
     writeJsonFile(appInfoFile(appSpec), mergedContent);
+
+    return mergedContent;
 };
 
 export const addDownloadAppData =
