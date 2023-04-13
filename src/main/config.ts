@@ -104,9 +104,6 @@ export const getAppsExternalDir = (effectiveConfig = config) =>
 
 export const getAppsLocalDir = () => path.join(config.appsRootDir, 'local');
 
-export const getAppsJsonPath = (sourceName?: string) =>
-    path.join(getAppsRootDir(sourceName), 'apps.json');
-
 export const getAppsRootDir = (
     sourceName: SourceName = OFFICIAL,
     effectiveConfig = config
@@ -120,6 +117,3 @@ export const getElectronResourcesDir = () =>
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');
-
-export const getUpdatesJsonPath = (sourceName?: string) =>
-    path.join(getAppsRootDir(sourceName), 'updates.json');

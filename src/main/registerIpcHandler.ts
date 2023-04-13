@@ -8,9 +8,7 @@ import Store from 'electron-store';
 
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
-    registerDownloadAllAppsJsonFiles,
-    registerDownloadAppIcon,
-    registerDownloadReleaseNotes,
+    registerDownloadLatestAppInfos,
     registerGetDownloadableApps,
     registerGetLocalApps,
     registerInstallDownloadableApp,
@@ -56,18 +54,20 @@ import {
     registerRemoveSource,
 } from '../ipc/sources';
 import {
-    downloadAllAppsJsonFiles,
-    downloadAppIcon,
-    downloadReleaseNotes,
-    getDownloadableApps,
-    getLocalApps,
     installDownloadableApp,
     installLocalApp,
     removeDownloadableApp,
     removeLocalApp,
-} from './apps';
+} from './apps/appChanges';
+import {
+    downloadLatestAppInfos,
+    getDownloadableApps,
+    getLocalApps,
+} from './apps/apps';
+import createDesktopShortcut from './apps/createDesktopShortcut';
+import { addSource, removeSource } from './apps/sourceChanges';
+import { getAllSources } from './apps/sources';
 import { getConfig } from './config';
-import createDesktopShortcut from './createDesktopShortcut';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
@@ -89,7 +89,6 @@ import {
     setNameFilter,
     setShownStates,
 } from './settings';
-import { addSource, getAllSources, removeSource } from './sources';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
@@ -121,9 +120,7 @@ export default () => {
     registerOpenApp(openApp);
     registerOpenLauncher(openLauncherWindow);
 
-    registerDownloadAllAppsJsonFiles(downloadAllAppsJsonFiles);
-    registerDownloadAppIcon(downloadAppIcon);
-    registerDownloadReleaseNotes(downloadReleaseNotes);
+    registerDownloadLatestAppInfos(downloadLatestAppInfos);
     registerGetDownloadableApps(getDownloadableApps);
     registerGetLocalApps(getLocalApps);
     registerInstallDownloadableApp(installDownloadableApp);

@@ -7,7 +7,8 @@
 import { app } from 'electron';
 import { join } from 'path';
 
-import { createTextFile } from './fileUtil';
+import describeError from './describeError';
+import { writeFile } from './fileUtil';
 
 /*
  * Let's store the full path to the executable if nRFConnect was started from a built package.
@@ -16,11 +17,15 @@ import { createTextFile } from './fileUtil';
  */
 export default () => {
     if (app.isPackaged) {
-        createTextFile(
-            join(app.getPath('userData'), 'execPath'),
-            process.platform === 'linux' && process.env.APPIMAGE
-                ? process.env.APPIMAGE
-                : process.execPath
-        ).catch(err => console.log(err.message));
+        try {
+            writeFile(
+                join(app.getPath('userData'), 'execPath'),
+                process.platform === 'linux' && process.env.APPIMAGE
+                    ? process.env.APPIMAGE
+                    : process.execPath
+            );
+        } catch (error) {
+            console.log(describeError(error));
+        }
     }
 };

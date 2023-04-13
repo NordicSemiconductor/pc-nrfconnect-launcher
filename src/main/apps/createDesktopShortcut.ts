@@ -4,30 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable no-bitwise */
-
 import { app as electronApp, shell } from 'electron';
-import fs from 'fs';
 import Mustache from 'mustache';
 import path from 'path';
 import { uuid } from 'short-uuid';
 
-import { isDownloadable, LaunchableApp } from '../ipc/apps';
-import { showErrorDialog } from '../ipc/showErrorDialog';
-import { OFFICIAL } from '../ipc/sources';
-import * as fileUtil from './fileUtil';
+import { isDownloadable, LaunchableApp } from '../../ipc/apps';
+import { showErrorDialog } from '../../ipc/showErrorDialog';
+import { OFFICIAL } from '../../ipc/sources';
+import { chmod, chmodDir, copy, readFile, untar, writeFile } from '../fileUtil';
+import { getShortcutIcon } from '../icons';
 
 const getDesktopDir = () => electronApp.getPath('desktop');
 
 const getElectronExePath = () =>
     process.env.APPIMAGE || electronApp.getPath('exe');
-
-const mode =
-    fs.constants.S_IRWXU |
-    fs.constants.S_IRGRP |
-    fs.constants.S_IXGRP |
-    fs.constants.S_IROTH |
-    fs.constants.S_IXOTH;
 
 const sourceName = (app: LaunchableApp) => {
     if (isDownloadable(app)) {
@@ -55,11 +46,12 @@ const getArgs = (app: LaunchableApp) =>
 const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
     const filePath = path.join(getDesktopDir(), `${fileName}.lnk`);
-    if (app.shortcutIconPath) {
+    const icon = getShortcutIcon(app);
+    if (icon) {
         const shortcutStatus = shell.writeShortcutLink(filePath, {
             target: getElectronExePath(),
             args: getArgs(app),
-            icon: app.shortcutIconPath,
+            icon,
             // iconIndex has to be set to change icon
             iconIndex: 0,
         });
@@ -67,7 +59,7 @@ const createShortcutForWindows = (app: LaunchableApp) => {
             showErrorDialog('Fail with shell.writeShortcutLink');
         }
     } else {
-        showErrorDialog('Fail to create desktop since app.iconPath is not set');
+        showErrorDialog('Fail to create desktop: Unable to determine an icon');
     }
 };
 
@@ -83,7 +75,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
     );
 
     const args = getArgs(app);
-    const { iconPath, shortcutIconPath } = app;
+    const icon = getShortcutIcon(app);
 
     const shortcutContent = [
         '[Desktop Entry]',
@@ -92,16 +84,16 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         `Name=${fileName}`,
         `Exec=${getElectronExePath()} ${args}`,
         'Terminal=false',
-        `Icon=${shortcutIconPath || iconPath}`,
+        `Icon=${icon}`,
         'Type=Application',
         '',
     ].join('\n');
 
     try {
-        fs.writeFileSync(desktopFilePath, shortcutContent);
-        fs.chmodSync(desktopFilePath, mode);
-        fs.writeFileSync(applicationsFilePath, shortcutContent);
-        fs.chmodSync(applicationsFilePath, mode);
+        writeFile(desktopFilePath, shortcutContent);
+        chmod(desktopFilePath);
+        writeFile(applicationsFilePath, shortcutContent);
+        chmod(applicationsFilePath);
     } catch (err) {
         showErrorDialog(
             `Fail to create desktop shortcut on Linux with error: ${err}`
@@ -140,8 +132,8 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
     try {
         // Untar template
-        await fileUtil.untar(appTemplateTarPath, tmpAppTemplatePath, 1);
-        await fileUtil.chmodDir(tmpAppTemplatePath, mode);
+        await untar(appTemplateTarPath, tmpAppTemplatePath, 1);
+        await chmodDir(tmpAppTemplatePath);
 
         // Create Info.plist
         const infoTmpPath = path.join(
@@ -151,7 +143,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
             isDownloadable(app) ? '' : '-local'
         }`;
-        const infoContentSource = fs.readFileSync(infoTmpPath, 'utf-8');
+        const infoContentSource = readFile(infoTmpPath);
         Mustache.parse(infoContentSource);
         const infoContentData = {
             identifier,
@@ -169,7 +161,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             / /g,
             '\\ '
         )} ${getArgs(app)}`;
-        const wflowContentSource = fs.readFileSync(wflowTmpPath, 'utf-8');
+        const wflowContentSource = readFile(wflowTmpPath);
         Mustache.parse(wflowContentSource);
         const wflowContentData = {
             shortcutCMD,
@@ -179,22 +171,22 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
             wflowContentData
         );
 
-        await fileUtil.createTextFile(infoTmpPath, infoContent);
-        await fileUtil.createTextFile(wflowTmpPath, wflowContent);
-        await fileUtil.copy(app.shortcutIconPath, icnsPath);
+        writeFile(infoTmpPath, infoContent);
+        writeFile(wflowTmpPath, wflowContent);
+        await copy(getShortcutIcon(app), icnsPath);
 
         // Copy to Desktop
-        await fileUtil.copy(tmpAppTemplatePath, filePath);
+        await copy(tmpAppTemplatePath, filePath);
 
         // Copy to Applications
         filePath = path.join(
             electronApp.getPath('home'),
             `/Applications/${fileName}.app/`
         );
-        await fileUtil.copy(tmpAppTemplatePath, filePath);
+        await copy(tmpAppTemplatePath, filePath);
 
         // Change mode
-        await fileUtil.chmodDir(appExecPath, mode);
+        await chmodDir(appExecPath);
     } catch (error) {
         showErrorDialog(
             `Error occured while creating desktop shortcut on MacOS with error: ${error}`

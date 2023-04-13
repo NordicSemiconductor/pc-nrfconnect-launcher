@@ -28,4 +28,9 @@ const showLoadingError = error => {
     });
 };
 
-initApp(appPath).then(render).catch(showLoadingError);
+try {
+    const app = initApp(appPath);
+    render(app);
+} catch (error) {
+    showLoadingError(error);
+}

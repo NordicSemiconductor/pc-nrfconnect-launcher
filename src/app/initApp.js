@@ -8,7 +8,7 @@ import { getGlobal } from '@electron/remote';
 import fs from 'fs';
 import path from 'path';
 
-import { mkdirIfNotExists } from '../main/mkdir';
+import { ensureDirExists } from '../main/mkdir';
 
 const getUserDataDir = () => getGlobal('userDataDir');
 
@@ -27,6 +27,7 @@ function setAppDirs(newAppDir, newAppDataDir, newAppLogDir) {
 const loadApp = appDir => {
     const moduleManifest = path.join(appDir, 'package.json');
 
+    // FIXME later: Do not do a file operation in the renderer process
     if (!fs.existsSync(moduleManifest)) {
         console.log(
             `Trying to load module, but package.json is missing in ${appDir}.`
@@ -41,35 +42,23 @@ const loadApp = appDir => {
     return app.default ?? app;
 };
 
-const ensureDirExists = async dir => {
-    try {
-        await mkdirIfNotExists(dir);
-    } catch {
-        throw new Error(`Failed to create '${dir}'.`);
-    }
-};
-
-/**
+/*
  * Initializes an app.
  *
- * Creates these directories needed for an app:
- * .../<userDataDir>/<appName>/
- * .../<userDataDir>/<appName>/logs/
- *
- * After that initializes the logger, loads the app and returns it.
+ * Prepares the environment, creates the needed directories, loads the app, and returns it.
  *
  * @param {string} appDir the directory of the app to load.
- * @returns {Promise<object>} Resolving to the loaded app.
  */
-export default async appDir => {
+export default appDir => {
     const appBaseName = path.basename(appDir);
     const userDataDir = getUserDataDir();
     const appDataDir = path.join(userDataDir, appBaseName);
     const appLogDir = path.join(appDataDir, 'logs');
     setAppDirs(appDir, appDataDir, appLogDir);
 
-    await ensureDirExists(appDataDir);
-    await ensureDirExists(appLogDir);
+    // FIXME later: Do this in the main process before launching an app
+    ensureDirExists(appDataDir);
+    ensureDirExists(appLogDir);
 
     return loadApp(appDir);
 };

@@ -4,42 +4,31 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import {
     addSource as addSourceInMain,
-    getSources,
+    OFFICIAL,
     removeSource as removeSourceInMain,
+    Source,
     SourceName,
     SourceUrl,
 } from '../../../ipc/sources';
 import type { AppDispatch } from '../../store';
-import { fetchInfoForAllDownloadableApps } from '../apps/appsEffects';
+import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
 import { hideSource, showSource } from '../filter/filterSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
-    setSources,
 } from './sourcesSlice';
-
-export const loadSources = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setSources(await getSources()));
-    } catch (error) {
-        dispatch(
-            ErrorDialogActions.showDialog(
-                `Unable to load settings: ${describeError(error)}`
-            )
-        );
-    }
-};
 
 export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
     addSourceInMain(url)
-        .then(name => {
-            dispatch(addSourceAction({ name, url }));
-            dispatch(showSource(name));
+        .then(({ source, apps }) => {
+            dispatch(addSourceAction(source));
+            dispatch(showSource(source.name));
+            dispatch(addDownloadableApps(apps));
         })
         .catch(error =>
             dispatch(
@@ -50,17 +39,16 @@ export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
                     )
                 )
             )
-        )
-        .then(() => dispatch(fetchInfoForAllDownloadableApps()));
+        );
 };
 
 export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
     removeSourceInMain(name)
         .then(() => {
+            dispatch(removeAppsOfSource(name));
             dispatch(removeSourceAction(name));
             dispatch(hideSource(name));
         })
-        .then(() => dispatch(fetchInfoForAllDownloadableApps()))
         .catch(error =>
             dispatch(
                 ErrorDialogActions.showDialog(
@@ -72,3 +60,42 @@ export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
             )
         );
 };
+
+const showProblemWithOfficialSource = (source: Source) =>
+    ErrorDialogActions.showDialog(
+        `Unable to retrieve the official source from ${source.url}.\n\n` +
+            'This is usually caused by a missing internet connection. ' +
+            'Without retrieving that file, official apps cannot be installed. '
+    );
+
+const showProblemWithExtraSource =
+    (source: Source) => (dispatch: AppDispatch) => {
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to retrieve the source “${source.name}” ` +
+                    `from ${source.url}. \n\n` +
+                    'This is usually caused by outdated app sources in the settings, ' +
+                    'where the sources files was removed from the server.',
+                {
+                    'Remove source': () => {
+                        dispatch(removeSource(source.name));
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                    Cancel: () => {
+                        dispatch(ErrorDialogActions.hideDialog());
+                    },
+                }
+            )
+        );
+    };
+
+export const handleSourcesWithErrors =
+    (sources: Source[]) => (dispatch: AppDispatch) => {
+        sources.forEach(source => {
+            if (source.name === OFFICIAL) {
+                dispatch(showProblemWithOfficialSource(source));
+            } else {
+                dispatch(showProblemWithExtraSource(source));
+            }
+        });
+    };

@@ -13,10 +13,8 @@ import {
 } from '../ipc/apps';
 import { LOCAL, OFFICIAL } from '../ipc/sources';
 
-const url = (appName: string) => `http://example.org/apps/${appName}.json`;
 const path = (appName: string) => `/path/to/${appName}`;
 const iconPath = (appName: string) => `/path/to/${appName}/icon.png`;
-const shortcutIconPath = (appName: string) => `/path/to/${appName}/icon.ico`;
 
 export const createLocalTestApp = (
     appName = 'dummy',
@@ -29,9 +27,11 @@ export const createLocalTestApp = (
 
     currentVersion: '1.2.3',
 
-    path: path(appName),
     iconPath: iconPath(appName),
-    shortcutIconPath: shortcutIconPath(appName),
+
+    installed: {
+        path: path(appName),
+    },
 
     ...additonalProps,
 });
@@ -47,11 +47,13 @@ export const createDownloadableTestApp = (
 
     currentVersion: '4.5.6',
     latestVersion: '4.5.6',
+    isWithdrawn: false,
 
-    url: url(appName),
-    path: path(appName),
     iconPath: iconPath(appName),
-    shortcutIconPath: shortcutIconPath(appName),
+
+    installed: {
+        path: path(appName),
+    },
 
     ...additonalProps,
 });
@@ -66,9 +68,8 @@ export const createUninstalledTestApp = (
     description: `The uninstalled ${lowerCase(appName)} test app`,
 
     latestVersion: '7.8.9',
-    currentVersion: undefined,
+    isWithdrawn: false,
 
-    url: url(appName),
     iconPath: iconPath(appName),
 
     ...additonalProps,

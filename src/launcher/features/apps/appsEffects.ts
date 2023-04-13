@@ -11,125 +11,95 @@ import {
     AppSpec,
     AppWithError,
     DownloadableApp,
-    DownloadableAppInfo,
-    downloadAppIcon as downloadAppIconInMain,
-    downloadReleaseNotes as downloadReleaseNotesInMain,
-    getDownloadableApps,
-    getLocalApps,
+    downloadLatestAppInfos as downloadLatestAppInfosInMain,
     installDownloadableApp as installDownloadableAppInMain,
     installLocalApp as installLocalAppInMain,
-    isInstalled,
     LaunchableApp,
     removeDownloadableApp as removeDownloadableAppInMain,
     removeLocalApp as removeLocalAppInMain,
-    UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { openApp } from '../../../ipc/openWindow';
 import type { AppDispatch } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
+import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
     EventAction,
     sendAppUsageData,
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
 import {
+    addDownloadableApps,
     addLocalApp,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    setAllDownloadableApps,
-    setAppIconPath,
-    setAppReleaseNote,
     showConfirmLaunchDialog,
-    updateDownloadableAppInfo,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
 const fs = remoteRequire('fs-extra');
 
-export const loadLocalApps = () => (dispatch: AppDispatch) => {
-    dispatch(loadLocalAppsStarted());
-
-    return getLocalApps()
-        .then(apps => dispatch(loadLocalAppsSuccess(apps)))
-        .catch(error => {
-            dispatch(loadLocalAppsError());
-            dispatch(ErrorDialogActions.showDialog(error.message));
-        });
-};
-
-const downloadAppIcon =
-    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
-        const iconPath = await downloadAppIconInMain(app);
-        if (iconPath != null) {
-            dispatch(setAppIconPath({ app, iconPath }));
-        }
-    };
-
-const downloadReleaseNotes =
-    (app: DownloadableApp) => async (dispatch: AppDispatch) => {
-        const releaseNote = await downloadReleaseNotesInMain(app);
-        if (releaseNote != null) {
-            dispatch(setAppReleaseNote({ app, releaseNote }));
-        }
-    };
-
-export const fetchInfoForAllDownloadableApps =
-    (checkOnlineForUpdates = true) =>
-    async (dispatch: AppDispatch) => {
-        dispatch(loadDownloadableAppsStarted());
-        const { apps, appsWithErrors } = await getDownloadableApps();
-
-        dispatch(setAllDownloadableApps(apps));
-
-        if (checkOnlineForUpdates) {
-            apps.forEach(app => {
-                dispatch(downloadReleaseNotes(app));
-                if (!isInstalled(app)) {
-                    dispatch(downloadAppIcon(app));
-                }
-            });
-        }
-
-        if (appsWithErrors.length > 0) {
-            handleAppsWithErrors(dispatch, appsWithErrors);
-        }
-    };
-
-const handleAppsWithErrors = (dispatch: AppDispatch, apps: AppWithError[]) => {
-    dispatch(loadDownloadableAppsError());
-    apps.forEach(app => {
-        sendLauncherUsageData(
-            EventAction.REPORT_INSTALLATION_ERROR,
-            `${app.source} - ${app.name}`
-        );
-    });
-
-    const recover = (invalidPaths: string[]) => () => {
-        invalidPaths.forEach(p => fs.remove(p));
-        getCurrentWindow().reload();
-    };
-
-    dispatch(
-        ErrorDialogActions.showDialog(buildErrorMessage(apps), {
-            Recover: recover(apps.map(app => app.path)),
-            Close: () => dispatch(ErrorDialogActions.hideDialog()),
-        })
-    );
-};
-
 const buildErrorMessage = (apps: AppWithError[]) => {
     const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');
     const paths = apps.map(app => `* *${app.path}*\n\n`).join('');
-    return `Unable to load all apps, these are the error messages:\n\n${errors}Clicking **Recover** will attempt to remove the following broken installation directories:\n\n${paths}`;
+    return (
+        'Unable to load all apps, these are the error messages:\n\n' +
+        `${errors}Clicking **Recover** will attempt to remove the ` +
+        `following broken installation directories:\n\n${paths}`
+    );
+};
+
+export const handleAppsWithErrors =
+    (apps: AppWithError[]) => (dispatch: AppDispatch) => {
+        if (apps.length === 0) {
+            return;
+        }
+
+        apps.forEach(app => {
+            sendLauncherUsageData(
+                EventAction.REPORT_INSTALLATION_ERROR,
+                `${app.source} - ${app.name}`
+            );
+        });
+
+        const recover = (invalidPaths: string[]) => () => {
+            // FIXME later: Do this whole thing in the main process
+            invalidPaths.forEach(p => fs.remove(p));
+            getCurrentWindow().reload();
+        };
+
+        dispatch(
+            ErrorDialogActions.showDialog(buildErrorMessage(apps), {
+                Recover: recover(apps.map(app => app.path)),
+                Close: () => dispatch(ErrorDialogActions.hideDialog()),
+            })
+        );
+    };
+
+export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(updateDownloadableAppInfosStarted());
+        const { apps, appsWithErrors, sourcesWithErrors } =
+            await downloadLatestAppInfosInMain();
+
+        dispatch(addDownloadableApps(apps));
+        dispatch(updateDownloadableAppInfosSuccess());
+        dispatch(handleAppsWithErrors(appsWithErrors));
+        dispatch(handleSourcesWithErrors(sourcesWithErrors));
+    } catch (error) {
+        dispatch(updateDownloadableAppInfosFailed());
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to download latest app info: ${describeError(error)}`
+            )
+        );
+    }
 };
 
 export const installLocalApp =
@@ -167,60 +137,52 @@ export const installLocalApp =
         }
     };
 
+const install = (app: DownloadableApp) => async (dispatch: AppDispatch) => {
+    try {
+        const installedApp = await installDownloadableAppInMain(app);
+        dispatch(addDownloadableApps([installedApp]));
+    } catch (error) {
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Unable to install: ${(error as Error).message}`
+            )
+        );
+    }
+    dispatch(resetAppProgress(app));
+};
+
 export const installDownloadableApp =
-    (app: UninstalledDownloadableApp) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
+
         dispatch(installDownloadableAppStarted(app));
-
-        installDownloadableAppInMain(app, app.latestVersion)
-            .then(installedApp => {
-                dispatch(updateDownloadableAppInfo(installedApp));
-            })
-            .catch(error => {
-                dispatch(resetAppProgress(app));
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to install: ${error.message}`
-                    )
-                );
-            });
-    };
-
-export const removeDownloadableApp =
-    (app: AppSpec) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.REMOVE_APP, app.source, app.name);
-        dispatch(removeDownloadableAppStarted(app));
-        removeDownloadableAppInMain(app)
-            .then(() => {
-                dispatch(removeDownloadableAppSuccess(app));
-            })
-            .catch(error => {
-                dispatch(resetAppProgress(app));
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to remove: ${error.message}`
-                    )
-                );
-            });
+        return dispatch(install(app));
     };
 
 export const updateDownloadableApp =
-    (app: DownloadableAppInfo, version: string) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp) => (dispatch: AppDispatch) => {
         sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
-        dispatch(updateDownloadableAppStarted(app));
 
-        return installDownloadableAppInMain(app, version)
-            .then(installedApp => {
-                dispatch(updateDownloadableAppInfo(installedApp));
-            })
-            .catch(error => {
-                dispatch(resetAppProgress(app));
-                dispatch(
-                    ErrorDialogActions.showDialog(
-                        `Unable to update: ${error.message}`
-                    )
-                );
-            });
+        dispatch(updateDownloadableAppStarted(app));
+        return dispatch(install(app));
+    };
+
+export const removeDownloadableApp =
+    (app: AppSpec) => async (dispatch: AppDispatch) => {
+        sendAppUsageData(EventAction.REMOVE_APP, app.source, app.name);
+
+        dispatch(removeDownloadableAppStarted(app));
+        try {
+            await removeDownloadableAppInMain(app);
+            dispatch(removeDownloadableAppSuccess(app));
+        } catch (error) {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Unable to remove: ${(error as Error).message}`
+                )
+            );
+        }
+        dispatch(resetAppProgress(app));
     };
 
 export const launch = (app: LaunchableApp) => {

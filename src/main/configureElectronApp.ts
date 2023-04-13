@@ -6,19 +6,36 @@
 
 import { app, dialog, Menu } from 'electron';
 
-import { initAppsDirectory } from './apps';
-import { getConfig } from './config';
+import { installAllLocalAppArchives } from './apps/appChanges';
+import { initialiseAllSources } from './apps/sources';
+import {
+    getAppsExternalDir,
+    getAppsLocalDir,
+    getAppsRootDir,
+    getConfig,
+    getNodeModulesDir,
+} from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
 import { logger } from './log';
 import menu from './menu';
+import { ensureDirExists } from './mkdir';
 import {
     openDownloadableAppWindow,
     openLauncherWindow,
     openLocalAppWindow,
 } from './windows';
 
-const openInitialWindow = async () => {
+const initAppsDirectory = async () => {
+    ensureDirExists(getAppsRootDir());
+    ensureDirExists(getAppsLocalDir());
+    ensureDirExists(getAppsExternalDir());
+    ensureDirExists(getNodeModulesDir());
+    initialiseAllSources();
+    await installAllLocalAppArchives();
+};
+
+const openInitialWindow = () => {
     const { startupApp } = getConfig();
 
     if (startupApp == null) {
@@ -27,9 +44,9 @@ const openInitialWindow = async () => {
     }
 
     if (startupApp.local) {
-        await openLocalAppWindow(startupApp.name);
+        openLocalAppWindow(startupApp.name);
     } else {
-        await openDownloadableAppWindow(startupApp);
+        openDownloadableAppWindow(startupApp);
     }
 };
 
@@ -53,7 +70,7 @@ export default () => {
 
         try {
             await initAppsDirectory();
-            await openInitialWindow();
+            openInitialWindow();
         } catch (error) {
             fatalError(error);
         }

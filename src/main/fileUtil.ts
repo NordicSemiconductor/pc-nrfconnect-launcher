@@ -5,15 +5,16 @@
  */
 
 import chmodr from 'chmodr';
-import { app } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { uuid } from 'short-uuid';
 import targz from 'targz';
 
 import describeError from './describeError';
 
-const readFile = (filePath: string) => {
+export const ifExists = (filePath: string) =>
+    fs.existsSync(filePath) ? filePath : undefined;
+
+export const readFile = (filePath: string) => {
     try {
         return fs.readFileSync(filePath, 'utf8');
     } catch (error) {
@@ -21,10 +22,14 @@ const readFile = (filePath: string) => {
     }
 };
 
-export const readJsonFile = <T>(filePath: string) => {
+export const readJsonFile = <T>(filePath: string, defaultValue?: T) => {
     try {
-        return <T>JSON.parse(readFile(filePath));
+        return <T>JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (error) {
+        if (defaultValue !== undefined) {
+            return defaultValue;
+        }
+
         throw new Error(`Unable to parse ${filePath}: ${describeError(error)}`);
     }
 };
@@ -100,7 +105,18 @@ export const untar = (src: string, dest: string, stripComponents: number) => {
     });
 };
 
-export const chmodDir = (src: string, mode: string | number) =>
+const defaultMode =
+    fs.constants.S_IRWXU | // eslint-disable-line no-bitwise
+    fs.constants.S_IRGRP |
+    fs.constants.S_IXGRP |
+    fs.constants.S_IROTH |
+    fs.constants.S_IXOTH;
+
+export const chmod = (filePath: string, mode: fs.Mode = defaultMode) => {
+    fs.chmodSync(filePath, mode);
+};
+
+export const chmodDir = (src: string, mode: fs.Mode = defaultMode) =>
     new Promise<void>((resolve, reject) => {
         chmodr(src, mode, error => {
             if (error) {
@@ -117,61 +133,13 @@ export const chmodDir = (src: string, mode: string | number) =>
         });
     });
 
-/*
- * Create a unique name for a temporary file or folder. The file is not
- * created, this just generates an absolute name for it in the directory
- * for temporary files.
- */
-export const getTmpFilename = (basename: string) =>
-    path.join(app.getPath('temp'), `${basename}-${uuid()}`);
-
-export const extractNpmPackage = async (
-    appName: string,
-    tgzFile: string,
-    destinationDir: string
-) => {
-    const tmpDir = getTmpFilename(appName);
-
-    await untar(tgzFile, tmpDir, 1);
-    await fs.move(tmpDir, destinationDir, { overwrite: true });
-};
-
-/*
- * Get the app name from the given *.tgz archive file. Expects the
- * file name to be on the form "{name}-{version}.tgz".
- */
-export const getNameFromNpmPackage = (tgzFile: string) => {
-    const fileName = path.basename(tgzFile);
-    const lastDash = fileName.lastIndexOf('-');
-    if (lastDash > 0) {
-        return fileName.substring(0, lastDash);
-    }
-    return null;
-};
-
-export const createTextFile = async (filePath: string, text: string) => {
+export const writeFile = (filePath: string, data: string) => {
     try {
-        await fs.writeFile(filePath, text);
+        fs.writeFileSync(filePath, data);
     } catch (error) {
-        throw new Error(
-            `Unable to initialize ${filePath}: ${describeError(error)}`
-        );
+        throw new Error(`Unable to write ${filePath}: ${describeError(error)}`);
     }
 };
 
-const createTextFileIfNotExists = async (filePath: string, text: string) => {
-    try {
-        await fs.stat(filePath);
-    } catch (error) {
-        await createTextFile(filePath, text);
-    }
-};
-
-export const createJsonFile = (filePath: string, jsonData: unknown) =>
-    createTextFile(filePath, JSON.stringify(jsonData, undefined, 2));
-
-export const createJsonFileIfNotExists = (
-    filePath: string,
-    jsonData: unknown
-) =>
-    createTextFileIfNotExists(filePath, JSON.stringify(jsonData, undefined, 2));
+export const writeJsonFile = (filePath: string, jsonData: unknown) =>
+    writeFile(filePath, JSON.stringify(jsonData, undefined, 2));

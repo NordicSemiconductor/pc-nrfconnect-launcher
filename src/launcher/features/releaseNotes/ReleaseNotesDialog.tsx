@@ -11,29 +11,29 @@ import ReactMarkdown from 'react-markdown';
 
 import {
     App,
-    DownloadableApp,
+    InstalledDownloadableApp,
     isDownloadable,
     isInstalled,
+    isUpdatable,
     isWithdrawn,
-    updateAvailable,
+    UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
-const canBeInstalledOrUpdated = (app?: App): app is DownloadableApp =>
-    app != null &&
-    !isWithdrawn(app) &&
-    isDownloadable(app) &&
-    (!isInstalled(app) || updateAvailable(app));
+const canBeInstalledOrUpdated = (
+    app?: App
+): app is InstalledDownloadableApp | UninstalledDownloadableApp =>
+    isDownloadable(app) && (!isInstalled(app) || isUpdatable(app));
 
 export default () => {
     const dispatch = useLauncherDispatch();
     const appToDisplay = useLauncherSelector(getReleaseNotesDialog);
     const app = useLauncherSelector(getDownloadableApp(appToDisplay));
 
-    if (app != null && isWithdrawn(app)) {
+    if (isWithdrawn(app)) {
         return null;
     }
 
@@ -56,7 +56,7 @@ export default () => {
             </Modal.Header>
             <Modal.Body className="release-notes">
                 <ReactMarkdown
-                    source={app?.releaseNote ?? ''}
+                    source={app?.releaseNotes ?? ''}
                     linkTarget="_blank"
                 />
             </Modal.Body>
@@ -65,9 +65,7 @@ export default () => {
                     <Button
                         variant="primary"
                         onClick={() => {
-                            dispatch(
-                                updateDownloadableApp(app, app.latestVersion)
-                            );
+                            dispatch(updateDownloadableApp(app));
                             hideDialog();
                         }}
                     >

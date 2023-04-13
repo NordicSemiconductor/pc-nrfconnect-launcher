@@ -11,6 +11,7 @@ import merge from 'lodash.merge';
 import type { Settings, ShownStates, WindowState } from '../ipc/settings';
 import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
+import { readFile, writeJsonFile } from './fileUtil';
 
 const defaultWindowSize = {
     width: 1024,
@@ -36,7 +37,7 @@ const parseJsonFile = (filePath: string) => {
         return {};
     }
     try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8'), (key, value) =>
+        return JSON.parse(readFile(filePath), (key, value) =>
             key === 'shownSources' ? new Set(value) : value
         );
     } catch (err) {
@@ -57,14 +58,15 @@ const load = () => {
 let data: Draft<Settings> = load();
 
 const save = () => {
-    fs.writeFileSync(
-        getConfig().settingsJsonPath,
-        JSON.stringify(
-            data,
-            (key, value) => (key === 'shownSources' ? [...value] : value),
-            2
-        )
-    );
+    const dataToSave = {
+        ...data,
+        appFilter: {
+            ...data.appFilter,
+            shownSources: [...data.appFilter.shownSources],
+        },
+    };
+
+    writeJsonFile(getConfig().settingsJsonPath, dataToSave);
 };
 
 export const resetSettings = () => {

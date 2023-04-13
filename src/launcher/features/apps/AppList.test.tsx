@@ -23,10 +23,10 @@ import {
     removeDownloadableApp,
 } from './appsEffects';
 import {
+    addDownloadableApps,
     installDownloadableAppStarted,
-    loadLocalAppsSuccess,
     removeDownloadableAppStarted,
-    setAllDownloadableApps,
+    setAllLocalApps,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
@@ -75,12 +75,12 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                setAllDownloadableApps([
+                addDownloadableApps([
                     uninstalledApp,
                     installedApp,
                     updatableApp,
                 ]),
-                loadLocalAppsSuccess([localApp]),
+                setAllLocalApps([localApp]),
             ]).baseElement
         ).toMatchSnapshot();
     });
@@ -89,7 +89,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                setAllDownloadableApps([uninstalledApp]),
+                addDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -99,7 +99,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                setAllDownloadableApps([installedApp]),
+                addDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -109,7 +109,7 @@ describe('AppList', () => {
         expect(
             render(<AppList />, [
                 setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                setAllDownloadableApps([updatableApp]),
+                addDownloadableApps([updatableApp]),
                 updateDownloadableAppStarted(updatableApp),
             ]).baseElement
         ).toMatchSnapshot();
@@ -122,7 +122,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    setAllDownloadableApps([uninstalledApp]),
+                    addDownloadableApps([uninstalledApp]),
                 ])}
             >
                 <AppList />
@@ -145,7 +145,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    setAllDownloadableApps([installedApp]),
+                    addDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />
@@ -170,7 +170,7 @@ describe('AppList', () => {
             <Provider
                 store={preparedStore([
                     setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    setAllDownloadableApps([installedApp]),
+                    addDownloadableApps([installedApp]),
                 ])}
             >
                 <AppList />

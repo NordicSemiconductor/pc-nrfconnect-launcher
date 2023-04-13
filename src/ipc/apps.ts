@@ -4,64 +4,58 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { AppVersions } from 'pc-nrfconnect-shared';
+
 import { handle, invoke } from './infrastructure/rendererToMain';
-import { LOCAL, SourceName } from './sources';
+import { LOCAL, Source, SourceName } from './sources';
 
 export interface AppSpec {
     name: string;
     source: SourceName;
 }
 
-export interface DownloadableAppInfoBase {
-    displayName: string;
-    description: string;
-    url: string;
-    homepage?: string;
-}
-
-export interface DownloadableAppInfo extends AppSpec, DownloadableAppInfoBase {}
-
 interface BaseApp {
     name: string;
     displayName: string;
     description: string;
-    iconPath?: string;
-}
-
-interface InstalledApp extends BaseApp {
-    currentVersion: string;
-    path: string;
-    shortcutIconPath: string;
-    engineVersion?: string;
-    repositoryUrl?: string;
-}
-
-export interface LocalApp extends InstalledApp {
-    source: typeof LOCAL;
     iconPath: string;
 }
-export interface UninstalledDownloadableApp
-    extends BaseApp,
-        DownloadableAppInfo {
+
+interface Downloadable {
     source: SourceName;
+    homepage?: string;
+    versions?: AppVersions;
+    releaseNotes?: string;
     latestVersion: string;
-    releaseNote?: string;
-    currentVersion: undefined;
+}
+
+interface Installed {
+    currentVersion: string;
+    engineVersion?: string;
+    repositoryUrl?: string;
+    installed: {
+        path: string;
+        shasum?: string;
+    };
+}
+
+export interface LocalApp extends Installed, BaseApp {
+    source: typeof LOCAL;
 }
 
 export interface InstalledDownloadableApp
-    extends InstalledApp,
-        DownloadableAppInfo {
-    source: SourceName;
-    iconPath: string;
-    latestVersion: string;
-    releaseNote?: string;
+    extends BaseApp,
+        Installed,
+        Downloadable {
+    isWithdrawn: false;
 }
 
-export interface WithdrawnApp extends InstalledApp, DownloadableAppInfo {
-    url: '';
-    source: SourceName;
-    iconPath: string;
+export interface UninstalledDownloadableApp extends BaseApp, Downloadable {
+    isWithdrawn: false;
+}
+
+export interface WithdrawnApp extends BaseApp, Installed, Downloadable {
+    isWithdrawn: true;
 }
 
 export type DownloadableApp =
@@ -78,39 +72,44 @@ export interface AppWithError extends AppSpec {
     path: string;
 }
 
-export const isDownloadable = (app: App): app is DownloadableApp =>
-    app.source !== LOCAL;
+export const isDownloadable = (app?: App): app is DownloadableApp =>
+    app != null && app?.source !== LOCAL;
 
-export const isInstalled = (app: App): app is LaunchableApp =>
-    app.currentVersion != null;
+export const isInstalled = (app?: App): app is LaunchableApp =>
+    app != null && 'installed' in app;
 
-export const isWithdrawn = (app: App): app is WithdrawnApp =>
-    isDownloadable(app) && !('latestVersion' in app);
+export const isWithdrawn = (app?: App): app is WithdrawnApp =>
+    isDownloadable(app) && app.isWithdrawn;
 
-export const updateAvailable = (app: InstalledDownloadableApp) =>
+export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
+    !isWithdrawn(app) &&
+    isInstalled(app) &&
+    isDownloadable(app) &&
     app.currentVersion !== app.latestVersion;
 
 const channel = {
-    downloadAllAppsJsonFiles: 'apps:download-all-apps-json-files',
+    downloadLatestAppInfos: 'apps:download-latest-app-infos',
     getLocalApps: 'apps:get-local-apps',
     getDownloadableApps: 'apps:get-downloadable-apps',
-    downloadReleaseNotes: 'apps:download-release-notes',
-    downloadAppIcon: 'apps:download-app-icon',
     installDownloadableApp: 'apps:install-downloadable-app',
     installLocalApp: 'apps:install-local-app',
     removeLocalApp: 'apps:remove-local-app',
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
 
-// downloadAllAppsJsonFiles
+// downloadLatestAppInfos
+type DownloadLatestAppInfos = () => {
+    apps: DownloadableApp[];
+    appsWithErrors: AppWithError[];
+    sourcesWithErrors: Source[];
+};
 
-type DownloadAllAppsJsonFiles = () => void;
-
-export const downloadAllAppsJsonFiles = invoke<DownloadAllAppsJsonFiles>(
-    channel.downloadAllAppsJsonFiles
+export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
+    channel.downloadLatestAppInfos
 );
-export const registerDownloadAllAppsJsonFiles =
-    handle<DownloadAllAppsJsonFiles>(channel.downloadAllAppsJsonFiles);
+export const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
+    channel.downloadLatestAppInfos
+);
 
 // getLocalApps
 
@@ -121,10 +120,13 @@ export const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
 
 // getDownloadableApps
 
-type GetDownloadableApps = () => {
+export type GetDownloadableAppsResult = {
     apps: DownloadableApp[];
     appsWithErrors: AppWithError[];
+    sourcesWithErrors: Source[];
 };
+
+type GetDownloadableApps = () => GetDownloadableAppsResult;
 
 export const getDownloadableApps = invoke<GetDownloadableApps>(
     channel.getDownloadableApps
@@ -133,28 +135,10 @@ export const registerGetDownloadableApps = handle<GetDownloadableApps>(
     channel.getDownloadableApps
 );
 
-// downloadReleaseNotes
-type DownloadReleaseNotes = (app: DownloadableApp) => string | undefined;
-
-export const downloadReleaseNotes = invoke<DownloadReleaseNotes>(
-    channel.downloadReleaseNotes
-);
-export const registerDownloadReleaseNotes = handle<DownloadReleaseNotes>(
-    channel.downloadReleaseNotes
-);
-
-// downloadAppIcon
-type DownloadAppIcon = (app: DownloadableApp) => string | undefined;
-
-export const downloadAppIcon = invoke<DownloadAppIcon>(channel.downloadAppIcon);
-export const registerDownloadAppIcon = handle<DownloadAppIcon>(
-    channel.downloadAppIcon
-);
-
 // installDownloadableApp
 type InstallDownloadableApp = (
-    app: DownloadableAppInfo,
-    version: string
+    app: DownloadableApp,
+    version?: string
 ) => DownloadableApp;
 
 export const installDownloadableApp = invoke<InstallDownloadableApp>(

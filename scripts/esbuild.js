@@ -4,21 +4,32 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-require('esbuild')
-    .build({
-        bundle: true,
-        color: true,
-        entryPoints: ['src/main/index.ts'],
-        external: [
-            'electron',
-            'serialport',
-            /node_modules\/(?!pc-nrfconnect-shared\/)/,
-        ],
-        logLevel: 'info',
-        outfile: 'dist/main.js',
-        platform: 'node',
-        sourcemap: true,
-        watch: process.argv.includes('--watch'),
-        minify: process.argv.includes('--prod'),
-    })
-    .catch(() => process.exit(1));
+const esbuild = require('esbuild');
+const fs = require('node:fs');
+
+const { dependencies } = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
+const options = {
+    bundle: true,
+    color: true,
+    entryPoints: ['src/main/index.ts'],
+    external: ['electron', ...Object.keys(dependencies ?? {})],
+    logLevel: 'info',
+    outfile: 'dist/main.js',
+    platform: 'node',
+    sourcemap: true,
+    minify: process.argv.includes('--prod'),
+};
+
+const build = async () => {
+    if (process.argv.includes('--watch')) {
+        const context = await esbuild.context(options);
+
+        await context.rebuild();
+        await context.watch();
+    } else {
+        esbuild.build(options);
+    }
+};
+
+build();

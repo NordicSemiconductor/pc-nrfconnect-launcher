@@ -11,38 +11,24 @@ import {
     screen,
     WebContents,
 } from 'electron';
-import fs from 'fs';
-import path from 'path';
 import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
 
 import { AppDetails } from '../ipc/appDetails';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import { LOCAL } from '../ipc/sources';
-import { getDownloadableApps, getLocalApps } from './apps';
-import * as browser from './browser';
+import { getDownloadableApps, getLocalApps } from './apps/apps';
+import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
-import * as settings from './settings';
+import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
+import { get as getSetting, setLastWindowState } from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
 const appWindows: {
     browserWindow: BrowserWindow;
     app: LaunchableApp;
 }[] = [];
-
-const getDefaultIconPath = () =>
-    path.join(
-        getElectronResourcesDir(),
-        process.platform === 'win32' ? 'icon.ico' : 'icon.png'
-    );
-
-export const ifExists = (filePath: string) =>
-    fs.existsSync(filePath) ? filePath : undefined;
-
-const getAppIcon = (app: LaunchableApp) =>
-    ifExists(path.join(app.path, 'resources', 'icon.png')) ??
-    getDefaultIconPath();
 
 export const openLauncherWindow = () => {
     if (launcherWindow) {
@@ -53,10 +39,10 @@ export const openLauncherWindow = () => {
 };
 
 const createLauncherWindow = () => {
-    const window = browser.createWindow({
+    const window = createWindow({
         title: `nRF Connect for Desktop v${getConfig().version}`,
         url: `file://${getElectronResourcesDir()}/launcher.html`,
-        icon: getDefaultIconPath(),
+        icon: getNrfConnectForDesktopIcon(),
         width: 760,
         height: 600,
         center: true,
@@ -86,7 +72,7 @@ export const openAppWindow = (
     app: LaunchableApp,
     openAppOptions: OpenAppOptions = {}
 ) => {
-    const { lastWindowState } = settings.get();
+    const { lastWindowState } = getSetting();
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;
@@ -116,11 +102,11 @@ export const openAppWindow = (
         }
     }
 
-    const appWindow = browser.createWindow(
+    const appWindow = createWindow(
         {
             title: `${app.displayName || app.name} v${app.currentVersion}`,
             url: `file://${getElectronResourcesDir()}/app.html?appPath=${
-                app.path
+                app.installed.path
             }`,
             icon: getAppIcon(app),
             x,
@@ -148,7 +134,7 @@ export const openAppWindow = (
 
     appWindow.on('close', () => {
         const bounds = appWindow.getBounds();
-        settings.setLastWindowState({
+        setLastWindowState({
             x: bounds.x,
             y: bounds.y,
             width: bounds.width,

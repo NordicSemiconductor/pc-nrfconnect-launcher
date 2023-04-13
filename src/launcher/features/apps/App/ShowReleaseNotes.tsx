@@ -14,7 +14,7 @@ import { DisplayedApp } from '../appsSlice';
 
 const ShowReleaseNotes: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
-    if (!isDownloadable(app) || isWithdrawn(app) || app.releaseNote == null)
+    if (!isDownloadable(app) || isWithdrawn(app) || app.releaseNotes == null)
         return null;
 
     return (

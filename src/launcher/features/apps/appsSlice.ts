@@ -11,12 +11,12 @@ import {
     App,
     AppSpec,
     DownloadableApp,
+    InstalledDownloadableApp,
     isDownloadable,
-    isInstalled,
+    isUpdatable,
     isWithdrawn,
     LaunchableApp,
     LocalApp,
-    updateAvailable,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
@@ -37,6 +37,11 @@ const notInProgress = (): AppProgess => ({
     fraction: 0,
 });
 
+const appNotInProgress = <X>(app: X) => ({
+    ...app,
+    progress: notInProgress(),
+});
+
 type DownloadableAppWithProgress = DownloadableApp & {
     progress: AppProgess;
 };
@@ -48,8 +53,6 @@ export type State = {
     downloadableApps: DownloadableAppWithProgress[];
     lastUpdateCheckDate?: Date;
     isDownloadingLatestAppInfo: boolean;
-    isLoadingLocalApps: boolean;
-    isLoadingDownloadableApps: boolean;
     isConfirmLaunchDialogVisible: boolean;
     confirmLaunchText?: string;
     confirmLaunchApp?: LaunchableApp;
@@ -59,8 +62,6 @@ const initialState: State = {
     localApps: [],
     downloadableApps: [],
     isDownloadingLatestAppInfo: false,
-    isLoadingLocalApps: true,
-    isLoadingDownloadableApps: true,
     isConfirmLaunchDialogVisible: false,
 };
 
@@ -69,6 +70,21 @@ const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
 
 const notEqualsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
     !equalsSpec(specOfSoughtApp)(app);
+
+const addApp = (apps: DownloadableAppWithProgress[], app: DownloadableApp) => {
+    apps.push(appNotInProgress(app));
+};
+
+const overwriteApp = (
+    apps: DownloadableAppWithProgress[],
+    app: DownloadableApp
+) => {
+    const existingAppIndex = apps.findIndex(equalsSpec(app));
+    apps[existingAppIndex] = {
+        ...app,
+        progress: apps[existingAppIndex].progress,
+    };
+};
 
 const updateApp = <AppType extends App>(
     specOfAppToUpdate: AppSpec,
@@ -99,110 +115,77 @@ const slice = createSlice({
     name: 'apps',
     initialState,
     reducers: {
-        // Load local apps
-        loadLocalAppsStarted(state) {
-            state.isLoadingLocalApps = true;
-        },
-        loadLocalAppsSuccess(
+        // Local apps
+        setAllLocalApps(
             state,
             { payload: localApps }: PayloadAction<LocalApp[]>
         ) {
             state.localApps = [...localApps];
-            state.isLoadingLocalApps = false;
         },
-        loadLocalAppsError(state) {
-            state.isLoadingLocalApps = false;
-        },
+
         addLocalApp(state, { payload: newApp }: PayloadAction<LocalApp>) {
             state.localApps.push(newApp);
         },
+
         removeLocalApp(state, { payload: appName }: PayloadAction<string>) {
             state.localApps = state.localApps.filter(
                 app => app.name !== appName
             );
         },
 
-        // Load Downloadable apps
-        loadDownloadableAppsStarted(state) {
-            state.isLoadingDownloadableApps = true;
-        },
-        setAllDownloadableApps(
+        // Downloadable apps
+        addDownloadableApps(
             state,
-            { payload: downloadableApps }: PayloadAction<DownloadableApp[]>
+            { payload: apps }: PayloadAction<DownloadableApp[]>
         ) {
-            state.isLoadingDownloadableApps = false;
-            state.downloadableApps = downloadableApps.map(app => ({
-                ...app,
-                progress: notInProgress(),
-            }));
-        },
-        updateDownloadableAppInfo(
-            state,
-            { payload: updatedApp }: PayloadAction<DownloadableApp>
-        ) {
-            state.isLoadingDownloadableApps = false;
-            state.downloadableApps = state.downloadableApps
-                .filter(notEqualsSpec(updatedApp))
-                .concat({
-                    ...updatedApp,
-                    progress: notInProgress(),
-                });
-        },
-        loadDownloadableAppsError(state) {
-            state.isLoadingDownloadableApps = false;
-        },
+            apps.forEach(app => {
+                const appIsKnown = state.downloadableApps.some(equalsSpec(app));
 
-        // Download latest app info
-        downloadLatestAppInfoStarted(state) {
-            state.isDownloadingLatestAppInfo = true;
-        },
-        downloadLatestAppInfoSuccess(
-            state,
-            {
-                payload: updateCheckDate = new Date(),
-            }: PayloadAction<Date | undefined>
-        ) {
-            state.isDownloadingLatestAppInfo = false;
-            state.lastUpdateCheckDate = updateCheckDate;
-        },
-        downloadLatestAppInfoError(state) {
-            state.isDownloadingLatestAppInfo = false;
-        },
-
-        // Set app specific properties
-        setAppIconPath(
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                app: AppSpec;
-                iconPath: string;
-            }>
-        ) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                app.iconPath = payload.iconPath;
-            });
-        },
-        setAppReleaseNote(
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                app: AppSpec;
-                releaseNote: string;
-            }>
-        ) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                if (!isWithdrawn(app)) {
-                    app.releaseNote = payload.releaseNote;
+                if (appIsKnown) {
+                    overwriteApp(state.downloadableApps, app);
+                } else {
+                    addApp(state.downloadableApps, app);
                 }
             });
         },
-        updateInstallProgress(state, { payload }: PayloadAction<Progress>) {
-            updateApp(payload.app, state.downloadableApps, app => {
-                app.progress.fraction = payload.progressFraction;
+
+        removeAppsOfSource(
+            state,
+            { payload: sourceName }: PayloadAction<SourceName>
+        ) {
+            state.downloadableApps = state.downloadableApps.filter(
+                app => app.source !== sourceName
+            );
+        },
+
+        // Update downloadable app infos
+        updateDownloadableAppInfosStarted(state) {
+            state.isDownloadingLatestAppInfo = true;
+        },
+
+        updateDownloadableAppInfosSuccess: {
+            reducer(state, { payload: updateCheckDate }: PayloadAction<Date>) {
+                state.isDownloadingLatestAppInfo = false;
+                state.lastUpdateCheckDate = updateCheckDate;
+            },
+            prepare(updateCheckDate: Date = new Date()) {
+                return { payload: updateCheckDate };
+            },
+        },
+        updateDownloadableAppInfosFailed(state) {
+            state.isDownloadingLatestAppInfo = false;
+        },
+
+        // Update progress
+        updateAppProgress(
+            state,
+            { payload: progress }: PayloadAction<Progress>
+        ) {
+            updateApp(progress.app, state.downloadableApps, app => {
+                app.progress.fraction = progress.progressFraction;
             });
         },
+
         resetAppProgress(state, { payload: app }: PayloadAction<AppSpec>) {
             resetProgress(app, state.downloadableApps);
         },
@@ -250,8 +233,15 @@ const slice = createSlice({
             } else {
                 resetProgress(removedApp, state.downloadableApps);
 
-                updateApp(removedApp, state.downloadableApps, app => {
-                    app.currentVersion = undefined;
+                updateApp(removedApp, state.downloadableApps, (app: object) => {
+                    if ('currentVersion' in app) {
+                        // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.currentVersion here
+                        delete app.currentVersion;
+                    }
+                    if ('installed' in app) {
+                        // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.installed here
+                        delete app.installed;
+                    }
                 });
             }
         },
@@ -276,28 +266,22 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
+    addDownloadableApps,
     addLocalApp,
-    downloadLatestAppInfoError,
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
+    removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    setAppIconPath,
-    setAppReleaseNote,
+    setAllLocalApps,
     showConfirmLaunchDialog,
-    setAllDownloadableApps,
-    updateDownloadableAppInfo,
-    updateInstallProgress,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
+    updateAppProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {
@@ -329,21 +313,20 @@ export const getDownloadableApp =
         );
 
 export const isAppUpdateAvailable = (state: RootState) =>
-    state.apps.downloadableApps.find(
-        app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
-    ) != null;
+    state.apps.downloadableApps.some(isUpdatable);
 
 export const getUpdateCheckStatus = (state: RootState) => ({
     isCheckingForUpdates: state.apps.isDownloadingLatestAppInfo,
     lastUpdateCheckDate: state.apps.lastUpdateCheckDate,
 });
 
-export const getUpdatableVisibleApps = (state: RootState) =>
+export const getUpdatableVisibleApps = (
+    state: RootState
+): InstalledDownloadableApp[] =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
-        .filter(
-            app => !isWithdrawn(app) && isInstalled(app) && updateAvailable(app)
-        );
+        .map((app: App) => app) // Narrowing the type, so that the final type is just InstalledDownloadableApp[]
+        .filter(isUpdatable);
 
 export const getConfirmLaunch = (state: RootState) => ({
     isDialogVisible: state.apps.isConfirmLaunchDialogVisible,

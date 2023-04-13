@@ -11,9 +11,9 @@ jobs:
   - name: WIN_TZ
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
-    value: 14.18.0
+    value: 18.15.0
   - name: NPM_VERSION
-    value: 6.14.15
+    value: 9.5.0
   - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     value: 1 # Because we use Electron, playwright needs no installed browsers https://playwright.dev/docs/api/class-electron
   strategy:
@@ -101,14 +101,6 @@ jobs:
     displayName: 'Copy npmrc on windows'
 
   - script: |
-      npm i -g node-gyp@6.0.1
-      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'))
-    displayName: 'Install and set node-gyp'
-
-  - script: |
       npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
     condition: and(
       eq(variables['INTERNAL'], 'true'),
@@ -141,8 +133,6 @@ jobs:
 
   - bash: |
       set -o errexit -o pipefail
-      npm i -g node-gyp@6.0.1
-      npm config set node_gyp "C:\npm\prefix\node_modules\node-gyp\bin\node-gyp.js"
       npm ci
       npm run check
       npm run build:prod

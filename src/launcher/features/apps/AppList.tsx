@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { App as AppType } from '../../../ipc/apps';
+import { App as AppType, isInstalled } from '../../../ipc/apps';
 import { useLauncherSelector } from '../../util/hooks';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
@@ -17,8 +17,7 @@ import { getAllApps } from './appsSlice';
 import ConfirmLaunchDialog from './ConfirmLaunchDialog';
 
 const sortByStateAndName = (appA: AppType, appB: AppType) => {
-    const cmpInstalled =
-        Number(!!appB.currentVersion) - Number(!!appA.currentVersion);
+    const cmpInstalled = Number(isInstalled(appB)) - Number(isInstalled(appA));
 
     const aName = appA.displayName || appA.name;
     const bName = appB.displayName || appB.name;

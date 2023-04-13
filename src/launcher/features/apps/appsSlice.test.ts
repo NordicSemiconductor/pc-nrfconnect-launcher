@@ -14,24 +14,20 @@ import {
 } from '../../../test/testFixtures';
 import { reducer as rootReducer } from '../../store';
 import reducer, {
-    downloadLatestAppInfoError,
-    downloadLatestAppInfoStarted,
-    downloadLatestAppInfoSuccess,
+    addDownloadableApps,
     getAllSourceNamesSorted,
     hideConfirmLaunchDialog,
     installDownloadableAppStarted,
-    loadDownloadableAppsError,
-    loadDownloadableAppsStarted,
-    loadLocalAppsError,
-    loadLocalAppsStarted,
-    loadLocalAppsSuccess,
+    removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
-    setAllDownloadableApps,
+    setAllLocalApps,
     showConfirmLaunchDialog,
     State,
-    updateDownloadableAppInfo,
+    updateDownloadableAppInfosFailed,
+    updateDownloadableAppInfosStarted,
+    updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
 } from './appsSlice';
 
@@ -44,8 +40,6 @@ const downloadableApp1 = createDownloadableTestApp('c');
 const downloadableApp2 = createDownloadableTestApp('d');
 
 const downloadableApps = [downloadableApp1, downloadableApp2];
-
-const initialState = dispatchTo(reducer);
 
 const findApp = (appToFind: AppSpec, state: State) => {
     const foundApp = state.downloadableApps.find(
@@ -62,231 +56,251 @@ const findApp = (appToFind: AppSpec, state: State) => {
 };
 
 describe('appsReducer', () => {
-    it('should have no apps in initial state', () => {
+    it('has no apps in initial state', () => {
+        const initialState = dispatchTo(reducer);
+
         expect(initialState.localApps.length).toEqual(0);
         expect(initialState.downloadableApps.length).toEqual(0);
     });
 
-    it('should be loading apps in initial state', () => {
-        expect(initialState.isLoadingLocalApps).toEqual(true);
-        expect(initialState.isLoadingDownloadableApps).toEqual(true);
-    });
-
-    it('should be loading local apps after loadLocalAppsAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [loadLocalAppsStarted()]);
-        expect(state.isLoadingLocalApps).toEqual(true);
-    });
-
-    it('should have local apps when loadLocalAppsSuccess has been dispatched with apps', () => {
-        const state = dispatchTo(reducer, [loadLocalAppsSuccess(localApps)]);
+    it('has local apps', () => {
+        const state = dispatchTo(reducer, [setAllLocalApps(localApps)]);
         expect(state.localApps).toEqual(localApps);
     });
 
-    it('should not be loading local apps after loadLocalAppsSuccess has been dispatched', () => {
+    it('has downloadable apps', () => {
         const state = dispatchTo(reducer, [
-            loadLocalAppsStarted(),
-            loadLocalAppsSuccess(localApps),
-        ]);
-        expect(state.isLoadingLocalApps).toEqual(false);
-    });
-
-    it('should not be loading local apps after loadLocalAppsError has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loadLocalAppsStarted(),
-            loadLocalAppsError(),
-        ]);
-        expect(state.isLoadingLocalApps).toEqual(false);
-    });
-
-    it('should be loading downloadable apps after loadDownloadableAppsAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [loadDownloadableAppsStarted()]);
-        expect(state.isLoadingDownloadableApps).toEqual(true);
-    });
-
-    it('should have downloadable apps when loadDownloadableAppsSuccess has been dispatched with apps', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps(downloadableApps),
         ]);
         expect(state.downloadableApps).toMatchObject(downloadableApps);
     });
 
-    it('should not be loading downloadable apps after loadDownloadableAppsSuccess has been dispatched', () => {
+    it('can add downloadable apps', () => {
+        const appOfSourceA = createDownloadableTestApp('app 1', {
+            source: 'A',
+        });
+        const anotherAppOfSourceA = createDownloadableTestApp('app 2', {
+            source: 'A',
+        });
+        const appOfSourceB = createDownloadableTestApp('app 1', {
+            source: 'B',
+        });
+        const anotherAppOfSourceB = createDownloadableTestApp('app 2', {
+            source: 'B',
+        });
+
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsStarted(),
-            setAllDownloadableApps(downloadableApps),
+            addDownloadableApps([appOfSourceA, anotherAppOfSourceA]),
+            addDownloadableApps([appOfSourceB, anotherAppOfSourceB]),
         ]);
-        expect(state.isLoadingDownloadableApps).toEqual(false);
+        expect(state.downloadableApps).toMatchObject([
+            appOfSourceA,
+            anotherAppOfSourceA,
+            appOfSourceB,
+            anotherAppOfSourceB,
+        ]);
     });
 
-    it('should not be loading downloadable apps after loadDownloadableAppsError has been dispatched', () => {
+    it('can update downloadable apps', () => {
+        const app = createDownloadableTestApp('app 1', {
+            description: 'Old description',
+        });
+        const updatedApp = createDownloadableTestApp('app 1', {
+            description: 'New description',
+        });
+
         const state = dispatchTo(reducer, [
-            loadDownloadableAppsStarted(),
-            loadDownloadableAppsError(),
+            addDownloadableApps([app]),
+            addDownloadableApps([updatedApp]),
         ]);
-        expect(state.isLoadingDownloadableApps).toEqual(false);
+        expect(state.downloadableApps).toMatchObject([updatedApp]);
     });
 
-    it('should be installing app after installDownloadableAppAction has been dispatched', () => {
+    it('keeps the progress when updating downloadable apps', () => {
+        const app = createDownloadableTestApp('app 1', {
+            description: 'Old description',
+        });
+
         const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            installDownloadableAppStarted(downloadableApp1),
+            addDownloadableApps([app]),
+            installDownloadableAppStarted(app),
+            addDownloadableApps([app]),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
-            true
+        expect(state.downloadableApps[0].progress.isInstalling).toBe(true);
+    });
+
+    it('can remove all apps of a source', () => {
+        const appOfSourceA = createDownloadableTestApp('app 1', {
+            source: 'A',
+        });
+        const anotherAppOfSourceA = createDownloadableTestApp('app 2', {
+            source: 'A',
+        });
+        const appOfSourceB = createDownloadableTestApp('app 1', {
+            source: 'B',
+        });
+        const anotherAppOfSourceB = createDownloadableTestApp('app 2', {
+            source: 'B',
+        });
+
+        const state = dispatchTo(reducer, [
+            addDownloadableApps([
+                appOfSourceA,
+                anotherAppOfSourceA,
+                appOfSourceB,
+                anotherAppOfSourceB,
+            ]),
+            removeAppsOfSource('B'),
+        ]);
+        expect(state.downloadableApps).toMatchObject([
+            appOfSourceA,
+            anotherAppOfSourceA,
+        ]);
+    });
+
+    it('signals when an app is being installed', () => {
+        const appIsInstalling = (state: State) =>
+            findApp(downloadableApp1, state).progress.isInstalling;
+
+        const initialState = dispatchTo(reducer, [
+            addDownloadableApps(downloadableApps),
+        ]);
+        expect(appIsInstalling(initialState)).toBe(false);
+
+        const whileInstalling = reducer(
+            initialState,
+            installDownloadableAppStarted(downloadableApp1)
         );
-    });
+        expect(appIsInstalling(whileInstalling)).toBe(true);
 
-    it('should not be installing app after updateDownloadableAppInfo has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            installDownloadableAppStarted(downloadableApp1),
-            updateDownloadableAppInfo(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
-            false
+        const afterFinishingInstalling = reducer(
+            whileInstalling,
+            resetAppProgress(downloadableApp1)
         );
+        expect(appIsInstalling(afterFinishingInstalling)).toBe(false);
     });
 
-    it('should not be installing app after installDownloadableAppErrorAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            installDownloadableAppStarted(downloadableApp1),
-            resetAppProgress(downloadableApp1),
+    it('signals when an app is being removed', () => {
+        const appIsBeingRemoved = (state: State) =>
+            findApp(downloadableApp1, state).progress.isRemoving;
+
+        const initialState = dispatchTo(reducer, [
+            addDownloadableApps(downloadableApps),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isInstalling).toBe(
-            false
+        expect(appIsBeingRemoved(initialState)).toBe(false);
+
+        const whileRemoving = reducer(
+            initialState,
+            removeDownloadableAppStarted(downloadableApp1)
         );
-    });
+        expect(appIsBeingRemoved(whileRemoving)).toBe(true);
 
-    it('should be removing app after removeDownloadableAppAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            removeDownloadableAppStarted(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(true);
-    });
-
-    it('should not be removing app after removeDownloadableAppSuccessAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            removeDownloadableAppStarted(downloadableApp1),
-            removeDownloadableAppSuccess(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(
-            false
+        const afterFinishingRemoving = reducer(
+            whileRemoving,
+            removeDownloadableAppSuccess(downloadableApp1)
         );
-    });
+        expect(appIsBeingRemoved(afterFinishingRemoving)).toBe(false);
 
-    it('should not be removing app after removeDownloadableAppErrorAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            removeDownloadableAppStarted(downloadableApp1),
-            resetAppProgress(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isRemoving).toBe(
-            false
+        const afterAbortingRemoving = reducer(
+            whileRemoving,
+            resetAppProgress(downloadableApp1)
         );
+        expect(appIsBeingRemoved(afterAbortingRemoving)).toBe(false);
     });
 
-    it('should be updating app after updateDownloadableAppAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            updateDownloadableAppStarted(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(true);
-    });
+    it('signals when an app is being updated', () => {
+        const appIsBeingUpdated = (state: State) =>
+            findApp(downloadableApp1, state).progress.isUpdating;
 
-    it('should not be updating app after updateDownloadableAppInfo has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            updateDownloadableAppStarted(downloadableApp1),
-            updateDownloadableAppInfo(downloadableApp1),
+        const initialState = dispatchTo(reducer, [
+            addDownloadableApps(downloadableApps),
         ]);
-        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
-            false
+        expect(appIsBeingUpdated(initialState)).toBe(false);
+
+        const whileUpdating = reducer(
+            initialState,
+            updateDownloadableAppStarted(downloadableApp1)
         );
-    });
+        expect(appIsBeingUpdated(whileUpdating)).toBe(true);
 
-    it('should not be removing app after updateDownloadableAppErrorAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            setAllDownloadableApps(downloadableApps),
-            updateDownloadableAppStarted(downloadableApp1),
-            resetAppProgress(downloadableApp1),
-        ]);
-        expect(findApp(downloadableApp1, state).progress.isUpdating).toBe(
-            false
+        const afterFinishingUpdating = reducer(
+            whileUpdating,
+            resetAppProgress(downloadableApp1)
         );
+        expect(appIsBeingUpdated(afterFinishingUpdating)).toBe(false);
     });
 
-    it('should show confirm dialog when showConfirmLaunchDialogAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            showConfirmLaunchDialog({
-                text: 'Do you confirm?',
-                app: localApp1,
-            }),
-        ]);
-        expect(state.isConfirmLaunchDialogVisible).toEqual(true);
+    it('signals when the latest app info are downloaded', () => {
+        const initialState = dispatchTo(reducer);
+        expect(initialState.isDownloadingLatestAppInfo).toBe(false);
+
+        const whileUpdating = reducer(
+            initialState,
+            updateDownloadableAppInfosStarted()
+        );
+        expect(whileUpdating.isDownloadingLatestAppInfo).toBe(true);
+
+        const afterFinishingUpdating = reducer(
+            whileUpdating,
+            updateDownloadableAppInfosSuccess()
+        );
+        expect(afterFinishingUpdating.isDownloadingLatestAppInfo).toBe(false);
+
+        const afterAbortingUpdating = reducer(
+            whileUpdating,
+            updateDownloadableAppInfosFailed()
+        );
+        expect(afterAbortingUpdating.isDownloadingLatestAppInfo).toBe(false);
     });
 
-    it('should add text to state when showConfirmLaunchDialogAction has been dispatched with text', () => {
-        const state = dispatchTo(reducer, [
-            showConfirmLaunchDialog({
-                text: 'Do you confirm?',
-                app: localApp1,
-            }),
-        ]);
-        expect(state.confirmLaunchText).toEqual('Do you confirm?');
-    });
-
-    it('should add app to state when showConfirmLaunchDialogAction has been dispatched with app', () => {
-        const state = dispatchTo(reducer, [
-            showConfirmLaunchDialog({
-                text: 'Do you confirm?',
-                app: localApp1,
-            }),
-        ]);
-        expect(state.confirmLaunchApp).toEqual(localApp1);
-    });
-
-    it('should hide confirm dialog when hideConfirmLaunchDialogAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            showConfirmLaunchDialog({
-                text: 'Do you confirm?',
-                app: localApp1,
-            }),
-            hideConfirmLaunchDialog(),
-        ]);
-        expect(state.isConfirmLaunchDialogVisible).toEqual(false);
-    });
-
-    it('should be downloading latest app info when downloadLatestAppInfoAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [downloadLatestAppInfoStarted()]);
-        expect(state.isDownloadingLatestAppInfo).toEqual(true);
-    });
-
-    it('should not be downloading latest app info when downloadLatestAppInfoSuccessAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            downloadLatestAppInfoStarted(),
-            downloadLatestAppInfoSuccess(),
-        ]);
-        expect(state.isDownloadingLatestAppInfo).toEqual(false);
-    });
-
-    it('should not be downloading latest app info when downloadLatestAppInfoErrorAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            downloadLatestAppInfoStarted(),
-            downloadLatestAppInfoError(),
-        ]);
-        expect(state.isDownloadingLatestAppInfo).toEqual(false);
-    });
-
-    it('should set a last update check date when downloadLatestAppInfoSuccessAction has been dispatched', () => {
+    it('has the date of the last update check', () => {
         const aDate = new Date(1972, 5, 27);
 
         const state = dispatchTo(reducer, [
-            downloadLatestAppInfoSuccess(aDate),
+            updateDownloadableAppInfosSuccess(aDate),
         ]);
         expect(state.lastUpdateCheckDate).toEqual(aDate);
+    });
+
+    describe('confirm dialog', () => {
+        it('signals when the dialog is shown', () => {
+            const initialState = dispatchTo(reducer);
+            expect(initialState.isConfirmLaunchDialogVisible).toEqual(false);
+
+            const dialogIsShown = dispatchTo(reducer, [
+                showConfirmLaunchDialog({
+                    text: 'Do you confirm?',
+                    app: localApp1,
+                }),
+            ]);
+            expect(dialogIsShown.isConfirmLaunchDialogVisible).toEqual(true);
+
+            const dialogIsClosed = reducer(
+                dialogIsShown,
+                hideConfirmLaunchDialog()
+            );
+            expect(dialogIsClosed.isConfirmLaunchDialogVisible).toEqual(false);
+        });
+
+        it('has a text', () => {
+            const state = dispatchTo(reducer, [
+                showConfirmLaunchDialog({
+                    text: 'Do you confirm?',
+                    app: localApp1,
+                }),
+            ]);
+            expect(state.confirmLaunchText).toEqual('Do you confirm?');
+        });
+
+        it('has an app', () => {
+            const state = dispatchTo(reducer, [
+                showConfirmLaunchDialog({
+                    text: 'Do you confirm?',
+                    app: localApp1,
+                }),
+            ]);
+            expect(state.confirmLaunchApp).toEqual(localApp1);
+        });
     });
 });
 
@@ -297,7 +311,7 @@ test('sortedSources sorts the sources into official, local and then the rest in 
             getDefaultMiddleware({ serializableCheck: false }),
     });
     store.dispatch(
-        setAllDownloadableApps([
+        addDownloadableApps([
             { ...downloadableApp1, source: 'OtherB' },
             { ...downloadableApp1, source: 'official' },
             { ...downloadableApp1, source: 'OtherA' },

@@ -114,12 +114,12 @@ export default () => {
                             </Button>
                         </Col>
                     </Row>
-                    {Object.keys(sources)
-                        .filter(name => name !== OFFICIAL)
-                        .map(name => (
-                            <Row key={name}>
+                    {sources
+                        .filter(source => source.name !== OFFICIAL)
+                        .map(source => (
+                            <Row key={source.name}>
                                 <Col className="item-name text-capitalize">
-                                    {name}
+                                    {source.name}
                                 </Col>
                                 <Col xs="auto">
                                     <ButtonToolbar>
@@ -127,9 +127,7 @@ export default () => {
                                             variant="outline-secondary"
                                             size="sm"
                                             onClick={() =>
-                                                clipboard.writeText(
-                                                    sources[name]
-                                                )
+                                                clipboard.writeText(source.url)
                                             }
                                             title="Copy URL to clipboard"
                                         >
@@ -139,7 +137,11 @@ export default () => {
                                             variant="outline-secondary"
                                             size="sm"
                                             onClick={() =>
-                                                dispatch(showRemoveSource(name))
+                                                dispatch(
+                                                    showRemoveSource(
+                                                        source.name
+                                                    )
+                                                )
                                             }
                                             title="Remove source and associated apps"
                                         >

@@ -11,12 +11,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
-import {
-    isDownloadable,
-    isInstalled,
-    isWithdrawn,
-    updateAvailable,
-} from '../../../../ipc/apps';
+import { isInstalled, isUpdatable, isWithdrawn } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
@@ -40,12 +35,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                 <div className="small text-muted-more">
                     {app.source}
                     {isInstalled(app) && <>, v{app.currentVersion}</>}
-                    {isInstalled(app) &&
-                        isDownloadable(app) &&
-                        !isWithdrawn(app) &&
-                        updateAvailable(app) && (
-                            <> (v{app.latestVersion} available)</>
-                        )}
+                    {isUpdatable(app) && <> (v{app.latestVersion} available)</>}
                     {!isInstalled(app) &&
                         !isWithdrawn(app) &&
                         app.latestVersion && <>, v{app.latestVersion}</>}
