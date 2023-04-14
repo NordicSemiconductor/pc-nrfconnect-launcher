@@ -25,3 +25,10 @@ jest.mock('./../main/log.ts', () => ({
         info: jest.fn(),
     },
 }));
+
+jest.mock('@electron/remote', () => ({
+    require: jest.fn(),
+    app: {
+        getAppPath: () => process.cwd(),
+    },
+}));
