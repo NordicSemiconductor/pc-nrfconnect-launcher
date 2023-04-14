@@ -235,11 +235,9 @@ const slice = createSlice({
 
                 updateApp(removedApp, state.downloadableApps, (app: object) => {
                     if ('currentVersion' in app) {
-                        // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.currentVersion here
                         delete app.currentVersion;
                     }
                     if ('installed' in app) {
-                        // @ts-expect-error TypeScript 4.8 will correctly detect that we can delete app.installed here
                         delete app.installed;
                     }
                 });
