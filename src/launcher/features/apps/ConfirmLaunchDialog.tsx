@@ -8,17 +8,21 @@ import React from 'react';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import {
+    getConfirmLaunchDialog,
+    hideConfirmLaunchDialog,
+} from './appDialogsSlice';
 import { launch } from './appsEffects';
-import { getConfirmLaunch, hideConfirmLaunchDialog } from './appsSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isDialogVisible, text, app } =
-        useLauncherSelector(getConfirmLaunch);
+    const { isVisible, text, app } = useLauncherSelector(
+        getConfirmLaunchDialog
+    );
 
     return (
         <ConfirmationDialog
-            isVisible={isDialogVisible}
+            isVisible={isVisible}
             title="Version problem"
             confirmLabel="Launch anyway"
             cancelLabel="Cancel"

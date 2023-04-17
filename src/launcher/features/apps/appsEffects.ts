@@ -28,6 +28,7 @@ import {
     sendAppUsageData,
     sendLauncherUsageData,
 } from '../usageData/usageDataEffects';
+import { showConfirmLaunchDialog } from './appDialogsSlice';
 import {
     addDownloadableApps,
     addLocalApp,
@@ -36,7 +37,6 @@ import {
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppProgress,
-    showConfirmLaunchDialog,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,

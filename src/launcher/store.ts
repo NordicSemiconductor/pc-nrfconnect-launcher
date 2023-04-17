@@ -8,6 +8,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
 import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 
+import appDialogs from './features/apps/appDialogsSlice';
 import apps from './features/apps/appsSlice';
 import filter from './features/filter/filterSlice';
 import launcherUpdate from './features/launcherUpdate/launcherUpdateSlice';
@@ -22,6 +23,7 @@ enableMapSet();
 
 export const reducer = {
     apps,
+    appDialogs,
     errorDialog,
     filter,
     launcherUpdate,
