@@ -24,6 +24,10 @@
   ${EndIf}
 !macroend
 
+!macro customHeader
+    RequestExecutionLevel admin
+!macroend
+
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
 !macro customInstall  
@@ -37,7 +41,7 @@
 
   BringToFront
 
-  ExecShell 'runas' '"$INSTDIR\nrf-device-lib-driver-installer.exe"'
+  nsExec::Exec '"$INSTDIR\nrf-device-lib-driver-installer.exe"'
 
   ; ===============================================================
   ; Installation of VC 2015 redistributable
@@ -47,7 +51,7 @@
   File "${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"
 
   ; Running installer and waiting before continuing
-  ExecWait '"$INSTDIR\vc_redist_2015.x86.exe" /passive /norestart'
+  nsExec::Exec '"$INSTDIR\vc_redist_2015.x86.exe" /passive /norestart /quiet'
 
   ; ===============================================================
   ; Installation of J-Link
@@ -71,8 +75,17 @@
  
   ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
     ; J-Link is older than the bundled version. Run installer.
-    StrCpy $0 "$INSTDIR\${JLinkInstaller}"
-    ${StdUtils.ExecShellWaitEx} $R0 $R1 $0 'runas' '/passive /norestart'
+    nsExec::Exec '"$INSTDIR\${JLinkInstaller}" -Silent=1'
   ${EndIf}
+
+  ; ===============================================================
+  ; Installation of nRF Command Line Tools
+  ; ===============================================================
+
+  ; Adding nRF Command Line Tools
+  File "${BUILD_RESOURCES_DIR}\nrf-command-line-tools-10.21.0-x64.exe"
+
+  ; Running installer and waiting before continuing
+  nsExec::Exec '"$INSTDIR\nrf-command-line-tools-10.21.0-x64.exe" /passive /norestart /quiet'
 
 !macroend
