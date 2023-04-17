@@ -111,6 +111,7 @@
         "@nordicsemiconductor/nrf-device-lib-js": "0.6.5",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
+        "electron-store": "8.1.0",
         "electron-updater": "4.3.1",
         "fs-extra": "9.0.0",
         "lodash.merge": "4.6.2",
