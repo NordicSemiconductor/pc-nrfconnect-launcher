@@ -1,4 +1,11 @@
 {
+    "_deprecation note_": {
+        "_1": "This apps.json on www.github.com was used by the launcher before version 3.11,",
+        "_2": "which was released in April 2022. Later versions do not use it anymore and so",
+        "_3": "we do not need to keep it up-to-date any longer. But it is nice to not break",
+        "_4": "the very occasional usage of an ancient launcher, so we just keep it lying",
+        "_5": "around without updating it."
+    },
     "pc-nrfconnect-ble": {
         "displayName": "Bluetooth Low Energy",
         "description": "General tool for development and testing with Bluetooth Low Energy",
