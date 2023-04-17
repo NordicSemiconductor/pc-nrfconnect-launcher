@@ -81,11 +81,23 @@ export const isInstalled = (app?: App): app is LaunchableApp =>
 export const isWithdrawn = (app?: App): app is WithdrawnApp =>
     isDownloadable(app) && app.isWithdrawn;
 
+const latestVersionHasDifferentChecksum = (app: InstalledDownloadableApp) => {
+    const shaOfLatest = app.versions?.[app.latestVersion]?.shasum;
+    const shaOfInstalled = app.installed.shasum;
+
+    return (
+        shaOfLatest != null &&
+        shaOfInstalled != null &&
+        shaOfInstalled !== shaOfLatest
+    );
+};
+
 export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
     !isWithdrawn(app) &&
     isInstalled(app) &&
     isDownloadable(app) &&
-    app.currentVersion !== app.latestVersion;
+    (app.currentVersion !== app.latestVersion ||
+        latestVersionHasDifferentChecksum(app));
 
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
