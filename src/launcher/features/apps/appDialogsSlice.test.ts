@@ -46,26 +46,17 @@ describe('app dialogs slice', () => {
             );
         });
 
-        it('has a text', () => {
+        it('has right properties', () => {
             const state = dispatchTo(reducer, [
                 showConfirmLaunchDialog({
                     text: 'Do you confirm?',
                     app,
                 }),
             ]);
-            expect(getConfirmLaunchDialog(state).text).toEqual(
-                'Do you confirm?'
-            );
-        });
-
-        it('has an app', () => {
-            const state = dispatchTo(reducer, [
-                showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
-                    app,
-                }),
-            ]);
-            expect(getConfirmLaunchDialog(state).app).toEqual(app);
+            expect(getConfirmLaunchDialog(state)).toMatchObject({
+                text: 'Do you confirm?',
+                app,
+            });
         });
     });
 });

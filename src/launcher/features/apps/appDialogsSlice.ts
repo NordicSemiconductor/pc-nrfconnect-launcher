@@ -10,14 +10,31 @@ import { createSlice } from '@reduxjs/toolkit';
 import { LaunchableApp } from '../../../ipc/apps';
 import type { RootState } from '../../store';
 
+type HiddenDialog = typeof hiddenDialog;
+const hiddenDialog = {
+    isVisible: false,
+} as const;
+
+type VisibleConfirmLaunchDialog = ReturnType<typeof visibleConfirmLaunchDialog>;
+const visibleConfirmLaunchDialog = ({
+    text,
+    app,
+}: {
+    text: string;
+    app: LaunchableApp;
+}) =>
+    ({
+        isVisible: true,
+        text,
+        app,
+    } as const);
+
 export type State = {
-    confirmLaunchIsDialogVisible: boolean;
-    confirmLaunchText?: string;
-    confirmLaunchApp?: LaunchableApp;
+    confirmLaunch: HiddenDialog | VisibleConfirmLaunchDialog;
 };
 
 const initialState: State = {
-    confirmLaunchIsDialogVisible: false,
+    confirmLaunch: hiddenDialog,
 };
 
 const slice = createSlice({
@@ -28,14 +45,10 @@ const slice = createSlice({
             state,
             { payload }: PayloadAction<{ text: string; app: LaunchableApp }>
         ) {
-            state.confirmLaunchIsDialogVisible = true;
-            state.confirmLaunchText = payload.text;
-            state.confirmLaunchApp = payload.app;
+            state.confirmLaunch = visibleConfirmLaunchDialog(payload);
         },
         hideConfirmLaunchDialog(state) {
-            state.confirmLaunchIsDialogVisible = false;
-            state.confirmLaunchText = initialState.confirmLaunchText;
-            state.confirmLaunchApp = initialState.confirmLaunchApp;
+            state.confirmLaunch = hiddenDialog;
         },
     },
 });
@@ -45,8 +58,5 @@ export default slice.reducer;
 export const { hideConfirmLaunchDialog, showConfirmLaunchDialog } =
     slice.actions;
 
-export const getConfirmLaunchDialog = (state: RootState) => ({
-    isVisible: state.appDialogs.confirmLaunchIsDialogVisible,
-    text: state.appDialogs.confirmLaunchText,
-    app: state.appDialogs.confirmLaunchApp,
-});
+export const getConfirmLaunchDialog = (state: RootState) =>
+    state.appDialogs.confirmLaunch;

@@ -16,23 +16,26 @@ import { launch } from './appsEffects';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isVisible, text, app } = useLauncherSelector(
-        getConfirmLaunchDialog
-    );
+    const confirmationDialog = useLauncherSelector(getConfirmLaunchDialog);
 
     return (
         <ConfirmationDialog
-            isVisible={isVisible}
+            isVisible={confirmationDialog.isVisible}
             title="Version problem"
             confirmLabel="Launch anyway"
             cancelLabel="Cancel"
             onConfirm={() => {
-                dispatch(hideConfirmLaunchDialog());
-                launch(app!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                if (!confirmationDialog.isVisible) {
+                    throw new Error(
+                        'Should be impossible to invoke a disabled button'
+                    );
+                }
+
+                launch(confirmationDialog.app);
             }}
             onCancel={() => dispatch(hideConfirmLaunchDialog())}
         >
-            {text}
+            {confirmationDialog.isVisible && confirmationDialog.text}
         </ConfirmationDialog>
     );
 };
