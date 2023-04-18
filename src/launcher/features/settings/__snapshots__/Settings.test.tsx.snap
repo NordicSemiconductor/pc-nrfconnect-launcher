@@ -192,7 +192,7 @@ exports[`SettingsView should render check for updates completed, with everything
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -215,7 +215,7 @@ exports[`SettingsView should render check for updates completed, with everything
           class="modal-footer"
         >
           <button
-            class="undefined btn-secondary"
+            class=""
             type="button"
           >
             Got it
@@ -419,7 +419,7 @@ exports[`SettingsView should render check for updates completed, with updates av
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -442,7 +442,7 @@ exports[`SettingsView should render check for updates completed, with updates av
           class="modal-footer"
         >
           <button
-            class="undefined btn-secondary"
+            class=""
             type="button"
           >
             Got it

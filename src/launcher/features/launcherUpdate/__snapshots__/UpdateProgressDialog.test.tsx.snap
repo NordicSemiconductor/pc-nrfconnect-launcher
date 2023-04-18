@@ -20,7 +20,7 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -82,7 +82,7 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -126,7 +126,7 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
           class="modal-footer"
         >
           <button
-            class="undefined btn-primary"
+            class=""
             type="button"
           >
             Cancel
@@ -158,7 +158,7 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -202,7 +202,7 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
           class="modal-footer"
         >
           <button
-            class="undefined btn-primary"
+            class=""
             disabled=""
             type="button"
           >
@@ -235,7 +235,7 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-dialog-centered"
+      class="modal-dialog modal-lg modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -279,7 +279,7 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
           class="modal-footer"
         >
           <button
-            class="undefined btn-primary"
+            class=""
             disabled=""
             type="button"
           >
