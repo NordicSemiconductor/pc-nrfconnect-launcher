@@ -7,7 +7,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { LaunchableApp } from '../../../ipc/apps';
+import { DownloadableApp, LaunchableApp } from '../../../ipc/apps';
 import type { RootState } from '../../store';
 
 type HiddenDialog = typeof hiddenDialog;
@@ -16,25 +16,23 @@ const hiddenDialog = {
 } as const;
 
 type VisibleConfirmLaunchDialog = ReturnType<typeof visibleConfirmLaunchDialog>;
-const visibleConfirmLaunchDialog = ({
-    text,
-    app,
-}: {
-    text: string;
-    app: LaunchableApp;
-}) =>
-    ({
-        isVisible: true,
-        text,
-        app,
-    } as const);
+const visibleConfirmLaunchDialog = (text: string, app: LaunchableApp) =>
+    ({ isVisible: true, text, app } as const);
+
+type VisibleInstallOtherVersionDialog = ReturnType<
+    typeof visibleInstallOtherVersionDialog
+>;
+const visibleInstallOtherVersionDialog = (app: DownloadableApp) =>
+    ({ isVisible: true, app } as const);
 
 export type State = {
     confirmLaunch: HiddenDialog | VisibleConfirmLaunchDialog;
+    installOtherVersion: HiddenDialog | VisibleInstallOtherVersionDialog;
 };
 
 const initialState: State = {
     confirmLaunch: hiddenDialog,
+    installOtherVersion: hiddenDialog,
 };
 
 const slice = createSlice({
@@ -45,18 +43,37 @@ const slice = createSlice({
             state,
             { payload }: PayloadAction<{ text: string; app: LaunchableApp }>
         ) {
-            state.confirmLaunch = visibleConfirmLaunchDialog(payload);
+            state.confirmLaunch = visibleConfirmLaunchDialog(
+                payload.text,
+                payload.app
+            );
         },
         hideConfirmLaunchDialog(state) {
             state.confirmLaunch = hiddenDialog;
+        },
+        showInstallOtherVersionDialog(
+            state,
+            { payload: app }: PayloadAction<DownloadableApp>
+        ) {
+            state.installOtherVersion = visibleInstallOtherVersionDialog(app);
+        },
+        hideInstallOtherVersionDialog(state) {
+            state.installOtherVersion = hiddenDialog;
         },
     },
 });
 
 export default slice.reducer;
 
-export const { hideConfirmLaunchDialog, showConfirmLaunchDialog } =
-    slice.actions;
+export const {
+    hideConfirmLaunchDialog,
+    hideInstallOtherVersionDialog,
+    showConfirmLaunchDialog,
+    showInstallOtherVersionDialog,
+} = slice.actions;
 
 export const getConfirmLaunchDialog = (state: RootState) =>
     state.appDialogs.confirmLaunch;
+
+export const getInstallOtherVersionDialog = (state: RootState) =>
+    state.appDialogs.installOtherVersion;

@@ -137,26 +137,39 @@ export const installLocalApp =
         }
     };
 
-const install = (app: DownloadableApp) => async (dispatch: AppDispatch) => {
-    try {
-        const installedApp = await installDownloadableAppInMain(app);
-        dispatch(addDownloadableApps([installedApp]));
-    } catch (error) {
-        dispatch(
-            ErrorDialogActions.showDialog(
-                `Unable to install: ${(error as Error).message}`
-            )
-        );
-    }
-    dispatch(resetAppProgress(app));
-};
+const install =
+    (app: DownloadableApp, version?: string) =>
+    async (dispatch: AppDispatch) => {
+        try {
+            const installedApp = await installDownloadableAppInMain(
+                app,
+                version
+            );
+            dispatch(addDownloadableApps([installedApp]));
+        } catch (error) {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Unable to install: ${(error as Error).message}`
+                )
+            );
+        }
+        dispatch(resetAppProgress(app));
+    };
 
 export const installDownloadableApp =
-    (app: DownloadableApp) => (dispatch: AppDispatch) => {
-        sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
+    (app: DownloadableApp, version?: string) => (dispatch: AppDispatch) => {
+        if (version == null) {
+            sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
+        } else {
+            sendAppUsageData(
+                EventAction.INSTALL_APP_OLD_VERSION,
+                app.source,
+                `${app.name} (${version})`
+            );
+        }
 
         dispatch(installDownloadableAppStarted(app));
-        return dispatch(install(app));
+        return dispatch(install(app, version));
     };
 
 export const updateDownloadableApp =
