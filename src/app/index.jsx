@@ -40,7 +40,22 @@ const showLoadingError = error => {
 
 mountApp();
 
-if (process.env.NODE_ENV === 'development') {
+/*
+  Automatically reload local apps when they are rebuild.
+
+  This is only enabled, when compiling the launcher as a development build,
+  e.g. using `npm run build:dev`.
+
+  If you want to disable this, you can set the environment variable
+  DISABLE_APP_RELOADING to something during runtime, e.g. by running the
+  launcher like this:
+
+    DISABLE_APP_RELOADING=1 npm run app
+*/
+if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DISABLE_APP_RELOADING == null
+) {
     nodeWatch(`${appPath}/dist/bundle.js`, evt => {
         console.log('Hot reloading app due to bundle.js changes', evt);
         mountApp();
