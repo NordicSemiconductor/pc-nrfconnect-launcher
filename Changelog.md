@@ -5,6 +5,11 @@
 -   Older Thingy53 devices programming failed due to timeout.
 -   External J-Link programmer not listed when not connected to device.
 
+### Changed
+
+-   Updated styles for `Update nRF Connect Launcher` and `Check for Updates`
+    dialogs.
+
 ## 4.0.0 - 2023-02-13
 
 ### Added

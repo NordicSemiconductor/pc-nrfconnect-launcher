@@ -5,8 +5,7 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Dialog, DialogButton } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { isAppUpdateAvailable as isAppUpdateAvailableSelector } from '../apps/appsSlice';
@@ -27,11 +26,9 @@ export default () => {
     const hideDialog = () => dispatch(hideUpdateCheckComplete());
 
     return (
-        <Modal show={isVisible} onHide={hideDialog}>
-            <Modal.Header>
-                <Modal.Title>Update check completed</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+        <Dialog isVisible={isVisible}>
+            <Dialog.Header title="Update check completed" />
+            <Dialog.Body>
                 {isAppUpdateAvailable ? (
                     <>
                         One or more updates are available. Go to the apps screen
@@ -40,12 +37,10 @@ export default () => {
                 ) : (
                     <>All apps are up to date.</>
                 )}
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="outline-primary" onClick={hideDialog}>
-                    Got it
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            </Dialog.Body>
+            <Dialog.Footer>
+                <DialogButton onClick={hideDialog}>Got it</DialogButton>
+            </Dialog.Footer>
+        </Dialog>
     );
 };

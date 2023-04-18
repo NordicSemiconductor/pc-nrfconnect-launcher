@@ -13,14 +13,14 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -28,11 +28,11 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Downloading update
-          </div>
+          <p>
+            <b>
+              Downloading update
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -75,14 +75,14 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -90,11 +90,11 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Downloading update
-          </div>
+          <p>
+            <b>
+              Downloading update
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -126,7 +126,7 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
           class="modal-footer"
         >
           <button
-            class="btn btn-primary"
+            class="undefined btn-primary"
             type="button"
           >
             Cancel
@@ -151,14 +151,14 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -166,11 +166,11 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Downloading update
-          </div>
+          <p>
+            <b>
+              Downloading update
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -202,7 +202,7 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
           class="modal-footer"
         >
           <button
-            class="btn btn-primary"
+            class="undefined btn-primary"
             disabled=""
             type="button"
           >
@@ -228,14 +228,14 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
   />
   <div
     aria-modal="true"
-    class="fade modal show"
+    class="fade dialog  modal show"
     data-focus-visible-added=""
     role="dialog"
     style="display: block;"
     tabindex="-1"
   >
     <div
-      class="modal-dialog"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -243,11 +243,11 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
         <div
           class="modal-header"
         >
-          <div
-            class="modal-title h4"
-          >
-            Downloading update
-          </div>
+          <p>
+            <b>
+              Downloading update
+            </b>
+          </p>
         </div>
         <div
           class="modal-body"
@@ -279,7 +279,7 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
           class="modal-footer"
         >
           <button
-            class="btn btn-primary"
+            class="undefined btn-primary"
             disabled=""
             type="button"
           >
