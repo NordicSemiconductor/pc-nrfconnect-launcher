@@ -22,10 +22,6 @@ jobs:
         IMAGE_NAME: 'ubuntu-latest'
       macOS:
         IMAGE_NAME: 'macos-11'
-      win32:
-        IMAGE_NAME: 'windows-2019'
-        ARCH: 'ia32'
-        NODE_ARCH: '32'
       win64:
         IMAGE_NAME: 'windows-2019'
         ARCH: 'x64'
@@ -33,6 +29,7 @@ jobs:
 
   pool:
     vmImage: $(IMAGE_NAME)
+
   steps:
   - script: tzutil /s "$(WIN_TZ)"
     condition: contains(variables['IMAGE_NAME'], 'win')
@@ -42,22 +39,6 @@ jobs:
       versionSpec: $(NODE_VERSION)
     condition: ne(variables['NODE_ARCH'], '32')
     displayName: 'Install Node.js $(NODE_VERSION)'
-
-  - bash: |
-      set -o errexit -o pipefail
-      choco install -y --version 1.1.7 nvm.portable
-      export PATH=$NVM_HOME:$PATH
-      nvm install $(NODE_VERSION) $(NODE_ARCH)
-      nvm use $(NODE_VERSION) $(NODE_ARCH)
-      npm install --global npm@$(NPM_VERSION)
-      ln -sf "$NVM_SYMLINK/node" "$NODE_SYMLINK/node"
-    env: {
-      NVM_HOME: "/C/ProgramData/nvm",
-      NVM_SYMLINK: "/C/ProgramData/nvm/v$(NODE_VERSION)",
-      NODE_SYMLINK: "/C/Program Files/nodejs",
-    }
-    condition: and(contains(variables['IMAGE_NAME'], 'win'), eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Install Node.js $(NODE_VERSION) 32-bit'
 
   - bash: |
       set -o errexit -o pipefail
@@ -161,18 +142,6 @@ jobs:
       npx electron-builder -p never --windows nsis:$(ARCH)
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build electron installer on Windows'
-
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-$(ARCH)-unpacked'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(ARCH)-$(Build.BuildNumber).zip'
-    condition: and(
-      ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'),
-      eq(variables['NODE_ARCH'], '32'))
-    displayName: 'Pack on Windows x86'
 
   - task: ArchiveFiles@2
     inputs:
