@@ -37,7 +37,6 @@ jobs:
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
-    condition: ne(variables['NODE_ARCH'], '32')
     displayName: 'Install Node.js $(NODE_VERSION)'
 
   - bash: |
@@ -151,8 +150,7 @@ jobs:
       archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(Build.BuildNumber).zip'
     condition: and(
       ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'),
-      ne(variables['NODE_ARCH'], '32'))
+      contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Pack on Windows x64'
 
   - task: DownloadSecureFile@1
