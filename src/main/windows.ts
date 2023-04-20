@@ -19,6 +19,7 @@ import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import { createWindow } from './browser';
+// @ts-expect-error Don't want to create a d.ts file
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';

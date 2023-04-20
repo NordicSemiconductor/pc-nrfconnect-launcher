@@ -35,7 +35,7 @@
   ; Installation of J-Link
   ; ===============================================================
 
-  ; J-Link installer (downloaded by 'npm run get-jlink')
+  ; J-Link installer (downloaded by getJlink.js through prePack hook)
   !define BundledJLinkVersion "V780c"
 
   !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"

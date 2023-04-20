@@ -9,7 +9,6 @@
     "main": "dist/main.js",
     "scripts": {
         "prepare": "husky install",
-        "postinstall": "ts-node scripts/getJlink",
         "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
         "app:debug": "cross-env NODE_OPTIONS=--enable-source-maps electron --remote-debugging-port=9223 .",
         "watch": "run-p --silent --continue-on-error --print-label watch:**",
@@ -64,6 +63,7 @@
             "category": "Development",
             "icon": "resources/icon.icns"
         },
+        "beforePack": "build/getJlink.js",
         "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",

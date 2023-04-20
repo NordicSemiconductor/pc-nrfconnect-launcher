@@ -4,21 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import axios from 'axios';
-import crypto from 'crypto';
-import fs from 'fs';
-import { mkdir } from 'fs/promises';
-import path from 'path';
-import { Stream } from 'stream';
+const axios = require('axios');
+const crypto = require('crypto');
+const fs = require('fs');
+const { mkdir } = require('fs/promises');
+const path = require('path');
 
-import bundledJlinkVersion from '../src/main/bundledJlinkVersion';
-
-if (process.platform !== 'win32') {
-    console.log(
-        `Unsupported platform: '${process.platform}', you need to visit https://www.segger.com/downloads/jlink`
-    );
-    process.exit();
-}
+const bundledJlinkVersion = require('../src/main/bundledJlinkVersion.js');
 
 const minVersion = bundledJlinkVersion.replace('.', '');
 
@@ -39,9 +31,9 @@ const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${targetFileN
 const outputDirectory = 'build';
 const DESTINATION_FILE_PATH = path.join(outputDirectory, FILENAME);
 
-async function downloadChecksum(fileUrl: string) {
+async function downloadChecksum(fileUrl) {
     console.log('Downloading', `${fileUrl}.md5`);
-    const { status, data } = await axios.get<string>(`${fileUrl}.md5`);
+    const { status, data } = await axios.get(`${fileUrl}.md5`);
     if (status !== 200) {
         throw new Error(
             `Unable to download ${fileUrl}.md5. Got status code ${status}`
@@ -50,11 +42,11 @@ async function downloadChecksum(fileUrl: string) {
     return data.split(' ').shift();
 }
 
-async function downloadFile(fileUrl: string, destinationFile: string) {
+async function downloadFile(fileUrl, destinationFile) {
     const hash = crypto.createHash('md5');
     const expectedChecksum = await downloadChecksum(fileUrl);
     console.log('Downloading', fileUrl);
-    const { status, data: stream } = await axios.get<Stream>(fileUrl, {
+    const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
     });
     if (status !== 200) {
@@ -64,7 +56,7 @@ async function downloadFile(fileUrl: string, destinationFile: string) {
     }
     console.log('Saving', destinationFile);
     await mkdir(path.dirname(destinationFile), { recursive: true });
-    return new Promise<void>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(destinationFile);
         stream.pipe(file);
         stream.on('data', data => hash.update(data));
@@ -83,9 +75,10 @@ async function downloadFile(fileUrl: string, destinationFile: string) {
     });
 }
 
-downloadFile(FILE_URL, DESTINATION_FILE_PATH)
-    .catch(error => {
-        console.error('\n!!! EXCEPTION', error.message);
-        process.exit(-1);
-    })
-    .then(() => process.exit());
+exports.default = () =>
+    process.platform === 'win32'
+        ? downloadFile(FILE_URL, DESTINATION_FILE_PATH).catch(error => {
+              console.error('\n!!! EXCEPTION', error.message);
+              process.exit(-1);
+          })
+        : undefined;

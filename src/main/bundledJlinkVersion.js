@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-export default 'V7.80c';
+module.exports = 'V7.80c';
