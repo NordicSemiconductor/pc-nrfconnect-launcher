@@ -11,7 +11,8 @@ const hotplug = new Proxy(deviceLib.startHotplugEvents, {
         // @ts-expect-error Typing of argArray too weak
         const id = target(...argArray);
         window.addEventListener('beforeunload', () => {
-            deviceLib.stopHotplugEvents(id);
+            // todo: update types on next device-lib update
+            deviceLib.stopHotplugEvents(id as unknown as number);
         });
 
         return id;
@@ -23,7 +24,8 @@ const logEvents = new Proxy(deviceLib.startLogEvents, {
         // @ts-expect-error Typing of argArray too weak
         const id = target(...argArray);
         window.addEventListener('beforeunload', () => {
-            deviceLib.stopLogEvents(id);
+            // todo: update types on next device-lib update
+            deviceLib.stopLogEvents(id as unknown as number);
         });
 
         return id;
