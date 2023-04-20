@@ -20,6 +20,7 @@ import {
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
     INSTALL_APP: 'Install app',
+    INSTALL_APP_OLD_VERSION: 'Install app - old version',
     LAUNCH_APP: 'Launch app',
     REMOVE_APP: 'Remove app',
     UPDATE_APP: 'Update app',

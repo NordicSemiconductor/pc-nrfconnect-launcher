@@ -15,7 +15,6 @@ import {
     isDownloadable,
     isUpdatable,
     isWithdrawn,
-    LaunchableApp,
     LocalApp,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
@@ -53,16 +52,12 @@ export type State = {
     downloadableApps: DownloadableAppWithProgress[];
     lastUpdateCheckDate?: Date;
     isDownloadingLatestAppInfo: boolean;
-    isConfirmLaunchDialogVisible: boolean;
-    confirmLaunchText?: string;
-    confirmLaunchApp?: LaunchableApp;
 };
 
 const initialState: State = {
     localApps: [],
     downloadableApps: [],
     isDownloadingLatestAppInfo: false,
-    isConfirmLaunchDialogVisible: false,
 };
 
 const equalsSpec = (specOfSoughtApp: AppSpec) => (app: App) =>
@@ -243,21 +238,6 @@ const slice = createSlice({
                 });
             }
         },
-
-        // Confirm launch dialog
-        showConfirmLaunchDialog(
-            state,
-            { payload }: PayloadAction<{ text: string; app: LaunchableApp }>
-        ) {
-            state.isConfirmLaunchDialogVisible = true;
-            state.confirmLaunchText = payload.text;
-            state.confirmLaunchApp = payload.app;
-        },
-        hideConfirmLaunchDialog(state) {
-            state.isConfirmLaunchDialogVisible = false;
-            state.confirmLaunchText = initialState.confirmLaunchText;
-            state.confirmLaunchApp = initialState.confirmLaunchApp;
-        },
     },
 });
 
@@ -266,7 +246,6 @@ export default slice.reducer;
 export const {
     addDownloadableApps,
     addLocalApp,
-    hideConfirmLaunchDialog,
     installDownloadableAppStarted,
     removeAppsOfSource,
     removeDownloadableAppStarted,
@@ -274,7 +253,6 @@ export const {
     removeLocalApp,
     resetAppProgress,
     setAllLocalApps,
-    showConfirmLaunchDialog,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
@@ -325,12 +303,6 @@ export const getUpdatableVisibleApps = (
         .filter(getAppsFilter(state))
         .map((app: App) => app) // Narrowing the type, so that the final type is just InstalledDownloadableApp[]
         .filter(isUpdatable);
-
-export const getConfirmLaunch = (state: RootState) => ({
-    isDialogVisible: state.apps.isConfirmLaunchDialogVisible,
-    text: state.apps.confirmLaunchText,
-    app: state.apps.confirmLaunchApp,
-});
 
 export const isInProgress = (
     app: DisplayedApp

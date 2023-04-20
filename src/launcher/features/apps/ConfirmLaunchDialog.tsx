@@ -8,27 +8,34 @@ import React from 'react';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import {
+    getConfirmLaunchDialog,
+    hideConfirmLaunchDialog,
+} from './appDialogsSlice';
 import { launch } from './appsEffects';
-import { getConfirmLaunch, hideConfirmLaunchDialog } from './appsSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isDialogVisible, text, app } =
-        useLauncherSelector(getConfirmLaunch);
+    const confirmationDialog = useLauncherSelector(getConfirmLaunchDialog);
 
     return (
         <ConfirmationDialog
-            isVisible={isDialogVisible}
+            isVisible={confirmationDialog.isVisible}
             title="Version problem"
             confirmLabel="Launch anyway"
             cancelLabel="Cancel"
             onConfirm={() => {
-                dispatch(hideConfirmLaunchDialog());
-                launch(app!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                if (!confirmationDialog.isVisible) {
+                    throw new Error(
+                        'Should be impossible to invoke a disabled button'
+                    );
+                }
+
+                launch(confirmationDialog.app);
             }}
             onCancel={() => dispatch(hideConfirmLaunchDialog())}
         >
-            {text}
+            {confirmationDialog.isVisible && confirmationDialog.text}
         </ConfirmationDialog>
     );
 };

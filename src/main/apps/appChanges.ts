@@ -224,7 +224,7 @@ const verifyShasum = async (filePath: string, expectedShasum?: string) => {
 
 const downloadTarball = async (app: AppSpec, version?: string) => {
     const appInfo = readAppInfoFile(app);
-    const versionToInstall = appInfo.versions[appInfo.latestVersion];
+    const versionToInstall = appInfo.versions[version ?? appInfo.latestVersion];
 
     if (versionToInstall == null) {
         return Promise.reject(

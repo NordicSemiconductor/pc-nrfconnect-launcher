@@ -17,6 +17,7 @@ import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
 import CreateShortcut from './CreateShortcut';
 import InstallApp from './InstallApp';
+import InstallOtherVersion from './InstallOtherVersion';
 import OpenApp from './OpenApp';
 import OpenHomepage from './OpenHomepage';
 import ShowReleaseNotes from './ShowReleaseNotes';
@@ -64,6 +65,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                         <OpenHomepage app={app} />
                         <ShowReleaseNotes app={app} />
                         <CreateShortcut app={app} />
+                        <InstallOtherVersion app={app} />
                         <UninstallApp app={app} />
                     </DropdownButton>
                 </ButtonToolbar>

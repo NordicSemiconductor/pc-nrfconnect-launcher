@@ -15,6 +15,7 @@ import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
 import { getAllApps } from './appsSlice';
 import ConfirmLaunchDialog from './ConfirmLaunchDialog';
+import InstallOtherVersionDialog from './InstallOtherVersionDialog';
 
 const sortByStateAndName = (appA: AppType, appB: AppType) => {
     const cmpInstalled = Number(isInstalled(appB)) - Number(isInstalled(appA));
@@ -41,6 +42,7 @@ export default () => {
             </WithScrollbarContainer>
 
             <ConfirmLaunchDialog />
+            <InstallOtherVersionDialog />
             <ReleaseNotesDialog />
         </>
     );

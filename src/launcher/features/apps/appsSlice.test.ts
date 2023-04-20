@@ -16,14 +16,12 @@ import { reducer as rootReducer } from '../../store';
 import reducer, {
     addDownloadableApps,
     getAllSourceNamesSorted,
-    hideConfirmLaunchDialog,
     installDownloadableAppStarted,
     removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     resetAppProgress,
     setAllLocalApps,
-    showConfirmLaunchDialog,
     State,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
@@ -260,47 +258,6 @@ describe('appsReducer', () => {
             updateDownloadableAppInfosSuccess(aDate),
         ]);
         expect(state.lastUpdateCheckDate).toEqual(aDate);
-    });
-
-    describe('confirm dialog', () => {
-        it('signals when the dialog is shown', () => {
-            const initialState = dispatchTo(reducer);
-            expect(initialState.isConfirmLaunchDialogVisible).toEqual(false);
-
-            const dialogIsShown = dispatchTo(reducer, [
-                showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
-                    app: localApp1,
-                }),
-            ]);
-            expect(dialogIsShown.isConfirmLaunchDialogVisible).toEqual(true);
-
-            const dialogIsClosed = reducer(
-                dialogIsShown,
-                hideConfirmLaunchDialog()
-            );
-            expect(dialogIsClosed.isConfirmLaunchDialogVisible).toEqual(false);
-        });
-
-        it('has a text', () => {
-            const state = dispatchTo(reducer, [
-                showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
-                    app: localApp1,
-                }),
-            ]);
-            expect(state.confirmLaunchText).toEqual('Do you confirm?');
-        });
-
-        it('has an app', () => {
-            const state = dispatchTo(reducer, [
-                showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
-                    app: localApp1,
-                }),
-            ]);
-            expect(state.confirmLaunchApp).toEqual(localApp1);
-        });
     });
 });
 
