@@ -22,22 +22,11 @@ if (process.platform !== 'win32') {
 
 const minVersion = bundledJlinkVersion.replace('.', '');
 
-const FILENAME = `JLink_Windows_${minVersion}.exe`;
-
-const FILENAME_X86 = `JLink_Windows_${minVersion}_i386.exe`;
-const FILENAME_X64 = `JLink_Windows_${minVersion}_x86_64.exe`;
-
-let targetFileName;
-if (process.arch === 'ia32') {
-    targetFileName = FILENAME_X86;
-} else {
-    targetFileName = FILENAME_X64;
-}
-
-const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/${targetFileName}`;
-
-const outputDirectory = 'build';
-const DESTINATION_FILE_PATH = path.join(outputDirectory, FILENAME);
+const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/JLink_Windows_${minVersion}_x86_64.exe`;
+const DESTINATION_FILE_PATH = path.join(
+    'build',
+    `JLink_Windows_${minVersion}.exe`
+);
 
 async function downloadChecksum(fileUrl: string) {
     console.log('Downloading', `${fileUrl}.md5`);

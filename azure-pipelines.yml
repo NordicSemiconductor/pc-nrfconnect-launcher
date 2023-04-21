@@ -12,8 +12,6 @@ jobs:
     value: 'W. Europe Standard Time'
   - name: NODE_VERSION
     value: 18.15.0
-  - name: NPM_VERSION
-    value: 9.5.0
   - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     value: 1 # Because we use Electron, playwright needs no installed browsers https://playwright.dev/docs/api/class-electron
   strategy:
@@ -24,8 +22,6 @@ jobs:
         IMAGE_NAME: 'macos-11'
       win64:
         IMAGE_NAME: 'windows-2019'
-        ARCH: 'x64'
-        NODE_ARCH: '64'
 
   pool:
     vmImage: $(IMAGE_NAME)
@@ -34,10 +30,10 @@ jobs:
   - script: tzutil /s "$(WIN_TZ)"
     condition: contains(variables['IMAGE_NAME'], 'win')
     displayName: 'Fix Windows timezone'
+
   - task: NodeTool@0
     inputs:
       versionSpec: $(NODE_VERSION)
-    condition: ne(variables['NODE_ARCH'], '32')
     displayName: 'Install Node.js $(NODE_VERSION)'
 
   - bash: |
@@ -139,7 +135,7 @@ jobs:
   - script: |
       set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
       set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never --windows nsis:$(ARCH)
+      npx electron-builder -p never --windows nsis:x64
     condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Build electron installer on Windows'
 
@@ -151,8 +147,7 @@ jobs:
       archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(Build.BuildNumber).zip'
     condition: and(
       ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'),
-      ne(variables['NODE_ARCH'], '32'))
+      contains(variables['IMAGE_NAME'], 'win'))
     displayName: 'Pack on Windows x64'
 
   - task: DownloadSecureFile@1
