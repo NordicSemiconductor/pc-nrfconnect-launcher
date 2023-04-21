@@ -11,6 +11,7 @@ const hotplug = new Proxy(deviceLib.startHotplugEvents, {
         // @ts-expect-error Typing of argArray too weak
         const id = target(...argArray);
         window.addEventListener('beforeunload', () => {
+            // @ts-expect-error Signature is wrong, fixed in NordicPlayground/nrf-device-lib-js#185
             deviceLib.stopHotplugEvents(id);
         });
 
@@ -23,6 +24,7 @@ const logEvents = new Proxy(deviceLib.startLogEvents, {
         // @ts-expect-error Typing of argArray too weak
         const id = target(...argArray);
         window.addEventListener('beforeunload', () => {
+            // @ts-expect-error Signature is wrong, fixed in NordicPlayground/nrf-device-lib-js#185
             deviceLib.stopLogEvents(id);
         });
 
