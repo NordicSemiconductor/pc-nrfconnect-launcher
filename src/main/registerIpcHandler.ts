@@ -39,7 +39,6 @@ import {
     registerUpdate,
     registerWrite,
 } from '../ipc/serialport';
-import { registerGetSettings } from '../ipc/settings';
 import {
     registerAddSource,
     registerGetSources,
@@ -72,7 +71,6 @@ import {
     update,
     writeToSerialport,
 } from './serialport';
-import { get as getSettings } from './settings';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
@@ -83,8 +81,6 @@ export default () => {
     registerGetConfig(getConfig);
 
     registerCreateDesktopShortcut(createDesktopShortcut);
-
-    registerGetSettings(getSettings);
 
     registerEndPreventingSleep();
     registerStartPreventingSleep();
