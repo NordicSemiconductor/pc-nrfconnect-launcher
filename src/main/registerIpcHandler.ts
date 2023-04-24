@@ -39,11 +39,7 @@ import {
     registerUpdate,
     registerWrite,
 } from '../ipc/serialport';
-import {
-    registerGetSettings,
-    registerHideSource,
-    registerShowSource,
-} from '../ipc/settings';
+import { registerGetSettings } from '../ipc/settings';
 import {
     registerAddSource,
     registerGetSources,
@@ -76,11 +72,7 @@ import {
     update,
     writeToSerialport,
 } from './serialport';
-import {
-    addShownSource,
-    get as getSettings,
-    removeShownSource,
-} from './settings';
+import { get as getSettings } from './settings';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
@@ -93,8 +85,6 @@ export default () => {
     registerCreateDesktopShortcut(createDesktopShortcut);
 
     registerGetSettings(getSettings);
-    registerShowSource(addShownSource);
-    registerHideSource(removeShownSource);
 
     registerEndPreventingSleep();
     registerStartPreventingSleep();

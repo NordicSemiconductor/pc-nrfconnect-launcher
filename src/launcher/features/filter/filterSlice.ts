@@ -10,22 +10,24 @@ import { createSlice } from '@reduxjs/toolkit';
 import { App, isInstalled } from '../../../ipc/apps';
 import {
     type ShownStates,
+    getHiddenSources as getPersistedHiddenSources,
     getNameFilter as getPersistedNameFilter,
     getShownStates as getPersistedShownStates,
+    setHiddenSources as setPersistedHiddenSources,
     setNameFilter as setPersistedNameFilter,
     setShownStates as setPersistedShownStates,
 } from '../../../ipc/persistedStore';
-import type { Settings } from '../../../ipc/settings';
 import type { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
-export type State = Settings['appFilter'] & {
+export type State = {
+    hiddenSources: Set<SourceName>;
     nameFilter: string;
     shownStates: ShownStates;
 };
 
 const initialState: State = {
-    shownSources: new Set(),
+    hiddenSources: getPersistedHiddenSources(),
     nameFilter: getPersistedNameFilter(),
     shownStates: getPersistedShownStates(),
 };
@@ -34,17 +36,13 @@ const slice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
-        setAllShownSources(
-            state,
-            { payload: shownSources }: PayloadAction<ReadonlySet<SourceName>>
-        ) {
-            state.shownSources = new Set(shownSources);
-        },
         showSource(state, { payload: sourceName }: PayloadAction<SourceName>) {
-            state.shownSources.add(sourceName);
+            state.hiddenSources.delete(sourceName);
+            setPersistedHiddenSources(state.hiddenSources);
         },
         hideSource(state, { payload: sourceName }: PayloadAction<SourceName>) {
-            state.shownSources.delete(sourceName);
+            state.hiddenSources.add(sourceName);
+            setPersistedHiddenSources(state.hiddenSources);
         },
         setNameFilter(state, { payload: nameFilter }: PayloadAction<string>) {
             state.nameFilter = nameFilter;
@@ -62,20 +60,16 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const {
-    setAllShownSources,
-    showSource,
-    hideSource,
-    setNameFilter,
-    setShownStates,
-} = slice.actions;
+export const { showSource, hideSource, setNameFilter, setShownStates } =
+    slice.actions;
 
-export const getShownSources = (state: RootState) => state.filter.shownSources;
+export const getHiddenSources = (state: RootState) =>
+    state.filter.hiddenSources;
 export const getNameFilter = (state: RootState) => state.filter.nameFilter;
 export const getShownStates = (state: RootState) => state.filter.shownStates;
 
 const matchesSourceFilter = (app: App, state: RootState) =>
-    state.filter.shownSources.has(app.source);
+    !state.filter.hiddenSources.has(app.source);
 
 const matchesNameFilter = (app: App, state: RootState) => {
     const filter = state.filter.nameFilter;

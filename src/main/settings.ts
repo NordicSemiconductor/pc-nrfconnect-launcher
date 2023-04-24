@@ -9,24 +9,17 @@ import type { Draft } from 'immer';
 import merge from 'lodash.merge';
 
 import type { Settings } from '../ipc/settings';
-import { allStandardSourceNames, SourceName } from '../ipc/sources';
 import { getConfig } from './config';
-import { readFile, writeJsonFile } from './fileUtil';
+import { readFile } from './fileUtil';
 
-const defaultSettings = {
-    appFilter: {
-        shownSources: new Set(allStandardSourceNames),
-    },
-};
+const defaultSettings = {};
 
 const parseJsonFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) {
         return {};
     }
     try {
-        return JSON.parse(readFile(filePath), (key, value) =>
-            key === 'shownSources' ? new Set(value) : value
-        );
+        return JSON.parse(readFile(filePath));
     } catch (err) {
         console.error(`Could not load settings at ${filePath}. Reason: `, err);
     }
@@ -44,26 +37,4 @@ const load = () => {
 
 const data: Draft<Settings> = load();
 
-const save = () => {
-    const dataToSave = {
-        ...data,
-        appFilter: {
-            ...data.appFilter,
-            shownSources: [...data.appFilter.shownSources],
-        },
-    };
-
-    writeJsonFile(getConfig().settingsJsonPath, dataToSave);
-};
-
 export const get = () => data as Settings;
-
-export const addShownSource = (sourceToAdd: SourceName) => {
-    data.appFilter.shownSources.add(sourceToAdd);
-    save();
-};
-
-export const removeShownSource = (sourceToRemove: SourceName) => {
-    data.appFilter.shownSources.delete(sourceToRemove);
-    save();
-};

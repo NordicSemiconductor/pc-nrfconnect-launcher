@@ -7,7 +7,6 @@
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { getDownloadableApps, getLocalApps } from '../../../ipc/apps';
-import { getSettings, Settings } from '../../../ipc/settings';
 import { getSources } from '../../../ipc/sources';
 import type { AppDispatch, RootState } from '../../store';
 import mainConfig from '../../util/mainConfig';
@@ -16,7 +15,6 @@ import {
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import { setAllShownSources } from '../filter/filterSlice';
 import { checkForCoreUpdates } from '../launcherUpdate/launcherUpdateEffects';
 import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
@@ -25,10 +23,6 @@ import {
     checkUsageDataSetting,
     sendEnvInfo,
 } from '../usageData/usageDataEffects';
-
-const initializeFilters = (settings: Settings) => (dispatch: AppDispatch) => {
-    dispatch(setAllShownSources(settings.appFilter.shownSources));
-};
 
 const loadSources = () => async (dispatch: AppDispatch) => {
     try {
@@ -83,9 +77,6 @@ const checkForCoreUpdatesAtStartup =
 
 export default () => async (dispatch: AppDispatch) => {
     dispatch(checkUsageDataSetting());
-
-    const settings = await getSettings();
-    dispatch(initializeFilters(settings));
 
     await dispatch(loadSources());
     await dispatch(loadApps());

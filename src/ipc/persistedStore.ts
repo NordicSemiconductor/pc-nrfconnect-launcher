@@ -6,6 +6,8 @@
 
 import Store from 'electron-store';
 
+import { SourceName } from './sources';
+
 type WindowState = {
     x?: number;
     y?: number;
@@ -25,6 +27,7 @@ interface Schema {
         doOnStartup: boolean;
     };
     appFilter: {
+        hiddenSources: SourceName[];
         nameFilter: string;
         shownStates: ShownStates;
     };
@@ -48,6 +51,11 @@ export const getCheckForUpdatesAtStartup = () =>
     store.get('updateCheck')?.doOnStartup ?? true;
 export const setCheckForUpdatesAtStartup = (checkUpdatesAtStartup: boolean) =>
     store.set('updateCheck.doOnStartup', checkUpdatesAtStartup);
+
+export const getHiddenSources = () =>
+    new Set(store.get('appFilter')?.hiddenSources ?? []);
+export const setHiddenSources = (hiddenSources: Set<SourceName>) =>
+    store.set('appFilter.hiddenSources', [...hiddenSources]);
 
 export const getNameFilter = () => store.get('appFilter')?.nameFilter ?? '';
 export const setNameFilter = (nameFilter: string) =>
