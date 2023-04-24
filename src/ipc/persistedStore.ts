@@ -25,6 +25,7 @@ interface Schema {
     lastWindowState: WindowState;
     updateCheck: {
         doOnStartup: boolean;
+        lastUpdate?: Date;
     };
     appFilter: {
         hiddenSources: SourceName[];
@@ -51,6 +52,13 @@ export const getCheckForUpdatesAtStartup = () =>
     store.get('updateCheck')?.doOnStartup ?? true;
 export const setCheckForUpdatesAtStartup = (checkUpdatesAtStartup: boolean) =>
     store.set('updateCheck.doOnStartup', checkUpdatesAtStartup);
+
+export const getLastUpdateCheckDate = () => {
+    const storedValue = store.get('updateCheck')?.lastUpdate;
+    return storedValue == null ? undefined : new Date(storedValue);
+};
+export const setLastUpdateCheckDate = (lastUpdate: Date) =>
+    store.set('updateCheck.lastUpdate', lastUpdate.toISOString());
 
 export const getHiddenSources = () =>
     new Set(store.get('appFilter')?.hiddenSources ?? []);
