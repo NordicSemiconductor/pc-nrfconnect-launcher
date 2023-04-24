@@ -40,15 +40,6 @@ import {
     registerWrite,
 } from '../ipc/serialport';
 import {
-    registerGetSettings,
-    registerHideSource,
-    registerResetSettings,
-    registerSetCheckUpdatesAtStartup,
-    registerSetNameFilter,
-    registerSetShownStates,
-    registerShowSource,
-} from '../ipc/settings';
-import {
     registerAddSource,
     registerGetSources,
     registerRemoveSource,
@@ -80,15 +71,6 @@ import {
     update,
     writeToSerialport,
 } from './serialport';
-import {
-    addShownSource,
-    get as getSettings,
-    removeShownSource,
-    resetSettings,
-    setCheckUpdatesAtStartup,
-    setNameFilter,
-    setShownStates,
-} from './settings';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 export default () => {
@@ -99,14 +81,6 @@ export default () => {
     registerGetConfig(getConfig);
 
     registerCreateDesktopShortcut(createDesktopShortcut);
-
-    registerResetSettings(resetSettings);
-    registerGetSettings(getSettings);
-    registerShowSource(addShownSource);
-    registerHideSource(removeShownSource);
-    registerSetNameFilter(setNameFilter);
-    registerSetShownStates(setShownStates);
-    registerSetCheckUpdatesAtStartup(setCheckUpdatesAtStartup);
 
     registerEndPreventingSleep();
     registerStartPreventingSleep();

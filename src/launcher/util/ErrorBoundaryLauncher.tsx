@@ -9,12 +9,12 @@ import { getCurrentWindow } from '@electron/remote';
 import { ErrorBoundary } from 'pc-nrfconnect-shared';
 
 import pkgJson from '../../../package.json';
-import { resetSettings } from '../../ipc/settings';
+import { resetStore } from '../../ipc/persistedStore';
 import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
 
 const ErrorBoundaryLauncher: React.FC = ({ children }) => {
-    const restoreDefaults = async () => {
-        await resetSettings();
+    const restoreDefaults = () => {
+        resetStore();
         getCurrentWindow().reload();
     };
 

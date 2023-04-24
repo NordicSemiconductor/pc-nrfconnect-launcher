@@ -16,13 +16,13 @@ import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
 import { AppDetails } from '../ipc/appDetails';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
+import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getConfig, getElectronResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
-import { get as getSetting, setLastWindowState } from './settings';
 
 let launcherWindow: BrowserWindow | undefined;
 const appWindows: {
@@ -72,7 +72,7 @@ export const openAppWindow = (
     app: LaunchableApp,
     openAppOptions: OpenAppOptions = {}
 ) => {
-    const { lastWindowState } = getSetting();
+    const lastWindowState = getLastWindowState();
 
     let { x, y } = lastWindowState;
     const { width, height } = lastWindowState;

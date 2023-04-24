@@ -15,7 +15,7 @@ import {
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
-    setCheckUpdatesAtStartup,
+    setCheckForUpdatesAtStartup,
     showUpdateCheckComplete,
 } from './settingsSlice';
 
@@ -32,13 +32,15 @@ jest.mock('react-bootstrap', () => ({
 describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {
         expect(
-            render(<Settings />, [setCheckUpdatesAtStartup(true)]).baseElement
+            render(<Settings />, [setCheckForUpdatesAtStartup(true)])
+                .baseElement
         ).toMatchSnapshot();
     });
 
     it('should render with check for updates disabled', () => {
         expect(
-            render(<Settings />, [setCheckUpdatesAtStartup(false)]).baseElement
+            render(<Settings />, [setCheckForUpdatesAtStartup(false)])
+                .baseElement
         ).toMatchSnapshot();
     });
 

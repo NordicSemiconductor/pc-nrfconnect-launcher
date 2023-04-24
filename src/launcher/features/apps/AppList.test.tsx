@@ -8,14 +8,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import { LOCAL, OFFICIAL } from '../../../ipc/sources';
 import {
     createDownloadableTestApp,
     createLocalTestApp,
     createUninstalledTestApp,
 } from '../../../test/testFixtures';
 import render, { preparedStore } from '../../../test/testrenderer';
-import { setAllShownSources } from '../filter/filterSlice';
 import AppList from './AppList';
 import {
     checkEngineAndLaunch,
@@ -74,7 +72,6 @@ describe('AppList', () => {
     it('should render local, not-installed, installed, and updatable apps', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources(new Set([OFFICIAL, LOCAL])),
                 addDownloadableApps([
                     uninstalledApp,
                     installedApp,
@@ -88,7 +85,6 @@ describe('AppList', () => {
     it('should disable buttons and display "Installing..." button text while installing an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources(new Set([OFFICIAL, LOCAL])),
                 addDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
             ]).baseElement
@@ -98,7 +94,6 @@ describe('AppList', () => {
     it('should disable buttons while removing an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources(new Set([OFFICIAL, LOCAL])),
                 addDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
             ]).baseElement
@@ -108,7 +103,6 @@ describe('AppList', () => {
     it('should disable buttons and display "Updating..." while updating an app', () => {
         expect(
             render(<AppList />, [
-                setAllShownSources(new Set([OFFICIAL, LOCAL])),
                 addDownloadableApps([updatableApp]),
                 updateDownloadableAppStarted(updatableApp),
             ]).baseElement
@@ -120,10 +114,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={preparedStore([
-                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    addDownloadableApps([uninstalledApp]),
-                ])}
+                store={preparedStore([addDownloadableApps([uninstalledApp])])}
             >
                 <AppList />
             </Provider>
@@ -143,10 +134,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={preparedStore([
-                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    addDownloadableApps([installedApp]),
-                ])}
+                store={preparedStore([addDownloadableApps([installedApp])])}
             >
                 <AppList />
             </Provider>
@@ -168,10 +156,7 @@ describe('AppList', () => {
 
         const wrapper = mount(
             <Provider
-                store={preparedStore([
-                    setAllShownSources(new Set([OFFICIAL, LOCAL])),
-                    addDownloadableApps([installedApp]),
-                ])}
+                store={preparedStore([addDownloadableApps([installedApp])])}
             >
                 <AppList />
             </Provider>

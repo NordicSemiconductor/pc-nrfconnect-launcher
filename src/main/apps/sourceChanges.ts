@@ -15,7 +15,6 @@ import {
     SourceUrl,
 } from '../../ipc/sources';
 import { getAppsRootDir } from '../config';
-import { addShownSource, removeShownSource } from '../settings';
 import { addDownloadAppData } from './app';
 import { downloadAppInfos } from './apps';
 import {
@@ -52,8 +51,6 @@ export const addSource = async (url: SourceUrl) => {
 
     addToSourceList(source);
 
-    addShownSource(source.name);
-
     const apps = (await downloadAppInfos(source)).map(
         addDownloadAppData(source.name)
     );
@@ -79,7 +76,5 @@ export const removeSource = async (sourceName?: SourceName) => {
         await removeSourceDirectory(sourceName);
 
         removeFromSourceList(sourceName);
-
-        removeShownSource(sourceName);
     }
 };

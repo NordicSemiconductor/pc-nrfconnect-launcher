@@ -8,23 +8,23 @@ import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
 import reducer, {
     hideUpdateCheckComplete,
-    setCheckUpdatesAtStartup,
+    setCheckForUpdatesAtStartup,
     showUpdateCheckComplete,
 } from './settingsSlice';
 
 describe('settingsReducer', () => {
     it('should set shouldCheckForUpdatesAtStartup to true when enabling', () => {
         const state = dispatchTo(reducer, [
-            setCheckUpdatesAtStartup(false),
-            setCheckUpdatesAtStartup(true),
+            setCheckForUpdatesAtStartup(false),
+            setCheckForUpdatesAtStartup(true),
         ]);
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(true);
     });
 
     it('should set shouldCheckForUpdatesAtStartup to false when disabling', () => {
         const state = dispatchTo(reducer, [
-            setCheckUpdatesAtStartup(true),
-            setCheckUpdatesAtStartup(false),
+            setCheckForUpdatesAtStartup(true),
+            setCheckForUpdatesAtStartup(false),
         ]);
         expect(state.shouldCheckForUpdatesAtStartup).toEqual(false);
     });

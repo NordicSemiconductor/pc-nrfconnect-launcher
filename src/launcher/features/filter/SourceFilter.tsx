@@ -8,41 +8,39 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import {
-    hideSource as hideSourceInSettings,
-    showSource as showSourceInSettings,
-} from '../../../ipc/settings';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getAllSourceNamesSorted } from '../apps/appsSlice';
-import { getShownSources, hideSource, showSource } from './filterSlice';
+import { getHiddenSources, hideSource, showSource } from './filterSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
     const allSourceNames = useLauncherSelector(getAllSourceNamesSorted);
-    const shownSourceNames = useLauncherSelector(getShownSources);
+    const hiddenSources = useLauncherSelector(getHiddenSources);
 
     return (
         <Col className="pl-4 pr-0">
             <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
-            {allSourceNames.map((sourceName, i) => (
-                <Form.Check
-                    label={sourceName}
-                    id={`cb-${sourceName}`}
-                    key={`cb-${i + 1}`}
-                    className="mx-3 py-1 px-4 text-capitalize"
-                    custom
-                    checked={shownSourceNames.has(sourceName)}
-                    onChange={({ target }) => {
-                        if (target.checked) {
-                            dispatch(showSource(sourceName));
-                            showSourceInSettings(sourceName);
-                        } else {
-                            dispatch(hideSource(sourceName));
-                            hideSourceInSettings(sourceName);
-                        }
-                    }}
-                />
-            ))}
+            {allSourceNames.map((sourceName, i) => {
+                const isShown = !hiddenSources.has(sourceName);
+
+                return (
+                    <Form.Check
+                        label={sourceName}
+                        id={`cb-${sourceName}`}
+                        key={`cb-${i + 1}`}
+                        className="mx-3 py-1 px-4 text-capitalize"
+                        custom
+                        checked={isShown}
+                        onChange={() => {
+                            if (isShown) {
+                                dispatch(hideSource(sourceName));
+                            } else {
+                                dispatch(showSource(sourceName));
+                            }
+                        }}
+                    />
+                );
+            })}
         </Col>
     );
 };
