@@ -8,19 +8,26 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { App, isInstalled } from '../../../ipc/apps';
-import type { Settings, ShownStates } from '../../../ipc/settings';
+import {
+    type ShownStates,
+    getNameFilter as getPersistedNameFilter,
+    getShownStates as getPersistedShownStates,
+    setNameFilter as setPersistedNameFilter,
+    setShownStates as setPersistedShownStates,
+} from '../../../ipc/persistedStore';
+import type { Settings } from '../../../ipc/settings';
 import type { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
-export type State = Settings['appFilter'];
+export type State = Settings['appFilter'] & {
+    nameFilter: string;
+    shownStates: ShownStates;
+};
 
 const initialState: State = {
     shownSources: new Set(),
-    nameFilter: '',
-    shownStates: {
-        downloadable: true,
-        installed: true,
-    },
+    nameFilter: getPersistedNameFilter(),
+    shownStates: getPersistedShownStates(),
 };
 
 const slice = createSlice({
@@ -41,15 +48,14 @@ const slice = createSlice({
         },
         setNameFilter(state, { payload: nameFilter }: PayloadAction<string>) {
             state.nameFilter = nameFilter;
+            setPersistedNameFilter(nameFilter);
         },
         setShownStates(
             state,
-            { payload: shownStates }: PayloadAction<Partial<ShownStates>>
+            { payload: shownStates }: PayloadAction<ShownStates>
         ) {
-            state.shownStates = {
-                ...state.shownStates,
-                ...shownStates,
-            };
+            state.shownStates = { ...shownStates };
+            setPersistedShownStates(shownStates);
         },
     },
 });

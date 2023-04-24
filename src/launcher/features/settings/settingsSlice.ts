@@ -7,6 +7,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import {
+    getCheckForUpdatesAtStartup as getPersistedCheckForUpdatesAtStartup,
+    setCheckForUpdatesAtStartup as setPersistedCheckForUpdatesAtStartup,
+} from '../../../ipc/persistedStore';
 import type { RootState } from '../../store';
 
 export type State = {
@@ -15,7 +19,7 @@ export type State = {
 };
 
 const initialState: State = {
-    shouldCheckForUpdatesAtStartup: true,
+    shouldCheckForUpdatesAtStartup: getPersistedCheckForUpdatesAtStartup(),
     isUpdateCheckCompleteVisible: false,
 };
 
@@ -23,11 +27,12 @@ const slice = createSlice({
     name: 'settings',
     initialState,
     reducers: {
-        setCheckUpdatesAtStartup(
+        setCheckForUpdatesAtStartup(
             state,
-            { payload: isEnabled }: PayloadAction<boolean>
+            { payload: checkForUpdatesAtStartup }: PayloadAction<boolean>
         ) {
-            state.shouldCheckForUpdatesAtStartup = isEnabled;
+            state.shouldCheckForUpdatesAtStartup = checkForUpdatesAtStartup;
+            setPersistedCheckForUpdatesAtStartup(checkForUpdatesAtStartup);
         },
         showUpdateCheckComplete(state) {
             state.isUpdateCheckCompleteVisible = true;
@@ -41,7 +46,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
-    setCheckUpdatesAtStartup,
+    setCheckForUpdatesAtStartup,
     showUpdateCheckComplete,
     hideUpdateCheckComplete,
 } = slice.actions;

@@ -9,20 +9,16 @@ import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 import { getDownloadableApps, getLocalApps } from '../../../ipc/apps';
 import { getSettings, Settings } from '../../../ipc/settings';
 import { getSources } from '../../../ipc/sources';
-import type { AppDispatch } from '../../store';
+import type { AppDispatch, RootState } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import {
     downloadLatestAppInfos,
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import {
-    setAllShownSources,
-    setNameFilter,
-    setShownStates,
-} from '../filter/filterSlice';
+import { setAllShownSources } from '../filter/filterSlice';
 import { checkForCoreUpdates } from '../launcherUpdate/launcherUpdateEffects';
-import { setCheckUpdatesAtStartup } from '../settings/settingsSlice';
+import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { setSources } from '../sources/sourcesSlice';
 import {
@@ -31,8 +27,6 @@ import {
 } from '../usageData/usageDataEffects';
 
 const initializeFilters = (settings: Settings) => (dispatch: AppDispatch) => {
-    dispatch(setShownStates(settings.appFilter.shownStates));
-    dispatch(setNameFilter(settings.appFilter.nameFilter));
     dispatch(setAllShownSources(settings.appFilter.shownSources));
 };
 
@@ -64,15 +58,20 @@ export const loadApps = () => async (dispatch: AppDispatch) => {
 };
 
 const downloadLatestAppInfoAtStartup =
-    (shouldCheckForUpdatesAtStartup: boolean) => (dispatch: AppDispatch) => {
+    () => (dispatch: AppDispatch, getState: () => RootState) => {
+        const shouldCheckForUpdatesAtStartup =
+            getShouldCheckForUpdatesAtStartup(getState());
+
         if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
             dispatch(downloadLatestAppInfos());
         }
     };
 
 const checkForCoreUpdatesAtStartup =
-    (shouldCheckForUpdatesAtStartup: boolean) =>
-    async (dispatch: AppDispatch) => {
+    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+        const shouldCheckForUpdatesAtStartup =
+            getShouldCheckForUpdatesAtStartup(getState());
+
         if (
             shouldCheckForUpdatesAtStartup &&
             !mainConfig().isSkipUpdateCore &&
@@ -86,15 +85,13 @@ export default () => async (dispatch: AppDispatch) => {
     dispatch(checkUsageDataSetting());
 
     const settings = await getSettings();
-    const { shouldCheckForUpdatesAtStartup } = settings;
-    dispatch(setCheckUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
     dispatch(initializeFilters(settings));
 
     await dispatch(loadSources());
     await dispatch(loadApps());
 
-    dispatch(downloadLatestAppInfoAtStartup(shouldCheckForUpdatesAtStartup));
-    dispatch(checkForCoreUpdatesAtStartup(shouldCheckForUpdatesAtStartup));
+    dispatch(downloadLatestAppInfoAtStartup());
+    dispatch(checkForCoreUpdatesAtStartup());
 
     sendEnvInfo();
 };

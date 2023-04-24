@@ -31,8 +31,10 @@ import {
     getIsSendingUsageData,
     showUsageDataDialog,
 } from '../usageData/usageDataSlice';
-import { checkUpdatesAtStartupChanged } from './settingsEffects';
-import { getShouldCheckForUpdatesAtStartup } from './settingsSlice';
+import {
+    getShouldCheckForUpdatesAtStartup,
+    setCheckForUpdatesAtStartup,
+} from './settingsSlice';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
 const { white, gray700, nordicBlue } = colors;
@@ -88,7 +90,7 @@ export default () => {
                         label="Check for updates at startup"
                         onToggle={() =>
                             dispatch(
-                                checkUpdatesAtStartupChanged(
+                                setCheckForUpdatesAtStartup(
                                     !shouldCheckForUpdatesAtStartup
                                 )
                             )

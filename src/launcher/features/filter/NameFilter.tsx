@@ -8,7 +8,6 @@ import React, { useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 import { useHotKey } from 'pc-nrfconnect-shared';
 
-import { setNameFilter as setNameFilterInSettings } from '../../../ipc/settings';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getNameFilter, setNameFilter } from './filterSlice';
 
@@ -33,7 +32,6 @@ export default () => {
             onChange={event => {
                 const nameFilter = event.target.value;
                 dispatch(setNameFilter(nameFilter));
-                setNameFilterInSettings(nameFilter);
             }}
         />
     );

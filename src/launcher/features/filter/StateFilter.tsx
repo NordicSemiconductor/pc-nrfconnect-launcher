@@ -8,7 +8,6 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import { setShownStates as setShownStatesInSettings } from '../../../ipc/settings';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getShownStates, setShownStates } from './filterSlice';
 
@@ -26,10 +25,12 @@ export default () => {
                 custom
                 checked={installed}
                 onChange={({ target }) => {
-                    dispatch(setShownStates({ installed: target.checked }));
-                    setShownStatesInSettings({
-                        installed: target.checked,
-                    });
+                    dispatch(
+                        setShownStates({
+                            installed: target.checked,
+                            downloadable,
+                        })
+                    );
                 }}
             />
             <Form.Check
@@ -39,10 +40,12 @@ export default () => {
                 custom
                 checked={downloadable}
                 onChange={({ target }) => {
-                    dispatch(setShownStates({ downloadable: target.checked }));
-                    setShownStatesInSettings({
-                        downloadable: target.checked,
-                    });
+                    dispatch(
+                        setShownStates({
+                            installed,
+                            downloadable: target.checked,
+                        })
+                    );
                 }}
             />
         </Col>

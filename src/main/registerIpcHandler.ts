@@ -42,10 +42,6 @@ import {
 import {
     registerGetSettings,
     registerHideSource,
-    registerResetSettings,
-    registerSetCheckUpdatesAtStartup,
-    registerSetNameFilter,
-    registerSetShownStates,
     registerShowSource,
 } from '../ipc/settings';
 import {
@@ -84,10 +80,6 @@ import {
     addShownSource,
     get as getSettings,
     removeShownSource,
-    resetSettings,
-    setCheckUpdatesAtStartup,
-    setNameFilter,
-    setShownStates,
 } from './settings';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
@@ -100,13 +92,9 @@ export default () => {
 
     registerCreateDesktopShortcut(createDesktopShortcut);
 
-    registerResetSettings(resetSettings);
     registerGetSettings(getSettings);
     registerShowSource(addShownSource);
     registerHideSource(removeShownSource);
-    registerSetNameFilter(setNameFilter);
-    registerSetShownStates(setShownStates);
-    registerSetCheckUpdatesAtStartup(setCheckUpdatesAtStartup);
 
     registerEndPreventingSleep();
     registerStartPreventingSleep();
