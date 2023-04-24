@@ -18,6 +18,10 @@ import {
     LocalApp,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
+import {
+    getLastUpdateCheckDate,
+    setLastUpdateCheckDate,
+} from '../../../ipc/persistedStore';
 import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
@@ -57,6 +61,7 @@ export type State = {
 const initialState: State = {
     localApps: [],
     downloadableApps: [],
+    lastUpdateCheckDate: getLastUpdateCheckDate(),
     isDownloadingLatestAppInfo: false,
 };
 
@@ -162,6 +167,7 @@ const slice = createSlice({
             reducer(state, { payload: updateCheckDate }: PayloadAction<Date>) {
                 state.isDownloadingLatestAppInfo = false;
                 state.lastUpdateCheckDate = updateCheckDate;
+                setLastUpdateCheckDate(updateCheckDate);
             },
             prepare(updateCheckDate: Date = new Date()) {
                 return { payload: updateCheckDate };
