@@ -7,7 +7,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
-import { sort } from 'semver';
+import { rsort } from 'semver';
 
 import { DownloadableApp } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -27,7 +27,7 @@ const VersionList = ({
     app?: DownloadableApp;
 }) => {
     const availableVersions = useMemo(
-        () => sort(Object.keys(app?.versions ?? {})),
+        () => rsort(Object.keys(app?.versions ?? {})),
         [app]
     );
 
