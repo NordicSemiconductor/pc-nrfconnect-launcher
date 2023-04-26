@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2023 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
+.versionListLine {
+    font-size: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.versionList {
+    width: 'fit-content';
+}
