@@ -6,7 +6,7 @@
 
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Dialog, DialogButton, Spinner } from 'pc-nrfconnect-shared';
+import { Dialog, DialogButton } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { cancelDownload } from './launcherUpdateEffects';
@@ -25,7 +25,10 @@ export default () => {
 
     return (
         <Dialog isVisible={isVisible} closeOnUnfocus={false}>
-            <Dialog.Header title="Downloading update" />
+            <Dialog.Header
+                title="Downloading update"
+                showSpinner={!isProgressSupported}
+            />
             <Dialog.Body>
                 <p>Downloading nRF Connect for Desktop {version}...</p>
                 {isProgressSupported && (
@@ -40,7 +43,6 @@ export default () => {
                 </p>
             </Dialog.Body>
             <Dialog.Footer>
-                {!isProgressSupported && <Spinner />}
                 {isCancelSupported && (
                     <DialogButton
                         onClick={() => dispatch(cancelDownload())}

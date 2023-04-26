@@ -5,8 +5,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import { ConfirmationDialog, Dropdown } from 'pc-nrfconnect-shared';
 import { rsort } from 'semver';
 
 import { DownloadableApp } from '../../../ipc/apps';
@@ -17,42 +16,40 @@ import {
 } from './appDialogsSlice';
 import { installDownloadableApp } from './appsEffects';
 
+import styles from './installOtherVersionDialog.module.scss';
+
 const VersionList = ({
-    versionToInstall,
-    setVersionToInstall,
     app,
+    id,
+    setVersionToInstall,
+    versionToInstall,
 }: {
-    versionToInstall?: string;
-    setVersionToInstall: (version: string) => void;
     app?: DownloadableApp;
+    id: string;
+    setVersionToInstall: (version: string) => void;
+    versionToInstall?: string;
 }) => {
     const availableVersions = useMemo(
-        () => rsort(Object.keys(app?.versions ?? {})),
+        () =>
+            rsort(Object.keys(app?.versions ?? {})).map(v => ({
+                label: v,
+                value: v,
+            })),
         [app]
     );
 
+    const selectedVersionToInstall =
+        availableVersions.find(item => item.value === versionToInstall) ??
+        availableVersions[0];
+
     return (
         <Dropdown
-            as="span"
-            className="ml-3"
-            onSelect={version => {
-                if (version != null) {
-                    setVersionToInstall(version);
-                }
-            }}
-        >
-            <Dropdown.Toggle variant="outline-secondary">
-                {versionToInstall}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-                {availableVersions.map(version => (
-                    <Dropdown.Item key={version} eventKey={version}>
-                        {version}
-                    </Dropdown.Item>
-                ))}
-            </Dropdown.Menu>
-        </Dropdown>
+            id={id}
+            onSelect={({ value }) => setVersionToInstall(value)}
+            selectedItem={selectedVersionToInstall}
+            items={availableVersions}
+            numItemsBeforeScroll={8}
+        />
     );
 };
 
@@ -105,18 +102,22 @@ export default () => {
                 Semiconductor.
             </p>
 
-            <p>
-                Version to install:
-                <VersionList
-                    app={
-                        installOtherVersionDialog.isVisible
-                            ? installOtherVersionDialog.app
-                            : undefined
-                    }
-                    versionToInstall={versionToInstall}
-                    setVersionToInstall={setVersionToInstall}
-                />
-            </p>
+            <form className={styles.versionListLine}>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- versionList is the id for a control */}
+                <label htmlFor="versionList">Version to install:</label>
+                <div className={styles.versionList}>
+                    <VersionList
+                        id="versionList"
+                        app={
+                            installOtherVersionDialog.isVisible
+                                ? installOtherVersionDialog.app
+                                : undefined
+                        }
+                        versionToInstall={versionToInstall}
+                        setVersionToInstall={setVersionToInstall}
+                    />
+                </div>
+            </form>
         </ConfirmationDialog>
     );
 };

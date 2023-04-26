@@ -15,7 +15,13 @@ import { DisplayedApp, isInProgress } from '../appsSlice';
 const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const dispatch = useLauncherDispatch();
 
-    if (!isDownloadable(app)) return null;
+    if (
+        !isDownloadable(app) ||
+        app.versions == null ||
+        Object.keys(app.versions).length < 2
+    ) {
+        return null;
+    }
 
     return (
         <Dropdown.Item
