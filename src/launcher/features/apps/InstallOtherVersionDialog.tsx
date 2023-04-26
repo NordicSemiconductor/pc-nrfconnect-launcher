@@ -105,7 +105,7 @@ export default () => {
             <form className={styles.versionListLine}>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- versionList is the id for a control */}
                 <label htmlFor="versionList">Version to install:</label>
-                <div className={styles.versionList}>
+                <div>
                     <VersionList
                         id="versionList"
                         app={
