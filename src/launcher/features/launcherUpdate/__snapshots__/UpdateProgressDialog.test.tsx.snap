@@ -20,7 +20,7 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg modal-dialog-centered"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -28,11 +28,14 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
         <div
           class="modal-header"
         >
-          <p>
+          <div>
             <b>
               Downloading update
             </b>
-          </p>
+            <div
+              class="spinner-border spinner-border-sm"
+            />
+          </div>
         </div>
         <div
           class="modal-body"
@@ -48,14 +51,7 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
         </div>
         <div
           class="modal-footer"
-        >
-          <img
-            alt="Loading..."
-            height="16"
-            src="test-file-stub"
-            width="16"
-          />
-        </div>
+        />
       </div>
     </div>
   </div>
@@ -82,7 +78,7 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg modal-dialog-centered"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -90,11 +86,11 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
         <div
           class="modal-header"
         >
-          <p>
+          <div>
             <b>
               Downloading update
             </b>
-          </p>
+          </div>
         </div>
         <div
           class="modal-body"
@@ -158,7 +154,7 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg modal-dialog-centered"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -166,11 +162,11 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
         <div
           class="modal-header"
         >
-          <p>
+          <div>
             <b>
               Downloading update
             </b>
-          </p>
+          </div>
         </div>
         <div
           class="modal-body"
@@ -235,7 +231,7 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg modal-dialog-centered"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -243,11 +239,11 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
         <div
           class="modal-header"
         >
-          <p>
+          <div>
             <b>
               Downloading update
             </b>
-          </p>
+          </div>
         </div>
         <div
           class="modal-body"

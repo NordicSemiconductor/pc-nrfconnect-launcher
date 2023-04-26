@@ -26,7 +26,7 @@ exports[`ConfirmRemoveSourceDialog shows the new version if one becomes availabl
     tabindex="-1"
   >
     <div
-      class="modal-dialog modal-lg modal-dialog-centered"
+      class="modal-dialog modal-dialog-centered"
     >
       <div
         class="modal-content"
@@ -34,11 +34,11 @@ exports[`ConfirmRemoveSourceDialog shows the new version if one becomes availabl
         <div
           class="modal-header"
         >
-          <p>
+          <div>
             <b>
               Remove app source
             </b>
-          </p>
+          </div>
         </div>
         <div
           class="modal-body"
