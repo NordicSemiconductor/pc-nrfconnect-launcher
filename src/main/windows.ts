@@ -235,5 +235,7 @@ export const getAppDetails = (webContents: WebContents): AppDetails => {
         tmpDir: electronApp.getPath('temp'),
         bundledJlink: bundledJlinkVersion,
         ...appWindow.app,
+        // Remove at some point in the future when all apps are update to at least shared v39
+        path: appWindow.app.installed.path,
     };
 };
