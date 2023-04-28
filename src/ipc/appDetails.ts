@@ -24,6 +24,7 @@ export type AppDetails = LaunchableApp & {
     homeDir: string;
     tmpDir: string;
     bundledJlink: string;
+    path: string;
 };
 
 type GetAppDetails = () => AppDetails;
