@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
@@ -14,6 +14,10 @@ import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
 import { colors, Toggle } from 'pc-nrfconnect-shared';
 
+import {
+    getQuickstartAlreadyLaunched,
+    setQuickstartAlreadyLaunched,
+} from '../../../ipc/persistedStore';
 import { OFFICIAL } from '../../../ipc/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
@@ -52,9 +56,38 @@ export default () => {
     const { isCheckingForUpdates, lastUpdateCheckDate } =
         useLauncherSelector(getUpdateCheckStatus);
 
+    const [launchQuickstart, setLaunchQuickstart] = useState(
+        !getQuickstartAlreadyLaunched()
+    );
+
     return (
         <WithScrollbarContainer>
             <div className="settings-pane-container">
+                <Card body>
+                    <Row>
+                        <Col>
+                            <Card.Title>Spike: Quickstart</Card.Title>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Toggle
+                                label="Launch quickstart automatically on next start"
+                                onToggle={() => {
+                                    setQuickstartAlreadyLaunched(
+                                        launchQuickstart
+                                    );
+                                    setLaunchQuickstart(!launchQuickstart);
+                                }}
+                                isToggled={launchQuickstart}
+                                variant="primary"
+                                handleColor={white}
+                                barColor={gray700}
+                                barColorToggled={nordicBlue}
+                            />
+                        </Col>
+                    </Row>
+                </Card>
                 <Card body>
                     <Row>
                         <Col>

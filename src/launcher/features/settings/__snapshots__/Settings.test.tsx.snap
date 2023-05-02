@@ -32,6 +32,59 @@ exports[`SettingsView should render check for updates completed, with everything
                   <div
                     class="card-title h5"
                   >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Updates
                   </div>
                 </div>
@@ -244,6 +297,59 @@ exports[`SettingsView should render check for updates completed, with updates av
         <div
           class="settings-pane-container"
         >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             class="card"
           >
@@ -481,6 +587,59 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   <div
                     class="card-title h5"
                   >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Updates
                   </div>
                 </div>
@@ -645,6 +804,59 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
         <div
           class="settings-pane-container"
         >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             class="card"
           >
@@ -838,6 +1050,59 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   <div
                     class="card-title h5"
                   >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Updates
                   </div>
                 </div>
@@ -1001,6 +1266,59 @@ exports[`SettingsView should render with last update check date 1`] = `
         <div
           class="settings-pane-container"
         >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Spike: Quickstart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label>
+                      <span
+                        class="toggle-label"
+                      >
+                        Launch quickstart automatically on next start
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary-toggled"
+                        style="background-color: rgb(0, 169, 206);"
+                      >
+                        <input
+                          aria-checked="true"
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             class="card"
           >
