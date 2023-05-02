@@ -32,6 +32,7 @@ interface Schema {
         nameFilter: string;
         shownStates: ShownStates;
     };
+    quickstartAlreadyLaunched: boolean;
 }
 
 const store = new Store<Schema>();
@@ -77,3 +78,9 @@ export const getShownStates = () =>
     store.get('appFilter')?.shownStates ?? defaultShownStates;
 export const setShownStates = (shownStates: ShownStates) =>
     store.set('appFilter.shownStates', shownStates);
+
+export const getQuickstartAlreadyLaunched = () =>
+    store.get('quickstartAlreadyLaunched', false);
+export const setQuickstartAlreadyLaunched = (
+    quickstartAlreadyLaunched: boolean
+) => store.set('quickstartAlreadyLaunched', quickstartAlreadyLaunched);
