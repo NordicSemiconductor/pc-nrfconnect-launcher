@@ -72,11 +72,11 @@ exports.default = async () => {
     //     false
     // );
 
-    // await downloadFile(
-    //     'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble-4.0.4.tgz',
-    //     'resources/pc-nrfconnect-ble-4.0.4.tgz',
-    //     false
-    // );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble-4.0.4.tgz',
+        'resources/pc-nrfconnect-ble-4.0.4.tgz',
+        false
+    );
     await downloadFile(
         'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-dtm-2.1.0.tgz',
         'resources/pc-nrfconnect-dtm-2.1.0.tgz',
