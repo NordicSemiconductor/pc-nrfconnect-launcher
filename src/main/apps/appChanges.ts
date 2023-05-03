@@ -62,6 +62,19 @@ export const getNameFromNpmPackage = (tgzFile: string) => {
     return null;
 };
 
+export const devVersionOfQuickstartAppExists = () =>
+    fs.existsSync(
+        path.join(
+            installedAppPath(localApp('pc-nrfconnect-quickstart')),
+            '.git'
+        )
+    );
+
+export const removeQuikstartApp = () => {
+    const appPath = installedAppPath(localApp('pc-nrfconnect-quickstart'));
+    fs.removeSync(appPath);
+};
+
 export const installLocalApp = async (
     tgzFilePath: string
 ): Promise<InstallResult> => {

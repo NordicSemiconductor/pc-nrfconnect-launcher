@@ -5,12 +5,17 @@
  */
 
 import { app, dialog, Menu } from 'electron';
+import { copyFileSync, existsSync } from 'fs';
 
 import {
     getQuickstartAlreadyLaunched,
     setQuickstartAlreadyLaunched,
 } from '../ipc/persistedStore';
-import { installAllLocalAppArchives } from './apps/appChanges';
+import {
+    devVersionOfQuickstartAppExists,
+    installAllLocalAppArchives,
+    removeQuikstartApp,
+} from './apps/appChanges';
 import { getLocalApps } from './apps/apps';
 import { initialiseAllSources } from './apps/sources';
 import {
@@ -18,6 +23,7 @@ import {
     getAppsLocalDir,
     getAppsRootDir,
     getConfig,
+    getElectronResourcesDir,
     getNodeModulesDir,
 } from './config';
 import describeError from './describeError';
@@ -38,6 +44,30 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
     initialiseAllSources();
+
+    if (devVersionOfQuickstartAppExists()) {
+        if (!process.argv.includes('--i-know')) {
+            dialog.showMessageBoxSync({
+                type: 'info',
+                title: 'Development version of Quckstart App detected',
+                message: 'Development version of Quckstart App detected',
+                detail: 'You seem to have a local development version of the quickstart app. Not overwriting it. If you do not want to display this warning (but still not overwrite the local app), launch the launcher with `--i-know`',
+                buttons: ['OK'],
+            });
+        }
+    } else if (
+        existsSync(
+            `${getElectronResourcesDir()}/pc-nrfconnect-quickstart-0.0.1.tgz`
+        )
+    ) {
+        removeQuikstartApp();
+
+        copyFileSync(
+            `${getElectronResourcesDir()}/pc-nrfconnect-quickstart-0.0.1.tgz`,
+            `${getAppsLocalDir()}/pc-nrfconnect-quickstart-0.0.1.tgz`
+        );
+    }
+
     await installAllLocalAppArchives();
 };
 

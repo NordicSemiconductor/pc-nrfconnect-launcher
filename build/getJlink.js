@@ -31,9 +31,10 @@ async function downloadChecksum(fileUrl) {
     return data.split(' ').shift();
 }
 
-async function downloadFile(fileUrl, destinationFile) {
+async function downloadFile(fileUrl, destinationFile, assertChecksum = true) {
     const hash = crypto.createHash('md5');
-    const expectedChecksum = await downloadChecksum(fileUrl);
+    const expectedChecksum =
+        assertChecksum && (await downloadChecksum(fileUrl));
     console.log('Downloading', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
@@ -53,7 +54,7 @@ async function downloadFile(fileUrl, destinationFile) {
         stream.on('end', () => {
             file.end();
             const calculatedChecksum = hash.digest('hex');
-            if (calculatedChecksum !== expectedChecksum) {
+            if (assertChecksum && calculatedChecksum !== expectedChecksum) {
                 fs.unlinkSync(destinationFile);
                 console.log('Calculated checksum:', calculatedChecksum);
                 console.log('Expected checksum:  ', expectedChecksum);
@@ -64,10 +65,17 @@ async function downloadFile(fileUrl, destinationFile) {
     });
 }
 
-exports.default = () =>
-    process.platform === 'win32'
-        ? downloadFile(FILE_URL, DESTINATION_FILE_PATH).catch(error => {
-              console.error('\n!!! EXCEPTION', error.message);
-              process.exit(-1);
-          })
-        : undefined;
+exports.default = async () => {
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-quickstart-0.0.1.tgz',
+        'resources/pc-nrfconnect-quickstart-0.0.1.tgz',
+        false
+    );
+
+    if (process.platform === 'win32') {
+        await downloadFile(FILE_URL, DESTINATION_FILE_PATH).catch(error => {
+            console.error('\n!!! EXCEPTION', error.message);
+            process.exit(-1);
+        });
+    }
+};
