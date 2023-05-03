@@ -45,7 +45,7 @@
         "files": [
             "dist/",
             "node_modules/",
-            "resources/pc-nrfconnect-quickstart-0.0.1.tgz",
+            "resources/pc-nrfconnect-*.tgz",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",

@@ -4,4 +4,4 @@
 /dist
 /node_modules
 /release
-/resources/pc-nrfconnect-quickstart-0.0.1.tgz
+/resources/pc-nrfconnect-*.tgz

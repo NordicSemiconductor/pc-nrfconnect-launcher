@@ -66,9 +66,60 @@ async function downloadFile(fileUrl, destinationFile, assertChecksum = true) {
 }
 
 exports.default = async () => {
+    // await downloadFile(
+    //     'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-quickstart-0.0.1.tgz',
+    //     'resources/pc-nrfconnect-quickstart-0.0.1.tgz',
+    //     false
+    // );
+
+    // await downloadFile(
+    //     'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ble-4.0.4.tgz',
+    //     'resources/pc-nrfconnect-ble-4.0.4.tgz',
+    //     false
+    // );
     await downloadFile(
-        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-quickstart-0.0.1.tgz',
-        'resources/pc-nrfconnect-quickstart-0.0.1.tgz',
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-dtm-2.1.0.tgz',
+        'resources/pc-nrfconnect-dtm-2.1.0.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-linkmonitor-2.0.3.tgz',
+        'resources/pc-nrfconnect-linkmonitor-2.0.3.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-ppk-3.5.5.tgz',
+        'resources/pc-nrfconnect-ppk-3.5.5.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-programmer-3.0.8.tgz',
+        'resources/pc-nrfconnect-programmer-3.0.8.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-rssi-1.4.4.tgz',
+        'resources/pc-nrfconnect-rssi-1.4.4.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-serial-terminal-1.0.1.tgz',
+        'resources/pc-nrfconnect-serial-terminal-1.0.1.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-toolchain-manager-1.2.2.tgz',
+        'resources/pc-nrfconnect-toolchain-manager-1.2.2.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector-preview-0.3.7.tgz',
+        'resources/pc-nrfconnect-tracecollector-preview-0.3.7.tgz',
+        false
+    );
+    await downloadFile(
+        'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-tracecollector-1.1.4.tgz',
+        'resources/pc-nrfconnect-tracecollector-1.1.4.tgz',
         false
     );
 
