@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "4.1.2-pre",
+    "version": "4.1.2-quickstart-spike",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -45,6 +45,7 @@
         "files": [
             "dist/",
             "node_modules/",
+            "resources/prefetched/",
             "resources/*.html",
             "resources/*.png",
             "resources/*.ico",

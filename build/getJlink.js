@@ -31,9 +31,10 @@ async function downloadChecksum(fileUrl) {
     return data.split(' ').shift();
 }
 
-async function downloadFile(fileUrl, destinationFile) {
+async function downloadFile(fileUrl, destinationFile, assertChecksum = true) {
     const hash = crypto.createHash('md5');
-    const expectedChecksum = await downloadChecksum(fileUrl);
+    const expectedChecksum =
+        assertChecksum && (await downloadChecksum(fileUrl));
     console.log('Downloading', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
@@ -53,7 +54,7 @@ async function downloadFile(fileUrl, destinationFile) {
         stream.on('end', () => {
             file.end();
             const calculatedChecksum = hash.digest('hex');
-            if (calculatedChecksum !== expectedChecksum) {
+            if (assertChecksum && calculatedChecksum !== expectedChecksum) {
                 fs.unlinkSync(destinationFile);
                 console.log('Calculated checksum:', calculatedChecksum);
                 console.log('Expected checksum:  ', expectedChecksum);
@@ -64,10 +65,36 @@ async function downloadFile(fileUrl, destinationFile) {
     });
 }
 
-exports.default = () =>
-    process.platform === 'win32'
-        ? downloadFile(FILE_URL, DESTINATION_FILE_PATH).catch(error => {
-              console.error('\n!!! EXCEPTION', error.message);
-              process.exit(-1);
-          })
-        : undefined;
+exports.default = async () => {
+    fs.mkdirSync('resources/prefetched', { recursive: true });
+
+    await Promise.all(
+        [
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/source.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-boilerplate.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-cellularmonitor.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-dtm.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-linkmonitor.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-npm.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-ppk.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-programmer.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-quickstart.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-serial-terminal.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-toolchain-manager.json',
+            'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/pc-nrfconnect-quickstart-0.0.1.tgz',
+        ].map(url =>
+            downloadFile(
+                url,
+                `resources/prefetched/${path.basename(url)}`,
+                false
+            )
+        )
+    );
+
+    if (process.platform === 'win32') {
+        await downloadFile(FILE_URL, DESTINATION_FILE_PATH).catch(error => {
+            console.error('\n!!! EXCEPTION', error.message);
+            process.exit(-1);
+        });
+    }
+};
