@@ -4,11 +4,29 @@
 ; For ExecShellWaitEx:
 !include 'StdUtils.nsh'
 
-!include 'x64.nsh'
+; For nsProcess:
+!addplugindir "${BUILD_RESOURCES_DIR}\plugins"
+
+!macro customInit
+  ; ===============================================================
+  ; Verify that nRF Connect for Desktop is not currently running.
+  ; ===============================================================
+
+  StrCpy $0 "nRF Connect for Desktop.exe"
+  nsProcess::_FindProcess $0
+  Pop $R0
+  ${If} $R0 = 0
+    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "nRF Connect for Desktop application is running. Click OK to close it and continue with the installation." /SD IDCANCEL IDOK stopProcess
+    Quit
+    stopProcess:
+      nsProcess::_KillProcess $0
+      Sleep 500
+  ${EndIf}
+!macroend
 
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
-!macro customInstall
+!macro customInstall  
   ; ===============================================================
   ; Installation of drivers for dfu trigger and cdc acm
   ; ===============================================================
@@ -44,25 +62,13 @@
 
   File ${JlinkInstallerResPath}
 
-  ; Check if the version exist in the registry
-  ; It's relevant to check it's running a 32-bit installer or 64-bit
-  ; because we want to make sure local machine has J-Link matching
-  ; the same platform architecture.
-  ${If} ${RunningX64}
-    ; Only check the 64-bit portion of registry
-    SetRegView 64
-  ${Else}
-    ; Only check the 32-bit portion of registry
-    SetRegView 32
-  ${EndIf}
-
   Var /GLOBAL LAST_JLINK_VERSION
   EnumRegKey $LAST_JLINK_VERSION HKCU ${JLinkRegistryRoot} 0
   ReadRegStr $3 HKCU "${JLinkRegistryRoot}\$LAST_JLINK_VERSION" "CurrentVersion"
   ${If} $3 == ""
     StrCpy $LAST_JLINK_VERSION ""
   ${EndIf}
-
+ 
   ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
     ; J-Link is older than the bundled version. Run installer.
     StrCpy $0 "$INSTDIR\${JLinkInstaller}"
