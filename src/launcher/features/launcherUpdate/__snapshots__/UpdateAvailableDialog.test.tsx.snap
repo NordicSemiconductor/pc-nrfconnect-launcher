@@ -49,7 +49,7 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
             ) of nRF Connect for Desktop is available. Would you like to update now?
           </p>
           <button
-            class="btn btn-link core-btn-link"
+            class=""
             type="button"
           >
             Click to see release notes
