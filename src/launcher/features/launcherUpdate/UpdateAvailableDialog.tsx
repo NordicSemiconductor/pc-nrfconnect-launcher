@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { ConfirmationDialog, openUrl } from 'pc-nrfconnect-shared';
+import { Button, ConfirmationDialog, openUrl } from 'pc-nrfconnect-shared';
 
 import { startUpdate } from '../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -34,13 +34,13 @@ export default () => {
                 A new version ({version}) of nRF Connect for Desktop is
                 available. Would you like to update now?
             </p>
-            <button
-                className="btn btn-link core-btn-link"
+            <Button
+                variant="link"
+                large
                 onClick={() => openUrl(releaseNotesUrl)}
-                type="button"
             >
                 Click to see release notes
-            </button>
+            </Button>
         </ConfirmationDialog>
     );
 };
