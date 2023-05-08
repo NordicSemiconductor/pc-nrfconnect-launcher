@@ -41,7 +41,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => (
                         !isWithdrawn(app) &&
                         app.latestVersion && <>, v{app.latestVersion}</>}
                     {isWithdrawn(app) && (
-                        <>, not available for download any more</>
+                        <>, not available for download anymore</>
                     )}
                 </div>
             </Col>
