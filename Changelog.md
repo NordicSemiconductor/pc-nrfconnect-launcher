@@ -6,7 +6,7 @@
 
 ### Fixed
 
--   Fixed PPK-1 regression introduced in 4.0.1.
+-   PPK-1 could not be used in nRF Connect for Desktop v4.0.1.
 
 ### Changed
 
