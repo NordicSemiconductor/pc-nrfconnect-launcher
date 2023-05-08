@@ -1,10 +1,10 @@
-## 4.1.0 - Unreleased
+## 4.1.0 - 2023-05-08
 
 ### Added
 
 -   Enable installing older app versions.
 
-## 4.0.1 - 30-03-23
+## 4.0.1 - 2023-03-30
 
 ### Fixed
 
