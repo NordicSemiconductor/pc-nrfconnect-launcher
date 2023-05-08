@@ -10,7 +10,7 @@
 
 ### Changed
 
--   Switch from 32-bit architecture to 64-bit.
+-   Windows: Switch from 32-bit architecture to 64-bit.
 
 ## 4.0.1 - 2023-03-30
 
