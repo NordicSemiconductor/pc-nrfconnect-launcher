@@ -6,7 +6,7 @@
 
 ### Fixed
 
--   PPK-1 measurements fix.
+-   Fixed PPK-1 regression introduced in 4.0.1.
 
 ### Changed
 
