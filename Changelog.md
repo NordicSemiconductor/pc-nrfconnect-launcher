@@ -4,6 +4,14 @@
 
 -   Enable installing older app versions.
 
+### Fixed
+
+-   Fixed PPK-1 regression introduced in 4.0.1.
+
+### Changed
+
+-   Switch from 32-bit architecture to 64-bit.
+
 ## 4.0.1 - 2023-03-30
 
 ### Fixed
