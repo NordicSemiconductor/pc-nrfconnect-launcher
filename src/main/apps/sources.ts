@@ -147,7 +147,10 @@ const downloadSourceJsonToFile = async (source: Source) => {
 };
 
 const readSourceJson = (source: Source) =>
-    readJsonFile<SourceJson>(getSourceJsonPath(source));
+    readJsonFile<SourceJson>(getSourceJsonPath(source), {
+        name: source.name,
+        apps: [],
+    });
 
 export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
     writeJsonFile(getSourceJsonPath(source), sourceJson);
