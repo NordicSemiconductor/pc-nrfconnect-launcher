@@ -1,10 +1,10 @@
-## Unreleased
+## 4.1.1 - 2023-05-10
 
 ### Fixed
 
 -   When nRF Connect for Desktop was never installed on a computer before, a
     misleading error message (Unable to retrieve the official source from …) was
-    shown and it was impossible to install any apps.
+    shown, and it was impossible to install any apps.
 
 ## 4.1.0 - 2023-05-08
 
