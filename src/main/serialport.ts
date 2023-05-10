@@ -132,13 +132,15 @@ export const writeToSerialport = (path: string, data: string) => {
         throw new Error(ErrorId.PORT_NOT_OPEN);
     }
 
-    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_WRITE, data);
-
     return new Promise<void>((resolve, reject) => {
-        openPort.serialPort.write(data, error => {
+        openPort.serialPort.write(data);
+
+        openPort.serialPort.drain(error => {
             if (error) {
                 reject(error);
             }
+
+            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_WRITE, data);
             resolve();
         });
     });
