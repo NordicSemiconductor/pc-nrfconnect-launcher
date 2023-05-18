@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { omit } from 'lodash';
 import path, { basename } from 'path';
 import type { AppInfo } from 'pc-nrfconnect-shared';
 
@@ -12,6 +13,7 @@ import {
     DownloadableApp,
     isWithdrawn,
     LocalApp,
+    UninstalledDownloadableApp,
 } from '../../ipc/apps';
 import { showErrorDialog } from '../../ipc/showErrorDialog';
 import { Source } from '../../ipc/sources';
@@ -43,6 +45,14 @@ const getAppSpec = (source: Source) => (appUrl: string) => ({
     source: source.name,
 });
 
+/* Motivation: If users switch back to a launcher pre 4.1, uninstalls an app
+   and then goes back to launcher 4.1, the app would still contain an
+   `installed` property in the app meta file, even though it is not installed.
+   So we remove it from the object. */
+const withoutInstalledProp = (
+    app: UninstalledDownloadableApp & { installed?: unknown }
+): UninstalledDownloadableApp => omit(app, 'installed');
+
 const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
     const appsWithErrors: AppWithError[] = [];
     const apps: DownloadableApp[] = [];
@@ -53,7 +63,7 @@ const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
         }
 
         if (!isInstalled(app)) {
-            apps.push(app);
+            apps.push(withoutInstalledProp(app));
             return;
         }
 
