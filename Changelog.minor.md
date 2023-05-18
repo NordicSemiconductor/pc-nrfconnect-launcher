@@ -9,6 +9,12 @@ release the new version.
 
 ## 4.1.2-pre
 
+### Changed
+
+-   #834: Send the IPC message `serialport:on-write` only after something was
+    written to a serial port.
+-   #836: Bumped device-lib-js to 0.6.9.
+
 ### Fixed
 
 -   #835: Wrong state for when users jumped between launcher versions.
