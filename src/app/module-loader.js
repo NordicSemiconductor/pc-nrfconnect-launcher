@@ -33,7 +33,4 @@ hostedModules['@nordicsemiconductor/nrf-device-lib-js'] =
     require('./device-lib-js').default;
 hostedModules['pc-nrfconnect-shared'] = require('pc-nrfconnect-shared');
 hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
 hostedModules['react'] = require('react');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
