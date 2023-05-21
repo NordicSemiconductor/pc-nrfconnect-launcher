@@ -37,3 +37,4 @@ hostedModules['react-redux'] = require('react-redux');
 hostedModules['react'] = require('react');
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
+hostedModules['systeminformation'] = require('systeminformation');
