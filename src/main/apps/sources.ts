@@ -25,7 +25,7 @@ type WithdrawnJson = UrlString[]; // FIXME later: Move this to shared
 
 const officialSource = {
     name: OFFICIAL,
-    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
+    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.jso',
 };
 
 const convertToOldSourceJsonFormat = (allSources: Source[]) =>
@@ -138,7 +138,7 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
 
 const downloadSourceJsonToFile = async (source: Source) => {
     const sourceJson = await downloadSourceJson(source.url);
-    writeJsonFile(getSourceJsonPath(source), sourceJson);
+    writeJsonFile(`/x/${getSourceJsonPath(source)}`, sourceJson);
 
     return sourceJson;
 };
