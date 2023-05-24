@@ -6,6 +6,7 @@
 
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import { SourceWithError } from '../../../ipc/apps';
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import {
     addSource as addSourceInMain,
@@ -90,12 +91,12 @@ const showProblemWithExtraSource =
     };
 
 export const handleSourcesWithErrors =
-    (sources: Source[]) => (dispatch: AppDispatch) => {
-        sources.forEach(source => {
+    (sources: SourceWithError[]) => (dispatch: AppDispatch) => {
+        sources.forEach(({ source, reason }) => {
             if (source.name === OFFICIAL) {
-                dispatch(showProblemWithOfficialSource(source));
+                dispatch(showProblemWithOfficialSource(source, reason));
             } else {
-                dispatch(showProblemWithExtraSource(source));
+                dispatch(showProblemWithExtraSource(source, reason));
             }
         });
     };
