@@ -104,6 +104,7 @@ export const getDownloadableApps = () => {
             apps.push(...result.apps);
             appsWithErrors.push(...result.appsWithErrors);
         } catch (error) {
+            console.log(error);
             sourcesWithErrors.push(source);
         }
     });

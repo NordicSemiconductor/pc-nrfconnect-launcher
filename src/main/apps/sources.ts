@@ -230,6 +230,7 @@ export const downloadAllSources = async () => {
 
                 successful.push(source);
             } catch (error) {
+                console.log(error);
                 erroneos.push(source);
             }
         })
