@@ -9,13 +9,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { App, isInstalled } from '../../../ipc/apps';
 import {
-    type ShownStates,
     getHiddenSources as getPersistedHiddenSources,
     getNameFilter as getPersistedNameFilter,
     getShownStates as getPersistedShownStates,
     setHiddenSources as setPersistedHiddenSources,
     setNameFilter as setPersistedNameFilter,
     setShownStates as setPersistedShownStates,
+    type ShownStates,
 } from '../../../ipc/persistedStore';
 import type { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
