@@ -14,6 +14,12 @@ release the new version.
 -   #834: Send the IPC message `serialport:on-write` only after something was
     written to a serial port.
 -   #836: Bumped device-lib-js to 0.6.9.
+-   #840: Error dialogs now make it easier to understand if there are multiple
+    errors and also can show technical details when a source fails to load.
+
+### Removed
+
+-   #839: Device-lib proxies.
 
 ### Fixed
 

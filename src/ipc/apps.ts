@@ -109,11 +109,13 @@ const channel = {
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
 
+export type SourceWithError = { source: Source; reason?: string };
+
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
     apps: DownloadableApp[];
     appsWithErrors: AppWithError[];
-    sourcesWithErrors: Source[];
+    sourcesWithErrors: SourceWithError[];
 };
 
 export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
@@ -135,7 +137,7 @@ export const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
 export type GetDownloadableAppsResult = {
     apps: DownloadableApp[];
     appsWithErrors: AppWithError[];
-    sourcesWithErrors: Source[];
+    sourcesWithErrors: SourceWithError[];
 };
 
 type GetDownloadableApps = () => GetDownloadableAppsResult;
