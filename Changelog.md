@@ -1,3 +1,9 @@
+## 4.1.2 - unreleased
+
+### Changed
+
+-   Minor fixes and improvements.
+
 ## 4.1.1 - 2023-05-10
 
 ### Fixed
