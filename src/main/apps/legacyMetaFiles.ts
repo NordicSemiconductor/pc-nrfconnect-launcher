@@ -48,7 +48,7 @@ const legacyMetaFilesExist = (source: Source) =>
 const getSource = (appsJson: AppsJson) => appsJson._source ?? 'official'; // eslint-disable-line no-underscore-dangle
 
 const appEntries = (appsJson: AppsJson): [string, LegacyAppInfo][] =>
-    Object.entries(appsJson).filter(([key]) => key !== '_source');
+    Object.entries(appsJson).filter(([key]) => !key.startsWith('_'));
 
 export const convertAppsJsonToSourceJson = (appsJson: AppsJson) => ({
     name: getSource(appsJson),
