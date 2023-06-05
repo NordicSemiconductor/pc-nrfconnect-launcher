@@ -13,11 +13,13 @@ import {
     DownloadableApp,
     isWithdrawn,
     LocalApp,
+    SourceWithError,
     UninstalledDownloadableApp,
 } from '../../ipc/apps';
 import { showErrorDialog } from '../../ipc/showErrorDialog';
 import { Source } from '../../ipc/sources';
 import { getAppsLocalDir } from '../config';
+import describeError from '../describeError';
 import { listDirectories } from '../fileUtil';
 import { downloadToJson } from '../net';
 import {
@@ -83,7 +85,7 @@ const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
 };
 
 export const getDownloadableApps = () => {
-    const sourcesWithErrors: Source[] = [];
+    const sourcesWithErrors: SourceWithError[] = [];
     const apps: DownloadableApp[] = [];
     const appsWithErrors: AppWithError[] = [];
 
@@ -104,7 +106,11 @@ export const getDownloadableApps = () => {
             apps.push(...result.apps);
             appsWithErrors.push(...result.appsWithErrors);
         } catch (error) {
-            sourcesWithErrors.push(source);
+            sourcesWithErrors.push({
+                source,
+                reason:
+                    error instanceof Error ? error.stack : describeError(error),
+            });
         }
     });
 

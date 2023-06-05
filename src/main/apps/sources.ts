@@ -9,6 +9,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
+import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import { getAppsRootDir, getConfig, getNodeModulesDir } from '../config';
 import describeError from '../describeError';
@@ -209,7 +210,7 @@ export const newWithdrawnJson = (
 
 export const downloadAllSources = async () => {
     const successful: Source[] = [];
-    const erroneos: Source[] = [];
+    const erroneos: SourceWithError[] = [];
 
     await Promise.allSettled(
         sources.map(async source => {
@@ -230,7 +231,13 @@ export const downloadAllSources = async () => {
 
                 successful.push(source);
             } catch (error) {
-                erroneos.push(source);
+                erroneos.push({
+                    source,
+                    reason:
+                        error instanceof Error
+                            ? error.stack
+                            : describeError(error),
+                });
             }
         })
     );

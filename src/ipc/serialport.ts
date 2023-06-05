@@ -25,8 +25,7 @@ const channel = {
     close: SERIALPORT_CHANNEL.CLOSE,
     write: SERIALPORT_CHANNEL.WRITE,
     isOpen: SERIALPORT_CHANNEL.IS_OPEN,
-    // @ts-expect-error --Will be included in the next version of shared.
-    getOptions: SERIALPORT_CHANNEL.GET_OPTIONS ?? 'serialport:get-options',
+    getOptions: SERIALPORT_CHANNEL.GET_OPTIONS,
     update: SERIALPORT_CHANNEL.UPDATE,
     set: SERIALPORT_CHANNEL.SET,
 };

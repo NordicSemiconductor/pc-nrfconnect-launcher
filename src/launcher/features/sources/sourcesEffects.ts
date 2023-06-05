@@ -6,6 +6,7 @@
 
 import { ErrorDialogActions } from 'pc-nrfconnect-shared';
 
+import { SourceWithError } from '../../../ipc/apps';
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import {
     addSource as addSourceInMain,
@@ -61,15 +62,17 @@ export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
         );
 };
 
-const showProblemWithOfficialSource = (source: Source) =>
+const showProblemWithOfficialSource = (source: Source, reason?: string) =>
     ErrorDialogActions.showDialog(
         `Unable to retrieve the official source from ${source.url}.\n\n` +
             'This is usually caused by a missing internet connection. ' +
-            'Without retrieving that file, official apps cannot be installed. '
+            'Without retrieving that file, official apps cannot be installed. ',
+        undefined,
+        reason
     );
 
 const showProblemWithExtraSource =
-    (source: Source) => (dispatch: AppDispatch) => {
+    (source: Source, reason?: string) => (dispatch: AppDispatch) => {
         dispatch(
             ErrorDialogActions.showDialog(
                 `Unable to retrieve the source “${source.name}” ` +
@@ -84,18 +87,19 @@ const showProblemWithExtraSource =
                     Cancel: () => {
                         dispatch(ErrorDialogActions.hideDialog());
                     },
-                }
+                },
+                reason
             )
         );
     };
 
 export const handleSourcesWithErrors =
-    (sources: Source[]) => (dispatch: AppDispatch) => {
-        sources.forEach(source => {
+    (sources: SourceWithError[]) => (dispatch: AppDispatch) => {
+        sources.forEach(({ source, reason }) => {
             if (source.name === OFFICIAL) {
-                dispatch(showProblemWithOfficialSource(source));
+                dispatch(showProblemWithOfficialSource(source, reason));
             } else {
-                dispatch(showProblemWithExtraSource(source));
+                dispatch(showProblemWithExtraSource(source, reason));
             }
         });
     };
