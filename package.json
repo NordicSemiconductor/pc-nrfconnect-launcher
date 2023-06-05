@@ -102,7 +102,7 @@
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v52",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v54",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
