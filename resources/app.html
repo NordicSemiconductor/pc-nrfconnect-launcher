@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8" />
         <style>
@@ -16,10 +17,12 @@
                 border-left: 8px solid #0080c0;
                 animation: rotator 2s infinite linear;
             }
+
             @keyframes rotator {
                 0% {
                     transform: rotate(0deg);
                 }
+
                 100% {
                     transform: rotate(360deg);
                 }
@@ -36,7 +39,15 @@
             const params = new URL(window.location).searchParams;
             const appPath = params.get('appPath');
 
-            document.write("<base href='" + appPath + "/dist/' />");
+            const path = require('path');
+            document.write(
+                "<base href='" +
+                appPath
+                    .split(path.sep)
+                    .map(encodeURIComponent)
+                    .join(path.sep) +
+                "/dist/' />"
+            );
             document.write('<link rel="stylesheet" href="bootstrap.css" type="text/css" />');
             document.write('<link rel="stylesheet" href="bundle.css" type="text/css" />');
         </script>
