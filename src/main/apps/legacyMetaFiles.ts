@@ -47,8 +47,12 @@ const legacyMetaFilesExist = (source: Source) =>
 
 const getSource = (appsJson: AppsJson) => appsJson._source ?? 'official'; // eslint-disable-line no-underscore-dangle
 
-const appEntries = (appsJson: AppsJson): [string, LegacyAppInfo][] =>
-    Object.entries(appsJson).filter(([key]) => !key.startsWith('_'));
+const isAppEntry = (
+    appInfo: [string, LegacyAppInfo]
+): appInfo is [AppName, LegacyAppInfo] => !appInfo[0].startsWith('_');
+
+const appEntries = (appsJson: AppsJson) =>
+    Object.entries(appsJson).filter(isAppEntry);
 
 export const convertAppsJsonToSourceJson = (appsJson: AppsJson) => ({
     name: getSource(appsJson),
@@ -149,12 +153,7 @@ const migrateLegacyMetaFiles = (source: Source) => {
         );
 
         writeAppInfo(
-            createNewAppInfo(
-                appName as AppName,
-                appsJson,
-                updatesJson,
-                packageJson
-            ),
+            createNewAppInfo(appName, appsJson, updatesJson, packageJson),
             source
         );
     });
