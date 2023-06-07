@@ -20,7 +20,10 @@ export default () => {
         hotKey: ['mod+e', 'mod+f', 'mod+l'],
         title: 'Focus search field',
         isGlobal: false,
-        action: () => searchFieldRef.current?.focus(),
+        action: () => {
+            searchFieldRef.current?.focus();
+            searchFieldRef.current?.select();
+        },
     });
 
     return (
@@ -33,6 +36,7 @@ export default () => {
                 const nameFilter = event.target.value;
                 dispatch(setNameFilter(nameFilter));
             }}
+            onClick={() => searchFieldRef.current?.select()}
         />
     );
 };
