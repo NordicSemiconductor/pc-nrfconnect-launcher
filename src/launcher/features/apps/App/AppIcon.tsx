@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import path from 'path';
 
 import { App, isInstalled } from '../../../../ipc/apps';
 import appCompatibilityWarning from '../../../util/appCompatibilityWarning';
@@ -31,7 +32,14 @@ const appBadge = (app: App) => {
 const AppIcon: React.FC<{ app: App }> = ({ app }) => (
     <div className="core-app-icon">
         {app.iconPath ? (
-            <img src={app.iconPath} alt="" draggable={false} />
+            <img
+                src={app.iconPath
+                    .split(path.sep)
+                    .map(encodeURIComponent)
+                    .join(path.sep)}
+                alt=""
+                draggable={false}
+            />
         ) : (
             <div className="icon-replacement" />
         )}
