@@ -147,6 +147,10 @@ const migrateLegacyMetaFiles = (source: Source) => {
     writeSourceJson(source, convertAppsJsonToSourceJson(appsJson));
 
     appEntries(appsJson).forEach(([appName]) => {
+        if (updatesJson[appName] == null) {
+            return;
+        }
+
         const packageJson = readJsonFile<PackageJson | null>(
             path.join(getNodeModulesDir(source.name), appName, 'package.json'),
             null

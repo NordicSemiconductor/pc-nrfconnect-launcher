@@ -25,6 +25,7 @@ import { downloadToJson } from '../net';
 import {
     addDownloadAppData,
     addInstalledAppData,
+    appInfoExists,
     getLocalApp,
     installedAppPath,
     isInstalled,
@@ -99,6 +100,7 @@ export const getDownloadableApps = () => {
             const result = addInstalledAppDatas(
                 getAllAppUrls(source)
                     .map(getAppSpec(source))
+                    .filter(appInfoExists)
                     .map(readAppInfo)
                     .map(addDownloadAppData(source.name))
             );
