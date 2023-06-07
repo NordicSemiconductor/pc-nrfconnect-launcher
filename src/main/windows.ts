@@ -105,9 +105,9 @@ export const openAppWindow = (
     const appWindow = createWindow(
         {
             title: `${app.displayName || app.name} v${app.currentVersion}`,
-            url: `file://${getElectronResourcesDir()}/app.html?appPath=${
+            url: `file://${getElectronResourcesDir()}/app.html?appPath=${encodeURIComponent(
                 app.installed.path
-            }`,
+            )}`,
             icon: getAppIcon(app),
             x,
             y,
