@@ -265,3 +265,16 @@ body {
 .me_32px {
     margin-right: 32px;
 }
+
+.app-entry-highlight {
+    animation: appWasInstalled 3s;
+}
+
+@keyframes appWasInstalled {
+    0% {
+        background-color: #c8e6c9;
+    }
+    100% {
+        background-color: white;
+    }
+}
