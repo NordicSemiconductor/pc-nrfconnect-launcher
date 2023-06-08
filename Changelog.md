@@ -1,14 +1,12 @@
 ## 4.1.2 - unreleased
 
-### Changed
-
--   Minor fixes and improvements.
-
 ### Fixed
 
 -   Having special characters (such as `&`) in the path created errors when
     launching apps. Usually happened when these characters were part of the
     username.
+-   Updating nRF Connect for Desktop from 3.10 or older directly to 4.1 led to
+    an error message (Unable to retrieve the official source from …).
 
 ## 4.1.1 - 2023-05-10
 

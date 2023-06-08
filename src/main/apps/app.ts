@@ -50,6 +50,9 @@ export const readAppInfoFile = (appSpec: AppSpec) =>
 export const readAppInfoFileIfExists = (appSpec: AppSpec) =>
     readJsonFile<AppInfo | null>(appInfoFile(appSpec), null);
 
+export const appInfoExists = (appSpec: AppSpec) =>
+    fs.existsSync(appInfoFile(appSpec));
+
 export const readAppInfo = (appSpec: AppSpec) => {
     const source = getSource(appSpec.source);
     if (source == null) {
