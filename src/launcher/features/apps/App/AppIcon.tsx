@@ -35,7 +35,12 @@ const AppIcon: React.FC<{ app: App }> = ({ app }) => (
             <img
                 src={app.iconPath
                     .split(path.sep)
-                    .map(encodeURIComponent)
+                    .map((val, index) =>
+                        // Don't encode Windows `<drive>:`
+                        process.platform === 'win32' && index === 0
+                            ? val
+                            : encodeURIComponent(val)
+                    )
                     .join(path.sep)}
                 alt=""
                 draggable={false}
