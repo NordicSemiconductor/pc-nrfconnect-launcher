@@ -16,6 +16,7 @@ release the new version.
 -   #840: Error dialogs now make it easier to understand if there are multiple
     errors and also can show technical details when a source fails to load.
 -   #841: Bumped device-lib-js to 0.6.11.
+-   #844: Select text on search field focus.
 
 ### Removed
 
