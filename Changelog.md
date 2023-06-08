@@ -4,6 +4,12 @@
 
 -   Minor fixes and improvements.
 
+### Fixed
+
+-   Having special characters (such as `&`) in the path created errors when
+    launching apps. Usually happened when these characters were part of the
+    username.
+
 ## 4.1.1 - 2023-05-10
 
 ### Fixed
