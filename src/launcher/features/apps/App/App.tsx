@@ -34,6 +34,7 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             isInstalled(app) &&
             itemRef.current
         ) {
+            itemRef.current.scrollIntoView();
             itemRef.current.classList.add('app-entry-highlight');
             setTimeout(
                 () => itemRef.current?.classList.remove('app-entry-highlight'),
