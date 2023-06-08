@@ -25,7 +25,7 @@ exports[`AppList should disable buttons and display "Installing..." button text 
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/uninstalled/icon.png"
+                  src="uninstalled.png"
                 />
               </div>
             </div>
@@ -123,7 +123,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/updatable/icon.png"
+                  src="updatable.png"
                 />
               </div>
             </div>
@@ -232,7 +232,7 @@ exports[`AppList should disable buttons while removing an app 1`] = `
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/installed/icon.png"
+                  src="installed.png"
                 />
               </div>
             </div>
@@ -330,7 +330,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/installed/icon.png"
+                  src="installed.png"
                 />
               </div>
             </div>
@@ -398,7 +398,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/updatable/icon.png"
+                  src="updatable.png"
                 />
               </div>
             </div>
@@ -476,7 +476,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/dummy/icon.png"
+                  src="dummy.png"
                 />
               </div>
             </div>
@@ -544,7 +544,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
                 <img
                   alt=""
                   draggable="false"
-                  src="/path/to/uninstalled/icon.png"
+                  src="uninstalled.png"
                 />
               </div>
             </div>
