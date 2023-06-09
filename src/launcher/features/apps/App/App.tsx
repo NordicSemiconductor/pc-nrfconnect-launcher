@@ -51,7 +51,12 @@ const useHighlightOnInstallation = (app: DisplayedApp) => {
             if (!timeout) return;
             clearTimeout(timeout);
         };
-    }, [app, appIsInstalled]);
+
+        // While we won't have the newest app reference, it will never be undefined and we only read the .installed property
+        // This also makes it so that this useEffect is only triggered once instead of multiple times which would make the cleanup function lead to problems with styles
+        // @ts-expect-error Typescript can't find this property somehow
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [app.installed]);
 
     return itemRef;
 };
