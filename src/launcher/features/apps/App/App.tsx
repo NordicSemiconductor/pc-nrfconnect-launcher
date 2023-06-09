@@ -40,8 +40,8 @@ const App: React.FC<{ app: DisplayedApp }> = ({ app }) => {
                 () => itemRef.current?.classList.remove('app-entry-highlight'),
                 3000
             );
-            installedStatusRef.current = isInstalled(app);
         }
+        installedStatusRef.current = isInstalled(app);
     }, [app]);
 
     return (
