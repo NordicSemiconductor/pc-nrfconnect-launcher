@@ -26,7 +26,7 @@ import UpdateApp from './UpdateApp';
 
 import styles from './app.module.scss';
 
-const App = ({ app }: { app: DisplayedApp }) => {
+const useHighlightOnInstallation = (app: DisplayedApp) => {
     const itemRef = React.useRef<HTMLAnchorElement>(null);
     const [appIsInstalled, setAppIsInstalled] = useState<boolean>(
         isInstalled(app)
@@ -51,6 +51,12 @@ const App = ({ app }: { app: DisplayedApp }) => {
             clearTimeout(timeout);
         };
     }, [app, appIsInstalled]);
+
+    return itemRef;
+};
+
+const App = ({ app }: { app: DisplayedApp }) => {
+    const itemRef = useHighlightOnInstallation(app);
 
     return (
         <ListGroup.Item ref={itemRef}>
