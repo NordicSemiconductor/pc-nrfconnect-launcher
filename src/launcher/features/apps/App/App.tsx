@@ -27,6 +27,7 @@ import UpdateApp from './UpdateApp';
 import styles from './app.module.scss';
 
 const useHighlightOnInstallation = (app: DisplayedApp) => {
+    // The bootstrap component ListGroup expects an anchor element ref
     const itemRef = useRef<HTMLAnchorElement>(null);
     const appIsInstalled = useRef<boolean>(isInstalled(app));
 
