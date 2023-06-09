@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Col from 'react-bootstrap/Col';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -27,16 +27,14 @@ import UpdateApp from './UpdateApp';
 import styles from './app.module.scss';
 
 const useHighlightOnInstallation = (app: DisplayedApp) => {
-    const itemRef = React.useRef<HTMLAnchorElement>(null);
-    const [appIsInstalled, setAppIsInstalled] = useState<boolean>(
-        isInstalled(app)
-    );
+    const itemRef = useRef<HTMLAnchorElement>(null);
+    const appIsInstalled = useRef<boolean>(isInstalled(app));
 
     useEffect(() => {
         if (!itemRef.current) return;
 
         let timeout: NodeJS.Timeout;
-        if (!appIsInstalled && isInstalled(app)) {
+        if (!appIsInstalled.current && isInstalled(app)) {
             itemRef.current.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
@@ -47,7 +45,7 @@ const useHighlightOnInstallation = (app: DisplayedApp) => {
                 3000
             );
         }
-        setAppIsInstalled(isInstalled(app));
+        appIsInstalled.current = isInstalled(app);
 
         return () => {
             if (!timeout) return;
