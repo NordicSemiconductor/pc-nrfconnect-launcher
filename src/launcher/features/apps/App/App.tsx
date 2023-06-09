@@ -33,17 +33,23 @@ const App = ({ app }: { app: DisplayedApp }) => {
     useEffect(() => {
         if (!itemRef.current) return;
 
+        let timeout: NodeJS.Timeout;
         if (!appIsInstalled && isInstalled(app)) {
             itemRef.current.scrollIntoView();
             itemRef.current.classList.add('app-entry-highlight');
-            setTimeout(
+            timeout = setTimeout(
                 () => itemRef.current?.classList.remove('app-entry-highlight'),
                 3000
             );
         }
         setAppIsInstalled(isInstalled(app));
 
+        return () => {
+            if (!timeout) return;
+            clearTimeout(timeout);
+        };
     }, [app, appIsInstalled]);
+
     return (
         <ListGroup.Item ref={itemRef}>
             <Row noGutters className="py-1">
