@@ -15,7 +15,7 @@ release the new version.
     written to a serial port.
 -   #840: Error dialogs now make it easier to understand if there are multiple
     errors and also can show technical details when a source fails to load.
--   #841: Bumped device-lib-js to 0.6.12.
+-   #848: Bumped device-lib-js to 0.6.12.
 
 ### Removed
 
