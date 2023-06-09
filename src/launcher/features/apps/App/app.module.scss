@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2019 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
+.highlight {
+    animation: appWasInstalled 3s;
+}
+
+@keyframes appWasInstalled {
+    0% {
+        background-color: #c8e6c9;
+    }
+    100% {
+        background-color: white;
+    }
+}

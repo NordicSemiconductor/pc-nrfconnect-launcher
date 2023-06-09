@@ -24,6 +24,8 @@ import ShowReleaseNotes from './ShowReleaseNotes';
 import UninstallApp from './UninstallApp';
 import UpdateApp from './UpdateApp';
 
+import styles from './app.module.scss';
+
 const App = ({ app }: { app: DisplayedApp }) => {
     const itemRef = React.useRef<HTMLAnchorElement>(null);
     const [appIsInstalled, setAppIsInstalled] = useState<boolean>(
@@ -36,9 +38,9 @@ const App = ({ app }: { app: DisplayedApp }) => {
         let timeout: NodeJS.Timeout;
         if (!appIsInstalled && isInstalled(app)) {
             itemRef.current.scrollIntoView();
-            itemRef.current.classList.add('app-entry-highlight');
+            itemRef.current.classList.add(styles.highlight);
             timeout = setTimeout(
-                () => itemRef.current?.classList.remove('app-entry-highlight'),
+                () => itemRef.current?.classList.remove(styles.highlight),
                 3000
             );
         }
