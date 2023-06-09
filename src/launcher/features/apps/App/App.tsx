@@ -24,7 +24,7 @@ import ShowReleaseNotes from './ShowReleaseNotes';
 import UninstallApp from './UninstallApp';
 import UpdateApp from './UpdateApp';
 
-const App: React.FC<{ app: DisplayedApp }> = ({ app }) => {
+const App = ({ app }: { app: DisplayedApp }) => {
     const itemRef = React.useRef<HTMLAnchorElement>(null);
     const installedStatusRef = React.useRef<boolean>(isInstalled(app));
 
