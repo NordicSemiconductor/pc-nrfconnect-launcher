@@ -1,5 +1,10 @@
 ## 4.1.2 - 2023-06-15
 
+### Added
+
+-   Successfully installing an app will focus it and highlight it for
+    visibility.
+
 ### Fixed
 
 -   Having special characters (such as `&`) in the path created errors when
