@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Col from 'react-bootstrap/Col';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -26,14 +26,14 @@ import UpdateApp from './UpdateApp';
 
 const App = ({ app }: { app: DisplayedApp }) => {
     const itemRef = React.useRef<HTMLAnchorElement>(null);
-    const installedStatusRef = React.useRef<boolean>(isInstalled(app));
+    const [appIsInstalled, setAppIsInstalled] = useState<boolean>(
+        isInstalled(app)
+    );
 
     useEffect(() => {
-        if (
-            installedStatusRef.current === false &&
-            isInstalled(app) &&
-            itemRef.current
-        ) {
+        if (!itemRef.current) return;
+
+        if (!appIsInstalled && isInstalled(app)) {
             itemRef.current.scrollIntoView();
             itemRef.current.classList.add('app-entry-highlight');
             setTimeout(
@@ -41,9 +41,9 @@ const App = ({ app }: { app: DisplayedApp }) => {
                 3000
             );
         }
-        installedStatusRef.current = isInstalled(app);
-    }, [app]);
+        setAppIsInstalled(isInstalled(app));
 
+    }, [app, appIsInstalled]);
     return (
         <ListGroup.Item ref={itemRef}>
             <Row noGutters className="py-1">
