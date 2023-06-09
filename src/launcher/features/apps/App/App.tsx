@@ -37,7 +37,10 @@ const useHighlightOnInstallation = (app: DisplayedApp) => {
 
         let timeout: NodeJS.Timeout;
         if (!appIsInstalled && isInstalled(app)) {
-            itemRef.current.scrollIntoView();
+            itemRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
             itemRef.current.classList.add(styles.highlight);
             timeout = setTimeout(
                 () => itemRef.current?.classList.remove(styles.highlight),
