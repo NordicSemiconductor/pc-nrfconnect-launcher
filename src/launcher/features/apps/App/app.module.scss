@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+@import 'pc-nrfconnect-shared/styles';
+
 .highlight {
     animation: appWasInstalled 3s;
 }
 
 @keyframes appWasInstalled {
     0% {
-        background-color: #c8e6c9;
+        background-color: $primary;
     }
     100% {
         background-color: white;
