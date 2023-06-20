@@ -1,3 +1,10 @@
+## Unreleased
+
+### Added
+
+-   Successfully installing an app will focus it and highlight it for
+    visibility.
+
 ## 4.1.2 - 2023-06-15
 
 ### Fixed
