@@ -131,6 +131,7 @@ export const addInstalledAppData = (
 
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
+        html: packageJson.html,
     };
 };
 
