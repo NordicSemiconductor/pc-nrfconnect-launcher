@@ -11,19 +11,24 @@ import type { AuthInfo } from 'electron';
 import type { RootState } from '../../store';
 
 export type State = {
-    username: string;
-    isLoginDialogVisible: boolean;
-    isErrorDialogVisible: boolean;
-    loginDialogMessage?: string;
-    requestId?: string;
+    loginRequest: {
+        username: string;
+        host: string;
+        requestId?: string;
+    };
+    loginError: {
+        isDialogVisible: boolean;
+    };
 };
 
 const initialState: State = {
-    username: '',
-    isLoginDialogVisible: false,
-    isErrorDialogVisible: false,
-    loginDialogMessage: undefined,
-    requestId: undefined,
+    loginRequest: {
+        username: '',
+        host: '',
+    },
+    loginError: {
+        isDialogVisible: false,
+    },
 };
 
 const slice = createSlice({
@@ -32,33 +37,27 @@ const slice = createSlice({
     reducers: {
         loginRequestedByServer(
             state,
-            action: PayloadAction<{ requestId: string; authInfo: AuthInfo }>
+            {
+                payload: { authInfo, requestId },
+            }: PayloadAction<{ requestId: string; authInfo: AuthInfo }>
         ) {
-            const proxyString = `${action.payload.authInfo.host}${
-                !action.payload.authInfo.realm
-                    ? ''
-                    : ` (realm: ${action.payload.authInfo.realm})`
-            }`;
-
-            state.requestId = action.payload.requestId;
-            state.loginDialogMessage =
-                `The proxy server ${proxyString} requires authentication. ` +
-                'Please enter username and password';
-            state.isLoginDialogVisible = true;
+            state.loginRequest.requestId = requestId;
+            state.loginRequest.host = authInfo.realm
+                ? `${authInfo.host} (realm: ${authInfo.realm})`
+                : authInfo.host;
         },
         loginCancelledByUser(state) {
-            state.isLoginDialogVisible = false;
-            state.isErrorDialogVisible = true;
+            state.loginRequest.requestId = undefined;
+            state.loginError.isDialogVisible = true;
         },
-        loginRequestSent(state, { payload: username }: PayloadAction<string>) {
-            state.isLoginDialogVisible = false;
-            state.username = username;
+        loginRequestSent(state) {
+            state.loginRequest.requestId = undefined;
         },
         changeUserName(state, { payload: username }: PayloadAction<string>) {
-            state.username = username;
+            state.loginRequest.username = username;
         },
         loginErrorDialogClosed(state) {
-            state.isErrorDialogVisible = false;
+            state.loginError.isDialogVisible = false;
         },
     },
 });
@@ -73,4 +72,10 @@ export const {
     loginErrorDialogClosed,
 } = slice.actions;
 
-export const getProxyLogin = (state: RootState) => state.proxyLogin;
+export const getProxyLoginRequest = (state: RootState) => ({
+    ...state.proxyLogin.loginRequest,
+    isVisible: state.proxyLogin.loginRequest.requestId != null,
+});
+
+export const getIsErrorVisible = (state: RootState) =>
+    state.proxyLogin.loginError.isDialogVisible;

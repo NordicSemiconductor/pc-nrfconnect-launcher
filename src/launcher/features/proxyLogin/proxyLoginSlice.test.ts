@@ -6,11 +6,15 @@
 
 import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
+import { RootState } from '../../store';
 import reducer, {
+    getIsErrorVisible,
+    getProxyLoginRequest,
     loginCancelledByUser,
     loginErrorDialogClosed,
     loginRequestedByServer,
     loginRequestSent,
+    State,
 } from './proxyLoginSlice';
 
 const authInfo = {
@@ -21,47 +25,62 @@ const authInfo = {
     realm: 'test realm',
 };
 
-describe('proxyReducer', () => {
-    it('should show login dialog with message when loginRequestedByServer has been dispatched', () => {
+const asRootState = (proxyLogin: State) => ({ proxyLogin } as RootState);
+
+describe('proxy login', () => {
+    it('shows login dialog when requested', () => {
         const state = dispatchTo(reducer, [
             loginRequestedByServer({ requestId: 'test ID', authInfo }),
         ]);
-        expect(state.isLoginDialogVisible).toEqual(true);
-        expect(state.loginDialogMessage).toEqual(
-            'The proxy server test host (realm: test realm) requires authentication. Please enter username and password'
-        );
+
+        const { isVisible, host } = getProxyLoginRequest(asRootState(state));
+
+        expect(isVisible).toBe(true);
+        expect(host).toBe('test host (realm: test realm)');
     });
 
-    it('should hide login dialog when loginCancelledByUserAction has been dispatched', () => {
-        const state = dispatchTo(reducer, [
-            loginRequestedByServer({ requestId: 'test ID', authInfo }),
-            loginCancelledByUser(),
-        ]);
-        expect(state.isLoginDialogVisible).toEqual(false);
-    });
-
-    it('should show login error dialog when loginCancelledByUserAction has been dispatched', () => {
+    it('hides login dialog when cancelled', () => {
         const state = dispatchTo(reducer, [
             loginRequestedByServer({ requestId: 'test ID', authInfo }),
             loginCancelledByUser(),
         ]);
-        expect(state.isErrorDialogVisible).toEqual(true);
+
+        const { isVisible } = getProxyLoginRequest(asRootState(state));
+
+        expect(isVisible).toBe(false);
     });
 
-    it('should hide login error dialog when loginErrorDialogClosedAction has been dispatched', () => {
+    it('shows error dialog when login was cancelled', () => {
+        const state = dispatchTo(reducer, [
+            loginRequestedByServer({ requestId: 'test ID', authInfo }),
+            loginCancelledByUser(),
+        ]);
+
+        const isVisible = getIsErrorVisible(asRootState(state));
+
+        expect(isVisible).toBe(true);
+    });
+
+    it('hides login error dialog when it is closed', () => {
         const state = dispatchTo(reducer, [
             loginRequestedByServer({ requestId: 'test ID', authInfo }),
             loginCancelledByUser(),
             loginErrorDialogClosed(),
         ]);
-        expect(state.isErrorDialogVisible).toEqual(false);
+
+        const isVisible = getIsErrorVisible(asRootState(state));
+
+        expect(isVisible).toBe(false);
     });
 
-    it('should hide login dialog when loginRequestSentAction has been dispatched', () => {
+    it('hides login dialog when login is sent', () => {
         const state = dispatchTo(reducer, [
             loginRequestedByServer({ requestId: 'test ID', authInfo }),
-            loginRequestSent('test username'),
+            loginRequestSent(),
         ]);
-        expect(state.isLoginDialogVisible).toEqual(false);
+
+        const { isVisible } = getProxyLoginRequest(asRootState(state));
+
+        expect(isVisible).toBe(false);
     });
 });

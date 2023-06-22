@@ -59,7 +59,7 @@ describe('ProxyLoginDialog', () => {
         expect(
             render(<ProxyLoginDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
-                loginRequestSent('the username'),
+                loginRequestSent(),
             ]).baseElement
         ).toMatchSnapshot();
     });
