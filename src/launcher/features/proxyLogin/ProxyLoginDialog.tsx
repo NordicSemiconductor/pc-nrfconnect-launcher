@@ -23,19 +23,21 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const [password, setPassword] = useState('');
 
-    const { isVisible, username, host, requestId } =
+    const { isVisible, username, host, requestIds } =
         useLauncherSelector(getProxyLoginRequest);
 
     const cancel = useCallback(() => {
-        answerProxyLoginRequest(requestId!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        requestIds.forEach(id => answerProxyLoginRequest(id));
         dispatch(loginCancelledByUser());
-    }, [dispatch, requestId]);
+    }, [dispatch, requestIds]);
 
     const submit = useCallback(() => {
-        answerProxyLoginRequest(requestId!, username, password); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        requestIds.forEach(id =>
+            answerProxyLoginRequest(id, username, password)
+        );
         dispatch(loginRequestSent());
         setPassword('');
-    }, [dispatch, password, requestId, username]);
+    }, [dispatch, password, requestIds, username]);
 
     const inputIsValid = useMemo(
         () => username !== '' && password !== '',

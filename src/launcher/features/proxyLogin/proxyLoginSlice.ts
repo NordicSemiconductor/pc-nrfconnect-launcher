@@ -14,7 +14,7 @@ export type State = {
     loginRequest: {
         username: string;
         host: string;
-        requestId?: string;
+        requestIds: string[];
     };
     loginError: {
         isDialogVisible: boolean;
@@ -25,6 +25,7 @@ const initialState: State = {
     loginRequest: {
         username: '',
         host: '',
+        requestIds: [],
     },
     loginError: {
         isDialogVisible: false,
@@ -41,17 +42,17 @@ const slice = createSlice({
                 payload: { authInfo, requestId },
             }: PayloadAction<{ requestId: string; authInfo: AuthInfo }>
         ) {
-            state.loginRequest.requestId = requestId;
+            state.loginRequest.requestIds.push(requestId);
             state.loginRequest.host = authInfo.realm
                 ? `${authInfo.host} (realm: ${authInfo.realm})`
                 : authInfo.host;
         },
         loginCancelledByUser(state) {
-            state.loginRequest.requestId = undefined;
+            state.loginRequest.requestIds = [];
             state.loginError.isDialogVisible = true;
         },
         loginRequestSent(state) {
-            state.loginRequest.requestId = undefined;
+            state.loginRequest.requestIds = [];
         },
         changeUserName(state, { payload: username }: PayloadAction<string>) {
             state.loginRequest.username = username;
@@ -74,7 +75,7 @@ export const {
 
 export const getProxyLoginRequest = (state: RootState) => ({
     ...state.proxyLogin.loginRequest,
-    isVisible: state.proxyLogin.loginRequest.requestId != null,
+    isVisible: state.proxyLogin.loginRequest.requestIds.length > 0,
 });
 
 export const getIsErrorVisible = (state: RootState) =>

@@ -83,4 +83,27 @@ describe('proxy login', () => {
 
         expect(isVisible).toBe(false);
     });
+
+    it('stores multiple request ids', () => {
+        const state = dispatchTo(reducer, [
+            loginRequestedByServer({ requestId: 'test ID', authInfo }),
+            loginRequestedByServer({ requestId: 'another test ID', authInfo }),
+        ]);
+
+        const { requestIds } = getProxyLoginRequest(asRootState(state));
+
+        expect(requestIds).toEqual(['test ID', 'another test ID']);
+    });
+
+    it('clears all request ids', () => {
+        const state = dispatchTo(reducer, [
+            loginRequestedByServer({ requestId: 'test ID', authInfo }),
+            loginRequestedByServer({ requestId: 'another test ID', authInfo }),
+            loginRequestSent(),
+        ]);
+
+        const { requestIds } = getProxyLoginRequest(asRootState(state));
+
+        expect(requestIds).toEqual([]);
+    });
 });
