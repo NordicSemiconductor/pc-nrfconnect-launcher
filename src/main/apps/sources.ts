@@ -137,14 +137,10 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
     downloadToJson<SourceJson>(sourceUrl, true);
 
 const downloadSourceJsonToFile = async (source: Source) => {
-    try {
-        const sourceJson = await downloadSourceJson(source.url);
-        writeJsonFile(getSourceJsonPath(source), sourceJson);
+    const sourceJson = await downloadSourceJson(source.url);
+    writeJsonFile(getSourceJsonPath(source), sourceJson);
 
-        return sourceJson;
-    } catch (error) {
-        throw source;
-    }
+    return sourceJson;
 };
 
 const readSourceJson = (source: Source) =>
