@@ -19,6 +19,7 @@ import {
 import type { AppThunk } from '../../store';
 import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
 import { hideSource, showSource } from '../filter/filterSlice';
+import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
@@ -100,7 +101,10 @@ const showProblemWithExtraSource =
 
 export const handleSourcesWithErrors =
     (sources: SourceWithError[]): AppThunk =>
-    dispatch => {
+    (dispatch, getState) => {
+        if (getIsProxyErrorShown(getState())) {
+            return;
+        }
         sources.forEach(({ source, reason }) => {
             if (source.name === OFFICIAL) {
                 dispatch(showProblemWithOfficialSource(source, reason));

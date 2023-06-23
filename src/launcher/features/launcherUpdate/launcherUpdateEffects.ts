@@ -13,6 +13,7 @@ import {
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
 import type { AppThunk } from '../../store';
 import { downloadLatestAppInfos } from '../apps/appsEffects';
+import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
@@ -35,15 +36,18 @@ export const cancelDownload = (): AppThunk => dispatch => {
     dispatch(reset());
 };
 
-export const checkForUpdatesManually = (): AppThunk => async dispatch => {
-    try {
-        await dispatch(downloadLatestAppInfos());
-        dispatch(showUpdateCheckComplete());
+export const checkForUpdatesManually =
+    (): AppThunk => async (dispatch, getState) => {
+        try {
+            await dispatch(downloadLatestAppInfos());
+            if (!getIsProxyErrorShown(getState())) {
+                dispatch(showUpdateCheckComplete());
 
-        dispatch(checkForLauncherUpdate());
-    } catch (error) {
-        ErrorDialogActions.showDialog(
-            `Unable to check for updates: ${describeError(error)}`
-        );
-    }
-};
+                dispatch(checkForLauncherUpdate());
+            }
+        } catch (error) {
+            ErrorDialogActions.showDialog(
+                `Unable to check for updates: ${describeError(error)}`
+            );
+        }
+    };
