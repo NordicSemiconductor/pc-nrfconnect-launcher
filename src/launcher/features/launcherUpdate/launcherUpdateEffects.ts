@@ -11,12 +11,12 @@ import {
 } from 'pc-nrfconnect-shared';
 
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
-import type { AppDispatch } from '../../store';
+import type { AppThunk } from '../../store';
 import { downloadLatestAppInfos } from '../apps/appsEffects';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
-export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
+export const checkForCoreUpdates = (): AppThunk => async dispatch => {
     try {
         const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
@@ -30,12 +30,12 @@ export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const cancelDownload = () => (dispatch: AppDispatch) => {
+export const cancelDownload = (): AppThunk => dispatch => {
     cancelUpdate();
     dispatch(reset());
 };
 
-export const checkForUpdatesManually = () => async (dispatch: AppDispatch) => {
+export const checkForUpdatesManually = (): AppThunk => async dispatch => {
     try {
         await dispatch(downloadLatestAppInfos());
         dispatch(showUpdateCheckComplete());

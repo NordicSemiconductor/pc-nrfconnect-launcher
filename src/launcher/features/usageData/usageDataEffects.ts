@@ -8,7 +8,7 @@ import { usageData } from 'pc-nrfconnect-shared';
 import si from 'systeminformation';
 
 import pkgJson from '../../../../package.json';
-import type { AppDispatch, RootState } from '../../store';
+import type { AppThunk } from '../../store';
 import {
     getIsSendingUsageData,
     hideUsageDataDialog,
@@ -37,36 +37,35 @@ const EventLabel = {
 
 export const isUsageDataOn = () => usageData.isEnabled();
 
-export const confirmSendingUsageData = () => (dispatch: AppDispatch) => {
+export const confirmSendingUsageData = (): AppThunk => dispatch => {
     usageData.enable();
     dispatch(setUsageDataOn());
     dispatch(hideUsageDataDialog());
 };
 
-export const cancelSendingUsageData = () => (dispatch: AppDispatch) => {
+export const cancelSendingUsageData = (): AppThunk => dispatch => {
     usageData.disable();
     dispatch(setUsageDataOff());
     dispatch(hideUsageDataDialog());
 };
 
-export const toggleSendingUsageData =
-    () => (dispatch: AppDispatch, getState: () => RootState) => {
-        const isSendingUsageData = getIsSendingUsageData(getState());
-        dispatch(hideUsageDataDialog());
-        if (isSendingUsageData) {
-            usageData.disable();
-            dispatch(setUsageDataOff());
-            return;
-        }
-        usageData.enable();
-        dispatch(setUsageDataOn());
-    };
+export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
+    const isSendingUsageData = getIsSendingUsageData(getState());
+    dispatch(hideUsageDataDialog());
+    if (isSendingUsageData) {
+        usageData.disable();
+        dispatch(setUsageDataOff());
+        return;
+    }
+    usageData.enable();
+    dispatch(setUsageDataOn());
+};
 
 const initUsageData = (label: string) => {
     usageData.sendUsageData(EventAction.LAUNCH_LAUNCHER, label);
 };
 
-export const checkUsageDataSetting = () => (dispatch: AppDispatch) => {
+export const checkUsageDataSetting = (): AppThunk => dispatch => {
     usageData.init(pkgJson);
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {

@@ -7,6 +7,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
 import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
 import appDialogs from './features/apps/appDialogsSlice';
 import apps from './features/apps/appsSlice';
@@ -43,5 +45,12 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+    ReturnType,
+    RootState,
+    unknown,
+    AnyAction
+>;
 
 export default store;

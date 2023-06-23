@@ -8,7 +8,7 @@ import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { getDownloadableApps, getLocalApps } from '../../../ipc/apps';
 import { getSources } from '../../../ipc/sources';
-import type { AppDispatch, RootState } from '../../store';
+import type { AppThunk } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import {
     downloadLatestAppInfos,
@@ -24,7 +24,7 @@ import {
     sendEnvInfo,
 } from '../usageData/usageDataEffects';
 
-const loadSources = () => async (dispatch: AppDispatch) => {
+const loadSources = (): AppThunk => async dispatch => {
     try {
         dispatch(setSources(await getSources()));
     } catch (error) {
@@ -36,7 +36,7 @@ const loadSources = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const loadApps = () => async (dispatch: AppDispatch) => {
+export const loadApps = (): AppThunk => async dispatch => {
     try {
         dispatch(setAllLocalApps(await getLocalApps()));
 
@@ -51,18 +51,18 @@ export const loadApps = () => async (dispatch: AppDispatch) => {
     }
 };
 
-const downloadLatestAppInfoAtStartup =
-    () => (dispatch: AppDispatch, getState: () => RootState) => {
-        const shouldCheckForUpdatesAtStartup =
-            getShouldCheckForUpdatesAtStartup(getState());
+const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
+    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
+        getState()
+    );
 
-        if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
-            dispatch(downloadLatestAppInfos());
-        }
-    };
+    if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
+        dispatch(downloadLatestAppInfos());
+    }
+};
 
 const checkForCoreUpdatesAtStartup =
-    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    (): AppThunk => async (dispatch, getState) => {
         const shouldCheckForUpdatesAtStartup =
             getShouldCheckForUpdatesAtStartup(getState());
 
@@ -75,7 +75,7 @@ const checkForCoreUpdatesAtStartup =
         }
     };
 
-export default () => async (dispatch: AppDispatch) => {
+export default (): AppThunk => async dispatch => {
     dispatch(checkUsageDataSetting());
 
     await dispatch(loadSources());
