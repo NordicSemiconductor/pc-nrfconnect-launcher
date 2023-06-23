@@ -14,7 +14,7 @@ import { answerProxyLoginRequest } from '../../../ipc/proxyLogin';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
     changeUserName,
-    getProxyLogin,
+    getProxyLoginRequest,
     loginCancelledByUser,
     loginRequestSent,
 } from './proxyLoginSlice';
@@ -23,23 +23,21 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const [password, setPassword] = useState('');
 
-    const {
-        requestId,
-        loginDialogMessage: message,
-        username,
-        isLoginDialogVisible: isVisible,
-    } = useLauncherSelector(getProxyLogin);
+    const { isVisible, username, host, requestIds } =
+        useLauncherSelector(getProxyLoginRequest);
 
     const cancel = useCallback(() => {
-        answerProxyLoginRequest(requestId!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        requestIds.forEach(id => answerProxyLoginRequest(id));
         dispatch(loginCancelledByUser());
-    }, [dispatch, requestId]);
+    }, [dispatch, requestIds]);
 
     const submit = useCallback(() => {
-        answerProxyLoginRequest(requestId!, username, password); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        dispatch(loginRequestSent(username));
+        requestIds.forEach(id =>
+            answerProxyLoginRequest(id, username, password)
+        );
+        dispatch(loginRequestSent());
         setPassword('');
-    }, [dispatch, password, requestId, username]);
+    }, [dispatch, password, requestIds, username]);
 
     const inputIsValid = useMemo(
         () => username !== '' && password !== '',
@@ -61,7 +59,10 @@ export default () => {
                 <Modal.Title>Proxy authentication required</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>{message}</p>
+                <p>
+                    The proxy server {host} requires authentication. Please
+                    enter username and password
+                </p>
                 <Form.Group controlId="username">
                     <Form.Label>Username:</Form.Label>
                     <InputGroup>

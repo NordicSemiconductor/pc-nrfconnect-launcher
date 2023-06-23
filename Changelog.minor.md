@@ -7,7 +7,14 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.1.2-pre
+## 4.1.3-pre
+
+### Fixed
+
+-   #851: Proxies with authentication were not handled correctly when multiple
+    requests were done at the same time.
+
+## 4.1.2
 
 ### Changed
 

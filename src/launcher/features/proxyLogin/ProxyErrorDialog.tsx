@@ -9,12 +9,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { getProxyLogin, loginErrorDialogClosed } from './proxyLoginSlice';
+import { getIsErrorVisible, loginErrorDialogClosed } from './proxyLoginSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isErrorDialogVisible: isVisible } =
-        useLauncherSelector(getProxyLogin);
+    const isVisible = useLauncherSelector(getIsErrorVisible);
 
     return (
         <Modal show={isVisible} backdrop>
