@@ -15,7 +15,7 @@ import {
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import { checkForCoreUpdates } from '../launcherUpdate/launcherUpdateEffects';
+import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { setSources } from '../sources/sourcesSlice';
@@ -61,17 +61,17 @@ const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     }
 };
 
-const checkForCoreUpdatesAtStartup =
+const checkForLauncherUpdateAtStartup =
     (): AppThunk => async (dispatch, getState) => {
         const shouldCheckForUpdatesAtStartup =
             getShouldCheckForUpdatesAtStartup(getState());
 
         if (
             shouldCheckForUpdatesAtStartup &&
-            !mainConfig().isSkipUpdateCore &&
+            !mainConfig().isSkipUpdateLauncher &&
             process.env.NODE_ENV !== 'development'
         ) {
-            await dispatch(checkForCoreUpdates());
+            await dispatch(checkForLauncherUpdate());
         }
     };
 
@@ -82,7 +82,7 @@ export default (): AppThunk => async dispatch => {
     await dispatch(loadApps());
 
     dispatch(downloadLatestAppInfoAtStartup());
-    dispatch(checkForCoreUpdatesAtStartup());
+    dispatch(checkForLauncherUpdateAtStartup());
 
     sendEnvInfo();
 };

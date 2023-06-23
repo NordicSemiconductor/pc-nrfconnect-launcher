@@ -13,7 +13,7 @@ const startApp = async (extraArgs: string[]) => {
     const projectPath = path.resolve(__dirname, '../');
     const electronArgs = [
         projectPath,
-        '--skip-update-core',
+        '--skip-update-launcher',
         '--skip-splash-screen',
         ...extraArgs,
     ];

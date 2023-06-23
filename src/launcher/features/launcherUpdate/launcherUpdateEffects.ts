@@ -16,7 +16,7 @@ import { downloadLatestAppInfos } from '../apps/appsEffects';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
-export const checkForCoreUpdates = (): AppThunk => async dispatch => {
+export const checkForLauncherUpdate = (): AppThunk => async dispatch => {
     try {
         const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
@@ -40,7 +40,7 @@ export const checkForUpdatesManually = (): AppThunk => async dispatch => {
         await dispatch(downloadLatestAppInfos());
         dispatch(showUpdateCheckComplete());
 
-        dispatch(checkForCoreUpdates());
+        dispatch(checkForLauncherUpdate());
     } catch (error) {
         ErrorDialogActions.showDialog(
             `Unable to check for updates: ${describeError(error)}`
