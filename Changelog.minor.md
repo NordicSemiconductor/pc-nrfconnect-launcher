@@ -13,6 +13,10 @@ release the new version.
 
 -   #851: Proxies with authentication were not handled correctly when multiple
     requests were done at the same time.
+-   #852:
+    -   Proxy dialogs were outdated.
+    -   Multiple, partially misleading dialogs were displayed if users cancelled
+        the proxy login.
 
 ## 4.1.2
 
