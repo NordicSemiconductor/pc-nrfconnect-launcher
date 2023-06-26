@@ -6,7 +6,7 @@
 
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import { ConfirmationDialog, useFocusedOnVisible } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { addSource } from './sourcesEffects';
@@ -16,6 +16,8 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(getIsAddSourceVisible);
     const [url, setUrl] = useState('');
+
+    const ref = useFocusedOnVisible<HTMLInputElement>(isVisible);
 
     const cancel = () => dispatch(hideAddSource());
 
@@ -36,6 +38,7 @@ export default () => {
             onCancel={cancel}
         >
             <Form.Control
+                ref={ref}
                 value={url}
                 onChange={event => setUrl(event.target.value)}
                 placeholder="https://..."
