@@ -5,10 +5,8 @@
  */
 
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { addSource } from './sourcesEffects';
@@ -21,46 +19,30 @@ export default () => {
 
     const cancel = () => dispatch(hideAddSource());
 
+    const maybeAddSource = () => {
+        if (url.trim().length > 0) {
+            dispatch(addSource(url.trim()));
+            dispatch(hideAddSource());
+            setUrl('');
+        }
+    };
+
     return (
-        <Modal show={isVisible} onHide={cancel} backdrop="static">
-            <Modal.Header>
-                <Modal.Title>Add source</Modal.Title>
-            </Modal.Header>
-            <Form
-                onSubmit={e => {
-                    if (url.trim().length > 0) {
-                        dispatch(addSource(url.trim()));
-                        dispatch(hideAddSource());
-                        setUrl('');
-                    }
-                    e.preventDefault();
-                }}
-            >
-                <Modal.Body>
-                    <Form.Control
-                        value={url}
-                        onChange={event => setUrl(event.target.value)}
-                        placeholder="https://..."
-                    />
-                    <small className="text-muted">
-                        The source file must be in .json format
-                    </small>
-                </Modal.Body>
-                <Modal.Footer>
-                    <ButtonToolbar className="wide-btns">
-                        <Button
-                            type="submit"
-                            variant="outline-primary"
-                            disabled={url == null}
-                        >
-                            Add
-                        </Button>
-                        <Button variant="outline-secondary" onClick={cancel}>
-                            Close
-                        </Button>
-                    </ButtonToolbar>
-                </Modal.Footer>
-            </Form>
-        </Modal>
+        <ConfirmationDialog
+            isVisible={isVisible}
+            title="Add source"
+            confirmLabel="Add"
+            onConfirm={maybeAddSource}
+            onCancel={cancel}
+        >
+            <Form.Control
+                value={url}
+                onChange={event => setUrl(event.target.value)}
+                placeholder="https://..."
+            />
+            <small className="text-muted">
+                The source file must be in .json format
+            </small>
+        </ConfirmationDialog>
     );
 };
