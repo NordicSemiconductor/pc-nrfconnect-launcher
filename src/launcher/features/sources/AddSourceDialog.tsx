@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Form from 'react-bootstrap/Form';
@@ -17,6 +17,7 @@ import { getIsAddSourceVisible, hideAddSource } from './sourcesSlice';
 export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(getIsAddSourceVisible);
+    const [url, setUrl] = useState('');
 
     const cancel = () => dispatch(hideAddSource());
 
@@ -27,17 +28,18 @@ export default () => {
             </Modal.Header>
             <Form
                 onSubmit={e => {
-                    const url = e.currentTarget.inputField.value;
-                    dispatch(addSource(url));
-                    dispatch(hideAddSource());
+                    if (url.length > 0) {
+                        dispatch(addSource(url));
+                        dispatch(hideAddSource());
+                        setUrl('');
+                    }
                     e.preventDefault();
                 }}
             >
                 <Modal.Body>
                     <Form.Control
-                        as="input"
-                        type="text"
-                        name="inputField"
+                        value={url}
+                        onChange={event => setUrl(event.target.value)}
                         placeholder="https://..."
                     />
                     <small className="text-muted">
@@ -46,7 +48,11 @@ export default () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <ButtonToolbar className="wide-btns">
-                        <Button type="submit" variant="outline-primary">
+                        <Button
+                            type="submit"
+                            variant="outline-primary"
+                            disabled={url == null}
+                        >
                             Add
                         </Button>
                         <Button variant="outline-secondary" onClick={cancel}>
