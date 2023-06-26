@@ -32,17 +32,27 @@ export const getSources = invoke<GetSources>(channel.get);
 export const registerGetSources = handle<GetSources>(channel.get);
 
 // Add
-type AddSourceResult =
+export type AddSourceError =
     | {
-          type: 'success';
-          source: Source;
-          apps: DownloadableApp[];
+          type: 'error';
+          errorType: 'Unable to retrieve source.json';
+          message: string;
+      }
+    | {
+          type: 'error';
+          errorType: 'Official sources cannot be added';
       }
     | {
           type: 'error';
           errorType: 'Source already exists';
           existingSource: Source;
       };
+export type AddSourceSuccess = {
+    type: 'success';
+    source: Source;
+    apps: DownloadableApp[];
+};
+export type AddSourceResult = AddSourceSuccess | AddSourceError;
 
 type AddSource = (url: SourceUrl) => AddSourceResult;
 

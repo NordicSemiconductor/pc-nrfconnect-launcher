@@ -8,6 +8,7 @@ import fs from 'fs-extra';
 import { SourceJson } from 'pc-nrfconnect-shared';
 
 import {
+    AddSourceResult,
     allStandardSourceNames,
     OFFICIAL,
     Source,
@@ -15,6 +16,7 @@ import {
     SourceUrl,
 } from '../../ipc/sources';
 import { getAppsRootDir } from '../config';
+import describeError from '../describeError';
 import { addDownloadAppData } from './app';
 import { downloadAppInfos } from './apps';
 import {
@@ -32,10 +34,6 @@ const downloadSource = async (
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
 
-    if (source.name === OFFICIAL) {
-        throw new Error('The official source cannot be added.');
-    }
-
     const isLegacyUrl = url.endsWith('/apps.json') && sourceJson.apps == null;
     if (isLegacyUrl) {
         return downloadSource(url.replace(/apps.json$/, 'source.json'));
@@ -44,8 +42,22 @@ const downloadSource = async (
     return { source, sourceJson };
 };
 
-export const addSource = async (url: SourceUrl) => {
-    const { source, sourceJson } = await downloadSource(url);
+export const addSource = async (url: SourceUrl): Promise<AddSourceResult> => {
+    let downloadResult;
+    try {
+        downloadResult = await downloadSource(url);
+    } catch (error) {
+        return {
+            type: 'error',
+            errorType: 'Unable to retrieve source.json',
+            message: describeError(error),
+        };
+    }
+    const { source, sourceJson } = downloadResult;
+
+    if (source.name === OFFICIAL) {
+        return { type: 'error', errorType: 'Official sources cannot be added' };
+    }
 
     const existingSource = getSource(source.name);
     if (existingSource != null) {
@@ -53,7 +65,7 @@ export const addSource = async (url: SourceUrl) => {
             type: 'error',
             errorType: 'Source already exists',
             existingSource,
-        } as const;
+        };
     }
 
     initialise(source);
@@ -65,7 +77,7 @@ export const addSource = async (url: SourceUrl) => {
         addDownloadAppData(source.name)
     );
 
-    return { type: 'success', source, apps } as const;
+    return { type: 'success', source, apps };
 };
 
 const isRemovableSource = (
