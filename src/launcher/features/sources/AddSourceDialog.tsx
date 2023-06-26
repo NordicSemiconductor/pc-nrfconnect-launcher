@@ -28,8 +28,8 @@ export default () => {
             </Modal.Header>
             <Form
                 onSubmit={e => {
-                    if (url.length > 0) {
-                        dispatch(addSource(url));
+                    if (url.trim().length > 0) {
+                        dispatch(addSource(url.trim()));
                         dispatch(hideAddSource());
                         setUrl('');
                     }
