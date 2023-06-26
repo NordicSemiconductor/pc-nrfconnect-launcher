@@ -32,10 +32,19 @@ export const getSources = invoke<GetSources>(channel.get);
 export const registerGetSources = handle<GetSources>(channel.get);
 
 // Add
-type AddSource = (url: SourceUrl) => {
-    source: Source;
-    apps: DownloadableApp[];
-};
+type AddSourceResult =
+    | {
+          type: 'success';
+          source: Source;
+          apps: DownloadableApp[];
+      }
+    | {
+          type: 'error';
+          errorType: 'Source already exists';
+          existingSource: Source;
+      };
+
+type AddSource = (url: SourceUrl) => AddSourceResult;
 
 export const addSource = invoke<AddSource>(channel.add);
 export const registerAddSource = handle<AddSource>(channel.add);

@@ -20,6 +20,7 @@ import { downloadAppInfos } from './apps';
 import {
     addToSourceList,
     downloadSourceJson,
+    getSource,
     initialise,
     removeFromSourceList,
     writeSourceJson,
@@ -46,6 +47,15 @@ const downloadSource = async (
 export const addSource = async (url: SourceUrl) => {
     const { source, sourceJson } = await downloadSource(url);
 
+    const existingSource = getSource(source.name);
+    if (existingSource != null) {
+        return {
+            type: 'error',
+            errorType: 'Source already exists',
+            existingSource,
+        } as const;
+    }
+
     initialise(source);
     writeSourceJson(source, sourceJson);
 
@@ -55,7 +65,7 @@ export const addSource = async (url: SourceUrl) => {
         addDownloadAppData(source.name)
     );
 
-    return { source, apps };
+    return { type: 'success', source, apps } as const;
 };
 
 const isRemovableSource = (

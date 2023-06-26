@@ -29,10 +29,19 @@ export const addSource =
     (url: SourceUrl): AppThunk =>
     dispatch => {
         addSourceInMain(url)
-            .then(({ source, apps }) => {
-                dispatch(addSourceAction(source));
-                dispatch(showSource(source.name));
-                dispatch(addDownloadableApps(apps));
+            .then(result => {
+                if (result.type === 'success') {
+                    dispatch(addSourceAction(result.source));
+                    dispatch(showSource(result.source.name));
+                    dispatch(addDownloadableApps(result.apps));
+                } else {
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            'No source added because there already is one ' +
+                                `with the name “${result.existingSource.name}”.`
+                        )
+                    );
+                }
             })
             .catch(error =>
                 dispatch(
