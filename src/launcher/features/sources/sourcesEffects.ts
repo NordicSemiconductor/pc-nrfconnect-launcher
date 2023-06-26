@@ -46,10 +46,10 @@ export const addSource =
             .catch(error =>
                 dispatch(
                     ErrorDialogActions.showDialog(
-                        cleanIpcErrorMessage(
-                            error.message,
-                            'Error while trying to add a source: '
-                        )
+                        'Unable to retrieve a valid `source.json` under ' +
+                            `the URL \`${url}\`. No source was added.`,
+                        undefined,
+                        cleanIpcErrorMessage(error.message)
                     )
                 )
             );
