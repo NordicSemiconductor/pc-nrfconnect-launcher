@@ -22,7 +22,7 @@ export interface Configuration {
     isRunningLauncherFromSource: boolean;
     isSkipSplashScreen: boolean;
     isSkipUpdateApps: boolean;
-    isSkipUpdateCore: boolean;
+    isSkipUpdateLauncher: boolean;
     settingsJsonPath: string;
     sourcesJsonPath: string;
     startupApp?: StartupApp;

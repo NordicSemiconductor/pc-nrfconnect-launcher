@@ -8,14 +8,14 @@ import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
 import { getDownloadableApps, getLocalApps } from '../../../ipc/apps';
 import { getSources } from '../../../ipc/sources';
-import type { AppDispatch, RootState } from '../../store';
+import type { AppThunk } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import {
     downloadLatestAppInfos,
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import { checkForCoreUpdates } from '../launcherUpdate/launcherUpdateEffects';
+import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { setSources } from '../sources/sourcesSlice';
@@ -24,7 +24,7 @@ import {
     sendEnvInfo,
 } from '../usageData/usageDataEffects';
 
-const loadSources = () => async (dispatch: AppDispatch) => {
+const loadSources = (): AppThunk => async dispatch => {
     try {
         dispatch(setSources(await getSources()));
     } catch (error) {
@@ -36,7 +36,7 @@ const loadSources = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const loadApps = () => async (dispatch: AppDispatch) => {
+export const loadApps = (): AppThunk => async dispatch => {
     try {
         dispatch(setAllLocalApps(await getLocalApps()));
 
@@ -51,38 +51,38 @@ export const loadApps = () => async (dispatch: AppDispatch) => {
     }
 };
 
-const downloadLatestAppInfoAtStartup =
-    () => (dispatch: AppDispatch, getState: () => RootState) => {
-        const shouldCheckForUpdatesAtStartup =
-            getShouldCheckForUpdatesAtStartup(getState());
+const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
+    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
+        getState()
+    );
 
-        if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
-            dispatch(downloadLatestAppInfos());
-        }
-    };
+    if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
+        dispatch(downloadLatestAppInfos());
+    }
+};
 
-const checkForCoreUpdatesAtStartup =
-    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+const checkForLauncherUpdateAtStartup =
+    (): AppThunk => async (dispatch, getState) => {
         const shouldCheckForUpdatesAtStartup =
             getShouldCheckForUpdatesAtStartup(getState());
 
         if (
             shouldCheckForUpdatesAtStartup &&
-            !mainConfig().isSkipUpdateCore &&
+            !mainConfig().isSkipUpdateLauncher &&
             process.env.NODE_ENV !== 'development'
         ) {
-            await dispatch(checkForCoreUpdates());
+            await dispatch(checkForLauncherUpdate());
         }
     };
 
-export default () => async (dispatch: AppDispatch) => {
+export default (): AppThunk => async dispatch => {
     dispatch(checkUsageDataSetting());
 
     await dispatch(loadSources());
     await dispatch(loadApps());
 
     dispatch(downloadLatestAppInfoAtStartup());
-    dispatch(checkForCoreUpdatesAtStartup());
+    dispatch(checkForLauncherUpdateAtStartup());
 
     sendEnvInfo();
 };

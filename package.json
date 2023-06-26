@@ -11,7 +11,7 @@
         "prepare": "husky install",
         "app": "cross-env NODE_OPTIONS=--enable-source-maps electron .",
         "app:debug": "cross-env NODE_OPTIONS=--enable-source-maps electron --remote-debugging-port=9223 .",
-        "watch": "run-p --silent --continue-on-error --print-label watch:**",
+        "watch:build": "run-p --silent --continue-on-error --print-label watch:build:*",
         "watch:build:main": "node scripts/esbuild --watch",
         "watch:build:renderer": "node scripts/esbuild-renderer --watch",
         "watch:types": "tsc --noEmit --pretty --watch --preserveWatchOutput",

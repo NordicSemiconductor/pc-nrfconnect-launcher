@@ -5,10 +5,9 @@
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Modal from 'react-bootstrap/Modal';
+import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
 import { answerProxyLoginRequest } from '../../../ipc/proxyLogin';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -31,7 +30,7 @@ export default () => {
         dispatch(loginCancelledByUser());
     }, [dispatch, requestIds]);
 
-    const submit = useCallback(() => {
+    const login = useCallback(() => {
         requestIds.forEach(id =>
             answerProxyLoginRequest(id, username, password)
         );
@@ -47,53 +46,48 @@ export default () => {
     const submitOnEnter: React.KeyboardEventHandler = useCallback(
         event => {
             if (event.key === 'Enter' && inputIsValid) {
-                submit();
+                login();
             }
         },
-        [inputIsValid, submit]
+        [inputIsValid, login]
     );
 
     return (
-        <Modal show={isVisible} backdrop>
-            <Modal.Header closeButton={false}>
-                <Modal.Title>Proxy authentication required</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>
-                    The proxy server {host} requires authentication. Please
-                    enter username and password
-                </p>
-                <Form.Group controlId="username">
-                    <Form.Label>Username:</Form.Label>
-                    <InputGroup>
-                        <Form.Control
-                            autoFocus
-                            value={username}
-                            onChange={event =>
-                                dispatch(changeUserName(event.target.value))
-                            }
-                            onKeyPress={submitOnEnter}
-                        />
-                    </InputGroup>
-                </Form.Group>
-                <Form.Group controlId="password">
-                    <Form.Label>Password:</Form.Label>
-                    <InputGroup>
-                        <Form.Control
-                            value={password}
-                            type="password"
-                            onChange={event => setPassword(event.target.value)}
-                            onKeyPress={submitOnEnter}
-                        />
-                    </InputGroup>
-                </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={cancel}>Cancel</Button>
-                <Button onClick={submit} disabled={!inputIsValid}>
-                    Login
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <ConfirmationDialog
+            isVisible={isVisible}
+            title="Proxy authentication required"
+            confirmLabel="Login"
+            onConfirm={login}
+            onCancel={cancel}
+        >
+            <p>
+                The proxy server {host} requires authentication. Please enter
+                username and password
+            </p>
+            <Form.Group controlId="username">
+                <Form.Label>Username:</Form.Label>
+                <InputGroup>
+                    <Form.Control
+                        autoFocus
+                        value={username}
+                        onChange={event =>
+                            dispatch(changeUserName(event.target.value))
+                        }
+                        onKeyPress={submitOnEnter}
+                    />
+                </InputGroup>
+            </Form.Group>
+            <Form.Group controlId="password">
+                <Form.Label>Password:</Form.Label>
+                <InputGroup>
+                    <Form.Control
+                        value={password}
+                        type="password"
+                        onChange={event => setPassword(event.target.value)}
+                        onKeyPress={submitOnEnter}
+                    />
+                </InputGroup>
+            </Form.Group>
+        </ConfirmationDialog>
     );
 };

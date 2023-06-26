@@ -19,7 +19,7 @@ import {
     removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
 import { openApp } from '../../../ipc/openWindow';
-import type { AppDispatch } from '../../store';
+import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
@@ -56,7 +56,8 @@ const buildErrorMessage = (apps: AppWithError[]) => {
 };
 
 export const handleAppsWithErrors =
-    (apps: AppWithError[]) => (dispatch: AppDispatch) => {
+    (apps: AppWithError[]): AppThunk =>
+    dispatch => {
         if (apps.length === 0) {
             return;
         }
@@ -82,7 +83,7 @@ export const handleAppsWithErrors =
         );
     };
 
-export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
+export const downloadLatestAppInfos = (): AppThunk => async dispatch => {
     try {
         dispatch(updateDownloadableAppInfosStarted());
         const { apps, appsWithErrors, sourcesWithErrors } =
@@ -103,7 +104,8 @@ export const downloadLatestAppInfos = () => async (dispatch: AppDispatch) => {
 };
 
 export const installLocalApp =
-    (appPackagePath: string) => async (dispatch: AppDispatch) => {
+    (appPackagePath: string): AppThunk =>
+    async dispatch => {
         const installResult = await installLocalAppInMain(appPackagePath);
         if (installResult.type === 'success') {
             dispatch(addLocalApp(installResult.app));
@@ -138,8 +140,8 @@ export const installLocalApp =
     };
 
 const install =
-    (app: DownloadableApp, version?: string) =>
-    async (dispatch: AppDispatch) => {
+    (app: DownloadableApp, version?: string): AppThunk =>
+    async dispatch => {
         try {
             const installedApp = await installDownloadableAppInMain(
                 app,
@@ -157,7 +159,8 @@ const install =
     };
 
 export const installDownloadableApp =
-    (app: DownloadableApp, version?: string) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp, version?: string): AppThunk =>
+    dispatch => {
         if (version == null) {
             sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
         } else {
@@ -173,7 +176,8 @@ export const installDownloadableApp =
     };
 
 export const updateDownloadableApp =
-    (app: DownloadableApp) => (dispatch: AppDispatch) => {
+    (app: DownloadableApp): AppThunk =>
+    dispatch => {
         sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
 
         dispatch(updateDownloadableAppStarted(app));
@@ -181,7 +185,8 @@ export const updateDownloadableApp =
     };
 
 export const removeDownloadableApp =
-    (app: AppSpec) => async (dispatch: AppDispatch) => {
+    (app: AppSpec): AppThunk =>
+    async dispatch => {
         sendAppUsageData(EventAction.REMOVE_APP, app.source, app.name);
 
         dispatch(removeDownloadableAppStarted(app));
@@ -207,7 +212,8 @@ export const launch = (app: LaunchableApp) => {
 };
 
 export const checkEngineAndLaunch =
-    (app: LaunchableApp) => (dispatch: AppDispatch) => {
+    (app: LaunchableApp): AppThunk =>
+    dispatch => {
         const compatibilityWarning = appCompatibilityWarning(app);
         const launchAppWithoutWarning =
             compatibilityWarning == null ||

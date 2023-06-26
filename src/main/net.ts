@@ -84,15 +84,10 @@ const downloadToBuffer = (
         request.end();
     });
 
-export const downloadToString = async (
-    url: string,
-    enableProxyLogin: boolean
-) => (await downloadToBuffer(url, enableProxyLogin)).toString();
-
 export const downloadToJson = async <T>(
     url: string,
     enableProxyLogin: boolean
-) => <T>JSON.parse(await downloadToString(url, enableProxyLogin));
+) => <T>JSON.parse((await downloadToBuffer(url, enableProxyLogin)).toString());
 
 export const downloadToFile = async (
     url: string,

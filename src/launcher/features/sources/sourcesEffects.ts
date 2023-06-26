@@ -16,51 +16,56 @@ import {
     SourceName,
     SourceUrl,
 } from '../../../ipc/sources';
-import type { AppDispatch } from '../../store';
+import type { AppThunk } from '../../store';
 import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
 import { hideSource, showSource } from '../filter/filterSlice';
+import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
 } from './sourcesSlice';
 
-export const addSource = (url: SourceUrl) => (dispatch: AppDispatch) => {
-    addSourceInMain(url)
-        .then(({ source, apps }) => {
-            dispatch(addSourceAction(source));
-            dispatch(showSource(source.name));
-            dispatch(addDownloadableApps(apps));
-        })
-        .catch(error =>
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    cleanIpcErrorMessage(
-                        error.message,
-                        'Error while trying to add a source: '
+export const addSource =
+    (url: SourceUrl): AppThunk =>
+    dispatch => {
+        addSourceInMain(url)
+            .then(({ source, apps }) => {
+                dispatch(addSourceAction(source));
+                dispatch(showSource(source.name));
+                dispatch(addDownloadableApps(apps));
+            })
+            .catch(error =>
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        cleanIpcErrorMessage(
+                            error.message,
+                            'Error while trying to add a source: '
+                        )
                     )
                 )
-            )
-        );
-};
+            );
+    };
 
-export const removeSource = (name: SourceName) => (dispatch: AppDispatch) => {
-    removeSourceInMain(name)
-        .then(() => {
-            dispatch(removeAppsOfSource(name));
-            dispatch(removeSourceAction(name));
-            dispatch(hideSource(name));
-        })
-        .catch(error =>
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    cleanIpcErrorMessage(
-                        error.message,
-                        `Error while trying to remove the source '${name}': `
+export const removeSource =
+    (name: SourceName): AppThunk =>
+    dispatch => {
+        removeSourceInMain(name)
+            .then(() => {
+                dispatch(removeAppsOfSource(name));
+                dispatch(removeSourceAction(name));
+                dispatch(hideSource(name));
+            })
+            .catch(error =>
+                dispatch(
+                    ErrorDialogActions.showDialog(
+                        cleanIpcErrorMessage(
+                            error.message,
+                            `Error while trying to remove the source '${name}': `
+                        )
                     )
                 )
-            )
-        );
-};
+            );
+    };
 
 const showProblemWithOfficialSource = (source: Source, reason?: string) =>
     ErrorDialogActions.showDialog(
@@ -72,7 +77,8 @@ const showProblemWithOfficialSource = (source: Source, reason?: string) =>
     );
 
 const showProblemWithExtraSource =
-    (source: Source, reason?: string) => (dispatch: AppDispatch) => {
+    (source: Source, reason?: string): AppThunk =>
+    dispatch => {
         dispatch(
             ErrorDialogActions.showDialog(
                 `Unable to retrieve the source “${source.name}” ` +
@@ -94,7 +100,11 @@ const showProblemWithExtraSource =
     };
 
 export const handleSourcesWithErrors =
-    (sources: SourceWithError[]) => (dispatch: AppDispatch) => {
+    (sources: SourceWithError[]): AppThunk =>
+    (dispatch, getState) => {
+        if (getIsProxyErrorShown(getState())) {
+            return;
+        }
         sources.forEach(({ source, reason }) => {
             if (source.name === OFFICIAL) {
                 dispatch(showProblemWithOfficialSource(source, reason));

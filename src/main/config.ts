@@ -59,21 +59,21 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
  * Init the config values based on the given command line arguments.
  *
  * Supported command line arguments:
- * --apps-root-dir       The directory where app data is stored.
- *                       Default: "<homeDir>/.nrfconnect-apps"
- * --user-data-dir       Path to the user data dir. If this is not
- *                       set, the environment variable NRF_USER_DATA_DIR
- *                       is also used.
- *                       See also https://www.electronjs.org/docs/api/app#appgetpathname
- *                       Default: The appData directory appended with 'nrfconnect'.
- * --settings-json-path  Path to the user's settings file.
- *                       Default: "<userDataDir>/settings.json"
- * --skip-update-apps    Do not download info/updates about apps.
- *                       Default: false
- * --skip-update-core    Skip checking for updates for nRF Connect for Desktop.
- *                       Default: false
- * --skip-splash-screen  Skip the splash screen at startup.
- *                       Default: false
+ * --apps-root-dir         The directory where app data is stored.
+ *                         Default: "<homeDir>/.nrfconnect-apps"
+ * --user-data-dir         Path to the user data dir. If this is not
+ *                         set, the environment variable NRF_USER_DATA_DIR
+ *                         is also used.
+ *                         See also https://www.electronjs.org/docs/api/app#appgetpathname
+ *                         Default: The appData directory appended with 'nrfconnect'.
+ * --settings-json-path    Path to the user's settings file.
+ *                         Default: "<userDataDir>/settings.json"
+ * --skip-update-apps      Do not download info/updates about apps.
+ *                         Default: false
+ * --skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
+ *                         Default: false
+ * --skip-splash-screen    Skip the splash screen at startup.
+ *                         Default: false
  */
 export const init = (argv: Argv) => {
     const appsRootDir =
@@ -87,7 +87,7 @@ export const init = (argv: Argv) => {
         ),
         isSkipSplashScreen: !!argv['skip-splash-screen'],
         isSkipUpdateApps: !!argv['skip-update-apps'],
-        isSkipUpdateCore: !!argv['skip-update-core'],
+        isSkipUpdateLauncher: !!argv['skip-update-launcher'],
         settingsJsonPath:
             argv['settings-json-path'] ||
             path.join(app.getPath('userData'), 'settings.json'),
