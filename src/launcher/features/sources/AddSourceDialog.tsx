@@ -37,15 +37,14 @@ export default () => {
             onConfirm={maybeAddSource}
             onCancel={cancel}
         >
+            <p>
+                Enter the URL of a source&rsquo;s <code>source.json</code> file:
+            </p>
             <Form.Control
                 ref={ref}
                 value={url}
                 onChange={event => setUrl(event.target.value)}
-                placeholder="https://..."
             />
-            <small className="text-muted">
-                The source file must be in .json format
-            </small>
         </ConfirmationDialog>
     );
 };
