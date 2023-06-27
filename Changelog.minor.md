@@ -17,6 +17,14 @@ release the new version.
     -   Proxy dialogs were outdated.
     -   Multiple, partially misleading dialogs were displayed if users cancelled
         the proxy login.
+-   #853:
+    -   Add Source dialog:
+        -   Trim leading and trailing whitespace from URL.
+        -   Dialog style was outdated.
+        -   More expressive error messages for typical errors: `source.json` not
+            reachable at given URL, source already exists, or trying to add the
+            official source.
+    -   Name filter for apps: Trim leading and trailing whitespace.
 
 ## 4.1.2
 
