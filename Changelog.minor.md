@@ -23,6 +23,11 @@ release the new version.
 
 ### Fixed
 
+-   #850: Support for a custom html-template from the app.
+
+    If the app supplies an `html`-entry in `package.json`, this path will
+    instead be used to load the app.
+
 -   #835: Wrong state for when users jumped between launcher versions.
 
     To reproduce:
