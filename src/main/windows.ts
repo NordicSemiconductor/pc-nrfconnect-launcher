@@ -11,6 +11,7 @@ import {
     screen,
     WebContents,
 } from 'electron';
+import { join } from 'path';
 import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
 
 import { AppDetails } from '../ipc/appDetails';
@@ -102,12 +103,16 @@ export const openAppWindow = (
         }
     }
 
+    const template = app.html
+        ? `file://${join(app.installed.path, app.html)}`
+        : `file://${getElectronResourcesDir()}/app.html?appPath=${encodeURIComponent(
+              app.installed.path
+          )}`;
+
     const appWindow = createWindow(
         {
             title: `${app.displayName || app.name} v${app.currentVersion}`,
-            url: `file://${getElectronResourcesDir()}/app.html?appPath=${encodeURIComponent(
-                app.installed.path
-            )}`,
+            url: template,
             icon: getAppIcon(app),
             x,
             y,
