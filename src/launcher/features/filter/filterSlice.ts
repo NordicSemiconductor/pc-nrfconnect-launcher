@@ -72,7 +72,7 @@ const matchesSourceFilter = (app: App, state: RootState) =>
     !state.filter.hiddenSources.has(app.source);
 
 const matchesNameFilter = (app: App, state: RootState) => {
-    const filter = state.filter.nameFilter;
+    const filter = state.filter.nameFilter.trim();
 
     try {
         return new RegExp(filter, 'i').test(app.displayName);
