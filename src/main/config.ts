@@ -99,18 +99,15 @@ export const init = (argv: Argv) => {
     };
 };
 
-export const getAppsExternalDir = (effectiveConfig = config) =>
-    path.join(effectiveConfig.appsRootDir, 'external');
+export const getAppsExternalDir = () =>
+    path.join(config.appsRootDir, 'external');
 
 export const getAppsLocalDir = () => path.join(config.appsRootDir, 'local');
 
-export const getAppsRootDir = (
-    sourceName: SourceName = OFFICIAL,
-    effectiveConfig = config
-) =>
+export const getAppsRootDir = (sourceName: SourceName = OFFICIAL) =>
     sourceName === OFFICIAL
-        ? effectiveConfig.appsRootDir
-        : path.join(getAppsExternalDir(effectiveConfig), sourceName);
+        ? config.appsRootDir
+        : path.join(getAppsExternalDir(), sourceName);
 
 export const getElectronResourcesDir = () =>
     path.join(app.getAppPath(), 'resources');
