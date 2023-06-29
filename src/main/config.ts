@@ -66,8 +66,6 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
  *                         is also used.
  *                         See also https://www.electronjs.org/docs/api/app#appgetpathname
  *                         Default: The appData directory appended with 'nrfconnect'.
- * --settings-json-path    Path to the user's settings file.
- *                         Default: "<userDataDir>/settings.json"
  * --skip-update-apps      Do not download info/updates about apps.
  *                         Default: false
  * --skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
@@ -88,9 +86,6 @@ export const init = (argv: Argv) => {
         isSkipSplashScreen: !!argv['skip-splash-screen'],
         isSkipUpdateApps: !!argv['skip-update-apps'],
         isSkipUpdateLauncher: !!argv['skip-update-launcher'],
-        settingsJsonPath:
-            argv['settings-json-path'] ||
-            path.join(app.getPath('userData'), 'settings.json'),
         sourcesJsonPath:
             argv['sources-json-path'] ||
             path.join(appsRootDir, 'external', 'sources.json'),

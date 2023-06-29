@@ -39,14 +39,11 @@ test.describe('automatic update check', () => {
     test.describe('When enabled', () => {
         const appsRootDir =
             'launcher/fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps';
-        const settingsJsonPath =
-            'launcher/fixtures/check-for-updates-at-startup-enabled/settings.json';
         let app: ElectronApplication;
         let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                settingsJsonPath,
                 skipUpdateApps: false,
             });
 
@@ -81,15 +78,12 @@ test.describe('automatic update check', () => {
     test.describe('When disabled', () => {
         const appsRootDir =
             'launcher/fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps';
-        const settingsJsonPath =
-            'launcher/fixtures/check-for-updates-at-startup-disabled/settings.json';
 
         let app: ElectronApplication;
         let page: Page;
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                settingsJsonPath,
                 skipUpdateApps: false,
             });
 
