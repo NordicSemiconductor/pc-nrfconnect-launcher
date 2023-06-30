@@ -93,6 +93,7 @@
         "@playwright/test": "^1.16.3",
         "@types/chmodr": "1.0.0",
         "@types/lodash": "^4.14.194",
+        "@types/minimist": "^1.2.2",
         "@types/mustache": "4.2.1",
         "@types/node": "14.17.17",
         "@types/targz": "1.0.1",
@@ -115,6 +116,7 @@
         "electron-updater": "4.3.1",
         "fs-extra": "9.0.0",
         "lodash": "^4.17.21",
+        "minimist": "^1.2.8",
         "mustache": "4.0.1",
         "node-watch": "^0.7.3",
         "react": "16.14.0",
@@ -123,8 +125,7 @@
         "short-uuid": "4.2.0",
         "sudo-prompt": "^9.2.1",
         "targz": "1.0.1",
-        "winston": "3.8.1",
-        "yargs": "15.3.1"
+        "winston": "3.8.1"
     },
     "eslintConfig": {
         "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"

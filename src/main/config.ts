@@ -11,16 +11,13 @@ import path from 'path';
 import packageJson from '../../package.json';
 import type { Configuration, StartupApp } from '../ipc/config';
 import { OFFICIAL, SourceName } from '../ipc/sources';
+import argv from './argv';
 
 let config: Configuration;
 
 export const getConfig = () => config;
 
-export interface Argv {
-    [x: string]: string;
-}
-
-const getStartupApp = (argv: Argv): StartupApp | undefined => {
+const getStartupApp = (): StartupApp | undefined => {
     const localApp = argv['open-local-app'];
     if (localApp != null) {
         return {
@@ -29,7 +26,7 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
         };
     }
 
-    const source = argv.source || OFFICIAL;
+    const source = argv.source ?? OFFICIAL;
 
     const downloadableApp = argv['open-downloadable-app'];
     if (downloadableApp != null) {
@@ -55,25 +52,7 @@ const getStartupApp = (argv: Argv): StartupApp | undefined => {
     }
 };
 
-/*
- * Init the config values based on the given command line arguments.
- *
- * Supported command line arguments:
- * --apps-root-dir         The directory where app data is stored.
- *                         Default: "<homeDir>/.nrfconnect-apps"
- * --user-data-dir         Path to the user data dir. If this is not
- *                         set, the environment variable NRF_USER_DATA_DIR
- *                         is also used.
- *                         See also https://www.electronjs.org/docs/api/app#appgetpathname
- *                         Default: The appData directory appended with 'nrfconnect'.
- * --skip-update-apps      Do not download info/updates about apps.
- *                         Default: false
- * --skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
- *                         Default: false
- * --skip-splash-screen    Skip the splash screen at startup.
- *                         Default: false
- */
-export const init = (argv: Argv) => {
+export const init = () => {
     const appsRootDir =
         argv['apps-root-dir'] ||
         path.join(app.getPath('home'), '.nrfconnect-apps');
@@ -83,10 +62,10 @@ export const init = (argv: Argv) => {
         isRunningLauncherFromSource: fs.existsSync(
             path.join(app.getAppPath(), 'README.md')
         ),
-        isSkipSplashScreen: !!argv['skip-splash-screen'],
-        isSkipUpdateApps: !!argv['skip-update-apps'],
-        isSkipUpdateLauncher: !!argv['skip-update-launcher'],
-        startupApp: getStartupApp(argv),
+        isSkipSplashScreen: argv['skip-splash-screen'],
+        isSkipUpdateApps: argv['skip-update-apps'],
+        isSkipUpdateLauncher: argv['skip-update-launcher'],
+        startupApp: getStartupApp(),
         version: packageJson.version,
     };
 };

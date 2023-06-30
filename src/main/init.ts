@@ -7,8 +7,6 @@
 /* eslint-disable import/first -- We have to keep the import order here, so that the user data directory is set first. */
 require('./setUserDataDir');
 
-import { argv } from 'yargs';
+import { init } from './config';
 
-import { Argv, init } from './config';
-
-init(argv as Argv);
+init();

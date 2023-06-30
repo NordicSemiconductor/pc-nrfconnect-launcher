@@ -6,16 +6,14 @@
 
 import { app } from 'electron';
 import { ensureDirSync } from 'fs-extra';
-import { argv } from 'yargs';
 
-import { Argv } from './config';
+import argv from './argv';
 
 declare global {
     var userDataDir: string; // eslint-disable-line no-var, vars-on-top -- Because this seems to be the way to declare a global variable in TypeScript
 }
 
-const userDataDir =
-    (argv as Argv)['user-data-dir'] || process.env.NRF_USER_DATA_DIR;
+const userDataDir = argv['user-data-dir'] ?? process.env.NRF_USER_DATA_DIR;
 
 if (userDataDir != null) {
     ensureDirSync(userDataDir);
