@@ -5,7 +5,7 @@
  */
 
 // Run this as soon as possible, so it is set up for the other modules to be loaded afterwards
-import './init';
+import './setUserDataDir';
 
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
 

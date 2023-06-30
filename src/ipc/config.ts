@@ -6,31 +6,17 @@
 
 import { ipcMain, ipcRenderer } from 'electron';
 
-export type StartupApp =
-    | {
-          local: true;
-          name: string;
-      }
-    | {
-          local: false;
-          name: string;
-          source: string;
-      };
-
 export interface Configuration {
-    appsRootDir: string;
     isRunningLauncherFromSource: boolean;
-    isSkipSplashScreen: boolean;
     isSkipUpdateApps: boolean;
     isSkipUpdateLauncher: boolean;
-    startupApp?: StartupApp;
     version: string;
 }
 const channel = 'get-config';
 
 export const getConfig = (): Configuration => ipcRenderer.sendSync(channel);
 
-export const registerGetConfig = (onGetConfig: () => Configuration) =>
+export const registerGetConfig = (config: Configuration) =>
     ipcMain.on(channel, event => {
-        event.returnValue = onGetConfig();
+        event.returnValue = config;
     });

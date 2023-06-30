@@ -14,15 +14,17 @@ import {
 import { join } from 'path';
 import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
 
+import packageJson from '../../package.json';
 import { AppDetails } from '../ipc/appDetails';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
+import argv from './argv';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
-import { getConfig, getElectronResourcesDir } from './config';
+import { getElectronResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -41,13 +43,13 @@ export const openLauncherWindow = () => {
 
 const createLauncherWindow = () => {
     const window = createWindow({
-        title: `nRF Connect for Desktop v${getConfig().version}`,
+        title: `nRF Connect for Desktop v${packageJson.version}`,
         url: `file://${getElectronResourcesDir()}/launcher.html`,
         icon: getNrfConnectForDesktopIcon(),
         width: 760,
         height: 600,
         center: true,
-        splashScreen: !getConfig().isSkipSplashScreen,
+        splashScreen: !argv['skip-splash-screen'],
     });
 
     registerLauncherWindow(window);
@@ -231,10 +233,8 @@ export const getAppDetails = (webContents: WebContents): AppDetails => {
         );
     }
 
-    const config = getConfig();
-
     return {
-        coreVersion: config.version,
+        coreVersion: packageJson.version,
         corePath: electronApp.getAppPath(),
         homeDir: electronApp.getPath('home'),
         tmpDir: electronApp.getPath('temp'),

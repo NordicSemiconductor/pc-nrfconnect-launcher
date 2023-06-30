@@ -8,11 +8,11 @@ import { app, dialog, Menu } from 'electron';
 
 import { installAllLocalAppArchives } from './apps/appChanges';
 import { initialiseAllSources } from './apps/sources';
+import { getStartupApp } from './argv';
 import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
-    getConfig,
     getNodeModulesDir,
 } from './config';
 import describeError from './describeError';
@@ -36,7 +36,7 @@ const initAppsDirectory = async () => {
 };
 
 const openInitialWindow = () => {
-    const { startupApp } = getConfig();
+    const startupApp = getStartupApp();
 
     if (startupApp == null) {
         openLauncherWindow();

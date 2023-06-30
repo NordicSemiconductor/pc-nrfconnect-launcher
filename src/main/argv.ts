@@ -6,6 +6,8 @@
 
 import parseArgs from 'minimist';
 
+import { OFFICIAL } from '../ipc/sources';
+
 /*
  * Supported command line arguments:
  *
@@ -63,5 +65,51 @@ const argv = parseArgs<CommandLineArguments>(process.argv.slice(2), {
         'remove-devtools',
     ],
 });
+
+type StartupApp =
+    | {
+          local: true;
+          name: string;
+      }
+    | {
+          local: false;
+          name: string;
+          source: string;
+      };
+
+export const getStartupApp = (): StartupApp | undefined => {
+    const localApp = argv['open-local-app'];
+    if (localApp != null) {
+        return {
+            local: true,
+            name: localApp,
+        };
+    }
+
+    const source = argv.source ?? OFFICIAL;
+
+    const downloadableApp = argv['open-downloadable-app'];
+    if (downloadableApp != null) {
+        return {
+            local: false,
+            source,
+            name: downloadableApp,
+        };
+    }
+
+    const officialApp = argv['open-official-app'];
+    if (officialApp != null) {
+        console.warn(
+            'Using the command line switch --open-official-app is deprecated,\n' +
+                'use --open-downloadable-app instead.'
+        );
+
+        return {
+            local: false,
+            source,
+            name: officialApp,
+        };
+    }
+};
 
 export default argv;
