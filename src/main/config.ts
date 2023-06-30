@@ -86,9 +86,6 @@ export const init = (argv: Argv) => {
         isSkipSplashScreen: !!argv['skip-splash-screen'],
         isSkipUpdateApps: !!argv['skip-update-apps'],
         isSkipUpdateLauncher: !!argv['skip-update-launcher'],
-        sourcesJsonPath:
-            argv['sources-json-path'] ||
-            path.join(appsRootDir, 'external', 'sources.json'),
         startupApp: getStartupApp(argv),
         version: packageJson.version,
     };
