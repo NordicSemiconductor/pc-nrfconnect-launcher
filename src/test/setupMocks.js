@@ -15,6 +15,7 @@ jest.mock('electron', () => ({
     },
     app: {
         on: jest.fn(),
+        getPath: () => 'mocked/path',
     },
 }));
 

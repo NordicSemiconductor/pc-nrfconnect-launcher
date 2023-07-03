@@ -4,8 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { app } from 'electron';
 import Store from 'electron-store';
+import fs from 'fs';
+import path from 'path';
 
+import packageJson from '../../package.json';
 import { registerGetAppDetails } from '../ipc/appDetails';
 import {
     registerDownloadLatestAppInfos,
@@ -58,7 +62,7 @@ import {
 import createDesktopShortcut from './apps/createDesktopShortcut';
 import { addSource, removeSource } from './apps/sourceChanges';
 import { getAllSources } from './apps/sources';
-import { getConfig } from './config';
+import argv from './argv';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
 import { requireModule } from './require';
@@ -78,7 +82,14 @@ export default () => {
 
     registerGetAppDetails(getAppDetails);
 
-    registerGetConfig(getConfig);
+    registerGetConfig({
+        isRunningLauncherFromSource: fs.existsSync(
+            path.join(app.getAppPath(), 'README.md')
+        ),
+        isSkipUpdateApps: argv['skip-update-apps'],
+        isSkipUpdateLauncher: argv['skip-update-launcher'],
+        version: packageJson.version,
+    });
 
     registerCreateDesktopShortcut(createDesktopShortcut);
 

@@ -11,6 +11,8 @@ import fs from 'fs';
 import path from 'path';
 import { exit } from 'process';
 
+import argv from './argv';
+
 type ExtensionReference = typeof REDUX_DEVTOOLS;
 
 type Extensions = Record<string, ExtensionReference>;
@@ -87,9 +89,9 @@ export default async () => {
 
     const extensions = { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS };
 
-    if (process.argv.includes('--install-devtools')) {
+    if (argv['install-devtools']) {
         await installDevtools(extensions);
-    } else if (process.argv.includes('--remove-devtools')) {
+    } else if (argv['remove-devtools']) {
         removeDevtools(extensions);
     } else {
         loadInstalledDevtools(extensions);
