@@ -25,7 +25,7 @@ release the new version.
             reachable at given URL, source already exists, or trying to add the
             official source.
     -   Name filter for apps: Trim leading and trailing whitespace.
--   #xxx: Bump device-lib-js to 0.6.13
+-   #855: Bump device-lib-js to 0.6.13
 
 ## 4.1.2
 
