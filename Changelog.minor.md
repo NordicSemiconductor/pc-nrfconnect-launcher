@@ -9,6 +9,11 @@ release the new version.
 
 ## 4.1.3-pre
 
+### Changed
+
+-   #844: Text is select when search field is focused, making it easier to
+    replace the current text.
+
 ### Fixed
 
 -   #851: Proxies with authentication were not handled correctly when multiple

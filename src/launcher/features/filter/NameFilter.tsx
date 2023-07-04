@@ -33,6 +33,7 @@ export default () => {
                 const nameFilter = event.target.value;
                 dispatch(setNameFilter(nameFilter));
             }}
+            onFocus={() => searchFieldRef.current?.select()}
         />
     );
 };
