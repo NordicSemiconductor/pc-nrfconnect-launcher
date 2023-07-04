@@ -11,7 +11,7 @@ import {
     shell,
 } from 'electron';
 
-import argv from './argv';
+import { additionalArguments } from './argv';
 import { getElectronResourcesDir } from './config';
 
 type BrowserWindowOptions = BrowserWindowConstructorOptions & {
@@ -44,11 +44,14 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
 };
 
 const mergeAdditionalArguments = (nonCommandlineArguments: string[]) => {
-    if (argv._.length === 0 && nonCommandlineArguments.length === 0) {
+    if (
+        additionalArguments.length === 0 &&
+        nonCommandlineArguments.length === 0
+    ) {
         return [];
     }
 
-    return ['--', ...nonCommandlineArguments, ...argv._];
+    return ['--', ...nonCommandlineArguments, ...additionalArguments];
 };
 
 export const createWindow = (

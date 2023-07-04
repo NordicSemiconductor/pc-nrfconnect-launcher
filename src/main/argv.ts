@@ -60,6 +60,7 @@ const isBundledApp = !process.defaultApp;
 const args = process.argv.slice(isBundledApp ? 1 : 2);
 
 const argv = parseArgs<CommandLineArguments>(args, {
+    '--': true,
     boolean: [
         'skip-splash-screen',
         'skip-update-apps',
@@ -68,6 +69,9 @@ const argv = parseArgs<CommandLineArguments>(args, {
         'remove-devtools',
     ],
 });
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Because '--': true is set above, this will always be non-null.
+export const additionalArguments: string[] = argv['--']!;
 
 type StartupApp =
     | {
