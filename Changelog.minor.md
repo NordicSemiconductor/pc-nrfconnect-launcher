@@ -11,8 +11,8 @@ release the new version.
 
 ### Changed
 
--   #844: Text is select when search field is focused, making it easier to replace
-    the current text.
+-   #844: Text is select when search field is focused, making it easier to
+    replace the current text.
 
 ### Fixed
 
