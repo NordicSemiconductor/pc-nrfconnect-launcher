@@ -56,7 +56,10 @@ interface CommandLineArguments {
     'remove-devtools': boolean;
 }
 
-const argv = parseArgs<CommandLineArguments>(process.argv.slice(2), {
+const isBundledApp = !process.defaultApp;
+const args = process.argv.slice(isBundledApp ? 1 : 2);
+
+const argv = parseArgs<CommandLineArguments>(args, {
     boolean: [
         'skip-splash-screen',
         'skip-update-apps',
