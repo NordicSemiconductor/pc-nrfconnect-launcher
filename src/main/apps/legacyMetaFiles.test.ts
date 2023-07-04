@@ -23,6 +23,9 @@ jest.mock('../config', () => {
 
 const officialSource = {
     appsJson: {
+        '_deprecation note_': {
+            _1: 'Such a note was added when we deprecated downloading apps.json from GitHub.',
+        },
         'pc-nrfconnect-rssi': {
             displayName: 'RSSI Viewer',
             description:

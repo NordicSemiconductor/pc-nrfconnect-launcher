@@ -25,6 +25,7 @@ import { downloadToJson } from '../net';
 import {
     addDownloadAppData,
     addInstalledAppData,
+    appInfoExists,
     getLocalApp,
     installedAppPath,
     isInstalled,
@@ -84,6 +85,10 @@ const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
     return { apps, appsWithErrors };
 };
 
+// appInfo.versions may contain a property `undefined` as the result of a broken migration.
+const hasValidAppInfo = (appInfo: AppInfo) =>
+    appInfo.versions.undefined == null;
+
 export const getDownloadableApps = () => {
     const sourcesWithErrors: SourceWithError[] = [];
     const apps: DownloadableApp[] = [];
@@ -99,7 +104,9 @@ export const getDownloadableApps = () => {
             const result = addInstalledAppDatas(
                 getAllAppUrls(source)
                     .map(getAppSpec(source))
+                    .filter(appInfoExists)
                     .map(readAppInfo)
+                    .filter(hasValidAppInfo)
                     .map(addDownloadAppData(source.name))
             );
 

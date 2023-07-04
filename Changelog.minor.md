@@ -7,7 +7,31 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.1.2-pre
+## 4.1.3-pre
+
+### Changed
+
+-   #844: Text is select when search field is focused, making it easier to replace
+    the current text.
+
+### Fixed
+
+-   #851: Proxies with authentication were not handled correctly when multiple
+    requests were done at the same time.
+-   #852:
+    -   Proxy dialogs were outdated.
+    -   Multiple, partially misleading dialogs were displayed if users cancelled
+        the proxy login.
+-   #853:
+    -   Add Source dialog:
+        -   Trim leading and trailing whitespace from URL.
+        -   Dialog style was outdated.
+        -   More expressive error messages for typical errors: `source.json` not
+            reachable at given URL, source already exists, or trying to add the
+            official source.
+    -   Name filter for apps: Trim leading and trailing whitespace.
+
+## 4.1.2
 
 ### Changed
 
@@ -15,14 +39,18 @@ release the new version.
     written to a serial port.
 -   #840: Error dialogs now make it easier to understand if there are multiple
     errors and also can show technical details when a source fails to load.
--   #841: Bumped device-lib-js to 0.6.11.
--   #844: Select text on search field focus.
+-   #848: Bumped device-lib-js to 0.6.12.
 
 ### Removed
 
 -   #839: Device-lib proxies.
 
 ### Fixed
+
+-   #850: Support for a custom html-template from the app.
+
+    If the app supplies an `html`-entry in `package.json`, this path will
+    instead be used to load the app.
 
 -   #835: Wrong state for when users jumped between launcher versions.
 

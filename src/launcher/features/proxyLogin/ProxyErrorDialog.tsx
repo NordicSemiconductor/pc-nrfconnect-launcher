@@ -5,42 +5,41 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { ErrorDialog } from 'pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { getProxyLogin, loginErrorDialogClosed } from './proxyLoginSlice';
+import { getIsErrorVisible, loginErrorDialogClosed } from './proxyLoginSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const { isErrorDialogVisible: isVisible } =
-        useLauncherSelector(getProxyLogin);
+    const isVisible = useLauncherSelector(getIsErrorVisible);
 
     return (
-        <Modal show={isVisible} backdrop>
-            <Modal.Header>
-                <Modal.Title>Proxy error</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>
-                    It appears that you are having problems authenticating with
-                    a proxy server. This will prevent you from using certain
-                    features of nRF Connect for Desktop, such as installing apps
-                    from the &quot;Add/remove apps&quot; screen.
-                </p>
-                <p>
-                    If you are unable to resolve the issue, then go to Settings
-                    and disable &quot;Check for updates at startup&quot;. Then
-                    restart nRF Connect for Desktop and install apps manually by
-                    following the instructions at
-                    https://github.com/NordicSemiconductor/pc-nrfconnect-launcher.
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={() => dispatch(loginErrorDialogClosed())}>
-                    OK
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <ErrorDialog
+            isVisible={isVisible}
+            onHide={() => dispatch(loginErrorDialogClosed())}
+            title="Proxy error"
+        >
+            <p>
+                It appears that you are having problems authenticating with a
+                proxy server. This will prevent you from using certain features
+                of nRF Connect for Desktop, such as installing downloadable apps
+                or checking for updates.
+            </p>
+            <p>
+                If you are unable to resolve the issue, then go to Settings and
+                disable &quot;Check for updates at startup&quot;. Then restart
+                nRF Connect for Desktop and install apps manually by following
+                the instructions at{' '}
+                <a
+                    target="_blank"
+                    href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher"
+                    rel="noreferrer"
+                >
+                    https://github.com/NordicSemiconductor/pc-nrfconnect-launcher
+                </a>
+                .
+            </p>
+        </ErrorDialog>
     );
 };

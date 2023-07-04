@@ -1,8 +1,19 @@
-## 4.1.2 - unreleased
+## Unreleased
 
-### Changed
+### Added
 
--   Minor fixes and improvements.
+-   Successfully installing an app will focus it and highlight it for
+    visibility.
+
+## 4.1.2 - 2023-06-15
+
+### Fixed
+
+-   Having special characters (such as `&`) in the path created errors when
+    launching apps. Usually happened when these characters were part of the
+    username.
+-   Updating nRF Connect for Desktop from 3.10 or older directly to 4.1 led to
+    an error message (Unable to retrieve the official source from …).
 
 ## 4.1.1 - 2023-05-10
 

@@ -11,12 +11,13 @@ import {
 } from 'pc-nrfconnect-shared';
 
 import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
-import type { AppDispatch } from '../../store';
+import type { AppThunk } from '../../store';
 import { downloadLatestAppInfos } from '../apps/appsEffects';
+import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
-export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
+export const checkForLauncherUpdate = (): AppThunk => async dispatch => {
     try {
         const { isUpdateAvailable, newVersion } = await checkForUpdate();
 
@@ -30,20 +31,23 @@ export const checkForCoreUpdates = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const cancelDownload = () => (dispatch: AppDispatch) => {
+export const cancelDownload = (): AppThunk => dispatch => {
     cancelUpdate();
     dispatch(reset());
 };
 
-export const checkForUpdatesManually = () => async (dispatch: AppDispatch) => {
-    try {
-        await dispatch(downloadLatestAppInfos());
-        dispatch(showUpdateCheckComplete());
+export const checkForUpdatesManually =
+    (): AppThunk => async (dispatch, getState) => {
+        try {
+            await dispatch(downloadLatestAppInfos());
+            if (!getIsProxyErrorShown(getState())) {
+                dispatch(showUpdateCheckComplete());
 
-        dispatch(checkForCoreUpdates());
-    } catch (error) {
-        ErrorDialogActions.showDialog(
-            `Unable to check for updates: ${describeError(error)}`
-        );
-    }
-};
+                dispatch(checkForLauncherUpdate());
+            }
+        } catch (error) {
+            ErrorDialogActions.showDialog(
+                `Unable to check for updates: ${describeError(error)}`
+            );
+        }
+    };

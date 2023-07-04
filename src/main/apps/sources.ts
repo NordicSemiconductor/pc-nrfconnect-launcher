@@ -11,7 +11,11 @@ import { SourceJson } from 'pc-nrfconnect-shared';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
-import { getAppsRootDir, getConfig, getNodeModulesDir } from '../config';
+import {
+    getAppsExternalDir,
+    getAppsRootDir,
+    getNodeModulesDir,
+} from '../config';
 import describeError from '../describeError';
 import { readFile, readJsonFile, writeJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
@@ -27,6 +31,8 @@ const officialSource = {
     name: OFFICIAL,
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
+
+const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
 
 const convertToOldSourceJsonFormat = (allSources: Source[]) =>
     Object.fromEntries(
@@ -45,14 +51,12 @@ const convertFromOldSourceJsonFormat = (
     }));
 
 const loadAllSources = () => {
-    const filePath = getConfig().sourcesJsonPath;
-
-    if (!fs.existsSync(filePath)) {
+    if (!fs.existsSync(sourcesJsonPath())) {
         return [];
     }
     let sourceJsonContent: string | undefined;
     try {
-        sourceJsonContent = readFile(filePath);
+        sourceJsonContent = readFile(sourcesJsonPath());
         const sourceJsonParsed = JSON.parse(sourceJsonContent);
 
         if (Array.isArray(sourceJsonParsed)) {
@@ -78,10 +82,7 @@ const loadAllSources = () => {
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
-    writeJsonFile(
-        getConfig().sourcesJsonPath,
-        convertToOldSourceJsonFormat(sources)
-    );
+    writeJsonFile(sourcesJsonPath(), convertToOldSourceJsonFormat(sources));
 };
 
 export const removeFromSourceList = (
@@ -137,14 +138,10 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
     downloadToJson<SourceJson>(sourceUrl, true);
 
 const downloadSourceJsonToFile = async (source: Source) => {
-    try {
-        const sourceJson = await downloadSourceJson(source.url);
-        writeJsonFile(getSourceJsonPath(source), sourceJson);
+    const sourceJson = await downloadSourceJson(source.url);
+    writeJsonFile(getSourceJsonPath(source), sourceJson);
 
-        return sourceJson;
-    } catch (error) {
-        throw source;
-    }
+    return sourceJson;
 };
 
 const readSourceJson = (source: Source) =>

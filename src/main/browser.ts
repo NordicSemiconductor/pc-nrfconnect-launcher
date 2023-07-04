@@ -11,6 +11,7 @@ import {
     shell,
 } from 'electron';
 
+import argv from './argv';
 import { getElectronResourcesDir } from './config';
 
 type BrowserWindowOptions = BrowserWindowConstructorOptions & {
@@ -43,18 +44,11 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
 };
 
 const mergeAdditionalArguments = (nonCommandlineArguments: string[]) => {
-    // Index of command line started arguments
-    const appArgumentsIndex = process.argv.indexOf('--');
-    const additionalArguments =
-        appArgumentsIndex === -1
-            ? []
-            : process.argv.slice(appArgumentsIndex + 1);
-
-    if (appArgumentsIndex === -1 && nonCommandlineArguments.length === 0) {
+    if (argv._.length === 0 && nonCommandlineArguments.length === 0) {
         return [];
     }
 
-    return ['--', ...nonCommandlineArguments, ...additionalArguments];
+    return ['--', ...nonCommandlineArguments, ...argv._];
 };
 
 export const createWindow = (

@@ -33,6 +33,7 @@ interface Installed {
     currentVersion: string;
     engineVersion?: string;
     repositoryUrl?: string;
+    html?: string;
     installed: {
         path: string;
         shasum?: string;

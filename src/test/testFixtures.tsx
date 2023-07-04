@@ -14,7 +14,10 @@ import {
 import { LOCAL, OFFICIAL } from '../ipc/sources';
 
 const path = (appName: string) => `/path/to/${appName}`;
-const iconPath = (appName: string) => `/path/to/${appName}/icon.png`;
+// AppIcon.tsx rebuilds the path with path.sep
+// This creates a different version than the snapshots on at least one platform
+// The path is invalid anyway and so has not real use other than to illustrate that it is a path
+const iconPath = (appName: string) => `${appName}.png`;
 
 export const createLocalTestApp = (
     appName = 'dummy',
