@@ -31,6 +31,22 @@ release the new version.
             official source.
     -   Name filter for apps: Trim leading and trailing whitespace.
 -   #855: Bump device-lib-js to 0.6.13
+-   #856: Fix shortcuts when different directories were specified.
+
+    To reproduce:
+
+    1. Determine an app (e.g. DTM) which is not installed when running the
+       launcher normally, with default directories.
+    1. Start the launcher with the options `--user-data-dir` and
+       `--apps-root-dir`, e.g. on macOS with
+       `--user-data-dir /tmp/nrf_data --apps-root-dir /tmp/nrf_apps`.
+    1. The launcher open without any apps installed. Install one and create a
+       shortcut to it.
+    1. Open the shortcut.
+
+    Previously the app didn't open, instead an error message was shown: “Error
+    when starting application – Error: Tried to open app …, but it is not
+    installed”. Now the app opens correctly.
 
 ## 4.1.2
 

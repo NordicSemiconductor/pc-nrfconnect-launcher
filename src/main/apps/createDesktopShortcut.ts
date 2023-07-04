@@ -12,6 +12,7 @@ import { uuid } from 'short-uuid';
 import { isDownloadable, LaunchableApp } from '../../ipc/apps';
 import { showErrorDialog } from '../../ipc/showErrorDialog';
 import { OFFICIAL } from '../../ipc/sources';
+import argv from '../argv';
 import { chmod, chmodDir, copy, readFile, untar, writeFile } from '../fileUtil';
 import { getShortcutIcon } from '../icons';
 
@@ -34,6 +35,22 @@ const sourceName = (app: LaunchableApp) => {
 const getFileName = (app: LaunchableApp) =>
     `${app.displayName || app.name}${sourceName(app)}`;
 
+const maybeAppsRootDir = () => {
+    if (argv['apps-root-dir'] == null) {
+        return [];
+    }
+
+    return ['--apps-root-dir', `"${argv['apps-root-dir']}"`];
+};
+
+const maybeUserDataDir = () => {
+    if (argv['user-data-dir'] == null) {
+        return [];
+    }
+
+    return ['--user-data-dir', `"${argv['user-data-dir']}"`];
+};
+
 const getArgs = (app: LaunchableApp) =>
     [
         '--args',
@@ -41,7 +58,11 @@ const getArgs = (app: LaunchableApp) =>
         app.name,
         '--source',
         `"${app.source}"`,
-    ].join(' ');
+        maybeAppsRootDir(),
+        maybeUserDataDir(),
+    ]
+        .flat()
+        .join(' ');
 
 const createShortcutForWindows = (app: LaunchableApp) => {
     const fileName = getFileName(app);
