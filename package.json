@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "4.1.3-pre",
+    "version": "4.1.3-pre2",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -109,7 +109,7 @@
     },
     "dependencies": {
         "@electron/remote": "2.0.8",
-        "@nordicsemiconductor/nrf-device-lib-js": "0.6.12",
+        "@nordicsemiconductor/nrf-device-lib-js": "0.6.13",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
