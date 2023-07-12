@@ -6,7 +6,7 @@
 
 import { BrowserWindow, ipcRenderer } from 'electron';
 
-let launcherWindow: BrowserWindow;
+let launcherWindow: BrowserWindow | undefined;
 
 export const registerLauncherWindowFromMain = (window: BrowserWindow) => {
     launcherWindow = window;
@@ -17,7 +17,7 @@ export const send =
         channel: string
     ) =>
     (...args: Parameters<T>) =>
-        launcherWindow.webContents.send(channel, ...args);
+        launcherWindow?.webContents.send(channel, ...args);
 
 export const on =
     <T extends (...args: any[]) => void>( // eslint-disable-line @typescript-eslint/no-explicit-any -- We have to explicitly allow any function here
