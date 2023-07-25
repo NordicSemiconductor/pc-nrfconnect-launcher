@@ -85,18 +85,26 @@ exports[`ProxyLoginDialog is displayed after a login is requested 1`] = `
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Login
-          </button>
-          <button
-            class=""
-            type="button"
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              type="button"
+            >
+              Login
+            </button>
+          </div>
+          <div
+            class="tw-preflight "
           >
-            Cancel
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -213,18 +221,26 @@ exports[`ProxyLoginDialog is updated if users enter a username 1`] = `
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Login
-          </button>
-          <button
-            class=""
-            type="button"
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              type="button"
+            >
+              Login
+            </button>
+          </div>
+          <div
+            class="tw-preflight "
           >
-            Cancel
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

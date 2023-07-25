@@ -51,7 +51,7 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -152,7 +152,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -258,7 +258,7 @@ exports[`AppList should disable buttons while removing an app 1`] = `
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -356,7 +356,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -427,7 +427,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -502,7 +502,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -570,7 +570,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 pl-3 ml-auto col-auto"
+              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
             >
               <div
                 class="wide-btns btn-toolbar"

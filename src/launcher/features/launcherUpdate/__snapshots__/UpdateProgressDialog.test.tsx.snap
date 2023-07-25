@@ -121,12 +121,16 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Cancel
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -197,13 +201,17 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            disabled=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Cancel
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              disabled=""
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -274,13 +282,17 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            disabled=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Cancel
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              disabled=""
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

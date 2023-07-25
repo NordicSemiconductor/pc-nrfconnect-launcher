@@ -214,12 +214,16 @@ exports[`SettingsView should render check for updates completed, with everything
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Got it
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              Got it
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -441,12 +445,16 @@ exports[`SettingsView should render check for updates completed, with updates av
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Got it
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              Got it
+            </button>
+          </div>
         </div>
       </div>
     </div>

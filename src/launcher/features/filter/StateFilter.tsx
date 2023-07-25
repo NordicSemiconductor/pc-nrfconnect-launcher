@@ -16,12 +16,12 @@ export default () => {
     const { installed, downloadable } = useLauncherSelector(getShownStates);
 
     return (
-        <Col className="pr-4 pl-0">
-            <div className="border-bottom py-1 mx-3 mb-2">State</div>
+        <Col className="pl-0 pr-4">
+            <div className="border-bottom mx-3 mb-2 py-1">State</div>
             <Form.Check
                 label="Installed"
                 id="cb-installed"
-                className="mx-3 py-1 px-4"
+                className="mx-3 px-4 py-1"
                 custom
                 checked={installed}
                 onChange={({ target }) => {
@@ -36,7 +36,7 @@ export default () => {
             <Form.Check
                 label="Downloadable"
                 id="cb-downloadable"
-                className="mx-3 py-1 px-4"
+                className="mx-3 px-4 py-1"
                 custom
                 checked={downloadable}
                 onChange={({ target }) => {

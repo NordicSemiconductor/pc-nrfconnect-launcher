@@ -59,12 +59,16 @@ exports[`ProxyErrorDialog is displayed after users canceled the login 1`] = `
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Close
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

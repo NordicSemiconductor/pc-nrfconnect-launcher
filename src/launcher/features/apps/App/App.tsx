@@ -90,7 +90,7 @@ const App = ({ app }: { app: DisplayedApp }) => {
                 </Col>
                 <Col
                     xs="auto"
-                    className="d-flex align-items-center my-3 pl-3 ml-auto"
+                    className="d-flex align-items-center my-3 ml-auto pl-3"
                 >
                     <ButtonToolbar className="wide-btns">
                         <UpdateApp app={app} />
