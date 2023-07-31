@@ -10,10 +10,9 @@ import { AnyAction } from 'redux';
 import { SourceWithError } from '../../../ipc/apps';
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import {
-    addSource as addSourceInMain,
     AddSourceError,
+    inMain as sources,
     OFFICIAL,
-    removeSource as removeSourceInMain,
     Source,
     SourceName,
     SourceUrl,
@@ -50,7 +49,8 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
 export const addSource =
     (url: SourceUrl): AppThunk =>
     dispatch => {
-        addSourceInMain(url)
+        sources
+            .addSource(url)
             .then(result => {
                 if (result.type === 'success') {
                     dispatch(addSourceAction(result.source));
@@ -74,7 +74,8 @@ export const addSource =
 export const removeSource =
     (name: SourceName): AppThunk =>
     dispatch => {
-        removeSourceInMain(name)
+        sources
+            .removeSource(name)
             .then(() => {
                 dispatch(removeAppsOfSource(name));
                 dispatch(removeSourceAction(name));
@@ -125,12 +126,12 @@ const showProblemWithExtraSource =
     };
 
 export const handleSourcesWithErrors =
-    (sources: SourceWithError[]): AppThunk =>
+    (sourcesWithError: SourceWithError[]): AppThunk =>
     (dispatch, getState) => {
         if (getIsProxyErrorShown(getState())) {
             return;
         }
-        sources.forEach(({ source, reason }) => {
+        sourcesWithError.forEach(({ source, reason }) => {
             if (source.name === OFFICIAL) {
                 dispatch(showProblemWithOfficialSource(source, reason));
             } else {

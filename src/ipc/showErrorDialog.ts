@@ -4,11 +4,17 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { on, send } from './infrastructure/mainToRenderer';
+import {
+    on,
+    send,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/mainToRenderer';
 
 const channel = 'show-error-dialog';
 
 type ShowErrorDialog = (errorMessage: string) => void;
 
-export const showErrorDialog = send<ShowErrorDialog>(channel);
-export const registerShowErrorDialog = on<ShowErrorDialog>(channel);
+const showErrorDialog = send<ShowErrorDialog>(channel);
+const registerShowErrorDialog = on<ShowErrorDialog>(channel);
+
+export const forMain = { registerShowErrorDialog };
+export const inRenderer = { showErrorDialog };

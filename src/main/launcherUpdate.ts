@@ -10,12 +10,8 @@ import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
 
-import {
-    updateFinished,
-    updateProgress,
-    updateStarted,
-} from '../ipc/launcherUpdateProgress';
-import { showErrorDialog } from '../ipc/showErrorDialog';
+import { inRenderer } from '../ipc/launcherUpdateProgress';
+import * as showError from '../ipc/showErrorDialog';
 
 let installCancellationToken: CancellationToken | undefined;
 
@@ -55,32 +51,32 @@ export const checkForUpdate = async () => {
 
 export const startUpdate = () => {
     if (installCancellationToken !== undefined) {
-        showErrorDialog(
+        showError.inRenderer.showErrorDialog(
             'Download was requested but another download operation is ' +
                 'already in progress.'
         );
         return;
     }
 
-    updateStarted();
+    inRenderer.updateStarted();
 
     autoUpdater.on('download-progress', (progressObj: ProgressInfo) => {
-        updateProgress(progressObj.percent);
+        inRenderer.updateProgress(progressObj.percent);
     });
 
     autoUpdater.on('update-downloaded', () => {
-        updateFinished(true);
+        inRenderer.updateFinished(true);
         installCancellationToken = undefined;
         autoUpdater.removeAllListeners();
         autoUpdater.quitAndInstall();
     });
 
-    autoUpdater.on('error', error => {
-        updateFinished(false);
+    autoUpdater.on('error', err => {
+        inRenderer.updateFinished(false);
         installCancellationToken = undefined;
         autoUpdater.removeAllListeners();
-        if (error.message !== 'cancelled') {
-            showErrorDialog(error.message);
+        if (err.message !== 'cancelled') {
+            showError.inRenderer.showErrorDialog(err.message);
         }
     });
 
@@ -93,6 +89,8 @@ export const cancelUpdate = () => {
         installCancellationToken.cancel();
         installCancellationToken = undefined;
     } else {
-        showErrorDialog('Unable to cancel. No download is in progress.');
+        showError.inRenderer.showErrorDialog(
+            'Unable to cancel. No download is in progress.'
+        );
     }
 };

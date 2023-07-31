@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 import path, { basename } from 'path';
-import type { AppInfo, PackageJson } from 'pc-nrfconnect-shared';
+import { AppInfo, PackageJson } from 'pc-nrfconnect-shared/main';
 
 import {
     AppSpec,

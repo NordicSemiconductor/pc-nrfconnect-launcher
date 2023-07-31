@@ -37,12 +37,6 @@ class SerialPortMap {
         this.map.clear();
     };
 
-    broadCast = (path: string, channel: string, ...args: unknown[]) => {
-        this.get(path)?.renderers.forEach(renderer => {
-            renderer.send(`${channel}_${path}`, ...args);
-        });
-    };
-
     hasEqualOptions = (
         path: string,
         options: SerialPortOpenOptions<AutoDetectTypes>

@@ -4,8 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    on,
+    send,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/mainToRenderer';
+
 import { AppSpec } from './apps';
-import { on, send } from './infrastructure/mainToRenderer';
 
 const channel = 'download-progress';
 
@@ -16,5 +20,8 @@ export type Progress = {
 
 type DownloadProgress = (progress: Progress) => void;
 
-export const downloadProgress = send<DownloadProgress>(channel);
-export const registerDownloadProgress = on<DownloadProgress>(channel);
+const reportDownloadProgress = send<DownloadProgress>(channel);
+const registerDownloadProgress = on<DownloadProgress>(channel);
+
+export const forMain = { registerDownloadProgress };
+export const inRenderer = { reportDownloadProgress };

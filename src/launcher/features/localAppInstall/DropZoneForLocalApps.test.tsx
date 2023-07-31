@@ -8,7 +8,7 @@ import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { RootErrorDialog } from 'pc-nrfconnect-shared';
 
-import { installLocalApp } from '../../../ipc/apps';
+import { inMain } from '../../../ipc/apps';
 import { createLocalTestApp } from '../../../test/testFixtures';
 import testrenderer, { preparedStore } from '../../../test/testrenderer';
 import { getAllApps } from '../apps/appsSlice';
@@ -32,7 +32,7 @@ const drop = (paths: string[]) => {
 
 describe('DropZoneForLocalApps', () => {
     it('installs the dropped file', async () => {
-        jest.mocked(installLocalApp)
+        jest.mocked(inMain.installLocalApp)
             .mockClear()
             .mockResolvedValue(successfulInstall(installedApp));
 
@@ -43,7 +43,7 @@ describe('DropZoneForLocalApps', () => {
 
         drop([path]);
 
-        expect(installLocalApp).toHaveBeenCalledWith(path);
+        expect(inMain.installLocalApp).toHaveBeenCalledWith(path);
 
         await waitFor(() =>
             expect(getAllApps(store.getState())).toContain(installedApp)
@@ -51,17 +51,17 @@ describe('DropZoneForLocalApps', () => {
     });
 
     it('installs nothing when dropping no file (e.g. only text)', () => {
-        jest.mocked(installLocalApp).mockClear();
+        jest.mocked(inMain.installLocalApp).mockClear();
 
         testrenderer(<DropZoneForLocalApps />);
 
         drop([]);
 
-        expect(installLocalApp).not.toHaveBeenCalled();
+        expect(inMain.installLocalApp).not.toHaveBeenCalled();
     });
 
     it('installs all files that are dropped', async () => {
-        jest.mocked(installLocalApp)
+        jest.mocked(inMain.installLocalApp)
             .mockClear()
             .mockResolvedValueOnce(successfulInstall(installedApp))
             .mockResolvedValueOnce(successfulInstall(anotherInstalledApp));
@@ -75,7 +75,7 @@ describe('DropZoneForLocalApps', () => {
         drop([path1, path2]);
 
         await waitFor(() => {
-            expect(installLocalApp).toHaveBeenCalledTimes(2);
+            expect(inMain.installLocalApp).toHaveBeenCalledTimes(2);
         });
         await waitFor(() => {
             expect(getAllApps(store.getState())).toEqual(
@@ -86,7 +86,7 @@ describe('DropZoneForLocalApps', () => {
 
     it('shows an error if the archive cannot be unpacked', async () => {
         const errorMessage = 'Could not unpack the archive';
-        jest.mocked(installLocalApp)
+        jest.mocked(inMain.installLocalApp)
             .mockClear()
             .mockResolvedValue(failureReadingFile(errorMessage));
 
@@ -104,7 +104,7 @@ describe('DropZoneForLocalApps', () => {
 
     it('shows an error if the app exists', async () => {
         const path = 'testapp-1.2.3.tgz';
-        jest.mocked(installLocalApp)
+        jest.mocked(inMain.installLocalApp)
             .mockClear()
             .mockResolvedValue(appExists('testapp', path));
 

@@ -4,16 +4,29 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    handle,
+    invoke,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+import {
+    allStandardSourceNames,
+    LOCAL,
+    OFFICIAL,
+    Source,
+    SourceName,
+    SourceUrl,
+} from 'pc-nrfconnect-shared/ipc/sources';
+
 import type { DownloadableApp } from './apps';
-import { handle, invoke } from './infrastructure/rendererToMain';
 
-export enum StandardSourceNames {
-    OFFICIAL = 'official',
-    LOCAL = 'local',
-}
-
-export const { LOCAL, OFFICIAL } = StandardSourceNames;
-export const allStandardSourceNames: SourceName[] = [OFFICIAL, LOCAL];
+export {
+    allStandardSourceNames,
+    LOCAL,
+    OFFICIAL,
+    type Source,
+    type SourceName,
+    type SourceUrl,
+};
 
 const channel = {
     get: 'sources:get',
@@ -21,15 +34,11 @@ const channel = {
     remove: 'sources:remove',
 };
 
-export type SourceName = string;
-export type SourceUrl = string;
-export type Source = { name: SourceName; url: SourceUrl };
-
 // Get
 type GetSources = () => Source[];
 
-export const getSources = invoke<GetSources>(channel.get);
-export const registerGetSources = handle<GetSources>(channel.get);
+const getSources = invoke<GetSources>(channel.get);
+const registerGetSources = handle<GetSources>(channel.get);
 
 // Add
 export type AddSourceError =
@@ -56,11 +65,23 @@ export type AddSourceResult = AddSourceSuccess | AddSourceError;
 
 type AddSource = (url: SourceUrl) => AddSourceResult;
 
-export const addSource = invoke<AddSource>(channel.add);
-export const registerAddSource = handle<AddSource>(channel.add);
+const addSource = invoke<AddSource>(channel.add);
+const registerAddSource = handle<AddSource>(channel.add);
 
 // Remove
 type RemoveSource = (name: SourceName) => void;
 
-export const removeSource = invoke<RemoveSource>(channel.remove);
-export const registerRemoveSource = handle<RemoveSource>(channel.remove);
+const removeSource = invoke<RemoveSource>(channel.remove);
+const registerRemoveSource = handle<RemoveSource>(channel.remove);
+
+export const forRenderer = {
+    registerAddSource,
+    registerGetSources,
+    registerRemoveSource,
+};
+
+export const inMain = {
+    addSource,
+    getSources,
+    removeSource,
+};

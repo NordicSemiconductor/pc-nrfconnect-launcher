@@ -9,10 +9,7 @@ import type {
     SetOptions,
     UpdateOptions,
 } from '@serialport/bindings-cpp';
-import {
-    OverwriteOptions,
-    SERIALPORT_CHANNEL,
-} from 'pc-nrfconnect-shared/main';
+import { OverwriteOptions, serialPort } from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
 import { logger } from './log';
@@ -113,14 +110,22 @@ const addRenderer = async (
             if (result === ErrorId.FAILED) {
                 throw new Error(ErrorId.FAILED);
             }
-            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CHANGED, options);
+
+            serialPort.inRenderer.broadcastChanged(
+                path,
+                serialPorts.get(path)?.renderers,
+                options
+            );
         }
         addSender(path, sender, existingPort);
         logInfo(path, `Added renderer (${sender.id})`);
     }
 };
 
-export const writeToSerialport = (path: string, data: string) => {
+export const writeToSerialport = (
+    path: string,
+    data: string | number[] | Buffer
+) => {
     const openPort = serialPorts.get(path);
     if (!openPort) {
         fail(path, 'Failed to set new options, port not found');
@@ -140,14 +145,22 @@ export const writeToSerialport = (path: string, data: string) => {
                 reject(error);
             }
 
-            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_WRITE, data);
+            serialPort.inRenderer.broadcastDataWritten(
+                path,
+                serialPorts.get(path)?.renderers,
+                data
+            );
             resolve();
         });
     });
 };
 
 const onData = (path: string, data: unknown) => {
-    serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_DATA, data);
+    serialPort.inRenderer.broadcastDataReceived(
+        path,
+        serialPorts.get(path)?.renderers,
+        data
+    );
 };
 
 export const isOpen = (path: string): boolean => {
@@ -159,18 +172,14 @@ export const isOpen = (path: string): boolean => {
     return port.isOpen;
 };
 
-/* Return true if port is closed, false otherwise */
-export const closeSerialPort = async (
-    sender: Renderer,
-    path: string
-): Promise<void> => {
+export const closeSerialPort = (sender: Renderer, path: string) => {
     const openPort = serialPorts.get(path);
     if (!openPort) {
         fail(path, 'Cannot close port, was not found');
         throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
-    await removeRenderer(path, sender);
+    return removeRenderer(path, sender);
 };
 
 const removeRenderer = async (
@@ -213,18 +222,18 @@ export const update = (path: string, options: UpdateOptions) => {
         throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
-    const { serialPort } = openPort;
+    const { serialPort: port } = openPort;
     return new Promise<void>((resolve, reject) => {
-        serialPort.update(options, error => {
+        port.update(options, error => {
             if (error) {
                 fail(path, `Could not update options: ${error.message}`);
                 reject(error);
             } else {
                 openPort.options = { ...openPort.options, ...options };
-                serialPorts.broadCast(
+                serialPort.inRenderer.broadcastUpdated(
                     path,
-                    SERIALPORT_CHANNEL.ON_UPDATE,
-                    serialPort.settings
+                    serialPorts.get(path)?.renderers,
+                    port.settings
                 );
                 logInfo(path, `Updated settings: ${JSON.stringify(options)}`);
                 resolve();
@@ -241,10 +250,10 @@ export const set = (path: string, newOptions: SetOptions) => {
         throw new Error(ErrorId.PORT_NOT_FOUND);
     }
 
-    const { serialPort } = openPort;
+    const { serialPort: port } = openPort;
 
     return new Promise<void>((resolve, reject) => {
-        serialPort.set(newOptions, error => {
+        port.set(newOptions, error => {
             if (error) {
                 fail(
                     path,
@@ -254,9 +263,9 @@ export const set = (path: string, newOptions: SetOptions) => {
                 );
                 reject(error);
             } else {
-                serialPorts.broadCast(
+                serialPort.inRenderer.broadcastSet(
                     path,
-                    SERIALPORT_CHANNEL.ON_SET,
+                    serialPorts.get(path)?.renderers,
                     newOptions
                 );
                 logInfo(
@@ -307,7 +316,10 @@ const openNewSerialPort = async (
     port.on('close', (error: Error) => {
         if (error) {
             fail(path, `Was closed due to error: ${error.message}`);
-            serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
+            serialPort.inRenderer.broadcastClosed(
+                path,
+                serialPorts.get(path)?.renderers
+            );
             serialPorts.delete(path);
         } else {
             logInfo(path, 'Was closed');
@@ -318,7 +330,10 @@ const openNewSerialPort = async (
         port.open(err => {
             if (err) {
                 fail(path, `Could not open port: ${err.message}`);
-                serialPorts.broadCast(path, SERIALPORT_CHANNEL.ON_CLOSED);
+                serialPort.inRenderer.broadcastClosed(
+                    path,
+                    serialPorts.get(path)?.renderers
+                );
                 serialPorts.delete(path);
                 reject(Error(ErrorId.FAILED));
             } else {

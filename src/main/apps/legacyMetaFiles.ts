@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import { PackageJson } from 'pc-nrfconnect-shared';
+import { PackageJson } from 'pc-nrfconnect-shared/main';
 
 import { Source } from '../../ipc/sources';
 import { getAppsRootDir, getNodeModulesDir } from '../config';

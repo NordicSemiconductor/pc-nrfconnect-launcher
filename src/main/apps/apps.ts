@@ -6,7 +6,7 @@
 
 import { omit } from 'lodash';
 import path, { basename } from 'path';
-import type { AppInfo } from 'pc-nrfconnect-shared';
+import { AppInfo } from 'pc-nrfconnect-shared/main';
 
 import {
     AppWithError,
@@ -16,7 +16,7 @@ import {
     SourceWithError,
     UninstalledDownloadableApp,
 } from '../../ipc/apps';
-import { showErrorDialog } from '../../ipc/showErrorDialog';
+import { inRenderer } from '../../ipc/showErrorDialog';
 import { Source } from '../../ipc/sources';
 import { getAppsLocalDir } from '../config';
 import describeError from '../describeError';
@@ -134,7 +134,7 @@ export const getLocalApps = (consistencyCheck = true) => {
         localApps
             .filter(app => !consistentAppAndDirectoryName(app))
             .forEach(app => {
-                showErrorDialog(
+                inRenderer.showErrorDialog(
                     `The local app at the path \`${app.installed.path}\` has the name ` +
                         `\`${app.name}\`, which does not match the directory. ` +
                         `Not showing this app.`
@@ -170,7 +170,7 @@ export const downloadAppInfos = async (source: Source) => {
             const appInfo = await downloadToJson<AppInfo>(appUrl, true);
 
             if (path.basename(appUrl) !== `${appInfo.name}.json`) {
-                showErrorDialog(
+                inRenderer.showErrorDialog(
                     `At \`${appUrl}\` an app is found ` +
                         `by the name \`${appInfo.name}\`, which does ` +
                         `not match the URL. This app will be ignored.`

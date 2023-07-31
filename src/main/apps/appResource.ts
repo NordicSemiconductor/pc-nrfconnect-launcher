@@ -5,10 +5,10 @@
  */
 
 import path from 'path';
-import type { AppInfo } from 'pc-nrfconnect-shared';
+import { AppInfo } from 'pc-nrfconnect-shared/main';
 
-import { AppSpec } from '../../ipc/apps';
-import { SourceName } from '../../ipc/sources';
+import type { AppSpec } from '../../ipc/apps';
+import type { SourceName } from '../../ipc/sources';
 import { getAppsRootDir } from '../config';
 import describeError from '../describeError';
 import { readFile } from '../fileUtil';

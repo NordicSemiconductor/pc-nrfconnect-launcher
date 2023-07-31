@@ -12,12 +12,13 @@ import {
     WebContents,
 } from 'electron';
 import { join } from 'path';
-import { OpenAppOptions } from 'pc-nrfconnect-shared/main';
+import {
+    OpenAppOptions,
+    registerLauncherWindowFromMain,
+} from 'pc-nrfconnect-shared/main';
 
 import packageJson from '../../package.json';
-import { AppDetails } from '../ipc/appDetails';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
-import { registerLauncherWindowFromMain as registerLauncherWindow } from '../ipc/infrastructure/mainToRenderer';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
@@ -52,7 +53,7 @@ const createLauncherWindow = () => {
         splashScreen: !argv['skip-splash-screen'],
     });
 
-    registerLauncherWindow(window);
+    registerLauncherWindowFromMain(window);
 
     window.on('close', event => {
         if (appWindows.length > 0) {
@@ -224,7 +225,7 @@ const getAppWindow = (sender: WebContents) => {
     return appWindows.find(appWin => appWin.browserWindow === parentWindow);
 };
 
-export const getAppDetails = (webContents: WebContents): AppDetails => {
+export const getAppDetails = (webContents: WebContents) => {
     const appWindow = getAppWindow(webContents);
 
     if (appWindow == null) {

@@ -4,12 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    on,
+    send,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+
 import { LaunchableApp } from './apps';
-import { on, send } from './infrastructure/rendererToMain';
 
 const channel = 'create-desktop-shortcut';
 
 type CreateDesktopShortcut = (app: LaunchableApp) => void;
 
-export const createDesktopShortcut = send<CreateDesktopShortcut>(channel);
-export const registerCreateDesktopShortcut = on<CreateDesktopShortcut>(channel);
+const createDesktopShortcut = send<CreateDesktopShortcut>(channel);
+const registerCreateDesktopShortcut = on<CreateDesktopShortcut>(channel);
+
+export const forRenderer = { registerCreateDesktopShortcut };
+export const inMain = { createDesktopShortcut };

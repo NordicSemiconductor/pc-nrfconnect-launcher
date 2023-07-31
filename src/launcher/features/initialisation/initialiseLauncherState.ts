@@ -6,8 +6,8 @@
 
 import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
 
-import { getDownloadableApps, getLocalApps } from '../../../ipc/apps';
-import { getSources } from '../../../ipc/sources';
+import { inMain } from '../../../ipc/apps';
+import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import mainConfig from '../../util/mainConfig';
 import {
@@ -26,7 +26,7 @@ import {
 
 const loadSources = (): AppThunk => async dispatch => {
     try {
-        dispatch(setSources(await getSources()));
+        dispatch(setSources(await sources.getSources()));
     } catch (error) {
         dispatch(
             ErrorDialogActions.showDialog(
@@ -38,10 +38,10 @@ const loadSources = (): AppThunk => async dispatch => {
 
 export const loadApps = (): AppThunk => async dispatch => {
     try {
-        dispatch(setAllLocalApps(await getLocalApps()));
+        dispatch(setAllLocalApps(await inMain.getLocalApps()));
 
         const { apps, appsWithErrors, sourcesWithErrors } =
-            await getDownloadableApps();
+            await inMain.getDownloadableApps();
 
         dispatch(addDownloadableApps(apps));
         dispatch(handleAppsWithErrors(appsWithErrors));

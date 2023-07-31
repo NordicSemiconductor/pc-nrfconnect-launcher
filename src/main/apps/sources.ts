@@ -7,7 +7,7 @@
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { SourceJson } from 'pc-nrfconnect-shared';
+import { SourceJson, WithdrawnJson } from 'pc-nrfconnect-shared/main';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
@@ -23,9 +23,6 @@ import { downloadToJson } from '../net';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
-
-type UrlString = string;
-type WithdrawnJson = UrlString[]; // FIXME later: Move this to shared
 
 const officialSource = {
     name: OFFICIAL,

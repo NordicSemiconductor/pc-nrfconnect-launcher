@@ -8,8 +8,8 @@ import { net, session } from 'electron';
 import fs from 'fs-extra';
 
 import type { AppSpec } from '../ipc/apps';
-import { downloadProgress } from '../ipc/downloadProgress';
-import { requestProxyLogin } from '../ipc/proxyLogin';
+import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
+import { inRenderer as proxyLogin } from '../ipc/proxyLogin';
 import { storeProxyLoginRequest } from './proxyLogins';
 
 // Using the same session name as electron-updater, so that proxy credentials
@@ -21,7 +21,7 @@ const reportInstallProgress = (
     progress: number,
     totalInstallSize: number
 ) => {
-    downloadProgress({
+    downloadProgress.reportDownloadProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
     });
@@ -75,7 +75,7 @@ const downloadToBuffer = (
         if (enableProxyLogin) {
             request.on('login', (authInfo, callback) => {
                 const requestId = storeProxyLoginRequest(callback);
-                requestProxyLogin(requestId, authInfo);
+                proxyLogin.requestProxyLogin(requestId, authInfo);
             });
         }
         request.on('error', error =>
