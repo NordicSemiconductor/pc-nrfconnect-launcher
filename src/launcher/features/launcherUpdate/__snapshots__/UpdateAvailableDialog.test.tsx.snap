@@ -48,28 +48,40 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
             1.2.3
             ) of nRF Connect for Desktop is available. Would you like to update now?
           </p>
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight undefined"
           >
-            Click to see release notes
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-transparent tw-p-0 tw-text-nordicBlue"
+              type="button"
+            >
+              Click to see release notes
+            </button>
+          </div>
         </div>
         <div
           class="modal-footer"
         >
-          <button
-            class=""
-            type="button"
+          <div
+            class="tw-preflight "
           >
-            Yes
-          </button>
-          <button
-            class=""
-            type="button"
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+              type="button"
+            >
+              Yes
+            </button>
+          </div>
+          <div
+            class="tw-preflight "
           >
-            No
-          </button>
+            <button
+              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+              type="button"
+            >
+              No
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ import {
     setShownStates as setPersistedShownStates,
     type ShownStates,
 } from '../../../ipc/persistedStore';
-import type { SourceName } from '../../../ipc/sources';
+import { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
 export type State = {

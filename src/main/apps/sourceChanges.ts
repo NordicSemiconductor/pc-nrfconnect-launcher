@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs-extra';
-import { SourceJson } from 'pc-nrfconnect-shared';
+import { SourceJson } from 'pc-nrfconnect-shared/main';
 
 import {
     AddSourceResult,

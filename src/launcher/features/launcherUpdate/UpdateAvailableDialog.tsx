@@ -7,7 +7,7 @@
 import React from 'react';
 import { Button, ConfirmationDialog, openUrl } from 'pc-nrfconnect-shared';
 
-import { startUpdate } from '../../../ipc/launcherUpdate';
+import { inMain } from '../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getLauncherUpdate, reset } from './launcherUpdateSlice';
 
@@ -27,7 +27,7 @@ export default () => {
             title="Update available"
             confirmLabel="Yes"
             cancelLabel="No"
-            onConfirm={() => startUpdate()}
+            onConfirm={() => inMain.startUpdate()}
             onCancel={() => dispatch(reset())}
         >
             <p>

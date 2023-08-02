@@ -7,10 +7,7 @@
 import { MockBinding } from '@serialport/binding-mock';
 import { UpdateOptions } from '@serialport/bindings-cpp';
 import { SerialPortStream as MockSerialPortStream } from '@serialport/stream';
-import {
-    OverwriteOptions,
-    SERIALPORT_CHANNEL,
-} from 'pc-nrfconnect-shared/main';
+import { OverwriteOptions } from 'pc-nrfconnect-shared/main';
 
 import {
     closeSerialPort,
@@ -84,7 +81,7 @@ describe('Single renderer', () => {
         await flushMacroTaskQueue();
 
         expect(renderer.send).toHaveBeenCalledWith(
-            `${SERIALPORT_CHANNEL.ON_DATA}_${defaultOptions.path}`,
+            `serialport:on-data_${defaultOptions.path}`,
             Buffer.from('OK')
         );
     });
@@ -135,7 +132,8 @@ describe('Two renderers', () => {
         expect(() => isOpen(testPortPath)).toThrow('PORT_NOT_FOUND');
         // Closing the same port when it has been deleted throws an error.
         await expect(
-            closeSerialPort(rendererTwo, testPortPath)
+            // eslint-disable-next-line no-return-await -- We want to wrap this in async/await to simulate the way this will be turned into a promise anyhow when invoked by IPC
+            async () => await closeSerialPort(rendererTwo, testPortPath)
         ).rejects.toThrow('PORT_NOT_FOUND');
     });
 

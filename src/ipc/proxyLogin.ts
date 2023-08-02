@@ -5,9 +5,8 @@
  */
 
 import { AuthInfo } from 'electron';
-
-import * as mainToRenderer from './infrastructure/mainToRenderer';
-import * as rendererToMain from './infrastructure/rendererToMain';
+import * as mainToRenderer from 'pc-nrfconnect-shared/ipc/infrastructure/mainToRenderer';
+import * as rendererToMain from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 const channel = {
     request: 'proxy-login:request',
@@ -18,10 +17,10 @@ const channel = {
 
 type RequestProxyLogin = (requestId: string, authInfo: AuthInfo) => void;
 
-export const requestProxyLogin = mainToRenderer.send<RequestProxyLogin>(
+const requestProxyLogin = mainToRenderer.send<RequestProxyLogin>(
     channel.request
 );
-export const registerRequestProxyLogin = mainToRenderer.on<RequestProxyLogin>(
+const registerRequestProxyLogin = mainToRenderer.on<RequestProxyLogin>(
     channel.request
 );
 
@@ -32,7 +31,13 @@ type AnswerProxyLoginRequest = (
     password?: string
 ) => void;
 
-export const answerProxyLoginRequest =
-    rendererToMain.send<AnswerProxyLoginRequest>(channel.response);
-export const registerAnswerProxyLoginRequest =
+const answerProxyLoginRequest = rendererToMain.send<AnswerProxyLoginRequest>(
+    channel.response
+);
+const registerAnswerProxyLoginRequest =
     rendererToMain.on<AnswerProxyLoginRequest>(channel.response);
+
+export const inRenderer = { requestProxyLogin };
+export const forRenderer = { registerAnswerProxyLoginRequest };
+export const inMain = { answerProxyLoginRequest };
+export const forMain = { registerRequestProxyLogin };

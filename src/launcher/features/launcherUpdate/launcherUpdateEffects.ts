@@ -10,7 +10,7 @@ import {
     logger,
 } from 'pc-nrfconnect-shared';
 
-import { cancelUpdate, checkForUpdate } from '../../../ipc/launcherUpdate';
+import { inMain } from '../../../ipc/launcherUpdate';
 import type { AppThunk } from '../../store';
 import { downloadLatestAppInfos } from '../apps/appsEffects';
 import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
@@ -19,7 +19,7 @@ import { reset, updateAvailable } from './launcherUpdateSlice';
 
 export const checkForLauncherUpdate = (): AppThunk => async dispatch => {
     try {
-        const { isUpdateAvailable, newVersion } = await checkForUpdate();
+        const { isUpdateAvailable, newVersion } = await inMain.checkForUpdate();
 
         if (isUpdateAvailable) {
             dispatch(updateAvailable(newVersion));
@@ -32,7 +32,7 @@ export const checkForLauncherUpdate = (): AppThunk => async dispatch => {
 };
 
 export const cancelDownload = (): AppThunk => dispatch => {
-    cancelUpdate();
+    inMain.cancelUpdate();
     dispatch(reset());
 };
 

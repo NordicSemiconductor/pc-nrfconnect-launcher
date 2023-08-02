@@ -6,14 +6,10 @@
 
 import { ErrorDialogActions, usageData } from 'pc-nrfconnect-shared';
 
-import { registerDownloadProgress } from '../../ipc/downloadProgress';
-import {
-    registerUpdateFinished,
-    registerUpdateProgress,
-    registerUpdateStarted,
-} from '../../ipc/launcherUpdateProgress';
-import { registerRequestProxyLogin } from '../../ipc/proxyLogin';
-import { registerShowErrorDialog } from '../../ipc/showErrorDialog';
+import * as downloadProgress from '../../ipc/downloadProgress';
+import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
+import * as proxyLogin from '../../ipc/proxyLogin';
+import * as showErrorDialog from '../../ipc/showErrorDialog';
 import { updateAppProgress } from '../features/apps/appsSlice';
 import {
     reset,
@@ -24,25 +20,25 @@ import { loginRequestedByServer } from '../features/proxyLogin/proxyLoginSlice';
 import type { AppDispatch } from '../store';
 
 export default (dispatch: AppDispatch) => {
-    registerDownloadProgress(progress => {
+    downloadProgress.forMain.registerDownloadProgress(progress => {
         dispatch(updateAppProgress(progress));
     });
 
-    registerShowErrorDialog(errorMessage => {
+    showErrorDialog.forMain.registerShowErrorDialog(errorMessage => {
         dispatch(ErrorDialogActions.showDialog(errorMessage));
     });
 
-    registerRequestProxyLogin((requestId, authInfo) => {
+    proxyLogin.forMain.registerRequestProxyLogin((requestId, authInfo) => {
         dispatch(loginRequestedByServer({ requestId, authInfo }));
     });
 
-    registerUpdateStarted(() => {
+    launcherUpdateProgress.forMain.registerUpdateStarted(() => {
         dispatch(startDownload());
     });
-    registerUpdateProgress(percentage => {
+    launcherUpdateProgress.forMain.registerUpdateProgress(percentage => {
         dispatch(updateDownloading(percentage));
     });
-    registerUpdateFinished(isSuccessful => {
+    launcherUpdateProgress.forMain.registerUpdateFinished(isSuccessful => {
         if (isSuccessful) {
             usageData.reset();
         }

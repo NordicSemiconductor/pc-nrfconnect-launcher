@@ -10,7 +10,7 @@ import path from 'path';
 import { uuid } from 'short-uuid';
 
 import { isDownloadable, LaunchableApp } from '../../ipc/apps';
-import { showErrorDialog } from '../../ipc/showErrorDialog';
+import { inRenderer } from '../../ipc/showErrorDialog';
 import { OFFICIAL } from '../../ipc/sources';
 import argv from '../argv';
 import { chmod, chmodDir, copy, readFile, untar, writeFile } from '../fileUtil';
@@ -85,10 +85,12 @@ const createShortcutForWindows = (app: LaunchableApp) => {
             iconIndex: 0,
         });
         if (shortcutStatus !== true) {
-            showErrorDialog('Fail with shell.writeShortcutLink');
+            inRenderer.showErrorDialog('Fail with shell.writeShortcutLink');
         }
     } else {
-        showErrorDialog('Fail to create desktop: Unable to determine an icon');
+        inRenderer.showErrorDialog(
+            'Fail to create desktop: Unable to determine an icon'
+        );
     }
 };
 
@@ -124,7 +126,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         writeFile(applicationsFilePath, shortcutContent);
         chmod(applicationsFilePath);
     } catch (err) {
-        showErrorDialog(
+        inRenderer.showErrorDialog(
             `Fail to create desktop shortcut on Linux with error: ${err}`
         );
     }
@@ -217,7 +219,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         // Change mode
         await chmodDir(appExecPath);
     } catch (error) {
-        showErrorDialog(
+        inRenderer.showErrorDialog(
             `Error occured while creating desktop shortcut on MacOS with error: ${error}`
         );
     }
@@ -235,7 +237,7 @@ export default (app: LaunchableApp) => {
             createShortcutForMacOS(app);
             break;
         default:
-            showErrorDialog(
+            inRenderer.showErrorDialog(
                 'Your operating system is neither Windows, Linux, nor macOS'
             );
     }

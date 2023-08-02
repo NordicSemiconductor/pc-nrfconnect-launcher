@@ -4,74 +4,39 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppVersions } from 'pc-nrfconnect-shared';
+import {
+    App,
+    AppSpec,
+    AppWithError,
+    DownloadableApp,
+    forRenderer as forRendererFromShared,
+    inMain as inMainFromShared,
+    InstalledDownloadableApp,
+    LaunchableApp,
+    LocalApp,
+    SourceWithError,
+    UninstalledDownloadableApp,
+    WithdrawnApp,
+} from 'pc-nrfconnect-shared/ipc/apps';
+import {
+    handle,
+    invoke,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
-import { handle, invoke } from './infrastructure/rendererToMain';
-import { LOCAL, Source, SourceName } from './sources';
+import { LOCAL } from './sources';
 
-export interface AppSpec {
-    name: string;
-    source: SourceName;
-}
-
-interface BaseApp {
-    name: string;
-    displayName: string;
-    description: string;
-    iconPath: string;
-}
-
-interface Downloadable {
-    source: SourceName;
-    homepage?: string;
-    versions?: AppVersions;
-    releaseNotes?: string;
-    latestVersion: string;
-}
-
-interface Installed {
-    currentVersion: string;
-    engineVersion?: string;
-    repositoryUrl?: string;
-    html?: string;
-    installed: {
-        path: string;
-        shasum?: string;
-    };
-}
-
-export interface LocalApp extends Installed, BaseApp {
-    source: typeof LOCAL;
-}
-
-export interface InstalledDownloadableApp
-    extends BaseApp,
-        Installed,
-        Downloadable {
-    isWithdrawn: false;
-}
-
-export interface UninstalledDownloadableApp extends BaseApp, Downloadable {
-    isWithdrawn: false;
-}
-
-export interface WithdrawnApp extends BaseApp, Installed, Downloadable {
-    isWithdrawn: true;
-}
-
-export type DownloadableApp =
-    | InstalledDownloadableApp
-    | UninstalledDownloadableApp
-    | WithdrawnApp;
-
-export type LaunchableApp = LocalApp | InstalledDownloadableApp | WithdrawnApp;
-
-export type App = LocalApp | DownloadableApp;
-
-export interface AppWithError extends AppSpec {
-    reason: unknown;
-    path: string;
-}
+export type {
+    AppSpec,
+    LocalApp,
+    InstalledDownloadableApp,
+    UninstalledDownloadableApp,
+    WithdrawnApp,
+    DownloadableApp,
+    LaunchableApp,
+    App,
+    AppWithError,
+    SourceWithError,
+};
 
 export const isDownloadable = (app?: App): app is DownloadableApp =>
     app != null && app?.source !== LOCAL;
@@ -103,14 +68,10 @@ export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
     getLocalApps: 'apps:get-local-apps',
-    getDownloadableApps: 'apps:get-downloadable-apps',
-    installDownloadableApp: 'apps:install-downloadable-app',
     installLocalApp: 'apps:install-local-app',
     removeLocalApp: 'apps:remove-local-app',
     removeDownloadableApp: 'apps:remove-downloadable-app',
 };
-
-export type SourceWithError = { source: Source; reason?: string };
 
 // downloadLatestAppInfos
 type DownloadLatestAppInfos = () => {
@@ -119,10 +80,10 @@ type DownloadLatestAppInfos = () => {
     sourcesWithErrors: SourceWithError[];
 };
 
-export const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
+const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
     channel.downloadLatestAppInfos
 );
-export const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
+const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
     channel.downloadLatestAppInfos
 );
 
@@ -130,38 +91,8 @@ export const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
 
 type GetLocalApps = () => LocalApp[];
 
-export const getLocalApps = invoke<GetLocalApps>(channel.getLocalApps);
-export const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
-
-// getDownloadableApps
-
-export type GetDownloadableAppsResult = {
-    apps: DownloadableApp[];
-    appsWithErrors: AppWithError[];
-    sourcesWithErrors: SourceWithError[];
-};
-
-type GetDownloadableApps = () => GetDownloadableAppsResult;
-
-export const getDownloadableApps = invoke<GetDownloadableApps>(
-    channel.getDownloadableApps
-);
-export const registerGetDownloadableApps = handle<GetDownloadableApps>(
-    channel.getDownloadableApps
-);
-
-// installDownloadableApp
-type InstallDownloadableApp = (
-    app: DownloadableApp,
-    version?: string
-) => DownloadableApp;
-
-export const installDownloadableApp = invoke<InstallDownloadableApp>(
-    channel.installDownloadableApp
-);
-export const registerInstallDownloadableApp = handle<InstallDownloadableApp>(
-    channel.installDownloadableApp
-);
+const getLocalApps = invoke<GetLocalApps>(channel.getLocalApps);
+const registerGetLocalApps = handle<GetLocalApps>(channel.getLocalApps);
 
 // installLocalApp
 
@@ -194,25 +125,41 @@ export type InstallResult =
 
 type InstallLocalApp = (path: string) => InstallResult;
 
-export const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
-export const registerInstallLocalApp = handle<InstallLocalApp>(
+const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
+const registerInstallLocalApp = handle<InstallLocalApp>(
     channel.installLocalApp
 );
 
 // removeLocalApp
 type RemoveLocalApp = (appName: string) => void;
 
-export const removeLocalApp = invoke<RemoveLocalApp>(channel.removeLocalApp);
-export const registerRemoveLocalApp = handle<RemoveLocalApp>(
-    channel.removeLocalApp
-);
+const removeLocalApp = invoke<RemoveLocalApp>(channel.removeLocalApp);
+const registerRemoveLocalApp = handle<RemoveLocalApp>(channel.removeLocalApp);
 
 // removeDownloadableApp
 type RemoveDownloadableApp = (app: AppSpec) => void;
 
-export const removeDownloadableApp = invoke<RemoveDownloadableApp>(
+const removeDownloadableApp = invoke<RemoveDownloadableApp>(
     channel.removeDownloadableApp
 );
-export const registerRemoveDownloadableApp = handle<RemoveDownloadableApp>(
+const registerRemoveDownloadableApp = handle<RemoveDownloadableApp>(
     channel.removeDownloadableApp
 );
+
+export const forRenderer = {
+    ...forRendererFromShared,
+    registerDownloadLatestAppInfos,
+    registerInstallLocalApp,
+    registerRemoveDownloadableApp,
+    registerRemoveLocalApp,
+    registerGetLocalApps,
+};
+
+export const inMain = {
+    ...inMainFromShared,
+    downloadLatestAppInfos,
+    getLocalApps,
+    installLocalApp,
+    removeLocalApp,
+    removeDownloadableApp,
+};

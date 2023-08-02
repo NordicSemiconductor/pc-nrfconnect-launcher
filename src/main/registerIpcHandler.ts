@@ -4,50 +4,24 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { app } from 'electron';
+import { app, powerSaveBlocker } from 'electron';
 import Store from 'electron-store';
 import fs from 'fs';
 import path from 'path';
+import {
+    appDetails,
+    openWindow,
+    preventSleep,
+    serialPort,
+} from 'pc-nrfconnect-shared/main';
 
 import packageJson from '../../package.json';
-import { registerGetAppDetails } from '../ipc/appDetails';
-import {
-    registerDownloadLatestAppInfos,
-    registerGetDownloadableApps,
-    registerGetLocalApps,
-    registerInstallDownloadableApp,
-    registerInstallLocalApp,
-    registerRemoveDownloadableApp,
-    registerRemoveLocalApp,
-} from '../ipc/apps';
-import { registerGetConfig } from '../ipc/config';
-import { registerCreateDesktopShortcut } from '../ipc/createDesktopShortcut';
-import {
-    registerCancelUpdate,
-    registerCheckForUpdate,
-    registerStartUpdate,
-} from '../ipc/launcherUpdate';
-import { registerOpenApp, registerOpenLauncher } from '../ipc/openWindow';
-import {
-    registerEndPreventingSleep,
-    registerStartPreventingSleep,
-} from '../ipc/preventSleep';
-import { registerAnswerProxyLoginRequest } from '../ipc/proxyLogin';
-import { registerRequire } from '../ipc/require';
-import {
-    registerClose,
-    registerGetOptions,
-    registerIsOpen,
-    registerOpen,
-    registerSet,
-    registerUpdate,
-    registerWrite,
-} from '../ipc/serialport';
-import {
-    registerAddSource,
-    registerGetSources,
-    registerRemoveSource,
-} from '../ipc/sources';
+import * as apps from '../ipc/apps';
+import * as config from '../ipc/config';
+import * as desktopShortcut from '../ipc/createDesktopShortcut';
+import * as launcherUpdate from '../ipc/launcherUpdate';
+import * as proxyLogin from '../ipc/proxyLogin';
+import * as sources from '../ipc/sources';
 import {
     installDownloadableApp,
     installLocalApp,
@@ -65,7 +39,6 @@ import { getAllSources } from './apps/sources';
 import argv from './argv';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
-import { requireModule } from './require';
 import {
     closeSerialPort,
     getOptions,
@@ -77,53 +50,61 @@ import {
 } from './serialport';
 import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
+const getConfigForRenderer = () => ({
+    isRunningLauncherFromSource: fs.existsSync(
+        path.join(app.getAppPath(), 'README.md')
+    ),
+    isSkipUpdateApps: argv['skip-update-apps'],
+    isSkipUpdateLauncher: argv['skip-update-launcher'],
+    version: packageJson.version,
+});
+
+const startPreventingSleep = () =>
+    powerSaveBlocker.start('prevent-app-suspension');
+const endPreventingSleep = (id: number) => powerSaveBlocker.stop(id);
+
 export default () => {
     Store.initRenderer();
 
-    registerGetAppDetails(getAppDetails);
+    appDetails.forRenderer.registerGetAppDetails(getAppDetails);
 
-    registerGetConfig({
-        isRunningLauncherFromSource: fs.existsSync(
-            path.join(app.getAppPath(), 'README.md')
-        ),
-        isSkipUpdateApps: argv['skip-update-apps'],
-        isSkipUpdateLauncher: argv['skip-update-launcher'],
-        version: packageJson.version,
-    });
+    config.forRenderer.registerGetConfig(getConfigForRenderer());
 
-    registerCreateDesktopShortcut(createDesktopShortcut);
+    desktopShortcut.forRenderer.registerCreateDesktopShortcut(
+        createDesktopShortcut
+    );
 
-    registerEndPreventingSleep();
-    registerStartPreventingSleep();
+    preventSleep.forRenderer.registerStart(startPreventingSleep);
+    preventSleep.forRenderer.registerEnd(endPreventingSleep);
 
-    registerAnswerProxyLoginRequest(callRegisteredCallback);
+    proxyLogin.forRenderer.registerAnswerProxyLoginRequest(
+        callRegisteredCallback
+    );
 
-    registerCheckForUpdate(checkForUpdate);
-    registerStartUpdate(startUpdate);
-    registerCancelUpdate(cancelUpdate);
+    launcherUpdate.forRenderer.registerCheckForUpdate(checkForUpdate);
+    launcherUpdate.forRenderer.registerStartUpdate(startUpdate);
+    launcherUpdate.forRenderer.registerCancelUpdate(cancelUpdate);
 
-    registerOpenApp(openApp);
-    registerOpenLauncher(openLauncherWindow);
+    openWindow.forRenderer.registerOpenApp(openApp);
+    openWindow.forRenderer.registerOpenLauncher(openLauncherWindow);
 
-    registerDownloadLatestAppInfos(downloadLatestAppInfos);
-    registerGetDownloadableApps(getDownloadableApps);
-    registerGetLocalApps(getLocalApps);
-    registerInstallDownloadableApp(installDownloadableApp);
-    registerInstallLocalApp(installLocalApp);
-    registerRemoveLocalApp(removeLocalApp);
-    registerRemoveDownloadableApp(removeDownloadableApp);
+    apps.forRenderer.registerDownloadLatestAppInfos(downloadLatestAppInfos);
+    apps.forRenderer.registerGetLocalApps(getLocalApps);
+    apps.forRenderer.registerInstallLocalApp(installLocalApp);
+    apps.forRenderer.registerRemoveLocalApp(removeLocalApp);
+    apps.forRenderer.registerRemoveDownloadableApp(removeDownloadableApp);
+    apps.forRenderer.registerGetDownloadableApps(getDownloadableApps);
+    apps.forRenderer.registerInstallDownloadableApp(installDownloadableApp);
 
-    registerGetSources(getAllSources);
-    registerAddSource(addSource);
-    registerRemoveSource(removeSource);
+    sources.forRenderer.registerGetSources(getAllSources);
+    sources.forRenderer.registerAddSource(addSource);
+    sources.forRenderer.registerRemoveSource(removeSource);
 
-    registerRequire(requireModule);
-
-    registerOpen(openOrAdd);
-    registerClose(closeSerialPort);
-    registerWrite(writeToSerialport);
-    registerIsOpen(isOpen);
-    registerGetOptions(getOptions);
-    registerUpdate(update);
-    registerSet(set);
+    serialPort.forRenderer.registerOpen(openOrAdd);
+    serialPort.forRenderer.registerClose(closeSerialPort);
+    serialPort.forRenderer.registerWrite(writeToSerialport);
+    serialPort.forRenderer.registerIsOpen(isOpen);
+    serialPort.forRenderer.registerGetOptions(getOptions);
+    serialPort.forRenderer.registerUpdate(update);
+    serialPort.forRenderer.registerSet(set);
 };

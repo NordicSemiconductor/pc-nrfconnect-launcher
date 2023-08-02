@@ -8,7 +8,7 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { isInstalled } from '../../../../ipc/apps';
-import { createDesktopShortcut } from '../../../../ipc/createDesktopShortcut';
+import { inMain } from '../../../../ipc/createDesktopShortcut';
 import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const CreateShortcut: React.FC<{ app: DisplayedApp }> = ({ app }) => {
@@ -18,7 +18,7 @@ const CreateShortcut: React.FC<{ app: DisplayedApp }> = ({ app }) => {
         <Dropdown.Item
             disabled={isInProgress(app)}
             title="Create a desktop shortcut for this app"
-            onClick={() => createDesktopShortcut(app)}
+            onClick={() => inMain.createDesktopShortcut(app)}
         >
             Create shortcut
         </Dropdown.Item>

@@ -5,20 +5,19 @@
  */
 
 import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
-import { describeError, ErrorDialogActions } from 'pc-nrfconnect-shared';
+import {
+    describeError,
+    ErrorDialogActions,
+    openWindow,
+} from 'pc-nrfconnect-shared';
 
 import {
     AppSpec,
     AppWithError,
     DownloadableApp,
-    downloadLatestAppInfos as downloadLatestAppInfosInMain,
-    installDownloadableApp as installDownloadableAppInMain,
-    installLocalApp as installLocalAppInMain,
+    inMain as appsInMain,
     LaunchableApp,
-    removeDownloadableApp as removeDownloadableAppInMain,
-    removeLocalApp as removeLocalAppInMain,
 } from '../../../ipc/apps';
-import { openApp } from '../../../ipc/openWindow';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
@@ -87,7 +86,7 @@ export const downloadLatestAppInfos = (): AppThunk => async dispatch => {
     try {
         dispatch(updateDownloadableAppInfosStarted());
         const { apps, appsWithErrors, sourcesWithErrors } =
-            await downloadLatestAppInfosInMain();
+            await appsInMain.downloadLatestAppInfos();
 
         dispatch(addDownloadableApps(apps));
         dispatch(updateDownloadableAppInfosSuccess());
@@ -106,7 +105,7 @@ export const downloadLatestAppInfos = (): AppThunk => async dispatch => {
 export const installLocalApp =
     (appPackagePath: string): AppThunk =>
     async dispatch => {
-        const installResult = await installLocalAppInMain(appPackagePath);
+        const installResult = await appsInMain.installLocalApp(appPackagePath);
         if (installResult.type === 'success') {
             dispatch(addLocalApp(installResult.app));
         } else if (installResult.errorType === 'error reading file') {
@@ -126,7 +125,9 @@ export const installLocalApp =
                     {
                         Overwrite: async () => {
                             dispatch(ErrorDialogActions.hideDialog());
-                            await removeLocalAppInMain(installResult.appName);
+                            await appsInMain.removeLocalApp(
+                                installResult.appName
+                            );
                             dispatch(removeLocalApp(installResult.appName));
                             dispatch(installLocalApp(appPackagePath));
                         },
@@ -143,7 +144,7 @@ const install =
     (app: DownloadableApp, version?: string): AppThunk =>
     async dispatch => {
         try {
-            const installedApp = await installDownloadableAppInMain(
+            const installedApp = await appsInMain.installDownloadableApp(
                 app,
                 version
             );
@@ -191,7 +192,7 @@ export const removeDownloadableApp =
 
         dispatch(removeDownloadableAppStarted(app));
         try {
-            await removeDownloadableAppInMain(app);
+            await appsInMain.removeDownloadableApp(app);
             dispatch(removeDownloadableAppSuccess(app));
         } catch (error) {
             dispatch(
@@ -208,7 +209,7 @@ export const launch = (app: LaunchableApp) => {
         `App version: ${app.currentVersion};` +
         ` Engine version: ${app.engineVersion};`;
     sendAppUsageData(EventAction.LAUNCH_APP, sharedData, app.name);
-    openApp(app);
+    openWindow.openApp(app);
 };
 
 export const checkEngineAndLaunch =

@@ -14,9 +14,11 @@ export interface Configuration {
 }
 const channel = 'get-config';
 
-export const getConfig = (): Configuration => ipcRenderer.sendSync(channel);
-
-export const registerGetConfig = (config: Configuration) =>
+const getConfig = (): Configuration => ipcRenderer.sendSync(channel);
+const registerGetConfig = (config: Configuration) =>
     ipcMain.on(channel, event => {
         event.returnValue = config;
     });
+
+export const forRenderer = { registerGetConfig };
+export const inMain = { getConfig };

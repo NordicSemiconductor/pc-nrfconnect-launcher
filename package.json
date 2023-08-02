@@ -103,7 +103,7 @@
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
         "electron-notarize": "0.3.0",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v63",
+        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v77",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
@@ -127,8 +127,5 @@
         "targz": "1.0.1",
         "winston": "3.8.1"
     },
-    "eslintConfig": {
-        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
-    },
-    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
+    "prettier": "pc-nrfconnect-shared/config/prettier.config.js"
 }

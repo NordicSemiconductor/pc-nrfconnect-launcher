@@ -4,7 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { handle, invoke, on, send } from './infrastructure/rendererToMain';
+import {
+    handle,
+    invoke,
+    on,
+    send,
+} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 const channel = {
     checkForUpdate: 'launcher-update:check',
@@ -18,19 +23,28 @@ type CheckForUpdate = () => {
     newVersion: string;
 };
 
-export const checkForUpdate = invoke<CheckForUpdate>(channel.checkForUpdate);
-export const registerCheckForUpdate = handle<CheckForUpdate>(
-    channel.checkForUpdate
-);
+const checkForUpdate = invoke<CheckForUpdate>(channel.checkForUpdate);
+const registerCheckForUpdate = handle<CheckForUpdate>(channel.checkForUpdate);
 
 // Start
 type StartUpdate = () => void;
 
-export const startUpdate = send<StartUpdate>(channel.startUpdate);
-export const registerStartUpdate = on<StartUpdate>(channel.startUpdate);
+const startUpdate = send<StartUpdate>(channel.startUpdate);
+const registerStartUpdate = on<StartUpdate>(channel.startUpdate);
 
 // Cancel
 type CancelUpdate = () => void;
 
-export const cancelUpdate = send<CancelUpdate>(channel.cancelUpdate);
-export const registerCancelUpdate = on<CancelUpdate>(channel.cancelUpdate);
+const cancelUpdate = send<CancelUpdate>(channel.cancelUpdate);
+const registerCancelUpdate = on<CancelUpdate>(channel.cancelUpdate);
+
+export const forRenderer = {
+    registerCheckForUpdate,
+    registerStartUpdate,
+    registerCancelUpdate,
+};
+export const inMain = {
+    checkForUpdate,
+    startUpdate,
+    cancelUpdate,
+};

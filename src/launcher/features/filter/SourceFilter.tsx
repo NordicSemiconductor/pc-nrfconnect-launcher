@@ -19,7 +19,7 @@ export default () => {
 
     return (
         <Col className="pl-4 pr-0">
-            <div className="border-bottom py-1 mx-3 mb-2">Sources</div>
+            <div className="border-bottom mx-3 mb-2 py-1">Sources</div>
             {allSourceNames.map((sourceName, i) => {
                 const isShown = !hiddenSources.has(sourceName);
 
@@ -28,7 +28,7 @@ export default () => {
                         label={sourceName}
                         id={`cb-${sourceName}`}
                         key={`cb-${i + 1}`}
-                        className="mx-3 py-1 px-4 text-capitalize"
+                        className="text-capitalize mx-3 px-4 py-1"
                         custom
                         checked={isShown}
                         onChange={() => {

@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { ConfirmationDialog } from 'pc-nrfconnect-shared';
 
-import { answerProxyLoginRequest } from '../../../ipc/proxyLogin';
+import { inMain as proxyLogin } from '../../../ipc/proxyLogin';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
     changeUserName,
@@ -26,13 +26,13 @@ export default () => {
         useLauncherSelector(getProxyLoginRequest);
 
     const cancel = useCallback(() => {
-        requestIds.forEach(id => answerProxyLoginRequest(id));
+        requestIds.forEach(id => proxyLogin.answerProxyLoginRequest(id));
         dispatch(loginCancelledByUser());
     }, [dispatch, requestIds]);
 
     const login = useCallback(() => {
         requestIds.forEach(id =>
-            answerProxyLoginRequest(id, username, password)
+            proxyLogin.answerProxyLoginRequest(id, username, password)
         );
         dispatch(loginRequestSent());
         setPassword('');
