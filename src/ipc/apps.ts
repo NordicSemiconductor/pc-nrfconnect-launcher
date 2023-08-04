@@ -12,6 +12,10 @@ import {
     forRenderer as forRendererFromShared,
     inMain as inMainFromShared,
     InstalledDownloadableApp,
+    isDownloadable,
+    isInstalled,
+    isUpdatable,
+    isWithdrawn,
     LaunchableApp,
     LocalApp,
     SourceWithError,
@@ -23,47 +27,22 @@ import {
     invoke,
 } from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
-import { LOCAL } from './sources';
-
-export type {
-    AppSpec,
-    LocalApp,
-    InstalledDownloadableApp,
-    UninstalledDownloadableApp,
-    WithdrawnApp,
-    DownloadableApp,
-    LaunchableApp,
-    App,
-    AppWithError,
-    SourceWithError,
+export {
+    isDownloadable,
+    isInstalled,
+    isUpdatable,
+    isWithdrawn,
+    type App,
+    type AppSpec,
+    type AppWithError,
+    type DownloadableApp,
+    type InstalledDownloadableApp,
+    type LaunchableApp,
+    type LocalApp,
+    type SourceWithError,
+    type UninstalledDownloadableApp,
+    type WithdrawnApp,
 };
-
-export const isDownloadable = (app?: App): app is DownloadableApp =>
-    app != null && app?.source !== LOCAL;
-
-export const isInstalled = (app?: App): app is LaunchableApp =>
-    app != null && 'installed' in app;
-
-export const isWithdrawn = (app?: App): app is WithdrawnApp =>
-    isDownloadable(app) && app.isWithdrawn;
-
-const latestVersionHasDifferentChecksum = (app: InstalledDownloadableApp) => {
-    const shaOfLatest = app.versions?.[app.latestVersion]?.shasum;
-    const shaOfInstalled = app.installed.shasum;
-
-    return (
-        shaOfLatest != null &&
-        shaOfInstalled != null &&
-        shaOfInstalled !== shaOfLatest
-    );
-};
-
-export const isUpdatable = (app?: App): app is InstalledDownloadableApp =>
-    !isWithdrawn(app) &&
-    isInstalled(app) &&
-    isDownloadable(app) &&
-    (app.currentVersion !== app.latestVersion ||
-        latestVersionHasDifferentChecksum(app));
 
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
