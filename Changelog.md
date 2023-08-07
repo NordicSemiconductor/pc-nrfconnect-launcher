@@ -4,6 +4,8 @@
 
 -   Successfully installing an app will focus it and highlight it for
     visibility.
+-   Show help if the app list is empty (usually because all apps have been
+    filtered out).
 
 ## 4.1.2 - 2023-06-15
 
