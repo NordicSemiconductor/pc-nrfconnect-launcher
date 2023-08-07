@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { App as AppType, isInstalled } from '../../../ipc/apps';
 import { useLauncherSelector } from '../../util/hooks';
@@ -27,21 +27,31 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
     return cmpInstalled || aName.localeCompare(bName);
 };
 
-const NoApps = ({ notYetLoaded }: { notYetLoaded: boolean }) => (
-    <div className="tw-grid tw-flex-1 tw-place-items-center">
-        <div className="tw-max-w-[75%] tw-bg-white tw-p-4">
-            {notYetLoaded ? (
-                <>
-                    The list of apps is not yet loaded from{' '}
-                    <Link href="https://developer.nordicsemi.com" />. Make sure
-                    you can reach that server.
-                </>
-            ) : (
-                'No apps shown because of the selected filters. Change those to display apps again.'
-            )}
+const NoApps = ({ notYetLoaded }: { notYetLoaded: boolean }) => {
+    const [justStarted, setJustStarted] = useState(true);
+
+    useEffect(() => {
+        setTimeout(() => setJustStarted(false), 2000);
+    }, []);
+
+    if (justStarted && notYetLoaded) return null;
+
+    return (
+        <div className="tw-grid tw-flex-1 tw-place-items-center">
+            <div className="tw-max-w-[75%] tw-bg-white tw-p-4">
+                {notYetLoaded ? (
+                    <>
+                        The list of apps is not yet loaded from{' '}
+                        <Link href="https://developer.nordicsemi.com" />. Make
+                        sure you can reach that server.
+                    </>
+                ) : (
+                    'No apps shown because of the selected filters. Change those to display apps again.'
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const Apps = ({ apps }: { apps: DisplayedApp[] }) => (
     <WithScrollbarContainer hasFilter>

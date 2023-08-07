@@ -305,6 +305,33 @@ exports[`AppList should disable buttons while removing an app 1`] = `
 </body>
 `;
 
+exports[`AppList should render a message without any apps after some time 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="tw-grid tw-flex-1 tw-place-items-center"
+    >
+      <div
+        class="tw-max-w-[75%] tw-bg-white tw-p-4"
+      >
+        The list of apps is not yet loaded from
+         
+        <a
+          href="https://developer.nordicsemi.com"
+          rel="noreferrer"
+          target="_blank"
+        >
+          https://developer.nordicsemi.com
+        </a>
+        . Make sure you can reach that server.
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
 exports[`AppList should render local, not-installed, installed, and updatable apps 1`] = `
 <body>
   <div>
@@ -622,28 +649,10 @@ exports[`AppList should render with all apps filtered out 1`] = `
 </body>
 `;
 
-exports[`AppList should render without any apps 1`] = `
+exports[`AppList should render without any apps initially empty 1`] = `
 <body>
   <div>
     <div />
-    <div
-      class="tw-grid tw-flex-1 tw-place-items-center"
-    >
-      <div
-        class="tw-max-w-[75%] tw-bg-white tw-p-4"
-      >
-        The list of apps is not yet loaded from
-         
-        <a
-          href="https://developer.nordicsemi.com"
-          rel="noreferrer"
-          target="_blank"
-        >
-          https://developer.nordicsemi.com
-        </a>
-        . Make sure you can reach that server.
-      </div>
-    </div>
     <div />
   </div>
 </body>
