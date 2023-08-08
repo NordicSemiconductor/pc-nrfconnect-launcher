@@ -14,7 +14,19 @@ const AppProgress: React.FC<{ app: DisplayedApp }> = ({ app }) => {
         return null;
     }
 
-    return <ProgressBar now={app.progress.fraction} />;
+    const noOfItems = Object.keys(app.progress.fractions).length;
+
+    return (
+        <ProgressBar
+            now={
+                noOfItems > 0
+                    ? Object.keys(app.progress.fractions)
+                          .map(key => app.progress.fractions[key])
+                          .reduce((pv, cr) => pv + cr, 0) / noOfItems
+                    : 0
+            }
+        />
+    );
 };
 
 export default AppProgress;
