@@ -31,7 +31,8 @@
         "pack": "npm run build:prod && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
-        "remove-devtools": "electron . --remove-devtools"
+        "remove-devtools": "electron . --remove-devtools",
+        "postinstall": " node scripts/getNrfutil.js"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
