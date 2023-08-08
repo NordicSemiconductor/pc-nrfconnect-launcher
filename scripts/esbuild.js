@@ -18,6 +18,11 @@ const options = {
     outfile: 'dist/main.js',
     platform: 'node',
     sourcemap: true,
+    define: {
+        'process.env.NODE_ENV': `"${
+            process.argv.includes('--prod') ? 'production' : 'development'
+        }"`,
+    },
     minify: process.argv.includes('--prod'),
 };
 
