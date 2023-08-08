@@ -7,6 +7,11 @@
 import { app as electronApp, dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
+import {
+    AppVersion,
+    NrfutilSandbox,
+    prepareSandbox,
+} from 'pc-nrfconnect-shared/main';
 import shasum from 'shasum';
 import { uuid } from 'short-uuid';
 
@@ -18,8 +23,10 @@ import {
     InstallResult,
     successfulInstall,
 } from '../../ipc/apps';
+import { inRenderer as downloadProgress } from '../../ipc/downloadProgress';
 import { getAppsLocalDir, getAppsRootDir } from '../config';
 import { deleteFile, listFiles, untar } from '../fileUtil';
+import { logger } from '../log';
 import { mkdir } from '../mkdir';
 import { downloadToFile } from '../net';
 import {
@@ -222,7 +229,7 @@ const verifyShasum = async (filePath: string, expectedShasum?: string) => {
     }
 };
 
-const downloadTarball = async (app: AppSpec, version?: string) => {
+const download = async (app: AppSpec, version?: string) => {
     const appInfo = readAppInfoFile(app);
     const versionToInstall = appInfo.versions[version ?? appInfo.latestVersion];
 
@@ -237,10 +244,46 @@ const downloadTarball = async (app: AppSpec, version?: string) => {
     const fileName = path.basename(tarballUrl);
     const packageFilePath = path.join(getAppsRootDir(app.source), fileName);
 
-    await downloadToFile(tarballUrl, packageFilePath, true, app);
+    await Promise.all([
+        downloadToFile(tarballUrl, packageFilePath, true, app),
+        prepareNrfutilModules(app, versionToInstall),
+    ]);
     await verifyShasum(packageFilePath, versionToInstall.shasum);
 
-    return { packageFilePath, checksum: versionToInstall.shasum };
+    return {
+        packageFilePath,
+        checksum: versionToInstall.shasum,
+        versionToInstall,
+    };
+};
+const prepareNrfutilModules = async (
+    app: AppSpec,
+    versionToInstall: AppVersion
+) => {
+    const nrfutilModules = versionToInstall.nrfutilModules;
+
+    if (nrfutilModules) {
+        await Promise.all(
+            Object.keys(nrfutilModules).map(module => {
+                const versions = nrfutilModules[module];
+                if (versions && versions.length > 0)
+                    return prepareSandbox(
+                        path.join(electronApp.getPath('appData'), 'nrfconnect'),
+                        module,
+                        versions[0],
+                        progress => {
+                            downloadProgress.reportDownloadProgress({
+                                app,
+                                progressFraction: progress.progressPercentage,
+                                key: module,
+                            });
+                        },
+                        logger
+                    );
+                return Promise.resolve();
+            })
+        );
+    }
 };
 
 const addInstallMetaData = (
@@ -261,7 +304,7 @@ export const installDownloadableApp = async (
     app: DownloadableApp,
     version?: string
 ): Promise<DownloadableApp> => {
-    const { packageFilePath, checksum } = await downloadTarball(app, version);
+    const { packageFilePath, checksum } = await download(app, version);
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
