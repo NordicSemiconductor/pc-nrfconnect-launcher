@@ -256,6 +256,10 @@ const download = async (app: AppSpec, version?: string) => {
         versionToInstall,
     };
 };
+
+const existingNrfutilSandboxes: { [index: string]: Promise<NrfutilSandbox> } =
+    {};
+
 const prepareNrfutilModules = async (
     app: AppSpec,
     versionToInstall: AppVersion
@@ -266,8 +270,15 @@ const prepareNrfutilModules = async (
         await Promise.all(
             Object.keys(nrfutilModules).map(module => {
                 const versions = nrfutilModules[module];
-                if (versions && versions.length > 0)
-                    return prepareSandbox(
+                if (
+                    existingNrfutilSandboxes[`${module}-${versions}`] !==
+                    undefined
+                ) {
+                    return existingNrfutilSandboxes[`${module}-${versions}`];
+                }
+
+                if (versions && versions.length > 0) {
+                    const promise = prepareSandbox(
                         path.join(electronApp.getPath('appData'), 'nrfconnect'),
                         module,
                         versions[0],
@@ -280,6 +291,10 @@ const prepareNrfutilModules = async (
                         },
                         logger
                     );
+
+                    existingNrfutilSandboxes[`${module}-${versions}`] = promise;
+                    return promise;
+                }
                 return Promise.resolve();
             })
         );
