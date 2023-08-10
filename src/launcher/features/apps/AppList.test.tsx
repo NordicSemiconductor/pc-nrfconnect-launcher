@@ -5,8 +5,10 @@
  */
 
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
+import { LOCAL } from 'pc-nrfconnect-shared/ipc/sources';
 
 import {
     createDownloadableTestApp,
@@ -14,6 +16,7 @@ import {
     createUninstalledTestApp,
 } from '../../../test/testFixtures';
 import render, { preparedStore } from '../../../test/testrenderer';
+import { hideSource } from '../filter/filterSlice';
 import AppList from './AppList';
 import {
     checkEngineAndLaunch,
@@ -65,8 +68,32 @@ const mockThunk = (thunkToMock: jest.MockableFunction) => {
 };
 
 describe('AppList', () => {
-    it('should render without any apps', () => {
+    it('should render without any apps initially empty', () => {
         expect(render(<AppList />).baseElement).toMatchSnapshot();
+    });
+
+    it('should render a message without any apps after some time', () => {
+        jest.useFakeTimers();
+
+        const view = render(<AppList />);
+
+        act(() => {
+            jest.runAllTimers();
+        });
+
+        expect(view.baseElement).toMatchSnapshot();
+
+        jest.runOnlyPendingTimers();
+        jest.useRealTimers();
+    });
+
+    it('should render with all apps filtered out', () => {
+        expect(
+            render(<AppList />, [
+                setAllLocalApps([localApp]),
+                hideSource(LOCAL),
+            ]).baseElement
+        ).toMatchSnapshot();
     });
 
     it('should render local, not-installed, installed, and updatable apps', () => {

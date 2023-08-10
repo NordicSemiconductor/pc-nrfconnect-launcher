@@ -11,6 +11,8 @@ import { installLocalApp } from '../apps/appsEffects';
 import DropZoneInfo from './DropZoneInfo';
 import { hideDropZone, showDropZone } from './localAppInstallSlice';
 
+import styles from './dropZoneInfo.module.scss';
+
 const DropZoneForLocalApps: React.FC = ({ children }) => {
     const dispatch = useLauncherDispatch();
     const enterCounter = useRef(0);
@@ -52,6 +54,7 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
             onDragOver={showAddCursor}
             onDragEnter={maybeShowDropZone}
             onDragLeave={maybeHideDropZone}
+            className={styles.dropzone}
         >
             {children}
 

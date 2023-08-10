@@ -23,11 +23,7 @@ export default () => {
     if (updatableApps.length === 0) return null;
 
     return (
-        <Button
-            variant="outline-secondary"
-            onClick={updateAllApps}
-            className="me_32px"
-        >
+        <Button variant="outline-secondary" onClick={updateAllApps}>
             Update all apps
         </Button>
     );
