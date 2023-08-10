@@ -7,7 +7,7 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.1.3-pre2
+## 4.1.3-pre3
 
 ### Changed
 
@@ -30,8 +30,8 @@ release the new version.
             reachable at given URL, source already exists, or trying to add the
             official source.
     -   Name filter for apps: Trim leading and trailing whitespace.
--   #855: Bump device-lib-js to 0.6.13
 -   #856: Fix shortcuts when different directories were specified.
+-   #864: Bump device-lib-js to 0.7.0
 
     To reproduce:
 
