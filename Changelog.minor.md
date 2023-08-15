@@ -11,6 +11,7 @@ release the new version.
 
 ### Changed
 
+-   #865: Use changed `html` property from apps.
 -   #844: Text is select when search field is focused, making it easier to
     replace the current text.
 
