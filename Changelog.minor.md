@@ -13,6 +13,7 @@ release the new version.
 
 -   #844: Text is select when search field is focused, making it easier to
     replace the current text.
+-   #864: Bump device-lib-js to 0.7.0.
 
 ### Fixed
 
@@ -31,7 +32,6 @@ release the new version.
             official source.
     -   Name filter for apps: Trim leading and trailing whitespace.
 -   #856: Fix shortcuts when different directories were specified.
--   #864: Bump device-lib-js to 0.7.0
 
     To reproduce:
 
