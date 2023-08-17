@@ -14,6 +14,7 @@ import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsRootDir,
+    getElectronResourcesDir,
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
@@ -27,6 +28,11 @@ let sources: Source[] = [];
 const officialSource = {
     name: OFFICIAL,
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
+};
+
+const internalSource = {
+    name: 'Internal',
+    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/source.json',
 };
 
 const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
@@ -240,4 +246,38 @@ export const downloadAllSources = async () => {
         sources: successful,
         sourcesWithErrors: erroneos,
     };
+};
+
+export const ensureInternalSourceExists = () => {
+    if (
+        getSource('Internal') == null &&
+        fs.existsSync(`${getElectronResourcesDir()}/prefetched/source.json`)
+    ) {
+        addToSourceList(internalSource);
+        ensureDirExists(getAppsRootDir(internalSource.name));
+
+        writeSourceJson(
+            internalSource,
+            readJsonFile(`${getElectronResourcesDir()}/prefetched/source.json`)
+        );
+    }
+
+    [
+        'pc-nrfconnect-boilerplate.json',
+        'pc-nrfconnect-cellularmonitor.json',
+        'pc-nrfconnect-dtm.json',
+        'pc-nrfconnect-linkmonitor.json',
+        'pc-nrfconnect-npm.json',
+        'pc-nrfconnect-ppk.json',
+        'pc-nrfconnect-programmer.json',
+        'pc-nrfconnect-quickstart.json',
+        'pc-nrfconnect-serial-terminal.json',
+        'pc-nrfconnect-toolchain-manager.json',
+    ].forEach(file => {
+        const from = `${getElectronResourcesDir()}/prefetched/${file}`;
+        const to = `${getAppsRootDir('Internal')}/${file}`;
+        if (fs.existsSync(from) && !fs.existsSync(to)) {
+            fs.copyFileSync(from, to);
+        }
+    });
 };

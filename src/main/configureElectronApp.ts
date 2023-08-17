@@ -7,7 +7,11 @@
 import { app, dialog, Menu } from 'electron';
 
 import { installAllLocalAppArchives } from './apps/appChanges';
-import { initialiseAllSources } from './apps/sources';
+import { ensureQuickstartAppExists } from './apps/quickstart';
+import {
+    ensureInternalSourceExists,
+    initialiseAllSources,
+} from './apps/sources';
 import { getStartupApp } from './argv';
 import {
     getAppsExternalDir,
@@ -31,7 +35,9 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsLocalDir());
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
+    ensureInternalSourceExists();
     initialiseAllSources();
+    await ensureQuickstartAppExists();
     await installAllLocalAppArchives();
 };
 
