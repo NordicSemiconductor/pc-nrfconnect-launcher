@@ -107,7 +107,10 @@ export const openAppWindow = (
     }
 
     const template = app.html
-        ? `file://${join(app.installed.path, app.html)}`
+        ? `file://${join(
+              app.installed.path,
+              app.html
+          )}?launcherPath=${encodeURIComponent(electronApp.getAppPath())}`
         : `file://${getElectronResourcesDir()}/app.html?appPath=${encodeURIComponent(
               app.installed.path
           )}`;
