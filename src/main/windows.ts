@@ -146,11 +146,13 @@ export const openAppWindow = (
         app,
     });
 
-    appWindow.webContents.on('did-finish-load', () => {
-        if (lastWindowState.maximized) {
-            appWindow.maximize();
-        }
-    });
+    if (!isQuickstartApp(app)) {
+        appWindow.webContents.on('did-finish-load', () => {
+            if (lastWindowState.maximized) {
+                appWindow.maximize();
+            }
+        });
+    }
 
     appWindow.on('close', () => {
         const bounds = appWindow.getBounds();
