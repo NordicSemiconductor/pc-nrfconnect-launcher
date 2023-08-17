@@ -19,6 +19,10 @@ import {
 } from '../../../ipc/persistedStore';
 import { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
+import {
+    quickstartAppName,
+    quickstartAppSource,
+} from '../quickstart/quickstartApp';
 
 export type State = {
     hiddenSources: Set<SourceName>;
@@ -86,7 +90,11 @@ const matchesStateFilter = (app: App, state: RootState) =>
     (state.filter.shownStates.installed && isInstalled(app)) ||
     (state.filter.shownStates.downloadable && !isInstalled(app));
 
+const matchesQuickstartFilter = (app: App) =>
+    app.source !== quickstartAppSource || app.name !== quickstartAppName;
+
 export const getAppsFilter = (state: RootState) => (app: App) =>
     matchesSourceFilter(app, state) &&
     matchesNameFilter(app, state) &&
-    matchesStateFilter(app, state);
+    matchesStateFilter(app, state) &&
+    matchesQuickstartFilter(app);
