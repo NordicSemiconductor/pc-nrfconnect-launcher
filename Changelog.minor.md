@@ -53,6 +53,11 @@ release the new version.
     when starting application – Error: Tried to open app …, but it is not
     installed”. Now the app opens correctly.
 
+### Removed
+
+-   Building the linux version with .tar.gz, now it's only AppImage, the only
+    version released.
+
 ## 4.1.2
 
 ### Changed

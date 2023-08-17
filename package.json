@@ -56,8 +56,7 @@
         },
         "linux": {
             "target": [
-                "AppImage",
-                "tar.gz"
+                "AppImage"
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
             "category": "Development",
