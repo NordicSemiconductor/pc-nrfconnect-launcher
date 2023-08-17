@@ -21,6 +21,10 @@ import packageJson from '../../package.json';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
+import {
+    quickstartAppName,
+    quickstartAppSource,
+} from '../launcher/features/quickstart/quickstartApp';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import argv from './argv';
 import { createWindow } from './browser';
@@ -72,10 +76,15 @@ export const hideLauncherWindow = () => {
     launcherWindow?.hide();
 };
 
+const isQuickstartApp = (app: LaunchableApp) =>
+    app.source === quickstartAppSource && app.name === quickstartAppName;
+
 export const openAppWindow = (
     app: LaunchableApp,
     openAppOptions: OpenAppOptions = {}
 ) => {
+    const minWidth = 760;
+    const minHeight = 500;
     const lastWindowState = getLastWindowState();
 
     let { x, y } = lastWindowState;
@@ -122,10 +131,10 @@ export const openAppWindow = (
             icon: getAppIcon(app),
             x,
             y,
-            width,
-            height,
             minHeight: 500,
             minWidth: 760,
+            width: isQuickstartApp(app) ? minWidth : width,
+            height: isQuickstartApp(app) ? minHeight : height,
             show: true,
             backgroundColor: '#fff',
         },
