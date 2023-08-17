@@ -159,9 +159,11 @@ export const openAppWindow = (
         setLastWindowState({
             x: bounds.x,
             y: bounds.y,
-            width: bounds.width,
-            height: bounds.height,
-            maximized: appWindow.isMaximized(),
+            width: isQuickstartApp(app) ? width : bounds.width,
+            height: isQuickstartApp(app) ? height : bounds.height,
+            maximized: isQuickstartApp(app)
+                ? lastWindowState.maximized
+                : appWindow.isMaximized(),
         });
     });
 
