@@ -16,6 +16,7 @@ import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog
 import DropZoneForLocalApps from './features/localAppInstall/DropZoneForLocalApps';
 import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
+import QuickstartTab from './features/quickstart/quickstartTab';
 import Settings from './features/settings/Settings';
 import UsageDataDialog from './features/usageData/UsageDataDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
@@ -60,7 +61,11 @@ export default () => {
                             settings
                         </Nav.Link>
                         {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-                        <Nav.Link accessKey="3" eventKey="about">
+                        <Nav.Link accessKey="3" eventKey="quickstart">
+                            quickstart
+                        </Nav.Link>
+                        {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+                        <Nav.Link accessKey="4" eventKey="about">
                             about
                         </Nav.Link>
                         <Logo />
@@ -71,6 +76,9 @@ export default () => {
                         </Tab.Pane>
                         <Tab.Pane eventKey="settings">
                             <Settings />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="quickstart">
+                            <QuickstartTab />
                         </Tab.Pane>
                         <Tab.Pane eventKey="about">
                             <About />
