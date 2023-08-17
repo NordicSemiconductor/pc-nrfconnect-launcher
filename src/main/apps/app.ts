@@ -132,7 +132,7 @@ export const addInstalledAppData = (
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
         // @ts-expect-error This will be in a future version of shared that is dependent on this beeing in the launcher first.
-        html: packageJson.html,
+        html: packageJson.nrfConnectForDesktop?.html,
     };
 };
 

@@ -11,6 +11,11 @@ release the new version.
 
 ### Changed
 
+-   #850, #865: Support for a custom html-template from the app.
+
+    If the app supplies an `nrfConnectForDesktop.html`-entry in `package.json`,
+    this path will instead be used to load the app.
+
 -   #844: Text is select when search field is focused, making it easier to
     replace the current text.
 -   #864: Bump device-lib-js to 0.7.0.
@@ -63,11 +68,6 @@ release the new version.
 -   #839: Device-lib proxies.
 
 ### Fixed
-
--   #850: Support for a custom html-template from the app.
-
-    If the app supplies an `html`-entry in `package.json`, this path will
-    instead be used to load the app.
 
 -   #835: Wrong state for when users jumped between launcher versions.
 
