@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const sharedConfig = require('pc-nrfconnect-shared/config/jest.config')([
-    'packageJson',
-    'serialport',
-]);
+const sharedConfig =
+    require('@nordicsemiconductor/pc-nrfconnect-shared/config/jest.config')([
+        'packageJson',
+        'serialport',
+    ]);
 
 sharedConfig.setupFilesAfterEnv.push('<rootDir>/src/test/setupMocks.js');
 

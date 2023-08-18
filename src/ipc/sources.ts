@@ -7,7 +7,7 @@
 import {
     handle,
     invoke,
-} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 import {
     allStandardSourceNames,
     LOCAL,
@@ -15,7 +15,7 @@ import {
     Source,
     SourceName,
     SourceUrl,
-} from 'pc-nrfconnect-shared/ipc/sources';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 
 import type { DownloadableApp } from './apps';
 

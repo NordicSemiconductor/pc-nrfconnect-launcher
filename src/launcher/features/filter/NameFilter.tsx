@@ -6,7 +6,7 @@
 
 import React, { useRef } from 'react';
 import Form from 'react-bootstrap/Form';
-import { useHotKey } from 'pc-nrfconnect-shared';
+import { useHotKey } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getNameFilter, setNameFilter } from './filterSlice';

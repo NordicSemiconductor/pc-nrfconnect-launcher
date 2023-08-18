@@ -34,7 +34,9 @@ exports[`ConfirmRemoveSourceDialog shows the new version if one becomes availabl
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Remove app source
             </b>

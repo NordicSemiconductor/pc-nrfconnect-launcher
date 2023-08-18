@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { OverwriteOptions } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { MockBinding } from '@serialport/binding-mock';
 import { UpdateOptions } from '@serialport/bindings-cpp';
 import { SerialPortStream as MockSerialPortStream } from '@serialport/stream';
-import { OverwriteOptions } from 'pc-nrfconnect-shared/main';
 
 import {
     closeSerialPort,

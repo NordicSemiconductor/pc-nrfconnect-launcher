@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { ErrorDialogActions } from 'pc-nrfconnect-shared';
+import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 
 import { SourceWithError } from '../../../ipc/apps';

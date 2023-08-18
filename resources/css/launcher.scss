@@ -16,7 +16,7 @@ $theme-colors: (
     // Nordic primary blue
 );
 
-@import 'pc-nrfconnect-shared/styles';
+@import '@nordicsemiconductor/pc-nrfconnect-shared/styles';
 $custom-control-indicator-checked-bg: $primary;
 $custom-control-indicator-bg: $white;
 @import 'bootstrap/scss/bootstrap';

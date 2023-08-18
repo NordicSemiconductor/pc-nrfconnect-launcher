@@ -1,5 +1,5 @@
 {
-    "extends": "pc-nrfconnect-shared/config/tsconfig.json",
+    "extends": "@nordicsemiconductor/pc-nrfconnect-shared/config/tsconfig.json",
     "compilerOptions": {
         "module": "CommonJS"
     }

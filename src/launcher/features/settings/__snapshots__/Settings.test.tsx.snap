@@ -200,7 +200,9 @@ exports[`SettingsView should render check for updates completed, with everything
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Update check completed
             </b>
@@ -431,7 +433,9 @@ exports[`SettingsView should render check for updates completed, with updates av
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Update check completed
             </b>

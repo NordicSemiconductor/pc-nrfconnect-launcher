@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
+import dispatchTo from '@nordicsemiconductor/pc-nrfconnect-shared/test/dispatchTo';
 
 import reducer, {
     cancelDownload,

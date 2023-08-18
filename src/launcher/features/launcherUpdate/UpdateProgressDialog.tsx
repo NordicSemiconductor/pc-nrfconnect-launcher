@@ -6,7 +6,10 @@
 
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Dialog, DialogButton } from 'pc-nrfconnect-shared';
+import {
+    Dialog,
+    DialogButton,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { cancelDownload } from './launcherUpdateEffects';

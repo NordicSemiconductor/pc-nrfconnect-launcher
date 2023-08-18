@@ -34,7 +34,9 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Update available
             </b>
@@ -52,7 +54,7 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
             class="tw-preflight undefined"
           >
             <button
-              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-transparent tw-p-0 tw-text-nordicBlue"
+              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-transparent tw-p-0 tw-text-nordicBlue hover:tw-underline"
               type="button"
             >
               Click to see release notes

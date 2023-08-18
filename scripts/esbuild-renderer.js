@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const { build } = require('pc-nrfconnect-shared/scripts/esbuild-renderer');
+const {
+    build,
+} = require('@nordicsemiconductor/pc-nrfconnect-shared/scripts/esbuild-renderer');
 
 build({
     entryPoints: ['./resources/css/fonts.scss'],

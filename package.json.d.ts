@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { PackageJson } from 'pc-nrfconnect-shared';
+import { PackageJson } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 declare const packageJson: PackageJson;
 

@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { AppInfo } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import path from 'path';
-import { AppInfo } from 'pc-nrfconnect-shared/main';
 
 import type { AppSpec } from '../../ipc/apps';
 import type { SourceName } from '../../ipc/sources';

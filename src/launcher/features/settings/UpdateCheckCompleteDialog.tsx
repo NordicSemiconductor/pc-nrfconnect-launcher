@@ -5,7 +5,10 @@
  */
 
 import React from 'react';
-import { Dialog, DialogButton } from 'pc-nrfconnect-shared';
+import {
+    Dialog,
+    DialogButton,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { isAppUpdateAvailable as isAppUpdateAvailableSelector } from '../apps/appsSlice';

@@ -6,7 +6,10 @@
 
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { ConfirmationDialog, useFocusedOnVisible } from 'pc-nrfconnect-shared';
+import {
+    ConfirmationDialog,
+    useFocusedOnVisible,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { addSource } from './sourcesEffects';

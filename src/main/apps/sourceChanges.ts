@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { SourceJson } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
-import { SourceJson } from 'pc-nrfconnect-shared/main';
 
 import {
     AddSourceResult,

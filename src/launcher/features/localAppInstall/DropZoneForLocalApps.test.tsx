@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
+import { RootErrorDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { RootErrorDialog } from 'pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/apps';
 import { createLocalTestApp } from '../../../test/testFixtures';

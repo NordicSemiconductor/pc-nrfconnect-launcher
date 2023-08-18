@@ -9,7 +9,7 @@ import {
     invoke,
     on,
     send,
-} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 const channel = {
     checkForUpdate: 'launcher-update:check',

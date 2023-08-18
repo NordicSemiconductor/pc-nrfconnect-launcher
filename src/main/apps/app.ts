@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    AppInfo,
+    PackageJson,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path, { basename } from 'path';
-import { AppInfo, PackageJson } from 'pc-nrfconnect-shared/main';
 
 import {
     AppSpec,
@@ -131,7 +134,6 @@ export const addInstalledAppData = (
 
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
-        // @ts-expect-error This will be in a future version of shared that is dependent on this beeing in the launcher first.
         html: packageJson.nrfConnectForDesktop?.html,
     };
 };

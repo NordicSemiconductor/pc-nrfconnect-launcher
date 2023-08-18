@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import dispatchTo from '@nordicsemiconductor/pc-nrfconnect-shared/test/dispatchTo';
 import { configureStore } from '@reduxjs/toolkit';
-import dispatchTo from 'pc-nrfconnect-shared/test/dispatchTo';
 
 import { AppSpec } from '../../../ipc/apps';
 import {

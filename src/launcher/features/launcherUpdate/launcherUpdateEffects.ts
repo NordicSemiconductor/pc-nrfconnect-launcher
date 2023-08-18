@@ -8,7 +8,7 @@ import {
     describeError,
     ErrorDialogActions,
     logger,
-} from 'pc-nrfconnect-shared';
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/launcherUpdate';
 import type { AppThunk } from '../../store';

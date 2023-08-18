@@ -9,7 +9,7 @@ $roboto-font-path: 'roboto-fontface/fonts' !default;
 
 @import '@mdi/font/css/materialdesignicons.min.css';
 
-@import 'pc-nrfconnect-shared/src/variables';
+@import '@nordicsemiconductor/pc-nrfconnect-shared/src/variables';
 @import 'bootstrap/scss/bootstrap';
 
 @each $color, $value in $theme-colors {

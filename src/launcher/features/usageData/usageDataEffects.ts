@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { usageData } from 'pc-nrfconnect-shared';
+import { usageData } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import si from 'systeminformation';
 
 import pkgJson from '../../../../package.json';

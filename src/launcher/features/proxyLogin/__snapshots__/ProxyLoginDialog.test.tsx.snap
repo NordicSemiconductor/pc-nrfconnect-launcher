@@ -27,7 +27,9 @@ exports[`ProxyLoginDialog is displayed after a login is requested 1`] = `
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Proxy authentication required
             </b>
@@ -163,7 +165,9 @@ exports[`ProxyLoginDialog is updated if users enter a username 1`] = `
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Proxy authentication required
             </b>

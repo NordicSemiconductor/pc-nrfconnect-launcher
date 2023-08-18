@@ -28,7 +28,9 @@ exports[`ProxyErrorDialog is displayed after users canceled the login 1`] = `
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Proxy error
             </b>
