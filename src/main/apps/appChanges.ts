@@ -5,11 +5,10 @@
  */
 
 import { AppVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import {
-    NrfutilSandbox,
-    prepareSandbox,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
+import prepareSandbox, {
+    NrfutilSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
 import { app as electronApp, dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
