@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const baseConfig = require('pc-nrfconnect-shared/config/tailwind.config.js');
+const baseConfig = require('@nordicsemiconductor/pc-nrfconnect-shared/config/tailwind.config.js');
 
 module.exports = {
     ...baseConfig,

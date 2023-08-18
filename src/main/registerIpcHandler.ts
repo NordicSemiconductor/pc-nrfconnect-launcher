@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { app, powerSaveBlocker } from 'electron';
-import Store from 'electron-store';
-import fs from 'fs';
-import path from 'path';
 import {
     appDetails,
     openWindow,
     preventSleep,
     serialPort,
-} from 'pc-nrfconnect-shared/main';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import { app, powerSaveBlocker } from 'electron';
+import Store from 'electron-store';
+import fs from 'fs';
+import path from 'path';
 
 import packageJson from '../../package.json';
 import * as apps from '../ipc/apps';

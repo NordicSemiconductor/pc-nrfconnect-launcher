@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { ErrorDialog } from 'pc-nrfconnect-shared';
+import { ErrorDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import Link from '../../util/Link';

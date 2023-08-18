@@ -10,9 +10,9 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
-import { colors, Toggle } from 'pc-nrfconnect-shared';
 
 import { OFFICIAL } from '../../../ipc/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';

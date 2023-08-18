@@ -7,7 +7,10 @@
 import React, { useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
-import { Logo, RootErrorDialog } from 'pc-nrfconnect-shared';
+import {
+    Logo,
+    RootErrorDialog,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import About from './features/about/About';
 import AppList from './features/apps/AppList';

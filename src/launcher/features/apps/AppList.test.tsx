@@ -7,8 +7,8 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
+import { LOCAL } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 import { mount } from 'enzyme';
-import { LOCAL } from 'pc-nrfconnect-shared/ipc/sources';
 
 import {
     createDownloadableTestApp,

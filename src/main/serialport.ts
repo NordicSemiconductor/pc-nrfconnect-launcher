@@ -4,12 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    OverwriteOptions,
+    serialPort,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import type {
     AutoDetectTypes,
     SetOptions,
     UpdateOptions,
 } from '@serialport/bindings-cpp';
-import { OverwriteOptions, serialPort } from 'pc-nrfconnect-shared/main';
 import { SerialPort, SerialPortOpenOptions } from 'serialport';
 
 import { logger } from './log';

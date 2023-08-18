@@ -5,7 +5,11 @@
  */
 
 import React from 'react';
-import { Button, ConfirmationDialog, openUrl } from 'pc-nrfconnect-shared';
+import {
+    Button,
+    ConfirmationDialog,
+    openUrl,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';

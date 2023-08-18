@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain as proxyLogin } from '../../../ipc/proxyLogin';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';

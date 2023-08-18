@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { ConfirmationDialog } from 'pc-nrfconnect-shared';
+import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { removeSource } from './sourcesEffects';

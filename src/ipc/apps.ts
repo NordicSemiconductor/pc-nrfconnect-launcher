@@ -21,11 +21,11 @@ import {
     SourceWithError,
     UninstalledDownloadableApp,
     WithdrawnApp,
-} from 'pc-nrfconnect-shared/ipc/apps';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/apps';
 import {
     handle,
     invoke,
-} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 export {
     isDownloadable,

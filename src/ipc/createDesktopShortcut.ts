@@ -7,7 +7,7 @@
 import {
     on,
     send,
-} from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
+} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 import { LaunchableApp } from './apps';
 

@@ -28,13 +28,19 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Downloading update
             </b>
             <div
-              class="spinner-border spinner-border-sm"
-            />
+              class="tw-pl-4"
+            >
+              <div
+                class="tw-preflight tw-border  spinner-border spinner-border-sm"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -86,7 +92,9 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Downloading update
             </b>
@@ -166,7 +174,9 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Downloading update
             </b>
@@ -247,7 +257,9 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
         <div
           class="modal-header"
         >
-          <div>
+          <div
+            class="tw-flex tw-flex-row"
+          >
             <b>
               Downloading update
             </b>

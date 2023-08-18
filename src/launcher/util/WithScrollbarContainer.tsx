@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { classNames } from 'pc-nrfconnect-shared';
+import { classNames } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 const WithScrollbarContainer: React.FC<{
     hasFilter?: boolean;

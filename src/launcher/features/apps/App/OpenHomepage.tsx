@@ -6,7 +6,7 @@
 
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { openUrl } from 'pc-nrfconnect-shared';
+import { openUrl } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { isDownloadable } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';

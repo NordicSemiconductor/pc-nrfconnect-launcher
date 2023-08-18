@@ -9,7 +9,7 @@ import {
     describeError,
     ErrorDialogActions,
     openWindow,
-} from 'pc-nrfconnect-shared';
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import {
     AppSpec,

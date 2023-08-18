@@ -4,10 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    SourceJson,
+    WithdrawnJson,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { SourceJson, WithdrawnJson } from 'pc-nrfconnect-shared/main';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';

@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { errorDialogReducer as errorDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { configureStore } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
-import { errorDialogReducer as errorDialog } from 'pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 

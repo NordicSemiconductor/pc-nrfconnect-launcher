@@ -5,6 +5,10 @@
  */
 
 import {
+    OpenAppOptions,
+    registerLauncherWindowFromMain,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import {
     app as electronApp,
     BrowserWindow,
     Rectangle,
@@ -12,10 +16,6 @@ import {
     WebContents,
 } from 'electron';
 import { join } from 'path';
-import {
-    OpenAppOptions,
-    registerLauncherWindowFromMain,
-} from 'pc-nrfconnect-shared/main';
 
 import packageJson from '../../package.json';
 import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';

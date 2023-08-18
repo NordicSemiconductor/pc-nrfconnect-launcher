@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import * as mainToRenderer from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/mainToRenderer';
+import * as rendererToMain from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 import { AuthInfo } from 'electron';
-import * as mainToRenderer from 'pc-nrfconnect-shared/ipc/infrastructure/mainToRenderer';
-import * as rendererToMain from 'pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
 const channel = {
     request: 'proxy-login:request',

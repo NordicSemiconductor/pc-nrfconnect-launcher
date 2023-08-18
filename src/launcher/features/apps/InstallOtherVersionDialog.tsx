@@ -5,7 +5,10 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { ConfirmationDialog, Dropdown } from 'pc-nrfconnect-shared';
+import {
+    ConfirmationDialog,
+    Dropdown,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { rsort } from 'semver';
 
 import { DownloadableApp } from '../../../ipc/apps';

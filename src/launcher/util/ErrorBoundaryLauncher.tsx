@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { getCurrentWindow } from '@electron/remote';
-import { ErrorBoundary } from 'pc-nrfconnect-shared';
+import { ErrorBoundary } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import pkgJson from '../../../package.json';
 import { resetStore } from '../../ipc/persistedStore';
