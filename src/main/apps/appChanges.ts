@@ -4,14 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { AppVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import {
+    NrfutilSandbox,
+    prepareSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
+import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
 import { app as electronApp, dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import {
-    AppVersion,
-    NrfutilSandbox,
-    prepareSandbox,
-} from 'pc-nrfconnect-shared/main';
 import shasum from 'shasum';
 import { uuid } from 'short-uuid';
 
@@ -277,6 +278,7 @@ const prepareNrfutilModules = async (
                     return existingNrfutilSandboxes[`${module}-${versions}`];
                 }
 
+                setNrfutilLogger(logger);
                 if (versions && versions.length > 0) {
                     const promise = prepareSandbox(
                         path.join(electronApp.getPath('appData'), 'nrfconnect'),
@@ -288,8 +290,7 @@ const prepareNrfutilModules = async (
                                 progressFraction: progress.progressPercentage,
                                 key: module,
                             });
-                        },
-                        logger
+                        }
                     );
 
                     existingNrfutilSandboxes[`${module}-${versions}`] = promise;
