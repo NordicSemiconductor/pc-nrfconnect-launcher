@@ -91,7 +91,7 @@
         }
     },
     "devDependencies": {
-        "@nordicsemiconductor/pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#feat/use-nrfutil-device",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^90.0.0",
         "@playwright/test": "^1.16.3",
         "@types/chmodr": "1.0.0",
         "@types/lodash": "^4.14.194",
