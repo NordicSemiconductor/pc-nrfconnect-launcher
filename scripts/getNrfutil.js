@@ -29,6 +29,12 @@ const allConfigs = {
 const config = allConfigs[process.platform];
 
 const destinationFile = path.join('resources', config.localFile);
+
+if (fs.existsSync(destinationFile)) {
+    console.log(`${destinationFile} already exists, not downloading it again.`);
+    return;
+}
+
 downloadFile(config.url, destinationFile)
     .then(() => {
         if (config.makeFileExecutable) {
