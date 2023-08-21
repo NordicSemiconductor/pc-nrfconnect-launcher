@@ -32,6 +32,7 @@ export default () => {
                 }
 
                 launch(confirmationDialog.app);
+                dispatch(hideConfirmLaunchDialog());
             }}
             onCancel={() => dispatch(hideConfirmLaunchDialog())}
         >
