@@ -24,6 +24,7 @@ const reportInstallProgress = (
     downloadProgress.reportDownloadProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
+        key: 'tarBall',
     });
 };
 

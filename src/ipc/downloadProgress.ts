@@ -16,6 +16,7 @@ const channel = 'download-progress';
 export type Progress = {
     app: AppSpec;
     progressFraction: number;
+    key: string;
 };
 
 type DownloadProgress = (progress: Progress) => void;

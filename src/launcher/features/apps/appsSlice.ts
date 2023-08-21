@@ -26,18 +26,18 @@ import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
-type AppProgess = {
+type AppProgress = {
     isInstalling: boolean;
     isUpdating: boolean;
     isRemoving: boolean;
-    fraction: number;
+    fractions: { [index: string]: number };
 };
 
-const notInProgress = (): AppProgess => ({
+const notInProgress = (): AppProgress => ({
     isInstalling: false,
     isUpdating: false,
     isRemoving: false,
-    fraction: 0,
+    fractions: {},
 });
 
 const appNotInProgress = <X>(app: X) => ({
@@ -46,7 +46,7 @@ const appNotInProgress = <X>(app: X) => ({
 });
 
 type DownloadableAppWithProgress = DownloadableApp & {
-    progress: AppProgess;
+    progress: AppProgress;
 };
 
 export type DisplayedApp = LocalApp | DownloadableAppWithProgress;
@@ -183,7 +183,8 @@ const slice = createSlice({
             { payload: progress }: PayloadAction<Progress>
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
-                app.progress.fraction = progress.progressFraction;
+                app.progress.fractions[progress.key] =
+                    progress.progressFraction;
             });
         },
 

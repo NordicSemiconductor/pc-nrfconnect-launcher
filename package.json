@@ -31,7 +31,8 @@
         "pack": "npm run build:prod && electron-builder -p never",
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
-        "remove-devtools": "electron . --remove-devtools"
+        "remove-devtools": "electron . --remove-devtools",
+        "postinstall": " node scripts/getNrfutil.js"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
@@ -49,7 +50,8 @@
             "resources/*.png",
             "resources/*.ico",
             "resources/*.svg",
-            "resources/mac/"
+            "resources/mac/",
+            "resources/nrfutil*"
         ],
         "directories": {
             "output": "release"
@@ -89,7 +91,7 @@
         }
     },
     "devDependencies": {
-        "@nordicsemiconductor/pc-nrfconnect-shared": "^89.0.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^90.0.0",
         "@playwright/test": "^1.16.3",
         "@types/chmodr": "1.0.0",
         "@types/lodash": "^4.14.194",
