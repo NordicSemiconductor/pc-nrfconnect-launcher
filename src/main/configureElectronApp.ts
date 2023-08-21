@@ -15,6 +15,7 @@ import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
+    getElectronResourcesDir,
     getNodeModulesDir,
 } from './config';
 import describeError from './describeError';
@@ -66,55 +67,16 @@ const fatalError = (error: unknown) => {
 
 const initNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
-    const nrfutilDestPath = path.join(
+
+    const nrfutilBundled = path.join(getElectronResourcesDir(), binName);
+    const nrfutilInAppPath = path.join(
         app.getPath('appData'),
         'nrfconnect',
         binName
     );
 
-    if (!fs.existsSync(nrfutilDestPath)) {
-        if (process.env.NODE_ENV === 'production') {
-            if (process.platform === 'darwin') {
-                fs.copyFileSync(
-                    path.join(
-                        path.dirname(app.getPath('exe')),
-                        '..',
-                        'Resources',
-                        'app.asar',
-                        'resources',
-                        binName
-                    ),
-                    path.join(app.getPath('appData'), 'nrfconnect', binName)
-                );
-            } else if (process.platform === 'win32') {
-                fs.copyFileSync(
-                    path.join(
-                        path.dirname(app.getPath('exe')),
-                        'resources',
-                        'app.asar',
-                        'resources',
-                        binName
-                    ),
-                    path.join(app.getPath('appData'), 'nrfconnect', binName)
-                );
-            } else if (process.platform === 'linux') {
-                fs.copyFileSync(
-                    path.join(
-                        path.dirname(app.getPath('exe')),
-                        'resources',
-                        'app.asar',
-                        'resources',
-                        binName
-                    ),
-                    path.join(app.getPath('appData'), 'nrfconnect', binName)
-                );
-            }
-        } else {
-            fs.copyFileSync(
-                `./resources/${binName}`,
-                path.join(app.getPath('appData'), 'nrfconnect', binName)
-            );
-        }
+    if (!fs.existsSync(nrfutilInAppPath)) {
+        fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
     }
 };
 
