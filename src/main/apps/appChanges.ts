@@ -24,7 +24,7 @@ import {
     successfulInstall,
 } from '../../ipc/apps';
 import { inRenderer as downloadProgress } from '../../ipc/downloadProgress';
-import { getAppsLocalDir, getAppsRootDir } from '../config';
+import { getAppsLocalDir, getAppsRootDir, getUserDataDir } from '../config';
 import { deleteFile, listFiles, untar } from '../fileUtil';
 import { logger } from '../log';
 import { mkdir } from '../mkdir';
@@ -280,7 +280,7 @@ const prepareNrfutilModules = async (
                 setNrfutilLogger(logger);
                 if (versions && versions.length > 0) {
                     const promise = prepareSandbox(
-                        electronApp.getPath('userData'),
+                        getUserDataDir(),
                         module,
                         versions[0],
                         progress => {

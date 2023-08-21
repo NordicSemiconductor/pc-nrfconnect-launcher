@@ -17,6 +17,7 @@ import {
     getAppsRootDir,
     getBundledResourcesDir,
     getNodeModulesDir,
+    getUserDataDir,
 } from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
@@ -69,7 +70,7 @@ const initNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
-    const nrfutilInAppPath = path.join(app.getPath('userData'), binName);
+    const nrfutilInAppPath = path.join(getUserDataDir(), binName);
 
     if (!fs.existsSync(nrfutilInAppPath)) {
         fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);

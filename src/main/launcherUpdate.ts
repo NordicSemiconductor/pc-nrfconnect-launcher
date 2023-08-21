@@ -5,17 +5,17 @@
  */
 
 import { ProgressInfo } from 'builder-util-runtime';
-import { app } from 'electron';
 import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
 
 import { inRenderer } from '../ipc/launcherUpdateProgress';
 import * as showError from '../ipc/showErrorDialog';
+import { getUserDataDir } from './config';
 
 let installCancellationToken: CancellationToken | undefined;
 
-const nrfConnectPath = path.join(app.getPath('userData'), 'logs');
+const nrfConnectPath = path.join(getUserDataDir(), 'logs');
 const logger = createLogger({
     transports: [
         new transports.File({
