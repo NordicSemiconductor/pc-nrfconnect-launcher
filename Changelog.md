@@ -7,6 +7,11 @@
 -   Show help if the app list is empty (usually because all apps have been
     filtered out).
 
+### Fixed
+
+-   Dialog Launching apps with incompatible versions not closes after launching
+    app
+
 ## 4.1.2 - 2023-06-15
 
 ### Fixed
