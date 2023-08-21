@@ -69,11 +69,7 @@ const initNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
-    const nrfutilInAppPath = path.join(
-        app.getPath('appData'),
-        'nrfconnect',
-        binName
-    );
+    const nrfutilInAppPath = path.join(app.getPath('userData'), binName);
 
     if (!fs.existsSync(nrfutilInAppPath)) {
         fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);

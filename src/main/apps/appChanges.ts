@@ -280,7 +280,7 @@ const prepareNrfutilModules = async (
                 setNrfutilLogger(logger);
                 if (versions && versions.length > 0) {
                     const promise = prepareSandbox(
-                        path.join(electronApp.getPath('appData'), 'nrfconnect'),
+                        electronApp.getPath('userData'),
                         module,
                         versions[0],
                         progress => {
