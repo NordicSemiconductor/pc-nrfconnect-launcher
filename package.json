@@ -32,7 +32,7 @@
         "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools",
-        "postinstall": " node scripts/getNrfutil.js"
+        "postinstall": "node scripts/getNrfutil.js"
     },
     "author": "Nordic Semiconductor ASA",
     "license": "Proprietary",
