@@ -15,7 +15,7 @@ import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
-    getElectronResourcesDir,
+    getBundledResourcesDir,
     getNodeModulesDir,
 } from './config';
 import describeError from './describeError';
@@ -68,7 +68,7 @@ const fatalError = (error: unknown) => {
 const initNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
-    const nrfutilBundled = path.join(getElectronResourcesDir(), binName);
+    const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(
         app.getPath('appData'),
         'nrfconnect',

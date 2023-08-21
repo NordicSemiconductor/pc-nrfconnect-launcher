@@ -22,7 +22,7 @@ export const getAppsRootDir = (sourceName: SourceName = OFFICIAL) =>
         ? appsRootDir
         : path.join(getAppsExternalDir(), sourceName);
 
-export const getElectronResourcesDir = () =>
+export const getBundledResourcesDir = () =>
     path.join(app.getAppPath(), 'resources');
 
 export const getNodeModulesDir = (sourceName?: string) =>
