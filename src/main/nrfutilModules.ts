@@ -45,7 +45,7 @@ const preparedSandbox = (
             downloadProgress.reportDownloadProgress({
                 app,
                 progressFraction: progress.progressPercentage,
-                key: moduleName,
+                fractionName: moduleName,
             });
         }
     );

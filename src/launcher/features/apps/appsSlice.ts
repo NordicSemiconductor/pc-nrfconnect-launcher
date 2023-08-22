@@ -30,7 +30,7 @@ type AppProgress = {
     isInstalling: boolean;
     isUpdating: boolean;
     isRemoving: boolean;
-    fractions: { [index: string]: number };
+    fractions: { [fractionName: string]: number };
 };
 
 const notInProgress = (): AppProgress => ({
@@ -183,7 +183,7 @@ const slice = createSlice({
             { payload: progress }: PayloadAction<Progress>
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
-                app.progress.fractions[progress.key] =
+                app.progress.fractions[progress.fractionName] =
                     progress.progressFraction;
             });
         },

@@ -21,7 +21,7 @@ const AppProgress: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             now={
                 noOfItems > 0
                     ? Object.keys(app.progress.fractions)
-                          .map(key => app.progress.fractions[key])
+                          .map(name => app.progress.fractions[name])
                           .reduce((pv, cr) => pv + cr, 0) / noOfItems
                     : 0
             }
