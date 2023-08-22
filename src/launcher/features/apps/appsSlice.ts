@@ -6,6 +6,7 @@
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { mean } from 'lodash';
 
 import {
     App,
@@ -318,3 +319,8 @@ export const isInProgress = (
     (app.progress.isInstalling ||
         app.progress.isUpdating ||
         app.progress.isRemoving);
+
+export const totalProgress = (app: DownloadableAppWithProgress) => {
+    const fractions = Object.values(app.progress.fractions);
+    return fractions.length === 0 ? 0 : mean(fractions);
+};

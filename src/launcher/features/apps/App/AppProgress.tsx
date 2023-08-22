@@ -7,26 +7,12 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-import { DisplayedApp, isInProgress } from '../appsSlice';
+import { DisplayedApp, isInProgress, totalProgress } from '../appsSlice';
 
-const AppProgress: React.FC<{ app: DisplayedApp }> = ({ app }) => {
+export default ({ app }: { app: DisplayedApp }) => {
     if (!isInProgress(app)) {
         return null;
     }
 
-    const noOfItems = Object.keys(app.progress.fractions).length;
-
-    return (
-        <ProgressBar
-            now={
-                noOfItems > 0
-                    ? Object.keys(app.progress.fractions)
-                          .map(name => app.progress.fractions[name])
-                          .reduce((pv, cr) => pv + cr, 0) / noOfItems
-                    : 0
-            }
-        />
-    );
+    return <ProgressBar now={totalProgress(app)} />;
 };
-
-export default AppProgress;
