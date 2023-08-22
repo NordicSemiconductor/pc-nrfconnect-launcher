@@ -240,7 +240,7 @@ const download = async (app: AppSpec, version?: string) => {
 
     await Promise.all([
         downloadToFile(tarballUrl, packageFilePath, true, app),
-        assertPreparedNrfutilModules(app, versionToInstall),
+        ...assertPreparedNrfutilModules(app, versionToInstall.nrfutilModules),
     ]);
     await verifyShasum(packageFilePath, versionToInstall.shasum);
 
