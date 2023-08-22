@@ -247,7 +247,6 @@ const download = async (app: AppSpec, version?: string) => {
     return {
         packageFilePath,
         checksum: versionToInstall.shasum,
-        versionToInstall,
     };
 };
 
