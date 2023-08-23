@@ -25,7 +25,7 @@ import { getDownloadableApps, getLocalApps } from './apps/apps';
 import argv from './argv';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
-import { getElectronResourcesDir } from './config';
+import { getBundledResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
 
 let launcherWindow: BrowserWindow | undefined;
@@ -45,7 +45,7 @@ export const openLauncherWindow = () => {
 const createLauncherWindow = () => {
     const window = createWindow({
         title: `nRF Connect for Desktop v${packageJson.version}`,
-        url: `file://${getElectronResourcesDir()}/launcher.html`,
+        url: `file://${getBundledResourcesDir()}/launcher.html`,
         icon: getNrfConnectForDesktopIcon(),
         width: 760,
         height: 600,
@@ -111,7 +111,7 @@ export const openAppWindow = (
               app.installed.path,
               app.html
           )}?launcherPath=${encodeURIComponent(electronApp.getAppPath())}`
-        : `file://${getElectronResourcesDir()}/app.html?appPath=${encodeURIComponent(
+        : `file://${getBundledResourcesDir()}/app.html?appPath=${encodeURIComponent(
               app.installed.path
           )}`;
 

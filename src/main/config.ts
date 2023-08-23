@@ -22,8 +22,10 @@ export const getAppsRootDir = (sourceName: SourceName = OFFICIAL) =>
         ? appsRootDir
         : path.join(getAppsExternalDir(), sourceName);
 
-export const getElectronResourcesDir = () =>
+export const getBundledResourcesDir = () =>
     path.join(app.getAppPath(), 'resources');
+
+export const getUserDataDir = () => app.getPath('userData');
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');

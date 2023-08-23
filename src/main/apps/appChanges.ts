@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
-import prepareSandbox, {
-    NrfutilSandbox,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
 import { app as electronApp, dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
@@ -23,12 +18,11 @@ import {
     InstallResult,
     successfulInstall,
 } from '../../ipc/apps';
-import { inRenderer as downloadProgress } from '../../ipc/downloadProgress';
 import { getAppsLocalDir, getAppsRootDir } from '../config';
 import { deleteFile, listFiles, untar } from '../fileUtil';
-import { logger } from '../log';
 import { mkdir } from '../mkdir';
 import { downloadToFile } from '../net';
+import { assertPreparedNrfutilModules } from '../nrfutilModules';
 import {
     addDownloadAppData,
     addInstalledAppData,
@@ -246,59 +240,14 @@ const download = async (app: AppSpec, version?: string) => {
 
     await Promise.all([
         downloadToFile(tarballUrl, packageFilePath, true, app),
-        prepareNrfutilModules(app, versionToInstall),
+        ...assertPreparedNrfutilModules(app, versionToInstall.nrfutilModules),
     ]);
     await verifyShasum(packageFilePath, versionToInstall.shasum);
 
     return {
         packageFilePath,
         checksum: versionToInstall.shasum,
-        versionToInstall,
     };
-};
-
-const existingNrfutilSandboxes: { [index: string]: Promise<NrfutilSandbox> } =
-    {};
-
-const prepareNrfutilModules = async (
-    app: AppSpec,
-    versionToInstall: AppVersion
-) => {
-    const nrfutilModules = versionToInstall.nrfutilModules;
-
-    if (nrfutilModules) {
-        await Promise.all(
-            Object.keys(nrfutilModules).map(module => {
-                const versions = nrfutilModules[module];
-                if (
-                    existingNrfutilSandboxes[`${module}-${versions}`] !==
-                    undefined
-                ) {
-                    return existingNrfutilSandboxes[`${module}-${versions}`];
-                }
-
-                setNrfutilLogger(logger);
-                if (versions && versions.length > 0) {
-                    const promise = prepareSandbox(
-                        path.join(electronApp.getPath('appData'), 'nrfconnect'),
-                        module,
-                        versions[0],
-                        progress => {
-                            downloadProgress.reportDownloadProgress({
-                                app,
-                                progressFraction: progress.progressPercentage,
-                                key: module,
-                            });
-                        }
-                    );
-
-                    existingNrfutilSandboxes[`${module}-${versions}`] = promise;
-                    return promise;
-                }
-                return Promise.resolve();
-            })
-        );
-    }
 };
 
 const addInstallMetaData = (

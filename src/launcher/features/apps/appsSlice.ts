@@ -6,6 +6,7 @@
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { mean } from 'lodash';
 
 import {
     App,
@@ -30,7 +31,7 @@ type AppProgress = {
     isInstalling: boolean;
     isUpdating: boolean;
     isRemoving: boolean;
-    fractions: { [index: string]: number };
+    fractions: { [fractionName: string]: number };
 };
 
 const notInProgress = (): AppProgress => ({
@@ -183,7 +184,7 @@ const slice = createSlice({
             { payload: progress }: PayloadAction<Progress>
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
-                app.progress.fractions[progress.key] =
+                app.progress.fractions[progress.fractionName] =
                     progress.progressFraction;
             });
         },
@@ -318,3 +319,8 @@ export const isInProgress = (
     (app.progress.isInstalling ||
         app.progress.isUpdating ||
         app.progress.isRemoving);
+
+export const totalProgress = (app: DownloadableAppWithProgress) => {
+    const fractions = Object.values(app.progress.fractions);
+    return fractions.length === 0 ? 0 : mean(fractions);
+};
