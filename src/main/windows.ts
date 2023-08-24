@@ -22,6 +22,7 @@ import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
+import { quickstartAppName } from './apps/quickstart';
 import argv from './argv';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
@@ -72,10 +73,15 @@ export const hideLauncherWindow = () => {
     launcherWindow?.hide();
 };
 
-export const openAppWindow = (
-    app: LaunchableApp,
-    openAppOptions: OpenAppOptions = {}
-) => {
+const getSizeOptions = (app: LaunchableApp) => {
+    if (app.name === quickstartAppName) {
+        return {
+            width: 800,
+            height: 550,
+            resizable: false,
+        };
+    }
+
     const lastWindowState = getLastWindowState();
 
     let { x, y } = lastWindowState;
@@ -96,6 +102,20 @@ export const openAppWindow = (
         }
     }
 
+    return {
+        x,
+        y,
+        width,
+        height,
+        minHeight: 500,
+        minWidth: 760,
+    };
+};
+
+export const openAppWindow = (
+    app: LaunchableApp,
+    openAppOptions: OpenAppOptions = {}
+) => {
     const { device } = openAppOptions;
     const additionalArguments: string[] = [];
     if (device != null) {
@@ -120,14 +140,9 @@ export const openAppWindow = (
             title: `${app.displayName || app.name} v${app.currentVersion}`,
             url: template,
             icon: getAppIcon(app),
-            x,
-            y,
-            width,
-            height,
-            minHeight: 500,
-            minWidth: 760,
             show: true,
             backgroundColor: '#fff',
+            ...getSizeOptions(app),
         },
         additionalArguments
     );
@@ -137,22 +152,24 @@ export const openAppWindow = (
         app,
     });
 
-    appWindow.webContents.on('did-finish-load', () => {
-        if (lastWindowState.maximized) {
-            appWindow.maximize();
-        }
-    });
-
-    appWindow.on('close', () => {
-        const bounds = appWindow.getBounds();
-        setLastWindowState({
-            x: bounds.x,
-            y: bounds.y,
-            width: bounds.width,
-            height: bounds.height,
-            maximized: appWindow.isMaximized(),
+    if (app.name !== quickstartAppName) {
+        appWindow.webContents.on('did-finish-load', () => {
+            if (getLastWindowState().maximized) {
+                appWindow.maximize();
+            }
         });
-    });
+
+        appWindow.on('close', () => {
+            const bounds = appWindow.getBounds();
+            setLastWindowState({
+                x: bounds.x,
+                y: bounds.y,
+                width: bounds.width,
+                height: bounds.height,
+                maximized: appWindow.isMaximized(),
+            });
+        });
+    }
 
     let reloading = false;
 
