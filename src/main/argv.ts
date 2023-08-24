@@ -84,8 +84,8 @@ type StartupApp =
           source: string;
       };
 
-export const getStartupApp = (): StartupApp | undefined => {
-    const localApp = argv['open-local-app'];
+export const getStartupApp = (arg: typeof argv): StartupApp | undefined => {
+    const localApp = arg['open-local-app'];
     if (localApp != null) {
         return {
             local: true,
@@ -93,9 +93,9 @@ export const getStartupApp = (): StartupApp | undefined => {
         };
     }
 
-    const source = argv.source ?? OFFICIAL;
+    const source = arg.source ?? OFFICIAL;
 
-    const downloadableApp = argv['open-downloadable-app'];
+    const downloadableApp = arg['open-downloadable-app'];
     if (downloadableApp != null) {
         return {
             local: false,
@@ -104,7 +104,7 @@ export const getStartupApp = (): StartupApp | undefined => {
         };
     }
 
-    const officialApp = argv['open-official-app'];
+    const officialApp = arg['open-official-app'];
     if (officialApp != null) {
         console.warn(
             'Using the command line switch --open-official-app is deprecated,\n' +
