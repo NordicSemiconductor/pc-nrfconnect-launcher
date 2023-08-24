@@ -11,8 +11,10 @@ import { initialize as initializeElectronRemote } from '@electron/remote/main';
 
 import configureElectronApp from './configureElectronApp';
 import registerIpcHandler from './registerIpcHandler';
+import singeInstanceLock from './singeInstanceLock';
 import storeExecutablePath from './storeExecutablePath';
 
+singeInstanceLock();
 initializeElectronRemote();
 registerIpcHandler();
 configureElectronApp();

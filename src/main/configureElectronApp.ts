@@ -10,7 +10,7 @@ import path from 'path';
 
 import { installAllLocalAppArchives } from './apps/appChanges';
 import { initialiseAllSources } from './apps/sources';
-import { getStartupApp } from './argv';
+import argv, { getStartupApp } from './argv';
 import {
     getAppsExternalDir,
     getAppsLocalDir,
@@ -39,8 +39,8 @@ const initAppsDirectory = async () => {
     await installAllLocalAppArchives();
 };
 
-const openInitialWindow = () => {
-    const startupApp = getStartupApp();
+export const openInitialWindow = (args = argv) => {
+    const startupApp = getStartupApp(args);
 
     if (startupApp == null) {
         openLauncherWindow();
