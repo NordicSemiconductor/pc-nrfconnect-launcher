@@ -9,7 +9,11 @@ import fs from 'fs';
 import path from 'path';
 
 import { installAllLocalAppArchives } from './apps/appChanges';
-import { initialiseAllSources } from './apps/sources';
+import { ensureQuickstartAppExists } from './apps/quickstart';
+import {
+    ensureInternalSourceExists,
+    initialiseAllSources,
+} from './apps/sources';
 import argv, { getStartupApp } from './argv';
 import {
     getAppsExternalDir,
@@ -35,7 +39,9 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsLocalDir());
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
+    ensureInternalSourceExists();
     initialiseAllSources();
+    await ensureQuickstartAppExists();
     await installAllLocalAppArchives();
 };
 

@@ -17,6 +17,7 @@ import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsRootDir,
+    getBundledResourcesDir,
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
@@ -30,6 +31,12 @@ let sources: Source[] = [];
 const officialSource = {
     name: OFFICIAL,
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
+};
+
+// TODO: Remove once quickstart has moved and is bundled from the official source
+const internalSource = {
+    name: 'Internal',
+    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/source.json',
 };
 
 const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
@@ -243,4 +250,38 @@ export const downloadAllSources = async () => {
         sources: successful,
         sourcesWithErrors: erroneos,
     };
+};
+
+export const ensureInternalSourceExists = () => {
+    if (
+        getSource('Internal') == null &&
+        fs.existsSync(`${getBundledResourcesDir()}/prefetched/source.json`)
+    ) {
+        addToSourceList(internalSource);
+        ensureDirExists(getAppsRootDir(internalSource.name));
+
+        writeSourceJson(
+            internalSource,
+            readJsonFile(`${getBundledResourcesDir()}/prefetched/source.json`)
+        );
+    }
+
+    [
+        'pc-nrfconnect-boilerplate.json',
+        'pc-nrfconnect-cellularmonitor.json',
+        'pc-nrfconnect-dtm.json',
+        'pc-nrfconnect-linkmonitor.json',
+        'pc-nrfconnect-npm.json',
+        'pc-nrfconnect-ppk.json',
+        'pc-nrfconnect-programmer.json',
+        'pc-nrfconnect-quickstart.json',
+        'pc-nrfconnect-serial-terminal.json',
+        'pc-nrfconnect-toolchain-manager.json',
+    ].forEach(file => {
+        const from = `${getBundledResourcesDir()}/prefetched/${file}`;
+        const to = `${getAppsRootDir('Internal')}/${file}`;
+        if (fs.existsSync(from) && !fs.existsSync(to)) {
+            fs.copyFileSync(from, to);
+        }
+    });
 };
