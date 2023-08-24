@@ -52,7 +52,8 @@
             "resources/*.ico",
             "resources/*.svg",
             "resources/mac/",
-            "resources/nrfutil*"
+            "resources/nrfutil*",
+            "resources/prefetched/"
         ],
         "directories": {
             "output": "release"
@@ -65,7 +66,7 @@
             "category": "Development",
             "icon": "resources/icon.icns"
         },
-        "beforePack": "build/getJlink.js",
+        "beforePack": "build/getBundledResources.js",
         "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",
