@@ -85,11 +85,11 @@ export default () => {
     safeStorage.forRenderer.registerEncryptionAvailable(
         safeStorageElectron.isEncryptionAvailable
     );
-    safeStorage.forRenderer.registerDecryptString(encryptString =>
-        safeStorageElectron.decryptString(Buffer.from(encryptString))
+    safeStorage.forRenderer.registerDecryptString(
+        safeStorageElectron.decryptString
     );
-    safeStorage.forRenderer.registerEncryptString(plainText =>
-        safeStorageElectron.encryptString(plainText).toString()
+    safeStorage.forRenderer.registerEncryptString(
+        safeStorageElectron.encryptString
     );
 
     proxyLogin.forRenderer.registerAnswerProxyLoginRequest(
