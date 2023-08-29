@@ -111,7 +111,7 @@
     },
     "dependencies": {
         "@electron/remote": "2.0.8",
-        "@nordicsemiconductor/nrf-device-lib-js": "^0.7.1",
+        "@nordicsemiconductor/nrf-device-lib-js": "0.6.12",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
