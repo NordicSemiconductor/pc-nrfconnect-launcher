@@ -7,8 +7,8 @@
 import 'regenerator-runtime/runtime';
 
 import React from 'react';
-import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { render } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import initialiseLauncherState from './features/initialisation/initialiseLauncherState';
 import Root from './Root';
@@ -20,12 +20,10 @@ import '../../resources/css/launcher.scss';
 const { dispatch } = store;
 registerIpcHandler(dispatch);
 
-const rootElement = (
+render(
     <Provider store={store}>
         <Root />
     </Provider>
 );
 
-render(rootElement, document.getElementById('webapp'), () => {
-    dispatch(initialiseLauncherState());
-});
+dispatch(initialiseLauncherState());

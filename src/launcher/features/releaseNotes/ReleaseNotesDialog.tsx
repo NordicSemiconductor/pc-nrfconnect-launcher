@@ -55,10 +55,9 @@ export default () => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="release-notes">
-                <ReactMarkdown
-                    source={app?.releaseNotes ?? ''}
-                    linkTarget="_blank"
-                />
+                <ReactMarkdown linkTarget="_blank">
+                    {app?.releaseNotes ?? ''}
+                </ReactMarkdown>
             </Modal.Body>
             <Modal.Footer>
                 {canBeInstalledOrUpdated(app) && (
