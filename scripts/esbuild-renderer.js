@@ -4,14 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const {
-    build,
-} = require('@nordicsemiconductor/pc-nrfconnect-shared/scripts/esbuild-renderer');
+// Copying this from shared for now to avoid creating a shared release to remove react as an external for now.
+const { build } = require('./esbuild-rendere-from-shared');
 
 build({
-    entryPoints: ['./resources/css/fonts.scss'],
-    outfile: './dist/fonts.css',
-    sourcemap: false,
+    entryPoints: ['./src/launcher'],
+    outfile: './dist/launcher.js',
+    format: 'cjs',
+    external: [],
 });
-
-build({ entryPoints: ['./src/app', './src/launcher'], format: 'iife' });
+build({
+    entryPoints: ['./src/app'],
+    outfile: './dist/app.js',
+    format: 'iife',
+    external: [
+        'react',
+        'react-dom',
+    ],
+});

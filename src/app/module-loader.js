@@ -6,6 +6,7 @@
 
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
+import { join } from 'path';
 
 const hostedModules = {};
 
@@ -14,6 +15,7 @@ const hostedModules = {};
  * app uses the same instances of react and react-redux as we have in core.
  * Cannot have multiple copies of these loaded at the same time.
  */
+
 const originalLoad = Module._load;
 Module._load = function load(modulePath) {
     if (hostedModules[modulePath]) {
@@ -32,11 +34,25 @@ hostedModules['@electron/remote'] = require('@electron/remote');
 hostedModules[
     '@nordicsemiconductor/nrf-device-lib-js'
 ] = require('@nordicsemiconductor/nrf-device-lib-js');
-hostedModules[
-    '@nordicsemiconductor/pc-nrfconnect-shared'
-] = require('@nordicsemiconductor/pc-nrfconnect-shared');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['react'] = require('react');
+
+hostedModules['prop-types/checkPropTypes'] = requireFromResources('check-prop-types.js')
+hostedModules['react'] = requireFromResources('react.js');
+hostedModules['scheduler'] = requireFromResources('scheduler.js');
+hostedModules['scheduler/tracing'] = requireFromResources(
+    'scheduler-tracing.js'
+);
 hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
 hostedModules['redux-thunk'] = require('redux-thunk');
+hostedModules['react-dom'] = requireFromResources('react-dom.js');
+hostedModules['react-dom/client'] = requireFromResources('react-dom-client.js');
+// hostedModules['react-redux'] = require('react-redux');
+
+function requireFromResources(file) {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    return require(join(
+        hostedModules['@electron/remote'].app.getAppPath(),
+        'resources',
+        'react',
+        file
+    ));
+}
