@@ -8,9 +8,14 @@ import {
     appDetails,
     openWindow,
     preventSleep,
+    safeStorage,
     serialPort,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import { app, powerSaveBlocker } from 'electron';
+import {
+    app,
+    powerSaveBlocker,
+    safeStorage as safeStorageElectron,
+} from 'electron';
 import Store from 'electron-store';
 import fs from 'fs';
 import path from 'path';
@@ -76,6 +81,16 @@ export default () => {
 
     preventSleep.forRenderer.registerStart(startPreventingSleep);
     preventSleep.forRenderer.registerEnd(endPreventingSleep);
+
+    safeStorage.forRenderer.registerEncryptionAvailable(
+        safeStorageElectron.isEncryptionAvailable
+    );
+    safeStorage.forRenderer.registerDecryptString(
+        safeStorageElectron.decryptString
+    );
+    safeStorage.forRenderer.registerEncryptString(
+        safeStorageElectron.encryptString
+    );
 
     proxyLogin.forRenderer.registerAnswerProxyLoginRequest(
         callRegisteredCallback
