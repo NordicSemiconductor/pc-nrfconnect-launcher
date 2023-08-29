@@ -8,7 +8,8 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { LOCAL } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
-import { mount } from 'enzyme';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import {
     createDownloadableTestApp,
@@ -136,30 +137,31 @@ describe('AppList', () => {
         ).toMatchSnapshot();
     });
 
-    it('should invoke installDownloadableApp with app name and source when install button is clicked', () => {
+    it('should invoke installDownloadableApp with app name and source when install button is clicked', async () => {
+        const user = userEvent.setup();
         mockThunk(installDownloadableApp);
 
-        const wrapper = mount(
+        render(
             <Provider
                 store={preparedStore([addDownloadableApps([uninstalledApp])])}
             >
                 <AppList />
             </Provider>
         );
-        wrapper
-            .find(`[title="Install ${uninstalledApp.displayName}"]`)
-            .first()
-            .simulate('click');
+        await user.click(
+            screen.getByTitle(`Install ${uninstalledApp.displayName}`)
+        );
 
         expect(installDownloadableApp).toHaveBeenCalledWith(
             expect.objectContaining(uninstalledApp)
         );
     });
 
-    it('should invoke removeDownloadableApp with app name and source when remove button is clicked', () => {
+    it('should invoke removeDownloadableApp with app name and source when remove button is clicked', async () => {
         mockThunk(removeDownloadableApp);
+        const user = userEvent.setup();
 
-        const wrapper = mount(
+        const { container } = render(
             <Provider
                 store={preparedStore([addDownloadableApps([installedApp])])}
             >
@@ -167,21 +169,23 @@ describe('AppList', () => {
             </Provider>
         );
 
-        wrapper.find(`button.dropdown-toggle`).first().simulate('click');
-        wrapper
-            .find(`[title="Remove ${installedApp.displayName}"]`)
-            .first()
-            .simulate('click');
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+        const el = container.getElementsByClassName('dropdown-toggle').item(0);
+        await user.click(el!);
+        await user.click(
+            screen.getByTitle(`Remove ${installedApp.displayName}`)
+        );
 
         expect(removeDownloadableApp).toHaveBeenCalledWith(
             expect.objectContaining(installedApp)
         );
     });
 
-    it('should invoke checkEngineAndLaunch with given app item when Open is clicked', () => {
+    it('should invoke checkEngineAndLaunch with given app item when Open is clicked', async () => {
         mockThunk(checkEngineAndLaunch);
+        const user = userEvent.setup();
 
-        const wrapper = mount(
+        render(
             <Provider
                 store={preparedStore([addDownloadableApps([installedApp])])}
             >
@@ -189,10 +193,7 @@ describe('AppList', () => {
             </Provider>
         );
 
-        wrapper
-            .find(`[title="Open ${installedApp.displayName}"]`)
-            .first()
-            .simulate('click');
+        await user.click(screen.getByTitle(`Open ${installedApp.displayName}`));
 
         expect(checkEngineAndLaunch).toHaveBeenCalledWith(
             expect.objectContaining(installedApp)
