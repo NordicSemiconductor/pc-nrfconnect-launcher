@@ -35,13 +35,13 @@ build({
 build({
     entryPoints: ['./src/launcher'],
     outfile: './dist/launcher.js',
-    format: 'cjs',
+    format: 'iife',
     external: [...commonExternal],
 });
 
 build({
     entryPoints: ['./src/app'],
     outfile: './dist/app.js',
-    format: 'cjs',
+    format: 'iife',
     external: [...commonExternal, 'react', 'react-dom'],
 });
