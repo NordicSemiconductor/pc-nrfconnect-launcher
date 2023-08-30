@@ -47,6 +47,7 @@
             "dist/",
             "node_modules/",
             "resources/*.html",
+            "resources/react/*.js",
             "resources/*.png",
             "resources/*.ico",
             "resources/*.svg",

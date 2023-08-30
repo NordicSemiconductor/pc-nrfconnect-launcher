@@ -6,37 +6,64 @@
 
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
+import path from 'path';
 
-const hostedModules = {};
+const electronRemote = require('@electron/remote');
 
-/*
- * The loaded app may import react and react-redux. We must make sure that the
- * app uses the same instances of react and react-redux as we have in core.
- * Cannot have multiple copies of these loaded at the same time.
- */
+const hostedModules = {
+    '@electron/remote': electronRemote,
+};
+
+const launcherPaths = window.module.paths;
+
 const originalLoad = Module._load;
 Module._load = function load(modulePath) {
     if (hostedModules[modulePath]) {
         return hostedModules[modulePath];
     }
 
-    return originalLoad.apply(this, arguments); // eslint-disable-line prefer-rest-params
+    if (lazy[modulePath]) {
+        const moduleToLoad = lazy[modulePath]();
+        // eslint-disable-next-line prefer-rest-params
+        const args = [...arguments];
+        args[0] = moduleToLoad;
+        args[1].paths.splice(0, 0, ...launcherPaths);
+        hostedModules[modulePath] = originalLoad(...args);
+        return hostedModules[modulePath];
+    }
+
+    return originalLoad(...arguments); // eslint-disable-line prefer-rest-params
 };
 
-/* eslint-disable dot-notation */
-// Disable dot-notation in this file, to keep the syntax below more consistent
-hostedModules['serialport'] = require('serialport');
+const lazy = {
+    electron: () => 'electron',
+    serialport: () => 'serialport',
+    react: () => requireFromResources('react.js'),
+    'object-assign': () => 'object-assign',
+    scheduler: () => requireFromResources('scheduler.js'),
+    'redux-devtools-extension': () => 'redux-devtools-extension',
+    'redux-thunk': () => 'redux-thunk',
+    'react-dom': () => requireFromResources('react-dom.js'),
+    'react-dom/client': () => requireFromResources('react-dom-client.js'),
+    'react-redux': () => 'react-redux',
+    '@nordicsemiconductor/nrf-device-lib-js': () =>
+        '@nordicsemiconductor/nrf-device-lib-js',
+    'prop-types/checkPropTypes': () =>
+        requireFromResources('check-prop-types.js'),
+    'scheduler/tracing': () => requireFromResources('scheduler-tracing.js'),
+};
 
-hostedModules['electron'] = require('electron');
-hostedModules['@electron/remote'] = require('@electron/remote');
-hostedModules[
-    '@nordicsemiconductor/nrf-device-lib-js'
-] = require('@nordicsemiconductor/nrf-device-lib-js');
-hostedModules[
-    '@nordicsemiconductor/pc-nrfconnect-shared'
-] = require('@nordicsemiconductor/pc-nrfconnect-shared');
-hostedModules['react-dom'] = require('react-dom');
-hostedModules['react-redux'] = require('react-redux');
-hostedModules['react'] = require('react');
-hostedModules['redux-devtools-extension'] = require('redux-devtools-extension');
-hostedModules['redux-thunk'] = require('redux-thunk');
+function requireFromResources(file) {
+    if (file === 'react.js') {
+        console.warn(
+            'This version of nRF Connect for Desktop still provides React 16 to this app. But the next version of nRF Connect for Desktop will stop that and either provide React 18 or none at all. Update your app for that!'
+        );
+    }
+
+    return path.join(
+        electronRemote.app.getAppPath(),
+        'resources',
+        'react',
+        file
+    );
+}
