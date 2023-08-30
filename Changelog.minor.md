@@ -9,6 +9,11 @@ release the new version.
 
 ## 4.1.3-pre3
 
+### Added
+
+-   #861, #870: Support for `nrfutil`.
+-   #874: IPC handler for safe storage.
+
 ### Changed
 
 -   #850, #865: Support for a custom html-template from the app.
@@ -18,9 +23,9 @@ release the new version.
 
 -   #844: Text is select when search field is focused, making it easier to
     replace the current text.
--   #864: Bump device-lib-js to 0.7.0.
 -   #871: Add single instance lock.
--   #877: Support React 16 for legacy apps.
+-   #877: Use React 18 but support React 16 for legacy apps.
+-   #878: Add `--help` command line argument.
 
 ### Fixed
 
@@ -57,8 +62,8 @@ release the new version.
 
 ### Removed
 
--   Building the linux version with .tar.gz, now it's only AppImage, the only
-    version released.
+-   #867: Building the linux version with .tar.gz, now it's only AppImage, the
+    only version released.
 
 ## 4.1.2
 
