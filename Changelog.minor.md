@@ -20,6 +20,7 @@ release the new version.
     replace the current text.
 -   #864: Bump device-lib-js to 0.7.0.
 -   #871: Add single instance lock.
+-   #877: Support React 16 for legacy apps.
 
 ### Fixed
 
