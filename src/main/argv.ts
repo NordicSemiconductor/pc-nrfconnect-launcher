@@ -8,36 +8,51 @@ import parseArgs from 'minimist';
 
 import { OFFICIAL } from '../ipc/sources';
 
-/*
- * Supported command line arguments:
- *
- * Launch app on startup
- * --open-local-app <id>         Open a local app with the given id on start.
- * --open-downloadable-app <id>  Open a downloadable app with the given id on start.
- * --open-official-app <id>      [Deprecated] Alias for --open-downloadable-app.
- * --source <name>               From which source to open the downloadable app.
- *                               Default: official
- *
- * Directories
- * --apps-root-dir  The directory where app data is stored.
- *                  Default: "<homeDir>/.nrfconnect-apps"
- * --user-data-dir  Path to the user data dir. If this is not set, the environment
- *                  variable NRF_USER_DATA_DIR is also used.
- *                  See also https://www.electronjs.org/docs/api/app#appgetpathname
- *                  Default: The appData directory appended with 'nrfconnect'.
- *
- * Startup behaviour
- * --skip-update-apps      Do not download info/updates about apps.
- *                         Default: false
- * --skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
- *                         Default: false
- * --skip-splash-screen    Skip the splash screen at startup.
- *                         Default: false
- *
- * Dev tools
- * --install-devtools  Install dev tools
- * --remove-devtools   Remove dev tools
- */
+const helpText = `
+Supported command line arguments:
+
+--help     Show this help
+
+Launch app on startup
+=====================
+--open-local-app <id>         Open a local app with the given id on start.
+--open-downloadable-app <id>  Open a downloadable app with the given id on start.
+--open-official-app <id>      [Deprecated] Alias for --open-downloadable-app.
+--source <name>               From which source to open the downloadable app.
+                              Default: official
+
+Directories
+===========
+--apps-root-dir  The directory where app data is stored.
+                 Default: "<homeDir>/.nrfconnect-apps"
+--user-data-dir  Path to the user data dir. If this is not set, the environment
+                 variable NRF_USER_DATA_DIR is also used.
+                 See also https://www.electronjs.org/docs/api/app#appgetpathname
+                 Default: The appData directory appended with 'nrfconnect'.
+
+Startup behaviour
+=================
+--skip-update-apps      Do not download info/updates about apps.
+                        Default: false
+--skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
+                        Default: false
+--skip-splash-screen    Skip the splash screen at startup.
+                        Default: false
+
+Dev tools
+=========
+--install-devtools  Install dev tools
+--remove-devtools   Remove dev tools
+
+Proxy settings
+==============
+--no-proxy-server                 Disable proxy
+--proxy-server=<scheme>=<uri>[:<port>][;...] | <uri>[:<port>] | "direct://"
+                                  Manual proxy address
+--proxy-pac-url=<pac-file-url>    Manual PAC address
+--proxy-bypass-list=(<trailing_domain>|<ip-address>)[:<port>][;...]
+                                  Disable proxy per host
+`.trim();
 
 interface CommandLineArguments {
     'open-local-app': string | undefined;
@@ -70,7 +85,12 @@ const argv = parseArgs<CommandLineArguments>(args, {
     ],
 });
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Because '--': true is set above, this will always be non-null.
+if (argv.help) {
+    console.log(helpText);
+    process.exit();
+}
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Because of the `'--': true` above, this will always be non-null.
 export const additionalArguments: string[] = argv['--']!;
 
 type StartupApp =
