@@ -9,8 +9,8 @@
 
 ### Fixed
 
--   Dialog Launching apps with incompatible versions not closes after launching
-    app
+-   Warning dialog about launching apps with incompatible versions did not close
+    on launching the app.
 
 ## 4.1.2 - 2023-06-15
 
