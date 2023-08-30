@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+/* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
-import { join } from 'path';
+import path from 'path';
+
 const electronRemote = require('@electron/remote');
 
 const hostedModules = {
     '@electron/remote': electronRemote,
-    '@nordicsemiconductor/nrf-device-lib-js':  require('@nordicsemiconductor/nrf-device-lib-js'),
+    '@nordicsemiconductor/nrf-device-lib-js': require('@nordicsemiconductor/nrf-device-lib-js'),
 };
 
 const originalLoad = Module._load;
@@ -22,6 +24,7 @@ Module._load = function load(modulePath) {
 
     if (lazy[modulePath]) {
         const moduleToLoad = lazy[modulePath]();
+        // eslint-disable-next-line prefer-rest-params
         const args = [...arguments];
         args[0] = moduleToLoad;
         hostedModules[modulePath] = originalLoad(...args);
@@ -32,24 +35,22 @@ Module._load = function load(modulePath) {
 };
 
 const lazy = {
-    'electron': () => 'electron',
-    'serialport': () => 'serialport',
-    'react': () => requireFromResources('react.js'),
+    electron: () => 'electron',
+    serialport: () => 'serialport',
+    react: () => requireFromResources('react.js'),
     'object-assign': () => 'object-assign',
-    'scheduler': () => requireFromResources('scheduler.js'),
+    scheduler: () => requireFromResources('scheduler.js'),
     'redux-devtools-extension': () => 'redux-devtools-extension',
     'redux-thunk': () => 'redux-thunk',
     'react-dom': () => requireFromResources('react-dom.js'),
     'react-dom/client': () => requireFromResources('react-dom-client.js'),
     'react-redux': () => 'react-redux',
-    '@nordicsemiconductor/nrf-device-lib-js':  () => '@nordicsemiconductor/nrf-device-lib-js',
-    'prop-types/checkPropTypes': () =>  requireFromResources(
-        'check-prop-types.js'
-    ),
-    'scheduler/tracing': () => requireFromResources(
-        'scheduler-tracing.js'
-    )
-}
+    '@nordicsemiconductor/nrf-device-lib-js': () =>
+        '@nordicsemiconductor/nrf-device-lib-js',
+    'prop-types/checkPropTypes': () =>
+        requireFromResources('check-prop-types.js'),
+    'scheduler/tracing': () => requireFromResources('scheduler-tracing.js'),
+};
 
 function requireFromResources(file) {
     if (file === 'react.js') {
@@ -58,7 +59,7 @@ function requireFromResources(file) {
         );
     }
 
-    return join(
+    return path.join(
         electronRemote.app.getAppPath(),
         'resources',
         'react',
