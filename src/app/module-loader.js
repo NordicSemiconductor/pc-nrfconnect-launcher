@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/* eslint-disable global-require */
 /* eslint-disable no-underscore-dangle */
 import Module from 'module';
 import path from 'path';
@@ -13,8 +12,9 @@ const electronRemote = require('@electron/remote');
 
 const hostedModules = {
     '@electron/remote': electronRemote,
-    '@nordicsemiconductor/nrf-device-lib-js': require('@nordicsemiconductor/nrf-device-lib-js'),
 };
+
+const launcherPaths = window.module.paths;
 
 const originalLoad = Module._load;
 Module._load = function load(modulePath) {
@@ -27,6 +27,7 @@ Module._load = function load(modulePath) {
         // eslint-disable-next-line prefer-rest-params
         const args = [...arguments];
         args[0] = moduleToLoad;
+        args[1].paths.splice(0, 0, ...launcherPaths);
         hostedModules[modulePath] = originalLoad(...args);
         return hostedModules[modulePath];
     }
