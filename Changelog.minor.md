@@ -19,6 +19,8 @@ release the new version.
 -   #844: Text is select when search field is focused, making it easier to
     replace the current text.
 -   #864: Bump device-lib-js to 0.7.0.
+-   #871: Add single instance lock.
+-   #877: Support React 16 for legacy apps.
 
 ### Fixed
 
