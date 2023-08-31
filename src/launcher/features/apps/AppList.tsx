@@ -14,7 +14,7 @@ import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
-import { DisplayedApp, getAllApps } from './appsSlice';
+import { DisplayedApp, getAllApps, getNoAppsExist } from './appsSlice';
 import ConfirmLaunchDialog from './ConfirmLaunchDialog';
 import InstallOtherVersionDialog from './InstallOtherVersionDialog';
 
@@ -27,19 +27,21 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
     return cmpInstalled || aName.localeCompare(bName);
 };
 
-const NoApps = ({ notYetLoaded }: { notYetLoaded: boolean }) => {
+const NoApps = () => {
+    const noAppsExist = useLauncherSelector(getNoAppsExist);
+
     const [justStarted, setJustStarted] = useState(true);
 
     useEffect(() => {
         setTimeout(() => setJustStarted(false), 2000);
     }, []);
 
-    if (justStarted && notYetLoaded) return null;
+    if (justStarted && noAppsExist) return null;
 
     return (
         <div className="tw-grid tw-flex-1 tw-place-items-center">
             <div className="tw-max-w-[75%] tw-bg-white tw-p-4">
-                {notYetLoaded ? (
+                {noAppsExist ? (
                     <>
                         The list of apps is not yet loaded from{' '}
                         <Link href="https://developer.nordicsemi.com" />. Make
@@ -62,19 +64,16 @@ const Apps = ({ apps }: { apps: DisplayedApp[] }) => (
 );
 
 export default () => {
-    const allApps = useLauncherSelector(getAllApps);
     const appsFilter = useLauncherSelector(getAppsFilter);
 
-    const apps = allApps.filter(appsFilter).sort(sortByStateAndName);
+    const apps = useLauncherSelector(getAllApps)
+        .filter(appsFilter)
+        .sort(sortByStateAndName);
 
     return (
         <>
             <AppFilterBar />
-            {apps.length === 0 ? (
-                <NoApps notYetLoaded={allApps.length === 0} />
-            ) : (
-                <Apps apps={apps} />
-            )}
+            {apps.length === 0 ? <NoApps /> : <Apps apps={apps} />}
             <ConfirmLaunchDialog />
             <InstallOtherVersionDialog />
             <ReleaseNotesDialog />
