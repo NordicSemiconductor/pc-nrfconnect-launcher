@@ -18,6 +18,7 @@ import {
 } from '../../../test/testFixtures';
 import render, { preparedStore } from '../../../test/testrenderer';
 import { hideSource } from '../filter/filterSlice';
+import { setCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import AppList from './AppList';
 import {
     checkEngineAndLaunch,
@@ -86,6 +87,13 @@ describe('AppList', () => {
 
         jest.runOnlyPendingTimers();
         jest.useRealTimers();
+    });
+
+    it('should render without any apps and disabled update check', () => {
+        expect(
+            render(<AppList />, [setCheckForUpdatesAtStartup(false)])
+                .baseElement
+        ).toMatchSnapshot();
     });
 
     it('should render with all apps filtered out', () => {

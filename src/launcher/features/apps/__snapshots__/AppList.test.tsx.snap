@@ -649,6 +649,32 @@ exports[`AppList should render with all apps filtered out 1`] = `
 </body>
 `;
 
+exports[`AppList should render without any apps and disabled update check 1`] = `
+<body>
+  <div>
+    <div />
+    <div
+      class="tw-grid tw-flex-1 tw-place-items-center"
+    >
+      <div
+        class="tw-max-w-[75%] tw-bg-white tw-p-4"
+      >
+        No apps are loaded from the server yet and you have “Check for updates at startup” disabled in the settings. You can enable it there or just
+         
+        <button
+          class="tw-inline tw-border-0 tw-bg-white tw-p-0 tw-text-primary"
+          type="button"
+        >
+          now check once for updates
+        </button>
+        .
+      </div>
+    </div>
+    <div />
+  </div>
+</body>
+`;
+
 exports[`AppList should render without any apps initially empty 1`] = `
 <body>
   <div>
