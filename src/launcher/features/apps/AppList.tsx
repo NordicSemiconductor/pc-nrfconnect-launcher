@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { App as AppType, isInstalled } from '../../../ipc/apps';
 import { useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
-import { DisplayedApp, getAllApps, getNoAppsExist } from './appsSlice';
+import AppListEmpty from './AppListEmpty';
+import { DisplayedApp, getAllApps } from './appsSlice';
 import ConfirmLaunchDialog from './ConfirmLaunchDialog';
 import InstallOtherVersionDialog from './InstallOtherVersionDialog';
 
@@ -25,34 +25,6 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
     const bName = appB.displayName || appB.name;
 
     return cmpInstalled || aName.localeCompare(bName);
-};
-
-const NoApps = () => {
-    const noAppsExist = useLauncherSelector(getNoAppsExist);
-
-    const [justStarted, setJustStarted] = useState(true);
-
-    useEffect(() => {
-        setTimeout(() => setJustStarted(false), 2000);
-    }, []);
-
-    if (justStarted && noAppsExist) return null;
-
-    return (
-        <div className="tw-grid tw-flex-1 tw-place-items-center">
-            <div className="tw-max-w-[75%] tw-bg-white tw-p-4">
-                {noAppsExist ? (
-                    <>
-                        The list of apps is not yet loaded from{' '}
-                        <Link href="https://developer.nordicsemi.com" />. Make
-                        sure you can reach that server.
-                    </>
-                ) : (
-                    'No apps shown because of the selected filters. Change those to display apps again.'
-                )}
-            </div>
-        </div>
-    );
 };
 
 const Apps = ({ apps }: { apps: DisplayedApp[] }) => (
@@ -73,7 +45,7 @@ export default () => {
     return (
         <>
             <AppFilterBar />
-            {apps.length === 0 ? <NoApps /> : <Apps apps={apps} />}
+            {apps.length === 0 ? <AppListEmpty /> : <Apps apps={apps} />}
             <ConfirmLaunchDialog />
             <InstallOtherVersionDialog />
             <ReleaseNotesDialog />
