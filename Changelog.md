@@ -2,9 +2,8 @@
 
 ### Added
 
--   Successfully installing an app will focus it and highlight it for
-    visibility.
--   Show help if the app list is empty (usually because all apps have been
+-   Successfully installed application will be highlighted after installation finishes.
+-   Helper will be displayed if the app list is empty (usually because all apps have been
     filtered out).
 
 ### Fixed
