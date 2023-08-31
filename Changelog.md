@@ -2,9 +2,10 @@
 
 ### Added
 
--   Successfully installed application will be highlighted after installation finishes.
--   Helper will be displayed if the app list is empty (usually because all apps have been
-    filtered out).
+-   Successfully installed application will be highlighted after installation
+    finishes.
+-   Helper will be displayed if the app list is empty (usually because all apps
+    have been filtered out).
 
 ### Fixed
 
