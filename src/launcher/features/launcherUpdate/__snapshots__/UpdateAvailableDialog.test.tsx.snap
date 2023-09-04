@@ -51,14 +51,16 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
             ) of nRF Connect for Desktop is available. Would you like to update now?
           </p>
           <div
-            class="tw-preflight undefined"
+            class="tw-text-sm"
           >
-            <button
-              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-transparent tw-p-0 tw-text-nordicBlue hover:tw-underline"
-              type="button"
+            <a
+              class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+              href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases"
+              rel="noreferrer noopener"
+              target="_blank"
             >
               Click to see release notes
-            </button>
+            </a>
           </div>
         </div>
         <div

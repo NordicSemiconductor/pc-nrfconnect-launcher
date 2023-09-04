@@ -6,9 +6,8 @@
 
 import React from 'react';
 import {
-    Button,
     ConfirmationDialog,
-    openUrl,
+    ExternalLink,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/launcherUpdate';
@@ -38,13 +37,12 @@ export default () => {
                 A new version ({version}) of nRF Connect for Desktop is
                 available. Would you like to update now?
             </p>
-            <Button
-                variant="link"
-                size="lg"
-                onClick={() => openUrl(releaseNotesUrl)}
-            >
-                Click to see release notes
-            </Button>
+            <div className="tw-text-sm">
+                <ExternalLink
+                    label="Click to see release notes"
+                    href={releaseNotesUrl}
+                />
+            </div>
         </ConfirmationDialog>
     );
 };
