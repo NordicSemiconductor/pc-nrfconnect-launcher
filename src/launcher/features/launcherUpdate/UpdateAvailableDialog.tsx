@@ -40,7 +40,7 @@ export default () => {
             </p>
             <Button
                 variant="link"
-                large
+                size="lg"
                 onClick={() => openUrl(releaseNotesUrl)}
             >
                 Click to see release notes
