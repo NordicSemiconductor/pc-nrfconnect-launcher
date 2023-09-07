@@ -6,12 +6,13 @@
 
 import { app, dialog, Menu } from 'electron';
 import fs from 'fs';
+import fse from 'fs-extra';
 import path from 'path';
 
+import { ensureBundledAppExists } from './apps/appBundler';
 import { installAllLocalAppArchives } from './apps/appChanges';
-import { ensureQuickstartAppExists } from './apps/quickstart';
 import {
-    ensureInternalSourceExists,
+    ensureInternalSourceExists as ensureBundledSourceExists,
     initialiseAllSources,
 } from './apps/sources';
 import argv, { getStartupApp } from './argv';
@@ -39,9 +40,9 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsLocalDir());
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
-    ensureInternalSourceExists();
+    ensureBundledSourceExists(); // No needed for Production
     initialiseAllSources();
-    await ensureQuickstartAppExists();
+    await ensureBundledAppExists();
     await installAllLocalAppArchives();
 };
 
@@ -78,9 +79,26 @@ const initNrfutil = () => {
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
 
+    const nrfutilBundledSandboxes = path.join(
+        getBundledResourcesDir(),
+        'nrfutil-sandboxes'
+    );
+    const nrfutilBundledSandboxesDest = path.join(
+        getUserDataDir(),
+        'nrfutil-sandboxes'
+    );
+
+    if (!fs.existsSync(nrfutilBundledSandboxes)) {
+        fs.mkdirSync(nrfutilBundledSandboxes);
+    }
+
     if (!fs.existsSync(nrfutilInAppPath)) {
         fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
     }
+
+    fse.copySync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
+        overwrite: false,
+    });
 };
 
 export default () => {

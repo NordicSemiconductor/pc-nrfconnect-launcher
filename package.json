@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "4.2.0",
+    "version": "4.2.1",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -53,6 +53,7 @@
             "resources/*.svg",
             "resources/mac/",
             "resources/nrfutil*",
+            "resources/nrfutil-sandboxes/",
             "resources/prefetched/"
         ],
         "directories": {

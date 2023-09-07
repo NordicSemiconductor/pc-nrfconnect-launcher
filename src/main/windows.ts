@@ -22,12 +22,13 @@ import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
-import { quickstartAppName } from './apps/quickstart';
 import argv from './argv';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getBundledResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
+
+const quickstartAppName = 'pc-nrfconnect-quickstart';
 
 let launcherWindow: BrowserWindow | undefined;
 const appWindows: {

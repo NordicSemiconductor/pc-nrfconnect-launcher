@@ -4,12 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const { default: getInternalSource } = require('./getInternalSource');
+const { default: bundleApps } = require('./bundleApps');
 const { default: getJlink } = require('./getJlink');
-const { default: getQuickstart } = require('./getQuickstart');
 
 exports.default = async () => {
-    await getJlink();
-    await getInternalSource();
-    await getQuickstart();
+    await Promise.allSettled([getJlink(), bundleApps()]);
 };
