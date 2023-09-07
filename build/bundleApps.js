@@ -5,7 +5,6 @@
  */
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
 const downloadFile = require('../scripts/downloadFile');
@@ -97,14 +96,6 @@ const parseSourceFile = appUrls =>
             }
 
             await Promise.allSettled(promises);
-            if (os.platform() !== 'win32') {
-                execSync(
-                    `chmod -R 744 ${path.join(
-                        'resources',
-                        'nrfutil-sandboxes'
-                    )} `
-                );
-            }
         })
     );
 

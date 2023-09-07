@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { execSync } from 'child_process';
 import { app, dialog, Menu } from 'electron';
-import fs from 'fs';
 import fse from 'fs-extra';
+import os from 'os';
 import path from 'path';
 
 import { ensureBundledAppExists } from './apps/appBundler';
@@ -88,17 +89,22 @@ const initNrfutil = () => {
         'nrfutil-sandboxes'
     );
 
-    if (!fs.existsSync(nrfutilBundledSandboxes)) {
-        fs.mkdirSync(nrfutilBundledSandboxes);
+    if (!fse.existsSync(nrfutilBundledSandboxes)) {
+        fse.mkdirSync(nrfutilBundledSandboxes);
     }
 
-    if (!fs.existsSync(nrfutilInAppPath)) {
-        fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    if (!fse.existsSync(nrfutilInAppPath)) {
+        fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
     }
 
     fse.copySync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
         overwrite: false,
     });
+    if (os.platform() !== 'win32') {
+        execSync(
+            `chmod -R 744 ${path.join('resources', 'nrfutil-sandboxes')} `
+        );
+    }
 };
 
 export default () => {
