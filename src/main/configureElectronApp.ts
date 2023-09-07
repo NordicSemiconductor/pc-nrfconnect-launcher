@@ -101,9 +101,7 @@ const initNrfutil = () => {
         overwrite: false,
     });
     if (os.platform() !== 'win32') {
-        execSync(
-            `chmod -R 744 ${path.join('resources', 'nrfutil-sandboxes')} `
-        );
+        execSync(`chmod -R 744 ${nrfutilBundledSandboxesDest} `);
     }
 };
 
