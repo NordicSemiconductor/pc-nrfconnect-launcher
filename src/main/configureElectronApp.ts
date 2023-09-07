@@ -79,6 +79,9 @@ const initNrfutil = () => {
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
+    if (!fse.existsSync(nrfutilInAppPath)) {
+        fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    }
 
     const nrfutilBundledSandboxes = path.join(
         getBundledResourcesDir(),
@@ -89,17 +92,14 @@ const initNrfutil = () => {
         'nrfutil-sandboxes'
     );
 
-    if (!fse.existsSync(nrfutilBundledSandboxes)) {
-        fse.mkdirSync(nrfutilBundledSandboxes);
-    }
-
-    if (!fse.existsSync(nrfutilInAppPath)) {
-        fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    if (!fse.existsSync(nrfutilBundledSandboxesDest)) {
+        fse.mkdirSync(nrfutilBundledSandboxesDest);
     }
 
     fse.copySync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
         overwrite: false,
     });
+
     if (os.platform() !== 'win32') {
         execSync(`chmod -R 744 ${nrfutilBundledSandboxesDest} `);
     }
