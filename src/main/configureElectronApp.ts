@@ -101,7 +101,7 @@ const initNrfutil = () => {
     });
 
     if (os.platform() !== 'win32') {
-        execSync(`chmod -R 744 ${nrfutilBundledSandboxesDest} `);
+        execSync(`chmod -R 744 '${nrfutilBundledSandboxesDest}'`);
     }
 };
 
