@@ -24,7 +24,7 @@ const downloadChecksum = async fileUrl => {
 module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
     const hash = crypto.createHash('md5');
 
-    console.log('Downloading', fileUrl);
+    console.log('Started Download', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
         responseType: 'stream',
     });
@@ -33,29 +33,31 @@ module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
             `Unable to download ${fileUrl}. Got status code ${status}`
         );
     }
-    console.log('Saving', destinationFile);
     await mkdir(path.dirname(destinationFile), { recursive: true });
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(destinationFile);
         stream.pipe(file);
         stream.on('data', data => hash.update(data));
         stream.on('error', reject);
-        stream.on('end', async () => {
-            file.end();
-            if (useChecksum) {
-                const calculatedChecksum = hash.digest('hex');
-                const expectedChecksum = await downloadChecksum(fileUrl);
+        stream.on('end', () => {
+            file.end(async () => {
+                console.log('🏁 Finish Download', fileUrl);
+                console.log('🏁 Saved to', destinationFile);
+                if (useChecksum) {
+                    const calculatedChecksum = hash.digest('hex');
+                    const expectedChecksum = await downloadChecksum(fileUrl);
 
-                if (calculatedChecksum !== expectedChecksum) {
-                    fs.unlinkSync(destinationFile);
-                    console.log('Calculated checksum:', calculatedChecksum);
-                    console.log('Expected checksum:  ', expectedChecksum);
-                    reject(new Error('Checksum verification failed.'));
-                    return;
+                    if (calculatedChecksum !== expectedChecksum) {
+                        fs.unlinkSync(destinationFile);
+                        console.log('Calculated checksum:', calculatedChecksum);
+                        console.log('Expected checksum:  ', expectedChecksum);
+                        reject(new Error('Checksum verification failed.'));
+                        return;
+                    }
                 }
-            }
 
-            resolve();
+                resolve();
+            });
         });
     });
 };
