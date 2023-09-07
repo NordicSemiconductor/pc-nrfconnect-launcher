@@ -5,6 +5,7 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
 const downloadFile = require('../scripts/downloadFile');
@@ -37,7 +38,7 @@ const bundleNrfutilModule = (module, version) => {
             env: {
                 ...process.env,
                 NRFUTIL_HOME: path.join(
-                    './resources',
+                    'resources',
                     'nrfutil-sandboxes',
                     module,
                     version
@@ -96,6 +97,14 @@ const parseSourceFile = appUrls =>
             }
 
             await Promise.allSettled(promises);
+            if (os.platform() !== 'win32') {
+                execSync(
+                    `chmod -R 744 ${path.join(
+                        'resources',
+                        'nrfutil-sandboxes'
+                    )} `
+                );
+            }
         })
     );
 
