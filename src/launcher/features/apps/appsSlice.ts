@@ -274,6 +274,10 @@ export const getAllApps = (state: RootState): DisplayedApp[] => {
     return [...localApps, ...downloadableApps];
 };
 
+export const getNoAppsExist = (state: RootState) =>
+    state.apps.localApps.length === 0 &&
+    state.apps.downloadableApps.length === 0;
+
 export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
     const allSources = [
         ...new Set(getAllApps(state).map(({ source }) => source)),

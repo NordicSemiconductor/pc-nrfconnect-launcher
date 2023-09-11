@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { App as AppType, isInstalled } from '../../../ipc/apps';
 import { useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
+import AppListEmpty from './AppListEmpty';
 import { DisplayedApp, getAllApps } from './appsSlice';
 import ConfirmLaunchDialog from './ConfirmLaunchDialog';
 import InstallOtherVersionDialog from './InstallOtherVersionDialog';
@@ -27,32 +27,6 @@ const sortByStateAndName = (appA: AppType, appB: AppType) => {
     return cmpInstalled || aName.localeCompare(bName);
 };
 
-const NoApps = ({ notYetLoaded }: { notYetLoaded: boolean }) => {
-    const [justStarted, setJustStarted] = useState(true);
-
-    useEffect(() => {
-        setTimeout(() => setJustStarted(false), 2000);
-    }, []);
-
-    if (justStarted && notYetLoaded) return null;
-
-    return (
-        <div className="tw-grid tw-flex-1 tw-place-items-center">
-            <div className="tw-max-w-[75%] tw-bg-white tw-p-4">
-                {notYetLoaded ? (
-                    <>
-                        The list of apps is not yet loaded from{' '}
-                        <Link href="https://developer.nordicsemi.com" />. Make
-                        sure you can reach that server.
-                    </>
-                ) : (
-                    'No apps shown because of the selected filters. Change those to display apps again.'
-                )}
-            </div>
-        </div>
-    );
-};
-
 const Apps = ({ apps }: { apps: DisplayedApp[] }) => (
     <WithScrollbarContainer hasFilter>
         {apps.map(app => (
@@ -62,19 +36,16 @@ const Apps = ({ apps }: { apps: DisplayedApp[] }) => (
 );
 
 export default () => {
-    const allApps = useLauncherSelector(getAllApps);
     const appsFilter = useLauncherSelector(getAppsFilter);
 
-    const apps = allApps.filter(appsFilter).sort(sortByStateAndName);
+    const apps = useLauncherSelector(getAllApps)
+        .filter(appsFilter)
+        .sort(sortByStateAndName);
 
     return (
         <>
             <AppFilterBar />
-            {apps.length === 0 ? (
-                <NoApps notYetLoaded={allApps.length === 0} />
-            ) : (
-                <Apps apps={apps} />
-            )}
+            {apps.length === 0 ? <AppListEmpty /> : <Apps apps={apps} />}
             <ConfirmLaunchDialog />
             <InstallOtherVersionDialog />
             <ReleaseNotesDialog />
