@@ -142,6 +142,7 @@ export const openAppWindow = (
             url: template,
             icon: getAppIcon(app),
             show: true,
+            useContentSize: true,
             backgroundColor: '#fff',
             ...getSizeOptions(app),
         },
