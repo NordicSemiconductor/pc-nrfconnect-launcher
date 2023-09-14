@@ -26,6 +26,7 @@ export const ensureBundledAppExists = async () => {
         'prefetched',
         'appBundles'
     );
+    if (!existsSync(bundledAppsPath)) return;
 
     await Promise.allSettled(
         readdirSync(bundledAppsPath).map(pathToTarBall => {
