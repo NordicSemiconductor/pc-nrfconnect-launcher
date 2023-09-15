@@ -9,18 +9,22 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
     getCheckForUpdatesAtStartup as getPersistedCheckForUpdatesAtStartup,
+    getIsQuickstartInfoShownBefore as getPersistedIsQuickstartInfoShownBefore,
     setCheckForUpdatesAtStartup as setPersistedCheckForUpdatesAtStartup,
+    setQuickstartInfoWasShown as setPersistedQuickstartInfoWasShown,
 } from '../../../ipc/persistedStore';
 import type { RootState } from '../../store';
 
 export type State = {
     shouldCheckForUpdatesAtStartup: boolean;
     isUpdateCheckCompleteVisible: boolean;
+    isQuickstartInfoShownBefore: boolean;
 };
 
 const initialState: State = {
     shouldCheckForUpdatesAtStartup: getPersistedCheckForUpdatesAtStartup(),
     isUpdateCheckCompleteVisible: false,
+    isQuickstartInfoShownBefore: getPersistedIsQuickstartInfoShownBefore(),
 };
 
 const slice = createSlice({
@@ -40,18 +44,25 @@ const slice = createSlice({
         hideUpdateCheckComplete(state) {
             state.isUpdateCheckCompleteVisible = false;
         },
+        quickstartInfoWasShown(state) {
+            state.isQuickstartInfoShownBefore = true;
+            setPersistedQuickstartInfoWasShown();
+        },
     },
 });
 
 export default slice.reducer;
 
 export const {
+    hideUpdateCheckComplete,
+    quickstartInfoWasShown,
     setCheckForUpdatesAtStartup,
     showUpdateCheckComplete,
-    hideUpdateCheckComplete,
 } = slice.actions;
 
 export const getShouldCheckForUpdatesAtStartup = (state: RootState) =>
     state.settings.shouldCheckForUpdatesAtStartup;
 export const getIsUpdateCheckCompleteVisible = (state: RootState) =>
     state.settings.isUpdateCheckCompleteVisible;
+export const getIsQuickstartInfoShownBefore = (state: RootState) =>
+    state.settings.isQuickstartInfoShownBefore;
