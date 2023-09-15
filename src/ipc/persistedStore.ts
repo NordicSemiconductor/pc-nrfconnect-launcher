@@ -22,6 +22,7 @@ export type ShownStates = {
 };
 
 interface Schema {
+    isQuickstartInfoShownBefore: boolean;
     lastWindowState: WindowState;
     updateCheck: {
         doOnStartup: boolean;
@@ -77,3 +78,8 @@ export const getShownStates = () =>
     store.get('appFilter')?.shownStates ?? defaultShownStates;
 export const setShownStates = (shownStates: ShownStates) =>
     store.set('appFilter.shownStates', shownStates);
+
+export const getIsQuickstartInfoShownBefore = () =>
+    store.get('isQuickstartInfoShownBefore', false);
+export const setQuickstartInfoWasShown = () =>
+    store.set('isQuickstartInfoShownBefore', true);

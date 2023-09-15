@@ -14,6 +14,8 @@ import {
     DownloadableApp,
     InstalledDownloadableApp,
     isDownloadable,
+    isInstalled,
+    isQuickstartApp,
     isUpdatable,
     isWithdrawn,
     LocalApp,
@@ -23,7 +25,11 @@ import {
     getLastUpdateCheckDate,
     setLastUpdateCheckDate,
 } from '../../../ipc/persistedStore';
-import { allStandardSourceNames, SourceName } from '../../../ipc/sources';
+import {
+    allStandardSourceNames,
+    OFFICIAL,
+    SourceName,
+} from '../../../ipc/sources';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
@@ -324,3 +330,9 @@ export const totalProgress = (app: DownloadableAppWithProgress) => {
     const fractions = Object.values(app.progress.fractions);
     return fractions.length === 0 ? 0 : mean(fractions);
 };
+
+export const getOfficialQuickstartApp = (state: RootState) =>
+    state.apps.downloadableApps
+        .filter(app => app.source === OFFICIAL)
+        .filter(isQuickstartApp)
+        .filter(isInstalled)[0] as InstalledDownloadableApp | undefined;
