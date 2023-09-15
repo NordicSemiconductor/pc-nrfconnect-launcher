@@ -18,7 +18,12 @@ import {
 import { join } from 'path';
 
 import packageJson from '../../package.json';
-import { AppSpec, isInstalled, LaunchableApp } from '../ipc/apps';
+import {
+    AppSpec,
+    isInstalled,
+    isQuickstartApp,
+    LaunchableApp,
+} from '../ipc/apps';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
@@ -27,8 +32,6 @@ import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getBundledResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
-
-const quickstartAppName = 'pc-nrfconnect-quickstart';
 
 let launcherWindow: BrowserWindow | undefined;
 const appWindows: {
@@ -75,7 +78,7 @@ export const hideLauncherWindow = () => {
 };
 
 const getSizeOptions = (app: LaunchableApp) => {
-    if (app.name === quickstartAppName) {
+    if (isQuickstartApp(app)) {
         return {
             width: 800,
             height: 550,
@@ -154,7 +157,7 @@ export const openAppWindow = (
         app,
     });
 
-    if (app.name !== quickstartAppName) {
+    if (!isQuickstartApp(app)) {
         appWindow.webContents.on('did-finish-load', () => {
             if (getLastWindowState().maximized) {
                 appWindow.maximize();
