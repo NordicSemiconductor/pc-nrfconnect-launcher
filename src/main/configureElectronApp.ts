@@ -87,6 +87,9 @@ const initNrfutil = () => {
         getBundledResourcesDir(),
         'nrfutil-sandboxes'
     );
+
+    if (!fse.existsSync(nrfutilBundledSandboxes)) return;
+
     const nrfutilBundledSandboxesDest = path.join(
         getUserDataDir(),
         'nrfutil-sandboxes'
