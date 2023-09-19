@@ -14,12 +14,9 @@ import { getDownloadableApps } from './apps';
 
 const getApp = (appName: string) =>
     getDownloadableApps().apps.find(
-        ({ name, source }) =>
-            // TODO: Change Internal to official once quickstart is released to official source
-            name === appName && source === 'Internal'
+        ({ name, source }) => name === appName && source === 'official'
     );
 
-// TODO: Pass/get bundled quickstart version to use for file name and shasum
 export const ensureBundledAppExists = async () => {
     const bundledAppsPath = path.join(
         getBundledResourcesDir(),
@@ -58,8 +55,7 @@ export const ensureBundledAppExists = async () => {
             if (appNotInstalled && existsSync(tarBallFullPath)) {
                 const appSpec = {
                     name: appName,
-                    // TODO: Change Internal to official once quickstart is released to official source
-                    source: 'Internal',
+                    source: 'official',
                 };
                 const appInfo = readAppInfoFile(appSpec);
                 const { shasum } = appInfo.versions[version];

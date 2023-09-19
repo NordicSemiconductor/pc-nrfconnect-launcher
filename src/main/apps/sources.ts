@@ -33,12 +33,6 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-// TODO: Remove once quickstart has moved and is bundled from the official source
-const internalSource = {
-    name: 'Internal',
-    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/source.json',
-};
-
 const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
 
 const convertToOldSourceJsonFormat = (allSources: Source[]) =>
@@ -252,34 +246,27 @@ export const downloadAllSources = async () => {
     };
 };
 
-export const ensureInternalSourceExists = () => {
-    if (
-        getSource('Internal') == null &&
-        fs.existsSync(`${getBundledResourcesDir()}/prefetched/source.json`)
-    ) {
-        addToSourceList(internalSource);
-        ensureDirExists(getAppsRootDir(internalSource.name));
+export const ensureBundledSourceExists = () => {
+    const bundledSource = path.join(
+        getBundledResourcesDir(),
+        'prefetched',
+        'source.json'
+    );
 
-        writeSourceJson(
-            internalSource,
-            readJsonFile(`${getBundledResourcesDir()}/prefetched/source.json`)
-        );
+    // we need to overwrite source json so if new apps are in it but not on the machine source file
+    // bundled apps will still be shown in the list
+    if (fs.existsSync(bundledSource)) {
+        const to = path.join(getAppsRootDir('official'), 'source.json');
+        fs.copyFileSync(bundledSource, to);
     }
 
-    [
-        'pc-nrfconnect-boilerplate.json',
-        'pc-nrfconnect-cellularmonitor.json',
-        'pc-nrfconnect-dtm.json',
-        'pc-nrfconnect-linkmonitor.json',
-        'pc-nrfconnect-npm.json',
-        'pc-nrfconnect-ppk.json',
-        'pc-nrfconnect-programmer.json',
-        'pc-nrfconnect-quickstart.json',
-        'pc-nrfconnect-serial-terminal.json',
-        'pc-nrfconnect-toolchain-manager.json',
-    ].forEach(file => {
-        const from = `${getBundledResourcesDir()}/prefetched/${file}`;
-        const to = `${getAppsRootDir('Internal')}/${file}`;
+    const appJson = fs
+        .readdirSync(path.join(getBundledResourcesDir(), 'prefetched'))
+        .filter(p => p.match(/(pc-nrfconnect-)*(.json)/));
+
+    appJson.forEach(file => {
+        const from = path.join(getBundledResourcesDir(), 'prefetched', file);
+        const to = path.join(getAppsRootDir('official'), file);
         if (fs.existsSync(from) && !fs.existsSync(to)) {
             fs.copyFileSync(from, to);
         }

@@ -10,7 +10,7 @@ const { execSync } = require('child_process');
 const downloadFile = require('../scripts/downloadFile');
 
 const SOURCE_URL =
-    'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/internal/source.json';
+    'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json';
 
 const BUNDLE_APPS = ['pc-nrfconnect-quickstart'];
 
