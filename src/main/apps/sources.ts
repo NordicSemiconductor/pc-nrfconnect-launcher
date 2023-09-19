@@ -88,15 +88,13 @@ const saveAllSources = () => {
     writeJsonFile(sourcesJsonPath(), convertToOldSourceJsonFormat(sources));
 };
 
-const bundledAppLastInstallVersionCache = path.join(
-    getUserDataDir(),
-    'bundledAppsInstalled.cache'
-);
+const bundledAppLastInstallVersionCache = () =>
+    path.join(getUserDataDir(), 'bundledAppsInstalled.cache');
 
 export const installBundledApps = () => {
     try {
         const version = fs
-            .readFileSync(bundledAppLastInstallVersionCache)
+            .readFileSync(bundledAppLastInstallVersionCache())
             .toString();
 
         return version !== packageJson.version;
@@ -106,7 +104,7 @@ export const installBundledApps = () => {
 };
 
 export const registerBundledAppInstalled = () => {
-    fs.writeFileSync(bundledAppLastInstallVersionCache, packageJson.version);
+    fs.writeFileSync(bundledAppLastInstallVersionCache(), packageJson.version);
 };
 
 export const removeFromSourceList = (
