@@ -13,8 +13,10 @@ import path from 'path';
 import { ensureBundledAppExists } from './apps/appBundler';
 import { installAllLocalAppArchives } from './apps/appChanges';
 import {
-    ensureInternalSourceExists as ensureBundledSourceExists,
+    ensureBundledSourceExists,
     initialiseAllSources,
+    installBundledApps,
+    registerBundledAppInstalled,
 } from './apps/sources';
 import argv, { getStartupApp } from './argv';
 import {
@@ -41,9 +43,15 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsLocalDir());
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
-    ensureBundledSourceExists(); // No needed for Production
+
     initialiseAllSources();
-    await ensureBundledAppExists();
+
+    if (installBundledApps()) {
+        ensureBundledSourceExists();
+        await ensureBundledAppExists();
+        registerBundledAppInstalled();
+    }
+
     await installAllLocalAppArchives();
 };
 
