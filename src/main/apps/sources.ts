@@ -281,11 +281,11 @@ export const ensureBundledSourceExists = () => {
         fs.copyFileSync(bundledSource, to);
     }
 
-    const appJson = fs
+    const appFiles = fs
         .readdirSync(path.join(getBundledResourcesDir(), 'prefetched'))
-        .filter(p => p.match(/(pc-nrfconnect-)*(.json)/));
+        .filter(p => p.match(/^(pc-nrfconnect-).*/));
 
-    appJson.forEach(file => {
+    appFiles.forEach(file => {
         const from = path.join(getBundledResourcesDir(), 'prefetched', file);
         const to = path.join(getAppsRootDir('official'), file);
         if (fs.existsSync(from) && !fs.existsSync(to)) {

@@ -54,15 +54,20 @@ const isAppBundled = appJSONUrl =>
 const parseSourceFile = appUrls =>
     Promise.allSettled(
         appUrls.apps.map(async appJSONUrl => {
-            const dstPath = path.join(
-                'resources',
-                'prefetched',
-                path.basename(appJSONUrl)
-            );
+            const dstPath = url =>
+                path.join('resources', 'prefetched', path.basename(url));
 
-            await downloadFile(appJSONUrl, dstPath, false);
+            await downloadFile(appJSONUrl, dstPath(appJSONUrl), false);
+            const appJSON = JSON.parse(fs.readFileSync(dstPath(appJSONUrl)));
 
-            const appJSON = JSON.parse(fs.readFileSync(dstPath));
+            await Promise.allSettled([
+                downloadFile(appJSON.iconUrl, dstPath(appJSON.iconUrl), false),
+                downloadFile(
+                    appJSON.releaseNotesUrl,
+                    dstPath(appJSON.releaseNotesUrl),
+                    false
+                ),
+            ]);
 
             if (!isAppBundled(appJSONUrl)) return;
 
