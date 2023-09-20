@@ -1,3 +1,9 @@
+## 4.2.1 - 2023-09-21
+
+### Added
+
+-   Bundle Quickstart app with the launcher installer
+
 ## 4.2.0 - 2023-09-05
 
 ### Added
