@@ -12,7 +12,6 @@ import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
 
-import packageJson from '../../../package.json';
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import {
@@ -20,7 +19,6 @@ import {
     getAppsRootDir,
     getBundledResourcesDir,
     getNodeModulesDir,
-    getUserDataDir,
 } from '../config';
 import describeError from '../describeError';
 import { readFile, readJsonFile, writeJsonFile } from '../fileUtil';
@@ -86,25 +84,6 @@ const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
     writeJsonFile(sourcesJsonPath(), convertToOldSourceJsonFormat(sources));
-};
-
-const bundledAppLastInstallVersionCache = () =>
-    path.join(getUserDataDir(), 'bundledAppsInstalled.cache');
-
-export const installBundledApps = () => {
-    try {
-        const version = fs
-            .readFileSync(bundledAppLastInstallVersionCache())
-            .toString();
-
-        return version !== packageJson.version;
-    } catch (error) {
-        return true;
-    }
-};
-
-export const registerBundledAppInstalled = () => {
-    fs.writeFileSync(bundledAppLastInstallVersionCache(), packageJson.version);
 };
 
 export const removeFromSourceList = (
