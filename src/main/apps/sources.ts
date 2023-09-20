@@ -17,6 +17,7 @@ import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import {
     getAppsExternalDir,
     getAppsRootDir,
+    getBundledResourcesDir,
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
@@ -243,4 +244,31 @@ export const downloadAllSources = async () => {
         sources: successful,
         sourcesWithErrors: erroneos,
     };
+};
+
+export const ensureBundledSourceExists = () => {
+    const bundledSource = path.join(
+        getBundledResourcesDir(),
+        'prefetched',
+        'source.json'
+    );
+
+    // we need to overwrite source json so if new apps are in it but not on the machine source file
+    // bundled apps will still be shown in the list
+    if (fs.existsSync(bundledSource)) {
+        const to = path.join(getAppsRootDir('official'), 'source.json');
+        fs.copyFileSync(bundledSource, to);
+    }
+
+    const appFiles = fs
+        .readdirSync(path.join(getBundledResourcesDir(), 'prefetched'))
+        .filter(p => p.match(/^(pc-nrfconnect-).*/));
+
+    appFiles.forEach(file => {
+        const from = path.join(getBundledResourcesDir(), 'prefetched', file);
+        const to = path.join(getAppsRootDir('official'), file);
+        if (fs.existsSync(from) && !fs.existsSync(to)) {
+            fs.copyFileSync(from, to);
+        }
+    });
 };

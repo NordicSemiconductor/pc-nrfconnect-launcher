@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "4.2.0",
+    "version": "4.2.1",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -52,7 +52,9 @@
             "resources/*.ico",
             "resources/*.svg",
             "resources/mac/",
-            "resources/nrfutil*"
+            "resources/nrfutil*",
+            "resources/nrfutil-sandboxes/",
+            "resources/prefetched/"
         ],
         "directories": {
             "output": "release"
@@ -65,7 +67,7 @@
             "category": "Development",
             "icon": "resources/icon.icns"
         },
-        "beforePack": "build/getJlink.js",
+        "beforePack": "build/getBundledResources.js",
         "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",
