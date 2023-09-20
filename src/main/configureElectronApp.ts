@@ -10,13 +10,15 @@ import fse from 'fs-extra';
 import os from 'os';
 import path from 'path';
 
+import {
+    getBundledAppInstalled,
+    setBundledAppInstalled,
+} from '../ipc/persistedStore';
 import { ensureBundledAppExists } from './apps/appBundler';
 import { installAllLocalAppArchives } from './apps/appChanges';
 import {
     ensureBundledSourceExists,
     initialiseAllSources,
-    installBundledApps,
-    registerBundledAppInstalled,
 } from './apps/sources';
 import argv, { getStartupApp } from './argv';
 import {
@@ -46,10 +48,10 @@ const initAppsDirectory = async () => {
 
     initialiseAllSources();
 
-    if (installBundledApps()) {
+    if (!getBundledAppInstalled()) {
         ensureBundledSourceExists();
         await ensureBundledAppExists();
-        registerBundledAppInstalled();
+        setBundledAppInstalled();
     }
 
     await installAllLocalAppArchives();
