@@ -2,185 +2,36 @@ trigger:
 - main
 - release/*
 
-jobs:
-- job: Build
-  variables:
+variables:
   - group: wayland
-  - name: TZ
-    value: 'Europe/Oslo'
-  - name: WIN_TZ
-    value: 'W. Europe Standard Time'
   - name: NODE_VERSION
     value: 18.15.0
   - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
-    value: 1 # Because we use Electron, playwright needs no installed browsers https://playwright.dev/docs/api/class-electron
-  strategy:
-    matrix:
-      linux:
-        IMAGE_NAME: 'ubuntu-latest'
-      macOS:
-        IMAGE_NAME: 'macos-11'
-      win64:
-        IMAGE_NAME: 'windows-2019'
+    value: 1
+  - name: npm_config_cache
+    value: $(Pipeline.Workspace)/.npm
 
-  pool:
-    vmImage: $(IMAGE_NAME)
-
-  steps:
-  - script: tzutil /s "$(WIN_TZ)"
-    condition: contains(variables['IMAGE_NAME'], 'win')
-    displayName: 'Fix Windows timezone'
-
-  - task: NodeTool@0
-    inputs:
-      versionSpec: $(NODE_VERSION)
-    displayName: 'Install Node.js $(NODE_VERSION)'
-
-  - bash: |
-      set -o errexit -o pipefail
-      sudo apt-get update
-      sudo apt-get install libudev-dev
-      sudo sysctl kernel.unprivileged_userns_clone=1
-    condition: contains(variables['IMAGE_NAME'], 'ubuntu')
-    displayName: 'Setup build environment for Linux'
-
-  - bash: |
-      set -o errexit -o pipefail
-      export ENABLE_DRAFT_TEST=true
-      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      cat .npmrc-internal >> .npmrc
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm ci
-      npm run check
-      npm run build:prod
-      npm test
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Build with internal release [Linux]'
-
-  - bash: |
-      set -o errexit -o pipefail
-      export ENABLE_DRAFT_TEST=true
-      export NODE_PRE_GYP_GITHUB_TOKEN=$(WAYLAND_GITHUB_TOKEN)
-      cat .npmrc-internal >> .npmrc
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-      npm ci
-      npm run check
-      npm run build:prod
-      npm test
-    condition: and(eq(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'mac'))
-    displayName: 'Build with internal release [macOS]'
-
-  - script: |
-      type .npmrc-internal >> .npmrc
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'))
-    displayName: 'Copy npmrc on windows'
-
-  - script: |
-      npm config set //npm.nordicsemi.no/:_authToken $(WAYLAND_NPM_TOKEN_INTERNAL)
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'))
-    displayName: 'Set npm auth token for windows'
-
-  - script: |
-      npm ci
-      npm run check
-      npm run build:prod
-      npm test
-    env: {
-      ENABLE_DRAFT_TEST: true,
-      NODE_PRE_GYP_GITHUB_TOKEN: $(WAYLAND_GITHUB_TOKEN),
-    }
-    condition: and(
-      eq(variables['INTERNAL'], 'true'),
-      contains(variables['image_name'], 'win'))
-    displayName: 'Build with internal release [Windows]'
-  # Internal procedure end
-
-  - bash: |
-      set -o errexit -o pipefail
-      npm ci
-      npm run check
-      npm run build:prod
-      npm test
-    condition: and(ne(variables['INTERNAL'], 'true'), not(contains(variables['IMAGE_NAME'], 'win')))
-    displayName: 'Build on not windows'
-
-  - bash: |
-      set -o errexit -o pipefail
-      npm ci
-      npm run check
-      npm run build:prod
-      npm test
-    condition: and(ne(variables['INTERNAL'], 'true'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Build on windows'
-
-  - bash: |
-      sudo apt-get install icnsutils
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Setup release environment for Linux'
-  - bash: |
-      npx electron-builder -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'ubuntu'))
-    displayName: 'Release on Linux'
-
-  - task: DownloadSecureFile@1
-    inputs:
-      secureFile: 'NORDIC_SIGNING_CERTIFICATE.pfx'
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Download certificate on Windows'
-
-  - script: |
-      set CSC_LINK=$(Agent.TempDirectory)\NORDIC_SIGNING_CERTIFICATE.pfx
-      set CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_PFX)
-      npx electron-builder -p never --windows nsis:x64
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Build electron installer on Windows'
-
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/release/win-unpacked'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/nrfconnect-portable-$(Build.BuildNumber).zip'
-    condition: and(
-      ne(variables['Build.Reason'], 'PullRequest'),
-      contains(variables['IMAGE_NAME'], 'win'))
-    displayName: 'Pack on Windows x64'
-
-  - task: DownloadSecureFile@1
-    inputs:
-      secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
-    displayName: 'Download certificate on macOS'
-
-  - bash: |
-      set -o errexit -o pipefail
-      export CSC_LINK=$(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
-      export CSC_KEY_PASSWORD=$(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
-      export APPLEID=$(WAYLAND_APPLE_ID)
-      export APPLEIDPASS=$(WAYLAND_APPLE_APP_SPECIFIC)
-      rm -f node_modules/pc-nrfjprog-js/nrfjprog/._*
-      rm -f node_modules/pc-nrfjprog-js/build/Release/._*
-      npx electron-builder -p never
-    condition: and(ne(variables['Build.Reason'], 'PullRequest'), contains(variables['IMAGE_NAME'], 'mac'))
-    displayName: 'Release on macOS'
-
-  - bash: |
-      set -o errexit -o pipefail
-      cp release/*.exe "$(Build.ArtifactStagingDirectory)" || :
-      cp release/*.zip "$(Build.ArtifactStagingDirectory)" || :
-      cp release/*.dmg "$(Build.ArtifactStagingDirectory)" || :
-      cp release/*.tar.gz "$(Build.ArtifactStagingDirectory)" || :
-      cp release/*.AppImage "$(Build.ArtifactStagingDirectory)" || :
-      cp release/latest* "$(Build.ArtifactStagingDirectory)"
-    condition: ne(variables['Build.Reason'], 'PullRequest')
-    displayName: 'Copy artifacts'
-
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: $(Build.ArtifactStagingDirectory)
-      publishLocation: 'pipeline'
-    displayName: 'Publishing artifacts to artifact storage'
+jobs: 
+  - template: pipelines/pipeline.yml
+    parameters: 
+      platform: darwin
+      pool:
+        vmImage: macos-11
+  # - template: pipelines/pipeline.yml
+  #   parameters: 
+  #     platform: darwin_arm
+  #     pool:
+  #       name: wayland_pool_sw_only
+  #       demands:
+  #       - agent.name -equals wl-node-test-17
+  - template: pipelines/pipeline.yml
+    parameters: 
+      platform: linux
+      pool:
+        vmImage: ubuntu-latest
+  - template: pipelines/pipeline.yml
+    parameters: 
+      platform: windows
+      pool:
+        vmImage: windows-2019
+  

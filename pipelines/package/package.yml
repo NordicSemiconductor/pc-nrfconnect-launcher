@@ -1,0 +1,10 @@
+parameters:
+  platform: ''
+
+steps:
+- template: ${{ format('{0}.yml', parameters.platform) }}
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)
+    publishLocation: 'pipeline'
+  displayName: 'Publishing artifacts to artifact storage'

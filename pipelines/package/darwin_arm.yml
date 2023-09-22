@@ -1,0 +1,18 @@
+steps:
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'NORDIC_SIGNING_CERTIFICATE.p12'
+  displayName: 'Download certificate'
+- bash: |
+    rm -rf release
+    npx electron-builder -p never --arm64
+  env:
+    CSC_LINK: $(Agent.TempDirectory)/NORDIC_SIGNING_CERTIFICATE.p12
+    CSC_KEY_PASSWORD: $(NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12)
+    APPLEID: $(WAYLAND_APPLE_ID)
+    APPLEIDPASS: $(WAYLAND_APPLE_APP_SPECIFIC)
+  displayName: Package release
+- bash: |
+    cp release/*.dmg "$(Build.ArtifactStagingDirectory)"
+  displayName: 'Copy artifacts'
+
