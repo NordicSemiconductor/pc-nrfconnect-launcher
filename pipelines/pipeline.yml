@@ -8,13 +8,13 @@ parameters:
 jobs: 
   - job: ${{ format('Build_{0}', parameters.platform) }}
     displayName: ${{ format('Build {0}', parameters.platform) }}
-    condition: ne(variables['Build.Reason'], 'PullRequest')
     pool: ${{parameters.pool}}
     variables:
       group: wayland
     steps:
     - template: ./build.yml
       parameters: ${{ parameters }}
-    - template: package/package.yml
-      parameters: ${{parameters}}
+    - ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+      - template: package/package.yml
+        parameters: ${{parameters}}
 
