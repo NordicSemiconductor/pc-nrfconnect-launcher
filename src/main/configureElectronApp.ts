@@ -4,12 +4,22 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { execSync } from 'child_process';
 import { app, dialog, Menu } from 'electron';
-import fs from 'fs';
+import fse from 'fs-extra';
+import os from 'os';
 import path from 'path';
 
+import {
+    getBundledAppInstalled,
+    setBundledAppInstalled,
+} from '../ipc/persistedStore';
+import { ensureBundledAppExists } from './apps/appBundler';
 import { installAllLocalAppArchives } from './apps/appChanges';
-import { initialiseAllSources } from './apps/sources';
+import {
+    ensureBundledSourceExists,
+    initialiseAllSources,
+} from './apps/sources';
 import argv, { getStartupApp } from './argv';
 import {
     getAppsExternalDir,
@@ -35,7 +45,15 @@ const initAppsDirectory = async () => {
     ensureDirExists(getAppsLocalDir());
     ensureDirExists(getAppsExternalDir());
     ensureDirExists(getNodeModulesDir());
+
     initialiseAllSources();
+
+    if (!getBundledAppInstalled()) {
+        ensureBundledSourceExists();
+        await ensureBundledAppExists();
+        setBundledAppInstalled();
+    }
+
     await installAllLocalAppArchives();
 };
 
@@ -71,9 +89,32 @@ const initNrfutil = () => {
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
+    if (!fse.existsSync(nrfutilInAppPath)) {
+        fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    }
 
-    if (!fs.existsSync(nrfutilInAppPath)) {
-        fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    const nrfutilBundledSandboxes = path.join(
+        getBundledResourcesDir(),
+        'nrfutil-sandboxes'
+    );
+
+    if (!fse.existsSync(nrfutilBundledSandboxes)) return;
+
+    const nrfutilBundledSandboxesDest = path.join(
+        getUserDataDir(),
+        'nrfutil-sandboxes'
+    );
+
+    if (!fse.existsSync(nrfutilBundledSandboxesDest)) {
+        fse.mkdirSync(nrfutilBundledSandboxesDest);
+    }
+
+    fse.copySync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
+        overwrite: false,
+    });
+
+    if (os.platform() !== 'win32') {
+        execSync(`chmod -R 744 '${nrfutilBundledSandboxesDest}'`);
     }
 };
 

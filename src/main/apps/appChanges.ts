@@ -274,14 +274,25 @@ export const installDownloadableApp = async (
         await removeDownloadableApp(app);
     }
 
-    const appPath = installedAppPath(app);
-    await extractNpmPackage(app.name, packageFilePath, appPath);
-    await deleteFile(packageFilePath);
-
-    addInstallMetaData(app, appPath, checksum);
+    await installDownloadableAppCore(app, packageFilePath, checksum);
 
     return addInstalledAppData(
         // @ts-expect-error -- Because the property `installed` was added above it must be there, I just do not know yet how to convince TypeScript of that
         addDownloadAppData(app.source)(readAppInfo(app))
     );
+};
+
+export const installDownloadableAppCore = async (
+    app: AppSpec,
+    packageFilePath: string,
+    checksum: string | undefined,
+    doDelete = true
+) => {
+    const appPath = installedAppPath(app);
+    await extractNpmPackage(app.name, packageFilePath, appPath);
+    if (doDelete) {
+        await deleteFile(packageFilePath);
+    }
+
+    addInstallMetaData(app, appPath, checksum);
 };

@@ -6,6 +6,7 @@
 
 import Store from 'electron-store';
 
+import packageJson from '../../package.json';
 import { SourceName } from './sources';
 
 type WindowState = {
@@ -22,6 +23,8 @@ export type ShownStates = {
 };
 
 interface Schema {
+    lastBundledAppInstalledVersion: string;
+    isQuickstartInfoShownBefore: boolean;
     lastWindowState: WindowState;
     updateCheck: {
         doOnStartup: boolean;
@@ -77,3 +80,14 @@ export const getShownStates = () =>
     store.get('appFilter')?.shownStates ?? defaultShownStates;
 export const setShownStates = (shownStates: ShownStates) =>
     store.set('appFilter.shownStates', shownStates);
+
+export const getIsQuickstartInfoShownBefore = () =>
+    store.get('isQuickstartInfoShownBefore', false);
+export const setQuickstartInfoWasShown = () =>
+    store.set('isQuickstartInfoShownBefore', true);
+
+export const getBundledAppInstalled = () =>
+    store.get('lastBundledAppInstalledVersion') === packageJson.version;
+
+export const setBundledAppInstalled = () =>
+    store.set('lastBundledAppInstalledVersion', packageJson.version);
