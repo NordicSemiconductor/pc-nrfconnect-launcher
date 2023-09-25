@@ -13,8 +13,8 @@ exports.default = ({ electronPlatformName, appOutDir }) =>
         ? notarize({
               appBundleId: pkgJson.build.appId,
               appPath: `${appOutDir}/${pkgJson.build.productName}.app`,
-              teamId: 'P3R8YQEV4L',
-              appleId: process.env.APPLEID,
-              appleIdPassword: process.env.APPLEIDPASS,
+              teamId: process.env.APPLE_TEAMID,
+              appleId: process.env.APPLE_ID,
+              appleIdPassword: process.env.APPLE_ID_PASS,
           })
         : undefined;
