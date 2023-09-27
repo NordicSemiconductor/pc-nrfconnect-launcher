@@ -19,7 +19,7 @@ import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog
 import DropZoneForLocalApps from './features/localAppInstall/DropZoneForLocalApps';
 import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
-import QuickstartDialog from './features/quickstart/QuickstartDialog';
+import QuickStartDialog from './features/quickstart/QuickstartDialog';
 import Settings from './features/settings/Settings';
 import UsageDataDialog from './features/usageData/UsageDataDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
@@ -89,7 +89,7 @@ export default () => {
             <UsageDataDialog />
             <ProxyLoginDialog />
             <ProxyErrorDialog />
-            <QuickstartDialog />
+            <QuickStartDialog />
         </ErrorBoundaryLauncher>
     );
 };

@@ -15,7 +15,7 @@ import {
     InstalledDownloadableApp,
     isDownloadable,
     isInstalled,
-    isQuickstartApp,
+    isQuickStartApp,
     isUpdatable,
     isWithdrawn,
     LocalApp,
@@ -335,8 +335,8 @@ export const totalProgress = (app: DownloadableAppWithProgress) => {
     return fractions.length === 0 ? 0 : mean(fractions);
 };
 
-export const getOfficialQuickstartApp = (state: RootState) =>
+export const getOfficialQuickStartApp = (state: RootState) =>
     state.apps.downloadableApps
         .filter(app => app.source === OFFICIAL)
-        .filter(isQuickstartApp)
+        .filter(isQuickStartApp)
         .filter(isInstalled)[0] as InstalledDownloadableApp | undefined;
