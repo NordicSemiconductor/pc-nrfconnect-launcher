@@ -2,7 +2,7 @@
 
 ### Added
 
--   Bundle Quickstart app with the launcher installer
+-   Added Quick Start app to easily get going with an nRF9160 or nRF9161 DK
 
 ## 4.2.0 - 2023-09-05
 
