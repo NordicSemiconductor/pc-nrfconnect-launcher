@@ -21,7 +21,7 @@ import packageJson from '../../package.json';
 import {
     AppSpec,
     isInstalled,
-    isQuickstartApp,
+    isQuickStartApp,
     LaunchableApp,
 } from '../ipc/apps';
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
@@ -78,7 +78,7 @@ export const hideLauncherWindow = () => {
 };
 
 const getSizeOptions = (app: LaunchableApp) => {
-    if (isQuickstartApp(app)) {
+    if (isQuickStartApp(app)) {
         return {
             width: 800,
             height: 550,
@@ -157,7 +157,7 @@ export const openAppWindow = (
         app,
     });
 
-    if (!isQuickstartApp(app)) {
+    if (!isQuickStartApp(app)) {
         appWindow.webContents.on('did-finish-load', () => {
             if (getLastWindowState().maximized) {
                 appWindow.maximize();
