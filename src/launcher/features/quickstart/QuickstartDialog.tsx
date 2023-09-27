@@ -40,7 +40,7 @@ export default () => {
             isVisible={isVisible}
             closeOnEsc
             closeOnUnfocus
-            title="Quickstart"
+            title="Quick Start"
             footer={
                 <>
                     <DialogButton
@@ -48,7 +48,7 @@ export default () => {
                         onClick={() => {
                             if (quickstartApp == null) {
                                 throw new Error(
-                                    'Dialog must not be visible if quickstart app is not available.'
+                                    'Dialog must not be visible if Quick Start app is not available.'
                                 );
                             }
 
@@ -56,7 +56,7 @@ export default () => {
                             dispatch(checkEngineAndLaunch(quickstartApp));
                         }}
                     >
-                        Open Quickstart app
+                        Open Quick Start app
                     </DialogButton>
                     <DialogButton
                         onClick={() => dispatch(quickstartInfoWasShown())}
@@ -67,8 +67,8 @@ export default () => {
             }
         >
             <p>
-                Do you have a new development kit? Use the Quickstart app to get
-                up and running as fast as possible.
+                Do you have a new development kit? Use the Quick Start app to
+                get up and running as fast as possible.
             </p>
             <p>Supported kits: nRF9160 DK, nRF9161 DK.</p>
         </GenericDialog>
