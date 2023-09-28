@@ -50,28 +50,20 @@ exports[`ConfirmRemoveSourceDialog shows the new version if one becomes availabl
            source along with any apps installed from it?
         </div>
         <div
-          class="modal-footer"
+          class="tw-preflight tw-flex tw-flex-row-reverse tw-justify-start tw-gap-2 tw-border-none tw-p-4 modal-footer"
         >
-          <div
-            class="tw-preflight "
+          <button
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+            type="button"
           >
-            <button
-              class="tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
-              type="button"
-            >
-              Yes, remove
-            </button>
-          </div>
-          <div
-            class="tw-preflight "
+            Yes, remove
+          </button>
+          <button
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+            type="button"
           >
-            <button
-              class="tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
-              type="button"
-            >
-              Cancel
-            </button>
-          </div>
+            Cancel
+          </button>
         </div>
       </div>
     </div>

@@ -10,6 +10,10 @@ import argv from './argv';
 import { openInitialWindow } from './configureElectronApp';
 
 export default () => {
+    if (argv['new-instance']) {
+        return;
+    }
+
     const isFirstInstance = app.requestSingleInstanceLock({
         argv: JSON.stringify(argv),
     });
@@ -20,6 +24,9 @@ export default () => {
             openInitialWindow(JSON.parse(args) as typeof argv);
         });
     } else {
+        console.log(
+            'Other instance already running. Bringing that to the front.'
+        );
         app.quit();
         process.exit();
     }

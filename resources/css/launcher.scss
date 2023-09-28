@@ -255,6 +255,7 @@ body {
 
 .user-data-policy {
     overflow-y: scroll;
+    @include scrollbars($white);
     height: 40vh;
 }
 
