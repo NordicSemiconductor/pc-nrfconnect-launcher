@@ -7,7 +7,7 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.2.1-pre1
+## 4.2.1
 
 ### Changed
 
