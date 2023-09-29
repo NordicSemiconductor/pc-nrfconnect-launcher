@@ -12,6 +12,8 @@ release the new version.
 ### Fixed
 
 -   #888: Styling of the usage statistics dialog.
+-   #888: Add command line switch `--new-instance` to force opening a new
+    instance of the launcher.
 
 ## 4.2.1
 
