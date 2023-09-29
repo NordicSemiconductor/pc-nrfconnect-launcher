@@ -14,6 +14,7 @@ release the new version.
 -   #888: Styling of the usage statistics dialog.
 -   #888: Add command line switch `--new-instance` to force opening a new
     instance of the launcher.
+-   #891: Styling of the empty apps list state.
 
 ## 4.2.1
 
