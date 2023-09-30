@@ -6,5 +6,4 @@ steps:
 - bash: |
     cp release/latest* "$(Build.ArtifactStagingDirectory)"
 - publish: $(Build.ArtifactStagingDirectory)
-  artifact: 'pipeline'
   displayName: 'Publishing artifacts to artifact storage'
