@@ -5,7 +5,7 @@ trigger:
 variables:
   - group: wayland
   - name: NODE_VERSION
-    value: 18.15.0
+    value: 18.x
   - name: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     value: 1
   - name: npm_config_cache

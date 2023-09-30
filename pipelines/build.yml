@@ -2,30 +2,8 @@ parameters:
   platform: ''
 
 steps:
-# Prepare per platform
-- ${{ if eq(parameters.platform, 'windows') }}:
-  - script: tzutil /s "W. Europe Standard Time"
-    displayName: 'Fix Windows timezone'
-
-- ${{ if eq(parameters.platform, 'darwin_arm') }}:
-  - bash: |
-      node -v && node -p "process.arch"
-      rm -rf dist
-    displayName: Use preinstalled node 18.17.1
-
-- ${{ if eq(parameters.platform, 'linux') }}:
-  - bash: |
-      sudo apt-get update
-      sudo apt-get install libudev-dev
-    displayName: 'Prepare linux'
-
-- ${{ if ne(parameters.platform, 'darwin_arm') }}:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: $(NODE_VERSION)
-    displayName: 'Install Node.js $(NODE_VERSION)'  
-
-# Common steps for all platforms
+- template: prepare.yml
+  parameters: ${{parameters}}
 - task: Cache@2
   inputs:
     key: 'npm | "$(Agent.OS)" | package-lock.json'
@@ -33,15 +11,11 @@ steps:
        npm | "$(Agent.OS)"
     path: $(npm_config_cache)
   displayName: Cache npm
-- bash: |
-    npm ci
+- bash: npm ci
   displayName: 'Install dependencies'
-- bash: |
-    npm run check
+- bash: npm run check
   displayName: 'Check'
-- bash: |
-    npm run build:prod
+- bash: npm run build:prod
   displayName: 'Build'
-- bash: |
-    npm test
+- bash: npm test
   displayName: 'Test'    
