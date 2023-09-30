@@ -3,8 +3,8 @@ parameters:
 
 steps:
 - template: ${{parameters.platform}}.yml
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: $(Build.ArtifactStagingDirectory)
-    publishLocation: 'pipeline'
+- bash: |
+    cp release/latest* "$(Build.ArtifactStagingDirectory)"
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: 'pipeline'
   displayName: 'Publishing artifacts to artifact storage'
