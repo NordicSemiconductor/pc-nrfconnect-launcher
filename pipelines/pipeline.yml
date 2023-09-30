@@ -6,8 +6,8 @@ parameters:
     default: {}
 
 jobs: 
-  - job: ${{ format('Build_{0}', parameters.platform) }}
-    displayName: ${{ format('Build {0}', parameters.platform) }}
+  - job: Build_${{parameters.platform}}
+    displayName: Build ${{ parameters.platform }}
     pool: ${{parameters.pool}}
     variables:
       group: wayland

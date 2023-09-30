@@ -2,7 +2,7 @@ parameters:
   platform: ''
 
 steps:
-- template: ${{ format('{0}.yml', parameters.platform) }}
+- template: ${{parameters.platform}}.yml
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)
