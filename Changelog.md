@@ -1,3 +1,9 @@
+## Unreleased
+
+### Added
+
+-   Menu “Window”.
+
 ## 4.2.1 - 2023-09-28
 
 ### Added
