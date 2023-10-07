@@ -38,6 +38,8 @@ Startup behaviour
                         Default: false
 --skip-splash-screen    Skip the splash screen at startup.
                         Default: false
+--new-instance          Launch a new instance, independent of other, potentially
+                        already running instances.
 
 Dev tools
 =========
@@ -80,6 +82,7 @@ const argv = parseArgs<CommandLineArguments>(args, {
         'skip-splash-screen',
         'skip-update-apps',
         'skip-update-launcher',
+        'new-instance',
         'install-devtools',
         'remove-devtools',
     ],

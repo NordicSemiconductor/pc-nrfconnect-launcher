@@ -310,21 +310,26 @@ exports[`AppList should render a message without any apps after some time 1`] = 
   <div>
     <div />
     <div
-      class="tw-grid tw-flex-1 tw-place-items-center"
+      class="tw-preflight tw-grid tw-flex-1 tw-place-items-center"
     >
       <div
-        class="tw-max-w-[75%] tw-bg-white tw-p-4"
+        class="tw-text-center"
       >
-        The list of apps is not yet loaded from
-         
-        <a
-          href="https://developer.nordicsemi.com"
-          rel="noreferrer"
-          target="_blank"
-        >
-          https://developer.nordicsemi.com
-        </a>
-        . Make sure you can reach that server.
+        <p>
+          The list of apps is not yet loaded from
+           
+          <a
+            href="https://developer.nordicsemi.com"
+            rel="noreferrer"
+            target="_blank"
+          >
+            https://developer.nordicsemi.com
+          </a>
+          .
+        </p>
+        <p>
+          Make sure you can reach that server.
+        </p>
       </div>
     </div>
     <div />
@@ -636,12 +641,17 @@ exports[`AppList should render with all apps filtered out 1`] = `
   <div>
     <div />
     <div
-      class="tw-grid tw-flex-1 tw-place-items-center"
+      class="tw-preflight tw-grid tw-flex-1 tw-place-items-center"
     >
       <div
-        class="tw-max-w-[75%] tw-bg-white tw-p-4"
+        class="tw-text-center"
       >
-        No apps shown because of the selected filters. Change those to display apps again.
+        <p>
+          No apps shown because of the selected filters.
+        </p>
+        <p>
+          Change those to display apps again.
+        </p>
       </div>
     </div>
     <div />
@@ -654,20 +664,28 @@ exports[`AppList should render without any apps and disabled update check 1`] = 
   <div>
     <div />
     <div
-      class="tw-grid tw-flex-1 tw-place-items-center"
+      class="tw-preflight tw-grid tw-flex-1 tw-place-items-center"
     >
       <div
-        class="tw-max-w-[75%] tw-bg-white tw-p-4"
+        class="tw-text-center"
       >
-        No apps are loaded from the server yet and you have “Check for updates at startup” disabled in the settings. You can enable it there or just
-         
-        <button
-          class="tw-inline tw-border-0 tw-bg-white tw-p-0 tw-text-primary"
-          type="button"
-        >
-          now check once for updates
-        </button>
-        .
+        <p>
+          No apps are loaded from the server yet.
+        </p>
+        <p>
+          You have “Check for updates at startup” disabled in the settings.
+        </p>
+        <p>
+          You can enable it there or now just
+           
+          <button
+            class="tw-inline tw-border-0 tw-p-0 tw-text-primary"
+            type="button"
+          >
+            check once for updates
+          </button>
+          .
+        </p>
       </div>
     </div>
     <div />

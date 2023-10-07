@@ -24,7 +24,7 @@ export type ShownStates = {
 
 interface Schema {
     lastBundledAppInstalledVersion: string;
-    isQuickstartInfoShownBefore: boolean;
+    isQuickStartInfoShownBefore: boolean;
     lastWindowState: WindowState;
     updateCheck: {
         doOnStartup: boolean;
@@ -81,10 +81,10 @@ export const getShownStates = () =>
 export const setShownStates = (shownStates: ShownStates) =>
     store.set('appFilter.shownStates', shownStates);
 
-export const getIsQuickstartInfoShownBefore = () =>
-    store.get('isQuickstartInfoShownBefore', false);
-export const setQuickstartInfoWasShown = () =>
-    store.set('isQuickstartInfoShownBefore', true);
+export const getIsQuickStartInfoShownBefore = () =>
+    store.get('isQuickStartInfoShownBefore', false);
+export const setQuickStartInfoWasShown = () =>
+    store.set('isQuickStartInfoShownBefore', true);
 
 export const getBundledAppInstalled = () =>
     store.get('lastBundledAppInstalledVersion') === packageJson.version;

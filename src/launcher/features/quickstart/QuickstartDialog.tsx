@@ -12,54 +12,54 @@ import {
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkEngineAndLaunch } from '../apps/appsEffects';
-import { getOfficialQuickstartApp } from '../apps/appsSlice';
+import { getOfficialQuickStartApp } from '../apps/appsSlice';
 import {
-    getIsQuickstartInfoShownBefore,
-    quickstartInfoWasShown,
+    getIsQuickStartInfoShownBefore,
+    quickStartInfoWasShown,
 } from '../settings/settingsSlice';
 import { getIsUsageDataDialogVisible } from '../usageData/usageDataSlice';
 
 export default () => {
-    const isQuickstartInfoShownBefore = useLauncherSelector(
-        getIsQuickstartInfoShownBefore
+    const isQuickStartInfoShownBefore = useLauncherSelector(
+        getIsQuickStartInfoShownBefore
     );
     const isUsageDataDialogVisible = useLauncherSelector(
         getIsUsageDataDialogVisible
     );
-    const quickstartApp = useLauncherSelector(getOfficialQuickstartApp);
+    const quickStartApp = useLauncherSelector(getOfficialQuickStartApp);
 
     const dispatch = useLauncherDispatch();
 
     const isVisible =
-        !isQuickstartInfoShownBefore &&
+        !isQuickStartInfoShownBefore &&
         !isUsageDataDialogVisible &&
-        quickstartApp != null;
+        quickStartApp != null;
 
     return (
         <GenericDialog
             isVisible={isVisible}
             closeOnEsc
             closeOnUnfocus
-            title="Quickstart"
+            title="Quick Start"
             footer={
                 <>
                     <DialogButton
                         variant="primary"
                         onClick={() => {
-                            if (quickstartApp == null) {
+                            if (quickStartApp == null) {
                                 throw new Error(
-                                    'Dialog must not be visible if quickstart app is not available.'
+                                    'Dialog must not be visible if Quick Start app is not available.'
                                 );
                             }
 
-                            dispatch(quickstartInfoWasShown());
-                            dispatch(checkEngineAndLaunch(quickstartApp));
+                            dispatch(quickStartInfoWasShown());
+                            dispatch(checkEngineAndLaunch(quickStartApp));
                         }}
                     >
-                        Open Quickstart app
+                        Open Quick Start app
                     </DialogButton>
                     <DialogButton
-                        onClick={() => dispatch(quickstartInfoWasShown())}
+                        onClick={() => dispatch(quickStartInfoWasShown())}
                     >
                         Close
                     </DialogButton>
@@ -67,8 +67,8 @@ export default () => {
             }
         >
             <p>
-                Do you have a new development kit? Use the Quickstart app to get
-                up and running as fast as possible.
+                Do you have a new development kit? Use the Quick Start app to
+                get up and running as fast as possible.
             </p>
             <p>Supported kits: nRF9160 DK, nRF9161 DK.</p>
         </GenericDialog>

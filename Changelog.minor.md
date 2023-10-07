@@ -7,7 +7,16 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.2.1-pre1
+## 4.2.2
+
+### Fixed
+
+-   #888: Styling of the usage statistics dialog.
+-   #888: Add command line switch `--new-instance` to force opening a new
+    instance of the launcher.
+-   #891: Styling of the empty apps list state.
+
+## 4.2.1
 
 ### Changed
 

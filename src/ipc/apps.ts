@@ -44,9 +44,9 @@ export {
     type WithdrawnApp,
 };
 
-const quickstartAppName = 'pc-nrfconnect-quickstart';
+const quickStartAppName = 'pc-nrfconnect-quickstart';
 
-export const isQuickstartApp = (app: App) => app.name === quickstartAppName;
+export const isQuickStartApp = (app: App) => app.name === quickStartAppName;
 
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',

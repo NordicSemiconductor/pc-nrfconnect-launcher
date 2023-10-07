@@ -18,8 +18,8 @@ import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { getNoAppsExist } from './appsSlice';
 
 const Box = ({ children }: { children: ReactNode }) => (
-    <div className="tw-grid tw-flex-1 tw-place-items-center">
-        <div className="tw-max-w-[75%] tw-bg-white tw-p-4">{children}</div>
+    <div className="tw-preflight tw-grid tw-flex-1 tw-place-items-center">
+        <div className="tw-text-center">{children}</div>
     </div>
 );
 
@@ -31,7 +31,7 @@ const InlineButton = ({
     onClick: MouseEventHandler;
 }) => (
     <button
-        className="tw-inline tw-border-0 tw-bg-white tw-p-0 tw-text-primary"
+        className="tw-inline tw-border-0 tw-p-0 tw-text-primary"
         type="button"
         onClick={onClick}
     >
@@ -44,13 +44,20 @@ const CheckForUpdatesDisabled = () => {
 
     return (
         <Box>
-            No apps are loaded from the server yet and you have “Check for
-            updates at startup” disabled in the settings. You can enable it
-            there or just{' '}
-            <InlineButton onClick={() => dispatch(checkForUpdatesManually())}>
-                now check once for updates
-            </InlineButton>
-            .
+            <p>No apps are loaded from the server yet.</p>
+            <p>
+                You have “Check for updates at startup” disabled in the
+                settings.
+            </p>
+            <p>
+                You can enable it there or now just{' '}
+                <InlineButton
+                    onClick={() => dispatch(checkForUpdatesManually())}
+                >
+                    check once for updates
+                </InlineButton>
+                .
+            </p>
         </Box>
     );
 };
@@ -64,9 +71,11 @@ const NotLoadedYet = () => {
 
     return justStarted ? null : (
         <Box>
-            The list of apps is not yet loaded from{' '}
-            <Link href="https://developer.nordicsemi.com" />. Make sure you can
-            reach that server.
+            <p>
+                The list of apps is not yet loaded from{' '}
+                <Link href="https://developer.nordicsemi.com" />.
+            </p>
+            <p>Make sure you can reach that server.</p>
         </Box>
     );
 };
@@ -85,8 +94,8 @@ const NoApps = () => {
 
 const AllFilteredOut = () => (
     <Box>
-        No apps shown because of the selected filters. Change those to display
-        apps again.
+        <p>No apps shown because of the selected filters.</p>
+        <p>Change those to display apps again.</p>
     </Box>
 );
 
