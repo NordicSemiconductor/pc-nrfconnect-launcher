@@ -6,6 +6,8 @@
 
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 
+const isMac = process.platform === 'darwin';
+
 export default () =>
     Menu.buildFromTemplate([
         {
@@ -62,10 +64,7 @@ export default () =>
                 },
                 {
                     label: 'Toggle &Full Screen',
-                    accelerator:
-                        process.platform === 'darwin'
-                            ? 'Ctrl+Command+F'
-                            : 'F11',
+                    accelerator: isMac ? 'Ctrl+Command+F' : 'F11',
                     click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
                         if (focusedWindow) {
                             focusedWindow.setFullScreen(
@@ -76,10 +75,7 @@ export default () =>
                 },
                 {
                     label: 'Toggle &Developer Tools',
-                    accelerator:
-                        process.platform === 'darwin'
-                            ? 'Alt+Command+I'
-                            : 'Ctrl+Shift+I',
+                    accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
                     visible: true,
                     click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
                         if (focusedWindow) {
@@ -88,5 +84,8 @@ export default () =>
                     },
                 },
             ],
+        },
+        {
+            role: 'windowMenu',
         },
     ]);
