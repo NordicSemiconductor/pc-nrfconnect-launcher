@@ -1,0 +1,10 @@
+parameters:
+  platform: ''
+
+steps:
+- template: ${{parameters.platform}}.yml
+- bash: |
+    cp release/latest* "$(Build.ArtifactStagingDirectory)"
+  displayName: Copy latest.yml
+- publish: $(Build.ArtifactStagingDirectory)
+  displayName: 'Publishing artifacts to artifact storage'

@@ -40,9 +40,6 @@
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect for Desktop",
         "npmRebuild": false,
-        "publish": [
-            "github"
-        ],
         "files": [
             "dist/",
             "node_modules/",
@@ -79,7 +76,7 @@
             "icon": "resources/icon.icns"
         },
         "dmg": {
-            "artifactName": "${name}-${version}.${ext}",
+            "artifactName": "${name}-${version}-${arch}.${ext}",
             "sign": false
         },
         "win": {
@@ -94,6 +91,7 @@
         }
     },
     "devDependencies": {
+        "@electron/notarize": "^2.1.0",
         "@nordicsemiconductor/pc-nrfconnect-shared": "^113.0.0",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
@@ -108,7 +106,6 @@
         "cross-env": "7.0.3",
         "electron-builder": "^22.14.13",
         "electron-devtools-installer": "3.2.0",
-        "electron-notarize": "0.3.0",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
     },
