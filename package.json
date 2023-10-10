@@ -110,7 +110,7 @@
         "xvfb-maybe": "0.2.1"
     },
     "dependencies": {
-        "@electron/remote": "2.0.8",
+        "@electron/remote": "^2.0.12",
         "@nordicsemiconductor/nrf-device-lib-js": "0.6.12",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
