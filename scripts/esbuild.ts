@@ -1,12 +1,14 @@
+#!/usr/bin/env ts-node
+
 /*
  * Copyright (c) 2022 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const esbuild = require('esbuild');
+import esbuild, { BuildOptions } from 'esbuild';
 
-const { dependencies } = require('../package.json');
+import { dependencies } from '../package.json';
 
 const options = {
     bundle: true,
@@ -23,7 +25,7 @@ const options = {
         }"`,
     },
     minify: process.argv.includes('--prod'),
-};
+} satisfies BuildOptions;
 
 const build = async () => {
     if (process.argv.includes('--watch')) {
