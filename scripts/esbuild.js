@@ -5,9 +5,8 @@
  */
 
 const esbuild = require('esbuild');
-const fs = require('node:fs');
 
-const { dependencies } = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const { dependencies } = require('../package.json');
 
 const options = {
     bundle: true,
