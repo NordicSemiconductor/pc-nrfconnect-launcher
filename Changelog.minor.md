@@ -7,7 +7,7 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## 4.2.2
+## Unreleased
 
 ### Fixed
 
@@ -15,6 +15,11 @@ release the new version.
 -   #888: Add command line switch `--new-instance` to force opening a new
     instance of the launcher.
 -   #891: Styling of the empty apps list state.
+
+### Changed
+
+-   #893: Parse `package.json` from apps with `zod` and converted build scripts
+    to TypeScript.
 
 ## 4.2.1
 
