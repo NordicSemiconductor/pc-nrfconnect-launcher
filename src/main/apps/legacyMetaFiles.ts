@@ -4,13 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { PackageJson } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import {
+    LegacyPackageJson,
+    parseLegacyPackageJson,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path from 'path';
 
 import { Source } from '../../ipc/sources';
 import { getAppsRootDir, getNodeModulesDir } from '../config';
-import { readJsonFile } from '../fileUtil';
+import { readFile, readJsonFile } from '../fileUtil';
 import { installedAppPath, writeAppInfo } from './app';
 import {
     sourceJsonExistsLocally,
@@ -63,7 +66,7 @@ export const createNewAppInfo = (
     appName: AppName,
     appsJson: AppsJson,
     updatesJson: UpdatesJson,
-    packageJson: PackageJson | null
+    packageJson: LegacyPackageJson | null
 ) => {
     const appInfo = appsJson[appName];
 
@@ -96,12 +99,12 @@ export const createNewAppInfo = (
 export const createNewAppInfoForWithdrawnApp = (
     source: Source,
     appName: AppName,
-    packageJson: PackageJson,
+    packageJson: LegacyPackageJson,
     oldAppUrl: string
 ) => ({
     name: appName,
-    displayName: packageJson.displayName || '',
-    description: packageJson.description || '',
+    displayName: packageJson.displayName,
+    description: packageJson.description,
     homepage: packageJson.homepage,
     iconUrl: `${oldAppUrl}.svg`,
     releaseNotesUrl: `${oldAppUrl}-Changelog.md`,
@@ -127,13 +130,17 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     const oldAppUrl = `${path.dirname(source.url)}/${withdrawnAppName}`;
     writeWithdrawnJson(source, [`${oldAppUrl}.json`]);
 
-    const packageJson = readJsonFile<PackageJson>(packageJsonFile);
+    const packageJsonResult = parseLegacyPackageJson(readFile(packageJsonFile));
+
+    if (!packageJsonResult.success) {
+        throw new Error(packageJsonResult.error.message);
+    }
 
     writeAppInfo(
         createNewAppInfoForWithdrawnApp(
             source,
             withdrawnAppName,
-            packageJson,
+            packageJsonResult.data,
             oldAppUrl
         ),
         source
@@ -151,10 +158,19 @@ const migrateLegacyMetaFiles = (source: Source) => {
             return;
         }
 
-        const packageJson = readJsonFile<PackageJson | null>(
-            path.join(getNodeModulesDir(source.name), appName, 'package.json'),
-            null
+        const packageJsonFile = path.join(
+            getNodeModulesDir(source.name),
+            appName,
+            'package.json'
         );
+
+        const packageJsonResult = parseLegacyPackageJson(
+            readFile(packageJsonFile)
+        );
+
+        const packageJson = packageJsonResult.success
+            ? packageJsonResult.data
+            : null;
 
         writeAppInfo(
             createNewAppInfo(appName, appsJson, updatesJson, packageJson),

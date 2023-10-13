@@ -65,6 +65,12 @@ const officialSource = {
                 type: 'git',
                 url: 'https://github.com/NordicSemiconductor/pc-nrfconnect-rssi.git',
             },
+            engines: {
+                nrfconnect: '>=4.2.0',
+            },
+            nrfConnectForDesktop: {
+                html: '',
+            },
         },
     },
 

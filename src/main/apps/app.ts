@@ -6,7 +6,7 @@
 
 import {
     AppInfo,
-    PackageJson,
+    parseLegacyPackageJson,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path, { basename } from 'path';
@@ -20,7 +20,7 @@ import {
 } from '../../ipc/apps';
 import { LOCAL, Source, SourceName } from '../../ipc/sources';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from '../config';
-import { ifExists, readJsonFile, writeJsonFile } from '../fileUtil';
+import { ifExists, readFile, readJsonFile, writeJsonFile } from '../fileUtil';
 import { appResourceProperties } from './appResource';
 import { getSource, isInListOfWithdrawnApps } from './sources';
 
@@ -112,9 +112,15 @@ export const addInstalledAppData = (
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
 
-    const packageJson = readJsonFile<PackageJson>(
-        path.join(appPath, 'package.json')
+    const packageJsonResult = parseLegacyPackageJson(
+        readFile(path.join(appPath, 'package.json'))
     );
+
+    if (!packageJsonResult.success) {
+        throw new Error(packageJsonResult.error.message);
+    }
+
+    const packageJson = packageJsonResult.data;
 
     return {
         ...app,
@@ -124,7 +130,7 @@ export const addInstalledAppData = (
         description: packageJson.description ?? app.description,
         displayName: packageJson.displayName ?? app.displayName,
 
-        engineVersion: packageJson.engines?.nrfconnect,
+        engineVersion: packageJson.engines.nrfconnect,
 
         currentVersion: packageJson.version,
 
