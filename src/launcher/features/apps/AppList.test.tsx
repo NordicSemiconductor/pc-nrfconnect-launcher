@@ -185,7 +185,8 @@ describe('AppList', () => {
         );
 
         expect(removeDownloadableApp).toHaveBeenCalledWith(
-            expect.objectContaining(installedApp)
+            expect.objectContaining(installedApp),
+            '4.5.6'
         );
     });
 
