@@ -62,10 +62,9 @@ export const handleAppsWithErrors =
         }
 
         apps.forEach(app => {
-            sendLauncherUsageData(
-                EventAction.REPORT_INSTALLATION_ERROR,
-                `${app.source} - ${app.name}`
-            );
+            sendLauncherUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
+                ...app,
+            });
         });
 
         const recover = (invalidPaths: string[]) => () => {
@@ -160,35 +159,42 @@ const install =
     };
 
 export const installDownloadableApp =
-    (app: DownloadableApp, version?: string): AppThunk =>
+    (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
-        if (version == null) {
-            sendAppUsageData(EventAction.INSTALL_APP, app.source, app.name);
-        } else {
-            sendAppUsageData(
-                EventAction.INSTALL_APP_OLD_VERSION,
-                app.source,
-                `${app.name} (${version})`
-            );
-        }
+        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+            action:
+                toVersion !== app.latestVersion
+                    ? 'Install Explicit Version'
+                    : 'Install',
+            ...app,
+            toVersion: toVersion ?? app.latestVersion,
+        });
 
         dispatch(installDownloadableAppStarted(app));
-        return dispatch(install(app, version));
+        return dispatch(install(app, toVersion));
     };
 
 export const updateDownloadableApp =
     (app: DownloadableApp): AppThunk =>
     dispatch => {
-        sendAppUsageData(EventAction.UPDATE_APP, app.source, app.name);
+        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+            action: 'Update',
+            ...app,
+            toVersion: app.latestVersion,
+        });
 
         dispatch(updateDownloadableAppStarted(app));
         return dispatch(install(app));
     };
 
 export const removeDownloadableApp =
-    (app: AppSpec): AppThunk =>
+    (app: AppSpec, currentVersion: string): AppThunk =>
     async dispatch => {
-        sendAppUsageData(EventAction.REMOVE_APP, app.source, app.name);
+        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+            action: 'Remove',
+            ...app,
+            fromVersion: currentVersion,
+        });
 
         dispatch(removeDownloadableAppStarted(app));
         try {
@@ -205,10 +211,7 @@ export const removeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    const sharedData =
-        `App version: ${app.currentVersion};` +
-        ` Engine version: ${app.engineVersion};`;
-    sendAppUsageData(EventAction.LAUNCH_APP, sharedData, app.name);
+    sendAppUsageData(EventAction.LAUNCH_APP, { appInfo: app });
     openWindow.openApp(app);
 };
 

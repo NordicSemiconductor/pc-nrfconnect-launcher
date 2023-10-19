@@ -21,7 +21,9 @@ const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
         <Dropdown.Item
             title={`Remove ${app.displayName}`}
             disabled={isInProgress(app)}
-            onClick={() => dispatch(removeDownloadableApp(app))}
+            onClick={() =>
+                dispatch(removeDownloadableApp(app, app.currentVersion))
+            }
         >
             {app.progress.isRemoving ? 'Uninstalling...' : 'Uninstall'}
         </Dropdown.Item>
