@@ -19,9 +19,12 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     };
 
     const sendUsageData = (error: string) => {
-        const launcherInfo = pkgJson.version ? `v${pkgJson.version}` : '';
-        const errorLabel = `${process.platform}; ${process.arch}; v${launcherInfo}; ${error}`;
-        sendLauncherUsageData('Report error', errorLabel);
+        sendLauncherUsageData('Report error', {
+            platform: process.platform,
+            arch: process.arch,
+            launcherVersion: pkgJson.version,
+            errorMessage: error,
+        });
     };
 
     return (
