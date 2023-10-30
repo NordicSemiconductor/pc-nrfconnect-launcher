@@ -7,6 +7,9 @@
  */
 
 import { build } from '@nordicsemiconductor/pc-nrfconnect-shared/scripts/esbuild-renderer';
+import * as fs from 'node:fs';
+
+const packageJson = fs.readFileSync('package.json', 'utf8');
 
 build({
     entryPoints: ['./resources/css/fonts.scss'],
@@ -17,6 +20,9 @@ build({
 build({
     entryPoints: ['./src/launcher'],
     outfile: './dist/launcher.js',
+    define: {
+        'process.env.PACKAGE_JSON_OF_RENDERER': JSON.stringify(packageJson),
+    },
 });
 
 build(

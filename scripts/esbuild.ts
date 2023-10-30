@@ -7,8 +7,11 @@
  */
 
 import esbuild, { BuildOptions } from 'esbuild';
+import * as fs from 'node:fs';
 
 import { dependencies } from '../package.json';
+
+const packageJson = fs.readFileSync('package.json', 'utf8');
 
 const options = {
     bundle: true,
@@ -23,6 +26,7 @@ const options = {
         'process.env.NODE_ENV': `"${
             process.argv.includes('--prod') ? 'production' : 'development'
         }"`,
+        'process.env.PACKAGE_JSON_OF_RENDERER': JSON.stringify(packageJson),
     },
     minify: process.argv.includes('--prod'),
 } satisfies BuildOptions;

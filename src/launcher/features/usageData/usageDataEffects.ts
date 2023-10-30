@@ -68,7 +68,7 @@ const initUsageData = (label: string) => {
 };
 
 export const checkUsageDataSetting = (): AppThunk => dispatch => {
-    usageData.init(pkgJson);
+    usageData.init();
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {
         dispatch(showUsageDataDialog());
