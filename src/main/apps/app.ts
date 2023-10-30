@@ -6,7 +6,7 @@
 
 import {
     AppInfo,
-    parseLegacyPackageJson,
+    parseAppLegacyPackageJson,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path, { basename } from 'path';
@@ -112,7 +112,7 @@ export const addInstalledAppData = (
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
 
-    const packageJsonResult = parseLegacyPackageJson(
+    const packageJsonResult = parseAppLegacyPackageJson(
         readFile(path.join(appPath, 'package.json'))
     );
 
