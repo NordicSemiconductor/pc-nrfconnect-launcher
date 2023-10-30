@@ -71,6 +71,7 @@ export const checkUsageDataSetting = (): AppThunk => dispatch => {
     usageData.init();
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {
+        initUsageData(EventLabel.LAUNCHER_USAGE_DATA_NOT_SET);
         dispatch(showUsageDataDialog());
         return;
     }
@@ -79,6 +80,7 @@ export const checkUsageDataSetting = (): AppThunk => dispatch => {
         dispatch(setUsageDataOn());
         return;
     }
+    initUsageData(EventLabel.LAUNCHER_USAGE_DATA_OFF); // TODO Confirm undefine
     dispatch(setUsageDataOff());
 };
 
