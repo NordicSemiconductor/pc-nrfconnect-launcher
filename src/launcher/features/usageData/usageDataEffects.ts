@@ -5,6 +5,7 @@
  */
 
 import {
+    isDevelopment,
     usageData,
     UsageDataMetadata,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
@@ -62,13 +63,16 @@ export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
 };
 
 const initUsageData = (label: string) => {
-    usageData.sendUsageData(EventAction.LAUNCH_LAUNCHER, {
-        usageData: label,
-    });
+    usageData.sendUsageData(
+        EventAction.LAUNCH_LAUNCHER,
+        {
+            usageData: label,
+        },
+        true
+    );
 };
 
 export const checkUsageDataSetting = (): AppThunk => dispatch => {
-    usageData.init();
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {
         initUsageData(EventLabel.LAUNCHER_USAGE_DATA_NOT_SET);
@@ -80,7 +84,7 @@ export const checkUsageDataSetting = (): AppThunk => dispatch => {
         dispatch(setUsageDataOn());
         return;
     }
-    initUsageData(EventLabel.LAUNCHER_USAGE_DATA_OFF); // TODO Confirm undefine
+    initUsageData(EventLabel.LAUNCHER_USAGE_DATA_OFF);
     dispatch(setUsageDataOff());
 };
 
