@@ -166,7 +166,10 @@ export const installDownloadableApp =
                 toVersion !== app.latestVersion
                     ? 'Install Explicit Version'
                     : 'Install',
-            ...app,
+            appInfo: {
+                name: app.name,
+                source: app.source,
+            },
             toVersion: toVersion ?? app.latestVersion,
         });
 
@@ -179,7 +182,10 @@ export const updateDownloadableApp =
     dispatch => {
         sendAppUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Update',
-            ...app,
+            appInfo: {
+                name: app.name,
+                source: app.source,
+            },
             toVersion: app.latestVersion,
         });
 
@@ -192,7 +198,10 @@ export const removeDownloadableApp =
     async dispatch => {
         sendAppUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Remove',
-            ...app,
+            appInfo: {
+                name: app.name,
+                source: app.source,
+            },
             fromVersion: currentVersion,
         });
 
@@ -211,7 +220,13 @@ export const removeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    sendAppUsageData(EventAction.LAUNCH_APP, { appInfo: app });
+    sendAppUsageData(EventAction.LAUNCH_APP, {
+        appInfo: {
+            name: app.name,
+            source: app.source,
+            version: app.currentVersion,
+        },
+    });
     openWindow.openApp(app);
 };
 

@@ -101,5 +101,8 @@ export const sendAppUsageData = (
 export const sendEnvInfo = async () => {
     const { platform, arch } = await si.osInfo();
     sendLauncherUsageData(EventAction.REPORT_OS_INFO, { platform, arch });
-    sendLauncherUsageData(EventAction.REPORT_LAUNCHER_INFO, { pkgJson });
+    sendLauncherUsageData(EventAction.REPORT_LAUNCHER_INFO, {
+        version: pkgJson.version,
+        isDevelopment,
+    });
 };
