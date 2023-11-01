@@ -30,12 +30,6 @@ export const EventAction = {
     REPORT_INSTALLATION_ERROR: 'Report installation error',
 };
 
-const EventLabel = {
-    LAUNCHER_USAGE_DATA_ON: 'Usage data on',
-    LAUNCHER_USAGE_DATA_OFF: 'Usage data off',
-    LAUNCHER_USAGE_DATA_NOT_SET: 'Usage data not set',
-};
-
 export const isUsageDataOn = () => usageData.isEnabled();
 
 export const confirmSendingUsageData = (): AppThunk => dispatch => {
@@ -62,29 +56,16 @@ export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
     dispatch(setUsageDataOn());
 };
 
-const initUsageData = (label: string) => {
-    usageData.sendUsageData(
-        EventAction.LAUNCH_LAUNCHER,
-        {
-            usageData: label,
-        },
-        true
-    );
-};
-
 export const checkUsageDataSetting = (): AppThunk => dispatch => {
     const isSendingUsageData = usageData.isEnabled();
     if (typeof isSendingUsageData !== 'boolean') {
-        initUsageData(EventLabel.LAUNCHER_USAGE_DATA_NOT_SET);
         dispatch(showUsageDataDialog());
         return;
     }
     if (isSendingUsageData) {
-        initUsageData(EventLabel.LAUNCHER_USAGE_DATA_ON);
         dispatch(setUsageDataOn());
         return;
     }
-    initUsageData(EventLabel.LAUNCHER_USAGE_DATA_OFF);
     dispatch(setUsageDataOff());
 };
 
