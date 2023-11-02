@@ -4,6 +4,17 @@
 
 -   Menu “Window”.
 
+## 4.2.2 - UNRELEASED
+
+### Fixed
+
+-   Error on windows 'The specific module could not be found (nrf-devcice-lib)'
+    by installing x64 version of vc redestibutables with launcher on windows
+
+### Changed
+
+-   Update bundled version of Jlink for windows to 7.88j
+
 ## 4.2.1 - 2023-09-28
 
 ### Added
