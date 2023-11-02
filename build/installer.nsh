@@ -44,10 +44,10 @@
   ; ===============================================================
 
   ; Adding Visual C++ Redistributable for Visual Studio 2015
-  File "${BUILD_RESOURCES_DIR}\vc_redist_2015.x86.exe"
+  File "${BUILD_RESOURCES_DIR}\VC_redist.x64.exe"
 
   ; Running installer and waiting before continuing
-  ExecWait '"$INSTDIR\vc_redist_2015.x86.exe" /passive /norestart'
+  ExecWait '"$INSTDIR\VC_redist.x64.exe" /passive /norestart'
 
   ; ===============================================================
   ; Installation of J-Link
