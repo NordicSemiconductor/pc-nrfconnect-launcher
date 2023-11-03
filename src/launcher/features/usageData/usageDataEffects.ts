@@ -7,9 +7,7 @@
 import {
     isDevelopment,
     usageData,
-    UsageDataMetadata,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import si from 'systeminformation';
 
 import pkgJson from '../../../../package.json';
 import type { AppThunk } from '../../store';
@@ -29,8 +27,6 @@ export const EventAction = {
     REPORT_LAUNCHER_INFO: 'Report launcher info',
     REPORT_INSTALLATION_ERROR: 'Report installation error',
 };
-
-export const isUsageDataOn = () => usageData.isEnabled();
 
 export const confirmSendingUsageData = (): AppThunk => dispatch => {
     usageData.enable();
@@ -69,24 +65,8 @@ export const checkUsageDataSetting = (): AppThunk => dispatch => {
     dispatch(setUsageDataOff());
 };
 
-export const sendLauncherUsageData = (
-    eventAction: string,
-    metadata?: UsageDataMetadata
-) => {
-    usageData.sendUsageData(eventAction, metadata);
-};
-
-export const sendAppUsageData = (
-    eventAction: string,
-    metadata?: UsageDataMetadata
-) => {
-    usageData.sendUsageData(eventAction, metadata);
-};
-
-export const sendEnvInfo = async () => {
-    const { platform, arch } = await si.osInfo();
-    sendLauncherUsageData(EventAction.REPORT_OS_INFO, { platform, arch });
-    sendLauncherUsageData(EventAction.REPORT_LAUNCHER_INFO, {
+export const sendEnvInfo = () => {
+    usageData.sendUsageData(EventAction.REPORT_LAUNCHER_INFO, {
         version: pkgJson.version,
         isDevelopment,
     });

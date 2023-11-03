@@ -8,12 +8,14 @@
 import './setUserDataDir';
 
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
+import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
 
 import configureElectronApp from './configureElectronApp';
 import registerIpcHandler from './registerIpcHandler';
 import singeInstanceLock from './singeInstanceLock';
 import storeExecutablePath from './storeExecutablePath';
 
+usageData.enableTelemetry();
 singeInstanceLock();
 initializeElectronRemote();
 registerIpcHandler();
