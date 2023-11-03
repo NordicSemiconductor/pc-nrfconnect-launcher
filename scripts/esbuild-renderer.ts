@@ -21,7 +21,7 @@ build({
     entryPoints: ['./src/launcher'],
     outfile: './dist/launcher.js',
     define: {
-        'process.env.PACKAGE_JSON_OF_RENDERER': JSON.stringify(packageJson),
+        'process.env.PACKAGE_JSON': JSON.stringify(packageJson),
     },
 });
 
