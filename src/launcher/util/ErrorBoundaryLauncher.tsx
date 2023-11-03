@@ -6,11 +6,13 @@
 
 import React from 'react';
 import { getCurrentWindow } from '@electron/remote';
-import { ErrorBoundary } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    ErrorBoundary,
+    usageData,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import pkgJson from '../../../package.json';
 import { resetStore } from '../../ipc/persistedStore';
-import { sendLauncherUsageData } from '../features/usageData/usageDataEffects';
 
 const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     const restoreDefaults = () => {
@@ -19,7 +21,7 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     };
 
     const sendUsageData = (error: string) => {
-        sendLauncherUsageData('Report error', {
+        usageData.sendUsageData('Report error', {
             platform: process.platform,
             arch: process.arch,
             launcherVersion: pkgJson.version,

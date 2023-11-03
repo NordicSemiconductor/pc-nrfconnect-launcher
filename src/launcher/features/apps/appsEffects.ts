@@ -10,6 +10,7 @@ import {
     ErrorDialogActions,
     openWindow,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
 
 import {
     AppSpec,
@@ -22,11 +23,7 @@ import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import mainConfig from '../../util/mainConfig';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
-import {
-    EventAction,
-    sendAppUsageData,
-    sendLauncherUsageData,
-} from '../usageData/usageDataEffects';
+import { EventAction } from '../usageData/usageDataEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
 import {
     addDownloadableApps,
@@ -62,7 +59,7 @@ export const handleAppsWithErrors =
         }
 
         apps.forEach(app => {
-            sendLauncherUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
+            usageData.sendUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
                 ...app,
             });
         });
@@ -161,7 +158,7 @@ const install =
 export const installDownloadableApp =
     (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action:
                 toVersion !== app.latestVersion
                     ? 'Install Explicit Version'
@@ -180,7 +177,7 @@ export const installDownloadableApp =
 export const updateDownloadableApp =
     (app: DownloadableApp): AppThunk =>
     dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Update',
             appInfo: {
                 name: app.name,
@@ -196,7 +193,7 @@ export const updateDownloadableApp =
 export const removeDownloadableApp =
     (app: AppSpec, currentVersion: string): AppThunk =>
     async dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Remove',
             appInfo: {
                 name: app.name,
@@ -220,7 +217,7 @@ export const removeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    sendAppUsageData(EventAction.LAUNCH_APP, {
+    usageData.sendUsageData(EventAction.LAUNCH_APP, {
         appInfo: {
             name: app.name,
             source: app.source,
