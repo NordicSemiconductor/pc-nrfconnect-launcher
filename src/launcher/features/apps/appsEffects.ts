@@ -17,6 +17,7 @@ import {
     AppWithError,
     DownloadableApp,
     inMain as appsInMain,
+    isInstalled,
     LaunchableApp,
 } from '../../../ipc/apps';
 import type { AppThunk } from '../../store';
@@ -168,6 +169,7 @@ export const installDownloadableApp =
                 source: app.source,
             },
             toVersion: toVersion ?? app.latestVersion,
+            fromVersion: isInstalled(app) ? app.currentVersion : undefined,
         });
 
         dispatch(installDownloadableAppStarted(app));
@@ -184,6 +186,7 @@ export const updateDownloadableApp =
                 source: app.source,
             },
             toVersion: app.latestVersion,
+            fromVersion: isInstalled(app) ? app.currentVersion : undefined,
         });
 
         dispatch(updateDownloadableAppStarted(app));
