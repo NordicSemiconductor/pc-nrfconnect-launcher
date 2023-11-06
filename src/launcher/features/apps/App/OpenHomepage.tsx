@@ -12,12 +12,13 @@ import { isDownloadable } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
 
 const OpenHomepage: React.FC<{ app: DisplayedApp }> = ({ app }) => {
-    if (!isDownloadable(app) || app.homepage == null) return null;
+    const homepage = isDownloadable(app) ? app.homepage : undefined;
+    if (homepage == null) return null;
 
     return (
         <Dropdown.Item
             title="Go to app website"
-            onClick={() => openUrl(app.homepage!)} // eslint-disable-line @typescript-eslint/no-non-null-assertion
+            onClick={() => openUrl(homepage)}
         >
             More info
         </Dropdown.Item>
