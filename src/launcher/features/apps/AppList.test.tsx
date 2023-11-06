@@ -45,7 +45,12 @@ jest.mock('react-bootstrap', () => ({
 
 jest.mock('../../features/filter/AppFilterBar', () => 'div');
 jest.mock('../../features/releaseNotes/ReleaseNotesDialog', () => 'div');
-jest.mock('../../util/mainConfig', () => () => ({ version: '6.1.0' }));
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
+    ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
+    launcherConfig: () => ({
+        launcherVersion: '6.1.0',
+    }),
+}));
 
 jest.mock('../../features/apps/appsEffects');
 
