@@ -8,6 +8,7 @@ import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import {
     describeError,
     ErrorDialogActions,
+    launcherConfig,
     openWindow,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
@@ -22,7 +23,6 @@ import {
 } from '../../../ipc/apps';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
-import mainConfig from '../../util/mainConfig';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { EventAction } from '../usageData/usageDataEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
@@ -236,7 +236,7 @@ export const checkEngineAndLaunch =
         const compatibilityWarning = appCompatibilityWarning(app);
         const launchAppWithoutWarning =
             compatibilityWarning == null ||
-            mainConfig().isRunningLauncherFromSource;
+            launcherConfig().isRunningLauncherFromSource;
 
         if (launchAppWithoutWarning) {
             launch(app);
