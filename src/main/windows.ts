@@ -5,6 +5,8 @@
  */
 
 import {
+    isOpenAppOptionsDevicePort,
+    isOpenAppOptionsDeviceSN,
     OpenAppOptions,
     registerLauncherWindowFromMain,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
@@ -118,15 +120,18 @@ const getSizeOptions = (app: LaunchableApp) => {
 
 export const openAppWindow = (
     app: LaunchableApp,
-    openAppOptions: OpenAppOptions = {}
+    openAppOptions?: OpenAppOptions,
+    additionalArguments: string[] = []
 ) => {
-    const { device } = openAppOptions;
-    const additionalArguments: string[] = [];
-    if (device != null) {
-        additionalArguments.push('--deviceSerial', device.serialNumber);
+    const nonCommandLineArguments: string[] = [];
+    if (openAppOptions?.device != null) {
+        const device = openAppOptions.device;
+        if (isOpenAppOptionsDeviceSN(device)) {
+            nonCommandLineArguments.push('--deviceSerial', device.serialNumber);
+        }
 
-        if (device.serialPortPath != null) {
-            additionalArguments.push('--comPort', device.serialPortPath);
+        if (isOpenAppOptionsDevicePort(device)) {
+            nonCommandLineArguments.push('--comPort', device.serialPortPath);
         }
     }
 
@@ -149,6 +154,7 @@ export const openAppWindow = (
             backgroundColor: '#fff',
             ...getSizeOptions(app),
         },
+        nonCommandLineArguments,
         additionalArguments
     );
 
@@ -215,14 +221,15 @@ export const openApp = (app: AppSpec, openAppOptions?: OpenAppOptions) => {
 
 export const openDownloadableAppWindow = (
     appSpec: AppSpec,
-    openAppOptions?: OpenAppOptions
+    openAppOptions?: OpenAppOptions,
+    args?: string[]
 ) => {
     const downloadableApp = getDownloadableApps().apps.find(
         app => app.name === appSpec.name && app.source === appSpec.source
     );
 
     if (downloadableApp != null && isInstalled(downloadableApp)) {
-        openAppWindow(downloadableApp, openAppOptions);
+        openAppWindow(downloadableApp, openAppOptions, args);
     } else {
         throw new Error(
             `Tried to open app ${appSpec.name} from source ${appSpec.source}, but it is not installed`
@@ -232,12 +239,13 @@ export const openDownloadableAppWindow = (
 
 export const openLocalAppWindow = (
     appName: string,
-    openAppOptions?: OpenAppOptions
+    openAppOptions?: OpenAppOptions,
+    args?: string[]
 ) => {
     const localApp = getLocalApps(false).find(app => app.name === appName);
 
     if (localApp) {
-        openAppWindow(localApp, openAppOptions);
+        openAppWindow(localApp, openAppOptions, args);
     } else {
         throw new Error(
             `Tried to open local app ${appName}, but it is not installed`

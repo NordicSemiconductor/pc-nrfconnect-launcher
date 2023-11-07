@@ -92,7 +92,7 @@
     },
     "devDependencies": {
         "@electron/notarize": "^2.1.0",
-        "@nordicsemiconductor/pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#feat/improve-azure-analytics",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#feat/auto-select-device-with-serial-path-only",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
         "@types/chmodr": "1.0.0",
