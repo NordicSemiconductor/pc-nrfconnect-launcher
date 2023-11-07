@@ -93,6 +93,16 @@ if (argv.help) {
     process.exit();
 }
 
+const hasDeviceSerialNumber = argv['--']?.find(a => a === '--deviceSerial');
+const hasDeviceSerialPort = argv['--']?.find(a => a === '--comPort');
+
+if (hasDeviceSerialNumber && hasDeviceSerialPort) {
+    console.log(
+        'Only --deviceSerial or --comPort can be passed when opening an app'
+    );
+    process.exit();
+}
+
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Because of the `'--': true` above, this will always be non-null.
 export const additionalArguments: string[] = argv['--']!;
 
