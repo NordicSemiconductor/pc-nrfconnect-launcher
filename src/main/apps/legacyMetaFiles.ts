@@ -5,8 +5,8 @@
  */
 
 import {
-    LegacyAppPackageJson,
-    parseAppLegacyPackageJson,
+    PackageJsonLegacyApp,
+    parsePackageJsonLegacyApp,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path from 'path';
@@ -66,7 +66,7 @@ export const createNewAppInfo = (
     appName: AppName,
     appsJson: AppsJson,
     updatesJson: UpdatesJson,
-    packageJson: LegacyAppPackageJson | null
+    packageJson: PackageJsonLegacyApp | null
 ) => {
     const appInfo = appsJson[appName];
 
@@ -99,7 +99,7 @@ export const createNewAppInfo = (
 export const createNewAppInfoForWithdrawnApp = (
     source: Source,
     appName: AppName,
-    packageJson: LegacyAppPackageJson,
+    packageJson: PackageJsonLegacyApp,
     oldAppUrl: string
 ) => ({
     name: appName,
@@ -130,7 +130,7 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     const oldAppUrl = `${path.dirname(source.url)}/${withdrawnAppName}`;
     writeWithdrawnJson(source, [`${oldAppUrl}.json`]);
 
-    const packageJsonResult = parseAppLegacyPackageJson(
+    const packageJsonResult = parsePackageJsonLegacyApp(
         readFile(packageJsonFile)
     );
 
@@ -166,7 +166,7 @@ const migrateLegacyMetaFiles = (source: Source) => {
             'package.json'
         );
 
-        const packageJsonResult = parseAppLegacyPackageJson(
+        const packageJsonResult = parsePackageJsonLegacyApp(
             readFile(packageJsonFile)
         );
 

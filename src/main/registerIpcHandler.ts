@@ -6,6 +6,7 @@
 
 import {
     appDetails,
+    launcherConfig,
     openWindow,
     preventSleep,
     safeStorage,
@@ -22,7 +23,6 @@ import path from 'path';
 
 import packageJson from '../../package.json';
 import * as apps from '../ipc/apps';
-import * as config from '../ipc/config';
 import * as desktopShortcut from '../ipc/createDesktopShortcut';
 import * as launcherUpdate from '../ipc/launcherUpdate';
 import * as proxyLogin from '../ipc/proxyLogin';
@@ -61,7 +61,8 @@ const getConfigForRenderer = () => ({
     ),
     isSkipUpdateApps: argv['skip-update-apps'],
     isSkipUpdateLauncher: argv['skip-update-launcher'],
-    version: packageJson.version,
+    launcherVersion: packageJson.version,
+    userDataDir: app.getPath('userData'),
 });
 
 const startPreventingSleep = () =>
@@ -73,7 +74,7 @@ export default () => {
 
     appDetails.forRenderer.registerGetAppDetails(getAppDetails);
 
-    config.forRenderer.registerGetConfig(getConfigForRenderer());
+    launcherConfig.forRenderer.registerGetConfig(getConfigForRenderer());
 
     desktopShortcut.forRenderer.registerCreateDesktopShortcut(
         createDesktopShortcut

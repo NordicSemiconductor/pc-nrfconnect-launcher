@@ -20,5 +20,5 @@ if (userDataDir != null) {
     app.setPath('userData', userDataDir);
 }
 
-// Must be set because it is expected in global.userDataDir at shared/src/utils/appDirs.ts
+// Must be set because it is expected in global.userDataDir at shared/src/utils/appDirs.ts until shared@122
 global.userDataDir = app.getPath('userData');

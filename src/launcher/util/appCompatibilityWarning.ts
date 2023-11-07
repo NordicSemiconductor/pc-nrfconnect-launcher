@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { launcherConfig } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
-import mainConfig from './mainConfig';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
 const undecided = { isDecided: false } as const;
@@ -96,7 +96,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
 
 export default (
     app: LaunchableApp,
-    providedVersionOfEngine = mainConfig().version
+    providedVersionOfEngine = launcherConfig().launcherVersion
 ): undefined | { warning: string; longWarning: string } => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [

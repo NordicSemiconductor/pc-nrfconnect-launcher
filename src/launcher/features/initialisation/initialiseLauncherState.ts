@@ -7,12 +7,12 @@
 import {
     describeError,
     ErrorDialogActions,
+    launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/apps';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
-import mainConfig from '../../util/mainConfig';
 import {
     downloadLatestAppInfos,
     handleAppsWithErrors,
@@ -59,7 +59,7 @@ const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
         getState()
     );
 
-    if (shouldCheckForUpdatesAtStartup && !mainConfig().isSkipUpdateApps) {
+    if (shouldCheckForUpdatesAtStartup && !launcherConfig().isSkipUpdateApps) {
         dispatch(downloadLatestAppInfos());
     }
 };
@@ -71,7 +71,7 @@ const checkForLauncherUpdateAtStartup =
 
         if (
             shouldCheckForUpdatesAtStartup &&
-            !mainConfig().isSkipUpdateLauncher &&
+            !launcherConfig().isSkipUpdateLauncher &&
             process.env.NODE_ENV !== 'development'
         ) {
             await dispatch(checkForLauncherUpdate());

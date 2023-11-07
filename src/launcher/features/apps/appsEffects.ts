@@ -8,25 +8,23 @@ import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import {
     describeError,
     ErrorDialogActions,
+    launcherConfig,
     openWindow,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
 
 import {
     AppSpec,
     AppWithError,
     DownloadableApp,
     inMain as appsInMain,
+    isInstalled,
     LaunchableApp,
 } from '../../../ipc/apps';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
-import mainConfig from '../../util/mainConfig';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
-import {
-    EventAction,
-    sendAppUsageData,
-    sendLauncherUsageData,
-} from '../usageData/usageDataEffects';
+import { EventAction } from '../usageData/usageDataEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
 import {
     addDownloadableApps,
@@ -62,7 +60,7 @@ export const handleAppsWithErrors =
         }
 
         apps.forEach(app => {
-            sendLauncherUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
+            usageData.sendUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
                 ...app,
             });
         });
@@ -161,7 +159,7 @@ const install =
 export const installDownloadableApp =
     (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action:
                 toVersion !== app.latestVersion
                     ? 'Install Explicit Version'
@@ -171,6 +169,7 @@ export const installDownloadableApp =
                 source: app.source,
             },
             toVersion: toVersion ?? app.latestVersion,
+            fromVersion: isInstalled(app) ? app.currentVersion : undefined,
         });
 
         dispatch(installDownloadableAppStarted(app));
@@ -180,13 +179,14 @@ export const installDownloadableApp =
 export const updateDownloadableApp =
     (app: DownloadableApp): AppThunk =>
     dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Update',
             appInfo: {
                 name: app.name,
                 source: app.source,
             },
             toVersion: app.latestVersion,
+            fromVersion: isInstalled(app) ? app.currentVersion : undefined,
         });
 
         dispatch(updateDownloadableAppStarted(app));
@@ -196,7 +196,7 @@ export const updateDownloadableApp =
 export const removeDownloadableApp =
     (app: AppSpec, currentVersion: string): AppThunk =>
     async dispatch => {
-        sendAppUsageData(EventAction.APP_MANAGEMENT, {
+        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
             action: 'Remove',
             appInfo: {
                 name: app.name,
@@ -220,7 +220,7 @@ export const removeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    sendAppUsageData(EventAction.LAUNCH_APP, {
+    usageData.sendUsageData(EventAction.LAUNCH_APP, {
         appInfo: {
             name: app.name,
             source: app.source,
@@ -236,7 +236,7 @@ export const checkEngineAndLaunch =
         const compatibilityWarning = appCompatibilityWarning(app);
         const launchAppWithoutWarning =
             compatibilityWarning == null ||
-            mainConfig().isRunningLauncherFromSource;
+            launcherConfig().isRunningLauncherFromSource;
 
         if (launchAppWithoutWarning) {
             launch(app);
