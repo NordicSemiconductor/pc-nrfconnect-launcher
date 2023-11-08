@@ -66,9 +66,9 @@ export const openInitialWindow = (args = argv) => {
     }
 
     if (startupApp.local) {
-        openLocalAppWindow(startupApp.name);
+        openLocalAppWindow(startupApp.name, undefined, args['--']);
     } else {
-        openDownloadableAppWindow(startupApp);
+        openDownloadableAppWindow(startupApp, undefined, args['--']);
     }
 };
 

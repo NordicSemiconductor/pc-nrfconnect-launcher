@@ -1,19 +1,24 @@
-## Unreleased
+## 4.3.0 - UNRELEASED
 
 ### Added
 
 -   Menu “Window”.
 
-## 4.2.2 - UNRELEASED
-
 ### Fixed
 
 -   Error on windows 'The specific module could not be found (nrf-devcice-lib)'
     by installing x64 version of vc redestibutables with launcher on windows
+-   Opening apps from command line while launcher was already open did not work
+    pass app specific argument to the app
 
 ### Changed
 
 -   Update bundled version of Jlink for windows to 7.88j
+-   Only one of these two cli arguments can be passed to apps when opening using
+    command line terminal to open an app: `--deviceSerial` or `--comPort`. These
+    are used to auto select a device in the device list. Note: Apps need to be
+    updated to support `--comPort`. Not all app must support `--deviceSerial` or
+    `--comPort`
 
 ## 4.2.1 - 2023-09-28
 

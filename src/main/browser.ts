@@ -43,20 +43,21 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
     return splashScreen;
 };
 
-const mergeAdditionalArguments = (nonCommandlineArguments: string[]) => {
-    if (
-        additionalArguments.length === 0 &&
-        nonCommandlineArguments.length === 0
-    ) {
+const mergeAdditionalArguments = (
+    nonCommandlineArguments: string[],
+    appArguments: string[]
+) => {
+    if (appArguments.length === 0 && nonCommandlineArguments.length === 0) {
         return [];
     }
 
-    return ['--', ...nonCommandlineArguments, ...additionalArguments];
+    return ['--', ...nonCommandlineArguments, ...appArguments];
 };
 
 export const createWindow = (
     options: BrowserWindowOptions,
-    nonCommandlineArguments: string[] = []
+    nonCommandlineArguments: string[] = [],
+    args: string[] = additionalArguments
 ) => {
     const mergedOptions: BrowserWindowOptions = {
         minWidth: 308,
@@ -68,7 +69,8 @@ export const createWindow = (
             sandbox: false,
             contextIsolation: false,
             additionalArguments: mergeAdditionalArguments(
-                nonCommandlineArguments
+                nonCommandlineArguments,
+                args
             ),
             backgroundThrottling: false,
         },
