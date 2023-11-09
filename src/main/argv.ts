@@ -103,9 +103,7 @@ const hasDeviceSerialNumber = appArguments().some(a => a === '--deviceSerial');
 const hasDeviceSerialPort = appArguments().some(a => a === '--comPort');
 
 if (hasDeviceSerialNumber && hasDeviceSerialPort) {
-    console.log(
-        'Only --deviceSerial or --comPort can be passed when opening an app'
-    );
+    console.log('--deviceSerial and --comPort cannot be used at the same time');
     process.exit();
 }
 
