@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import {
+    isOpenAppOptionsDeviceSN,
+    OpenAppOptions,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import parseArgs from 'minimist';
 
 import { OFFICIAL } from '../ipc/sources';
@@ -74,9 +78,9 @@ interface CommandLineArguments {
 }
 
 const isBundledApp = !process.defaultApp;
-const args = process.argv.slice(isBundledApp ? 1 : 2);
+const argSlice = process.argv.slice(isBundledApp ? 1 : 2);
 
-const argv = parseArgs<CommandLineArguments>(args, {
+const argv = parseArgs<CommandLineArguments>(argSlice, {
     '--': true,
     boolean: [
         'skip-splash-screen',
@@ -93,8 +97,10 @@ if (argv.help) {
     process.exit();
 }
 
-const hasDeviceSerialNumber = argv['--']?.find(a => a === '--deviceSerial');
-const hasDeviceSerialPort = argv['--']?.find(a => a === '--comPort');
+export const appArguments = (arg = argv) => arg['--'] ?? [];
+
+const hasDeviceSerialNumber = appArguments().some(a => a === '--deviceSerial');
+const hasDeviceSerialPort = appArguments().some(a => a === '--comPort');
 
 if (hasDeviceSerialNumber && hasDeviceSerialPort) {
     console.log(
@@ -102,9 +108,6 @@ if (hasDeviceSerialNumber && hasDeviceSerialPort) {
     );
     process.exit();
 }
-
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Because of the `'--': true` above, this will always be non-null.
-export const additionalArguments: string[] = argv['--']!;
 
 type StartupApp =
     | {
@@ -150,6 +153,41 @@ export const getStartupApp = (arg: typeof argv): StartupApp | undefined => {
             name: officialApp,
         };
     }
+};
+
+const removeArguments = (args: string[], argumentsToRemove: string[]) => {
+    const result = [...args];
+
+    const argumentCountToRemove = 2;
+    argumentsToRemove.forEach(argToRemove => {
+        const index = result.findIndex(arg => arg === argToRemove);
+        if (index !== -1) {
+            result.splice(index, argumentCountToRemove);
+        }
+    });
+
+    return result;
+};
+
+const convertToArguments = (
+    device: { serialNumber: string } | { serialPortPath: string }
+) =>
+    isOpenAppOptionsDeviceSN(device)
+        ? ['--deviceSerial', device.serialNumber]
+        : ['--comPort', device.serialPortPath];
+
+export const mergeAppArguments = (
+    args: string[],
+    openAppOptions?: OpenAppOptions
+) => {
+    if (openAppOptions?.device == null) {
+        return args;
+    }
+
+    return [
+        ...removeArguments(args, ['--deviceSerial', '--comPort']),
+        ...convertToArguments(openAppOptions.device),
+    ];
 };
 
 export default argv;

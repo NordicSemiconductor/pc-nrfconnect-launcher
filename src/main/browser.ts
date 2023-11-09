@@ -11,7 +11,7 @@ import {
     shell,
 } from 'electron';
 
-import { additionalArguments } from './argv';
+import { appArguments } from './argv';
 import { getBundledResourcesDir } from './config';
 
 type BrowserWindowOptions = BrowserWindowConstructorOptions & {
@@ -43,21 +43,9 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
     return splashScreen;
 };
 
-const mergeAdditionalArguments = (
-    nonCommandlineArguments: string[],
-    appArguments: string[]
-) => {
-    if (appArguments.length === 0 && nonCommandlineArguments.length === 0) {
-        return [];
-    }
-
-    return ['--', ...nonCommandlineArguments, ...appArguments];
-};
-
 export const createWindow = (
     options: BrowserWindowOptions,
-    nonCommandlineArguments: string[] = [],
-    args: string[] = additionalArguments
+    args = appArguments()
 ) => {
     const mergedOptions: BrowserWindowOptions = {
         minWidth: 308,
@@ -68,10 +56,7 @@ export const createWindow = (
             nodeIntegration: true,
             sandbox: false,
             contextIsolation: false,
-            additionalArguments: mergeAdditionalArguments(
-                nonCommandlineArguments,
-                args
-            ),
+            additionalArguments: args.length === 0 ? [] : ['--', ...args],
             backgroundThrottling: false,
         },
         ...options,
