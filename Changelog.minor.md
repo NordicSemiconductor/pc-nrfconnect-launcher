@@ -18,8 +18,11 @@ release the new version.
 
 ### Changed
 
--   #893: Parse `package.json` from apps with `zod` and converted build scripts
-    to TypeScript.
+-   #887, #899: Update build pipelines.
+-   #893, #900, #902: Parse `package.json` from apps with `zod` and converted
+    build scripts to TypeScript.
+-   #894, #900, #901, #902: Telemetry events were changed and are now sent to
+    Azure instead of Google.
 
 ## 4.2.1
 
