@@ -5,8 +5,6 @@
  */
 
 import {
-    isOpenAppOptionsDevicePort,
-    isOpenAppOptionsDeviceSN,
     OpenAppOptions,
     registerLauncherWindowFromMain,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
@@ -29,7 +27,7 @@ import {
 import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
-import argv from './argv';
+import argv, { appArguments, mergeAppArguments } from './argv';
 import { createWindow } from './browser';
 import bundledJlinkVersion from './bundledJlinkVersion';
 import { getBundledResourcesDir } from './config';
@@ -118,23 +116,7 @@ const getSizeOptions = (app: LaunchableApp) => {
     };
 };
 
-export const openAppWindow = (
-    app: LaunchableApp,
-    openAppOptions?: OpenAppOptions,
-    additionalArguments: string[] = []
-) => {
-    const nonCommandLineArguments: string[] = [];
-    if (openAppOptions?.device != null) {
-        const device = openAppOptions.device;
-        if (isOpenAppOptionsDeviceSN(device)) {
-            nonCommandLineArguments.push('--deviceSerial', device.serialNumber);
-        }
-
-        if (isOpenAppOptionsDevicePort(device)) {
-            nonCommandLineArguments.push('--comPort', device.serialPortPath);
-        }
-    }
-
+export const openAppWindow = (app: LaunchableApp, args: string[]) => {
     const template = app.html
         ? `file://${join(
               app.installed.path,
@@ -154,8 +136,7 @@ export const openAppWindow = (
             backgroundColor: '#fff',
             ...getSizeOptions(app),
         },
-        nonCommandLineArguments,
-        additionalArguments
+        args
     );
 
     appWindows.push({
@@ -205,31 +186,29 @@ export const openAppWindow = (
         reloading = true;
         appWindow.close();
         appWindow.once('closed', () => {
-            openAppWindow(app);
+            openAppWindow(app, args);
             reloading = false;
         });
     });
 };
 
 export const openApp = (app: AppSpec, openAppOptions?: OpenAppOptions) => {
+    const args = mergeAppArguments(appArguments(), openAppOptions);
+
     if (app.source === LOCAL) {
-        openLocalAppWindow(app.name, openAppOptions);
+        openLocalAppWindow(app.name, args);
     } else {
-        openDownloadableAppWindow(app, openAppOptions);
+        openDownloadableAppWindow(app, args);
     }
 };
 
-export const openDownloadableAppWindow = (
-    appSpec: AppSpec,
-    openAppOptions?: OpenAppOptions,
-    args?: string[]
-) => {
+export const openDownloadableAppWindow = (appSpec: AppSpec, args: string[]) => {
     const downloadableApp = getDownloadableApps().apps.find(
         app => app.name === appSpec.name && app.source === appSpec.source
     );
 
     if (downloadableApp != null && isInstalled(downloadableApp)) {
-        openAppWindow(downloadableApp, openAppOptions, args);
+        openAppWindow(downloadableApp, args);
     } else {
         throw new Error(
             `Tried to open app ${appSpec.name} from source ${appSpec.source}, but it is not installed`
@@ -237,15 +216,11 @@ export const openDownloadableAppWindow = (
     }
 };
 
-export const openLocalAppWindow = (
-    appName: string,
-    openAppOptions?: OpenAppOptions,
-    args?: string[]
-) => {
+export const openLocalAppWindow = (appName: string, args: string[]) => {
     const localApp = getLocalApps(false).find(app => app.name === appName);
 
     if (localApp) {
-        openAppWindow(localApp, openAppOptions, args);
+        openAppWindow(localApp, args);
     } else {
         throw new Error(
             `Tried to open local app ${appName}, but it is not installed`

@@ -20,7 +20,7 @@ import {
     ensureBundledSourceExists,
     initialiseAllSources,
 } from './apps/sources';
-import argv, { getStartupApp } from './argv';
+import argv, { appArguments, getStartupApp } from './argv';
 import {
     getAppsExternalDir,
     getAppsLocalDir,
@@ -66,9 +66,9 @@ export const openInitialWindow = (args = argv) => {
     }
 
     if (startupApp.local) {
-        openLocalAppWindow(startupApp.name, undefined, args['--']);
+        openLocalAppWindow(startupApp.name, appArguments(args));
     } else {
-        openDownloadableAppWindow(startupApp, undefined, args['--']);
+        openDownloadableAppWindow(startupApp, appArguments(args));
     }
 };
 
