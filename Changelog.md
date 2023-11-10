@@ -2,23 +2,24 @@
 
 ### Added
 
--   Menu “Window”.
+-   Menu “Window” accessible from application's system top bar.
 
 ### Fixed
 
--   Error on windows 'The specific module could not be found (nrf-devcice-lib)'
-    by installing x64 version of vc redestibutables with launcher on windows
--   Opening apps from command line while launcher was already open did not work
-    pass app specific argument to the app
+-   Error on Windows
+    `The specific module could not be found (nrf-device-lib-js)` by installing
+    64-bit version of Visual C++ Redistributable.
+-   Opening apps from command line while nRF Connect for Desktop was running
+    wasn't possible.
 
 ### Changed
 
--   Update bundled version of Jlink for windows to 7.88j
--   Only one of these two cli arguments can be passed to apps when opening using
-    command line terminal to open an app: `--deviceSerial` or `--comPort`. These
-    are used to auto select a device in the device list. Note: Apps need to be
-    updated to support `--comPort`. Not all app must support `--deviceSerial` or
-    `--comPort`
+-   Update the bundled version of J-Link for Windows to 7.88j.
+-   Only one of these two CLI arguments can be passed to applications using the
+    command line terminal to open the app: `--deviceSerial` or `--comPort`.
+    These are used to auto-select a device in the device list. Note: Apps need
+    to be updated to support `--comPort` parameters. Not all the apps will
+    support `--deviceSerial` or `--comPort` arguments.
 
 ## 4.2.1 - 2023-09-28
 
