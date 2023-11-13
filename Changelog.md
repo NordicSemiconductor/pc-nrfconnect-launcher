@@ -2,7 +2,7 @@
 
 ### Added
 
--   Menu “Window” accessible from application's system top bar.
+-   The “Window” menu is now accessible from the application's system top bar.
 
 ### Fixed
 
