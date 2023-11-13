@@ -6,19 +6,21 @@
 
 ### Fixed
 
--   Fixed an issue on Windows that would report that
-    `The specific module could not be found (nrf-device-lib-js)`. The issue was fixed by installing
-    the 64-bit version of Visual C++ Redistributable.
--   Fixed opening of the apps from command line while nRF Connect for Desktop was running.
+-   Issue on Windows that would report that
+    `The specific module could not be found (nrf-device-lib-js)`. The issue was
+    fixed by bundling the 64-bit version of Visual C++ Redistributable.
+-   Opening of the apps from command line while nRF Connect for Desktop
+    was running.
 
 ### Changed
 
 -   Updated the bundled version of SEGGER J-Link for Windows to v7.88j.
--   Modified the way in which `--deviceSerial` or `--comPort` CLI arguments are relating to one another. These are used to auto-select a device in the device list. Now, only one of these arguments can be passed to applications using the
-    command line terminal to open the app.
-    
-    -  Note: Apps need to be updated to support `--comPort` parameters. Not all the apps 
-    support `--deviceSerial` and `--comPort` arguments.
+-   Modified the way in which `--deviceSerial` or `--comPort` CLI arguments are
+    relating to one another. These are used to auto-select a device in the
+    device list. Now, only one of these arguments can be passed to applications
+    using the command line terminal to open the app.
+    -   Note: Apps need to be updated to support `--comPort` parameters. Not all
+        the apps support `--deviceSerial` and `--comPort` arguments.
 
 ## 4.2.1 - 2023-09-28
 
