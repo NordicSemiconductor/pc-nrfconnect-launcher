@@ -13,12 +13,12 @@
 
 ### Changed
 
--   Update the bundled version of J-Link for Windows to 7.88j.
--   Only one of these two CLI arguments can be passed to applications using the
-    command line terminal to open the app: `--deviceSerial` or `--comPort`.
-    These are used to auto-select a device in the device list. Note: Apps need
-    to be updated to support `--comPort` parameters. Not all the apps will
-    support `--deviceSerial` or `--comPort` arguments.
+-   Updated the bundled version of SEGGER J-Link for Windows to v7.88j.
+-   Modified the way in which `--deviceSerial` or `--comPort` CLI arguments are relating to one another. These are used to auto-select a device in the device list. Now, only one of these arguments can be passed to applications using the
+    command line terminal to open the app.
+    
+    -  Note: Apps need to be updated to support `--comPort` parameters. Not all the apps 
+    support `--deviceSerial` and `--comPort` arguments.
 
 ## 4.2.1 - 2023-09-28
 
