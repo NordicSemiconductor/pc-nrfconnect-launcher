@@ -6,11 +6,10 @@
 
 ### Fixed
 
--   Error on Windows
-    `The specific module could not be found (nrf-device-lib-js)` by installing
-    64-bit version of Visual C++ Redistributable.
--   Opening apps from command line while nRF Connect for Desktop was running
-    wasn't possible.
+-   Fixed an issue on Windows that would report that
+    `The specific module could not be found (nrf-device-lib-js)`. The issue was fixed by installing
+    the 64-bit version of Visual C++ Redistributable.
+-   Fixed opening of the apps from command line while nRF Connect for Desktop was running.
 
 ### Changed
 
