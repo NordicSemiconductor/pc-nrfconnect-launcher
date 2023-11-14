@@ -26,6 +26,7 @@ const options = {
         'process.env.NODE_ENV': `"${
             process.argv.includes('--prod') ? 'production' : 'development'
         }"`,
+        'process.env.APPLICATIONINSIGHTS_CONFIGURATION_CONTENT': '"{}"', // Needed because of https://github.com/microsoft/ApplicationInsights-node.js/issues/1226
         'process.env.PACKAGE_JSON': JSON.stringify(packageJson),
     },
     minify: process.argv.includes('--prod'),

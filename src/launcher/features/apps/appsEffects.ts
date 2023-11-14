@@ -160,10 +160,7 @@ export const installDownloadableApp =
     (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
         usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
-            action:
-                toVersion !== app.latestVersion
-                    ? 'Install Explicit Version'
-                    : 'Install',
+            action: toVersion == null ? 'Install' : 'Install Explicit Version',
             appInfo: {
                 name: app.name,
                 source: app.source,
