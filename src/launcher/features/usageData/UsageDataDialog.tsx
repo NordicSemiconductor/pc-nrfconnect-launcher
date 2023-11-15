@@ -62,14 +62,13 @@ export default () => {
 
                 <h5>How is this information processed and shared?</h5>
                 <p>
-                    Google Analytics is used for collecting and processing the
+                    Microsoft Azure is used for collecting and processing the
                     data. All data collected is anonymous and no personal data
-                    is ever collected. IP address is set to anonymized when
-                    using Google Analytics.
+                    is ever collected.
                 </p>
                 <p>
                     We do not share the data to any third-party companies or
-                    individuals other than Google Analytics.
+                    individuals other than Microsoft Azure.
                 </p>
             </div>
         </ConfirmationDialog>
