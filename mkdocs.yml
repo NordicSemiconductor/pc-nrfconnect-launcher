@@ -1,0 +1,61 @@
+site_name: nRF Connect for Desktop launcher documentation
+site_url:
+use_directory_urls: false
+
+theme:
+  name: material
+  palette:
+    - scheme: custom-blue
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+    - scheme: custom-blue-dark
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+  # logo: assets/logo.png
+  # favicon: assets/logo.png
+  features:
+    - content.code.annotate
+    - content.tooltips
+    - content.tabs.link
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - toc.follow
+
+
+extra_css:
+  - stylesheets/style.css
+
+copyright:
+  Copyright &copy; 2023
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - meta
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.tabbed
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - toc:
+      permalink: true
+      toc_depth: 4
+
+plugins:
+  - macros
+  - search
+
+
+extra:
+  test: This is a test abbreviation snippet
+
+nav:
+  - Home: README.md

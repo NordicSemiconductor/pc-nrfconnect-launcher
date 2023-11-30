@@ -1,0 +1,10 @@
+# Document tags for Zoomin.
+
+# Tags for all topics:
+mapping_global:
+  - nrfconnect-launcher
+
+# Tags for individual topics:
+#mapping_topics:
+#  - filename.md: ["tag1","tag2"]
+

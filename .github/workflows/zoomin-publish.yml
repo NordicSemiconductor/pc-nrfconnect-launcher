@@ -1,0 +1,34 @@
+name: Publish documentation to Zoomin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-zoomin-bundle:
+    name: Create Zoomin bundle
+    uses: './.github/workflows/zoomin.yml'
+  publish-zoomin-bundle:
+    name: Publish Zoomin bundle
+    needs: create-zoomin-bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get bundle
+        uses: actions/download-artifact@v3
+        with:
+          name: nrfconnect-launcher-docs
+      - name: Upload documentation
+        run: |
+          # trust server
+          mkdir -p ~/.ssh
+          ssh-keyscan upload-v1.zoominsoftware.io >> ~/.ssh/known_hosts
+
+          # prepare key
+          echo "${{ secrets.ZOOMIN_KEY }}" > zoomin_key
+          chmod 600 zoomin_key
+
+          # upload bundle:
+          sftp -v -i zoomin_key nordic@upload-v1.zoominsoftware.io <<EOF
+          cd /docs-be.nordicsemi.com/markdown/incoming
+          put nrfconnect-launcher-docs.zip
+          quit
+          EOF
