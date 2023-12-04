@@ -58,4 +58,4 @@ extra:
   test: This is a test abbreviation snippet
 
 nav:
-  - Home: README.md
+  - Home: index.md

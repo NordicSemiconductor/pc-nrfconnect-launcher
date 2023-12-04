@@ -70,7 +70,7 @@ Nordic Semiconductor are:
 ### Proxy settings
 
 To use behind a proxy, see
-[proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/main/doc/proxy-settings.md).
+[proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/main/doc/non-mkdocs/proxy-settings.md).
 
 ## Developing
 
