@@ -14,6 +14,5 @@ steps:
     APPLE_TEAMID: $(WAYLAND_APPLE_TEAMID)
   displayName: Package release
 - bash: |
-    cp release/*.dmg "$(Build.ArtifactStagingDirectory)"
+    cp release/*.dmg release/*.zip "$(Build.ArtifactStagingDirectory)"
   displayName: 'Copy artifacts'
-
