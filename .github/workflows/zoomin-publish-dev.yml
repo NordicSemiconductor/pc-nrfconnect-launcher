@@ -20,7 +20,7 @@ jobs:
       - name: Get bundle
         uses: actions/download-artifact@v3
         with:
-          name: nrfconnect-launcher-docs
+          name: nrf-connect-desktop
       - name: Upload documentation
         run: |
           # trust server
@@ -34,6 +34,6 @@ jobs:
           # upload bundle:
           sftp -v -i zoomin_key nordic@upload-v1.zoominsoftware.io <<EOF
           cd /nordic-be-dev.zoominsoftware.io/markdown/incoming
-          put nrfconnect-launcher-docs.zip
+          put nrf-connect-desktop.zip
           quit
           EOF
