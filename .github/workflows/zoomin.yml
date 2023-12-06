@@ -1,0 +1,35 @@
+name: Create Zoomin bundle
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+    paths:
+      - '.github/workflows/zoomin.yml'
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  create-zoomin-bundle:
+    name: Create Zoomin bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy zoomin properties
+        run: cp doc/docs/zoomin/* .
+
+      - name: Replace index.md
+        run: cp doc/docs/zoomin/index.md doc/docs/index.md
+
+      - name: Create zip file
+        run: |
+          zip -r nrf-connect-desktop.zip \
+            docs mkdocs.yml custom.properties tags.yml \
+            -x@docs/zoomin/ignore.txt
+
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nrf-connect-desktop
+          path: nrf-connect-desktop.zip
+          retention-days: 7
