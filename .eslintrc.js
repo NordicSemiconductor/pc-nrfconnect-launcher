@@ -4,4 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-module.exports = require('@nordicsemiconductor/pc-nrfconnect-shared/config/eslintrc');
+const defaultEslintrc = require('@nordicsemiconductor/pc-nrfconnect-shared/config/eslintrc');
+
+module.exports = {
+    ...defaultEslintrc,
+    ignorePatterns: [...defaultEslintrc.ignorePatterns, 'doc/docs'],
+};
