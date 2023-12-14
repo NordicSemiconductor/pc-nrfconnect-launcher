@@ -55,13 +55,13 @@ jobs:
         run: |
           if [ "${{ runner.os == 'Windows'}}" ]; then
             echo "$BUILD_FOR_PLATFORM=--windows nsis:x64" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=exe"
+            echo "$FILE_POSTFIX=exe" >> $GITHUB_ENV
           elif [ "${{ runner.os == 'macOS'}}" ]; then
             echo "$BUILD_FOR_PLATFORM=--x64" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=dmg"
+            echo "$FILE_POSTFIX=dmg" >> $GITHUB_ENV
           else
             echo "$BUILD_FOR_PLATFORM=" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=AppImage"
+            echo "$FILE_POSTFIX=AppImage" >> $GITHUB_ENV
           fi
       - name: Run Electron Builder
         run: npx electron-builder -p never $BUILD_FOR_PLATFORM
