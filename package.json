@@ -92,7 +92,7 @@
     },
     "devDependencies": {
         "@electron/notarize": "^2.1.0",
-        "@nordicsemiconductor/pc-nrfconnect-shared": "^132.0.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^142.0.0",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
         "@types/chmodr": "1.0.0",
