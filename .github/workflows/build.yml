@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Run all checks
-        run: npm check
+        run: npm run check
       - name: Run Tests
         run: npm test
       - name: Build for Production
