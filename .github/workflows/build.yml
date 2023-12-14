@@ -9,13 +9,6 @@ on:
         type: string # [Windows, macOS, Linux]
 
 jobs:
-  use_node:
-    runs-on: ["${{ inputs.runner }}"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
   prepare:
     runs-on: ["${{ inputs.runner }}"]
     steps:
@@ -31,6 +24,10 @@ jobs:
   build:
     runs-on: ["${{ inputs.runner }}"]
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
       - name: Install Dependencies
         run: npm ci
       - name: Run all checks
