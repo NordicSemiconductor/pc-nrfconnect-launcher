@@ -1,0 +1,40 @@
+name: Build nRF Connect for Desktop
+
+on:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+
+jobs:
+    build_on_windows:
+        runs-on: windows-latest
+        steps:
+          - name: Build on Windows
+            uses: ./.github/workflows/prepare-build.yml
+            with:
+              runner: windows-latest
+
+    build_on_mac_intel:
+        runs-on: macos-latest
+        steps:
+          - name: Build on Intel macOS
+            uses: ./.github/workflows/prepare-build.yml
+            with:
+              runner: macos-latest
+    build_on_mac_apple_silicon:
+        runs-on: macos-latest-xlarge # [beta] / only available option for m1
+        steps:
+          - name: Build on Apple Sillicon macOS
+            uses: ./.github/workflows/prepare-build.yml
+            with:
+              runner: macos-latest-xlarge
+    build_on_ubuntu:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Build on Linux (Ubuntu)
+            uses: ./.github/workflows/prepare-build.yml
+            with:
+              runner: ubuntu-latest

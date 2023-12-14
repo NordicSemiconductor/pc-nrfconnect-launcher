@@ -1,0 +1,51 @@
+
+name: Prepare nRF Connect for Desktop build
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string # [Windows, macOS, Linux]
+
+jobs:
+  prepare:
+    runs-on: ["${{ inputs.runner }}"]
+    steps:
+      - name: Fix Timezone on Windows
+        if: runner.os == 'Windows'
+        run: echo "This is windows, so timezone will be fixed." && tzutil /s "W. Europe Standard Time"
+      - name: Remove dist/ on macOS ARM
+        if: runner.os == 'macOS' && runner.arch == 'ARM64'
+        run: echo "Running macOS ARM64" && node -v && node -p "process.arch" && rm -rf dist
+      - name: Install libudev on Linux (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install libudev-dev
+  build:
+    runs-on: ["${{ inputs.runner }}"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run all checks
+        run: npm check
+      - name: Run Tests
+        run: npm test
+      - name: Build for Production
+        run: npm run build:prod
+
+
+## Should also create chache-task
+# steps:
+# - template: prepare.yml
+#   parameters: ${{parameters}}
+# - task: Cache@2
+#   inputs:
+#     key: 'npm | "$(Agent.OS)" | package-lock.json'
+#     restoreKeys: |
+#        npm | "$(Agent.OS)"
+#     path: $(npm_config_cache)
+#   displayName: Cache npm
