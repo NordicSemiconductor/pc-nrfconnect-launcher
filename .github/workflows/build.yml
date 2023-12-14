@@ -38,7 +38,7 @@ jobs:
       - name: Build for Production
         run: npm run build:prod
       - name: Upload build files
-        uses: actions/upload-artifacts@v3
+        uses: actions/upload-artifact@v5
         with:
           name: build_${{ inputs.runner }}
           path: dist/
