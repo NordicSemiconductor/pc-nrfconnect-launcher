@@ -9,18 +9,18 @@ on:
         type: string # [Windows, macOS, Linux]
 
 jobs:
-  prepare:
-    runs-on: ["${{ inputs.runner }}"]
-    steps:
-      - name: Fix Timezone on Windows
-        if: runner.os == 'Windows'
-        run: echo "This is windows, so timezone will be fixed." && tzutil /s "W. Europe Standard Time"
-      - name: Remove dist/ on macOS ARM
-        if: runner.os == 'macOS' && runner.arch == 'ARM64'
-        run: echo "Running macOS ARM64" && node -v && node -p "process.arch" && rm -rf dist
-      - name: Install libudev on Linux (Ubuntu)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install libudev-dev
+  # prepare:
+  #   runs-on: ["${{ inputs.runner }}"]
+  #   steps:
+  #     - name: Fix Timezone on Windows
+  #       if: runner.os == 'Windows'
+  #       run: echo "This is windows, so timezone will be fixed." && tzutil /s "W. Europe Standard Time"
+  #     - name: Remove dist/ on macOS ARM
+  #       if: runner.os == 'macOS' && runner.arch == 'ARM64'
+  #       run: echo "Running macOS ARM64" && node -v && node -p "process.arch" && rm -rf dist
+  #     - name: Install libudev on Linux (Ubuntu)
+  #       if: runner.os == 'Linux'
+  #       run: sudo apt-get update && sudo apt-get install libudev-dev
   build:
     runs-on: ["${{ inputs.runner }}"]
     steps:
@@ -44,6 +44,7 @@ jobs:
           path: dist/
   package:
     runs-on: ["${{ inputs.runner }}"]
+    needs: [ build ]
     steps:
       - name: 'Download artifacts "build_${{ inputs.runner }}"'
         uses: actions/download-artifact@v3
