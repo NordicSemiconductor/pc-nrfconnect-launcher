@@ -51,8 +51,26 @@ jobs:
         with:
           name: build_${{ inputs.runner }}
           path: dist/
-      - name: 'Debug: Print Directory'
-        run: ls -lR
+      - name: Set the environment in order to Build for correct platform
+        run: |
+          if [ "${{ runner.os == 'Windows'}}" ]; then
+            echo "$BUILD_FOR_PLATFORM=--windows nsis:x64" >> $GITHUB_ENV
+            echo "$FILE_POSTFIX=exe"
+          elif [ "${{ runner.os == 'macOS'}}" ]; then
+            echo "$BUILD_FOR_PLATFORM=--x64" >> $GITHUB_ENV
+            echo "$FILE_POSTFIX=dmg"
+          else
+            echo "$BUILD_FOR_PLATFORM=" >> $GITHUB_ENV
+            echo "$FILE_POSTFIX=AppImage"
+          fi
+      - name: Run Electron Builder
+        run: npx electron-builder -p never $BUILD_FOR_PLATFORM
+      - name: Publish built artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nRF Connect for Desktop
+          path: "release/*.$FILE_POSTFIX"
+          retention-days: 7
 
         
 
