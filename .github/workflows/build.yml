@@ -1,0 +1,45 @@
+
+name: Prepare nRF Connect for Desktop build
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string # [Windows, macOS, Linux]
+
+jobs:
+  build:
+    runs-on: ["${{ inputs.runner }}"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run all checks
+        run: npm run check
+      - name: Run Tests
+        run: npm test
+      - name: Build for Production
+        run: npm run build:prod
+
+      - name: Run Electron Builder (Windows)
+        if: runner.os == 'Windows'
+        run: npx electron-builder -p never --windows nsis:x64
+      - name: Run Electron Builder (macOS)
+        if: runner.os == 'macOS'
+        run: npx electron-builder -p never --x64
+      - name: Run Electron Builder (Linux)
+        if: runner.os == 'Linux'
+        run: npx electron-builder -p never
+
+      - name: Publish built artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nRF Connect for Desktop
+          path: "release/nrfconnect*"
+          retention-days: 7

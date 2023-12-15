@@ -1,0 +1,34 @@
+name: GitHub Release of nRF Connect for Desktop
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to be used (e.g. v2.1.3)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Make the release a pre-release'
+        required: true
+        default: true
+        type: boolean
+      draft:
+        description: 'Create draft release'
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ['ubuntu-latest']
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+            allowUpdates: false
+            artifacts: 'release/*'
+            commit: ${{ inputs.tag }}
+            prerelease: ${{ inputs.prerelease }}
+            draft: ${{ inputs.draft }}
+
+
