@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nRF Connect for Desktop
-          path: "release/*.$FILE_POSTFIX"
+          path: "release/nrfconnect*"
           retention-days: 7
 
 
