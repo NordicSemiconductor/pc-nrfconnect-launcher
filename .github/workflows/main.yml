@@ -9,19 +9,20 @@ on:
             - main
 
 jobs:
-    build_on_windows:
-      uses: ./.github/workflows/build.yml
-      with:
-        runner: windows-latest
-    build_on_mac_intel:
-      uses: ./.github/workflows/build.yml
-      with:
-          runner: macos-latest
+  build_on_windows:
+    uses: ./.github/workflows/build.yml
+    with:
+      runner: windows-latest
+  build_on_ubuntu:
+    uses: ./.github/workflows/build.yml
+    with:
+      runner: ubuntu-latest
+
+    # build_on_mac_intel:
+    #   uses: ./.github/workflows/build.yml
+    #   with:
+    #       runner: macos-latest
     # build_on_mac_apple_silicon:
     #   uses: ./.github/workflows/build.yml
     #   with:
     #     runner: macos-latest-xlarge
-    build_on_ubuntu:
-      uses: ./.github/workflows/build.yml
-      with:
-        runner: ubuntu-latest
