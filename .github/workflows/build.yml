@@ -37,20 +37,20 @@ jobs:
         run: npm test
       - name: Build for Production
         run: npm run build:prod
-      - name: Upload build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: build_${{ inputs.runner }}
-          path: dist/
-  package:
-    runs-on: ["${{ inputs.runner }}"]
-    needs: [ build ]
-    steps:
-      - name: 'Download artifacts "build_${{ inputs.runner }}"'
-        uses: actions/download-artifact@v3
-        with:
-          name: build_${{ inputs.runner }}
-          path: dist/
+      #      - name: Upload build files
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: build_${{ inputs.runner }}
+      #          path: dist/
+      #  package:
+      #    runs-on: ["${{ inputs.runner }}"]
+      #    needs: [ build ]
+      #    steps:
+      #      - name: 'Download artifacts "build_${{ inputs.runner }}"'
+      #        uses: actions/download-artifact@v3
+      #        with:
+      #          name: build_${{ inputs.runner }}
+      #          path: dist/
       - name: Run Electron Builder (Windows)
         if: runner.os == 'Windows'
         run: npx electron-builder -p never --windows nsis:x64
