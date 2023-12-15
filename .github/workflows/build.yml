@@ -51,20 +51,15 @@ jobs:
         with:
           name: build_${{ inputs.runner }}
           path: dist/
-      - name: Set the environment in order to Build for correct platform
-        run: |
-          if [ "${{ runner.os == 'Windows'}}" ]; then
-            echo "$BUILD_FOR_PLATFORM=--windows nsis:x64" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=exe" >> $GITHUB_ENV
-          elif [ "${{ runner.os == 'macOS'}}" ]; then
-            echo "$BUILD_FOR_PLATFORM=--x64" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=dmg" >> $GITHUB_ENV
-          else
-            echo "$BUILD_FOR_PLATFORM=" >> $GITHUB_ENV
-            echo "$FILE_POSTFIX=AppImage" >> $GITHUB_ENV
-          fi
-      - name: Run Electron Builder
-        run: npx electron-builder -p never $BUILD_FOR_PLATFORM
+      - name: Run Electron Builder (Windows)
+        if: runner.os == 'Windows'
+        run: npx electron-builder -p never --windows nsis:x64
+      - name: Run Electron Builder (macOS)
+        if: runner.os == 'macOS'
+        run: npx electron-builder -p never --x64
+      - name: Run Electron Builder (Linux)
+        if: runner.os == 'Linux'
+        run: npx electron-builder -p never
       - name: Publish built artifact
         uses: actions/upload-artifact@v3
         with:
@@ -72,7 +67,7 @@ jobs:
           path: "release/*.$FILE_POSTFIX"
           retention-days: 7
 
-        
+
 
 
 ## Should also create chache-task
