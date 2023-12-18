@@ -7,6 +7,9 @@ on:
       runner:
         required: true
         type: string # [Windows, macOS, Linux]
+      electronArgument:
+        required: true
+        type: string # e.g. --windows nsis:x64
 
 jobs:
   build:
@@ -29,7 +32,7 @@ jobs:
 
       - name: Run Electron Builder (Windows)
         if: runner.os == 'Windows'
-        run: npx electron-builder -p never --windows nsis:x64
+        run: npx electron-builder -p never ${{ inputs.electronArgument }}
       - name: Run Electron Builder (macOS)
         if: runner.os == 'macOS'
         run: npx electron-builder -p never --x64
