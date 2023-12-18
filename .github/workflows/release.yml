@@ -34,8 +34,7 @@ jobs:
             body_path: ${{ github.workspace }}/Changelog.md
             generate_release_notes: true
             allowUpdates: false
-            files: |
-              nrfconnect*
+            files: release/*
             prerelease: ${{ inputs.prerelease }}
             draft: ${{ inputs.draft }}
 
