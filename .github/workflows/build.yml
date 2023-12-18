@@ -49,7 +49,7 @@ jobs:
       - name: Publish built artifact
         uses: actions/upload-artifact@v3
         with:
-          name: nRF Connect for Desktop
+          name: nrf-connect-for-desktop
           path: |
             release/nrfconnect*
             Changelog.md

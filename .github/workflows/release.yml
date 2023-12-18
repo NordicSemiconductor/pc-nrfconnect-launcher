@@ -21,7 +21,7 @@ jobs:
       - name: Download Artifacts from build
         uses: actions/download-artifact@v4
         with:
-          name: nRF Connect for Desktop
+          name: nrf-connect-for-desktop
       - name: List directory
         run: ls -lR
       - name: File workspace/Changelog.md
