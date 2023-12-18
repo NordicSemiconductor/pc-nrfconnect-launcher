@@ -10,16 +10,17 @@ on:
   workflow_dispatch:
     inputs:
       release:
+        description: Run Release Workflow
         required: true
         default: false
         type: boolean
       prerelease:
-        description: 'Make the release a pre-release'
+        description: Make the release a pre-release
         required: true
         default: true
         type: boolean
       draft:
-        description: 'Create draft release'
+        description: Create draft release
         required: true
         default: true
         type: boolean
