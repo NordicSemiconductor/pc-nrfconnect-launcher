@@ -1,7 +1,7 @@
 name: GitHub Release of nRF Connect for Desktop
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       prerelease:
         description: 'Make the release a pre-release'

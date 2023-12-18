@@ -7,6 +7,23 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      release:
+        required: true
+        default: false
+        type: boolean
+      prerelease:
+        description: 'Make the release a pre-release'
+        required: true
+        default: true
+        type: boolean
+      draft:
+        description: 'Create draft release'
+        required: true
+        default: true
+        type: boolean
+  
 
 jobs:
   build_on_windows:
@@ -20,8 +37,13 @@ jobs:
       runner: ubuntu-latest
       electronArgument: ''
   release:
-    uses: ./.github/workflows/release.yml
+    if: github.event_name == 'workflow_dispatch' && inputs.release
     needs: [ build_on_windows, build_on_ubuntu ]
+    uses: ./.github/workflows/release.yml
+    with:
+      prerelease: ${{ inputs.prerelease }}
+      draft: ${{ inputs.draft }}
+
 
       # build_on_mac_intel:
       #   uses: ./.github/workflows/build.yml
