@@ -13,10 +13,12 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       runner: windows-latest
+      electronArgument: --windows nsis:x64
   build_on_ubuntu:
     uses: ./.github/workflows/build.yml
     with:
       runner: ubuntu-latest
+      electronArgument: empty
 
     # build_on_mac_intel:
     #   uses: ./.github/workflows/build.yml
