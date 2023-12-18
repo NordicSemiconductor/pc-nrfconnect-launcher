@@ -18,13 +18,15 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       runner: ubuntu-latest
-      electronArgument: empty
+      electronArgument: ''
 
     # build_on_mac_intel:
     #   uses: ./.github/workflows/build.yml
     #   with:
     #       runner: macos-latest
+    #       electronArgument: --x64
     # build_on_mac_apple_silicon:
     #   uses: ./.github/workflows/build.yml
     #   with:
     #     runner: macos-latest-xlarge
+          # electronArgument:

@@ -30,15 +30,8 @@ jobs:
       - name: Build for Production
         run: npm run build:prod
 
-      - name: Run Electron Builder (Windows)
-        if: runner.os == 'Windows'
+      - name: Run Electron Builder
         run: npx electron-builder -p never ${{ inputs.electronArgument }}
-      - name: Run Electron Builder (macOS)
-        if: runner.os == 'macOS'
-        run: npx electron-builder -p never --x64
-      - name: Run Electron Builder (Linux)
-        if: runner.os == 'Linux'
-        run: npx electron-builder -p never
 
       - name: Publish built artifact
         uses: actions/upload-artifact@v3
