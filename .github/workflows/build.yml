@@ -1,5 +1,5 @@
 
-name: Prepare nRF Connect for Desktop build
+name: Build
 
 on:
   workflow_call:
@@ -37,5 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nRF Connect for Desktop
-          path: "release/nrfconnect*"
+          path: |
+            release/nrfconnect*
+            Changelog.md
           retention-days: 7

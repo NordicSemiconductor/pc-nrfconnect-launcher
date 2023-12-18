@@ -18,12 +18,24 @@ jobs:
   release:
     runs-on: ['ubuntu-latest']
     steps:
-      - name: Create Release
-        uses: ncipollo/release-action@v1.13.0
+      - name: Download Artifacts from build
+        uses: actions/download-artifact@v4
         with:
+          name: nRF Connect for Desktop
+      - name: List directory
+        run: ls -lR
+      - name: File workspace/Changelog.md
+        run: file ${{ github.workspace }}/Changelog.md
+      - name: File ./Changelog.md
+        run: file ./Changelog.md
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+            body_path: ${{ github.workspace }}/Changelog.md
+            generate_release_notes: true
             allowUpdates: false
-            artifacts: 'release/*'
-            
+            files: |
+              nrfconnect*
             prerelease: ${{ inputs.prerelease }}
             draft: ${{ inputs.draft }}
 

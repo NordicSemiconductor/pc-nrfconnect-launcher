@@ -1,3 +1,10 @@
+## 4.3.1 - Unreleased
+
+### Added
+
+-   Nothing has been added, this is simply a test to see if we can auto generate
+    the changelog using github actions.
+
 ## 4.3.0 - 2023-12-07
 
 ### Added
