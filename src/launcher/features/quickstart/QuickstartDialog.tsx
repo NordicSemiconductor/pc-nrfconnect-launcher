@@ -6,9 +6,14 @@
 
 import React from 'react';
 import {
+    deviceInfo,
     DialogButton,
     GenericDialog,
+    InstalledDownloadableApp,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { parsePackageJsonApp } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import fs from 'fs';
+import path from 'path';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { checkEngineAndLaunch } from '../apps/appsEffects';
@@ -18,6 +23,29 @@ import {
     quickStartInfoWasShown,
 } from '../settings/settingsSlice';
 import { getIsUsageDataDialogVisible } from '../usageData/usageDataSlice';
+
+const DEFAULT_SUPPORTED_DEVICES = ['pca10090', 'pca10153'];
+
+const nameFor = (pcaNumber: string) =>
+    deviceInfo({
+        id: 0,
+        traits: {},
+        devkit: { boardVersion: pcaNumber },
+    }).name;
+
+const packageJson = (quickStartApp?: InstalledDownloadableApp) => {
+    if (quickStartApp?.installed.path == null) {
+        return;
+    }
+
+    const parsed = parsePackageJsonApp(
+        fs.readFileSync(
+            path.join(quickStartApp?.installed.path, 'package.json'),
+            'utf8'
+        )
+    );
+    return parsed.success ? parsed.data : undefined;
+};
 
 export default () => {
     const isQuickStartInfoShownBefore = useLauncherSelector(
@@ -34,6 +62,10 @@ export default () => {
         !isQuickStartInfoShownBefore &&
         !isUsageDataDialogVisible &&
         quickStartApp != null;
+
+    const supportedDevices =
+        packageJson(quickStartApp)?.nrfConnectForDesktop?.supportedDevices ??
+        DEFAULT_SUPPORTED_DEVICES;
 
     return (
         <GenericDialog
@@ -70,7 +102,7 @@ export default () => {
                 Do you have a new development kit? Use the Quick Start app to
                 get up and running as fast as possible.
             </p>
-            <p>Supported kits: nRF9160 DK, nRF9161 DK.</p>
+            <p>Supported kits: {supportedDevices.map(nameFor).join(', ')}.</p>
         </GenericDialog>
     );
 };

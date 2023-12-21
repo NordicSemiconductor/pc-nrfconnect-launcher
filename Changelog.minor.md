@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Changed
+
+-   #914: Show the devices actually supported by the current Quick Start app.
+
+## 4.3.0
+
 ### Fixed
 
 -   #888: Styling of the usage statistics dialog.
