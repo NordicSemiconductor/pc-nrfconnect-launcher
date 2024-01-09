@@ -43,7 +43,7 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             A new version (

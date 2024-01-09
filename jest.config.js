@@ -6,7 +6,6 @@
 
 const sharedConfig =
     require('@nordicsemiconductor/pc-nrfconnect-shared/config/jest.config')([
-        'packageJson',
         'serialport',
     ]);
 

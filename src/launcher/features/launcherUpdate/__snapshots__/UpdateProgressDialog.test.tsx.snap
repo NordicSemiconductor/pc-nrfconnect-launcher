@@ -44,7 +44,7 @@ exports[`UpdateProgressDialog can be without progress, and not cancellable 1`] =
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             Downloading nRF Connect for Desktop 
@@ -101,7 +101,7 @@ exports[`UpdateProgressDialog can have a version, percent downloaded, and be can
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             Downloading nRF Connect for Desktop 
@@ -179,7 +179,7 @@ exports[`UpdateProgressDialog has cancelling disabled after being cancelled 1`] 
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             Downloading nRF Connect for Desktop 
@@ -258,7 +258,7 @@ exports[`UpdateProgressDialog has cancelling disabled when 100 percent complete 
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             Downloading nRF Connect for Desktop 

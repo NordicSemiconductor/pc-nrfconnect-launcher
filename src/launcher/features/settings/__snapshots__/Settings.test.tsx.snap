@@ -209,7 +209,7 @@ exports[`SettingsView should render check for updates completed, with everything
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           All apps are up to date.
         </div>
@@ -438,7 +438,7 @@ exports[`SettingsView should render check for updates completed, with updates av
           </div>
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           One or more updates are available. Go to the apps screen to update.
         </div>
