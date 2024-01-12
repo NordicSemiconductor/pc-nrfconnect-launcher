@@ -6,14 +6,15 @@ on:
     inputs:
       runner:
         required: true
-        type: string # [Windows, macOS, Linux]
+        type: [ string ] # [Windows, macOS, Linux]
       electronArgument:
         required: true
         type: string # e.g. --windows nsis:x64
 
 jobs:
   build:
-    runs-on: ["${{ inputs.runner }}"]
+    # runs-on: ["${{ inputs.runner }}"]
+    runs-on: inputs.runner
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

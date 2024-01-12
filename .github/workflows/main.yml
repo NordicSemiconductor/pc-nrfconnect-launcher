@@ -29,5 +29,5 @@ jobs:
     build_on_mac_apple_silicon:
         uses: ./.github/workflows/build.yml
         with:
-            runner: wl-node-test-17
+            runner: [self-hosted, macOS, ARM64]
             electronArgument: --arm64
