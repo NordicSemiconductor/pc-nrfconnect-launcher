@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "4.3.0",
+    "version": "5.0.0",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -68,7 +68,7 @@
         "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",
-            "artifactName": "${name}-${version}-${os}.${ext}",
+            "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
@@ -91,7 +91,7 @@
         }
     },
     "devDependencies": {
-        "@electron/notarize": "^2.1.0",
+        "@electron/notarize": "^2.2.0",
         "@nordicsemiconductor/pc-nrfconnect-shared": "^151.0.0",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
@@ -104,7 +104,7 @@
         "asar": "3.0.3",
         "cli-truncate": "2.1.0",
         "cross-env": "7.0.3",
-        "electron-builder": "^22.14.13",
+        "electron-builder": "^24.9.1",
         "electron-devtools-installer": "3.2.0",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
@@ -115,7 +115,7 @@
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
-        "electron-updater": "4.3.1",
+        "electron-updater": "4.3.7",
         "fs-extra": "9.0.0",
         "lodash": "^4.17.21",
         "minimist": "^1.2.8",

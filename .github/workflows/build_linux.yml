@@ -1,0 +1,25 @@
+name: Build nRF Connect for Desktop for Linux x64
+
+on:
+    workflow_dispatch:
+        inputs:
+    workflow_call:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Build
+              uses: ./.github/actions/build-action
+
+            - name: Run Electron Builder
+              run: npx electron-builder -p never --x64
+              if: github.event_name != 'pull_request'
+
+            - name: Upload
+              uses: ./.github/actions/publish-action
+              with:
+                  suffix: linux-x64
+              if: github.event_name != 'pull_request'

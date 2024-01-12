@@ -1,0 +1,24 @@
+name: Publish nRF Connect for Desktop
+
+inputs:
+    suffix:
+        type: string
+        required: true
+
+runs:
+    using: 'composite'
+    steps:
+        - name: List files
+          shell: bash
+          run: ls release
+        - name: Publish built artifact
+          uses: actions/upload-artifact@v4
+          with:
+              name: nrfconnect-${{ inputs.suffix}}
+              path: |
+                  release/nrfconnect*.exe
+                  release/nrfconnect*.zip
+                  release/nrfconnect*.dmg
+                  release/nrfconnect*.AppImage
+                  release/latest*
+              retention-days: 7

@@ -1,0 +1,21 @@
+name: Build nRF Connect for Desktop
+
+runs:
+    using: 'composite'
+    steps:
+        - uses: actions/setup-node@v4
+          with:
+              node-version: 18
+              cache: 'npm'
+        - name: Install Dependencies
+          shell: bash
+          run: npm ci
+        - name: Run all checks
+          shell: bash
+          run: npm run check
+        - name: Run Tests
+          shell: bash
+          run: npm test
+        - name: Build for Production
+          shell: bash
+          run: npm run build:prod
