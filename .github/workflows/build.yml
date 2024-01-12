@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     # runs-on: ["${{ inputs.runner }}"]
-    runs-on: inputs.runner
+    runs-on: ${{ fromJSON(inputs.runner) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
