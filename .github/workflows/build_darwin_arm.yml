@@ -13,6 +13,7 @@ on:
 jobs:
   build:
     runs-on: ${{ fromJSON(inputs.runner) }}
+    secrets: inherit
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,13 +36,13 @@ jobs:
         run: echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode > ./nordic_signing_certificate.p12
 
       - name: Run Electron Builder
-        run: npx electron-builder -p never ${{ inputs.electronArgument }}
         env:
           CSC_LINK: ./nordic_signing_certificate.p12
           CSC_KEY_PASSWORD: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12 }}
           APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_ID_PASS }}
           APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
+        run: npx electron-builder -p never ${{ inputs.electronArgument }}
 
       - name: Publish built artifact
         uses: actions/upload-artifact@v3
