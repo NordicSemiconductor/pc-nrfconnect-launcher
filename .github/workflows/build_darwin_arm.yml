@@ -9,7 +9,6 @@ on:
       electronArgument:
         required: true
         type: string # e.g. --windows nsis:x64
-    secrets: inherit
 
 jobs:
   build:

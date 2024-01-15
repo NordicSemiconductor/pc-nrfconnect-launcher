@@ -31,3 +31,4 @@ jobs:
         with:
             runner: "['self-hosted', 'macOS', 'ARM64']"
             electronArgument: --arm64
+        secrets: inherit
