@@ -5,10 +5,10 @@ on:
     inputs:
       runner:
         required: true
-    type: string # [Windows, macOS, Linux]
-    electronArgument:
-      required: true
-      type: string # e.g. --windows nsis:x64
+        type: string # [Windows, macOS, Linux]
+      electronArgument:
+        required: true
+        type: string # e.g. --windows nsis:x64
 
 jobs:
   build:
