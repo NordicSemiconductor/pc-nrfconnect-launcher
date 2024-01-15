@@ -9,11 +9,11 @@ on:
       electronArgument:
         required: true
         type: string # e.g. --windows nsis:x64
+    secrets: inherit
 
 jobs:
   build:
     runs-on: ${{ fromJSON(inputs.runner) }}
-    secrets: inherit
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
