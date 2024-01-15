@@ -27,7 +27,7 @@ jobs:
     #         runner: macos-latest
     #         electronArgument: --x64
     build_on_mac_apple_silicon:
-        uses: ./.github/workflows/build/darwin_arm.yml
+        uses: ./.github/workflows/build_darwin_arm.yml
         with:
             runner: "['self-hosted', 'macOS', 'ARM64']"
             electronArgument: --arm64
