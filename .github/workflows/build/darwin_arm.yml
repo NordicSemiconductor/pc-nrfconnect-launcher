@@ -1,15 +1,14 @@
-
-name: Prepare nRF Connect for Desktop build
+name: Build nRF Connect for Desktop for Darwin ARM64
 
 on:
   workflow_call:
     inputs:
       runner:
         required: true
-        type: string # [Windows, macOS, Linux]
-      electronArgument:
-        required: true
-        type: string # e.g. --windows nsis:x64
+    type: string # [Windows, macOS, Linux]
+    electronArgument:
+      required: true
+      type: string # e.g. --windows nsis:x64
 
 jobs:
   build:
@@ -30,8 +29,19 @@ jobs:
       - name: Build for Production
         run: npm run build:prod
 
+      - name: Fetch certificate file
+        env:
+          NORDIC_SIGNING_CERTIFICATE: ${{ secrets.NORDIC_SIGNING_CERTIFICATE }}
+        run: echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode > ./nordic_signing_certificate.p12
+
       - name: Run Electron Builder
         run: npx electron-builder -p never ${{ inputs.electronArgument }}
+        env:
+          CSC_LINK: ./nordic_signing_certificate.p12
+          CSC_KEY_PASSWORD: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PASSWORD_P12 }}
+          APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_ID_PASS }}
+          APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
 
       - name: Publish built artifact
         uses: actions/upload-artifact@v3
