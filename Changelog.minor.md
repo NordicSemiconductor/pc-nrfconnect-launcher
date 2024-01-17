@@ -18,6 +18,8 @@ release the new version.
 -   #937: No quirky error message when invoking `nrfutil` fails in strange ways
     (from from
     [shared v150](https://github.com/NordicSemiconductor/pc-nrfconnect-shared/releases/tag/v150)).
+-   #937: No error message on shutdown when e.g. an ongoing download still wants
+    to send IPC messages.
 
 ## 4.3.0
 
