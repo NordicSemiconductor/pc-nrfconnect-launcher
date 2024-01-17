@@ -15,6 +15,9 @@ release the new version.
 -   #935: Updated and corrected dialog styles from
     [shared v146](https://github.com/NordicSemiconductor/pc-nrfconnect-shared/releases/tag/v146).
 -   #935: Better message when installing downloadable apps fails.
+-   #937: No quirky error message when invoking `nrfutil` fails in strange ways
+    (from from
+    [shared v150](https://github.com/NordicSemiconductor/pc-nrfconnect-shared/releases/tag/v150)).
 
 ## 4.3.0
 
