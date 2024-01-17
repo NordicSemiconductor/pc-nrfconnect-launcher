@@ -40,7 +40,7 @@ exports[`ProxyErrorDialog is displayed after users canceled the login 1`] = `
           />
         </div>
         <div
-          class="modal-body"
+          class="tw-select-text modal-body"
         >
           <p>
             It appears that you are having problems authenticating with a proxy server. This will prevent you from using certain features of nRF Connect for Desktop, such as installing downloadable apps or checking for updates.

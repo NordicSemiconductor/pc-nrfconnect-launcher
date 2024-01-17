@@ -21,6 +21,7 @@ import {
     isInstalled,
     LaunchableApp,
 } from '../../../ipc/apps';
+import { cleanIpcErrorMessage } from '../../../ipc/error';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
@@ -149,7 +150,9 @@ const install =
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    `Unable to install: ${(error as Error).message}`
+                    `Unable to install downloadable app.`,
+                    undefined,
+                    cleanIpcErrorMessage(describeError(error))
                 )
             );
         }

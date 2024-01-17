@@ -12,6 +12,9 @@ release the new version.
 ### Changed
 
 -   #914: Show the devices actually supported by the current Quick Start app.
+-   #935: Updated and corrected dialog styles from
+    [shared v146](https://github.com/NordicSemiconductor/pc-nrfconnect-shared/releases/tag/v146).
+-   #935: Better message when installing downloadable apps fails.
 
 ## 4.3.0
 
