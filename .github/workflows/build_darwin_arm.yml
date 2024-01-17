@@ -31,8 +31,8 @@ jobs:
 
       - name: Fetch certificate file
         env:
-          NORDIC_SIGNING_CERTIFICATE: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
-        run: echo "$NORDIC_SIGNING_CERTIFICATE_PFX" | base64 --decode > ./nordic_signing_certificate.p12
+          NORDIC_SIGNING_CERTIFICATE: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12 }}
+        run: echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode > ./nordic_signing_certificate.p12
 
       - name: Run Electron Builder
         env:
