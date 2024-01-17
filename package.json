@@ -91,7 +91,7 @@
         }
     },
     "devDependencies": {
-        "@electron/notarize": "^2.1.0",
+        "@electron/notarize": "^2.2.0",
         "@nordicsemiconductor/pc-nrfconnect-shared": "^132.0.0",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
@@ -104,7 +104,7 @@
         "asar": "3.0.3",
         "cli-truncate": "2.1.0",
         "cross-env": "7.0.3",
-        "electron-builder": "^22.14.13",
+        "electron-builder": "^24.9.1",
         "electron-devtools-installer": "3.2.0",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"

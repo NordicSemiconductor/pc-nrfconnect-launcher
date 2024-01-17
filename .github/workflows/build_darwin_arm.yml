@@ -37,7 +37,8 @@ jobs:
       - name: Run Electron Builder
         env:
           CSC_LINK: ./nordic_signing_certificate.p12
-          CSC_KEY_PASSWORD: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
+          # CSC_KEY_PASSWORD: ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
+          CSC_KEY_PASSWORD:
           APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
           APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
