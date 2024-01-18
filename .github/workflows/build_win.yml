@@ -30,6 +30,7 @@ jobs:
               run: npm run build:prod
 
             - name: Fetch certificate file
+              shell: bash
               env:
                   NORDIC_SIGNING_CERTIFICATE:
                       ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
