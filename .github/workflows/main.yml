@@ -24,7 +24,7 @@ jobs:
     build_on_mac_intel:
         uses: ./.github/workflows/build_darwin.yml
         with:
-            runner: "['macos-latest']""
+            runner: "['macos-latest']"
             electronArgument: --x64
         secrets: inherit
     build_on_mac_apple_silicon:
