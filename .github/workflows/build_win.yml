@@ -32,24 +32,21 @@ jobs:
             - name: Fetch certificate file
               env:
                   NORDIC_SIGNING_CERTIFICATE:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12 }}
+                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
               run:
                   echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
-                  ./nordic_signing_certificate.p12
+                  ./nordic_signing_certificate.pfx
 
             - name: Run Electron Builder
               env:
-                  CSC_LINK: ./nordic_signing_certificate.p12
-                  CSC_KEY_PASSWORD: ''
-                  APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
-                  APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
-                  APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
+                  CSC_LINK: ./nordic_signing_certificate.pfx
+                  CSC_KEY_PASSWORD:
+                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
               run: npx electron-builder -p never ${{ inputs.electronArgument }}
 
             - name: Publish built artifact
               uses: actions/upload-artifact@v3
               with:
-                  name:
-                      nRF Connect for Desktop darwin${{inputs.electronArgument}}
+                  name: nRF Connect for Desktop win32
                   path: 'release/nrfconnect*'
                   retention-days: 7
