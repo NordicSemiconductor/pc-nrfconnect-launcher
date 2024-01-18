@@ -21,7 +21,7 @@ jobs:
     #     runner: ubuntu-latest
     #     electronArgument: ''
 
-      build_on_mac_intel:
+    build_on_mac_intel:
         uses: ./.github/workflows/build_darwin.yml
         with:
             runner: macos-latest
