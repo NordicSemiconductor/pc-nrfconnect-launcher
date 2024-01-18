@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop for Darwin ARM64
+name: Prepare nRF Connect for Desktop build
 
 on:
     workflow_call:
@@ -29,27 +29,12 @@ jobs:
             - name: Build for Production
               run: npm run build:prod
 
-            - name: Fetch certificate file
-              env:
-                  NORDIC_SIGNING_CERTIFICATE:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12 }}
-              run:
-                  echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
-                  ./nordic_signing_certificate.p12
-
             - name: Run Electron Builder
-              env:
-                  CSC_LINK: ./nordic_signing_certificate.p12
-                  CSC_KEY_PASSWORD: ''
-                  APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
-                  APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
-                  APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
               run: npx electron-builder -p never ${{ inputs.electronArgument }}
 
             - name: Publish built artifact
               uses: actions/upload-artifact@v3
               with:
-                  name:
-                      nRF Connect for Desktop darwin${{inputs.electronArgument}}
+                  name: nRF Connect for Desktop linux
                   path: 'release/nrfconnect*'
                   retention-days: 7
