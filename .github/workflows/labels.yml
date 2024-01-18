@@ -1,0 +1,20 @@
+name: Check labels
+
+on:
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    check_labels:
+        runs-on: ubuntu-latest
+        steps:
+          - name: 'Required "doc_required" or "doc_not_required" label'
+            if: >
+                contains(github.event.pull_request.labels.*.name, 'doc_required') == false &&
+                contains(github.event.pull_request.labels.*.name, 'doc_not_required') == false
+            run: exit 1
+
+
+
+
