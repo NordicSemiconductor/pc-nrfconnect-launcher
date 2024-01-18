@@ -7,6 +7,7 @@
 import {
     OpenAppOptions,
     registerLauncherWindowFromMain,
+    removeLauncherWindowFromMain,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import {
     app as electronApp,
@@ -64,6 +65,8 @@ const createLauncherWindow = () => {
         if (appWindows.length > 0) {
             event.preventDefault();
             window.hide();
+        } else {
+            removeLauncherWindowFromMain();
         }
     });
 
