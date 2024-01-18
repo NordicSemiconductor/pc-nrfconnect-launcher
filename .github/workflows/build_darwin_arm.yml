@@ -12,7 +12,8 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ fromJSON(inputs.runner) }}
+    # runs-on: ${{ fromJSON(inputs.runner) }}
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
