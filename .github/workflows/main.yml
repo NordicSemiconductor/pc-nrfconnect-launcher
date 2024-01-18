@@ -21,15 +21,15 @@ jobs:
     #     runner: ubuntu-latest
     #     electronArgument: ''
 
-    #   build_on_mac_intel:
-    #     uses: ./.github/workflows/build.yml
-    #     with:
-    #         runner: macos-latest
-    #         electronArgument: --x64
-    build_on_mac_apple_silicon:
-        uses: ./.github/workflows/build_darwin_arm.yml
+      build_on_mac_intel:
+        uses: ./.github/workflows/build_darwin.yml
         with:
-            # runner: "['self-hosted', 'macOS', 'ARM64']"
-            runner: macos-13-xlarge
+            runner: macos-latest
+            electronArgument: --x64
+        secrets: inherit
+    build_on_mac_apple_silicon:
+        uses: ./.github/workflows/build_darwin.yml
+        with:
+            runner: "['self-hosted', 'macOS', 'ARM64']"
             electronArgument: --arm64
         secrets: inherit
