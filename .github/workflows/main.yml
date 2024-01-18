@@ -29,6 +29,7 @@ jobs:
     build_on_mac_apple_silicon:
         uses: ./.github/workflows/build_darwin_arm.yml
         with:
-            runner: "['self-hosted', 'macOS', 'ARM64']"
+            # runner: "['self-hosted', 'macOS', 'ARM64']"
+            runner: macos-13-xlarge
             electronArgument: --arm64
         secrets: inherit
