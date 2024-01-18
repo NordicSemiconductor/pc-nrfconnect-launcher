@@ -11,8 +11,8 @@ jobs:
         steps:
           - name: 'Required "doc_required" or "doc_not_required" label'
             if: >
-                contains(github.event.pull_request.labels.*.name, 'doc_required') == false &&
-                contains(github.event.pull_request.labels.*.name, 'doc_not_required') == false
+                contains(github.event.pull_request.labels.*.name, 'doc required') == false &&
+                contains(github.event.pull_request.labels.*.name, 'doc not required') == false
             run: exit 1
 
 
