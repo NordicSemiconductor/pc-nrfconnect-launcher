@@ -1,4 +1,4 @@
-name: Prepare nRF Connect for Desktop build
+name: Build nRF Connect for Desktop
 
 runs:
     using: 'composite'

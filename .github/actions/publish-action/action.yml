@@ -1,0 +1,16 @@
+name: Publish nRF Connect for Desktop
+
+inputs:
+    suffix:
+        type: string
+        required: true
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Publish built artifact
+          uses: actions/upload-artifact@v3
+          with:
+              name: nRF Connect for Desktop ${{ inputs. suffix}}
+              path: 'release/nrfconnect*'
+              retention-days: 7

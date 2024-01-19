@@ -1,30 +1,27 @@
-name: Prepare nRF Connect for Desktop build
+name: Build nRF Connect for Desktop on Linux
 
 on:
-    workflow_call:
-        inputs:
-            runner:
-                required: true
-                type: string # [Windows, macOS, Linux]
-            electronArgument:
-                required: true
-                type: string # e.g. --windows nsis:x64
+    workflow_dispatch:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
 
 jobs:
     build:
-        runs-on: ${{ fromJSON(inputs.runner) }}
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+
             - name: Build
               uses: ./.github/actions/build-action
 
             - name: Run Electron Builder
-              run: npx electron-builder -p never ${{ inputs.electronArgument }}
+              run: npx electron-builder -p never --x64
 
-            - name: Publish built artifact
-              uses: actions/upload-artifact@v3
+            - name: Upload
+              uses: ./.github/actions/publish-action
               with:
-                  name: nRF Connect for Desktop linux
-                  path: 'release/nrfconnect*'
-                  retention-days: 7
-                  compression-level: 0
+                  suffix: for Linux x64
