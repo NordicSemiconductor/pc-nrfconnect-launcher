@@ -1,0 +1,22 @@
+name: Build nRF Connect for Desktop
+
+on:
+    workflow_dispatch:
+        inputs:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+            - test/github-actions
+
+jobs:
+    build_on_windows:
+        uses: ./.github/workflows/build_win.yml
+    build_on_linux:
+        uses: ./.github/workflows/build_linux.yml
+    build_on_darwin_x64:
+        uses: ./.github/workflows/build_darwin_x64.yml
+    build_on_darwin_arm64:
+        uses: ./.github/workflows/build_darwin_arm64.yml

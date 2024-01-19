@@ -3,13 +3,8 @@ name: Build nRF Connect for Desktop for macOS arm64
 on:
     workflow_dispatch:
         inputs:
-    pull_request:
-        branches:
-            - main
-    push:
-        branches:
-            - main
-            - test/github-actions
+    workflow_call:
+        inputs:
 
 jobs:
     build:
