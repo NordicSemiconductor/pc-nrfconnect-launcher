@@ -1,12 +1,14 @@
 name: Prepare nRF Connect for Desktop build
 
-inputs:
-    runner:
-        required: true
-        type: string # [Windows, macOS, Linux]
-    electronArgument:
-        required: true
-        type: string # e.g. --windows nsis:x64
+on:
+    workflow_call:
+        inputs:
+            runner:
+                required: true
+                type: string # [Windows, macOS, Linux]
+            electronArgument:
+                required: true
+                type: string # e.g. --windows nsis:x64
 
 jobs:
     build:
