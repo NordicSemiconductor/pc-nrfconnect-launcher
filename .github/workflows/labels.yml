@@ -2,6 +2,10 @@ name: Check labels
 
 on:
     pull_request:
+        types:
+            - opened
+            - labeled
+            - unlabeled
         branches:
             - main
 
