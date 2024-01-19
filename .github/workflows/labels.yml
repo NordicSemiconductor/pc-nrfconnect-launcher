@@ -13,7 +13,7 @@ jobs:
     check_labels:
         runs-on: ubuntu-latest
         steps:
-          - name: 'Required "doc_required" or "doc_not_required" label'
+          - name: 'Required "doc required" or "doc not required" label'
             if: >
                 contains(github.event.pull_request.labels.*.name, 'doc required') == false &&
                 contains(github.event.pull_request.labels.*.name, 'doc not required') == false
