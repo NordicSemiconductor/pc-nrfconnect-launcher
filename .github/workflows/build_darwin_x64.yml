@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop for Darwin ARM64
+name: Build nRF Connect for Desktop for Darwin x64
 
 on:
     workflow_dispatch:
@@ -12,29 +12,30 @@ on:
 
 jobs:
     build:
-        runs-on: windows-latest
+        runs-on: macos-latest
         steps:
             - uses: actions/checkout@v4
             - name: Build
               uses: ./.github/actions/build-action
 
             - name: Fetch certificate file
-              shell: bash
               env:
                   NORDIC_SIGNING_CERTIFICATE:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
+                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12 }}
               run:
                   echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
-                  ./nordic_signing_certificate.pfx
+                  ./nordic_signing_certificate.p12
 
             - name: Run Electron Builder
               env:
-                  CSC_LINK: ./nordic_signing_certificate.pfx
-                  CSC_KEY_PASSWORD:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
-              run: npx electron-builder -p never --windows nsis:x64
+                  CSC_LINK: ./nordic_signing_certificate.p12
+                  CSC_KEY_PASSWORD: ''
+                  APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
+                  APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
+                  APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
+              run: npx electron-builder -p never --x64
 
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
-                  suffix: for Windows x64
+                  suffix: for macOS x64
