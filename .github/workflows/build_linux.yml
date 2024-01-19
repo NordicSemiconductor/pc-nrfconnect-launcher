@@ -15,7 +15,7 @@ jobs:
         runs-on: ${{ fromJSON(inputs.runner) }}
         steps:
             - name: Build
-              uses: './.github/build/build.yml'
+              uses: ./.github/workflows/build.yml
 
             - name: Run Electron Builder
               run: npx electron-builder -p never ${{ inputs.electronArgument }}
