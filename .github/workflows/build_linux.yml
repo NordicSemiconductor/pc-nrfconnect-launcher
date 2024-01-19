@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop on Linux
+name: Build nRF Connect for Desktop for Linux x64
 
 on:
     workflow_dispatch:

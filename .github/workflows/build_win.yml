@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop for Darwin ARM64
+name: Build nRF Connect for Desktop for Windows x64
 
 on:
     workflow_dispatch:
@@ -19,6 +19,7 @@ jobs:
               uses: ./.github/actions/build-action
 
             - name: Fetch certificate file
+              if: github.event_name != 'pull_request'
               shell: bash
               env:
                   NORDIC_SIGNING_CERTIFICATE:
@@ -26,6 +27,7 @@ jobs:
               run:
                   echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
                   ./nordic_signing_certificate.pfx
+              if: github.event_name != 'pull_request'
 
             - name: Run Electron Builder
               env:
@@ -33,6 +35,7 @@ jobs:
                   CSC_KEY_PASSWORD:
                       ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
               run: npx electron-builder -p never --windows nsis:x64
+              if: github.event_name != 'pull_request'
 
             - name: Upload
               uses: ./.github/actions/publish-action

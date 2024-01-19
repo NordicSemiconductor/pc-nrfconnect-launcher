@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop for Darwin ARM64
+name: Build nRF Connect for Desktop for macOS arm64
 
 on:
     workflow_dispatch:
@@ -25,6 +25,7 @@ jobs:
               run:
                   echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
                   ./nordic_signing_certificate.p12
+              if: github.event_name != 'pull_request'
 
             - name: Run Electron Builder
               env:
@@ -34,6 +35,7 @@ jobs:
                   APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
               run: npx electron-builder -p never --arm64
+              if: github.event_name != 'pull_request'
 
             - name: Upload
               uses: ./.github/actions/publish-action
