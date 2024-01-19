@@ -19,7 +19,6 @@ jobs:
               uses: ./.github/actions/build-action
 
             - name: Fetch certificate file
-              if: github.event_name != 'pull_request'
               shell: bash
               env:
                   NORDIC_SIGNING_CERTIFICATE:
