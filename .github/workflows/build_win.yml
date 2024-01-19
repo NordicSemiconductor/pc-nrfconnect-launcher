@@ -2,6 +2,7 @@ name: Build nRF Connect for Desktop for Windows x64
 
 on:
     workflow_dispatch:
+        inputs:
     pull_request:
         branches:
             - main
