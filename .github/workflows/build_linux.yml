@@ -14,14 +14,8 @@ jobs:
     build:
         runs-on: ${{ fromJSON(inputs.runner) }}
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 18
-                  cache: 'npm'
-
             - name: Build
-              uses: ./.github/workflows/build.yml
+              uses: ./.github/actions/build-action
 
             - name: Run Electron Builder
               run: npx electron-builder -p never ${{ inputs.electronArgument }}
