@@ -3,7 +3,7 @@ name: Release to GitHub
 on:
     workflow_dispatch:
         inputs:
-            run-id:
+            run_id:
                 description: 'The workflow id where the artifacts were uploaded'
                 required: true
                 type: string
@@ -26,12 +26,12 @@ jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+            # - name: Checkout
+            #   uses: actions/checkout@v3
             - name: Download artifacts
-              uses: actions/download-artifact@v4
+              uses: dawidd6/action-download-artifact@v3
               with:
-                  run-id: ${{ inputs.run-id }}
+                  run_id: ${{ inputs.run_id }}
                   merge-multiple: true
             - name: List files
               run: ls -R
