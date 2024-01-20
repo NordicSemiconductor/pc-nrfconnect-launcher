@@ -31,8 +31,10 @@ jobs:
             - name: Download artifacts
               uses: dawidd6/action-download-artifact@v3
               with:
+                  github_token: ${{secrets.WAYLAND_GITHU_TOKEN_DEPLOYMENT}}
                   run_id: ${{ inputs.run_id }}
                   merge-multiple: true
+
             - name: List files
               run: ls -R
             # - name: Create Release
