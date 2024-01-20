@@ -26,10 +26,15 @@ jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
-            - uses: actions/download-artifact@v4
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Download artifacts
+              uses: actions/download-artifact@v4
               with:
                   run-id: ${{ inputs.run-id }}
                   merge-multiple: true
+            - name: List files
+              run: ls -R
             # - name: Create Release
             # uses: ncipollo/release-action@v1.13.0
             # with:
