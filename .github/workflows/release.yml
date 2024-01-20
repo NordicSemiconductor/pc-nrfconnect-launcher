@@ -38,6 +38,6 @@ jobs:
               with:
                   allowUpdates: false
                   artifacts: '**/*.AppImage,**/*.exe,**/.dmg,**/.zip'
-                  commit: ${{ inputs.tag }}
-                  prerelease: ${{ inputs.prerelease }}
+                  # commit: ${{ inputs.tag }}
+                  # prerelease: ${{ inputs.prerelease }}
                   draft: ${{ inputs.draft }}
