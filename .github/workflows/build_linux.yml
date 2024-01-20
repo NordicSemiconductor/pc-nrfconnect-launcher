@@ -4,7 +4,6 @@ on:
     workflow_dispatch:
         inputs:
     workflow_call:
-        inputs:
 
 jobs:
     build:
