@@ -3,6 +3,10 @@ name: Release to GitHub
 on:
     workflow_dispatch:
         inputs:
+            run-id:
+                description: 'The workflow id where the artifacts were uploaded'
+                required: true
+                type: string
             tag:
                 description: 'Tag to be used (e.g. v8.8.8)'
                 required: true
@@ -22,6 +26,10 @@ jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
+            - uses: actions/download-artifact@v4
+              with:
+                  run-id: ${{ inputs.run-id }}
+                  merge-multiple: true
             - name: Create Release
               uses: ncipollo/release-action@v1.13.0
               with:
