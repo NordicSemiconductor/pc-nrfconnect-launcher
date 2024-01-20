@@ -31,10 +31,10 @@ jobs:
                   run-id: ${{ inputs.run-id }}
                   merge-multiple: true
             - name: Create Release
-              uses: ncipollo/release-action@v1.13.0
-              with:
-                  allowUpdates: false
-                  artifacts: 'release/*'
-                  commit: ${{ inputs.tag }}
-                  prerelease: ${{ inputs.prerelease }}
-                  draft: ${{ inputs.draft }}
+              # uses: ncipollo/release-action@v1.13.0
+              # with:
+              #     allowUpdates: false
+              #     artifacts: 'release/*'
+              #     commit: ${{ inputs.tag }}
+              #     prerelease: ${{ inputs.prerelease }}
+              #     draft: ${{ inputs.draft }}
