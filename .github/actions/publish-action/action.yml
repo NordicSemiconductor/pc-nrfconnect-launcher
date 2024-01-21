@@ -11,7 +11,7 @@ runs:
         - name: Publish built artifact
           uses: actions/upload-artifact@v3
           with:
-              name: nRF Connect for Desktop ${{ inputs. suffix}}
+              name: nrfconnect-${{ inputs. suffix}}
               path: 'release/nrfconnect*'
               retention-days: 7
           if: github.event_name != 'pull_request'

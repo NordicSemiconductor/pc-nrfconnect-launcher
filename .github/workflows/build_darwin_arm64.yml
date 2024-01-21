@@ -35,4 +35,4 @@ jobs:
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
-                  suffix: for macOS arm64
+                  suffix: macOS-arm64

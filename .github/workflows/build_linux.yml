@@ -20,4 +20,4 @@ jobs:
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
-                  suffix: for Linux x64
+                  suffix: linux-x64

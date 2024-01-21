@@ -34,4 +34,4 @@ jobs:
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
-                  suffix: for Windows x64
+                  suffix: windows-x64
