@@ -37,7 +37,7 @@ jobs:
               uses: ncipollo/release-action@v1.13.0
               with:
                   allowUpdates: false
-                  artifacts: '**/*.AppImage,**/*.exe,**/.dmg,**/.zip'
+                  artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip'
                   # commit: ${{ inputs.tag }}
                   # prerelease: ${{ inputs.prerelease }}
                   draft: ${{ inputs.draft }}
