@@ -9,6 +9,7 @@ runs:
     using: 'composite'
     steps:
         - name: List files
+          shell: bash
           run: ls release
         - name: Publish built artifact
           uses: actions/upload-artifact@v3
