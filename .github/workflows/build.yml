@@ -18,9 +18,12 @@ jobs:
     build_on_linux:
         uses: ./.github/workflows/build_linux.yml
         secrets: inherit
-    build_on_darwin_x64:
-        uses: ./.github/workflows/build_darwin_x64.yml
-        secrets: inherit
-    build_on_darwin_arm64:
-        uses: ./.github/workflows/build_darwin_arm64.yml
+    # build_on_darwin_x64:
+    #     uses: ./.github/workflows/build_darwin_x64.yml
+    #     secrets: inherit
+    # build_on_darwin_arm64:
+    #     uses: ./.github/workflows/build_darwin_arm64.yml
+    #     secrets: inherit
+    build_on_darwin:
+        uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
