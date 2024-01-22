@@ -16,7 +16,10 @@ runs:
           with:
               name: nrfconnect-${{ inputs.suffix}}
               path: |
-                  release/nrfconnect*
+                  release/nrfconnect*.exe
+                  release/nrfconnect*.zip
+                  release/nrfconnect*.dmg
+                  release/nrfconnect*.AppImage
                   release/latest*
               retention-days: 7
           if: github.event_name != 'pull_request'
