@@ -12,6 +12,6 @@ runs:
           uses: actions/upload-artifact@v3
           with:
               name: nrfconnect-${{ inputs. suffix}}
-              path: 'release/nrfconnect*'
+              path: 'release/nrfconnect*,release/latest*'
               retention-days: 7
           if: github.event_name != 'pull_request'

@@ -1,28 +1,16 @@
 name: Release to GitHub
 
 on:
-    push:
-        tags: '*'
     workflow_dispatch:
         inputs:
             run_id:
                 description: 'The workflow id where the artifacts were uploaded'
                 required: true
                 type: string
-            # tag:
-            #     description: 'Tag to be used (e.g. v8.8.8)'
-            #     required: true
-            #     type: string
-            # prerelease:
-            #     description: 'Make the release a pre-release'
-            #     required: true
-            #     default: true
-            #     type: boolean
-            draft:
-                description: 'Create draft release'
+            tag:
+                description: 'Tag to be used (e.g. v8.8.8)'
                 required: true
-                default: true
-                type: boolean
+                type: string
 
 jobs:
     release:
@@ -41,6 +29,5 @@ jobs:
               with:
                   allowUpdates: false
                   artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip'
-                  tag: 'v5.0.0'
-                  # prerelease: ${{ inputs.prerelease }}
-                  draft: ${{ inputs.draft }}
+                  tag: ${{ inputs.tag }}
+                  draft: true

@@ -68,7 +68,7 @@
         "afterSign": "build/notarize.js",
         "mac": {
             "category": "public.app-category.developer-tools",
-            "artifactName": "${name}-${version}-${os}.${ext}",
+            "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
             "hardenedRuntime": true,
             "gatekeeperAssess": false,
             "entitlements": "build/entitlements.mac.plist",
