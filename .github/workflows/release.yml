@@ -25,6 +25,7 @@ jobs:
             - name: Merge latest-mac.yml
               run: |
                   ls -R
+                  rm package.json package-lock.json
                   mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
                   mv scripts/mergeLatestYmls.js nrfconnect-macOS-arm64/
                   cd nrfconnect-macOS-arm64

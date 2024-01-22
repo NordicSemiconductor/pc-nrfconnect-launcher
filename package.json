@@ -67,13 +67,6 @@
         "beforePack": "build/getBundledResources.js",
         "afterSign": "build/notarize.js",
         "mac": {
-            "target": {
-                "target": "default",
-                "arch": [
-                    "x64",
-                    "arm64"
-                ]
-            },
             "category": "public.app-category.developer-tools",
             "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
             "hardenedRuntime": true,
