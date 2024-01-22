@@ -32,6 +32,11 @@ jobs:
               run: npx electron-builder -p never --arm64
               if: github.event_name != 'pull_request'
 
+            - name: Rename latest-mac.yml
+              run: |
+                  cd release
+                  mv latest-mac.yml latest-mac-arm64.yml
+
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
