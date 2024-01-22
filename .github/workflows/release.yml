@@ -7,15 +7,15 @@ on:
                 description: 'The workflow id where the artifacts were uploaded'
                 required: true
                 type: string
-            tag:
-                description: 'Tag to be used (e.g. v8.8.8)'
-                required: true
-                type: string
-            prerelease:
-                description: 'Make the release a pre-release'
-                required: true
-                default: true
-                type: boolean
+            # tag:
+            #     description: 'Tag to be used (e.g. v8.8.8)'
+            #     required: true
+            #     type: string
+            # prerelease:
+            #     description: 'Make the release a pre-release'
+            #     required: true
+            #     default: true
+            #     type: boolean
             draft:
                 description: 'Create draft release'
                 required: true
