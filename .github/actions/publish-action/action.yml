@@ -14,7 +14,7 @@ runs:
         - name: Publish built artifact
           uses: actions/upload-artifact@v3
           with:
-              name: nrfconnect-${{ inputs. suffix}}
+              name: nrfconnect-${{ inputs.suffix}}
               path: |
                   release/nrfconnect*
                   release/latest*
