@@ -35,3 +35,4 @@ jobs:
               uses: ./.github/actions/publish-action
               with:
                   suffix: windows-x64
+              if: github.event_name != 'pull_request'

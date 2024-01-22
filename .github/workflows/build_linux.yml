@@ -21,3 +21,4 @@ jobs:
               uses: ./.github/actions/publish-action
               with:
                   suffix: linux-x64
+              if: github.event_name != 'pull_request'

@@ -36,3 +36,4 @@ jobs:
               uses: ./.github/actions/publish-action
               with:
                   suffix: macOS
+              if: github.event_name != 'pull_request'

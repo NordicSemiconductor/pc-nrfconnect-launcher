@@ -22,4 +22,3 @@ runs:
                   release/nrfconnect*.AppImage
                   release/latest*
               retention-days: 7
-          if: github.event_name != 'pull_request'
