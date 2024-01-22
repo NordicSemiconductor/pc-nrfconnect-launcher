@@ -34,7 +34,6 @@ jobs:
 
             - name: Rename latest-mac.yml
               run: |
-                  cp scripts/mergeLatestYmls.js release
                   cd release
                   mv latest-mac.yml latest-mac-arm64.yml
               if: github.event_name != 'pull_request'
