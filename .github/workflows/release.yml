@@ -26,7 +26,7 @@ jobs:
                   ls -R
                   mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
                   cd nrfconnect-macOS-arm64
-                  npm i js-ymal
+                  npm i js-yaml
                   node mergeLatestYmls.js latest-mac-x64.yml latest-mac-arm64.yml latest-mac.yml
                   rm latest-mac-x64.yml latest-mac-arm64.yml
 
