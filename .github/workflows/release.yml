@@ -1,6 +1,8 @@
 name: Release to GitHub
 
 on:
+    push:
+        tags: '*'
     workflow_dispatch:
         inputs:
             run_id:
@@ -39,6 +41,6 @@ jobs:
               with:
                   allowUpdates: false
                   artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip'
-                  commit: 'v5.0.0'
+                  commit: 'v4.0.0'
                   # prerelease: ${{ inputs.prerelease }}
                   draft: ${{ inputs.draft }}
