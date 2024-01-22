@@ -115,7 +115,7 @@
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
-        "electron-updater": "4.3.1",
+        "electron-updater": "6.1.7",
         "fs-extra": "9.0.0",
         "lodash": "^4.17.21",
         "minimist": "^1.2.8",
