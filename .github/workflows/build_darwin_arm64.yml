@@ -37,8 +37,10 @@ jobs:
                   cp scripts/mergeLatestYmls.js release
                   cd release
                   mv latest-mac.yml latest-mac-arm64.yml
+              if: github.event_name != 'pull_request'
 
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
                   suffix: macOS-arm64
+              if: github.event_name != 'pull_request'
