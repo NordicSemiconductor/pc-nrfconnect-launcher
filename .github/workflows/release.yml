@@ -41,6 +41,6 @@ jobs:
               with:
                   allowUpdates: false
                   artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip'
-                  commit: 'v4.0.0'
+                  tag: 'v5.0.0'
                   # prerelease: ${{ inputs.prerelease }}
                   draft: ${{ inputs.draft }}
