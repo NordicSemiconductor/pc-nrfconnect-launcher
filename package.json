@@ -67,6 +67,13 @@
         "beforePack": "build/getBundledResources.js",
         "afterSign": "build/notarize.js",
         "mac": {
+            "target": {
+                "target": "default",
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
+            },
             "category": "public.app-category.developer-tools",
             "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
             "hardenedRuntime": true,
@@ -115,7 +122,7 @@
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
-        "electron-updater": "6.1.7",
+        "electron-updater": "4.3.7",
         "fs-extra": "9.0.0",
         "lodash": "^4.17.21",
         "minimist": "^1.2.8",
