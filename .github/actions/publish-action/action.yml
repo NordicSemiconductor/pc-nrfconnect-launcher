@@ -9,13 +9,13 @@ runs:
     using: 'composite'
     steps:
         - name: List files
-            run: ls release
+          run: ls release
         - name: Publish built artifact
           uses: actions/upload-artifact@v3
           with:
               name: nrfconnect-${{ inputs. suffix}}
-              path:  |
-                release/nrfconnect*
-                release/latest*
+              path: |
+                  release/nrfconnect*
+                  release/latest*
               retention-days: 7
           if: github.event_name != 'pull_request'
