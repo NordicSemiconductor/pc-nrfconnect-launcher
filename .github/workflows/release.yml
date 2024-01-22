@@ -28,6 +28,6 @@ jobs:
               uses: ncipollo/release-action@v1.13.0
               with:
                   allowUpdates: false
-                  artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip'
+                  artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip,nrfconnect-*/*.yml'
                   tag: ${{ inputs.tag }}
                   draft: true
