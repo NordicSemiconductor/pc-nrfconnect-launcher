@@ -26,7 +26,7 @@ jobs:
                   ls -R
                   mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
                   cd nrfconnect-macOS-arm64
-                  yq eval-all '(select(fileIndex == 0).files as $x) | (select(fileIndex == 1).files) += $x' latest-mac-arm64.yml latest-mac-x64.yml | awk '/---/ {p = !p; next} p' > latest-mac.yml
+                  yq '. *=+ load("latest-mac-x64.yml")' latest-mac-arm64.yml > latest-mac.yml
                   rm latest-mac-x64.yml latest-mac-arm64.yml
 
             - name: Create Release
