@@ -29,8 +29,7 @@ jobs:
                   mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
                   mv scripts/mergeLatestYmls.js nrfconnect-macOS-arm64/
                   cd nrfconnect-macOS-arm64
-                  npm i js-yaml
-                  node mergeLatestYmls.js latest-mac-x64.yml latest-mac-arm64.yml latest-mac.yml
+                  yq eval-all '(select(fileIndex == 0).files as $x) | (select(fileIndex == 1).files) += $x' latest-mac-arm64.yml latest-mac-x64.yml | awk '/---/ {p = !p; next} p' > latest-mac.yml
                   rm latest-mac-x64.yml latest-mac-arm64.yml
 
             - name: Create Release
