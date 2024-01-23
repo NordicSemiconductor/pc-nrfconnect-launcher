@@ -6,6 +6,7 @@ on:
             - opened
             - labeled
             - unlabeled
+            - synchronize
         branches:
             - main
 
@@ -14,20 +15,35 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: 'Required "doc required" or "doc not required" label'
+            id: missing_label
             if: >
                 contains(github.event.pull_request.labels.*.name, 'doc required') == false &&
                 contains(github.event.pull_request.labels.*.name, 'doc not required') == false
+            run: echo "missing_label=true" > $GITHUB_OUTPUT
+
+          - name: 'Check if already commented'
+            if: steps.missing_label.outputs.missing_label == 'true'
+            uses: peter-evans/find-comment@v2
+            id: fc
+            with:
+                issue-number: ${{ github.event.pull_request.number }}
+                body-includes: 'Make sure to add the "doc required" or "doc not required" label.'
+
+          - name: 'Create comment'
             uses: actions/github-script@v7
+            if: steps.missing_label.outputs.missing_label == 'true' && steps.fc.outputs.comment-id == 0
             with:
               script: |
                 github.rest.issues.createComment({
                   issue_number: context.issue.number,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  body: 'Make sure to add the "doc required" or "doc not required" label. '
+                  body: 'Make sure to add the "doc required" or "doc not required" label.'
                 })
-                core.setFailed('Required "doc required" or "doc not required" label')
 
+          - name: 'Fail'
+            if: steps.missing_label.outputs.missing_label == 'true'
+            run: core.setFailed('Required "doc required" or "doc not required" label')
 
 
 
