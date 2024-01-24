@@ -1,33 +1,10 @@
 # nRF Connect for Desktop launcher
 
-nRF Connect for Desktop is a cross-platform framework for development applications. It contains applications for testing Bluetooth® Low Energy, monitoring LTE links, power optimization, programming, and more.
+nRF Connect for Desktop is a cross-platform framework for development applications, available for [Windows, Linux, and macOS](os_support.md).
 
 nRF Connect for Desktop is designed to be used with Nordic Semiconductor development kits and dongles. The apps will detect which kit you connected to your computer and upload the needed firmware.
 
-## Supported operating systems
-
-nRF Connect for Desktop has Tier 1 support for the following platforms:
-
-* Ubuntu 20.04 LTS (x64)
-* Windows 10 (x64)
-* MacOS 11 (x64, arm64)
-
-In addition, nRF Connect for Desktop has Tier 2 support for Windows 11 (x64), Ubuntu 22.04 (x64), and MacOS 12 (x64, arm64).
-
-??? info "Tier definitions"
-    **Tier 1**: The tools will always work. The automated build and automated testing ensure that the tools build and successfully complete tests after each change.
-
-    **Tier 2**: The tools will always build. The automated build ensures that the tools build successfully after each change. There is no guarantee that a build will work because the automation tests do not always run.
-
-    **Tier 3**: The tools are supported by design, but are not built or tested after each change. Therefore, the application may or may not work.
-
-    **Not supported**: The tools do not work, but it may be supported in the future.
-
-    **Not applicable**: The specified architecture is not supported for the respective operating system.
-
-## Available applications
-
-The following applications are available from nRF Connect for Desktop. See [Installing and updating nRF Connect for Desktop apps](installing_apps.md) for information how to install them.
+The following applications are available from nRF Connect for Desktop. All of them share [OS requirements](os_support.md) and [installation instructions](installing_apps.md).
 
 | Application           | Purpose                                                                          | Status |
 | --------------------- | -------------------------------------------------------------------------------- | ------ |
@@ -44,4 +21,3 @@ The following applications are available from nRF Connect for Desktop. See [Inst
 | [Serial Terminal](https://docs.nordicsemi.com/bundle/nrf-connect-serial-terminal/page/index.html)  | Cross-platform terminal emulator for serial port communications with Nordic Semiconductor devices over Universal Asynchronous Receiver/Transmitter (UART).  | Supported |
 | [Toolchain Manager](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/installation/install_ncs.html#legacy_installation_with_toolchain_manager)  | Install and manage tools to develop with the nRF Connect SDK.  | Recommended for the nRF Connect SDK v1.9.x and earlier  |
 | [Trace Collector](https://docs.nordicsemi.com/bundle/nrf-connect-tracecollector/page/index.html)  | Capture trace files of the nRF9160 modem.   | Deprecated  |
-
