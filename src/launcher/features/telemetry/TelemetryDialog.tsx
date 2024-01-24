@@ -12,11 +12,11 @@ import {
     cancelSendingUsageData,
     confirmSendingUsageData,
 } from './telemetryEffects';
-import { getIsUsageDataDialogVisible } from './telemetrySlice';
+import { getIsTelemetryDialogVisible } from './telemetrySlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const isVisible = useLauncherSelector(getIsUsageDataDialogVisible);
+    const isVisible = useLauncherSelector(getIsTelemetryDialogVisible);
 
     return (
         <ConfirmationDialog

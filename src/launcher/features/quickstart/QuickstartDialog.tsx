@@ -22,7 +22,7 @@ import {
     getIsQuickStartInfoShownBefore,
     quickStartInfoWasShown,
 } from '../settings/settingsSlice';
-import { getIsUsageDataDialogVisible } from '../telemetry/telemetrySlice';
+import { getIsTelemetryDialogVisible } from '../telemetry/telemetrySlice';
 
 const DEFAULT_SUPPORTED_DEVICES = ['pca10090', 'pca10153'];
 
@@ -51,8 +51,8 @@ export default () => {
     const isQuickStartInfoShownBefore = useLauncherSelector(
         getIsQuickStartInfoShownBefore
     );
-    const isUsageDataDialogVisible = useLauncherSelector(
-        getIsUsageDataDialogVisible
+    const isTelemetryDialogVisible = useLauncherSelector(
+        getIsTelemetryDialogVisible
     );
     const quickStartApp = useLauncherSelector(getOfficialQuickStartApp);
 
@@ -60,7 +60,7 @@ export default () => {
 
     const isVisible =
         !isQuickStartInfoShownBefore &&
-        !isUsageDataDialogVisible &&
+        !isTelemetryDialogVisible &&
         quickStartApp != null;
 
     const supportedDevices =

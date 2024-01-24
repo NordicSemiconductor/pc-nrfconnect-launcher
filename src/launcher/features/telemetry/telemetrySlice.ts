@@ -4,35 +4,35 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { RootState } from '../../store';
 
 export type State = {
-    isUsageDataDialogVisible: boolean;
-    isSendingUsageData: boolean;
+    isTelemetryDialogVisible: boolean;
+    isSendingTelemetry: boolean;
 };
 
 const initialState: State = {
-    isUsageDataDialogVisible: false,
-    isSendingUsageData: false,
+    isTelemetryDialogVisible: false,
+    isSendingTelemetry: false,
 };
 
 const slice = createSlice({
     name: 'settings',
     initialState,
     reducers: {
-        showUsageDataDialog(state) {
-            state.isUsageDataDialogVisible = true;
+        showTelemetryDialog(state) {
+            state.isTelemetryDialogVisible = true;
         },
-        hideUsageDataDialog(state) {
-            state.isUsageDataDialogVisible = false;
+        hideTelemetryDialog(state) {
+            state.isTelemetryDialogVisible = false;
         },
-        setUsageDataOn(state) {
-            state.isSendingUsageData = true;
-        },
-        setUsageDataOff(state) {
-            state.isSendingUsageData = false;
+        setIsSendingTelemetry(
+            state,
+            { payload: isSendingTelemetry }: PayloadAction<boolean>
+        ) {
+            state.isSendingTelemetry = isSendingTelemetry;
         },
     },
 });
@@ -40,13 +40,12 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const {
-    showUsageDataDialog,
-    hideUsageDataDialog,
-    setUsageDataOn,
-    setUsageDataOff,
+    showTelemetryDialog,
+    hideTelemetryDialog,
+    setIsSendingTelemetry,
 } = slice.actions;
 
-export const getIsUsageDataDialogVisible = (state: RootState) =>
-    state.usageData.isUsageDataDialogVisible;
-export const getIsSendingUsageData = (state: RootState) =>
-    state.usageData.isSendingUsageData;
+export const getIsTelemetryDialogVisible = (state: RootState) =>
+    state.telemetry.isTelemetryDialogVisible;
+export const getIsSendingTelemetry = (state: RootState) =>
+    state.telemetry.isSendingTelemetry;

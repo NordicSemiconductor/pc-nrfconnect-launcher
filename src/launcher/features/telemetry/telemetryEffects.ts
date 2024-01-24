@@ -8,15 +8,15 @@ import {
     isDevelopment,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import pkgJson from '../../../../package.json';
 import type { AppThunk } from '../../store';
 import {
-    getIsSendingUsageData,
-    hideUsageDataDialog,
-    setUsageDataOff,
-    setUsageDataOn,
-    showUsageDataDialog,
+    getIsSendingTelemetry,
+    hideTelemetryDialog,
+    setIsSendingTelemetry,
+    showTelemetryDialog,
 } from './telemetrySlice';
 
 export const EventAction = {
@@ -30,38 +30,30 @@ export const EventAction = {
 
 export const confirmSendingUsageData = (): AppThunk => dispatch => {
     telemetry.setUsersAgreedToTelemetry(true);
-    dispatch(setUsageDataOn());
-    dispatch(hideUsageDataDialog());
+    dispatch(setIsSendingTelemetry(true));
+    dispatch(hideTelemetryDialog());
 };
 
 export const cancelSendingUsageData = (): AppThunk => dispatch => {
     telemetry.setUsersAgreedToTelemetry(false);
-    dispatch(setUsageDataOff());
-    dispatch(hideUsageDataDialog());
+    dispatch(setIsSendingTelemetry(false));
+    dispatch(hideTelemetryDialog());
 };
 
 export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
-    const isSendingUsageData = getIsSendingUsageData(getState());
-    dispatch(hideUsageDataDialog());
+    const isSendingUsageData = getIsSendingTelemetry(getState());
+    dispatch(hideTelemetryDialog());
     telemetry.setUsersAgreedToTelemetry(!isSendingUsageData);
-    if (isSendingUsageData) {
-        dispatch(setUsageDataOff());
-        return;
-    }
-    dispatch(setUsageDataOn());
+    dispatch(setIsSendingTelemetry(!isSendingUsageData));
 };
 
 export const checkUsageDataSetting = (): AppThunk => dispatch => {
-    const isSendingUsageData = telemetry.getIsSendingTelemetry();
-    if (typeof isSendingUsageData !== 'boolean') {
-        dispatch(showUsageDataDialog());
+    if (getHasUserAgreedToTelemetry == null) {
+        dispatch(showTelemetryDialog());
         return;
     }
-    if (isSendingUsageData) {
-        dispatch(setUsageDataOn());
-        return;
-    }
-    dispatch(setUsageDataOff());
+
+    dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
 };
 
 export const sendEnvInfo = () => {

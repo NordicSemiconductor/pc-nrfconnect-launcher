@@ -28,8 +28,8 @@ import {
 } from '../sources/sourcesSlice';
 import { toggleSendingUsageData } from '../telemetry/telemetryEffects';
 import {
-    getIsSendingUsageData,
-    showUsageDataDialog,
+    getIsSendingTelemetry,
+    showTelemetryDialog,
 } from '../telemetry/telemetrySlice';
 import {
     getShouldCheckForUpdatesAtStartup,
@@ -45,7 +45,7 @@ export default () => {
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
         getShouldCheckForUpdatesAtStartup
     );
-    const isSendingUsageData = useLauncherSelector(getIsSendingUsageData);
+    const isSendingTelemetry = useLauncherSelector(getIsSendingTelemetry);
 
     const sources = useLauncherSelector(getSources);
 
@@ -173,7 +173,7 @@ export default () => {
                                 onToggle={() =>
                                     dispatch(toggleSendingUsageData())
                                 }
-                                isToggled={isSendingUsageData}
+                                isToggled={isSendingTelemetry}
                                 variant="primary"
                                 handleColor={white}
                                 barColor={gray700}
@@ -183,7 +183,7 @@ export default () => {
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
-                                onClick={() => dispatch(showUsageDataDialog())}
+                                onClick={() => dispatch(showTelemetryDialog())}
                             >
                                 Show agreement
                             </Button>
