@@ -26,11 +26,11 @@ import {
     showAddSource,
     showRemoveSource,
 } from '../sources/sourcesSlice';
-import { toggleSendingUsageData } from '../usageData/usageDataEffects';
+import { toggleSendingUsageData } from '../telemetry/telemetryEffects';
 import {
     getIsSendingUsageData,
     showUsageDataDialog,
-} from '../usageData/usageDataSlice';
+} from '../telemetry/telemetrySlice';
 import {
     getShouldCheckForUpdatesAtStartup,
     setCheckForUpdatesAtStartup,

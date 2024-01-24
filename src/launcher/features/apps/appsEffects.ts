@@ -25,7 +25,7 @@ import { cleanIpcErrorMessage } from '../../../ipc/error';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
-import { EventAction } from '../usageData/usageDataEffects';
+import { EventAction } from '../telemetry/telemetryEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
 import {
     addDownloadableApps,

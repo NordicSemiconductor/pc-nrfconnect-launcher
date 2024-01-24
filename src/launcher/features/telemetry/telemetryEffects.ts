@@ -17,7 +17,7 @@ import {
     setUsageDataOff,
     setUsageDataOn,
     showUsageDataDialog,
-} from './usageDataSlice';
+} from './telemetrySlice';
 
 export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',

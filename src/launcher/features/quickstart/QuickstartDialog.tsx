@@ -22,7 +22,7 @@ import {
     getIsQuickStartInfoShownBefore,
     quickStartInfoWasShown,
 } from '../settings/settingsSlice';
-import { getIsUsageDataDialogVisible } from '../usageData/usageDataSlice';
+import { getIsUsageDataDialogVisible } from '../telemetry/telemetrySlice';
 
 const DEFAULT_SUPPORTED_DEVICES = ['pca10090', 'pca10153'];
 

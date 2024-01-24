@@ -25,7 +25,7 @@ import { setSources } from '../sources/sourcesSlice';
 import {
     checkUsageDataSetting,
     sendEnvInfo,
-} from '../usageData/usageDataEffects';
+} from '../telemetry/telemetryEffects';
 
 const loadSources = (): AppThunk => async dispatch => {
     try {

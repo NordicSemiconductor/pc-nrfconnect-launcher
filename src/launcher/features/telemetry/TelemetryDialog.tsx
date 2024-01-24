@@ -11,8 +11,8 @@ import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
     cancelSendingUsageData,
     confirmSendingUsageData,
-} from './usageDataEffects';
-import { getIsUsageDataDialogVisible } from './usageDataSlice';
+} from './telemetryEffects';
+import { getIsUsageDataDialogVisible } from './telemetrySlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
