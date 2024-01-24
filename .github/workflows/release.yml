@@ -17,9 +17,8 @@ jobs:
         runs-on: ['ubuntu-latest']
         steps:
             - name: Download artifacts
-              uses: dawidd6/action-download-artifact@v3
-              with:
-                  run_id: ${{ inputs.run_id }}
+              run: |
+                gh run download ${{ inputs.run_id }} --repo nordicsemiconductor/pc-nrfconnect-launcher
 
             - name: Merge latest-mac.yml
               run: |
