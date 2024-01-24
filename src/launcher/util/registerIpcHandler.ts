@@ -6,7 +6,7 @@
 
 import {
     ErrorDialogActions,
-    usageData,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import * as downloadProgress from '../../ipc/downloadProgress';
@@ -43,7 +43,7 @@ export default (dispatch: AppDispatch) => {
     });
     launcherUpdateProgress.forMain.registerUpdateFinished(isSuccessful => {
         if (isSuccessful) {
-            usageData.reset();
+            telemetry.setUsersWithdrewTelemetryAgreement();
         }
         dispatch(reset());
     });

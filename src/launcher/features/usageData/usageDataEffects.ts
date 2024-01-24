@@ -6,7 +6,7 @@
 
 import {
     isDevelopment,
-    usageData,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import pkgJson from '../../../../package.json';
@@ -29,13 +29,13 @@ export const EventAction = {
 };
 
 export const confirmSendingUsageData = (): AppThunk => dispatch => {
-    usageData.enable();
+    telemetry.setUsersAgreedToTelemetry(true);
     dispatch(setUsageDataOn());
     dispatch(hideUsageDataDialog());
 };
 
 export const cancelSendingUsageData = (): AppThunk => dispatch => {
-    usageData.disable();
+    telemetry.setUsersAgreedToTelemetry(false);
     dispatch(setUsageDataOff());
     dispatch(hideUsageDataDialog());
 };
@@ -43,17 +43,16 @@ export const cancelSendingUsageData = (): AppThunk => dispatch => {
 export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
     const isSendingUsageData = getIsSendingUsageData(getState());
     dispatch(hideUsageDataDialog());
+    telemetry.setUsersAgreedToTelemetry(!isSendingUsageData);
     if (isSendingUsageData) {
-        usageData.disable();
         dispatch(setUsageDataOff());
         return;
     }
-    usageData.enable();
     dispatch(setUsageDataOn());
 };
 
 export const checkUsageDataSetting = (): AppThunk => dispatch => {
-    const isSendingUsageData = usageData.isEnabled();
+    const isSendingUsageData = telemetry.getIsSendingTelemetry();
     if (typeof isSendingUsageData !== 'boolean') {
         dispatch(showUsageDataDialog());
         return;
@@ -66,7 +65,7 @@ export const checkUsageDataSetting = (): AppThunk => dispatch => {
 };
 
 export const sendEnvInfo = () => {
-    usageData.sendUsageData(EventAction.REPORT_LAUNCHER_INFO, {
+    telemetry.sendEvent(EventAction.REPORT_LAUNCHER_INFO, {
         version: pkgJson.version,
         isDevelopment,
     });
