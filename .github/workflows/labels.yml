@@ -42,8 +42,7 @@ jobs:
                 })
 
           - name: 'Fail'
+            uses: actions/github-script@v7
             if: steps.missing_label.outputs.missing_label == 'true'
-            run: core.setFailed('Required "doc required" or "doc not required" label')
-
-
-
+            with:
+              script: core.setFailed('Required "doc required" or "doc not required" label')
