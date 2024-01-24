@@ -8,7 +8,7 @@ import React from 'react';
 import { getCurrentWindow } from '@electron/remote';
 import {
     ErrorBoundary,
-    usageData,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import pkgJson from '../../../package.json';
@@ -21,7 +21,7 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     };
 
     const sendUsageData = (error: string) => {
-        usageData.sendUsageData('Report error', {
+        telemetry.sendEvent('Report error', {
             platform: process.platform,
             arch: process.arch,
             launcherVersion: pkgJson.version,
@@ -33,7 +33,7 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
         <ErrorBoundary
             appName="Launcher"
             restoreDefaults={restoreDefaults}
-            sendUsageData={sendUsageData}
+            sendTelemetryEvent={sendUsageData}
         >
             {children}
         </ErrorBoundary>

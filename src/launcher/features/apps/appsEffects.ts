@@ -10,8 +10,8 @@ import {
     ErrorDialogActions,
     launcherConfig,
     openWindow,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
 
 import {
     AppSpec,
@@ -61,7 +61,7 @@ export const handleAppsWithErrors =
         }
 
         apps.forEach(app => {
-            usageData.sendUsageData(EventAction.REPORT_INSTALLATION_ERROR, {
+            telemetry.sendEvent(EventAction.REPORT_INSTALLATION_ERROR, {
                 ...app,
             });
         });
@@ -162,7 +162,7 @@ const install =
 export const installDownloadableApp =
     (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
-        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
+        telemetry.sendEvent(EventAction.APP_MANAGEMENT, {
             action: toVersion == null ? 'Install' : 'Install Explicit Version',
             appInfo: {
                 name: app.name,
@@ -179,7 +179,7 @@ export const installDownloadableApp =
 export const updateDownloadableApp =
     (app: DownloadableApp): AppThunk =>
     dispatch => {
-        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
+        telemetry.sendEvent(EventAction.APP_MANAGEMENT, {
             action: 'Update',
             appInfo: {
                 name: app.name,
@@ -196,7 +196,7 @@ export const updateDownloadableApp =
 export const removeDownloadableApp =
     (app: AppSpec, currentVersion: string): AppThunk =>
     async dispatch => {
-        usageData.sendUsageData(EventAction.APP_MANAGEMENT, {
+        telemetry.sendEvent(EventAction.APP_MANAGEMENT, {
             action: 'Remove',
             appInfo: {
                 name: app.name,
@@ -220,7 +220,7 @@ export const removeDownloadableApp =
     };
 
 export const launch = (app: LaunchableApp) => {
-    usageData.sendUsageData(EventAction.LAUNCH_APP, {
+    telemetry.sendEvent(EventAction.LAUNCH_APP, {
         appInfo: {
             name: app.name,
             source: app.source,

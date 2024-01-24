@@ -8,7 +8,7 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, usageData } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { render, telemetry } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import initialiseLauncherState from './features/initialisation/initialiseLauncherState';
 import Root from './Root';
@@ -17,7 +17,7 @@ import registerIpcHandler from './util/registerIpcHandler';
 
 import '../../resources/css/launcher.scss';
 
-usageData.enableTelemetry();
+telemetry.enableTelemetry();
 const { dispatch } = store;
 registerIpcHandler(dispatch);
 
