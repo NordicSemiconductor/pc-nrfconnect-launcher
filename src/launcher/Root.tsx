@@ -21,7 +21,7 @@ import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
 import QuickStartDialog from './features/quickstart/QuickstartDialog';
 import Settings from './features/settings/Settings';
-import UsageDataDialog from './features/telemetry/TelemetryDialog';
+import TelemetryDialog from './features/telemetry/TelemetryDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
 
 const blurActiveElementOnLaunch = () => {
@@ -86,7 +86,7 @@ export default () => {
             <RootErrorDialog />
             <UpdateAvailableDialog />
             <UpdateProgressDialog />
-            <UsageDataDialog />
+            <TelemetryDialog />
             <ProxyLoginDialog />
             <ProxyErrorDialog />
             <QuickStartDialog />

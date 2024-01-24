@@ -20,7 +20,7 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
         getCurrentWindow().reload();
     };
 
-    const sendUsageData = (error: string) => {
+    const sendTelemetryEvent = (error: string) => {
         telemetry.sendEvent('Report error', {
             platform: process.platform,
             arch: process.arch,
@@ -33,7 +33,7 @@ const ErrorBoundaryLauncher: React.FC = ({ children }) => {
         <ErrorBoundary
             appName="Launcher"
             restoreDefaults={restoreDefaults}
-            sendTelemetryEvent={sendUsageData}
+            sendTelemetryEvent={sendTelemetryEvent}
         >
             {children}
         </ErrorBoundary>
