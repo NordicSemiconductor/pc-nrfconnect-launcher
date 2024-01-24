@@ -4,10 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import {
-    ErrorDialogActions,
-    telemetry,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import * as downloadProgress from '../../ipc/downloadProgress';
 import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
@@ -41,10 +38,7 @@ export default (dispatch: AppDispatch) => {
     launcherUpdateProgress.forMain.registerUpdateProgress(percentage => {
         dispatch(updateDownloading(percentage));
     });
-    launcherUpdateProgress.forMain.registerUpdateFinished(isSuccessful => {
-        if (isSuccessful) {
-            telemetry.setUsersWithdrewTelemetryAgreement();
-        }
+    launcherUpdateProgress.forMain.registerUpdateFinished(() => {
         dispatch(reset());
     });
 };

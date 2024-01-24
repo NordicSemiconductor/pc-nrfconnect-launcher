@@ -23,9 +23,9 @@ import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { setSources } from '../sources/sourcesSlice';
 import {
-    checkUsageDataSetting,
+    checkTelemetrySetting,
     sendEnvInfo,
-} from '../usageData/usageDataEffects';
+} from '../telemetry/telemetryEffects';
 
 const loadSources = (): AppThunk => async dispatch => {
     try {
@@ -79,7 +79,7 @@ const checkForLauncherUpdateAtStartup =
     };
 
 export default (): AppThunk => async dispatch => {
-    dispatch(checkUsageDataSetting());
+    dispatch(checkTelemetrySetting());
 
     await dispatch(loadSources());
     await dispatch(loadApps());

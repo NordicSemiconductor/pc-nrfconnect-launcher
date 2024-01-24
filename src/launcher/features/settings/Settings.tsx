@@ -26,11 +26,11 @@ import {
     showAddSource,
     showRemoveSource,
 } from '../sources/sourcesSlice';
-import { toggleSendingUsageData } from '../usageData/usageDataEffects';
+import { toggleSendingTelemetry } from '../telemetry/telemetryEffects';
 import {
-    getIsSendingUsageData,
-    showUsageDataDialog,
-} from '../usageData/usageDataSlice';
+    getIsSendingTelemetry,
+    showTelemetryDialog,
+} from '../telemetry/telemetrySlice';
 import {
     getShouldCheckForUpdatesAtStartup,
     setCheckForUpdatesAtStartup,
@@ -45,7 +45,7 @@ export default () => {
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
         getShouldCheckForUpdatesAtStartup
     );
-    const isSendingUsageData = useLauncherSelector(getIsSendingUsageData);
+    const isSendingTelemetry = useLauncherSelector(getIsSendingTelemetry);
 
     const sources = useLauncherSelector(getSources);
 
@@ -171,9 +171,9 @@ export default () => {
                                 id="checkForShare"
                                 label="Collect anonymous usage data"
                                 onToggle={() =>
-                                    dispatch(toggleSendingUsageData())
+                                    dispatch(toggleSendingTelemetry())
                                 }
-                                isToggled={isSendingUsageData}
+                                isToggled={isSendingTelemetry}
                                 variant="primary"
                                 handleColor={white}
                                 barColor={gray700}
@@ -183,7 +183,7 @@ export default () => {
                         <Col xs="auto">
                             <Button
                                 variant="outline-primary"
-                                onClick={() => dispatch(showUsageDataDialog())}
+                                onClick={() => dispatch(showTelemetryDialog())}
                             >
                                 Show agreement
                             </Button>
