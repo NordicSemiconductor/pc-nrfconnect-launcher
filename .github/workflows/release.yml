@@ -32,9 +32,12 @@ jobs:
                   rm latest-mac-x64.yml latest-mac-arm64.yml
 
             - name: Create Release
-              uses: ncipollo/release-action@v1.13.0
-              with:
-                  allowUpdates: false
-                  artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip,nrfconnect-*/latest*.yml'
-                  tag: ${{ inputs.tag }}
-                  draft: true
+              run: >
+                gh release create ${{ inputs.tag }}
+                --title ${{ inputs.tag }}
+                --draft -F Changelog.md
+                nrfconnect-*/*.AppImage
+                nrfconnect-*/*.exe
+                nrfconnect-*/*.dmg
+                nrfconnect-*/*.zip
+                nrfconnect-*/latest*.yml
