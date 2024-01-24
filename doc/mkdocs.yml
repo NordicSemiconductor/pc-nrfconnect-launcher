@@ -59,3 +59,5 @@ extra:
 
 nav:
   - Home: index.md
+  - Download and overview: download_cfd.md
+  - Installing and updating nRF Connect for Desktop apps: installing_apps.md
