@@ -26,7 +26,7 @@ import {
     showAddSource,
     showRemoveSource,
 } from '../sources/sourcesSlice';
-import { toggleSendingUsageData } from '../telemetry/telemetryEffects';
+import { toggleSendingTelemetry } from '../telemetry/telemetryEffects';
 import {
     getIsSendingTelemetry,
     showTelemetryDialog,
@@ -171,7 +171,7 @@ export default () => {
                                 id="checkForShare"
                                 label="Collect anonymous usage data"
                                 onToggle={() =>
-                                    dispatch(toggleSendingUsageData())
+                                    dispatch(toggleSendingTelemetry())
                                 }
                                 isToggled={isSendingTelemetry}
                                 variant="primary"

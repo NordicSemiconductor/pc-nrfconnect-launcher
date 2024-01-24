@@ -28,26 +28,26 @@ export const EventAction = {
     REPORT_INSTALLATION_ERROR: 'Report installation error',
 };
 
-export const confirmSendingUsageData = (): AppThunk => dispatch => {
+export const confirmSendingTelemetry = (): AppThunk => dispatch => {
     telemetry.setUsersAgreedToTelemetry(true);
     dispatch(setIsSendingTelemetry(true));
     dispatch(hideTelemetryDialog());
 };
 
-export const cancelSendingUsageData = (): AppThunk => dispatch => {
+export const cancelSendingTelemetry = (): AppThunk => dispatch => {
     telemetry.setUsersAgreedToTelemetry(false);
     dispatch(setIsSendingTelemetry(false));
     dispatch(hideTelemetryDialog());
 };
 
-export const toggleSendingUsageData = (): AppThunk => (dispatch, getState) => {
-    const isSendingUsageData = getIsSendingTelemetry(getState());
+export const toggleSendingTelemetry = (): AppThunk => (dispatch, getState) => {
+    const isSendingTelemetry = getIsSendingTelemetry(getState());
     dispatch(hideTelemetryDialog());
-    telemetry.setUsersAgreedToTelemetry(!isSendingUsageData);
-    dispatch(setIsSendingTelemetry(!isSendingUsageData));
+    telemetry.setUsersAgreedToTelemetry(!isSendingTelemetry);
+    dispatch(setIsSendingTelemetry(!isSendingTelemetry));
 };
 
-export const checkUsageDataSetting = (): AppThunk => dispatch => {
+export const checkTelemetrySetting = (): AppThunk => dispatch => {
     if (getHasUserAgreedToTelemetry == null) {
         dispatch(showTelemetryDialog());
         return;

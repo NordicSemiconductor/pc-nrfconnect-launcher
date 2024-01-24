@@ -9,8 +9,8 @@ import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
-    cancelSendingUsageData,
-    confirmSendingUsageData,
+    cancelSendingTelemetry,
+    confirmSendingTelemetry,
 } from './telemetryEffects';
 import { getIsTelemetryDialogVisible } from './telemetrySlice';
 
@@ -24,8 +24,8 @@ export default () => {
             title="Help us improve nRF Connect for Desktop"
             confirmLabel="Accept"
             cancelLabel="Decline"
-            onConfirm={() => dispatch(confirmSendingUsageData())}
-            onCancel={() => dispatch(cancelSendingUsageData())}
+            onConfirm={() => dispatch(confirmSendingTelemetry())}
+            onCancel={() => dispatch(cancelSendingTelemetry())}
         >
             <div className="user-data-policy">
                 <p>
