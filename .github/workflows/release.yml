@@ -30,6 +30,9 @@ jobs:
                   cd nrfconnect-macOS-arm64
                   yq '. *=+ load("latest-mac-x64.yml")' latest-mac-arm64.yml > latest-mac.yml
                   rm latest-mac-x64.yml latest-mac-arm64.yml
+            
+            - name: Move Changelog.md to root
+              run: mv --update */Changelog.md ./
 
             - name: Create Release
               run: >

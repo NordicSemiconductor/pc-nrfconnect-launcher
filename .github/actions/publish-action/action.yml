@@ -16,7 +16,10 @@ runs:
           with:
               name: nrfconnect-${{ inputs.suffix}}
               path: |
-                  release/nrfconnect*
+                  release/nrfconnect*.exe
+                  release/nrfconnect*.zip
+                  release/nrfconnect*.dmg
+                  release/nrfconnect*.AppImage
                   release/latest*
                   ./Changelog.md
               retention-days: 7
