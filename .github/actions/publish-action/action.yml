@@ -8,6 +8,9 @@ inputs:
 runs:
     using: 'composite'
     steps:
+        - name: Move Changelog.md into release/
+          shell: bash
+          run: cp ./Changelog.md ./release/
         - name: List files
           shell: bash
           run: ls release
@@ -16,10 +19,7 @@ runs:
           with:
               name: nrfconnect-${{ inputs.suffix}}
               path: |
-                  release/nrfconnect*.exe
-                  release/nrfconnect*.zip
-                  release/nrfconnect*.dmg
-                  release/nrfconnect*.AppImage
+                  release/nrfconnect*
                   release/latest*
-                  ./Changelog.md
+                  release/Changelog.md
               retention-days: 7
