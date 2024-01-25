@@ -31,7 +31,7 @@ export default () => (
                 </Col>
             </Row>
             <Button
-                href="https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-desktop"
+                href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html"
                 target="_blank"
                 variant="outline-primary"
             >
@@ -44,7 +44,7 @@ export default () => (
                     <Card.Title>License</Card.Title>
                 </Col>
             </Row>
-            <p>Copyright (c) 2015 Nordic Semiconductor ASA</p>
+            <p>Copyright (c) 2015-2024 Nordic Semiconductor ASA</p>
             <p>All rights reserved.</p>
             <p>SPDX-License-Identifier: Nordic-4-Clause</p>
             <p>

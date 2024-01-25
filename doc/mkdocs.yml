@@ -60,5 +60,6 @@ extra:
 nav:
   - Home: index.md
   - Supported operating systems: os_support.md
-  - Download and overview: download_cfd.md
-  - Installing and updating nRF Connect for Desktop apps: installing_apps.md
+  - Requirements and installation: download_cfd.md
+  - Overview: overview_cfd.md
+  - Installing nRF Connect for Desktop apps: installing_apps.md
