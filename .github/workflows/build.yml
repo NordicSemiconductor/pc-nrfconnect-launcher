@@ -6,9 +6,13 @@ on:
     pull_request:
         branches:
             - main
+        paths-ignore:
+            - 'doc/**'
     push:
         branches:
             - main
+        paths-ignore:
+            - 'doc/**'
 
 jobs:
     build_on_windows:
