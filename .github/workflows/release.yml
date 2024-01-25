@@ -36,7 +36,8 @@ jobs:
                 gh release create ${{ inputs.tag }}
                 --repo nordicsemiconductor/pc-nrfconnect-launcher
                 --title ${{ inputs.tag }}
-                --draft -F nrfconnect-linux-x64/Changelog.md
+                --draft
+                --generate-notes
                 nrfconnect-*/*.AppImage
                 nrfconnect-*/*.exe
                 nrfconnect-*/*.dmg
