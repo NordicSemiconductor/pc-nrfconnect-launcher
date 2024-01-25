@@ -32,7 +32,7 @@ jobs:
                   rm latest-mac-x64.yml latest-mac-arm64.yml
             
             - name: Move Changelog.md to root
-              run: mv --update */Changelog.md ./
+              run: mv --force */Changelog.md ./
 
             - name: Create Release
               run: >
