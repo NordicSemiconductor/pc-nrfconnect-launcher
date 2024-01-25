@@ -1,8 +1,0 @@
-steps:
-- bash: |
-    # sudo apt-get install icnsutils
-    npx electron-builder -p never
-  displayName: Package release
-- bash: |
-    cp release/*.AppImage "$(Build.ArtifactStagingDirectory)"
-  displayName: 'Copy artifacts'
