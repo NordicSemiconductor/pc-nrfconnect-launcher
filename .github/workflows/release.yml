@@ -12,14 +12,16 @@ on:
                 required: true
                 type: string
 
+env:
+    GH_TOKEN: ${{ github.token }}
+
 jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
             - name: Download artifacts
-              uses: dawidd6/action-download-artifact@v3
-              with:
-                  run_id: ${{ inputs.run_id }}
+              run: |
+                gh run download ${{ inputs.run_id }} --repo nordicsemiconductor/pc-nrfconnect-launcher
 
             - name: Merge latest-mac.yml
               run: |
@@ -28,11 +30,16 @@ jobs:
                   cd nrfconnect-macOS-arm64
                   yq '. *=+ load("latest-mac-x64.yml")' latest-mac-arm64.yml > latest-mac.yml
                   rm latest-mac-x64.yml latest-mac-arm64.yml
-
+            
             - name: Create Release
-              uses: ncipollo/release-action@v1.13.0
-              with:
-                  allowUpdates: false
-                  artifacts: 'nrfconnect-*/*.AppImage,nrfconnect-*/*.exe,nrfconnect-*/*.dmg,nrfconnect-*/*.zip,nrfconnect-*/latest*.yml'
-                  tag: ${{ inputs.tag }}
-                  draft: true
+              run: >
+                gh release create ${{ inputs.tag }}
+                --repo nordicsemiconductor/pc-nrfconnect-launcher
+                --title ${{ inputs.tag }}
+                --draft
+                --generate-notes
+                nrfconnect-*/*.AppImage
+                nrfconnect-*/*.exe
+                nrfconnect-*/*.dmg
+                nrfconnect-*/*.zip
+                nrfconnect-*/latest*.yml
