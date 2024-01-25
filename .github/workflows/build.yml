@@ -1,41 +1,25 @@
-
-name: Prepare nRF Connect for Desktop build
+name: Build nRF Connect for Desktop
 
 on:
-  workflow_call:
-    inputs:
-      runner:
-        required: true
-        type: string # [Windows, macOS, Linux]
-      electronArgument:
-        required: true
-        type: string # e.g. --windows nsis:x64
+    workflow_dispatch:
+        inputs:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
 
 jobs:
-  build:
-    runs-on: ["${{ inputs.runner }}"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run all checks
-        run: npm run check
-      - name: Run Tests
-        run: npm test
-      - name: Build for Production
-        run: npm run build:prod
-
-      - name: Run Electron Builder
-        run: npx electron-builder -p never ${{ inputs.electronArgument }}
-
-      - name: Publish built artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: nRF Connect for Desktop
-          path: "release/nrfconnect*"
-          retention-days: 7
+    build_on_windows:
+        uses: ./.github/workflows/build_win.yml
+        secrets: inherit
+    build_on_linux:
+        uses: ./.github/workflows/build_linux.yml
+        secrets: inherit
+    build_on_darwin_x64:
+        uses: ./.github/workflows/build_darwin_x64.yml
+        secrets: inherit
+    build_on_darwin_arm64:
+        uses: ./.github/workflows/build_darwin_arm64.yml
+        secrets: inherit

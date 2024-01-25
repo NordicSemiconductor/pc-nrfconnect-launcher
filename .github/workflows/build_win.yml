@@ -1,0 +1,38 @@
+name: Build nRF Connect for Desktop for Windows x64
+
+on:
+    workflow_dispatch:
+        inputs:
+    workflow_call:
+
+jobs:
+    build:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Build
+              uses: ./.github/actions/build-action
+
+            - name: Fetch certificate file
+              shell: bash
+              env:
+                  NORDIC_SIGNING_CERTIFICATE:
+                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
+              run:
+                  echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
+                  ./nordic_signing_certificate.pfx
+              if: github.event_name != 'pull_request'
+
+            - name: Run Electron Builder
+              env:
+                  CSC_LINK: ./nordic_signing_certificate.pfx
+                  CSC_KEY_PASSWORD:
+                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
+              run: npx electron-builder -p never --windows nsis:x64
+              if: github.event_name != 'pull_request'
+
+            - name: Upload
+              uses: ./.github/actions/publish-action
+              with:
+                  suffix: windows-x64
+              if: github.event_name != 'pull_request'
