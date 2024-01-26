@@ -6,10 +6,8 @@
 nRF Connect for Desktop is a cross-platform framework for desktop apps for
 development kits and dongles from Nordic Semiconductor. The framework provides a
 launcher and the general layout for selecting devices, navigation menus, and
-logging, among others.
-Apps can decorate the standard components and use
-built-in libraries in order to create end-user
-tools.
+logging, among others. Apps can decorate the standard components and use
+built-in libraries in order to create end-user tools.
 
 ## Documentation
 
