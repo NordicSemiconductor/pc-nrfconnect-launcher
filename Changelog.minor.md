@@ -20,6 +20,9 @@ release the new version.
     [shared v150](https://github.com/NordicSemiconductor/pc-nrfconnect-shared/releases/tag/v150)).
 -   #937: No error message on shutdown when e.g. an ongoing download still wants
     to send IPC messages.
+-   #926, #931, #940, #946, #955: Switch from Azure to GitHub Actions.
+-   #928, #939, #945, #954: Update documentation.
+-   #950, #952: Use the refactored telemetry code.
 
 ## 4.3.0
 
