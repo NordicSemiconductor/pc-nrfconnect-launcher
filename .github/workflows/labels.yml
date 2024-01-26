@@ -6,28 +6,14 @@ on:
             - opened
             - labeled
             - unlabeled
+            - synchronize
         branches:
             - main
 
 jobs:
     check_labels:
-        runs-on: ubuntu-latest
-        steps:
-          - name: 'Required "doc required" or "doc not required" label'
-            if: >
-                contains(github.event.pull_request.labels.*.name, 'doc required') == false &&
-                contains(github.event.pull_request.labels.*.name, 'doc not required') == false
-            uses: actions/github-script@v7
-            with:
-              script: |
-                github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: 'Make sure to add the "doc required" or "doc not required" label. '
-                })
-                core.setFailed('Required "doc required" or "doc not required" label')
-
+        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/labels.yml@main
+        secrets: inherit
 
 
 
