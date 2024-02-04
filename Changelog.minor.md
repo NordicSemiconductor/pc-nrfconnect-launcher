@@ -23,6 +23,7 @@ release the new version.
 -   #926, #931, #940, #946, #955: Switch from Azure to GitHub Actions.
 -   #928, #939, #945, #954: Update documentation.
 -   #950, #952: Use the refactored telemetry code.
+-   #958 Update electron from 22.x to 28.x
 
 ## 4.3.0
 
