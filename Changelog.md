@@ -2,7 +2,7 @@
 
 ### Changed
 
-- Implemented notarization on macOS with stricter entitlements.
+-   Implemented notarization on macOS with stricter entitlements.
 -   Minor fixes and improvements.
 
 ## 4.3.0 - 2023-12-07
