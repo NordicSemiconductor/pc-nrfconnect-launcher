@@ -1,8 +1,9 @@
-## 4.3.1 - Unreleased
+## 4.4.0 - Unreleased
 
 ### Changed
 
--   Notarize with stricter entitlements for macOS
+-   Implemented notarization on macOS with stricter entitlements.
+-   Minor fixes and improvements.
 
 ## 4.3.0 - 2023-12-07
 

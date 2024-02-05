@@ -7,7 +7,7 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
-## Unreleased
+## 4.4.0 - Unreleased
 
 ### Changed
 
@@ -23,6 +23,7 @@ release the new version.
 -   #926, #931, #940, #946, #955: Switch from Azure to GitHub Actions.
 -   #928, #939, #945, #954: Update documentation.
 -   #950, #952: Use the refactored telemetry code.
+-   #958 Update electron from 22.x to 28.x
 
 ## 4.3.0
 
