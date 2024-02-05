@@ -50,7 +50,7 @@ export const toggleSendingTelemetry = (): AppThunk => (dispatch, getState) => {
 };
 
 export const checkTelemetrySetting = (): AppThunk => dispatch => {
-    if (getHasUserAgreedToTelemetry == null) {
+    if (getHasUserAgreedToTelemetry() == null) {
         dispatch(showTelemetryDialog());
         return;
     }
