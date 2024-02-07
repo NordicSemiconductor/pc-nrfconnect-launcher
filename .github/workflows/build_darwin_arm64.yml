@@ -8,7 +8,6 @@ on:
 jobs:
     build:
         runs-on: [self-hosted, macOS, ARM64]
-        if: false # skip job for now
         steps:
             - uses: actions/checkout@v4
             - name: Build
