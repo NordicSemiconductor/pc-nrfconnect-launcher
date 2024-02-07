@@ -35,8 +35,8 @@ export const confirmSendingTelemetry = (): AppThunk => dispatch => {
 };
 
 export const cancelSendingTelemetry = (): AppThunk => (dispatch, getState) => {
+    telemetry.setUsersAgreedToTelemetry(false);
     if (getIsSendingTelemetry(getState())) {
-        telemetry.setUsersAgreedToTelemetry(false);
         dispatch(setIsSendingTelemetry(false));
     }
     dispatch(hideTelemetryDialog());
