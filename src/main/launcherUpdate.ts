@@ -42,7 +42,18 @@ export const checkForUpdate = async () => {
     // checkForUpdatesPromise will resolve with result whether or not update
     // is available, but the result will contain a cancellationToken and a
     // downloadPromise only if there is an update
-    const { updateInfo, cancellationToken } = await updateCheckResult;
+    const result = await updateCheckResult;
+
+    if (!result) {
+        logger.warn(
+            'Not checking for nRF Connect for Desktop updates. ' +
+            'Result is unavailable'
+        );
+        throw new Error('Auto update not started');
+    }
+
+    const { updateInfo, cancellationToken } = result;
+
     return {
         isUpdateAvailable: !!cancellationToken,
         newVersion: updateInfo.version,
