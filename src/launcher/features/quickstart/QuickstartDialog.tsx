@@ -38,11 +38,17 @@ const packageJson = (quickStartApp?: InstalledDownloadableApp) => {
         return;
     }
 
+    const packageJSONPath = path.join(
+        quickStartApp?.installed.path,
+        'package.json'
+    );
+
+    if (!fs.existsSync(packageJSONPath)) {
+        return undefined;
+    }
+
     const parsed = parsePackageJsonApp(
-        fs.readFileSync(
-            path.join(quickStartApp?.installed.path, 'package.json'),
-            'utf8'
-        )
+        fs.readFileSync(packageJSONPath, 'utf8')
     );
     return parsed.success ? parsed.data : undefined;
 };
