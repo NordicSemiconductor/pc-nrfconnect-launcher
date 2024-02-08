@@ -47,7 +47,7 @@ export const checkForUpdate = async () => {
     if (!result) {
         logger.warn(
             'Not checking for nRF Connect for Desktop updates. ' +
-            'Result is unavailable'
+                'Result is unavailable'
         );
         throw new Error('Auto update not started');
     }
