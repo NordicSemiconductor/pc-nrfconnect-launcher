@@ -166,18 +166,20 @@ const migrateLegacyMetaFiles = (source: Source) => {
             'package.json'
         );
 
-        const packageJsonResult = parsePackageJsonLegacyApp(
-            readFile(packageJsonFile)
-        );
+        if (fs.existsSync(packageJsonFile)) {
+            const packageJsonResult = parsePackageJsonLegacyApp(
+                readFile(packageJsonFile)
+            );
 
-        const packageJson = packageJsonResult.success
-            ? packageJsonResult.data
-            : null;
+            const packageJson = packageJsonResult.success
+                ? packageJsonResult.data
+                : null;
 
-        writeAppInfo(
-            createNewAppInfo(appName, appsJson, updatesJson, packageJson),
-            source
-        );
+            writeAppInfo(
+                createNewAppInfo(appName, appsJson, updatesJson, packageJson),
+                source
+            );
+        }
     });
 
     createWithDrawnAppFiles('pc-nrfconnect-gettingstarted', source);
