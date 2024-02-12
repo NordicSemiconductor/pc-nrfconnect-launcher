@@ -3,6 +3,11 @@ name: Build nRF Connect for Desktop for macOS arm64
 on:
     workflow_dispatch:
         inputs:
+            skip_notarisation:
+                description: 'Skip notarisation'
+                required: true
+                default: false
+                type: boolean
     workflow_call:
 
 jobs:
@@ -29,6 +34,7 @@ jobs:
                   APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
                   APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
+                  SKIP_NOTARISATION: ${{ inputs.skip_notarisation }}
               run: npx electron-builder -p never --arm64
               if: github.event_name != 'pull_request'
 

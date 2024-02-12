@@ -9,7 +9,8 @@ const { notarize } = require('@electron/notarize');
 const pkgJson = require('../package.json');
 
 exports.default = ({ electronPlatformName, appOutDir }) =>
-    electronPlatformName === 'darwin'
+    electronPlatformName === 'darwin' &&
+    process.env.SKIP_NOTARISATION !== 'true'
         ? notarize({
               tool: 'notarytool',
               appPath: `${appOutDir}/${pkgJson.build.productName}.app`,
