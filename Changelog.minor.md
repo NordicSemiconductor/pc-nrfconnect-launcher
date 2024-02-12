@@ -25,6 +25,10 @@ release the new version.
 -   #950, #952: Use the refactored telemetry code.
 -   #958 Update electron from 22.x to 28.x
 
+### Fixed
+
+-   #978 Do not convert legacy app if it has been uninstalled in the mean time
+
 ## 4.3.0
 
 ### Fixed
