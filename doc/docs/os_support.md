@@ -1,6 +1,6 @@
 # Supported operating systems
 
-nRF Connect for Desktop and all of its applications that are actively supported have Tier 1 support for the following platforms:
+The following table lists operating systems supported by nRF Connect for Desktop and all of its applications:
 
 | Operating System          | x86            | x64           | ARM64         |
 |---------------------------|----------------|---------------|---------------|
