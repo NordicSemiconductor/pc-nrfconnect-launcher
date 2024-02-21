@@ -26,7 +26,7 @@
 
 ; Adding custom installation steps for electron-builder, ref:
 ; https://www.electron.build/configuration/nsis#custom-nsis-script
-!macro customInstall  
+!macro customInstall
   ; ===============================================================
   ; Installation of drivers for dfu trigger and cdc acm
   ; ===============================================================
@@ -54,7 +54,7 @@
   ; ===============================================================
 
   ; J-Link installer (downloaded by getJlink.js through prePack hook)
-  !define BundledJLinkVersion "V788j"
+  !define BundledJLinkVersion "V794e"
 
   !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
   !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
@@ -68,7 +68,7 @@
   ${If} $3 == ""
     StrCpy $LAST_JLINK_VERSION ""
   ${EndIf}
- 
+
   ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
     ; J-Link is older than the bundled version. Run installer.
     StrCpy $0 "$INSTDIR\${JLinkInstaller}"
