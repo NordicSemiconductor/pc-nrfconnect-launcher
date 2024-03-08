@@ -7,6 +7,12 @@ because it is so minor that the users will rarely care about them.
 It is still helpful that we collect them, e.g. so that we can check them when
 release the new version.
 
+## Unreleased
+
+### Fixed
+
+-   #989: Some strange source URLs could be handled wrong.
+
 ## 4.4.0
 
 ### Changed
