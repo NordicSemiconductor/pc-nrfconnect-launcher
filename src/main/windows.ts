@@ -185,13 +185,23 @@ export const openAppWindow = (app: LaunchableApp, args: string[]) => {
     });
 
     // @ts-expect-error Custom event
-    appWindow.once('restart-window', () => {
+    appWindow.on('restart-window', () => {
+        if (reloading) {
+            return;
+        }
         reloading = true;
         appWindow.close();
-        appWindow.once('closed', () => {
-            openAppWindow(app, args);
-            reloading = false;
-        });
+    });
+
+    appWindow.once('closed', () => {
+        if (!reloading) return;
+        openAppWindow(app, args);
+        reloading = false;
+    });
+
+    // @ts-expect-error Custom event
+    appWindow.on('restart-cancelled', () => {
+        reloading = false;
     });
 };
 
