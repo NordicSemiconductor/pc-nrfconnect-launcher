@@ -39,7 +39,7 @@ const convertToOldSourceJsonFormat = (allSources: Source[]) =>
     Object.fromEntries(
         allSources.map(source => [
             source.name,
-            source.url.replace('source.json', 'apps.json'),
+            source.url.replace(/source\.json$/, 'apps.json'),
         ])
     );
 
@@ -48,7 +48,7 @@ const convertFromOldSourceJsonFormat = (
 ) =>
     Object.entries(sourceJsonParsed).map(([name, url]) => ({
         name,
-        url: url.replace('apps.json', 'source.json'),
+        url: url.replace(/apps\.json$/, 'source.json'),
     }));
 
 const loadAllSources = () => {

@@ -131,7 +131,7 @@ export default () => {
                                             onClick={() =>
                                                 clipboard.writeText(
                                                     source.url.replace(
-                                                        /source.json$/,
+                                                        /source\.json$/,
                                                         'apps.json'
                                                     )
                                                 )
