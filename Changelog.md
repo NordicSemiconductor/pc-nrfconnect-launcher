@@ -1,10 +1,10 @@
-## 4.4.1 - UNRELEASED
+## 4.4.1 - 2024-03-13
 
 ### Changed
 
--   Windows bundled JLink version updated to v7.94e.
+-   Windows: bundled J-Link version was updated to v7.94e.
 
-## 4.4.0 - 2023-02-12
+## 4.4.0 - 2024-02-12
 
 ### Changed
 
