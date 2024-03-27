@@ -19,12 +19,23 @@ export const storeProxyLoginRequest = (callback: LoginResponse) => {
 
 export const callRegisteredCallback = (
     requestId: string,
+    host: string,
     username?: string,
     password?: string
 ) => {
     const callback = loginRequests.get(requestId);
 
     if (callback != null) {
+        // set env for nrfutil
+        let proxy = host;
+        if (username) {
+            proxy = `http://${username}:${password ?? ''}@${host}`;
+        }
+        process.env.HTTP_PROXY = proxy;
+        process.env.HTTPS_PROXY = proxy;
+        process.env.http_proxy = proxy;
+        process.env.https_proxy = proxy;
+
         callback(username, password);
         loginRequests.delete(requestId);
     } else {

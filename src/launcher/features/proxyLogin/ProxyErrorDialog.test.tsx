@@ -18,9 +18,9 @@ const requestId = 'test ID';
 const authInfo = {
     isProxy: true,
     scheme: 'https',
-    host: 'test host',
+    host: 'host',
     port: 4711,
-    realm: 'test realm',
+    realm: 'realm',
 };
 
 describe('ProxyErrorDialog', () => {

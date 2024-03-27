@@ -11,11 +11,14 @@ import { initialize as initializeElectronRemote } from '@electron/remote/main';
 import telemetry from '@nordicsemiconductor/pc-nrfconnect-shared/src/telemetry/telemetry';
 
 import configureElectronApp from './configureElectronApp';
+import initNrfUtilProxyEnv from './initNrfUtilProxyEnv';
 import registerIpcHandler from './registerIpcHandler';
 import singeInstanceLock from './singeInstanceLock';
 import storeExecutablePath from './storeExecutablePath';
 
 telemetry.enableTelemetry();
+
+initNrfUtilProxyEnv();
 singeInstanceLock();
 initializeElectronRemote();
 registerIpcHandler();

@@ -27,6 +27,7 @@ const registerRequestProxyLogin = mainToRenderer.on<RequestProxyLogin>(
 // Answer Proxy Login Request
 type AnswerProxyLoginRequest = (
     requestId: string,
+    host: string,
     username?: string,
     password?: string
 ) => void;

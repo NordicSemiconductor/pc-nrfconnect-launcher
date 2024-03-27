@@ -14,6 +14,7 @@ export type State = {
     loginRequest: {
         username: string;
         host: string;
+        realm?: string;
         requestIds: string[];
     };
     loginError: {
@@ -43,9 +44,8 @@ const slice = createSlice({
             }: PayloadAction<{ requestId: string; authInfo: AuthInfo }>
         ) {
             state.loginRequest.requestIds.push(requestId);
-            state.loginRequest.host = authInfo.realm
-                ? `${authInfo.host} (realm: ${authInfo.realm})`
-                : authInfo.host;
+            state.loginRequest.host = `${authInfo.host}:${authInfo.port}`;
+            state.loginRequest.realm = authInfo.realm;
         },
         loginCancelledByUser(state) {
             state.loginRequest.requestIds = [];

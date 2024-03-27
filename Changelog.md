@@ -1,3 +1,9 @@
+## 4.4.2 - Unreleased
+
+### Fixed
+
+-   Proxy settings are passed on to nRF Util CLI
+
 ## 4.4.1 - 2024-03-13
 
 ### Changed
