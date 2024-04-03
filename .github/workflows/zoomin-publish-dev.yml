@@ -1,4 +1,4 @@
-name: Publish documentation to Zoomin
+name: Publish documentation to Zoomin dev
 
 on:
   push:
