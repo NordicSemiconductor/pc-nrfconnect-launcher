@@ -12,7 +12,6 @@ The following applications are available from nRF Connect for Desktop. All of th
 | [Board Configurator](https://docs.nordicsemi.com/bundle/nrf-connect-board-configurator/page/index.html) | Update the board configuration on Nordic Development kits.   | Experimental  |
 | [Cellular Monitor](https://docs.nordicsemi.com/bundle/nrf-connect-cellularmonitor/page/index.html) | Cross-platform tool for Nordic Semiconductor nRF91 Series devices. It is used for capturing and analyzing modem traces to evaluate communication and view network parameters. | Supported |
 | [Direct Test Mode](https://docs.nordicsemi.com/bundle/nrf-connect-direct-test-mode/page/index.html)  | Perform RF PHY testing of Bluetooth Low Energy devices with the Bluetooth specified Direct Test Mode. | Supported |
-
 | [nPM PowerUP](https://docs.nordicsemi.com/bundle/nan_045/page/APP/nan_045/profiling_npm_powerup.html) | Profile your battery and generate a battery model.   | Supported  |
 | [Power Profiler](https://docs.nordicsemi.com/bundle/nrf-connect-ppk/page/index.html) | Measure the real-time power consumption of your designs. | Supported |
 | [Programmer](https://docs.nordicsemi.com/bundle/nrf-connect-programmer/page/index.html) | Program firmware to Nordic Semiconductor devices and inspect memory layout.  | Supported |
