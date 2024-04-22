@@ -28,13 +28,13 @@ export const callRegisteredCallback = (
     if (callback != null) {
         // set env for nrfutil
         let proxy = host;
-        if (username) {
-            proxy = `http://${username}:${password ?? ''}@${host}`;
+        if (username && password) {
+            proxy = `http://${username}:${password}@${host}`;
+            process.env.HTTP_PROXY = proxy;
+            process.env.HTTPS_PROXY = proxy;
+            process.env.http_proxy = proxy;
+            process.env.https_proxy = proxy;
         }
-        process.env.HTTP_PROXY = proxy;
-        process.env.HTTPS_PROXY = proxy;
-        process.env.http_proxy = proxy;
-        process.env.https_proxy = proxy;
 
         callback(username, password);
         loginRequests.delete(requestId);

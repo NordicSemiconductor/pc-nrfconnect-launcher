@@ -63,7 +63,7 @@ export default () => {
             <p>
                 {`The proxy server ${host} ${
                     realm ? `(realm: ${realm})` : ''
-                } requires authentication. Please enter username and password`}
+                } requires authentication. Enter your username and password.`}
             </p>
             <Form.Group controlId="username">
                 <Form.Label>Username:</Form.Label>

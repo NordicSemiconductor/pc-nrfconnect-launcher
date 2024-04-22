@@ -39,7 +39,7 @@ exports[`ProxyLoginDialog is displayed after a login is requested 1`] = `
           class="tw-select-text modal-body"
         >
           <p>
-            The proxy server host:4711 (realm: realm) requires authentication. Please enter username and password
+            The proxy server host:4711 (realm: realm) requires authentication. Enter your username and password.
           </p>
           <div
             class="form-group"
@@ -167,7 +167,7 @@ exports[`ProxyLoginDialog is updated if users enter a username 1`] = `
           class="tw-select-text modal-body"
         >
           <p>
-            The proxy server host:4711 (realm: realm) requires authentication. Please enter username and password
+            The proxy server host:4711 (realm: realm) requires authentication. Enter your username and password.
           </p>
           <div
             class="form-group"

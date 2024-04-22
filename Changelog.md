@@ -2,7 +2,7 @@
 
 ### Fixed
 
--   Proxy settings are passed on to nRF Util CLI
+-   Proxy settings are now correctly passed on to nRF Util CLI.
 
 ## 4.4.1 - 2024-03-13
 
