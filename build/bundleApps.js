@@ -28,6 +28,11 @@ const bundleNrfutilModule = (module, version) => {
     preparingSandbox.get(module).add(version);
 
     console.log(`Bundling nrfutil module ${module} version ${version}`);
+
+    const nrfutilSandboxFolder =
+        process.platform === 'darwin' && process.arch !== 'x64'
+            ? path.join('nrfutil-sandboxes', process.arch)
+            : 'nrfutil-sandboxes';
     execSync(
         `${path.join(
             'resources',
@@ -38,7 +43,7 @@ const bundleNrfutilModule = (module, version) => {
                 ...process.env,
                 NRFUTIL_HOME: path.join(
                     'resources',
-                    'nrfutil-sandboxes',
+                    nrfutilSandboxFolder,
                     module,
                     version
                 ),
