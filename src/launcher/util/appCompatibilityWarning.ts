@@ -5,6 +5,8 @@
  */
 
 import { launcherConfig } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import fs from 'fs';
+import path from 'path';
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
@@ -64,6 +66,49 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
           );
 };
 
+export const checkLegacyDependencies: AppCompatibilityChecker = (
+    app: LaunchableApp,
+    providedVersionOfEngine: string
+) => {
+    if (app?.installed.path == null) {
+        return undecided;
+    }
+
+    // The proxy app is an exceptions
+    if (app.name === 'pc-nrfconnect-ble') {
+        return undecided;
+    }
+
+    const packageJSONPath = path.join(app?.installed.path, 'package.json');
+
+    if (!fs.existsSync(packageJSONPath)) {
+        return undecided;
+    }
+
+    try {
+        const parsed = JSON.parse(fs.readFileSync(packageJSONPath, 'utf8')) as {
+            nrfConnectForDesktop?: {
+                nrfutil?: unknown;
+            };
+        };
+
+        if (!parsed.nrfConnectForDesktop?.nrfutil) {
+            return incompatible(
+                'The app only supports nRF Connect for Desktop' +
+                    `${app.engineVersion} and <=4.4.1, which does not match your ` +
+                    'currently installed version',
+                'The app only supports nRF Connect for Desktop' +
+                    `${app.engineVersion} and <=4.4.1 while your installed version is ` +
+                    `${providedVersionOfEngine}. Application will not work.`
+            );
+        }
+    } catch {
+        // nothing
+    }
+
+    return undecided;
+};
+
 const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
     const appIsRecentEnough =
         minimalRequiredAppVersions[app.name] == null ||
@@ -103,6 +148,7 @@ export default (
         checkEngineVersionIsSet,
         checkEngineIsSupported,
         checkMinimalRequiredAppVersions,
+        checkLegacyDependencies,
     ]) {
         const result = check(app, providedVersionOfEngine);
         if (result.isDecided) {

@@ -46,8 +46,6 @@ const lazy = {
     'react-dom': () => requireFromResources('react-dom.js'),
     'react-dom/client': () => requireFromResources('react-dom-client.js'),
     'react-redux': () => 'react-redux',
-    '@nordicsemiconductor/nrf-device-lib-js': () =>
-        '@nordicsemiconductor/nrf-device-lib-js',
     'prop-types/checkPropTypes': () =>
         requireFromResources('check-prop-types.js'),
     'scheduler/tracing': () => requireFromResources('scheduler-tracing.js'),
