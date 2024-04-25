@@ -5,8 +5,6 @@
  */
 
 import { launcherConfig } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import fs from 'fs';
-import path from 'path';
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
@@ -66,60 +64,28 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
           );
 };
 
-export const checkLegacyDependencies: AppCompatibilityChecker = (
-    app: LaunchableApp,
-    providedVersionOfEngine: string
-) => {
-    if (app?.installed.path == null) {
-        return undecided;
-    }
-
-    // The proxy app is an exceptions
-    if (app.name === 'pc-nrfconnect-ble') {
-        return undecided;
-    }
-
-    const packageJSONPath = path.join(app?.installed.path, 'package.json');
-
-    if (!fs.existsSync(packageJSONPath)) {
-        return undecided;
-    }
-
-    try {
-        const parsed = JSON.parse(fs.readFileSync(packageJSONPath, 'utf8')) as {
-            nrfConnectForDesktop?: {
-                nrfutil?: unknown;
-            };
-        };
-
-        if (!parsed.nrfConnectForDesktop?.nrfutil) {
-            return incompatible(
-                'The app only supports nRF Connect for Desktop' +
-                    `${app.engineVersion} and <=4.4.1, which does not match your ` +
-                    'currently installed version',
-                'The app only supports nRF Connect for Desktop' +
-                    `${app.engineVersion} and <=4.4.1 while your installed version is ` +
-                    `${providedVersionOfEngine}. Application will not work.`
-            );
-        }
-    } catch {
-        // nothing
-    }
-
-    return undecided;
-};
-
 const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
+    const minSupportedVersion = minimalRequiredAppVersions[app.name];
+    if (minSupportedVersion === null) {
+        return incompatible(
+            'This version of nRF Connect for Desktop does not support ' +
+                `this app.`,
+            `This version of nRF Connect for Desktop does not support ` +
+                `this app "${app.displayName}". Running the currently ` +
+                `installed version will not work.`
+        );
+    }
+
     const appIsRecentEnough =
         minimalRequiredAppVersions[app.name] == null ||
-        semver.gte(app.currentVersion, minimalRequiredAppVersions[app.name]);
+        semver.gte(app.currentVersion, minSupportedVersion);
 
     const fittingVersionExists =
         minimalRequiredAppVersions[app.name] != null &&
         isDownloadable(app) &&
         !isWithdrawn(app) &&
         app.latestVersion != null &&
-        semver.gte(app.latestVersion, minimalRequiredAppVersions[app.name]);
+        semver.gte(app.latestVersion, minSupportedVersion);
 
     return appIsRecentEnough
         ? undecided
@@ -135,7 +101,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
                       fittingVersionExists
                           ? ' Download the latest available version of this app.'
                           : ''
-                  } Running the currently installed version of this app might not work as expected.`
+                  } Running the currently installed version will not work.`
           );
 };
 
@@ -148,7 +114,6 @@ export default (
         checkEngineVersionIsSet,
         checkEngineIsSupported,
         checkMinimalRequiredAppVersions,
-        checkLegacyDependencies,
     ]) {
         const result = check(app, providedVersionOfEngine);
         if (result.isDecided) {
