@@ -69,10 +69,9 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
     if (minSupportedVersion === null) {
         return incompatible(
             'This version of nRF Connect for Desktop does not support ' +
-                `this app.`,
+                `this app anymore.`,
             `This version of nRF Connect for Desktop does not support ` +
-                `this app "${app.displayName}". Running the currently ` +
-                `installed version will not work.`
+                `this app "${app.displayName}". Running this will not work.`
         );
     }
 
