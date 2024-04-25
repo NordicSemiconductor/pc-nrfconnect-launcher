@@ -5,7 +5,10 @@
  */
 
 export default {
-    'pc-nrfconnect-cellularmonitor': '2.0.0',
+    'pc-nrfconnect-cellularmonitor':
+        process.platform === 'darwin' && process.arch !== 'x64'
+            ? '2.4.0'
+            : '1.0.3',
     'pc-nrfconnect-dtm': '2.2.0',
     'pc-nrfconnect-npm': '1.0.0',
     'pc-nrfconnect-ppk': '4.0.0',
