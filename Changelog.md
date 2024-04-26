@@ -3,8 +3,8 @@
 ### Removed
 
 -   Removed support for older apps that depended on nrf-device-js-binding. Only
-    apps that support nrfutil device cli will work with this version of nRF
-    Connect for desktop
+    apps that support nRF Util's device CLI will work with this version of nRF
+    Connect for Desktop.
 
 ## 4.4.1 - 2024-03-13
 
