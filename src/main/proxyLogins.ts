@@ -27,9 +27,8 @@ export const callRegisteredCallback = (
 
     if (callback != null) {
         // set env for nrfutil
-        let proxy = host;
         if (username && password) {
-            proxy = `http://${username}:${password}@${host}`;
+            const proxy = `http://${username}:${password}@${host}`;
             process.env.HTTP_PROXY = proxy;
             process.env.HTTPS_PROXY = proxy;
             process.env.http_proxy = proxy;
