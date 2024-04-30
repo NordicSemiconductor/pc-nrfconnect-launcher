@@ -5,12 +5,19 @@
  */
 
 export default {
-    'pc-nrfconnect-dtm': '2.0.4',
-    'pc-nrfconnect-gettingstarted': '2.1.1',
-    'pc-nrfconnect-linkmonitor': '2.0.3',
-    'pc-nrfconnect-ppk': '3.5.4',
-    'pc-nrfconnect-programmer': '3.0.5',
-    'pc-nrfconnect-rssi': '1.4.3',
-    'pc-nrfconnect-tracecollector-preview': '0.3.7',
-    'pc-nrfconnect-tracecollector': '1.1.4',
-} as Record<string, string>;
+    'pc-nrfconnect-cellularmonitor':
+        process.platform === 'darwin' && process.arch !== 'x64'
+            ? '2.4.0'
+            : '1.0.3',
+    'pc-nrfconnect-dtm': '2.2.0',
+    'pc-nrfconnect-npm': '1.0.0',
+    'pc-nrfconnect-ppk': '4.0.0',
+    'pc-nrfconnect-programmer': '4.0.0',
+    'pc-nrfconnect-rssi': '1.5.0',
+    'pc-nrfconnect-serial-terminal': '1.2.0',
+    'pc-nrfconnect-toolchain-manager': '1.3.0',
+    'pc-nrfconnect-gettingstarted': null,
+    'pc-nrfconnect-linkmonitor': null,
+    'pc-nrfconnect-tracecollector-preview': null,
+    'pc-nrfconnect-tracecollector': null,
+} as Record<string, string | null>;

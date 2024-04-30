@@ -12,6 +12,7 @@ release the new version.
 ### Fixed
 
 -   #989: Some strange source URLs could be handled wrong.
+-   #997: Broken link to the proxy settings docs.
 
 ## 4.4.0
 

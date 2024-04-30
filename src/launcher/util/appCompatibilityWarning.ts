@@ -65,16 +65,26 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
 };
 
 const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
+    const minSupportedVersion = minimalRequiredAppVersions[app.name];
+    if (minSupportedVersion === null) {
+        return incompatible(
+            'This version of nRF Connect for Desktop does not support ' +
+                `this app anymore.`,
+            `This version of nRF Connect for Desktop does not support ` +
+                `this app "${app.displayName}". Running this will not work.`
+        );
+    }
+
     const appIsRecentEnough =
         minimalRequiredAppVersions[app.name] == null ||
-        semver.gte(app.currentVersion, minimalRequiredAppVersions[app.name]);
+        semver.gte(app.currentVersion, minSupportedVersion);
 
     const fittingVersionExists =
         minimalRequiredAppVersions[app.name] != null &&
         isDownloadable(app) &&
         !isWithdrawn(app) &&
         app.latestVersion != null &&
-        semver.gte(app.latestVersion, minimalRequiredAppVersions[app.name]);
+        semver.gte(app.latestVersion, minSupportedVersion);
 
     return appIsRecentEnough
         ? undecided
@@ -90,7 +100,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
                       fittingVersionExists
                           ? ' Download the latest available version of this app.'
                           : ''
-                  } Running the currently installed version of this app might not work as expected.`
+                  } Running the currently installed version will not work.`
           );
 };
 
