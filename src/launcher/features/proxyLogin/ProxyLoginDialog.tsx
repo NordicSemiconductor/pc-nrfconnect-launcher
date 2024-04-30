@@ -22,21 +22,21 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const [password, setPassword] = useState('');
 
-    const { isVisible, username, host, requestIds } =
+    const { isVisible, username, host, realm, requestIds } =
         useLauncherSelector(getProxyLoginRequest);
 
     const cancel = useCallback(() => {
-        requestIds.forEach(id => proxyLogin.answerProxyLoginRequest(id));
+        requestIds.forEach(id => proxyLogin.answerProxyLoginRequest(id, host));
         dispatch(loginCancelledByUser());
-    }, [dispatch, requestIds]);
+    }, [dispatch, host, requestIds]);
 
     const login = useCallback(() => {
         requestIds.forEach(id =>
-            proxyLogin.answerProxyLoginRequest(id, username, password)
+            proxyLogin.answerProxyLoginRequest(id, host, username, password)
         );
         dispatch(loginRequestSent());
         setPassword('');
-    }, [dispatch, password, requestIds, username]);
+    }, [dispatch, host, password, requestIds, username]);
 
     const inputIsValid = useMemo(
         () => username !== '' && password !== '',
@@ -61,8 +61,9 @@ export default () => {
             onCancel={cancel}
         >
             <p>
-                The proxy server {host} requires authentication. Please enter
-                username and password
+                {`The proxy server ${host} ${
+                    realm ? `(realm: ${realm})` : ''
+                } requires authentication. Enter your username and password.`}
             </p>
             <Form.Group controlId="username">
                 <Form.Label>Username:</Form.Label>

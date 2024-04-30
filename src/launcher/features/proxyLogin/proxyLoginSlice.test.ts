@@ -20,9 +20,9 @@ import reducer, {
 const authInfo = {
     isProxy: true,
     scheme: 'https',
-    host: 'test host',
+    host: 'host',
     port: 4711,
-    realm: 'test realm',
+    realm: 'realm',
 };
 
 const asRootState = (proxyLogin: State) => ({ proxyLogin } as RootState);
@@ -33,10 +33,13 @@ describe('proxy login', () => {
             loginRequestedByServer({ requestId: 'test ID', authInfo }),
         ]);
 
-        const { isVisible, host } = getProxyLoginRequest(asRootState(state));
+        const { isVisible, host, realm } = getProxyLoginRequest(
+            asRootState(state)
+        );
 
         expect(isVisible).toBe(true);
-        expect(host).toBe('test host (realm: test realm)');
+        expect(host).toBe('host:4711');
+        expect(realm).toBe('realm');
     });
 
     it('hides login dialog when cancelled', () => {

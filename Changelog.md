@@ -6,6 +6,10 @@
     apps that support nRF Util's device CLI will work with this version of nRF
     Connect for Desktop.
 
+### Fixed
+
+-   Proxy settings are now correctly passed on to nRF Util CLI.
+
 ## 4.4.1 - 2024-03-13
 
 ### Changed
