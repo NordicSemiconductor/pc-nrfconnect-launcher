@@ -1,4 +1,4 @@
-# Installing nRF Connect for Desktop apps
+# Installing apps in nRF Connect for Desktop
 
 All applications available from nRF Connect for Desktop share the same installation instructions.
 

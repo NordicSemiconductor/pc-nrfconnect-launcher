@@ -29,6 +29,6 @@ repository. You need to set up these rules only once.
 ## Using behind proxy
 
 To use nRF Connect for Desktop and its applications behind a proxy, see the
-[proxy settings](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/blob/main/doc/non_mkdocs/proxy-settings.md) page.
+[Starting nRF Connect for Desktop with proxy settings](./proxy_settings.md) page.
 
 
