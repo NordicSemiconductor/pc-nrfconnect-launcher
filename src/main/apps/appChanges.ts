@@ -247,18 +247,20 @@ const download = async (app: AppSpec, version?: string) => {
     return {
         packageFilePath,
         checksum: versionToInstall.shasum,
+        publishTimestamp: versionToInstall.publishTimestamp,
     };
 };
 
 const addInstallMetaData = (
     app: AppSpec,
     appPath: string,
-    checksum?: string
+    checksum?: string,
+    publishTimestamp?: string
 ) => {
     writeAppInfo(
         {
             ...readAppInfo(app),
-            installed: { path: appPath, shasum: checksum },
+            installed: { path: appPath, shasum: checksum, publishTimestamp },
         },
         getSource(app.source)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
     );
@@ -268,13 +270,21 @@ export const installDownloadableApp = async (
     app: DownloadableApp,
     version?: string
 ): Promise<DownloadableApp> => {
-    const { packageFilePath, checksum } = await download(app, version);
+    const { packageFilePath, checksum, publishTimestamp } = await download(
+        app,
+        version
+    );
 
     if (isInstalled(app)) {
         await removeDownloadableApp(app);
     }
 
-    await installDownloadableAppCore(app, packageFilePath, checksum);
+    await installDownloadableAppCore(
+        app,
+        packageFilePath,
+        checksum,
+        publishTimestamp
+    );
 
     return addInstalledAppData(
         // @ts-expect-error -- Because the property `installed` was added above it must be there, I just do not know yet how to convince TypeScript of that
@@ -286,6 +296,7 @@ export const installDownloadableAppCore = async (
     app: AppSpec,
     packageFilePath: string,
     checksum: string | undefined,
+    publishTimestamp?: string,
     doDelete = true
 ) => {
     const appPath = installedAppPath(app);
@@ -294,5 +305,5 @@ export const installDownloadableAppCore = async (
         await deleteFile(packageFilePath);
     }
 
-    addInstallMetaData(app, appPath, checksum);
+    addInstallMetaData(app, appPath, checksum, publishTimestamp);
 };

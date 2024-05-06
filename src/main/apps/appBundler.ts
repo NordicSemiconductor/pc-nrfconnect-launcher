@@ -58,11 +58,12 @@ export const ensureBundledAppExists = async () => {
                     source: 'official',
                 };
                 const appInfo = readAppInfoFile(appSpec);
-                const { shasum } = appInfo.versions[version];
+                const { shasum, publishTimestamp } = appInfo.versions[version];
                 return installDownloadableAppCore(
                     appSpec,
                     tarBallFullPath,
                     shasum,
+                    publishTimestamp,
                     false
                 );
             }
