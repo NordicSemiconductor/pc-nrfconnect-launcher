@@ -10,6 +10,7 @@ import { enableMapSet } from 'immer';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
+import appleSilicon from './features/appleSilicon/appleSiliconSlice';
 import appDialogs from './features/apps/appDialogsSlice';
 import apps from './features/apps/appsSlice';
 import filter from './features/filter/filterSlice';
@@ -24,6 +25,7 @@ import telemetry from './features/telemetry/telemetrySlice';
 enableMapSet();
 
 export const reducer = {
+    appleSilicon,
     apps,
     appDialogs,
     errorDialog,
