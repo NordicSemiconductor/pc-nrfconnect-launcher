@@ -13,6 +13,7 @@ release the new version.
 
 -   #989: Some strange source URLs could be handled wrong.
 -   #997: Broken link to the proxy settings docs.
+-   #1010: Display publish date for non-official sources.
 
 ## 4.4.0
 
