@@ -10,12 +10,12 @@ described below.
 
 You can run nRF Connect for Desktop with the following proxy setting configuration:
 
-| Proxy setting flag  | Description | Parameters  |
-|---------------------|-------------|-------------|
-| `--no-proxy-server` | Do not use proxy. This overrides any other proxy settings provided. | None  |
-| `--proxy-server`    | Use a custom proxy configuration. | - `<scheme>=<uri>[:<port>][;...]` - A semi-colon-separated mapping of list scheme to URL/port pairs. </br> - `<uri>[:<port>]` - A single URI with optional port to use for all URLs. </br> - `"direct://"` - The special value that causes all connections to not use a proxy. |
-| `--proxy-pac-url`   | Use a custom PAC address. | `<pac-file-url>` - The URL of the PAC to use. |
-| `--proxy-bypass-list` | Disable the specified proxy for the given list of hosts. The flag must be used with `--proxy-server`. | `(<trailing_domain>|<ip-address>)[:<port>][;...]` |
+| Proxy setting flag    | Description | Parameters  |
+|-----------------------|-------------|-------------|
+| `--no-proxy-server`   | Do not use proxy. This overrides any other proxy settings provided. | None  |
+| `--proxy-server`      | Use a custom proxy configuration. | `<uri>[:<port>]` - A single URI with optional port to use for all URLs. |
+| `--proxy-pac-url`     | Use a custom PAC address. | `<pac-file-url>` - The URL of the PAC to use. |
+| `--proxy-bypass-list` | Disable the specified proxy for the given list of hosts. The flag must be used with `--proxy-server`. | `(<trailing_domain>|<ip-address>)[:<port>][;...]` - A shortened URL of the domain or the IP address, together with the the port to use for the URL or IP address. Providing the port is optional. |
 
 ## Specifying custom proxy settings
 
