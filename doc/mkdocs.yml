@@ -62,4 +62,5 @@ nav:
   - Supported operating systems: os_support.md
   - Requirements and installation: download_cfd.md
   - Overview: overview_cfd.md
-  - Installing nRF Connect for Desktop apps: installing_apps.md
+  - Installing apps in nRF Connect for Desktop: installing_apps.md
+  - Starting nRF Connect for Desktop with proxy settings: proxy_settings.md
