@@ -10,16 +10,25 @@ import { setDoNotShowAppleSiliconWarning } from '../../../ipc/persistedStore';
 import type { AppThunk } from '../../store';
 import { hideAppleSiliconDialog } from './appleSiliconSlice';
 
-export const confirm = (): AppThunk => dispatch => {
-    telemetry.sendEvent('IgnoreAppleSiliconWarning', {
+export const download = (): AppThunk => dispatch => {
+    telemetry.sendEvent('Apple Silicon Warning', {
+        ignored: false,
+    });
+    dispatch(hideAppleSiliconDialog());
+};
+
+export const ignore = (): AppThunk => dispatch => {
+    telemetry.sendEvent('Apple Silicon Warning', {
+        ignored: true,
         permanent: false,
     });
     dispatch(hideAppleSiliconDialog());
 };
 
 export const doNotShowAgain = (): AppThunk => dispatch => {
-    telemetry.sendEvent('IgnoreAppleSiliconWarning', {
-        permanent: false,
+    telemetry.sendEvent('Apple Silicon Warning', {
+        ignored: true,
+        permanent: true,
     });
     dispatch(hideAppleSiliconDialog());
     setDoNotShowAppleSiliconWarning();

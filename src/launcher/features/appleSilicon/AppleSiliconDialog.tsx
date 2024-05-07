@@ -9,11 +9,12 @@ import {
     DialogButton,
     ExternalLink,
     GenericDialog,
+    openUrl,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getIsTelemetryDialogVisible } from '../telemetry/telemetrySlice';
-import { confirm, doNotShowAgain } from './appleSiliconEffects';
+import { doNotShowAgain, download, ignore } from './appleSiliconEffects';
 import { getIsAppleSiliconDialogVisible } from './appleSiliconSlice';
 
 export default () => {
@@ -34,32 +35,40 @@ export default () => {
             headerIcon="alert"
             className="tw-preflight"
             isVisible={isVisible}
-            onHide={() => dispatch(confirm())}
+            onHide={() => dispatch(ignore())}
             title="Unsupported - Intel Build on Apple Silicon"
             footer={
                 <>
                     <DialogButton
                         variant="primary"
-                        onClick={() => dispatch(confirm())}
+                        onClick={() => {
+                            openUrl(
+                                'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/latest'
+                            );
+                            dispatch(download());
+                        }}
                     >
-                        OK
+                        Download
+                    </DialogButton>
+                    <DialogButton onClick={() => dispatch(ignore())}>
+                        Ignore
                     </DialogButton>
                     <DialogButton onClick={() => dispatch(doNotShowAgain())}>
-                        {`Don't show this again`}
+                        {`Don't show again`}
                     </DialogButton>
                 </>
             }
         >
-            <div className="">
+            <div>
                 <p>
                     nRF Connect for Desktop is now available natively for Apple
-                    Silicon. Click on this{' '}
+                    Silicon.{' '}
                     <ExternalLink
-                        label="link"
+                        label="Download the latest version of the launcher"
                         href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/latest"
-                    />{' '}
-                    to download the latest version. This is the only support way
-                    to use nRF Connect for Desktop on Apple Silicon machines.
+                    />
+                    . This is the only supported way to use nRF Connect for
+                    Desktop on Apple Silicon machines.
                 </p>
             </div>
         </GenericDialog>
