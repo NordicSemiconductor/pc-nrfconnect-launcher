@@ -91,3 +91,9 @@ export const getBundledAppInstalled = () =>
 
 export const setBundledAppInstalled = () =>
     store.set('lastBundledAppInstalledVersion', packageJson.version);
+
+export const setDoNotShowAppleSiliconWarning = () =>
+    store.set('doNotShowAppleSiliconWarning', true);
+
+export const getDoNotShowAppleSiliconWarning = () =>
+    store.get('doNotShowAppleSiliconWarning', false);

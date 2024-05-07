@@ -13,6 +13,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import About from './features/about/About';
+import AppleSiliconAlert from './features/appleSilicon/AppleSiliconAlert';
+import AppleSiliconDialog from './features/appleSilicon/AppleSiliconDialog';
 import AppList from './features/apps/AppList';
 import UpdateAvailableDialog from './features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog';
@@ -71,12 +73,15 @@ export default () => {
                     </Nav>
                     <Tab.Content>
                         <Tab.Pane eventKey="apps">
+                            <AppleSiliconAlert />
                             <AppList />
                         </Tab.Pane>
                         <Tab.Pane eventKey="settings">
+                            <AppleSiliconAlert />
                             <Settings />
                         </Tab.Pane>
                         <Tab.Pane eventKey="about">
+                            <AppleSiliconAlert />
                             <About />
                         </Tab.Pane>
                     </Tab.Content>
@@ -89,6 +94,7 @@ export default () => {
             <TelemetryDialog />
             <ProxyLoginDialog />
             <ProxyErrorDialog />
+            <AppleSiliconDialog />
             <QuickStartDialog />
         </ErrorBoundaryLauncher>
     );

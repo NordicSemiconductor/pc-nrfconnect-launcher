@@ -16,6 +16,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { getIsAppleSiliconDialogVisible } from '../appleSilicon/appleSiliconSlice';
 import { checkEngineAndLaunch } from '../apps/appsEffects';
 import { getOfficialQuickStartApp } from '../apps/appsSlice';
 import {
@@ -60,6 +61,11 @@ export default () => {
     const isTelemetryDialogVisible = useLauncherSelector(
         getIsTelemetryDialogVisible
     );
+
+    const isAppleSiliconDialogVisible = useLauncherSelector(
+        getIsAppleSiliconDialogVisible
+    );
+
     const quickStartApp = useLauncherSelector(getOfficialQuickStartApp);
 
     const dispatch = useLauncherDispatch();
@@ -67,6 +73,7 @@ export default () => {
     const isVisible =
         !isQuickStartInfoShownBefore &&
         !isTelemetryDialogVisible &&
+        !isAppleSiliconDialogVisible &&
         quickStartApp != null;
 
     const supportedDevices =
