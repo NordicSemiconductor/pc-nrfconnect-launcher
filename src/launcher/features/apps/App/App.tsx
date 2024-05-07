@@ -12,6 +12,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
 import { isInstalled, isUpdatable, isWithdrawn } from '../../../../ipc/apps';
+import { OFFICIAL } from '../../../../ipc/sources';
+import formatPublishTimestamp from '../../../util/formatTimestamp';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
@@ -77,6 +79,14 @@ const App = ({ app }: { app: DisplayedApp }) => {
                     <div className="small text-muted-more">
                         {app.source}
                         {isInstalled(app) && <>, v{app.currentVersion}</>}
+                        {isInstalled(app) && app.source !== OFFICIAL && (
+                            <>
+                                {formatPublishTimestamp(
+                                    app.installed.publishTimestamp
+                                )}
+                            </>
+                        )}
+
                         {isUpdatable(app) && (
                             <> (v{app.latestVersion} available)</>
                         )}
