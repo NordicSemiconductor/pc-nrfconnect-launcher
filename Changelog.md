@@ -1,5 +1,9 @@
 ## 5.0.0 - 2024-05-13
 
+### Added
+
+-   Support for Apple silicon.
+
 ### Removed
 
 -   Removed support for older apps that depended on `nrf-device-lib-js` binding.
