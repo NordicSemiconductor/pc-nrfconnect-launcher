@@ -1,8 +1,8 @@
-## 5.0.0 - Unreleased
+## 5.0.0 - 2024-05-13
 
 ### Removed
 
--   Removed support for older apps that depended on nrf-device-js-binding. Only
+-   Removed support for older apps that depended on `nrf-device-lib-js` binding. Only
     apps that support nRF Util's device CLI will work with this version of nRF
     Connect for Desktop.
 
