@@ -13,21 +13,39 @@ jobs:
             - name: Build
               uses: ./.github/actions/build-action
 
+            # - name: Fetch certificate file
+            #   shell: bash
+            #   env:
+            #       NORDIC_SIGNING_CERTIFICATE:
+            #           ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
+            #   run:
+            #       echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
+            #       ./nordic_signing_certificate.pfx
+            #   if: github.event_name != 'pull_request'
+
             - name: Fetch certificate file
               shell: bash
               env:
-                  NORDIC_SIGNING_CERTIFICATE:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
+                  SM_CLIENT_CERT_FILE_B64:
+                      ${{ secrets.NORDIC_SM_CLIENT_CERT_P12 }}
               run:
-                  echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
-                  ./nordic_signing_certificate.pfx
+                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode > ./Certificate_pkcs12.pfx
               if: github.event_name != 'pull_request'
 
+            - name: Set variables
+              shell: bash
+              run: |
+                echo "::set-output name=version::${GITHUB_REF#refs/tags/v}"
+                echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
+                echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
+                echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
+                echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
+            if: github.event_name != 'pull_request'
+
+            - name: Initiate the client tools setup
+              run: echo “The config file path ${{ steps.SSMClientToolSetup.outputs.PKCS11_CONFIG }}”
+
             - name: Run Electron Builder
-              env:
-                  CSC_LINK: ./nordic_signing_certificate.pfx
-                  CSC_KEY_PASSWORD:
-                      ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX_PASS }}
               run: npx electron-builder -p never --windows nsis:x64
               if: github.event_name != 'pull_request'
 
