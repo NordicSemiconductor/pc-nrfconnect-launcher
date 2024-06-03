@@ -29,21 +29,24 @@ jobs:
                   SM_CLIENT_CERT_FILE_B64:
                       ${{ secrets.NORDIC_SM_CLIENT_CERT_P12 }}
               run:
-                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode > ./Certificate_pkcs12.pfx
+                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode >
+                  ./Certificate_pkcs12.pfx
               if: github.event_name != 'pull_request'
 
             - name: Set variables
               shell: bash
               run: |
-                echo "::set-output name=version::${GITHUB_REF#refs/tags/v}"
-                echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
-                echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
-                echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
-                echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
-            if: github.event_name != 'pull_request'
+                  echo "::set-output name=version::${GITHUB_REF#refs/tags/v}"
+                  echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
+                  echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
+                  echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
+                  echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
+              if: github.event_name != 'pull_request'
 
             - name: Initiate the client tools setup
-              run: echo “The config file path ${{ steps.SSMClientToolSetup.outputs.PKCS11_CONFIG }}”
+              run:
+                  echo “The config file path ${{
+                  steps.SSMClientToolSetup.outputs.PKCS11_CONFIG }}”
 
             - name: Run Electron Builder
               run: npx electron-builder -p never --windows nsis:x64
