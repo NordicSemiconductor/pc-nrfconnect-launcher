@@ -13,6 +13,9 @@ jobs:
             - name: Build
               uses: ./.github/actions/build-action
 
+            - name: Code signing with Software Trust Manager
+              uses: digicert/ssm-code-signing@v0.0.2
+
             # - name: Fetch certificate file
             #   shell: bash
             #   env:
