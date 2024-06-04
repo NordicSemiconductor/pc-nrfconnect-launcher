@@ -13,19 +13,6 @@ jobs:
             - name: Build
               uses: ./.github/actions/build-action
 
-            - name: Code signing with Software Trust Manager
-              uses: digicert/ssm-code-signing@v0.0.2
-
-            # - name: Fetch certificate file
-            #   shell: bash
-            #   env:
-            #       NORDIC_SIGNING_CERTIFICATE:
-            #           ${{ secrets.NORDIC_SIGNING_CERTIFICATE_PFX }}
-            #   run:
-            #       echo "$NORDIC_SIGNING_CERTIFICATE" | base64 --decode >
-            #       ./nordic_signing_certificate.pfx
-            #   if: github.event_name != 'pull_request'
-
             - name: Fetch certificate file
               shell: bash
               env:
@@ -39,11 +26,19 @@ jobs:
             - name: Set variables
               shell: bash
               run: |
-                  echo "::set-output name=version::${GITHUB_REF#refs/tags/v}"
                   echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
                   echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
                   echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
                   echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
+                  echo "SM_CODE_SIGNING_CERT_SHA1_HASH=${{ env.NORDIC_SM_CERTIFICATE_SHA1_HASH }}" >> "$GITHUB_ENV"
+              if: github.event_name != 'pull_request'
+
+            - name: Code signing with Software Trust Manager
+              uses: digicert/ssm-code-signing@v0.0.2
+              env:
+                  SM_API_KEY: ${{ env.SM_API_KEY }}
+                  SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
+                  SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
               if: github.event_name != 'pull_request'
 
             - name: Initiate the client tools setup
