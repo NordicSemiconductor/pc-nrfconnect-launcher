@@ -7,12 +7,16 @@
 const { execSync } = require('child_process');
 
 exports.default = configuration => {
+    console.log('Start code signing');
     const keypairAlias = process.env.NORDIC_SM_KEYPAIR_ALIAS;
+
+    console.log(`Configuration path ${configuration.path}`);
     if (configuration.path) {
-        execSync(
+        const result = execSync(
             `smctl sign --keypair-alias=${keypairAlias} --input "${String(
                 configuration.path
             )}"`
         );
+        console.log(`Signing result ${result}`);
     }
 };
