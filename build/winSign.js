@@ -11,12 +11,17 @@ exports.default = configuration => {
     const keypairAlias = process.env.NORDIC_SM_KEYPAIR_ALIAS;
 
     console.log(`Configuration path ${configuration.path}`);
+    console.log(`Env variables ${process.env}`);
     if (configuration.path) {
-        const result = execSync(
-            `smctl sign --keypair-alias=${keypairAlias} --input "${String(
-                configuration.path
-            )}"`
-        );
-        console.log(`Signing result ${result}`);
+        try {
+            const result = execSync(
+                `smctl sign --keypair-alias=${keypairAlias} --input "${String(
+                    configuration.path
+                )}"`
+            );
+            console.log(`Signing result ${result}`);
+        } catch (error) {
+            console.log(error);
+        }
     }
 };
