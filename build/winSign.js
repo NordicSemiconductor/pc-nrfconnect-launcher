@@ -11,7 +11,7 @@ exports.default = configuration => {
     const keypairAlias = process.env.NORDIC_SM_KEYPAIR_ALIAS;
 
     console.log(`Configuration path ${configuration.path}`);
-    console.log(`Env variables ${process.env}`);
+    console.log(`Env variables ${JSON.stringify(process.env)}`);
     if (configuration.path) {
         try {
             const result = execSync(
