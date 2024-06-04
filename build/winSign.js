@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 
 exports.default = configuration => {
     console.log('Start code signing');
@@ -13,15 +13,13 @@ exports.default = configuration => {
     console.log(`Configuration path ${configuration.path}`);
     console.log(`Env variables ${JSON.stringify(process.env)}`);
     if (configuration.path) {
-        try {
-            const result = execSync(
-                `smctl sign --keypair-alias=${keypairAlias} --input "${String(
-                    configuration.path
-                )}"`
-            );
-            console.log(`Signing result ${result}`);
-        } catch (error) {
-            console.log(error);
-        }
+        exec(
+            `smctl sign --keypair-alias=${keypairAlias} --input "${String(
+                configuration.path
+            )}"`,
+            error => {
+                console.log(error);
+            }
+        );
     }
 };
