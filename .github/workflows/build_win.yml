@@ -77,7 +77,11 @@ jobs:
                   export DEBUG=electron-builder
                   export SM_LOG_LEVEL=TRACE
                   npx electron-builder -p never --windows nsis:x64
-                  ls ~/.signingmanager/logs
+                  cd ~/.signingmanager/logs
+                  ls
+                  cat smctl.log
+                  cat smksp.log
+                  cat smksp_cert_sync.log
               shell: bash
               if: github.event_name != 'pull_request'
 

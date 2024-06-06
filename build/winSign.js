@@ -29,7 +29,7 @@ exports.default = async configuration => {
                     stdio: 'inherit',
                 }
             );
-            console.log(`Signing succeeded`);
+            console.log(`Signing succeeded???`);
         } catch (e) {
             console.log(`Signing failed with error: ${e}`);
         }
