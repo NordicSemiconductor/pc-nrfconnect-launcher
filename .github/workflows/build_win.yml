@@ -10,8 +10,6 @@ jobs:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v4
-            - name: Build
-              uses: ./.github/actions/build-action
 
             - name: Fetch certificate file
               shell: bash
@@ -36,6 +34,9 @@ jobs:
                   echo "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools" >> $GITHUB_PATH
                   echo "C:\Program Files\DigiCert\DigiCert One Signing Manager Tools" >> $GITHUB_PATH
               if: github.event_name != 'pull_request'
+
+            - name: Build
+              uses: ./.github/actions/build-action
 
             # - name: Code signing with Software Trust Manager
             #   uses: digicert/ssm-code-signing@v0.0.2
