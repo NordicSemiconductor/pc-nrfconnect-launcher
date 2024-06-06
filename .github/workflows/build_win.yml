@@ -19,8 +19,7 @@ jobs:
                   SM_CLIENT_CERT_FILE_B64:
                       ${{ secrets.NORDIC_SM_CLIENT_CERT_P12 }}
               run: |
-                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode >
-                  ./Certificate_pkcs12.pfx
+                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode > ./Certificate_pkcs12.p12
                   cat /d/Certificate_pkcs12.p12
               if: github.event_name != 'pull_request'
 
