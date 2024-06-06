@@ -20,14 +20,18 @@ exports.default = configuration => {
     const keypairAlias = process.env.SM_KEYPAIR_ALIAS;
 
     if (configuration.path) {
-        const result = execSync(
-            `smctl sign --keypair-alias="${keypairAlias}" --input "${String(
-                configuration.path
-            )}"`,
-            {
-                stdio: 'inherit',
-            }
-        );
-        console.log(`Signing result ${result}`);
+        try {
+            execSync(
+                `smctl sign --keypair-alias="${keypairAlias}" --input "${String(
+                    configuration.path
+                )}"`,
+                {
+                    stdio: 'inherit',
+                }
+            );
+            console.log(`Signing succeeded`);
+        } catch (e) {
+            console.log(`Signing failed with error: ${e}`);
+        }
     }
 };
