@@ -6,7 +6,7 @@
 
 const { execSync } = require('child_process');
 
-exports.default = configuration => {
+exports.default = async configuration => {
     if (!process.env.SM_API_KEY) {
         console.info(`Skip signing because SM_API_KEY is not configured`);
         return;
@@ -21,7 +21,7 @@ exports.default = configuration => {
 
     if (configuration.path) {
         try {
-            execSync(
+            await execSync(
                 `smctl sign --keypair-alias="${keypairAlias}" --input "${String(
                     configuration.path
                 )}"`,

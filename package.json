@@ -83,7 +83,7 @@
             "target": "nsis",
             "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico",
-            "sign": "build/winSign.js",
+            "sign": "./build/winSign.js",
             "signingHashAlgorithms": [
                 "sha256"
             ]
