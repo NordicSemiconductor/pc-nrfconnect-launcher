@@ -73,7 +73,9 @@ jobs:
               if: github.event_name != 'pull_request'
 
             - name: Run Electron Builder
-              run: npx electron-builder -p never --windows nsis:x64
+              run: |
+                  SM_LOG_LEVEL=TRACE npx electron-builder -p never --windows nsis:x64
+                  echo %USERPROFILE%/.signingmanager/logs
               if: github.event_name != 'pull_request'
 
             - name: Upload
