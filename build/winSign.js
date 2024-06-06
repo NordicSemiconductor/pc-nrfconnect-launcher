@@ -21,15 +21,17 @@ exports.default = async configuration => {
 
     if (configuration.path) {
         try {
-            await execSync(
+            const output = await execSync(
                 `smctl sign --keypair-alias="${keypairAlias}" --input "${String(
                     configuration.path
-                )}"`,
+                )}"  --verbose`,
                 {
                     stdio: 'inherit',
                 }
-            );
-            console.log(`Signing succeeded???`);
+            )
+                .toString()
+                .trim();
+            console.log(`Signing succeeded???: ${output}`);
         } catch (e) {
             console.log(`Signing failed with error: ${e}`);
         }
