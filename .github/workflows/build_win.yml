@@ -64,6 +64,13 @@ jobs:
                   C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user
                   smksp_cert_sync.exe
               shell: cmd
+              if: github.event_name != 'pull_request'
+
+            - name: Certificates Sync
+              run: |
+                  smctl windows certsync
+              shell: cmd
+              if: github.event_name != 'pull_request'
 
             - name: Run Electron Builder
               run: npx electron-builder -p never --windows nsis:x64
