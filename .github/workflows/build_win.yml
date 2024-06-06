@@ -75,7 +75,7 @@ jobs:
             - name: Run Electron Builder
               run: |
                   SM_LOG_LEVEL=TRACE npx electron-builder -p never --windows nsis:x64
-                  echo %USERPROFILE%/.signingmanager/logs
+                  echo ~/.signingmanager/logs
               shell: bash
               if: github.event_name != 'pull_request'
 
