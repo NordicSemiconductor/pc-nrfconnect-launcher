@@ -7,17 +7,26 @@
 const { execSync } = require('child_process');
 
 exports.default = configuration => {
-    console.log('Start code signing');
-    const keypairAlias = process.env.NORDIC_SM_KEYPAIR_ALIAS;
+    if (!process.env.SM_API_KEY) {
+        console.info(`Skip signing because SM_API_KEY is not configured`);
+        return;
+    }
+    if (!process.env.SM_KEYPAIR_ALIAS) {
+        console.info(`Skip signing because SM_KEYPAIR_ALIAS is not configured`);
+        return;
+    }
 
-    console.log(`Configuration path ${configuration.path}`);
-    console.log(`Env variables ${process.env.NORDIC_SM_KEYPAIR_ALIAS}`);
-    console.log(`Env variables ${keypairAlias}`);
+    console.log('Start code signing');
+    const keypairAlias = process.env.SM_KEYPAIR_ALIAS;
+
     if (configuration.path) {
         const result = execSync(
-            `smctl sign --keypair-alias=${keypairAlias} --input "${String(
+            `smctl sign --keypair-alias="${keypairAlias}" --input "${String(
                 configuration.path
-            )}"`
+            )}"`,
+            {
+                stdio: 'inherit',
+            }
         );
         console.log(`Signing result ${result}`);
     }

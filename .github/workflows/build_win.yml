@@ -28,6 +28,7 @@ jobs:
               run: |
                   echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
                   echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
+                  echo "SM_KEYPAIR_ALIAS=${{ secrets.NORDIC_SM_KEYPAIR_ALIAS }}" >> "$GITHUB_ENV"
                   echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
                   echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
                   echo "SM_CODE_SIGNING_CERT_SHA1_HASH=${{ env.NORDIC_SM_CERTIFICATE_SHA1_HASH }}" >> "$GITHUB_ENV"
@@ -36,9 +37,13 @@ jobs:
             - name: Code signing with Software Trust Manager
               uses: digicert/ssm-code-signing@v0.0.2
               env:
+                  SM_HOST: ${{ env.SM_HOST }}
                   SM_API_KEY: ${{ env.SM_API_KEY }}
-                  SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
+                  SM_KEYPAIR_ALIAS: ${{ env.SM_KEYPAIR_ALIAS }}
                   SM_CLIENT_CERT_FILE: ${{ env.SM_CLIENT_CERT_FILE }}
+                  SM_CLIENT_CERT_PASSWORD: ${{ env.SM_CLIENT_CERT_PASSWORD }}
+                  SM_CODE_SIGNING_CERT_SHA1_HASH:
+                      ${{ env.SM_CODE_SIGNING_CERT_SHA1_HASH }}
               if: github.event_name != 'pull_request'
 
             - name: Initiate the client tools setup
