@@ -89,8 +89,21 @@ const initNrfutil = () => {
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
-    if (!fse.existsSync(nrfutilInAppPath)) {
+    const nrfutilBundledStats = fse.statSync(nrfutilBundled);
+
+    // if no nrfutil exists or if the on that exists is not last modifies on the same date
+    // resolution in seconds; copy file from bundle
+    if (
+        !fse.existsSync(nrfutilInAppPath) ||
+        Math.floor(nrfutilBundledStats.birthtime.getTime() / 1000) !==
+            Math.floor(fse.statSync(nrfutilInAppPath).mtimeMs / 1000)
+    ) {
         fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+        fse.utimes(
+            nrfutilInAppPath,
+            nrfutilBundledStats.atime,
+            nrfutilBundledStats.mtime
+        );
     }
 
     const nrfutilBundledSandboxes = path.join(
