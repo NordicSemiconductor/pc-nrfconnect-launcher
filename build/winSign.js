@@ -7,7 +7,7 @@
 const { execSync } = require('child_process');
 
 exports.default = configuration => {
-    if (configuration.path) {
+    if (!configuration.path) {
         console.info('Skip signing because configuration.path is undefined');
     }
 
