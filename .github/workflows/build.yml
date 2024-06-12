@@ -3,7 +3,7 @@ name: Build nRF Connect for Desktop
 on:
     workflow_dispatch:
         inputs:
-            sign:
+            sign_windows:
                 type: boolean
                 default: false
                 required: true

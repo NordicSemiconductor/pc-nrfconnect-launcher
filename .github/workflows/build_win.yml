@@ -3,7 +3,7 @@ name: Build nRF Connect for Desktop for Windows x64
 on:
     workflow_dispatch:
         inputs:
-            sign:
+            sign_windows:
                 type: boolean
                 default: false
                 required: true
@@ -23,7 +23,9 @@ jobs:
               run: |
                   echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode > /d/Certificate_pkcs12.p12
                   cat /d/Certificate_pkcs12.p12
-              if: ${{ github.event_name != 'pull_request' && inputs.sign}}
+              if:
+                  ${{ github.event_name != 'pull_request' &&
+                  inputs.sign_windows}}
 
             - name: Set variables
               shell: bash
@@ -37,7 +39,9 @@ jobs:
                   echo "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit" >> $GITHUB_PATH
                   echo "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools" >> $GITHUB_PATH
                   echo "C:\\Program Files\\DigiCert\\DigiCert One Signing Manager Tools" >> $GITHUB_PATH
-              if: ${{ github.event_name != 'pull_request' && inputs.sign}}
+              if:
+                  ${{ github.event_name != 'pull_request' &&
+                  inputs.sign_windows}}
 
             - name: Build
               uses: ./.github/actions/build-action
@@ -51,24 +55,21 @@ jobs:
                   C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user
                   smksp_cert_sync.exe
               shell: cmd
-              if: ${{ github.event_name != 'pull_request' && inputs.sign}}
+              if:
+                  ${{ github.event_name != 'pull_request' &&
+                  inputs.sign_windows}}
 
             - name: Certificates Sync
               run: |
                   smctl windows certsync
               shell: cmd
-              if: ${{ github.event_name != 'pull_request' && inputs.sign}}
+              if:
+                  ${{ github.event_name != 'pull_request' &&
+                  inputs.sign_windows}}
 
             - name: Run Electron Builder
               run: |
-                  export DEBUG=electron-builder
-                  export SM_LOG_LEVEL=TRACE
                   npx electron-builder -p never --windows nsis:x64
-                  # Keep the lines for debugging
-                  # cd ~/.signingmanager/logs
-                  # cat smctl.log
-                  # cat smksp.log
-                  # cat smksp_cert_sync.log
               shell: bash
               if: github.event_name != 'pull_request'
 
