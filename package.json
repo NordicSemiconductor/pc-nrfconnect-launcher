@@ -82,7 +82,11 @@
         "win": {
             "target": "nsis",
             "publisherName": "Nordic Semiconductor ASA",
-            "icon": "resources/icon.ico"
+            "icon": "resources/icon.ico",
+            "sign": "./build/winSign.js",
+            "signingHashAlgorithms": [
+                "sha256"
+            ]
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
