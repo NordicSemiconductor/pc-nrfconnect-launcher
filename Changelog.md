@@ -2,7 +2,7 @@
 
 ### Fixed
 
--   App crash on linux (Ubuntu 22.04).
+-   App crash on Linux (Ubuntu 22.04).
 
 ## 5.0.0 - 2024-05-13
 
