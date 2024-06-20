@@ -92,19 +92,18 @@ const initNrfutil = () => {
     const nrfutilBundledStats = fse.statSync(nrfutilBundled);
 
     const noNrfutilInstalled = !fse.existsSync(nrfutilInAppPath);
-    const installedAndBundledNrfutilDiffer =
-        Math.floor(nrfutilBundledStats.mtimeMs) !==
-        Math.floor(fse.statSync(nrfutilInAppPath).mtimeMs);
+    const installedNrfutilOlderThenBundledNrfutil =
+        Math.round(nrfutilBundledStats.mtimeMs) >
+        Math.round(fse.statSync(nrfutilInAppPath).mtimeMs);
 
-    // if no nrfutil exists or if the on that exists is not last modifies on the same date
-    // resolution in seconds; copy file from bundle
-    if (noNrfutilInstalled || installedAndBundledNrfutilDiffer) {
+    if (noNrfutilInstalled || installedNrfutilOlderThenBundledNrfutil) {
         fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
         fse.utimes(
             nrfutilInAppPath,
             nrfutilBundledStats.atime,
             nrfutilBundledStats.mtime
         );
+        logger.info('update nrfutil exe');
     }
 
     const nrfutilBundledSandboxes = path.join(
