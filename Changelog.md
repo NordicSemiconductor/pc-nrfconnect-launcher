@@ -1,3 +1,9 @@
+## 5.0.1 - Unreleased
+
+### Fixed
+
+-   Install JLink Legacy driver on Windows.
+
 ## 5.0.0 - 2024-05-13
 
 ### Added
