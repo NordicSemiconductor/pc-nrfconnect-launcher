@@ -10,7 +10,7 @@ const downloadFile = require('./downloadFile');
 
 const allConfigs = {
     win32: {
-        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables//x86_64-pc-windows-msvc/nrfutil.exe',
+        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/x86_64-pc-windows-msvc/nrfutil.exe',
         localFile: 'nrfutil.exe',
         makeFileExecutable: false,
     },
