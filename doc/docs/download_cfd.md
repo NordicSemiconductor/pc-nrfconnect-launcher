@@ -14,15 +14,19 @@ Running nRF Connect for Desktop has the following additional requirements.
 
 ### SEGGER J-Link driver
 
-Required on all platforms. On Windows, the driver comes bundled with nRF Connect for Desktop.
+Required on all platforms.
+
+On Windows, the driver comes bundled with nRF Connect for Desktop.
 
 On macOS and Linux, you must install the driver manually.
 Download the installer for your platform from [SEGGER J-Link Software](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack).
-If you don't install the J-Link driver, running the apps will fail and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
+If you don't install the J-Link driver, running the apps will be very limited and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
 
-### Installing libusb-1.0 and nrf-udev on Linux
+### Installing libusb-1.0-0 and nrf-udev on Linux
 
-libusb-1.0 usually comes installed with Ubuntu, and nrf-udev can be installed by downloading a DEB file from the [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) project repository.
+libusb-1.0-0 usually comes installed with Ubuntu.
+
+nrf-udev can be installed by downloading a DEB file from the [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) project repository.
 
 The _udev_ rules are required to access Nordic USB devices with correct permissions.
 You need to set up these rules only once.
