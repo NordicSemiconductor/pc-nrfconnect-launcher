@@ -10,17 +10,17 @@ const downloadFile = require('./downloadFile');
 
 const allConfigs = {
     win32: {
-        url: 'https://developer.nordicsemi.com/.pc-tools/nrfutil/x64-windows/nrfutil.exe',
+        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/x86_64-pc-windows-msvc/nrfutil.exe',
         localFile: 'nrfutil.exe',
         makeFileExecutable: false,
     },
     darwin: {
-        url: 'https://developer.nordicsemi.com/.pc-tools/nrfutil/universal-osx/nrfutil',
+        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/universal-apple-darwin/nrfutil',
         localFile: 'nrfutil',
         makeFileExecutable: true,
     },
     linux: {
-        url: 'https://developer.nordicsemi.com/.pc-tools/nrfutil/x64-linux/nrfutil',
+        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/x86_64-unknown-linux-gnu/nrfutil',
         localFile: 'nrfutil',
         makeFileExecutable: true,
     },
