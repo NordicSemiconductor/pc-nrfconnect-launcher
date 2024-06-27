@@ -113,7 +113,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         'Encoding=UTF-8',
         `Version=${app.currentVersion}`,
         `Name=${fileName}`,
-        `Exec=${getElectronExePath()} ${args}`,
+        `Exec=${getElectronExePath().replace(/ /g, '\\ ')} ${args}`,
         'Terminal=false',
         `Icon=${icon}`,
         'Type=Application',
