@@ -93,8 +93,9 @@ const initNrfutil = () => {
 
     const noNrfutilInstalled = !fse.existsSync(nrfutilInAppPath);
     const installedNrfutilOlderThenBundledNrfutil =
+        nrfutilInAppPath ||
         Math.round(nrfutilBundledStats.mtimeMs) >
-        Math.round(fse.statSync(nrfutilInAppPath).mtimeMs);
+            Math.round(fse.statSync(nrfutilInAppPath).mtimeMs);
 
     if (noNrfutilInstalled || installedNrfutilOlderThenBundledNrfutil) {
         fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
