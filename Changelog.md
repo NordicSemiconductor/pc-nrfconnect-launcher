@@ -4,6 +4,8 @@
 
 -   Installation of the J-Link legacy driver on Windows.
 -   App crash on Linux (Ubuntu 22.04).
+-   Linux: Application shortcuts now also work for when the path to nRF Connect
+    for Desktop contains spaces.
 
 ## 5.0.0 - 2024-05-13
 
