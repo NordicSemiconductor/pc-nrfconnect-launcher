@@ -1,3 +1,11 @@
+## 5.0.2 - Unreleased
+
+### Fixed
+
+-   Recovers form invalid nrfutil module installation.
+-   Progress bar shows correct progress when installing multiple app at the same
+    time that depend on the same nrfuil.
+
 ## 5.0.1 - 2024-07-09
 
 ### Fixed
