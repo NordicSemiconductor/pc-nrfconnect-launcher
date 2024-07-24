@@ -3,8 +3,9 @@
 ### Fixed
 
 -   Implemented recovery from invalid nRF Util module installations.
--   Corrected the progress bar behavior to accurately reflect the installation progress
-    when multiple applications relying on the same nRF Util are being installed simultaneously.
+-   Corrected the progress bar behavior to accurately reflect the installation
+    progress when multiple applications relying on the same nRF Util are being
+    installed simultaneously.
 
 ## 5.0.1 - 2024-07-09
 
