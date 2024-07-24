@@ -2,9 +2,8 @@
 
 ### Fixed
 
--   Recovers form invalid nrfutil module installation.
--   Progress bar shows correct progress when installing multiple app at the same
-    time that depend on the same nrfuil.
+-   Implemented recovery from invalid nRF Util module installations.
+-   Corrected the progress bar behavior to accurately reflect the installation progress when multiple applications relying on the same nRF Util are being installed simultaneously.
 
 ## 5.0.1 - 2024-07-09
 
