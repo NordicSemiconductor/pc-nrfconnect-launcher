@@ -1,12 +1,18 @@
 # Requirements and installation
 
-Download nRF Connect for Desktop's executable from Nordic Semiconductor's [website](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-desktop).
+To install nRF Connect for Desktop, complete the following steps:
+
+1. Open Nordic Semiconductor's [nRF Connect for Desktop product website](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-desktop).
+2. Scroll to the Downloads section.
+3. Download the executable for your operating system.
+   See also the list of [Supported operating systems](./os_support.md).
+4. Make sure you meet all the [additional requirements](#additional-requirements).
+5. Run the executable to install and start the launcher.
+
+You will then see the list of available apps.
+See the [Launcher overview](overview_cfd.md) and [Installing nRF Connect for Desktop apps](installing_apps.md) pages for more information.
 
 All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
-See also the list of [Supported operating systems](./os_support.md).
-
-After installing and starting the launcher, you will see the list of available apps.
-See the [Launcher overview](overview_cfd.md) and [Installing nRF Connect for Desktop apps](installing_apps.md) pages for more information.
 
 ## Additional requirements
 
