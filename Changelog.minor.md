@@ -11,10 +11,8 @@ release the new version.
 
 ### Fixed
 
--   #1037: Add padding on the right to align "Update all apps" button with the
-    list vertically.
--   #1037: Visually aligning distances between list of the apps to the filters
-    bar on the top and to the scroll bar.
+-   #1037: Aligned "Update all apps" button with the list of the apps
+    vertically.
 
 ## 4.4.1 - 5.0.2
 
