@@ -85,7 +85,6 @@ body {
 
     .content-container {
         overflow-anchor: none;
-        padding-right: 0.375rem;
     }
 
     .with-scrollbar {
@@ -93,6 +92,7 @@ body {
         height: calc(100vh - 64px - 16px - 16px);
         margin-right: -14px;
         overflow-y: overlay;
+        scrollbar-gutter: stable;
         @include scrollbars($gray-100);
     }
     .filter-adjusted-height {
@@ -226,7 +226,6 @@ body {
     position: sticky;
     background-color: $body-bg;
     align-items: start;
-    padding-right: 0.375rem;
 
     > * {
         margin-left: 0.75em;
