@@ -11,6 +11,15 @@ release the new version.
 
 ### Fixed
 
+-   #1037: Add padding on the right to align "Update all apps" button with the
+    list vertically.
+-   #1037: Visually aligning distances between list of the apps to the filters
+    bar on the top and to the scroll bar.
+
+## 4.4.1 - 5.0.2
+
+### Fixed
+
 -   #989: Some strange source URLs could be handled wrong.
 -   #997: Broken link to the proxy settings docs.
 -   #1010: Display publish date for non-official sources.
