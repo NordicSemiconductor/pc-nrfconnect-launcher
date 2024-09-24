@@ -85,7 +85,7 @@ body {
 
     .content-container {
         overflow-anchor: none;
-        padding-right: 14px;
+        padding-right: 0.375rem;
     }
 
     .with-scrollbar {
@@ -226,6 +226,7 @@ body {
     position: sticky;
     background-color: $body-bg;
     align-items: start;
+    padding-right: 0.375rem;
 
     > * {
         margin-left: 0.75em;
