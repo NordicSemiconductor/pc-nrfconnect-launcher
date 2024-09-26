@@ -11,6 +11,13 @@ release the new version.
 
 ### Fixed
 
+-   #1037: Aligned "Update all apps" button with the list of the apps
+    vertically.
+
+## 4.4.1 - 5.0.2
+
+### Fixed
+
 -   #989: Some strange source URLs could be handled wrong.
 -   #997: Broken link to the proxy settings docs.
 -   #1010: Display publish date for non-official sources.
