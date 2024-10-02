@@ -16,35 +16,37 @@ All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
 ## Additional requirements
 
-Running nRF Connect for Desktop has the following additional requirements.
+Running nRF Connect for Desktop has the following additional requirements:
 
-### SEGGER J-Link driver
+- [**SEGGER J-Link** v7.94e](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) - required for all platforms.
 
-Required on all platforms.
+    - On Windows, the driver comes bundled with nRF Connect for Desktop.
+    - On macOS and Linux, you must install the driver manually. Download the installer for your platform from [SEGGER J-Link Software](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack).
 
-On Windows, the driver comes bundled with nRF Connect for Desktop.
+     If you don't install the J-Link driver, running the apps will be very limited and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
 
-On macOS and Linux, you must install the driver manually.
-Download the installer for your platform from [SEGGER J-Link Software](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack).
-If you don't install the J-Link driver, running the apps will be very limited and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
+- For Linux:
 
-### Installing libusb-1.0-0 and nrf-udev on Linux
+    - **libusb-1.0-0** - Usually comes installed with Ubuntu and you can install it with the following command:
 
-libusb-1.0-0 usually comes installed with Ubuntu.
+        ```
+        sudo apt install libusb-1.0-0
+        ```
 
-nrf-udev can be installed by downloading a DEB file from the [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) project repository.
+    - **nrf-udev** - The _udev_ rules are required to access Nordic USB devices with correct permissions. Download the latest DEB file from [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev) and run the following command to install nrf-udev:
 
-The _udev_ rules are required to access Nordic USB devices with correct permissions.
-You need to set up these rules only once.
+        ```
+        sudo dpkg -i nrf-udev_1.0.1-all.deb
+        ```
 
-Complete the following steps:
+    - **libfuse2** - Required for Ubuntu v22.04 and above to run `AppImage` applications.
+      You can install it with the following command:
 
-1. Download the latest DEB file from [nrf-udev](https://github.com/NordicSemiconductor/nrf-udev).
-2. Run the following command to install nrf-udev:
-
-    ```
-    sudo dpkg -i nrf-udev_1.0.1-all.deb
-    ```
+        ```
+        sudo add-apt-repository universe
+        sudo apt-get update
+        sudo apt install libfuse2
+        ```
 
 ## Using behind proxy
 
