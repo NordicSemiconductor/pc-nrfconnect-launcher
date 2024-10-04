@@ -104,19 +104,20 @@ describe('check compatibility of an app with the launcher', () => {
 
                     it(`${description}, with app spec ${inspect(
                         appSpec
-                    )} and engine spec ${inspect(engineSpec)}`, () => {
-                        const compatibilityWarning = appCompatibilityWarning(
-                            appSpec,
-                            providedVersionOfEngine
-                        );
+                    )} and engine spec ${inspect(engineSpec)}`, async () => {
+                        const compatibilityWarning =
+                            await appCompatibilityWarning(
+                                appSpec,
+                                providedVersionOfEngine
+                            );
                         expect(compatibilityWarning?.warning).toBeDefined();
                         expect(compatibilityWarning?.longWarning).toBeDefined();
                     });
                 }
             );
 
-            it('The app version is too old according to the list of minimal required versions', () => {
-                const compatibilityWarning = appCompatibilityWarning(
+            it('The app version is too old according to the list of minimal required versions', async () => {
+                const compatibilityWarning = await appCompatibilityWarning(
                     createDownloadableTestApp('pc-nrfconnect-dtm', {
                         currentVersion: '2.0.3',
                         engineVersion: '1.0.0',

@@ -21,7 +21,7 @@ import { hideSource } from '../filter/filterSlice';
 import { setCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import AppList from './AppList';
 import {
-    checkEngineAndLaunch,
+    checkCompatabilityThenLaunch,
     installDownloadableApp,
     removeDownloadableApp,
 } from './appsEffects';
@@ -196,7 +196,7 @@ describe('AppList', () => {
     });
 
     it('should invoke checkEngineAndLaunch with given app item when Open is clicked', async () => {
-        mockThunk(checkEngineAndLaunch);
+        mockThunk(checkCompatabilityThenLaunch);
         const user = userEvent.setup();
 
         render(
@@ -209,7 +209,7 @@ describe('AppList', () => {
 
         await user.click(screen.getByTitle(`Open ${installedApp.displayName}`));
 
-        expect(checkEngineAndLaunch).toHaveBeenCalledWith(
+        expect(checkCompatabilityThenLaunch).toHaveBeenCalledWith(
             expect.objectContaining(installedApp)
         );
     });

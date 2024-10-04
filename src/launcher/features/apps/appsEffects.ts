@@ -230,22 +230,23 @@ export const launch = (app: LaunchableApp) => {
     openWindow.openApp(app);
 };
 
-export const checkEngineAndLaunch =
+export const checkCompatabilityThenLaunch =
     (app: LaunchableApp): AppThunk =>
     dispatch => {
-        const compatibilityWarning = appCompatibilityWarning(app);
-        const launchAppWithoutWarning =
-            compatibilityWarning == null ||
-            launcherConfig().isRunningLauncherFromSource;
+        appCompatibilityWarning(app).then(compatibilityWarning => {
+            const launchAppWithoutWarning =
+                compatibilityWarning == null ||
+                launcherConfig().isRunningLauncherFromSource;
 
-        if (launchAppWithoutWarning) {
-            launch(app);
-        } else {
-            dispatch(
-                showConfirmLaunchDialog({
-                    app,
-                    text: compatibilityWarning.longWarning,
-                })
-            );
-        }
+            if (launchAppWithoutWarning) {
+                launch(app);
+            } else {
+                dispatch(
+                    showConfirmLaunchDialog({
+                        app,
+                        text: compatibilityWarning.longWarning,
+                    })
+                );
+            }
+        });
     };
