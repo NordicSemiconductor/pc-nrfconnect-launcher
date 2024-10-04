@@ -16,8 +16,10 @@ const hiddenDialog = {
 } as const;
 
 type VisibleConfirmLaunchDialog = ReturnType<typeof visibleConfirmLaunchDialog>;
-const visibleConfirmLaunchDialog = (text: string, app: LaunchableApp) =>
-    ({ isVisible: true, text, app } as const);
+const visibleConfirmLaunchDialog = (
+    text: React.ReactNode,
+    app: LaunchableApp
+) => ({ isVisible: true, text, app } as const);
 
 type VisibleInstallOtherVersionDialog = ReturnType<
     typeof visibleInstallOtherVersionDialog
@@ -41,7 +43,12 @@ const slice = createSlice({
     reducers: {
         showConfirmLaunchDialog(
             state,
-            { payload }: PayloadAction<{ text: string; app: LaunchableApp }>
+            {
+                payload,
+            }: PayloadAction<{
+                text: React.ReactNode;
+                app: LaunchableApp;
+            }>
         ) {
             state.confirmLaunch = visibleConfirmLaunchDialog(
                 payload.text,

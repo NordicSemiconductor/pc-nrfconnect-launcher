@@ -1,5 +1,9 @@
 ## 5.0.3 - Unrelesed
 
+### Added
+
+-   JLink Warning when Application does not find the expected JLink version.
+
 ### Updated
 
 -   Bundeled J-Link Version to 7.94i for windows.
