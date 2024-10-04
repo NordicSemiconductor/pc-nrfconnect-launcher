@@ -1,3 +1,9 @@
+## 5.0.3 - Unrelesed
+
+### Updated
+
+-   Bundeled J-Link Version to 7.94i for windows.
+
 ## 5.0.2 - 2024-07-24
 
 ### Fixed
