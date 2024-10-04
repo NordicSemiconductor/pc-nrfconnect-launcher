@@ -141,14 +141,13 @@ const checkJLinkRequierments: AppCompatibilityChecker = async (
 
     const requiredVerion = nrfutilDeviceToJLink(deviceVerison);
 
-    const sandbox = await getSandbox(getUserDataDir(), 'device', deviceVerison);
+    const userDir = getUserDataDir();
+    const sandbox = await getSandbox(userDir, 'device', deviceVerison);
     const moduleVersion = await sandbox.getModuleVersion();
     const jlinkVersion = resolveModuleVersion(
         'JlinkARM',
         moduleVersion.dependencies
     );
-
-    console.log(jlinkVersion);
 
     if (!jlinkVersion) {
         return incompatible(
@@ -168,7 +167,7 @@ const checkJLinkRequierments: AppCompatibilityChecker = async (
 
     if (jlinkVersion?.expectedVersion) {
         return incompatible(
-            `Untested version of J-Link Found. Expected ${jlinkVersion.expectedVersion.version}`,
+            `Untested version of J-Link Found. Expected ${jlinkVersion.expectedVersion.version}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
                     {`This app requires a J-Link ${jlinkVersion.expectedVersion.version} but nrfutil device version ${deviceVerison} found ${jlinkVersion.version}.`}
