@@ -132,6 +132,10 @@ const nrfutilDeviceToJLink = (device: string) => {
 const checkJLinkRequierments: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
+    if (!isDownloadable(app)) {
+        return undecided;
+    }
+
     const deviceVerison =
         app.versions?.[app.currentVersion]?.nrfutilModules?.device?.at(0);
 
