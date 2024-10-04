@@ -217,7 +217,7 @@ describe('check compatibility of an app with the launcher', () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Unable to detect J-link Version. Expected JLink_V7.80c.'
+                    'Unable to detect J-link Version. Expected JLink_V7.88j.'
                 );
             });
 
