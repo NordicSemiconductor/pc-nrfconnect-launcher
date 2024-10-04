@@ -112,15 +112,15 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
 };
 
 const nrfutilDeviceToJLink = (device: string) => {
-    if (semver.gte(device, '1.4.4') && semver.lte(device, '2.0.2')) {
+    if (semver.gte(device, '1.4.4') && semver.lt(device, '2.0.0')) {
         return 'V7.80c';
     }
 
-    if (semver.gte(device, '2.0.2') && semver.lte(device, '2.0.3')) {
+    if (semver.gte(device, '2.0.0') && semver.lt(device, '2.1.0')) {
         return 'V7.88j';
     }
 
-    if (semver.gte(device, '2.1.1') && semver.lte(device, '2.5.3')) {
+    if (semver.gte(device, '2.1.0') && semver.lt(device, '2.5.44')) {
         return 'V7.94e';
     }
 
