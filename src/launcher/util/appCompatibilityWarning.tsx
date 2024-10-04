@@ -4,14 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { launcherConfig } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import React from 'react';
+import {
+    getUserDataDir,
+    launcherConfig,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
+import getSandbox from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
+import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
 const undecided = { isDecided: false } as const;
-const incompatible = (warning: string, longWarning: string) =>
+const incompatible = (warning: string, longWarning: React.ReactNode) =>
     ({
         isDecided: true,
         isCompatible: false,
@@ -25,7 +32,7 @@ type Incompatible = ReturnType<typeof incompatible>;
 type AppCompatibilityChecker = (
     app: LaunchableApp,
     providedVersionOfEngine: string
-) => Undecided | Incompatible;
+) => Promise<Undecided | Incompatible> | Undecided | Incompatible;
 
 export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
@@ -104,17 +111,93 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
           );
 };
 
-export default (
+const nrfutilDeviceToJLink = (device: string) => {
+    if (semver.gte(device, '1.4.4') && semver.lte(device, '2.0.2')) {
+        return 'V7.80c';
+    }
+
+    if (semver.gte(device, '2.0.2') && semver.lte(device, '2.0.3')) {
+        return 'V7.88j';
+    }
+
+    if (semver.gte(device, '2.1.1') && semver.lte(device, '2.5.3')) {
+        return 'V7.94e';
+    }
+
+    if (semver.gte(device, '2.5.4')) {
+        return 'V7.94i';
+    }
+};
+
+const checkJLinkRequierments: AppCompatibilityChecker = async (
+    app: LaunchableApp
+) => {
+    const deviceVerison =
+        app.versions?.[app.currentVersion]?.nrfutilModules?.device?.at(0);
+
+    if (!deviceVerison) {
+        return undecided;
+    }
+
+    const requiredVerion = nrfutilDeviceToJLink(deviceVerison);
+
+    const sandbox = await getSandbox(getUserDataDir(), 'device', deviceVerison);
+    const moduleVersion = await sandbox.getModuleVersion();
+    const jlinkVersion = resolveModuleVersion(
+        'JlinkARM',
+        moduleVersion.dependencies
+    );
+
+    console.log(jlinkVersion);
+
+    if (!jlinkVersion) {
+        return incompatible(
+            `Unable to detect J-link Version. Expected JLink_${requiredVerion}.`,
+            <div className="tw-flex tw-flex-col tw-gap-2">
+                <div>
+                    {`This app requires a J-Link installation to work. Nrfutil device version ${deviceVerison} was unable to find J-Link Dlls`}
+                </div>
+                <div>{`Make sure that Jlink version ${requiredVerion} is installed.`}</div>
+                <div>
+                    You can download the tested version from from{' '}
+                    <Link href="https://www.segger.com/downloads/jlink/" />
+                </div>
+            </div>
+        );
+    }
+
+    if (jlinkVersion?.expectedVersion) {
+        return incompatible(
+            `Untested version of J-Link Found. Expected ${jlinkVersion.expectedVersion.version}`,
+            <div className="tw-flex tw-flex-col tw-gap-2">
+                <div>
+                    {`This app requires a J-Link ${jlinkVersion.expectedVersion.version} but nrfutil device version ${deviceVerison} found ${jlinkVersion.version}.`}
+                </div>
+                <div>Things might not work as expected!.</div>
+                <div>
+                    You can download the tested version from from{' '}
+                    <Link href="https://www.segger.com/downloads/jlink/" />
+                </div>
+            </div>
+        );
+    }
+
+    return undecided;
+};
+
+export default async (
     app: LaunchableApp,
     providedVersionOfEngine = launcherConfig().launcherVersion
-): undefined | { warning: string; longWarning: string } => {
+): Promise<undefined | { warning: string; longWarning: React.ReactNode }> => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
         checkEngineIsSupported,
         checkMinimalRequiredAppVersions,
+        checkJLinkRequierments,
     ]) {
-        const result = check(app, providedVersionOfEngine);
+        // eslint-disable-next-line no-await-in-loop
+        const result = await check(app, providedVersionOfEngine);
         if (result.isDecided) {
             return { warning: result.warning, longWarning: result.longWarning };
         }
