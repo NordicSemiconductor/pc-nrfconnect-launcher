@@ -1,8 +1,8 @@
 ## 5.0.3 - Unrelesed
 
-### Updated
+### Changed
 
--   Bundeled J-Link Version to 7.94i for windows.
+-   Updated bundled SEGGER J-Link to v7.94i for Windows.
 
 ## 5.0.2 - 2024-07-24
 
