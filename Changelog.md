@@ -2,7 +2,8 @@
 
 ### Changed
 
--   Updated bundled SEGGER J-Link to v7.94i for Windows.
+-   Bundled SEGGER J-Link to v7.94i for Windows.
+-   Minor fixes and improvements.
 
 ## 5.0.2 - 2024-07-24
 

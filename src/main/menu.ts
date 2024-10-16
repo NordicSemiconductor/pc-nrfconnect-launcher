@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { app, BrowserWindow, Menu, MenuItem } from 'electron';
+import { BaseWindow, Menu, MenuItem } from 'electron';
 
 const isMac = process.platform === 'darwin';
 
@@ -16,16 +16,12 @@ export default () =>
                 {
                     label: '&Quit nRF Connect for Desktop',
                     accelerator: 'CmdOrCtrl+Q',
-                    click: () => {
-                        app.quit();
-                    },
+                    role: 'quit',
                 },
                 {
                     label: '&Close Window',
                     accelerator: 'CmdOrCtrl+W',
-                    click: (_, browserWindow) => {
-                        browserWindow?.close();
-                    },
+                    role: 'close',
                 },
             ],
         },
@@ -56,7 +52,7 @@ export default () =>
                 {
                     label: '&Restart Window',
                     accelerator: 'CmdOrCtrl+R',
-                    click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
+                    click: (_item: MenuItem, focusedWindow?: BaseWindow) => {
                         if (focusedWindow) {
                             focusedWindow.emit('restart-window');
                         }
@@ -65,23 +61,13 @@ export default () =>
                 {
                     label: 'Toggle &Full Screen',
                     accelerator: isMac ? 'Ctrl+Command+F' : 'F11',
-                    click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
-                        if (focusedWindow) {
-                            focusedWindow.setFullScreen(
-                                !focusedWindow.isFullScreen()
-                            );
-                        }
-                    },
+                    role: 'togglefullscreen',
                 },
                 {
                     label: 'Toggle &Developer Tools',
                     accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
                     visible: true,
-                    click: (_item: MenuItem, focusedWindow?: BrowserWindow) => {
-                        if (focusedWindow) {
-                            focusedWindow.webContents.toggleDevTools();
-                        }
-                    },
+                    role: 'toggleDevTools',
                 },
             ],
         },
