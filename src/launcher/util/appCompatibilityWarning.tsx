@@ -129,24 +129,24 @@ const nrfutilDeviceToJLink = (device: string) => {
     }
 };
 
-const checkJLinkRequierments: AppCompatibilityChecker = async (
+const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
     if (!isDownloadable(app)) {
         return undecided;
     }
 
-    const deviceVerison =
+    const deviceVersion =
         app.versions?.[app.currentVersion]?.nrfutilModules?.device?.at(0);
 
-    if (!deviceVerison) {
+    if (!deviceVersion) {
         return undecided;
     }
 
-    const requiredVerion = nrfutilDeviceToJLink(deviceVerison);
+    const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
 
     const userDir = getUserDataDir();
-    const sandbox = await getSandbox(userDir, 'device', deviceVerison);
+    const sandbox = await getSandbox(userDir, 'device', deviceVersion);
     const moduleVersion = await sandbox.getModuleVersion();
     const jlinkVersion = resolveModuleVersion(
         'JlinkARM',
@@ -155,12 +155,12 @@ const checkJLinkRequierments: AppCompatibilityChecker = async (
 
     if (!jlinkVersion) {
         return incompatible(
-            `Unable to detect J-link Version. Expected JLink_${requiredVerion}.`,
+            `Unable to detect SEGGER J-Link version. Expected version: J-Link ${requiredVersion}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    {`This app requires a J-Link installation to work. Nrfutil device version ${deviceVerison} was unable to find J-Link Dlls`}
+                    {`This app requires a SEGGER J-Link installation to work. nRF Util's device command v${requiredVersion} was unable to find J-Link DLLs.`}
                 </div>
-                <div>{`Make sure that Jlink version ${requiredVerion} is installed.`}</div>
+                <div>{`Make sure that SEGGER J-Link v${requiredVersion} is installed.`}</div>
                 <div>
                     You can download the tested version from from{' '}
                     <Link href="https://www.segger.com/downloads/jlink/" />
@@ -171,10 +171,10 @@ const checkJLinkRequierments: AppCompatibilityChecker = async (
 
     if (jlinkVersion?.expectedVersion) {
         return incompatible(
-            `Untested version of J-Link Found. Expected ${jlinkVersion.expectedVersion.version}.`,
+            `Untested version of SEGGER J-Link found. Expected version: ${jlinkVersion.expectedVersion.version}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    {`This app requires a J-Link ${jlinkVersion.expectedVersion.version} but nrfutil device version ${deviceVerison} found ${jlinkVersion.version}.`}
+                    {`This app requires a SEGGER J-Link v${jlinkVersion.expectedVersion.version}, but nRF Util's device command v${deviceVersion} found J-Link v${jlinkVersion.version}.`}
                 </div>
                 <div>Things might not work as expected!.</div>
                 <div>
@@ -197,7 +197,7 @@ export default async (
         checkEngineVersionIsSet,
         checkEngineIsSupported,
         checkMinimalRequiredAppVersions,
-        checkJLinkRequierments,
+        checkJLinkRequirements,
     ]) {
         // eslint-disable-next-line no-await-in-loop
         const result = await check(app, providedVersionOfEngine);
