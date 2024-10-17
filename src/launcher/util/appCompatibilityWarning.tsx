@@ -112,21 +112,20 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
 };
 
 const nrfutilDeviceToJLink = (device: string) => {
-    if (semver.gte(device, '1.4.4') && semver.lt(device, '2.0.0')) {
+    // According to https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html#prerequisites
+    if (semver.lt(device, '2.0.0')) {
         return 'V7.80c';
     }
 
-    if (semver.gte(device, '2.0.0') && semver.lt(device, '2.1.0')) {
+    if (semver.lt(device, '2.1.0')) {
         return 'V7.88j';
     }
 
-    if (semver.gte(device, '2.1.0') && semver.lt(device, '2.5.44')) {
+    if (semver.lt(device, '2.5.4')) {
         return 'V7.94e';
     }
 
-    if (semver.gte(device, '2.5.4')) {
-        return 'V7.94i';
-    }
+    return 'V7.94i';
 };
 
 const checkJLinkRequirements: AppCompatibilityChecker = async (
@@ -143,8 +142,6 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         return undecided;
     }
 
-    const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
-
     const userDir = getUserDataDir();
     const sandbox = await getSandbox(userDir, 'device', deviceVersion);
     const moduleVersion = await sandbox.getModuleVersion();
@@ -154,6 +151,8 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
     );
 
     if (!jlinkVersion) {
+        const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
+
         return incompatible(
             `Unable to detect SEGGER J-Link version. Expected version: J-Link ${requiredVersion}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
