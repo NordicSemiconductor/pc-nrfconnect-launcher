@@ -200,7 +200,7 @@ describe('check compatibility of an app with the launcher', () => {
                 name: 'name',
                 displayName: '',
                 iconPath: '',
-                description: 'all versions are exactly as specified',
+                description: 'All versions are exactly as specified',
                 currentVersion: 'v1.0.0',
                 versions: {
                     'v1.0.0': {
@@ -213,11 +213,11 @@ describe('check compatibility of an app with the launcher', () => {
                 },
             };
 
-            it(`No installed JLink`, async () => {
+            it(`No installed J-Link`, async () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Unable to detect J-link Version. Expected JLink_V7.88j.'
+                    'Unable to detect SEGGER J-Link version. Expected version: J-Link V7.88j.'
                 );
             });
 
@@ -225,7 +225,7 @@ describe('check compatibility of an app with the launcher', () => {
                 dependency = {
                     expectedVersion: {
                         versionFormat: 'string',
-                        version: 'JLink_V7_80c',
+                        version: 'JLink_V7.80c',
                     },
                     name: 'JlinkARM',
                     versionFormat: 'string',
@@ -235,7 +235,7 @@ describe('check compatibility of an app with the launcher', () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Untested version of J-Link Found. Expected JLink_V7_80c.'
+                    'Untested version of SEGGER J-Link found. Expected version: JLink_V7.80c.'
                 );
             });
         });
