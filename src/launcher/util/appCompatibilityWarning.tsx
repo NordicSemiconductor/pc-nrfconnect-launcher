@@ -157,9 +157,14 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
             `Unable to detect SEGGER J-Link version. Expected version: J-Link ${requiredVersion}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    {`This app requires a SEGGER J-Link installation to work. nRF Util's device command v${requiredVersion} was unable to find J-Link DLLs.`}
+                    This app requires a SEGGER J-Link installation to work. nRF
+                    Util&rsquo;s device command v{requiredVersion} was unable to
+                    find J-Link DLLs.
                 </div>
-                <div>{`Make sure that SEGGER J-Link v${requiredVersion} is installed.`}</div>
+                <div>
+                    Make sure that SEGGER J-Link v{requiredVersion} is
+                    installed.
+                </div>
                 <div>
                     You can download the tested version from from{' '}
                     <Link href="https://www.segger.com/downloads/jlink/" />
@@ -173,7 +178,10 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
             `Untested version of SEGGER J-Link found. Expected version: ${jlinkVersion.expectedVersion.version}.`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    {`This app requires a SEGGER J-Link v${jlinkVersion.expectedVersion.version}, but nRF Util's device command v${deviceVersion} found J-Link v${jlinkVersion.version}.`}
+                    This app requires a SEGGER J-Link
+                    {jlinkVersion.expectedVersion.version}, but nRF Util&rsquo;s
+                    device command {deviceVersion} found J-Link
+                    {jlinkVersion.version}.
                 </div>
                 <div>Things might not work as expected!.</div>
                 <div>
