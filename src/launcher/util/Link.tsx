@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
-export default ({ href }: { href: string }) => (
+export default ({ href, children }: { href: string; children?: ReactNode }) => (
     <a target="_blank" href={href} rel="noreferrer">
-        {href}
+        {children ?? href}
     </a>
 );
