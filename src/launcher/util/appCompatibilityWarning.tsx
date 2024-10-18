@@ -154,20 +154,16 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
 
         return incompatible(
-            `Unable to detect SEGGER J-Link version. Expected version: J-Link ${requiredVersion}.`,
+            `Required SEGGER J-Link not found, expected version ${requiredVersion}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
+                <div>This app requires SEGGER J-Link {requiredVersion}.</div>
                 <div>
-                    This app requires a SEGGER J-Link installation to work. nRF
-                    Util&rsquo;s device command v{requiredVersion} was unable to
-                    find J-Link DLLs.
-                </div>
-                <div>
-                    Make sure that SEGGER J-Link v{requiredVersion} is
-                    installed.
-                </div>
-                <div>
-                    You can download the tested version from from{' '}
-                    <Link href="https://www.segger.com/downloads/jlink/" />
+                    <Link href="https://www.segger.com/downloads/jlink/">
+                        Download
+                    </Link>{' '}
+                    and install the SEGGER J-Link J-Link Software and
+                    Documentation pack {requiredVersion}. Restart nRF Connect
+                    for Desktop afterwards.
                 </div>
             </div>
         );

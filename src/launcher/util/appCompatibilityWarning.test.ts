@@ -217,7 +217,7 @@ describe('check compatibility of an app with the launcher', () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Unable to detect SEGGER J-Link version. Expected version: J-Link V7.88j.'
+                    'Required SEGGER J-Link not found, expected version V7.88j'
                 );
             });
 
