@@ -225,17 +225,17 @@ describe('check compatibility of an app with the launcher', () => {
                 dependency = {
                     expectedVersion: {
                         versionFormat: 'string',
-                        version: 'JLink_V7.80c',
+                        version: 'JLink_V7.94i',
                     },
                     name: 'JlinkARM',
                     versionFormat: 'string',
-                    version: '7.94i',
+                    version: 'JLink_V7.94e',
                 };
 
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Untested version of SEGGER J-Link found. Expected version: JLink_V7.80c.'
+                    'Untested version V7.94e of SEGGER J-Link found, expected at least version V7.94i'
                 );
             });
         });
