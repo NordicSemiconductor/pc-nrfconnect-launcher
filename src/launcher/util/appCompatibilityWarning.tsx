@@ -14,6 +14,10 @@ import getSandbox from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbo
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
+import {
+    existingIsOlderThanExpected,
+    strippedVersionName,
+} from './jlinkVersion';
 import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
@@ -145,12 +149,12 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
     const userDir = getUserDataDir();
     const sandbox = await getSandbox(userDir, 'device', deviceVersion);
     const moduleVersion = await sandbox.getModuleVersion();
-    const jlinkVersion = resolveModuleVersion(
+    const jlinkVersionDependency = resolveModuleVersion(
         'JlinkARM',
         moduleVersion.dependencies
     );
 
-    if (!jlinkVersion) {
+    if (!jlinkVersionDependency) {
         const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
 
         return incompatible(
@@ -169,20 +173,32 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         );
     }
 
-    if (jlinkVersion?.expectedVersion) {
+    if (
+        jlinkVersionDependency.expectedVersion &&
+        existingIsOlderThanExpected(jlinkVersionDependency)
+    ) {
+        const expectedVersionNumber = strippedVersionName(
+            jlinkVersionDependency.expectedVersion
+        );
+        const actualVersionNumber = strippedVersionName(jlinkVersionDependency);
+
         return incompatible(
-            `Untested version of SEGGER J-Link found. Expected version: ${jlinkVersion.expectedVersion.version}.`,
+            `Untested version V${actualVersionNumber} of SEGGER J-Link found, ` +
+                `expected at least version V${expectedVersionNumber}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    This app requires a SEGGER J-Link
-                    {jlinkVersion.expectedVersion.version}, but nRF Util&rsquo;s
-                    device command {deviceVersion} found J-Link
-                    {jlinkVersion.version}.
+                    This app was tested with SEGGER J-Link V
+                    {expectedVersionNumber} but version V{actualVersionNumber}{' '}
+                    was found on your system.
                 </div>
-                <div>Things might not work as expected!.</div>
+                <div>Things might not work as expected!</div>
                 <div>
-                    You can download the tested version from from{' '}
-                    <Link href="https://www.segger.com/downloads/jlink/" />
+                    <Link href="https://www.segger.com/downloads/jlink/">
+                        Download
+                    </Link>{' '}
+                    and install the SEGGER J-Link Software and Documentation
+                    pack V{expectedVersionNumber}. Restart nRF Connect for
+                    Desktop afterwards.
                 </div>
             </div>
         );
