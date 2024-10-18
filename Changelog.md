@@ -1,8 +1,13 @@
-## 5.0.3 - Unrelesed
+## 5.1.0 - Unreleased
 
 ### Changed
 
 -   Updated bundled SEGGER J-Link to v7.94i for Windows.
+
+### Added
+
+-   A warning related to the SEGGER J-Link version when the application does not
+    find the expected J-Link version.
 
 ## 5.0.2 - 2024-07-24
 
