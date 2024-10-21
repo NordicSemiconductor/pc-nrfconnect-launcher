@@ -21,13 +21,13 @@ export default () => {
     return (
         <ConfirmationDialog
             isVisible={confirmationDialog.isVisible}
-            title="Version problem"
+            title={confirmationDialog.isVisible ? confirmationDialog.title : ''}
             confirmLabel="Launch anyway"
             cancelLabel="Cancel"
             onConfirm={() => {
                 if (!confirmationDialog.isVisible) {
                     throw new Error(
-                        'Should be impossible to invoke a disabled button'
+                        'Should be impossible to invoke a button on an invisible dialog'
                     );
                 }
 

@@ -29,6 +29,7 @@ describe('app dialogs slice', () => {
 
             const dialogIsShown = dispatchTo(reducer, [
                 showConfirmLaunchDialog({
+                    title: 'Please',
                     text: 'Do you confirm?',
                     app,
                 }),
@@ -49,11 +50,13 @@ describe('app dialogs slice', () => {
         it('has right properties', () => {
             const state = dispatchTo(reducer, [
                 showConfirmLaunchDialog({
+                    title: 'Please',
                     text: 'Do you confirm?',
                     app,
                 }),
             ]);
             expect(getConfirmLaunchDialog(state)).toMatchObject({
+                title: 'Please',
                 text: 'Do you confirm?',
                 app,
             });

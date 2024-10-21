@@ -21,11 +21,22 @@ import {
 import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
+type IncompatibilityWarning = {
+    title: string;
+    warning: string;
+    longWarning: React.ReactNode;
+};
+
 const undecided = { isDecided: false } as const;
-const incompatible = (warning: string, longWarning: React.ReactNode) =>
+const incompatible = (
+    title: string,
+    warning: string,
+    longWarning: React.ReactNode
+) =>
     ({
         isDecided: true,
         isCompatible: false,
+        title,
         warning,
         longWarning,
     } as const);
@@ -42,6 +53,7 @@ export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
     app.engineVersion
         ? undecided
         : incompatible(
+              'Version problem',
               'The app does not specify which nRF Connect for Desktop ' +
                   'versions it supports',
               'The app does not specify which nRF Connect for Desktop ' +
@@ -66,6 +78,7 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
     return isSupportedEngine
         ? undecided
         : incompatible(
+              'Version problem',
               'The app only supports nRF Connect for Desktop ' +
                   `${app.engineVersion}, which does not match your ` +
                   'currently installed version',
@@ -79,6 +92,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
     const minSupportedVersion = minimalRequiredAppVersions[app.name];
     if (minSupportedVersion === null) {
         return incompatible(
+            'Version problem',
             'This version of nRF Connect for Desktop does not support ' +
                 `this app anymore.`,
             `This version of nRF Connect for Desktop does not support ` +
@@ -100,6 +114,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
     return appIsRecentEnough
         ? undecided
         : incompatible(
+              'Version problem',
               'This version of nRF Connect for Desktop does not support ' +
                   `version ${app.currentVersion} of this app. You ` +
                   `need at least version ` +
@@ -158,6 +173,7 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
 
         return incompatible(
+            'Missing dependency',
             `Required SEGGER J-Link not found, expected version ${requiredVersion}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>This app requires SEGGER J-Link {requiredVersion}.</div>
@@ -183,6 +199,7 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         const actualVersionNumber = strippedVersionName(jlinkVersionDependency);
 
         return incompatible(
+            'Outdated dependency',
             `Untested version V${actualVersionNumber} of SEGGER J-Link found, ` +
                 `expected at least version V${expectedVersionNumber}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
@@ -210,7 +227,7 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
 export default async (
     app: LaunchableApp,
     providedVersionOfEngine = launcherConfig().launcherVersion
-): Promise<undefined | { warning: string; longWarning: React.ReactNode }> => {
+): Promise<undefined | IncompatibilityWarning> => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
@@ -221,7 +238,7 @@ export default async (
         // eslint-disable-next-line no-await-in-loop
         const result = await check(app, providedVersionOfEngine);
         if (result.isDecided) {
-            return { warning: result.warning, longWarning: result.longWarning };
+            return result;
         }
     }
 

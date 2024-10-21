@@ -241,9 +241,11 @@ export const checkCompatabilityThenLaunch =
             if (launchAppWithoutWarning) {
                 launch(app);
             } else {
+                console.log(compatibilityWarning);
                 dispatch(
                     showConfirmLaunchDialog({
                         app,
+                        title: compatibilityWarning.title,
                         text: compatibilityWarning.longWarning,
                     })
                 );
