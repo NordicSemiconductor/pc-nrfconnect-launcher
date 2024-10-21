@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 
 import { isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
-import { checkCompatabilityThenLaunch } from '../appsEffects';
+import { checkCompatibilityThenLaunch } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
@@ -21,7 +21,7 @@ const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
         <Button
             title={`Open ${app.displayName}`}
             disabled={isInProgress(app)}
-            onClick={() => dispatch(checkCompatabilityThenLaunch(app))}
+            onClick={() => dispatch(checkCompatibilityThenLaunch(app))}
         >
             Open
         </Button>

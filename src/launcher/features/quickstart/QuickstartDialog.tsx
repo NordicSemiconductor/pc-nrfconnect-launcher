@@ -12,7 +12,7 @@ import {
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getIsAppleSiliconDialogVisible } from '../appleSilicon/appleSiliconSlice';
-import { checkCompatabilityThenLaunch } from '../apps/appsEffects';
+import { checkCompatibilityThenLaunch } from '../apps/appsEffects';
 import { getOfficialQuickStartApp } from '../apps/appsSlice';
 import {
     getIsQuickStartInfoShownBefore,
@@ -61,7 +61,7 @@ export default () => {
 
                             dispatch(quickStartInfoWasShown());
                             dispatch(
-                                checkCompatabilityThenLaunch(quickStartApp)
+                                checkCompatibilityThenLaunch(quickStartApp)
                             );
                         }}
                     >

@@ -230,7 +230,7 @@ export const launch = (app: LaunchableApp) => {
     openWindow.openApp(app);
 };
 
-export const checkCompatabilityThenLaunch =
+export const checkCompatibilityThenLaunch =
     (app: LaunchableApp): AppThunk =>
     dispatch => {
         appCompatibilityWarning(app).then(compatibilityWarning => {
