@@ -24,6 +24,7 @@ import {
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
+import { quickStartInfoWasShown } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { EventAction } from '../telemetry/telemetryEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
@@ -219,19 +220,23 @@ export const removeDownloadableApp =
         dispatch(resetAppProgress(app));
     };
 
-export const launch = (app: LaunchableApp) => {
-    telemetry.sendEvent(EventAction.LAUNCH_APP, {
-        appInfo: {
-            name: app.name,
-            source: app.source,
-            version: app.currentVersion,
-        },
-    });
-    openWindow.openApp(app);
-};
+export const launch =
+    (app: LaunchableApp, setQuickStartInfoWasShown: boolean): AppThunk =>
+    dispatch => {
+        if (setQuickStartInfoWasShown) dispatch(quickStartInfoWasShown());
+
+        telemetry.sendEvent(EventAction.LAUNCH_APP, {
+            appInfo: {
+                name: app.name,
+                source: app.source,
+                version: app.currentVersion,
+            },
+        });
+        openWindow.openApp(app);
+    };
 
 export const checkCompatibilityThenLaunch =
-    (app: LaunchableApp): AppThunk =>
+    (app: LaunchableApp, setQuickStartInfoWasShown = false): AppThunk =>
     dispatch => {
         appCompatibilityWarning(app).then(compatibilityWarning => {
             const launchAppWithoutWarning =
@@ -239,14 +244,14 @@ export const checkCompatibilityThenLaunch =
                 launcherConfig().isRunningLauncherFromSource;
 
             if (launchAppWithoutWarning) {
-                launch(app);
+                dispatch(launch(app, setQuickStartInfoWasShown));
             } else {
-                console.log(compatibilityWarning);
                 dispatch(
                     showConfirmLaunchDialog({
                         app,
                         title: compatibilityWarning.title,
                         text: compatibilityWarning.longWarning,
+                        setQuickStartInfoWasShown,
                     })
                 );
             }

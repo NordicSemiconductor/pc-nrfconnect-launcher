@@ -59,9 +59,11 @@ export default () => {
                                 );
                             }
 
-                            dispatch(quickStartInfoWasShown());
                             dispatch(
-                                checkCompatibilityThenLaunch(quickStartApp)
+                                checkCompatibilityThenLaunch(
+                                    quickStartApp,
+                                    true
+                                )
                             );
                         }}
                     >

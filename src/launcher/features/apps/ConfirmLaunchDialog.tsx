@@ -31,7 +31,12 @@ export default () => {
                     );
                 }
 
-                launch(confirmationDialog.app);
+                dispatch(
+                    launch(
+                        confirmationDialog.app,
+                        confirmationDialog.setQuickStartInfoWasShown
+                    )
+                );
                 dispatch(hideConfirmLaunchDialog());
             }}
             onCancel={() => dispatch(hideConfirmLaunchDialog())}
