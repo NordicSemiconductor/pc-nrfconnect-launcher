@@ -21,17 +21,25 @@ import {
 import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
+enum WarningKind {
+    ENGINE_CHECK = 'Engine check',
+    UNSUPPORTED_APP = 'Unsupported app',
+    JLINK = 'No appropriate J-Link',
+}
+
 type IncompatibilityWarning = {
     title: string;
     warning: string;
     longWarning: React.ReactNode;
+    warningData: Record<string, unknown>;
 };
 
 const undecided = { isDecided: false } as const;
 const incompatible = (
     title: string,
     warning: string,
-    longWarning: React.ReactNode
+    longWarning: React.ReactNode,
+    warningData: Record<string, unknown>
 ) =>
     ({
         isDecided: true,
@@ -39,6 +47,7 @@ const incompatible = (
         title,
         warning,
         longWarning,
+        warningData,
     } as const);
 
 type Undecided = typeof undecided;
@@ -58,7 +67,12 @@ export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
                   'versions it supports',
               'The app does not specify which nRF Connect for Desktop ' +
                   'versions it supports. Ask the app author to add an ' +
-                  'engines.nrfconnect definition to package.json.'
+                  'engines.nrfconnect definition to package.json.',
+              {
+                  warningKind: WarningKind.ENGINE_CHECK,
+                  app: app.name,
+                  requestedEngine: 'not specified',
+              }
           );
 
 const replaceCaretWithGreaterEqual = (engineVersion: string) =>
@@ -84,7 +98,13 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
                   'currently installed version',
               'The app only supports nRF Connect for Desktop ' +
                   `${app.engineVersion} while your installed version is ` +
-                  `${providedVersionOfEngine}. It might not work as expected.`
+                  `${providedVersionOfEngine}. It might not work as expected.`,
+              {
+                  warningKind: WarningKind.ENGINE_CHECK,
+                  app: app.name,
+                  requestedEngine: app.engineVersion,
+                  providedEngine: providedVersionOfEngine,
+              }
           );
 };
 
@@ -96,7 +116,13 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
             'This version of nRF Connect for Desktop does not support ' +
                 `this app anymore.`,
             `This version of nRF Connect for Desktop does not support ` +
-                `this app "${app.displayName}". Running this will not work.`
+                `this app "${app.displayName}". Running this will not work.`,
+            {
+                warningKind: WarningKind.UNSUPPORTED_APP,
+                app: app.name,
+                appVersion: app.currentVersion,
+                minimalAppVersion: 'none',
+            }
         );
     }
 
@@ -126,7 +152,13 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
                       fittingVersionExists
                           ? ' Download the latest available version of this app.'
                           : ''
-                  } Running the currently installed version will not work.`
+                  } Running the currently installed version will not work.`,
+              {
+                  warningKind: WarningKind.UNSUPPORTED_APP,
+                  app: app.name,
+                  appVersion: app.currentVersion,
+                  minimalAppVersion: minimalRequiredAppVersions[app.name],
+              }
           );
 };
 
@@ -185,7 +217,14 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
                     Documentation pack {requiredVersion}. Restart nRF Connect
                     for Desktop afterwards.
                 </div>
-            </div>
+            </div>,
+            {
+                warningKind: WarningKind.JLINK,
+                app: app.name,
+                nrfutilDevice: deviceVersion,
+                requiredJlink: requiredVersion,
+                actualJlink: 'none',
+            }
         );
     }
 
@@ -217,7 +256,14 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
                     pack V{expectedVersionNumber}. Restart nRF Connect for
                     Desktop afterwards.
                 </div>
-            </div>
+            </div>,
+            {
+                warningKind: WarningKind.JLINK,
+                app: app.name,
+                nrfutilDevice: deviceVersion,
+                requiredJlink: jlinkVersionDependency.expectedVersion.version,
+                actualJlink: jlinkVersionDependency.version,
+            }
         );
     }
 

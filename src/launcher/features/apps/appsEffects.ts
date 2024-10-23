@@ -251,6 +251,7 @@ export const checkCompatibilityThenLaunch =
                         app,
                         title: compatibilityWarning.title,
                         text: compatibilityWarning.longWarning,
+                        warningData: compatibilityWarning.warningData,
                         setQuickStartInfoWasShown,
                     })
                 );

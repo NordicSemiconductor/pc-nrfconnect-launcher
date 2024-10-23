@@ -33,6 +33,7 @@ describe('app dialogs slice', () => {
                     title: 'Please',
                     text: 'Do you confirm?',
                     setQuickStartInfoWasShown: false,
+                    warningData: {},
                 }),
             ]);
             expect(getConfirmLaunchDialog(dialogIsShown).isVisible).toEqual(
@@ -55,6 +56,9 @@ describe('app dialogs slice', () => {
                     title: 'Please',
                     text: 'Do you confirm?',
                     setQuickStartInfoWasShown: false,
+                    warningData: {
+                        warning: 'Text',
+                    },
                 }),
             ]);
             expect(getConfirmLaunchDialog(state)).toMatchObject({
@@ -62,6 +66,9 @@ describe('app dialogs slice', () => {
                 title: 'Please',
                 text: 'Do you confirm?',
                 setQuickStartInfoWasShown: false,
+                warningData: {
+                    warning: 'Text',
+                },
             });
         });
     });

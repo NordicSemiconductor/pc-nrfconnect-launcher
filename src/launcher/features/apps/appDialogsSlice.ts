@@ -20,6 +20,7 @@ type VisibleConfirmLaunchDialog = {
     app: LaunchableApp;
     title: string;
     text: React.ReactNode;
+    warningData: Record<string, unknown>;
     setQuickStartInfoWasShown: boolean;
 };
 
@@ -45,20 +46,18 @@ const slice = createSlice({
         showConfirmLaunchDialog(
             state,
             {
-                payload: { app, title, text, setQuickStartInfoWasShown },
+                payload,
             }: PayloadAction<{
                 app: LaunchableApp;
                 title: string;
                 text: React.ReactNode;
+                warningData: Record<string, unknown>;
                 setQuickStartInfoWasShown: boolean;
             }>
         ) {
             state.confirmLaunch = {
                 isVisible: true,
-                title,
-                text,
-                app,
-                setQuickStartInfoWasShown,
+                ...payload,
             };
         },
         hideConfirmLaunchDialog(state) {

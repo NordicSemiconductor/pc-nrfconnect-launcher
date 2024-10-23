@@ -5,9 +5,13 @@
  */
 
 import React from 'react';
-import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    ConfirmationDialog,
+    telemetry,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { EventAction } from '../telemetry/telemetryEffects';
 import {
     getConfirmLaunchDialog,
     hideConfirmLaunchDialog,
@@ -37,9 +41,21 @@ export default () => {
                         confirmationDialog.setQuickStartInfoWasShown
                     )
                 );
+                telemetry.sendEvent(EventAction.LAUNCH_APP_WARNING, {
+                    warningIgnored: true,
+                    ...confirmationDialog.warningData,
+                });
                 dispatch(hideConfirmLaunchDialog());
             }}
-            onCancel={() => dispatch(hideConfirmLaunchDialog())}
+            onCancel={() => {
+                if (confirmationDialog.isVisible) {
+                    telemetry.sendEvent(EventAction.LAUNCH_APP_WARNING, {
+                        warningIgnored: false,
+                        ...confirmationDialog.warningData,
+                    });
+                    dispatch(hideConfirmLaunchDialog());
+                }
+            }}
         >
             {confirmationDialog.isVisible && confirmationDialog.text}
         </ConfirmationDialog>
