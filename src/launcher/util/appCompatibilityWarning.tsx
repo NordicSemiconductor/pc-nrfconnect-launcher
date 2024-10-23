@@ -98,7 +98,7 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
                   'currently installed version',
               'The app only supports nRF Connect for Desktop ' +
                   `${app.engineVersion} while your installed version is ` +
-                  `${providedVersionOfEngine}. It might not work as expected.`,
+                  `${providedVersionOfEngine}. The app might not work as expected.`,
               {
                   warningKind: WarningKind.ENGINE_CHECK,
                   app: app.name,
@@ -116,7 +116,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
             'This version of nRF Connect for Desktop does not support ' +
                 `this app anymore.`,
             `This version of nRF Connect for Desktop does not support ` +
-                `this app "${app.displayName}". Running this will not work.`,
+                `this app "${app.displayName}". This app will not work.`,
             {
                 warningKind: WarningKind.UNSUPPORTED_APP,
                 app: app.name,
@@ -206,16 +206,16 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
 
         return incompatible(
             'Missing dependency',
-            `Required SEGGER J-Link not found, expected version ${requiredVersion}`,
+            `Required SEGGER J-Link not found: expected version ${requiredVersion}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>This app requires SEGGER J-Link {requiredVersion}.</div>
                 <div>
                     <Link href="https://www.segger.com/downloads/jlink/">
                         Download
                     </Link>{' '}
-                    and install the SEGGER J-Link J-Link Software and
-                    Documentation pack {requiredVersion}. Restart nRF Connect
-                    for Desktop afterwards.
+                    and install the SEGGER J-Link Software and Documentation
+                    pack {requiredVersion}. Restart nRF Connect for Desktop
+                    afterwards.
                 </div>
             </div>,
             {
@@ -239,7 +239,7 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
 
         return incompatible(
             'Outdated dependency',
-            `Untested version V${actualVersionNumber} of SEGGER J-Link found, ` +
+            `Untested version V${actualVersionNumber} of SEGGER J-Link found: ` +
                 `expected at least version V${expectedVersionNumber}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
@@ -247,7 +247,7 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
                     {expectedVersionNumber} but version V{actualVersionNumber}{' '}
                     was found on your system.
                 </div>
-                <div>Things might not work as expected!</div>
+                <div>This app might not work as expected!</div>
                 <div>
                     <Link href="https://www.segger.com/downloads/jlink/">
                         Download

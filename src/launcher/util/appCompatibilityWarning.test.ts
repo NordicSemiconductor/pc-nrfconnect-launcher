@@ -217,7 +217,7 @@ describe('check compatibility of an app with the launcher', () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Required SEGGER J-Link not found, expected version V7.88j'
+                    'Required SEGGER J-Link not found: expected version V7.88j'
                 );
             });
 
@@ -235,7 +235,7 @@ describe('check compatibility of an app with the launcher', () => {
                 expect(
                     (await appCompatibilityWarning(app, '5.0.0'))?.warning
                 ).toBe(
-                    'Untested version V7.94e of SEGGER J-Link found, expected at least version V7.94i'
+                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
                 );
             });
         });
