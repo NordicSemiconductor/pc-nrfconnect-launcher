@@ -69,10 +69,10 @@
     StrCpy $LAST_JLINK_VERSION ""
   ${EndIf}
 
-  # ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
+  ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
     ; J-Link is older than the bundled version. Run installer.
     StrCpy $0 "$INSTDIR\${JLinkInstaller}"
     ${StdUtils.ExecShellWaitEx} $R0 $R1 $0 'runas' '/passive /norestart -InstUSBDriver=1'
-  # ${EndIf}
+  ${EndIf}
 
 !macroend
