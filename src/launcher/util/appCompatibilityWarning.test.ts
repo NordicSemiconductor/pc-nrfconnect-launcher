@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { NrfutilSandbox } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
+import {
+    Dependency,
+    ModuleVersion,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandboxTypes';
 import { inspect } from 'util';
 
 import { LaunchableApp } from '../../ipc/apps';
@@ -26,6 +31,28 @@ const failingCheck = {
 const undecidedCheck = {
     isDecided: false,
 };
+
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox', () => ({
+    __esModule: true,
+    default: () =>
+        Promise.resolve({
+            getModuleVersion: () => Promise.resolve([] as ModuleVersion[]),
+        } as unknown as NrfutilSandbox),
+}));
+
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
+    ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
+    getUserDataDir: () => '',
+}));
+
+let dependency: Dependency | undefined;
+
+jest.mock(
+    '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion',
+    () => ({
+        resolveModuleVersion: () => dependency,
+    })
+);
 
 describe('check compatibility of an app with the launcher', () => {
     describe('check if the app sets an engine version', () => {
@@ -104,19 +131,20 @@ describe('check compatibility of an app with the launcher', () => {
 
                     it(`${description}, with app spec ${inspect(
                         appSpec
-                    )} and engine spec ${inspect(engineSpec)}`, () => {
-                        const compatibilityWarning = appCompatibilityWarning(
-                            appSpec,
-                            providedVersionOfEngine
-                        );
+                    )} and engine spec ${inspect(engineSpec)}`, async () => {
+                        const compatibilityWarning =
+                            await appCompatibilityWarning(
+                                appSpec,
+                                providedVersionOfEngine
+                            );
                         expect(compatibilityWarning?.warning).toBeDefined();
                         expect(compatibilityWarning?.longWarning).toBeDefined();
                     });
                 }
             );
 
-            it('The app version is too old according to the list of minimal required versions', () => {
-                const compatibilityWarning = appCompatibilityWarning(
+            it('The app version is too old according to the list of minimal required versions', async () => {
+                const compatibilityWarning = await appCompatibilityWarning(
                     createDownloadableTestApp('pc-nrfconnect-dtm', {
                         currentVersion: '2.0.3',
                         engineVersion: '1.0.0',
@@ -148,11 +176,12 @@ describe('check compatibility of an app with the launcher', () => {
                 }) => {
                     const appSpec = requiringEngine(engineVersion);
                     const engineSpec = providedVersionOfEngine;
+
                     it(`${description}, with app spec ${inspect(
                         appSpec
-                    )} and engine spec ${inspect(engineSpec)}`, () => {
+                    )} and engine spec ${inspect(engineSpec)}`, async () => {
                         expect(
-                            appCompatibilityWarning(
+                            await appCompatibilityWarning(
                                 appSpec,
                                 providedVersionOfEngine
                             )
@@ -160,6 +189,55 @@ describe('check compatibility of an app with the launcher', () => {
                     });
                 }
             );
+        });
+
+        describe('Jlink Tests', () => {
+            const app: LaunchableApp = {
+                engineVersion: '5.0.0',
+                source: '',
+                latestVersion: 'v1.0.0',
+                isWithdrawn: false,
+                name: 'name',
+                displayName: '',
+                iconPath: '',
+                description: 'All versions are exactly as specified',
+                currentVersion: 'v1.0.0',
+                versions: {
+                    'v1.0.0': {
+                        tarballUrl: '',
+                        nrfutilModules: { device: ['2.0.0'] },
+                    },
+                },
+                installed: {
+                    path: '',
+                },
+            };
+
+            it(`No installed J-Link`, async () => {
+                expect(
+                    (await appCompatibilityWarning(app, '5.0.0'))?.warning
+                ).toBe(
+                    'Required SEGGER J-Link not found: expected version V7.88j'
+                );
+            });
+
+            it(`Wrong JLink version`, async () => {
+                dependency = {
+                    expectedVersion: {
+                        versionFormat: 'string',
+                        version: 'JLink_V7.94i',
+                    },
+                    name: 'JlinkARM',
+                    versionFormat: 'string',
+                    version: 'JLink_V7.94e',
+                };
+
+                expect(
+                    (await appCompatibilityWarning(app, '5.0.0'))?.warning
+                ).toBe(
+                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
+                );
+            });
         });
     });
 });

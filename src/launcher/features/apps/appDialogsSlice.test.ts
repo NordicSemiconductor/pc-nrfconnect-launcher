@@ -29,8 +29,11 @@ describe('app dialogs slice', () => {
 
             const dialogIsShown = dispatchTo(reducer, [
                 showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
                     app,
+                    title: 'Please',
+                    text: 'Do you confirm?',
+                    setQuickStartInfoWasShown: false,
+                    warningData: {},
                 }),
             ]);
             expect(getConfirmLaunchDialog(dialogIsShown).isVisible).toEqual(
@@ -49,13 +52,23 @@ describe('app dialogs slice', () => {
         it('has right properties', () => {
             const state = dispatchTo(reducer, [
                 showConfirmLaunchDialog({
-                    text: 'Do you confirm?',
                     app,
+                    title: 'Please',
+                    text: 'Do you confirm?',
+                    setQuickStartInfoWasShown: false,
+                    warningData: {
+                        warning: 'Text',
+                    },
                 }),
             ]);
             expect(getConfirmLaunchDialog(state)).toMatchObject({
-                text: 'Do you confirm?',
                 app,
+                title: 'Please',
+                text: 'Do you confirm?',
+                setQuickStartInfoWasShown: false,
+                warningData: {
+                    warning: 'Text',
+                },
             });
         });
     });

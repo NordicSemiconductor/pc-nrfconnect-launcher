@@ -15,15 +15,19 @@ const hiddenDialog = {
     isVisible: false,
 } as const;
 
-type VisibleConfirmLaunchDialog = ReturnType<typeof visibleConfirmLaunchDialog>;
-const visibleConfirmLaunchDialog = (text: string, app: LaunchableApp) =>
-    ({ isVisible: true, text, app } as const);
+type VisibleConfirmLaunchDialog = {
+    isVisible: true;
+    app: LaunchableApp;
+    title: string;
+    text: React.ReactNode;
+    warningData: Record<string, unknown>;
+    setQuickStartInfoWasShown: boolean;
+};
 
-type VisibleInstallOtherVersionDialog = ReturnType<
-    typeof visibleInstallOtherVersionDialog
->;
-const visibleInstallOtherVersionDialog = (app: DownloadableApp) =>
-    ({ isVisible: true, app } as const);
+type VisibleInstallOtherVersionDialog = {
+    isVisible: true;
+    app: DownloadableApp;
+};
 
 export type State = {
     confirmLaunch: HiddenDialog | VisibleConfirmLaunchDialog;
@@ -41,12 +45,20 @@ const slice = createSlice({
     reducers: {
         showConfirmLaunchDialog(
             state,
-            { payload }: PayloadAction<{ text: string; app: LaunchableApp }>
+            {
+                payload,
+            }: PayloadAction<{
+                app: LaunchableApp;
+                title: string;
+                text: React.ReactNode;
+                warningData: Record<string, unknown>;
+                setQuickStartInfoWasShown: boolean;
+            }>
         ) {
-            state.confirmLaunch = visibleConfirmLaunchDialog(
-                payload.text,
-                payload.app
-            );
+            state.confirmLaunch = {
+                isVisible: true,
+                ...payload,
+            };
         },
         hideConfirmLaunchDialog(state) {
             state.confirmLaunch = hiddenDialog;
@@ -55,7 +67,7 @@ const slice = createSlice({
             state,
             { payload: app }: PayloadAction<DownloadableApp>
         ) {
-            state.installOtherVersion = visibleInstallOtherVersionDialog(app);
+            state.installOtherVersion = { isVisible: true, app };
         },
         hideInstallOtherVersionDialog(state) {
             state.installOtherVersion = hiddenDialog;

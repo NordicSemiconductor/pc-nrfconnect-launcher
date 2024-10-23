@@ -23,6 +23,7 @@ export const EventAction = {
     LAUNCH_LAUNCHER: 'Launch launcher',
     APP_MANAGEMENT: 'App Management',
     LAUNCH_APP: 'Launch app',
+    LAUNCH_APP_WARNING: 'Warn before app launch',
     REPORT_OS_INFO: 'Report OS info',
     REPORT_LAUNCHER_INFO: 'Report launcher info',
     REPORT_INSTALLATION_ERROR: 'Report installation error',

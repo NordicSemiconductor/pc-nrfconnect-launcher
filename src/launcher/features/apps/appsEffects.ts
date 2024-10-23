@@ -24,6 +24,7 @@ import {
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
+import { quickStartInfoWasShown } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { EventAction } from '../telemetry/telemetryEffects';
 import { showConfirmLaunchDialog } from './appDialogsSlice';
@@ -219,33 +220,41 @@ export const removeDownloadableApp =
         dispatch(resetAppProgress(app));
     };
 
-export const launch = (app: LaunchableApp) => {
-    telemetry.sendEvent(EventAction.LAUNCH_APP, {
-        appInfo: {
-            name: app.name,
-            source: app.source,
-            version: app.currentVersion,
-        },
-    });
-    openWindow.openApp(app);
-};
-
-export const checkEngineAndLaunch =
-    (app: LaunchableApp): AppThunk =>
+export const launch =
+    (app: LaunchableApp, setQuickStartInfoWasShown: boolean): AppThunk =>
     dispatch => {
-        const compatibilityWarning = appCompatibilityWarning(app);
-        const launchAppWithoutWarning =
-            compatibilityWarning == null ||
-            launcherConfig().isRunningLauncherFromSource;
+        if (setQuickStartInfoWasShown) dispatch(quickStartInfoWasShown());
 
-        if (launchAppWithoutWarning) {
-            launch(app);
-        } else {
-            dispatch(
-                showConfirmLaunchDialog({
-                    app,
-                    text: compatibilityWarning.longWarning,
-                })
-            );
-        }
+        telemetry.sendEvent(EventAction.LAUNCH_APP, {
+            appInfo: {
+                name: app.name,
+                source: app.source,
+                version: app.currentVersion,
+            },
+        });
+        openWindow.openApp(app);
+    };
+
+export const checkCompatibilityThenLaunch =
+    (app: LaunchableApp, setQuickStartInfoWasShown = false): AppThunk =>
+    dispatch => {
+        appCompatibilityWarning(app).then(compatibilityWarning => {
+            const launchAppWithoutWarning =
+                compatibilityWarning == null ||
+                launcherConfig().isRunningLauncherFromSource;
+
+            if (launchAppWithoutWarning) {
+                dispatch(launch(app, setQuickStartInfoWasShown));
+            } else {
+                dispatch(
+                    showConfirmLaunchDialog({
+                        app,
+                        title: compatibilityWarning.title,
+                        text: compatibilityWarning.longWarning,
+                        warningData: compatibilityWarning.warningData,
+                        setQuickStartInfoWasShown,
+                    })
+                );
+            }
+        });
     };

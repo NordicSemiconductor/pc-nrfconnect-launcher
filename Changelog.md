@@ -1,4 +1,9 @@
-## 5.0.3 - Unrelesed
+## 5.1.0 - Unreleased
+
+### Added
+
+-   A warning related to the SEGGER J-Link version when the application does not
+    find the expected J-Link version.
 
 ### Changed
 

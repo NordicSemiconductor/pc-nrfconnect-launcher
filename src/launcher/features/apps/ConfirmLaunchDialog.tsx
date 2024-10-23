@@ -5,9 +5,13 @@
  */
 
 import React from 'react';
-import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    ConfirmationDialog,
+    telemetry,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { EventAction } from '../telemetry/telemetryEffects';
 import {
     getConfirmLaunchDialog,
     hideConfirmLaunchDialog,
@@ -21,20 +25,37 @@ export default () => {
     return (
         <ConfirmationDialog
             isVisible={confirmationDialog.isVisible}
-            title="Version problem"
+            title={confirmationDialog.isVisible ? confirmationDialog.title : ''}
             confirmLabel="Launch anyway"
             cancelLabel="Cancel"
             onConfirm={() => {
                 if (!confirmationDialog.isVisible) {
                     throw new Error(
-                        'Should be impossible to invoke a disabled button'
+                        'Should be impossible to invoke a button on an invisible dialog'
                     );
                 }
 
-                launch(confirmationDialog.app);
+                dispatch(
+                    launch(
+                        confirmationDialog.app,
+                        confirmationDialog.setQuickStartInfoWasShown
+                    )
+                );
+                telemetry.sendEvent(EventAction.LAUNCH_APP_WARNING, {
+                    warningIgnored: true,
+                    ...confirmationDialog.warningData,
+                });
                 dispatch(hideConfirmLaunchDialog());
             }}
-            onCancel={() => dispatch(hideConfirmLaunchDialog())}
+            onCancel={() => {
+                if (confirmationDialog.isVisible) {
+                    telemetry.sendEvent(EventAction.LAUNCH_APP_WARNING, {
+                        warningIgnored: false,
+                        ...confirmationDialog.warningData,
+                    });
+                    dispatch(hideConfirmLaunchDialog());
+                }
+            }}
         >
             {confirmationDialog.isVisible && confirmationDialog.text}
         </ConfirmationDialog>
