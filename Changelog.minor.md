@@ -13,6 +13,8 @@ release the new version.
 
 -   #1037: Aligned "Update all apps" button with the list of the apps
     vertically.
+-   #1051: `nrfutil` was always overwritten by the bundled version, even if the
+    latter was older.
 
 ## 4.4.1 - 5.0.2
 
