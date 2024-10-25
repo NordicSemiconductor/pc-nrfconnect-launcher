@@ -19,6 +19,12 @@ const { appExists, failureReadingFile, successfulInstall } =
 
 jest.mock('../../../ipc/apps');
 
+jest.mock('electron', () => ({
+    webUtils: {
+        getPathForFile: jest.fn((file: { path: string }) => file.path), // treat "file" as "path" for the tests
+    },
+}));
+
 const installedApp = createLocalTestApp('anApp');
 const anotherInstalledApp = createLocalTestApp('anotherApp');
 
