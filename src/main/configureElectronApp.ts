@@ -91,13 +91,13 @@ const initNrfutil = () => {
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
     const nrfutilBundledStats = fse.statSync(nrfutilBundled);
 
-    const noNrfutilInstalled = !fse.existsSync(nrfutilInAppPath);
+    const nrfutilInstalled = fse.existsSync(nrfutilInAppPath);
     const installedNrfutilOlderThenBundledNrfutil =
-        nrfutilInAppPath ||
+        nrfutilInstalled &&
         Math.round(nrfutilBundledStats.mtimeMs) >
             Math.round(fse.statSync(nrfutilInAppPath).mtimeMs);
 
-    if (noNrfutilInstalled || installedNrfutilOlderThenBundledNrfutil) {
+    if (!nrfutilInstalled || installedNrfutilOlderThenBundledNrfutil) {
         fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
         fse.utimes(
             nrfutilInAppPath,
