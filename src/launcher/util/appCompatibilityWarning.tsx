@@ -201,7 +201,8 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         moduleVersion.dependencies
     );
 
-    if (!jlinkVersionDependency) {
+    const noJlinkInstalled = jlinkVersionDependency?.version == null;
+    if (noJlinkInstalled) {
         const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
 
         return incompatible(
