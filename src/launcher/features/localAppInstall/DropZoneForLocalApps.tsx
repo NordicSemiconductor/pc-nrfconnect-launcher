@@ -5,6 +5,7 @@
  */
 
 import React, { useRef } from 'react';
+import { webUtils } from 'electron';
 
 import { useLauncherDispatch } from '../../util/hooks';
 import { installLocalApp } from '../apps/appsEffects';
@@ -21,7 +22,7 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
         event.preventDefault();
 
         [...event.dataTransfer.files].forEach(file =>
-            dispatch(installLocalApp(file.path))
+            dispatch(installLocalApp(webUtils.getPathForFile(file)))
         );
 
         enterCounter.current = 0;
