@@ -10,6 +10,7 @@ import { useLauncherDispatch } from '../../util/hooks';
 import { installLocalApp } from '../apps/appsEffects';
 import DropZoneInfo from './DropZoneInfo';
 import { hideDropZone, showDropZone } from './localAppInstallSlice';
+import { webUtils } from 'electron';
 
 import styles from './dropZoneInfo.module.scss';
 
@@ -21,7 +22,7 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
         event.preventDefault();
 
         [...event.dataTransfer.files].forEach(file =>
-            dispatch(installLocalApp(file.path))
+            dispatch(installLocalApp(webUtils.getPathForFile(file)))
         );
 
         enterCounter.current = 0;
