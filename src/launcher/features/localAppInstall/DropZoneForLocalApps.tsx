@@ -5,12 +5,12 @@
  */
 
 import React, { useRef } from 'react';
+import { webUtils } from 'electron';
 
 import { useLauncherDispatch } from '../../util/hooks';
 import { installLocalApp } from '../apps/appsEffects';
 import DropZoneInfo from './DropZoneInfo';
 import { hideDropZone, showDropZone } from './localAppInstallSlice';
-import { webUtils } from 'electron';
 
 import styles from './dropZoneInfo.module.scss';
 
