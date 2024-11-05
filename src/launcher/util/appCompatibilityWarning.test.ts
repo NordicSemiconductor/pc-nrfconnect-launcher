@@ -5,10 +5,7 @@
  */
 
 import { NrfutilSandbox } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
-import {
-    Dependency,
-    ModuleVersion,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandboxTypes';
+import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
 import { inspect } from 'util';
 
 import { LaunchableApp } from '../../ipc/apps';
@@ -36,7 +33,7 @@ jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox', () => ({
     __esModule: true,
     default: () =>
         Promise.resolve({
-            getModuleVersion: () => Promise.resolve([] as ModuleVersion[]),
+            getModuleVersion: () => Promise.resolve([]),
         } as unknown as NrfutilSandbox),
 }));
 
@@ -45,14 +42,7 @@ jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
     getUserDataDir: () => '',
 }));
 
-let dependency: Dependency | undefined;
-
-jest.mock(
-    '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion',
-    () => ({
-        resolveModuleVersion: () => dependency,
-    })
-);
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion');
 
 describe('check compatibility of an app with the launcher', () => {
     describe('check if the app sets an engine version', () => {
@@ -192,7 +182,7 @@ describe('check compatibility of an app with the launcher', () => {
         });
 
         describe('Jlink Tests', () => {
-            const app: LaunchableApp = {
+            const app = (nrfutilDeviceVersion: string): LaunchableApp => ({
                 engineVersion: '5.0.0',
                 source: '',
                 latestVersion: 'v1.0.0',
@@ -205,24 +195,27 @@ describe('check compatibility of an app with the launcher', () => {
                 versions: {
                     'v1.0.0': {
                         tarballUrl: '',
-                        nrfutilModules: { device: ['2.0.0'] },
+                        nrfutilModules: { device: [nrfutilDeviceVersion] },
                     },
                 },
                 installed: {
                     path: '',
                 },
-            };
+            });
 
             it(`No installed J-Link`, async () => {
+                jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
+
                 expect(
-                    (await appCompatibilityWarning(app, '5.0.0'))?.warning
+                    (await appCompatibilityWarning(app('2.0.0'), '5.0.0'))
+                        ?.warning
                 ).toBe(
                     'Required SEGGER J-Link not found: expected version V7.88j'
                 );
             });
 
             it(`Wrong JLink version`, async () => {
-                dependency = {
+                jest.mocked(resolveModuleVersion).mockReturnValue({
                     expectedVersion: {
                         versionFormat: 'string',
                         version: 'JLink_V7.94i',
@@ -230,13 +223,27 @@ describe('check compatibility of an app with the launcher', () => {
                     name: 'JlinkARM',
                     versionFormat: 'string',
                     version: 'JLink_V7.94e',
-                };
+                });
 
                 expect(
-                    (await appCompatibilityWarning(app, '5.0.0'))?.warning
+                    (await appCompatibilityWarning(app('2.0.2'), '5.0.0'))
+                        ?.warning
                 ).toBe(
                     'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
                 );
+            });
+
+            it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
+                const mockedGetSandbox = jest
+                    .mocked(resolveModuleVersion)
+                    .mockReset();
+
+                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
+                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
+                await appCompatibilityWarning(app('3.0.1'), '5.0.0');
+                await appCompatibilityWarning(app('3.0.2'), '5.0.0');
+
+                expect(mockedGetSandbox).toBeCalledTimes(3);
             });
         });
     });
