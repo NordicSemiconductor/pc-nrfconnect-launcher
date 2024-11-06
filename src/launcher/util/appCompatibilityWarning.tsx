@@ -11,6 +11,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
 import getSandbox from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
+import { memoize } from 'lodash';
 import semver from 'semver';
 
 import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
@@ -179,6 +180,20 @@ const nrfutilDeviceToJLink = (device: string) => {
     return 'V7.94i';
 };
 
+const getJlinkVersionDependency = memoize(
+    async (nrfutilDeviceVersion: string) => {
+        const userDir = getUserDataDir();
+        const sandbox = await getSandbox(
+            userDir,
+            'device',
+            nrfutilDeviceVersion
+        );
+        const moduleVersion = await sandbox.getModuleVersion();
+
+        return resolveModuleVersion('JlinkARM', moduleVersion.dependencies);
+    }
+);
+
 const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
@@ -193,14 +208,9 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
         return undecided;
     }
 
-    const userDir = getUserDataDir();
-    const sandbox = await getSandbox(userDir, 'device', deviceVersion);
-    const moduleVersion = await sandbox.getModuleVersion();
-    const jlinkVersionDependency = resolveModuleVersion(
-        'JlinkARM',
-        moduleVersion.dependencies
+    const jlinkVersionDependency = await getJlinkVersionDependency(
+        deviceVersion
     );
-
     const noJlinkInstalled = jlinkVersionDependency?.version == null;
     if (noJlinkInstalled) {
         const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
