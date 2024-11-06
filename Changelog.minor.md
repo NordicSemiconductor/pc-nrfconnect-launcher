@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Changed
+
+-   #1057: Show J-Link warning also for local apps.
+
+## 5.1.0
+
 ### Fixed
 
 -   #1037: Aligned "Update all apps" button with the list of the apps

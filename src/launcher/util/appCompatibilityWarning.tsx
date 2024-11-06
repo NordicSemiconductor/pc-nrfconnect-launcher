@@ -9,12 +9,18 @@ import {
     getUserDataDir,
     launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import type { NrfutilModules } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/MetaFiles';
 import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
 import getSandbox from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
 import { memoize } from 'lodash';
 import semver from 'semver';
 
-import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
+import {
+    isDownloadable,
+    isInstalled,
+    isWithdrawn,
+    LaunchableApp,
+} from '../../ipc/apps';
 import {
     existingIsOlderThanExpected,
     strippedVersionName,
@@ -197,12 +203,13 @@ const getJlinkVersionDependency = memoize(
 const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
-    if (!isDownloadable(app)) {
+    if (!isInstalled(app)) {
         return undecided;
     }
 
     const deviceVersion =
-        app.versions?.[app.currentVersion]?.nrfutilModules?.device?.at(0);
+        // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`. Then the typecast should also be removed.
+        (app.nrfutil as NrfutilModules | undefined)?.device?.at(0);
 
     if (!deviceVersion) {
         return undecided;

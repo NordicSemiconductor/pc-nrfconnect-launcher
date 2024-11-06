@@ -186,21 +186,15 @@ describe('check compatibility of an app with the launcher', () => {
                 engineVersion: '5.0.0',
                 source: '',
                 latestVersion: 'v1.0.0',
-                isWithdrawn: false,
+                isWithdrawn: true,
                 name: 'name',
                 displayName: '',
                 iconPath: '',
                 description: 'All versions are exactly as specified',
                 currentVersion: 'v1.0.0',
-                versions: {
-                    'v1.0.0': {
-                        tarballUrl: '',
-                        nrfutilModules: { device: [nrfutilDeviceVersion] },
-                    },
-                },
-                installed: {
-                    path: '',
-                },
+                // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`
+                nrfutil: { device: [nrfutilDeviceVersion] },
+                installed: { path: '' },
             });
 
             it(`No installed J-Link as reported before nrfutil-device 2.7`, async () => {
