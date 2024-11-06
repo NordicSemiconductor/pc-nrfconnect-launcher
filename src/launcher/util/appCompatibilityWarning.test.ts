@@ -203,11 +203,29 @@ describe('check compatibility of an app with the launcher', () => {
                 },
             });
 
-            it(`No installed J-Link`, async () => {
+            it(`No installed J-Link as reported before nrfutil-device 2.7`, async () => {
                 jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
 
                 expect(
                     (await appCompatibilityWarning(app('2.0.0'), '5.0.0'))
+                        ?.warning
+                ).toBe(
+                    'Required SEGGER J-Link not found: expected version V7.88j'
+                );
+            });
+
+            it(`No installed J-Link as reported since nrfutil-device 2.7`, async () => {
+                // @ts-expect-error -- The type for dependencies still needs to be updated in shared
+                jest.mocked(resolveModuleVersion).mockReturnValue({
+                    expectedVersion: {
+                        versionFormat: 'string',
+                        version: 'JLink_V7.94i',
+                    },
+                    name: 'JlinkARM',
+                });
+
+                expect(
+                    (await appCompatibilityWarning(app('2.0.1'), '5.0.0'))
                         ?.warning
                 ).toBe(
                     'Required SEGGER J-Link not found: expected version V7.88j'
