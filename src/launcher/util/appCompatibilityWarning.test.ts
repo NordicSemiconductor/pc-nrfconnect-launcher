@@ -18,12 +18,12 @@ import appCompatibilityWarning, {
 const requiringEngine = (engineVersion?: string): LaunchableApp =>
     createDownloadableTestApp(undefined, { engineVersion });
 
-const failingCheck = {
+const failingCheck = (warning: string) => ({
     isDecided: true,
     isCompatible: false,
-    warning: expect.anything(),
+    warning,
     longWarning: expect.anything(),
-};
+});
 
 const undecidedCheck = {
     isDecided: false,
@@ -52,7 +52,11 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine(undefined),
                     'irrelevant'
                 )
-            ).toMatchObject(failingCheck);
+            ).toMatchObject(
+                failingCheck(
+                    'The app does not specify which nRF Connect for Desktop versions it supports'
+                )
+            );
         });
 
         it('is undecided if any engine version is set', () => {
@@ -93,7 +97,11 @@ describe('check compatibility of an app with the launcher', () => {
         it('fails if the app requires a higher version', () => {
             expect(
                 checkEngineIsSupported(requiringEngine('^2.0.0'), '1.2.3')
-            ).toMatchObject(failingCheck);
+            ).toMatchObject(
+                failingCheck(
+                    'The app only supports nRF Connect for Desktop ^2.0.0, which does not match your currently installed version'
+                )
+            );
         });
     });
 
