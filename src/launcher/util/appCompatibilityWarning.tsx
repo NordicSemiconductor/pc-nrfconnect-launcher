@@ -200,7 +200,7 @@ const getJlinkVersionDependency = memoize(
     }
 );
 
-const checkJLinkRequirements: AppCompatibilityChecker = async (
+export const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
     if (!isInstalled(app)) {

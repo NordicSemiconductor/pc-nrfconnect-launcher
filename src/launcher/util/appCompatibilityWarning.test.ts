@@ -13,6 +13,7 @@ import { createDownloadableTestApp } from '../../test/testFixtures';
 import appCompatibilityWarning, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,
+    checkJLinkRequirements,
 } from './appCompatibilityWarning';
 
 const requiringEngine = (engineVersion?: string): LaunchableApp =>
@@ -105,6 +106,78 @@ describe('check compatibility of an app with the launcher', () => {
         });
     });
 
+    describe('Check if the tested version of J-Link is installed', () => {
+        const app = (nrfutilDeviceVersion: string) =>
+            createDownloadableTestApp(undefined, {
+                // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`
+                nrfutil: { device: [nrfutilDeviceVersion] },
+            });
+
+        it(`No installed J-Link as reported before nrfutil-device 2.7`, async () => {
+            jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
+
+            expect(
+                await checkJLinkRequirements(app('2.0.0'), '5.0.0')
+            ).toMatchObject(
+                failingCheck(
+                    'Required SEGGER J-Link not found: expected version V7.88j'
+                )
+            );
+        });
+
+        it(`No installed J-Link as reported since nrfutil-device 2.7`, async () => {
+            // @ts-expect-error -- The type for dependencies still needs to be updated in shared
+            jest.mocked(resolveModuleVersion).mockReturnValue({
+                expectedVersion: {
+                    versionFormat: 'string',
+                    version: 'JLink_V7.94i',
+                },
+                name: 'JlinkARM',
+            });
+
+            expect(
+                await checkJLinkRequirements(app('2.0.1'), '5.0.0')
+            ).toMatchObject(
+                failingCheck(
+                    'Required SEGGER J-Link not found: expected version V7.88j'
+                )
+            );
+        });
+
+        it(`Wrong JLink version`, async () => {
+            jest.mocked(resolveModuleVersion).mockReturnValue({
+                expectedVersion: {
+                    versionFormat: 'string',
+                    version: 'JLink_V7.94i',
+                },
+                name: 'JlinkARM',
+                versionFormat: 'string',
+                version: 'JLink_V7.94e',
+            });
+
+            expect(
+                await checkJLinkRequirements(app('2.0.2'), '5.0.0')
+            ).toMatchObject(
+                failingCheck(
+                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
+                )
+            );
+        });
+
+        it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
+            const mockedGetSandbox = jest
+                .mocked(resolveModuleVersion)
+                .mockReset();
+
+            await checkJLinkRequirements(app('3.0.0'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.0'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.1'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.2'), '5.0.0');
+
+            expect(mockedGetSandbox).toBeCalledTimes(3);
+        });
+    });
+
     describe('integrating all the checkes', () => {
         describe('some checks fails if', () => {
             [
@@ -187,84 +260,6 @@ describe('check compatibility of an app with the launcher', () => {
                     });
                 }
             );
-        });
-
-        describe('Jlink Tests', () => {
-            const app = (nrfutilDeviceVersion: string): LaunchableApp => ({
-                engineVersion: '5.0.0',
-                source: '',
-                latestVersion: 'v1.0.0',
-                isWithdrawn: true,
-                name: 'name',
-                displayName: '',
-                iconPath: '',
-                description: 'All versions are exactly as specified',
-                currentVersion: 'v1.0.0',
-                // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`
-                nrfutil: { device: [nrfutilDeviceVersion] },
-                installed: { path: '' },
-            });
-
-            it(`No installed J-Link as reported before nrfutil-device 2.7`, async () => {
-                jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
-
-                expect(
-                    (await appCompatibilityWarning(app('2.0.0'), '5.0.0'))
-                        ?.warning
-                ).toBe(
-                    'Required SEGGER J-Link not found: expected version V7.88j'
-                );
-            });
-
-            it(`No installed J-Link as reported since nrfutil-device 2.7`, async () => {
-                // @ts-expect-error -- The type for dependencies still needs to be updated in shared
-                jest.mocked(resolveModuleVersion).mockReturnValue({
-                    expectedVersion: {
-                        versionFormat: 'string',
-                        version: 'JLink_V7.94i',
-                    },
-                    name: 'JlinkARM',
-                });
-
-                expect(
-                    (await appCompatibilityWarning(app('2.0.1'), '5.0.0'))
-                        ?.warning
-                ).toBe(
-                    'Required SEGGER J-Link not found: expected version V7.88j'
-                );
-            });
-
-            it(`Wrong JLink version`, async () => {
-                jest.mocked(resolveModuleVersion).mockReturnValue({
-                    expectedVersion: {
-                        versionFormat: 'string',
-                        version: 'JLink_V7.94i',
-                    },
-                    name: 'JlinkARM',
-                    versionFormat: 'string',
-                    version: 'JLink_V7.94e',
-                });
-
-                expect(
-                    (await appCompatibilityWarning(app('2.0.2'), '5.0.0'))
-                        ?.warning
-                ).toBe(
-                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
-                );
-            });
-
-            it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
-                const mockedGetSandbox = jest
-                    .mocked(resolveModuleVersion)
-                    .mockReset();
-
-                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.1'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.2'), '5.0.0');
-
-                expect(mockedGetSandbox).toBeCalledTimes(3);
-            });
         });
     });
 });
