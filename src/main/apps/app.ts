@@ -142,7 +142,6 @@ export const addInstalledAppData = (
         repositoryUrl: packageJson.repository?.url,
         html: packageJson.nrfConnectForDesktop?.html,
 
-        // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`
         nrfutil: packageJson.nrfConnectForDesktop?.nrfutil,
     };
 };

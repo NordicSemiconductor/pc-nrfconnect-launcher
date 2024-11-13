@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { NrfutilSandbox } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
-import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
+import {
+    getJlinkCompatibility,
+    prepareSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { inspect } from 'util';
 
 import { LaunchableApp } from '../../ipc/apps';
@@ -30,13 +32,7 @@ const undecidedCheck = {
     isDecided: false,
 };
 
-jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox', () => ({
-    __esModule: true,
-    default: () =>
-        Promise.resolve({
-            getModuleVersion: () => Promise.resolve([]),
-        } as unknown as NrfutilSandbox),
-}));
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil');
 
 jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
     ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
@@ -109,65 +105,20 @@ describe('check compatibility of an app with the launcher', () => {
     describe('Check if the tested version of J-Link is installed', () => {
         const app = (nrfutilDeviceVersion: string) =>
             createDownloadableTestApp(undefined, {
-                // @ts-expect-error -- Needs to be added to Installed in shared as `nrfutil?: NrfutilModules;`
                 nrfutil: { device: [nrfutilDeviceVersion] },
             });
 
-        it(`No installed J-Link as reported before nrfutil-device 2.7`, async () => {
-            jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
-
-            expect(
-                await checkJLinkRequirements(app('2.0.0'), '5.0.0')
-            ).toMatchObject(
-                failingCheck(
-                    'Required SEGGER J-Link not found: expected version V7.88j'
-                )
-            );
-        });
-
-        it(`No installed J-Link as reported since nrfutil-device 2.7`, async () => {
-            // @ts-expect-error -- The type for dependencies still needs to be updated in shared
-            jest.mocked(resolveModuleVersion).mockReturnValue({
-                expectedVersion: {
-                    versionFormat: 'string',
-                    version: 'JLink_V7.94i',
-                },
-                name: 'JlinkARM',
-            });
-
-            expect(
-                await checkJLinkRequirements(app('2.0.1'), '5.0.0')
-            ).toMatchObject(
-                failingCheck(
-                    'Required SEGGER J-Link not found: expected version V7.88j'
-                )
-            );
-        });
-
-        it(`Wrong JLink version`, async () => {
-            jest.mocked(resolveModuleVersion).mockReturnValue({
-                expectedVersion: {
-                    versionFormat: 'string',
-                    version: 'JLink_V7.94i',
-                },
-                name: 'JlinkARM',
-                versionFormat: 'string',
-                version: 'JLink_V7.94e',
-            });
-
-            expect(
-                await checkJLinkRequirements(app('2.0.2'), '5.0.0')
-            ).toMatchObject(
-                failingCheck(
-                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
-                )
-            );
-        });
-
         it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
+            jest.mocked(prepareSandbox).mockResolvedValue({
+                // @ts-expect-error -- I do not understand et how to fix this TypeScript error, but this is only a test, test ¯\_(ツ)_/¯
+                getModuleVersion: () => [],
+            });
+
             const mockedGetSandbox = jest
-                .mocked(resolveModuleVersion)
-                .mockReset();
+                .mocked(getJlinkCompatibility)
+                .mockClear()
+                // @ts-expect-error -- As above
+                .mockResolvedValue({});
 
             await checkJLinkRequirements(app('3.0.0'), '5.0.0');
             await checkJLinkRequirements(app('3.0.0'), '5.0.0');
