@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { NrfutilSandbox } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
-import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
+import {
+    getJlinkCompatibility,
+    prepareSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { inspect } from 'util';
 
 import { LaunchableApp } from '../../ipc/apps';
@@ -13,29 +15,24 @@ import { createDownloadableTestApp } from '../../test/testFixtures';
 import appCompatibilityWarning, {
     checkEngineIsSupported,
     checkEngineVersionIsSet,
+    checkJLinkRequirements,
 } from './appCompatibilityWarning';
 
 const requiringEngine = (engineVersion?: string): LaunchableApp =>
     createDownloadableTestApp(undefined, { engineVersion });
 
-const failingCheck = {
+const failingCheck = (warning: string) => ({
     isDecided: true,
     isCompatible: false,
-    warning: expect.anything(),
+    warning,
     longWarning: expect.anything(),
-};
+});
 
 const undecidedCheck = {
     isDecided: false,
 };
 
-jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox', () => ({
-    __esModule: true,
-    default: () =>
-        Promise.resolve({
-            getModuleVersion: () => Promise.resolve([]),
-        } as unknown as NrfutilSandbox),
-}));
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil');
 
 jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
     ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
@@ -52,7 +49,11 @@ describe('check compatibility of an app with the launcher', () => {
                     requiringEngine(undefined),
                     'irrelevant'
                 )
-            ).toMatchObject(failingCheck);
+            ).toMatchObject(
+                failingCheck(
+                    'The app does not specify which nRF Connect for Desktop versions it supports'
+                )
+            );
         });
 
         it('is undecided if any engine version is set', () => {
@@ -93,7 +94,38 @@ describe('check compatibility of an app with the launcher', () => {
         it('fails if the app requires a higher version', () => {
             expect(
                 checkEngineIsSupported(requiringEngine('^2.0.0'), '1.2.3')
-            ).toMatchObject(failingCheck);
+            ).toMatchObject(
+                failingCheck(
+                    'The app only supports nRF Connect for Desktop ^2.0.0, which does not match your currently installed version'
+                )
+            );
+        });
+    });
+
+    describe('Check if the tested version of J-Link is installed', () => {
+        const app = (nrfutilDeviceVersion: string) =>
+            createDownloadableTestApp(undefined, {
+                nrfutil: { device: [nrfutilDeviceVersion] },
+            });
+
+        it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
+            jest.mocked(prepareSandbox).mockResolvedValue({
+                // @ts-expect-error -- I do not understand et how to fix this TypeScript error, but this is only a test, test ¯\_(ツ)_/¯
+                getModuleVersion: () => [],
+            });
+
+            const mockedGetSandbox = jest
+                .mocked(getJlinkCompatibility)
+                .mockClear()
+                // @ts-expect-error -- As above
+                .mockResolvedValue({});
+
+            await checkJLinkRequirements(app('3.0.0'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.0'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.1'), '5.0.0');
+            await checkJLinkRequirements(app('3.0.2'), '5.0.0');
+
+            expect(mockedGetSandbox).toBeCalledTimes(3);
         });
     });
 
@@ -179,72 +211,6 @@ describe('check compatibility of an app with the launcher', () => {
                     });
                 }
             );
-        });
-
-        describe('Jlink Tests', () => {
-            const app = (nrfutilDeviceVersion: string): LaunchableApp => ({
-                engineVersion: '5.0.0',
-                source: '',
-                latestVersion: 'v1.0.0',
-                isWithdrawn: false,
-                name: 'name',
-                displayName: '',
-                iconPath: '',
-                description: 'All versions are exactly as specified',
-                currentVersion: 'v1.0.0',
-                versions: {
-                    'v1.0.0': {
-                        tarballUrl: '',
-                        nrfutilModules: { device: [nrfutilDeviceVersion] },
-                    },
-                },
-                installed: {
-                    path: '',
-                },
-            });
-
-            it(`No installed J-Link`, async () => {
-                jest.mocked(resolveModuleVersion).mockReturnValue(undefined);
-
-                expect(
-                    (await appCompatibilityWarning(app('2.0.0'), '5.0.0'))
-                        ?.warning
-                ).toBe(
-                    'Required SEGGER J-Link not found: expected version V7.88j'
-                );
-            });
-
-            it(`Wrong JLink version`, async () => {
-                jest.mocked(resolveModuleVersion).mockReturnValue({
-                    expectedVersion: {
-                        versionFormat: 'string',
-                        version: 'JLink_V7.94i',
-                    },
-                    name: 'JlinkARM',
-                    versionFormat: 'string',
-                    version: 'JLink_V7.94e',
-                });
-
-                expect(
-                    (await appCompatibilityWarning(app('2.0.2'), '5.0.0'))
-                        ?.warning
-                ).toBe(
-                    'Untested version V7.94e of SEGGER J-Link found: expected at least version V7.94i'
-                );
-            });
-
-            it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
-                const mockedGetSandbox = jest
-                    .mocked(resolveModuleVersion)
-                    .mockReset();
-
-                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.0'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.1'), '5.0.0');
-                await appCompatibilityWarning(app('3.0.2'), '5.0.0');
-
-                expect(mockedGetSandbox).toBeCalledTimes(3);
-            });
         });
     });
 });

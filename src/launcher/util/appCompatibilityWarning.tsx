@@ -9,16 +9,19 @@ import {
     getUserDataDir,
     launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { resolveModuleVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion';
-import getSandbox from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
+import {
+    getJlinkCompatibility as getJlinkCompatibilityFromModuleVersion,
+    prepareSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { memoize } from 'lodash';
 import semver from 'semver';
 
-import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
 import {
-    existingIsOlderThanExpected,
-    strippedVersionName,
-} from './jlinkVersion';
+    isDownloadable,
+    isInstalled,
+    isWithdrawn,
+    LaunchableApp,
+} from '../../ipc/apps';
 import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
@@ -163,69 +166,47 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
           );
 };
 
-const nrfutilDeviceToJLink = (device: string) => {
-    // According to https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html#prerequisites
-    if (semver.lt(device, '2.0.0')) {
-        return 'V7.80c';
-    }
+const getJlinkCompatibility = memoize(async (nrfutilDeviceVersion: string) => {
+    const userDir = getUserDataDir();
+    const sandbox = await prepareSandbox(
+        userDir,
+        'device',
+        nrfutilDeviceVersion
+    );
+    const moduleVersion = await sandbox.getModuleVersion();
 
-    if (semver.lt(device, '2.1.0')) {
-        return 'V7.88j';
-    }
+    return getJlinkCompatibilityFromModuleVersion(moduleVersion);
+});
 
-    if (semver.lt(device, '2.5.4')) {
-        return 'V7.94e';
-    }
-
-    return 'V7.94i';
-};
-
-const getJlinkVersionDependency = memoize(
-    async (nrfutilDeviceVersion: string) => {
-        const userDir = getUserDataDir();
-        const sandbox = await getSandbox(
-            userDir,
-            'device',
-            nrfutilDeviceVersion
-        );
-        const moduleVersion = await sandbox.getModuleVersion();
-
-        return resolveModuleVersion('JlinkARM', moduleVersion.dependencies);
-    }
-);
-
-const checkJLinkRequirements: AppCompatibilityChecker = async (
+export const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
 ) => {
-    if (!isDownloadable(app)) {
+    if (!isInstalled(app)) {
         return undecided;
     }
 
-    const deviceVersion =
-        app.versions?.[app.currentVersion]?.nrfutilModules?.device?.at(0);
+    const deviceVersion = app.nrfutil?.device?.at(0);
 
     if (!deviceVersion) {
         return undecided;
     }
 
-    const jlinkVersionDependency = await getJlinkVersionDependency(
-        deviceVersion
-    );
-    const noJlinkInstalled = jlinkVersionDependency?.version == null;
-    if (noJlinkInstalled) {
-        const requiredVersion = nrfutilDeviceToJLink(deviceVersion);
+    const jlinkCompatibility = await getJlinkCompatibility(deviceVersion);
+
+    if (jlinkCompatibility.kind === 'No J-Link installed') {
+        const { requiredJlink } = jlinkCompatibility;
 
         return incompatible(
             'Missing dependency',
-            `Required SEGGER J-Link not found: expected version ${requiredVersion}`,
+            `Required SEGGER J-Link not found: expected version V${requiredJlink}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
-                <div>This app requires SEGGER J-Link {requiredVersion}.</div>
+                <div>This app requires SEGGER J-Link V{requiredJlink}.</div>
                 <div>
                     <Link href="https://www.segger.com/downloads/jlink/">
                         Download
                     </Link>{' '}
                     and install the SEGGER J-Link Software and Documentation
-                    pack {requiredVersion}. Restart nRF Connect for Desktop
+                    pack V{requiredJlink}. Restart nRF Connect for Desktop
                     afterwards.
                 </div>
             </div>,
@@ -233,30 +214,22 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
                 warningKind: WarningKind.JLINK,
                 app: app.name,
                 nrfutilDevice: deviceVersion,
-                requiredJlink: requiredVersion,
-                actualJlink: 'none',
+                ...jlinkCompatibility,
             }
         );
     }
 
-    if (
-        jlinkVersionDependency.expectedVersion &&
-        existingIsOlderThanExpected(jlinkVersionDependency)
-    ) {
-        const expectedVersionNumber = strippedVersionName(
-            jlinkVersionDependency.expectedVersion
-        );
-        const actualVersionNumber = strippedVersionName(jlinkVersionDependency);
+    if (jlinkCompatibility.kind === 'Outdated J-Link') {
+        const { actualJlink, requiredJlink } = jlinkCompatibility;
 
         return incompatible(
             'Outdated dependency',
-            `Untested version V${actualVersionNumber} of SEGGER J-Link found: ` +
-                `expected at least version V${expectedVersionNumber}`,
+            `Untested version V${actualJlink} of SEGGER J-Link found: ` +
+                `expected at least version V${requiredJlink}`,
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>
-                    This app was tested with SEGGER J-Link V
-                    {expectedVersionNumber} but version V{actualVersionNumber}{' '}
-                    was found on your system.
+                    This app was tested with SEGGER J-Link V{requiredJlink} but
+                    version V{actualJlink} was found on your system.
                 </div>
                 <div>This app might not work as expected!</div>
                 <div>
@@ -264,16 +237,15 @@ const checkJLinkRequirements: AppCompatibilityChecker = async (
                         Download
                     </Link>{' '}
                     and install the SEGGER J-Link Software and Documentation
-                    pack V{expectedVersionNumber}. Restart nRF Connect for
-                    Desktop afterwards.
+                    pack V{requiredJlink}. Restart nRF Connect for Desktop
+                    afterwards.
                 </div>
             </div>,
             {
                 warningKind: WarningKind.JLINK,
                 app: app.name,
                 nrfutilDevice: deviceVersion,
-                requiredJlink: jlinkVersionDependency.expectedVersion.version,
-                actualJlink: jlinkVersionDependency.version,
+                ...jlinkCompatibility,
             }
         );
     }
