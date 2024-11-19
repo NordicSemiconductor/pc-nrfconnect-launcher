@@ -12,7 +12,9 @@
 
 @keyframes appWasInstalled {
     0% {
-        background-color: $primary;
+        // background-color: $primary;
+        // background-color: #ebfdff;
+        background-color: #cef9ff;
     }
     100% {
         background-color: white;
