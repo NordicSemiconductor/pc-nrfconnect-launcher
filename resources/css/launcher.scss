@@ -209,7 +209,13 @@ body {
 }
 
 .release-notes {
-    overflow-y: overlay;
+    overflow-y: scroll;
+
+    max-height: 70dvh;
+    @media screen and (max-height: 650px) {
+        max-height: 55dvh;
+    }
+
     @include scrollbars($white);
     h2 {
         font-size: 1.25rem;
