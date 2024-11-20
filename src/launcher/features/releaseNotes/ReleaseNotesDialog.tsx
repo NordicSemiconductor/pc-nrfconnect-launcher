@@ -5,7 +5,14 @@
  */
 
 import React from 'react';
+import Form from 'react-bootstrap/Form';
 import ReactMarkdown from 'react-markdown';
+import {
+    classNames,
+    ConfirmationDialog,
+    DialogButton,
+    GenericDialog,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import {
     App,
@@ -20,8 +27,6 @@ import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
-import Form from "react-bootstrap/Form";
-import {classNames, ConfirmationDialog, DialogButton, GenericDialog} from "@nordicsemiconductor/pc-nrfconnect-shared";
 
 const canBeInstalledOrUpdated = (
     app?: App
@@ -75,5 +80,5 @@ export default () => {
                 </ReactMarkdown>
             </div>
         </GenericDialog>
-    )
+    );
 };
