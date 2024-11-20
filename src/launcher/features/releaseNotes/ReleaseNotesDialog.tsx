@@ -51,7 +51,6 @@ export default () => {
             key="releaseNotes"
             onHide={hideDialog}
             closeOnEsc
-            // scrollable
             isVisible={isVisible}
             title={`Release notes for ${app?.displayName ?? appToDisplay.name}`}
             size="xl"
