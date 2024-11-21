@@ -53,7 +53,7 @@ export default () => {
             closeOnEsc
             isVisible={isVisible}
             title={`Release notes for ${app?.displayName ?? appToDisplay.name}`}
-            size="xl"
+            size="lg"
             footer={
                 <>
                     {canBeInstalledOrUpdated(app) && (
