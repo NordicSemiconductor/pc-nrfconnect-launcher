@@ -12,13 +12,17 @@ const crypto = require('crypto');
 
 const downloadChecksum = async fileUrl => {
     console.log('Downloading', fileUrl);
-    const { status, data } = await axios.get(fileUrl);
-    if (status !== 200) {
-        throw new Error(
-            `Unable to download ${fileUrl}. Got status code ${status}`
-        );
+    try {
+        const { status, data } = await axios.get(fileUrl);
+        if (status !== 200) {
+            throw new Error(
+                `Unable to download ${fileUrl}. Got status code ${status}`
+            );
+        }
+        return data;
+    } catch (error) {
+        throw new Error(`Unable to download ${fileUrl}: ${error.message}`);
     }
-    return data;
 };
 
 module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
