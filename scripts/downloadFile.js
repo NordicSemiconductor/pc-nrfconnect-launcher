@@ -11,11 +11,11 @@ const path = require('path');
 const crypto = require('crypto');
 
 const downloadChecksum = async fileUrl => {
-    console.log('Downloading', `${fileUrl}.md5`);
-    const { status, data } = await axios.get(`${fileUrl}.md5`);
+    console.log('Downloading', fileUrl);
+    const { status, data } = await axios.get(fileUrl);
     if (status !== 200) {
         throw new Error(
-            `Unable to download ${fileUrl}.md5. Got status code ${status}`
+            `Unable to download ${fileUrl}. Got status code ${status}`
         );
     }
     return data.split(' ').shift();
@@ -45,7 +45,9 @@ module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
                 console.log('🏁 Saved to', destinationFile);
                 if (useChecksum) {
                     const calculatedChecksum = hash.digest('hex');
-                    const expectedChecksum = await downloadChecksum(fileUrl);
+                    const expectedChecksum = await downloadChecksum(
+                        `${fileUrl}.md5`
+                    );
 
                     if (calculatedChecksum !== expectedChecksum) {
                         fs.unlinkSync(destinationFile);
