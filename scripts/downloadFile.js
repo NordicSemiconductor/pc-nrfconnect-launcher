@@ -18,11 +18,11 @@ const downloadChecksum = async fileUrl => {
             `Unable to download ${fileUrl}. Got status code ${status}`
         );
     }
-    return data.split(' ').shift();
+    return data;
 };
 
 module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
-    const hash = crypto.createHash('md5');
+    const hash = crypto.createHash('sha256');
 
     console.log('Started Download', fileUrl);
     const { status, data: stream } = await axios.get(fileUrl, {
@@ -46,7 +46,7 @@ module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
                 if (useChecksum) {
                     const calculatedChecksum = hash.digest('hex');
                     const expectedChecksum = await downloadChecksum(
-                        `${fileUrl}.md5`
+                        `${fileUrl}.sha256`
                     );
 
                     if (calculatedChecksum !== expectedChecksum) {
