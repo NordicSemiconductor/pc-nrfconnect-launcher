@@ -5,9 +5,14 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import ReactMarkdown from 'react-markdown';
+import {
+    classNames,
+    ConfirmationDialog,
+    DialogButton,
+    GenericDialog,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import {
     App,
@@ -42,41 +47,37 @@ export default () => {
     const hideDialog = () => dispatch(hide());
 
     return (
-        <Modal
-            show={isVisible}
-            onHide={hideDialog}
-            size="xl"
-            scrollable
+        <GenericDialog
             key="releaseNotes"
+            onHide={hideDialog}
+            closeOnEsc
+            isVisible={isVisible}
+            title={`Release notes for ${app?.displayName ?? appToDisplay.name}`}
+            size="lg"
+            footer={
+                <>
+                    {canBeInstalledOrUpdated(app) && (
+                        <DialogButton
+                            variant="primary"
+                            onClick={() => {
+                                dispatch(updateDownloadableApp(app));
+                                hideDialog();
+                            }}
+                        >
+                            {isInstalled(app)
+                                ? 'Update to latest version'
+                                : 'Install'}
+                        </DialogButton>
+                    )}
+                    <DialogButton onClick={hideDialog}>Close</DialogButton>
+                </>
+            }
         >
-            <Modal.Header>
-                <Modal.Title>
-                    Release notes for {app?.displayName ?? appToDisplay.name}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="release-notes">
+            <div className="release-notes">
                 <ReactMarkdown linkTarget="_blank">
                     {app?.releaseNotes ?? ''}
                 </ReactMarkdown>
-            </Modal.Body>
-            <Modal.Footer>
-                {canBeInstalledOrUpdated(app) && (
-                    <Button
-                        variant="primary"
-                        onClick={() => {
-                            dispatch(updateDownloadableApp(app));
-                            hideDialog();
-                        }}
-                    >
-                        {isInstalled(app)
-                            ? 'Update to latest version'
-                            : 'Install'}
-                    </Button>
-                )}
-                <Button variant="outline-primary" onClick={hideDialog}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            </div>
+        </GenericDialog>
     );
 };

@@ -1,3 +1,9 @@
+## 5.1.1 - unreleased
+
+### Changed
+
+-   Layout of the changelog modal.
+
 ## 5.1.0 - 2024-11-11
 
 ### Added
