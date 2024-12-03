@@ -12,6 +12,7 @@ release the new version.
 ### Changed
 
 -   #1057: Show J-Link warning also for local apps.
+-   #1063: Download J-Link from Artifactory.
 
 ## 5.1.0
 

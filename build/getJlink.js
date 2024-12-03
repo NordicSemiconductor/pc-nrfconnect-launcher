@@ -11,7 +11,7 @@ const bundledJlinkVersion = require('../src/main/bundledJlinkVersion.js');
 
 const minVersion = bundledJlinkVersion.replace('.', '');
 
-const FILE_URL = `https://developer.nordicsemi.com/.pc-tools/jlink/JLink_Windows_${minVersion}_x86_64.exe`;
+const FILE_URL = `https://files.nordicsemi.com/artifactory/swtools/external/ncd/jlink/JLink_Windows_${minVersion}_x86_64.exe`;
 const DESTINATION_FILE_PATH = path.join(
     'build',
     `JLink_Windows_${minVersion}.exe`
