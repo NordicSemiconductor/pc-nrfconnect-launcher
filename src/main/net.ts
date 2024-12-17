@@ -8,8 +8,10 @@ import { net, session } from 'electron';
 import fs from 'fs-extra';
 
 import type { AppSpec } from '../ipc/apps';
+import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { inRenderer as proxyLogin } from '../ipc/proxyLogin';
+import { retrieveToken } from './artifactoryTokenStorage';
 import { storeProxyLoginRequest } from './proxyLogins';
 
 // Using the same session name as electron-updater, so that proxy credentials
@@ -28,12 +30,18 @@ const reportInstallProgress = (
     });
 };
 
+const determineBearer = (url: string) =>
+    url.startsWith('https://files.nordicsemi.com/')
+        ? retrieveToken()
+        : undefined;
+
 export type NetError = Error & { statusCode?: number };
 
 const downloadToBuffer = (
     url: string,
     enableProxyLogin: boolean,
-    app: AppSpec | undefined = undefined
+    app: AppSpec | undefined = undefined,
+    bearer = determineBearer(url)
 ) =>
     new Promise<Buffer>((resolve, reject) => {
         const request = net.request({
@@ -41,6 +49,9 @@ const downloadToBuffer = (
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
+        if (bearer) {
+            request.setHeader('Authorization', `Bearer ${bearer}`);
+        }
 
         request.on('response', response => {
             const { statusCode } = response;
@@ -87,8 +98,16 @@ const downloadToBuffer = (
 
 export const downloadToJson = async <T>(
     url: string,
-    enableProxyLogin: boolean
-) => <T>JSON.parse((await downloadToBuffer(url, enableProxyLogin)).toString());
+    enableProxyLogin: boolean,
+    bearer?: string
+) =>
+    <T>(
+        JSON.parse(
+            (
+                await downloadToBuffer(url, enableProxyLogin, undefined, bearer)
+            ).toString()
+        )
+    );
 
 export const downloadToFile = async (
     url: string,
@@ -99,3 +118,10 @@ export const downloadToFile = async (
     const buffer = await downloadToBuffer(url, enableProxyLogin, app);
     await fs.writeFile(filePath, buffer);
 };
+
+export const getArtifactoryTokenInformation = (token: string) =>
+    downloadToJson<TokenInformation>(
+        'https://files.nordicsemi.com/access/api/v1/tokens/me',
+        true,
+        token
+    );
