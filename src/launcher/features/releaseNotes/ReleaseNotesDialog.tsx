@@ -5,11 +5,8 @@
  */
 
 import React from 'react';
-import Form from 'react-bootstrap/Form';
 import ReactMarkdown from 'react-markdown';
 import {
-    classNames,
-    ConfirmationDialog,
     DialogButton,
     GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
