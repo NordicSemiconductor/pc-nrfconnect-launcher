@@ -7,9 +7,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import type { TokenInformation } from '../../../ipc/artifactoryToken';
 import {
+    getArtifactoryTokenInformation as getPersistedArtifactoryTokenInformation,
     getCheckForUpdatesAtStartup as getPersistedCheckForUpdatesAtStartup,
     getIsQuickStartInfoShownBefore as getPersistedIsQuickStartInfoShownBefore,
+    removeArtifactoryTokenInformation as removePersistedArtifactoryTokenInformation,
+    setArtifactoryTokenInformation as setPersistedArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup as setPersistedCheckForUpdatesAtStartup,
     setQuickStartInfoWasShown as setPersistedQuickStartInfoWasShown,
 } from '../../../ipc/persistedStore';
@@ -19,12 +23,16 @@ export type State = {
     shouldCheckForUpdatesAtStartup: boolean;
     isUpdateCheckCompleteVisible: boolean;
     isQuickStartInfoShownBefore: boolean;
+    isAddArtifactoryTokenVisible: boolean;
+    artifactoryTokenInformation?: TokenInformation;
 };
 
 const initialState: State = {
     shouldCheckForUpdatesAtStartup: getPersistedCheckForUpdatesAtStartup(),
     isUpdateCheckCompleteVisible: false,
     isQuickStartInfoShownBefore: getPersistedIsQuickStartInfoShownBefore(),
+    isAddArtifactoryTokenVisible: false,
+    artifactoryTokenInformation: getPersistedArtifactoryTokenInformation(),
 };
 
 const slice = createSlice({
@@ -48,15 +56,36 @@ const slice = createSlice({
             state.isQuickStartInfoShownBefore = true;
             setPersistedQuickStartInfoWasShown();
         },
+        showAddArtifactoryToken(state) {
+            state.isAddArtifactoryTokenVisible = true;
+        },
+        hideAddArtifactoryToken(state) {
+            state.isAddArtifactoryTokenVisible = false;
+        },
+        setArtifactoryTokenInformation(
+            state,
+            { payload: tokenInformation }: PayloadAction<TokenInformation>
+        ) {
+            state.artifactoryTokenInformation = tokenInformation;
+            setPersistedArtifactoryTokenInformation(tokenInformation);
+        },
+        removeArtifactoryTokenInformation(state) {
+            state.artifactoryTokenInformation = undefined;
+            removePersistedArtifactoryTokenInformation();
+        },
     },
 });
 
 export default slice.reducer;
 
 export const {
+    hideAddArtifactoryToken,
     hideUpdateCheckComplete,
     quickStartInfoWasShown,
+    removeArtifactoryTokenInformation,
+    setArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup,
+    showAddArtifactoryToken,
     showUpdateCheckComplete,
 } = slice.actions;
 
@@ -66,3 +95,7 @@ export const getIsUpdateCheckCompleteVisible = (state: RootState) =>
     state.settings.isUpdateCheckCompleteVisible;
 export const getIsQuickStartInfoShownBefore = (state: RootState) =>
     state.settings.isQuickStartInfoShownBefore;
+export const getArtifactoryTokenInformation = (state: RootState) =>
+    state.settings.artifactoryTokenInformation;
+export const getIsAddArtifactoryTokenVisible = (state: RootState) =>
+    state.settings.isAddArtifactoryTokenVisible;

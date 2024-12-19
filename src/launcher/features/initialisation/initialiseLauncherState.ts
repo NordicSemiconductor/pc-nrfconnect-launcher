@@ -11,6 +11,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/apps';
+import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
+import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import {
@@ -19,7 +21,10 @@ import {
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
-import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
+import {
+    getShouldCheckForUpdatesAtStartup,
+    setArtifactoryTokenInformation,
+} from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { setSources } from '../sources/sourcesSlice';
 import {
@@ -54,6 +59,26 @@ export const loadApps = (): AppThunk => async dispatch => {
     }
 };
 
+const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
+    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
+        getState()
+    );
+    if (!shouldCheckForUpdatesAtStartup) return;
+
+    try {
+        const token = await artifactoryToken.getTokenInformation();
+        if (token != null) dispatch(setArtifactoryTokenInformation(token));
+    } catch (error) {
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Your Artifactory token could not be validated. If you are online it may have expired.`,
+                undefined,
+                cleanIpcErrorMessage(describeError(error))
+            )
+        );
+    }
+};
+
 const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
@@ -84,6 +109,7 @@ export default (): AppThunk => async dispatch => {
     await dispatch(loadSources());
     await dispatch(loadApps());
 
+    dispatch(loadTokenInformation());
     dispatch(downloadLatestAppInfoAtStartup());
     dispatch(checkForLauncherUpdateAtStartup());
 

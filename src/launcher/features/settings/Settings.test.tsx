@@ -15,6 +15,7 @@ import {
 } from '../apps/appsSlice';
 import Settings from './Settings';
 import {
+    setArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup,
     showUpdateCheckComplete,
 } from './settingsSlice';
@@ -80,6 +81,18 @@ describe('SettingsView', () => {
             render(<Settings />, [
                 showUpdateCheckComplete(),
                 addDownloadableApps([createDownloadableTestApp()]),
+            ]).baseElement
+        ).toMatchSnapshot();
+    });
+
+    it('should render the token information', () => {
+        expect(
+            render(<Settings />, [
+                setArtifactoryTokenInformation({
+                    description: 'a token',
+                    expiry: 100,
+                    token_id: 'an_id',
+                }),
             ]).baseElement
         ).toMatchSnapshot();
     });

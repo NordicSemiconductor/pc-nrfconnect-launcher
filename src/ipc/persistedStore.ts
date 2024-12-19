@@ -7,7 +7,8 @@
 import Store from 'electron-store';
 
 import packageJson from '../../package.json';
-import { SourceName } from './sources';
+import type { TokenInformation } from './artifactoryToken';
+import type { SourceName } from './sources';
 
 type WindowState = {
     x?: number;
@@ -35,6 +36,8 @@ interface Schema {
         nameFilter: string;
         shownStates: ShownStates;
     };
+    encryptedArtifactoryToken?: string;
+    artifactoryTokenInformation?: TokenInformation;
 }
 
 const store = new Store<Schema>();
@@ -97,3 +100,18 @@ export const setDoNotShowAppleSiliconWarning = () =>
 
 export const getDoNotShowAppleSiliconWarning = () =>
     store.get('doNotShowAppleSiliconWarning', false);
+
+export const getEncryptedArtifactoryToken = () =>
+    store.get('encryptedArtifactoryToken');
+export const setEncryptedArtifactoryToken = (token: string) =>
+    store.set('encryptedArtifactoryToken', token);
+export const removeEncryptedArtifactoryToken = () =>
+    store.delete('encryptedArtifactoryToken');
+
+export const getArtifactoryTokenInformation = () =>
+    store.get('artifactoryTokenInformation');
+export const setArtifactoryTokenInformation = (
+    tokenInformation: TokenInformation
+) => store.set('artifactoryTokenInformation', tokenInformation);
+export const removeArtifactoryTokenInformation = () =>
+    store.delete('artifactoryTokenInformation');

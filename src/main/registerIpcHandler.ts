@@ -23,6 +23,7 @@ import path from 'path';
 
 import packageJson from '../../package.json';
 import * as apps from '../ipc/apps';
+import * as artifactoryToken from '../ipc/artifactoryToken';
 import * as desktopShortcut from '../ipc/createDesktopShortcut';
 import * as launcherUpdate from '../ipc/launcherUpdate';
 import * as proxyLogin from '../ipc/proxyLogin';
@@ -42,6 +43,7 @@ import createDesktopShortcut from './apps/createDesktopShortcut';
 import { addSource, removeSource } from './apps/sourceChanges';
 import { getAllSources } from './apps/sources';
 import argv from './argv';
+import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
 import { callRegisteredCallback } from './proxyLogins';
 import {
@@ -71,6 +73,12 @@ const endPreventingSleep = (id: number) => powerSaveBlocker.stop(id);
 
 export default () => {
     Store.initRenderer();
+
+    artifactoryToken.forRenderer.registerGetTokenInformation(
+        getTokenInformation
+    );
+    artifactoryToken.forRenderer.registerSetToken(setToken);
+    artifactoryToken.forRenderer.registerRemoveToken(removeToken);
 
     appDetails.forRenderer.registerGetAppDetails(getAppDetails);
 
