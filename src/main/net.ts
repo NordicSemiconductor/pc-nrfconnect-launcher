@@ -6,6 +6,7 @@
 
 import { net, session } from 'electron';
 import fs from 'fs-extra';
+import { z } from 'zod';
 
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
@@ -119,9 +120,17 @@ export const downloadToFile = async (
     await fs.writeFile(filePath, buffer);
 };
 
-export const getArtifactoryTokenInformation = (token: string) =>
-    downloadToJson<TokenInformation>(
-        'https://files.nordicsemi.com/access/api/v1/tokens/me',
-        true,
-        token
+const tokenInformationSchema = z.object({
+    token_id: z.string(),
+    expiry: z.number().optional().describe('In seconds since epoch'),
+    description: z.string().optional(),
+});
+
+export const getArtifactoryTokenInformation = async (token: string) =>
+    tokenInformationSchema.parse(
+        await downloadToJson<TokenInformation>(
+            'https://files.nordicsemi.com/access/api/v1/tokens/me',
+            true,
+            token
+        )
     );
