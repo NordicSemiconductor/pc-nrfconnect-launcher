@@ -75,11 +75,13 @@ export default () => {
             {hasToken && (
                 <p>The current token will be forgotten by this app.</p>
             )}
-            <Form.Control
-                ref={ref}
-                value={enteredToken}
-                onChange={event => setEnteredToken(event.target.value)}
-            />
+            <Form onSubmit={storeToken}>
+                <Form.Control
+                    ref={ref}
+                    value={enteredToken}
+                    onChange={event => setEnteredToken(event.target.value)}
+                />
+            </Form>
         </ConfirmationDialog>
     );
 };
