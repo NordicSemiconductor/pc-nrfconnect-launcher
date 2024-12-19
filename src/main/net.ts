@@ -87,6 +87,14 @@ const downloadToBuffer = (
         });
         if (enableProxyLogin) {
             request.on('login', (authInfo, callback) => {
+                if (
+                    authInfo.isProxy === false &&
+                    authInfo.host === 'files.nordicsemi.com'
+                ) {
+                    callback();
+                    return;
+                }
+
                 const requestId = storeProxyLoginRequest(callback);
                 proxyLogin.requestProxyLogin(requestId, authInfo);
             });
