@@ -9,6 +9,10 @@ release the new version.
 
 ## Unreleased
 
+### Added
+
+-   #1066: Support for Artifactory tokens.
+
 ### Changed
 
 -   #1057: Show J-Link warning also for local apps.

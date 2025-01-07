@@ -112,6 +112,58 @@ exports[`SettingsView should render check for updates completed, with everything
           </div>
           <div
             class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
             <div
               class="card-body"
@@ -341,6 +393,58 @@ exports[`SettingsView should render check for updates completed, with updates av
           </div>
           <div
             class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
             <div
               class="card-body"
@@ -458,6 +562,247 @@ exports[`SettingsView should render check for updates completed, with updates av
 </body>
 `;
 
+exports[`SettingsView should render the token information 1`] = `
+<body
+  class=""
+  style="padding-right: 0px;"
+>
+  <div>
+    <div
+      class="with-scrollbar"
+    >
+      <div
+        class="content-container"
+      >
+        <div
+          class="settings-pane-container"
+        >
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Updates
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Check for updates
+                  </button>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              />
+              <div
+                class="toggle"
+              >
+                <label
+                  for="checkForUpdates"
+                >
+                  <span
+                    class="toggle-label"
+                  >
+                    Check for updates at startup
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary-toggled"
+                    style="background-color: rgb(0, 169, 206);"
+                  >
+                    <input
+                      aria-checked="true"
+                      checked=""
+                      id="checkForUpdates"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    App sources
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Add source
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Replace
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small col"
+                >
+                  ID: 
+                  an_id
+                  <br />
+                  Description: 
+                  a token
+                  <br />
+                  Expires: 
+                  1970-01-01T00:01:40.000Z
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-secondary btn-sm"
+                    title="Forget Artifactory token"
+                    type="button"
+                  >
+                    Forget
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Usage statistics
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="toggle"
+                  >
+                    <label
+                      for="checkForShare"
+                    >
+                      <span
+                        class="toggle-label"
+                      >
+                        Collect anonymous usage data
+                      </span>
+                      <div
+                        class="toggle-bar toggle-bar-primary"
+                        style="background-color: rgb(69, 90, 100);"
+                      >
+                        <input
+                          aria-checked="false"
+                          id="checkForShare"
+                          type="checkbox"
+                        />
+                        <span
+                          class="toggle-handle toggle-handle-primary"
+                          style="background-color: white;"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Show agreement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`SettingsView should render when checking for updates 1`] = `
 <body>
   <div>
@@ -560,6 +905,58 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   >
                     Add source
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
                 </div>
               </div>
             </div>
@@ -744,6 +1141,58 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           </div>
           <div
             class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
           >
             <div
               class="card-body"
@@ -916,6 +1365,58 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   >
                     Add source
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
                 </div>
               </div>
             </div>
@@ -1098,6 +1599,58 @@ exports[`SettingsView should render with last update check date 1`] = `
                   >
                     Add source
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+            id="app-sources"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Artifactory token
+                  </div>
+                </div>
+                <div
+                  class="col-auto"
+                >
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                  >
+                    Set
+                     token
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="small text-muted col"
+                >
+                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                   
+                  <a
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    https://files.nordicsemi.com/ui/user_profile
+                  </a>
+                   
+                  and set it here.
                 </div>
               </div>
             </div>
