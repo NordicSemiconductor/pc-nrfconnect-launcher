@@ -21,7 +21,7 @@ import {
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
-import { readFile, readJsonFile, writeJsonFile } from '../fileUtil';
+import { readJsonFile, writeJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
 import { downloadToJson } from '../net';
 
@@ -38,15 +38,8 @@ export const oldSourcesJsonPath = () =>
 export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-const convertToOldSourceJsonFormat = (allSources: Source[]) =>
-    Object.fromEntries(
-        allSources.map(source => [
-            source.name,
-            source.url.replace(/source\.json$/, 'apps.json'),
-        ])
-    );
-
 type OldSourceJson = Record<SourceName, SourceUrl>;
+type SourceVersionedJson = { v1: Source[] };
 
 const convertFromOldSourceJsonFormat = (sourceJsonParsed: OldSourceJson) =>
     Object.entries(sourceJsonParsed).map(([name, url]) => ({
@@ -55,38 +48,32 @@ const convertFromOldSourceJsonFormat = (sourceJsonParsed: OldSourceJson) =>
     }));
 
 const loadAllSources = () => {
-    if (!fs.existsSync(oldSourcesJsonPath())) {
+    if (!fs.existsSync(sourcesVersionedJsonPath())) {
         return [];
     }
-    let sourceJsonContent: string | undefined;
     try {
-        sourceJsonContent = readFile(oldSourcesJsonPath());
-        const sourceJsonParsed = JSON.parse(sourceJsonContent);
-
-        if (Array.isArray(sourceJsonParsed)) {
-            return sourceJsonParsed;
-        }
-        if (sourceJsonParsed != null && typeof sourceJsonParsed === 'object') {
-            return convertFromOldSourceJsonFormat(sourceJsonParsed);
-        }
-
-        throw new Error('Unable to parse `source.json`.');
+        return readJsonFile<SourceVersionedJson>(sourcesVersionedJsonPath()).v1;
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
             'No sources besides the official and the local one will be shown. ' +
                 'Also apps from other sources will be hidden.\n\nError: ' +
-                `${describeError(err)}\n\n` +
-                `Content of \`source.json\`+ \`${sourceJsonContent}\``
+                `${describeError(err)}`
         );
+        return [];
     }
-    return [];
+};
+
+const writeSourcesFile = (allSources: Source[]) => {
+    writeJsonFile(sourcesVersionedJsonPath(), {
+        v1: allSources,
+    } satisfies SourceVersionedJson);
 };
 
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
-    writeJsonFile(oldSourcesJsonPath(), convertToOldSourceJsonFormat(sources));
+    writeSourcesFile(sources);
 };
 
 export const removeFromSourceList = (
@@ -286,7 +273,5 @@ export const migrateSourcesJson = () => {
 
     const oldSourcesJson = readJsonFile<OldSourceJson>(oldSourcesJsonPath());
 
-    writeJsonFile(sourcesVersionedJsonPath(), {
-        v1: convertFromOldSourceJsonFormat(oldSourcesJson),
-    });
+    writeSourcesFile(convertFromOldSourceJsonFormat(oldSourcesJson));
 };
