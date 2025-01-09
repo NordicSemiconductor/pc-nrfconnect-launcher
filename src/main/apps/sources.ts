@@ -6,11 +6,14 @@
 
 import {
     SourceJson,
+    sourceJsonSchema,
     WithdrawnJson,
+    withdrawnJsonSchema,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
+import { z } from 'zod';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
@@ -21,7 +24,7 @@ import {
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
-import { readJsonFile, writeJsonFile } from '../fileUtil';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
 import { downloadToJson } from '../net';
 
@@ -33,17 +36,27 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-export const sourcesVersionedJsonPath = () =>
+const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-type SourceVersionedJson = { v1: Source[] };
+const sourcesVersionedSchema = z.object({
+    v1: z.array(
+        z.object({
+            name: z.string(),
+            url: z.string().url(),
+        })
+    ),
+});
 
 const loadAllSources = () => {
     if (!fs.existsSync(sourcesVersionedJsonPath())) {
         return [];
     }
     try {
-        return readJsonFile<SourceVersionedJson>(sourcesVersionedJsonPath()).v1;
+        return readSchemedJsonFile(
+            sourcesVersionedJsonPath(),
+            sourcesVersionedSchema
+        ).v1;
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
@@ -56,9 +69,9 @@ const loadAllSources = () => {
 };
 
 const writeSourcesFile = (allSources: Source[]) => {
-    writeJsonFile(sourcesVersionedJsonPath(), {
+    writeSchemedJsonFile(sourcesVersionedJsonPath(), sourcesVersionedSchema, {
         v1: allSources,
-    } satisfies SourceVersionedJson);
+    });
 };
 
 const saveAllSources = () => {
@@ -121,19 +134,23 @@ export const downloadSourceJson = (sourceUrl: SourceUrl) =>
 
 const downloadSourceJsonToFile = async (source: Source) => {
     const sourceJson = await downloadSourceJson(source.url);
-    writeJsonFile(getSourceJsonPath(source), sourceJson);
+    writeSourceJson(source, sourceJson);
 
     return sourceJson;
 };
 
 const readSourceJson = (source: Source) =>
-    readJsonFile<SourceJson>(getSourceJsonPath(source), {
+    readSchemedJsonFile(getSourceJsonPath(source), sourceJsonSchema, {
         name: source.name,
         apps: [],
     });
 
 export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
-    writeJsonFile(getSourceJsonPath(source), sourceJson);
+    writeSchemedJsonFile(
+        getSourceJsonPath(source),
+        sourceJsonSchema,
+        sourceJson
+    );
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
@@ -149,12 +166,17 @@ const getWithdrawnJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'withdrawn.json');
 
 const readWithdrawnJson = (source: Source) =>
-    readJsonFile<WithdrawnJson>(getWithdrawnJsonPath(source), []);
+    readSchemedJsonFile(getWithdrawnJsonPath(source), withdrawnJsonSchema, []);
 
 export const writeWithdrawnJson = (
     source: Source,
     withdrawnJson: WithdrawnJson
-) => writeJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+) =>
+    writeSchemedJsonFile(
+        getWithdrawnJsonPath(source),
+        withdrawnJsonSchema,
+        withdrawnJson
+    );
 
 export const isInListOfWithdrawnApps = (
     source: SourceName,
@@ -256,9 +278,10 @@ export const ensureBundledSourceExists = () => {
 
 // migration
 
-type OldSourceJson = Record<SourceName, SourceUrl>;
 export const oldSourcesJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources.json');
+
+const oldSourcesJsonSchema = z.record(z.string(), z.string().url());
 
 export const migrateSourcesJson = () => {
     if (
@@ -268,7 +291,10 @@ export const migrateSourcesJson = () => {
         return;
     }
 
-    const oldSourcesJson = readJsonFile<OldSourceJson>(oldSourcesJsonPath());
+    const oldSourcesJson = readSchemedJsonFile(
+        oldSourcesJsonPath(),
+        oldSourcesJsonSchema
+    );
     const migratedSources = Object.entries(oldSourcesJson).map(
         ([name, url]) => ({
             name,

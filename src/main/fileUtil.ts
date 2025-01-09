@@ -8,6 +8,7 @@ import chmodr from 'chmodr';
 import fs from 'fs-extra';
 import path from 'path';
 import targz from 'targz';
+import { z } from 'zod';
 
 import describeError from './describeError';
 
@@ -25,6 +26,22 @@ export const readFile = (filePath: string) => {
 export const readJsonFile = <T>(filePath: string, defaultValue?: T) => {
     try {
         return <T>JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch (error) {
+        if (defaultValue !== undefined) {
+            return defaultValue;
+        }
+
+        throw new Error(`Unable to parse ${filePath}: ${describeError(error)}`);
+    }
+};
+export const readSchemedJsonFile = <T extends z.ZodTypeAny>(
+    filePath: string,
+    schema: T,
+    defaultValue?: z.infer<T>
+): z.infer<T> => {
+    try {
+        const content = readJsonFile(filePath);
+        return schema.parse(content);
     } catch (error) {
         if (defaultValue !== undefined) {
             return defaultValue;
@@ -143,3 +160,18 @@ export const writeFile = (filePath: string, data: string) => {
 
 export const writeJsonFile = (filePath: string, jsonData: unknown) =>
     writeFile(filePath, JSON.stringify(jsonData, undefined, 2));
+
+export const writeSchemedJsonFile = <T extends z.ZodTypeAny>(
+    filePath: string,
+    schema: T,
+    jsonData: z.infer<T>
+) => {
+    const parsed = schema.safeParse(jsonData);
+    if (parsed.success) {
+        writeJsonFile(filePath, parsed.data);
+    } else {
+        throw new Error(
+            `Malformed data, not written to ${filePath}: ${parsed.error}`
+        );
+    }
+};

@@ -6,7 +6,7 @@
 
 import { existsSync } from 'fs';
 
-import { readJsonFile, writeJsonFile } from '../fileUtil';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import {
     migrateSourcesJson,
     newWithdrawnJson,
@@ -48,8 +48,8 @@ test('computing the new list of withdrawn apps', () => {
 
 describe('migrating sources.json', () => {
     const mockedExistsSync = jest.mocked(existsSync);
-    const mockedReadJsonFile = jest.mocked(readJsonFile);
-    const mockedWriteJsonFile = jest.mocked(writeJsonFile);
+    const mockedReadSchemedJsonFile = jest.mocked(readSchemedJsonFile);
+    const mockedWriteSchemedJsonFile = jest.mocked(writeSchemedJsonFile);
 
     beforeEach(() => {
         jest.resetAllMocks();
@@ -71,13 +71,14 @@ describe('migrating sources.json', () => {
         mockedExistsSync.mockImplementation(
             path => path === oldSourcesJsonPath()
         );
-        mockedReadJsonFile.mockReturnValue(oldSourceJsonContent);
+        mockedReadSchemedJsonFile.mockReturnValue(oldSourceJsonContent);
 
         // Act
         migrateSourcesJson();
 
         // Assert
-        expect(mockedWriteJsonFile).toBeCalledWith(
+        expect(mockedWriteSchemedJsonFile).toBeCalledWith(
+            expect.anything(),
             expect.anything(),
             newSourceVersionedJsonContent
         );
@@ -88,7 +89,7 @@ describe('migrating sources.json', () => {
 
         migrateSourcesJson();
 
-        expect(mockedReadJsonFile).not.toBeCalled();
+        expect(mockedReadSchemedJsonFile).not.toBeCalled();
     });
 
     it('should do nothing if sources-versioned.json already exists', () => {
@@ -96,6 +97,6 @@ describe('migrating sources.json', () => {
 
         migrateSourcesJson();
 
-        expect(mockedReadJsonFile).not.toBeCalled();
+        expect(mockedReadSchemedJsonFile).not.toBeCalled();
     });
 });
