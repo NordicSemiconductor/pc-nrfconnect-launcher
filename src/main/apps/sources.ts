@@ -33,19 +33,10 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-export const oldSourcesJsonPath = () =>
-    path.join(getAppsExternalDir(), 'sources.json');
 export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-type OldSourceJson = Record<SourceName, SourceUrl>;
 type SourceVersionedJson = { v1: Source[] };
-
-const convertFromOldSourceJsonFormat = (sourceJsonParsed: OldSourceJson) =>
-    Object.entries(sourceJsonParsed).map(([name, url]) => ({
-        name,
-        url: url.replace(/apps\.json$/, 'source.json'),
-    }));
 
 const loadAllSources = () => {
     if (!fs.existsSync(sourcesVersionedJsonPath())) {
@@ -98,7 +89,7 @@ export const addToSourceList = (sourceToAdd: Source, doSave = true) => {
     }
 };
 
-export const ensureSourcesAreLoaded = () => {
+const ensureSourcesAreLoaded = () => {
     if (!sourcesAreLoaded) {
         sourcesAreLoaded = true;
 
@@ -263,6 +254,12 @@ export const ensureBundledSourceExists = () => {
     });
 };
 
+// migration
+
+type OldSourceJson = Record<SourceName, SourceUrl>;
+export const oldSourcesJsonPath = () =>
+    path.join(getAppsExternalDir(), 'sources.json');
+
 export const migrateSourcesJson = () => {
     if (
         !fs.existsSync(oldSourcesJsonPath()) ||
@@ -272,6 +269,12 @@ export const migrateSourcesJson = () => {
     }
 
     const oldSourcesJson = readJsonFile<OldSourceJson>(oldSourcesJsonPath());
+    const migratedSources = Object.entries(oldSourcesJson).map(
+        ([name, url]) => ({
+            name,
+            url: url.replace(/apps\.json$/, 'source.json'),
+        })
+    );
 
-    writeSourcesFile(convertFromOldSourceJsonFormat(oldSourcesJson));
+    writeSourcesFile(migratedSources);
 };
