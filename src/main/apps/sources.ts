@@ -33,7 +33,10 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
+export const oldSourcesJsonPath = () =>
+    path.join(getAppsExternalDir(), 'sources.json');
+export const sourcesVersionedJsonPath = () =>
+    path.join(getAppsExternalDir(), 'sources-versioned.json');
 
 const convertToOldSourceJsonFormat = (allSources: Source[]) =>
     Object.fromEntries(
@@ -43,21 +46,21 @@ const convertToOldSourceJsonFormat = (allSources: Source[]) =>
         ])
     );
 
-const convertFromOldSourceJsonFormat = (
-    sourceJsonParsed: Record<SourceName, SourceUrl>
-) =>
+type OldSourceJson = Record<SourceName, SourceUrl>;
+
+const convertFromOldSourceJsonFormat = (sourceJsonParsed: OldSourceJson) =>
     Object.entries(sourceJsonParsed).map(([name, url]) => ({
         name,
         url: url.replace(/apps\.json$/, 'source.json'),
     }));
 
 const loadAllSources = () => {
-    if (!fs.existsSync(sourcesJsonPath())) {
+    if (!fs.existsSync(oldSourcesJsonPath())) {
         return [];
     }
     let sourceJsonContent: string | undefined;
     try {
-        sourceJsonContent = readFile(sourcesJsonPath());
+        sourceJsonContent = readFile(oldSourcesJsonPath());
         const sourceJsonParsed = JSON.parse(sourceJsonContent);
 
         if (Array.isArray(sourceJsonParsed)) {
@@ -83,7 +86,7 @@ const loadAllSources = () => {
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
-    writeJsonFile(sourcesJsonPath(), convertToOldSourceJsonFormat(sources));
+    writeJsonFile(oldSourcesJsonPath(), convertToOldSourceJsonFormat(sources));
 };
 
 export const removeFromSourceList = (
@@ -270,5 +273,20 @@ export const ensureBundledSourceExists = () => {
         if (fs.existsSync(from) && !fs.existsSync(to)) {
             fs.copyFileSync(from, to);
         }
+    });
+};
+
+export const migrateSourcesJson = () => {
+    if (
+        !fs.existsSync(oldSourcesJsonPath()) ||
+        fs.existsSync(sourcesVersionedJsonPath())
+    ) {
+        return;
+    }
+
+    const oldSourcesJson = readJsonFile<OldSourceJson>(oldSourcesJsonPath());
+
+    writeJsonFile(sourcesVersionedJsonPath(), {
+        v1: convertFromOldSourceJsonFormat(oldSourcesJson),
     });
 };

@@ -10,6 +10,7 @@ import './setUserDataDir';
 import { initialize as initializeElectronRemote } from '@electron/remote/main';
 import telemetry from '@nordicsemiconductor/pc-nrfconnect-shared/src/telemetry/telemetry';
 
+import { migrateSourcesJson } from './apps/sources';
 import configureElectronApp from './configureElectronApp';
 import initNrfUtilProxyEnv from './initNrfUtilProxyEnv';
 import registerIpcHandler from './registerIpcHandler';
@@ -21,6 +22,7 @@ telemetry.enableTelemetry();
 initNrfUtilProxyEnv();
 singeInstanceLock();
 initializeElectronRemote();
+migrateSourcesJson();
 registerIpcHandler();
 configureElectronApp();
 storeExecutablePath();
