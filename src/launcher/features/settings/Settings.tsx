@@ -143,12 +143,7 @@ const Sources = () => {
                                     variant="outline-secondary"
                                     size="sm"
                                     onClick={() =>
-                                        clipboard.writeText(
-                                            source.url.replace(
-                                                /source\.json$/,
-                                                'apps.json'
-                                            )
-                                        )
+                                        clipboard.writeText(source.url)
                                     }
                                     title="Copy URL to clipboard"
                                 >
