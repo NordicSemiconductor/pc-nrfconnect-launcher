@@ -36,7 +36,7 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-const sourcesVersionedJsonPath = () =>
+export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
 const sourcesVersionedSchema = z.object({
@@ -68,7 +68,7 @@ const loadAllSources = () => {
     }
 };
 
-const writeSourcesFile = (allSources: Source[]) => {
+export const writeSourcesFile = (allSources: Source[]) => {
     writeSchemedJsonFile(sourcesVersionedJsonPath(), sourcesVersionedSchema, {
         v1: allSources,
     });
@@ -274,33 +274,4 @@ export const ensureBundledSourceExists = () => {
             fs.copyFileSync(from, to);
         }
     });
-};
-
-// migration
-
-export const oldSourcesJsonPath = () =>
-    path.join(getAppsExternalDir(), 'sources.json');
-
-const oldSourcesJsonSchema = z.record(z.string(), z.string().url());
-
-export const migrateSourcesJson = () => {
-    if (
-        !fs.existsSync(oldSourcesJsonPath()) ||
-        fs.existsSync(sourcesVersionedJsonPath())
-    ) {
-        return;
-    }
-
-    const oldSourcesJson = readSchemedJsonFile(
-        oldSourcesJsonPath(),
-        oldSourcesJsonSchema
-    );
-    const migratedSources = Object.entries(oldSourcesJson).map(
-        ([name, url]) => ({
-            name,
-            url: url.replace(/apps\.json$/, 'source.json'),
-        })
-    );
-
-    writeSourcesFile(migratedSources);
 };
