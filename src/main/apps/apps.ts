@@ -33,7 +33,7 @@ import {
     writeAppInfo,
 } from './app';
 import { downloadAppResources } from './appResource';
-import { maybeMigrateLegacyMetaFiles } from './legacyMetaFiles';
+import { maybeMigrateLegacyMetaFiles } from './dataMigration/legacyMetaFiles';
 import {
     downloadAllSources,
     getAllAppUrls,

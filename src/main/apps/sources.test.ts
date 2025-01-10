@@ -6,6 +6,9 @@
 
 import { newWithdrawnJson } from './sources';
 
+jest.mock('fs');
+jest.mock('../fileUtil');
+
 test('computing the new list of withdrawn apps', () => {
     const oldWithdrawnJson = [
         'http://example.org/oldWithdrawnApp.json',

@@ -34,11 +34,6 @@ const downloadSource = async (
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
 
-    const isLegacyUrl = url.endsWith('/apps.json') && sourceJson.apps == null;
-    if (isLegacyUrl) {
-        return downloadSource(url.replace(/apps\.json$/, 'source.json'));
-    }
-
     return { source, sourceJson };
 };
 
