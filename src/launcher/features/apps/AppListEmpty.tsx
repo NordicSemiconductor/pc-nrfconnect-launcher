@@ -10,9 +10,9 @@ import React, {
     useEffect,
     useState,
 } from 'react';
+import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
 import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { getNoAppsExist } from './appsSlice';
@@ -73,7 +73,7 @@ const NotLoadedYet = () => {
         <Box>
             <p>
                 The list of apps is not yet loaded from{' '}
-                <Link href="https://developer.nordicsemi.com" />.
+                <ExternalLink href="https://developer.nordicsemi.com" />.
             </p>
             <p>Make sure you can reach that server.</p>
         </Box>

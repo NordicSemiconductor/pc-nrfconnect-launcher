@@ -6,6 +6,7 @@
 
 import React from 'react';
 import {
+    ExternalLink,
     getUserDataDir,
     launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
@@ -22,7 +23,6 @@ import {
     isWithdrawn,
     LaunchableApp,
 } from '../../ipc/apps';
-import Link from './Link';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
 enum WarningKind {
@@ -202,9 +202,10 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
             <div className="tw-flex tw-flex-col tw-gap-2">
                 <div>This app requires SEGGER J-Link V{requiredJlink}.</div>
                 <div>
-                    <Link href="https://www.segger.com/downloads/jlink/">
-                        Download
-                    </Link>{' '}
+                    <ExternalLink
+                        href="https://www.segger.com/downloads/jlink/"
+                        label="Download"
+                    />{' '}
                     and install the SEGGER J-Link Software and Documentation
                     pack V{requiredJlink}. Restart nRF Connect for Desktop
                     afterwards.
@@ -233,9 +234,10 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
                 </div>
                 <div>This app might not work as expected!</div>
                 <div>
-                    <Link href="https://www.segger.com/downloads/jlink/">
-                        Download
-                    </Link>{' '}
+                    <ExternalLink
+                        href="https://www.segger.com/downloads/jlink/"
+                        label="Download"
+                    />{' '}
                     and install the SEGGER J-Link Software and Documentation
                     pack V{requiredJlink}. Restart nRF Connect for Desktop
                     afterwards.

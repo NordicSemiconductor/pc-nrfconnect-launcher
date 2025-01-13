@@ -17,6 +17,7 @@ release the new version.
 
 -   #1057: Show J-Link warning also for local apps.
 -   #1063: Download J-Link from Artifactory.
+-   #1070: Use `ExternalLink` from shared.
 
 ## 5.1.0
 

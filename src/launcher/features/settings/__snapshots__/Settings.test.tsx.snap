@@ -150,8 +150,9 @@ exports[`SettingsView should render check for updates completed, with everything
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile
@@ -431,8 +432,9 @@ exports[`SettingsView should render check for updates completed, with updates av
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile
@@ -949,8 +951,9 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile
@@ -1179,8 +1182,9 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile
@@ -1409,8 +1413,9 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile
@@ -1643,8 +1648,9 @@ exports[`SettingsView should render with last update check date 1`] = `
                   To access non-external sources from Nordic Semiconductor, get an identity token from
                    
                   <a
+                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
                     href="https://files.nordicsemi.com/ui/user_profile"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     https://files.nordicsemi.com/ui/user_profile

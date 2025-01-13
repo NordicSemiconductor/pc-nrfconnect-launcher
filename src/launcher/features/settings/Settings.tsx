@@ -13,6 +13,7 @@ import Row from 'react-bootstrap/Row';
 import {
     colors,
     ErrorDialogActions,
+    ExternalLink,
     Toggle,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
@@ -26,7 +27,6 @@ import {
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { OFFICIAL } from '../../../ipc/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import { getUpdateCheckStatus } from '../apps/appsSlice';
 import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
@@ -225,7 +225,7 @@ const Artifactory = () => {
                     <Col className="small text-muted">
                         To access non-external sources from Nordic
                         Semiconductor, get an identity token from{' '}
-                        <Link href="https://files.nordicsemi.com/ui/user_profile" />{' '}
+                        <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />{' '}
                         and set it here.
                     </Col>
                 ) : (
