@@ -167,7 +167,7 @@ export const downloadLatestAppInfos = async () => {
 export const downloadAppInfos = async (source: Source) => {
     const downloadableApps = await Promise.all(
         getAppUrls(source).map(async appUrl => {
-            const appInfo = await downloadToJson<AppInfo>(appUrl, true);
+            const appInfo = await downloadToJson<AppInfo>(appUrl);
 
             if (path.basename(appUrl) !== `${appInfo.name}.json`) {
                 inRenderer.showErrorDialog(
