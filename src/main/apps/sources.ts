@@ -130,7 +130,7 @@ const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
 
 export const downloadSourceJson = (sourceUrl: SourceUrl) =>
-    downloadToJson<SourceJson>(sourceUrl, true);
+    downloadToJson<SourceJson>(sourceUrl);
 
 const downloadSourceJsonToFile = async (source: Source) => {
     const sourceJson = await downloadSourceJson(source.url);

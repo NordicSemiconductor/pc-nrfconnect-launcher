@@ -5,10 +5,12 @@
  */
 
 import React from 'react';
-import { ErrorDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    ErrorDialog,
+    ExternalLink,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import { getIsErrorVisible, loginErrorDialogClosed } from './proxyLoginSlice';
 
 export default () => {
@@ -32,7 +34,7 @@ export default () => {
                 disable &quot;Check for updates at startup&quot;. Then restart
                 nRF Connect for Desktop and install apps manually by following
                 the instructions at{' '}
-                <Link href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher" />
+                <ExternalLink href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher" />
                 .
             </p>
         </ErrorDialog>

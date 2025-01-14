@@ -38,18 +38,21 @@ const determineBearer = (url: string) =>
 
 export type NetError = Error & { statusCode?: number };
 
-const downloadToBuffer = (
-    url: string,
-    enableProxyLogin: boolean,
-    app: AppSpec | undefined = undefined,
-    bearer = determineBearer(url)
-) =>
+type DownloadOptions = {
+    enableProxyLogin: boolean;
+    app?: AppSpec;
+    bearer?: string;
+};
+
+const downloadToBuffer = (url: string, options: DownloadOptions) =>
     new Promise<Buffer>((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
+
+        const bearer = options.bearer ?? determineBearer(url);
         if (bearer) {
             request.setHeader('Authorization', `Bearer ${bearer}`);
         }
@@ -76,8 +79,8 @@ const downloadToBuffer = (
             response.on('data', data => {
                 addToBuffer(data);
                 progress += data.length;
-                if (app) {
-                    reportInstallProgress(app, progress, downloadSize);
+                if (options.app != null) {
+                    reportInstallProgress(options.app, progress, downloadSize);
                 }
             });
             response.on('end', () => resolve(Buffer.concat(buffer)));
@@ -85,7 +88,7 @@ const downloadToBuffer = (
                 reject(new Error(`Error when reading ${url}: ${error.message}`))
             );
         });
-        if (enableProxyLogin) {
+        if (options.enableProxyLogin) {
             request.on('login', (authInfo, callback) => {
                 if (
                     authInfo.isProxy === false &&
@@ -107,24 +110,15 @@ const downloadToBuffer = (
 
 export const downloadToJson = async <T>(
     url: string,
-    enableProxyLogin: boolean,
-    bearer?: string
-) =>
-    <T>(
-        JSON.parse(
-            (
-                await downloadToBuffer(url, enableProxyLogin, undefined, bearer)
-            ).toString()
-        )
-    );
+    options: DownloadOptions = { enableProxyLogin: true }
+) => <T>JSON.parse((await downloadToBuffer(url, options)).toString());
 
 export const downloadToFile = async (
     url: string,
     filePath: string,
-    enableProxyLogin: boolean | undefined = false,
-    app: AppSpec | undefined = undefined
+    options: DownloadOptions = { enableProxyLogin: false }
 ) => {
-    const buffer = await downloadToBuffer(url, enableProxyLogin, app);
+    const buffer = await downloadToBuffer(url, options);
     await fs.writeFile(filePath, buffer);
 };
 
@@ -138,7 +132,6 @@ export const getArtifactoryTokenInformation = async (token: string) =>
     tokenInformationSchema.parse(
         await downloadToJson<TokenInformation>(
             'https://files.nordicsemi.com/access/api/v1/tokens/me',
-            true,
-            token
+            { enableProxyLogin: true, bearer: token }
         )
     );

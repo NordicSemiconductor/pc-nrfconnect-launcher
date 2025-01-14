@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import {
     ConfirmationDialog,
     ErrorDialogActions,
+    ExternalLink,
     useFocusedOnVisible,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
@@ -16,7 +17,6 @@ import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import Link from '../../util/Link';
 import {
     getArtifactoryTokenInformation,
     getIsAddArtifactoryTokenVisible,
@@ -70,7 +70,8 @@ export default () => {
             <p>
                 Enter an Artifactory token to use for retrieving apps. You can
                 get an identity token from{' '}
-                <Link href="https://files.nordicsemi.com/ui/user_profile" />.
+                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
+                .
             </p>
             {hasToken && (
                 <p>The current token will be forgotten by this app.</p>
