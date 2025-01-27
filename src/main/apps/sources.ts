@@ -6,11 +6,14 @@
 
 import {
     SourceJson,
+    sourceJsonSchema,
     WithdrawnJson,
+    withdrawnJsonSchema,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
+import { z } from 'zod';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
@@ -21,7 +24,7 @@ import {
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
-import { readFile, readJsonFile, writeJsonFile } from '../fileUtil';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
 import { downloadToJson } from '../net';
 
@@ -33,57 +36,48 @@ const officialSource = {
     url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
 };
 
-const sourcesJsonPath = () => path.join(getAppsExternalDir(), 'sources.json');
+export const sourcesVersionedJsonPath = () =>
+    path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-const convertToOldSourceJsonFormat = (allSources: Source[]) =>
-    Object.fromEntries(
-        allSources.map(source => [
-            source.name,
-            source.url.replace(/source\.json$/, 'apps.json'),
-        ])
-    );
-
-const convertFromOldSourceJsonFormat = (
-    sourceJsonParsed: Record<SourceName, SourceUrl>
-) =>
-    Object.entries(sourceJsonParsed).map(([name, url]) => ({
-        name,
-        url: url.replace(/apps\.json$/, 'source.json'),
-    }));
+const sourcesVersionedSchema = z.object({
+    v1: z.array(
+        z.object({
+            name: z.string(),
+            url: z.string().url(),
+        })
+    ),
+});
 
 const loadAllSources = () => {
-    if (!fs.existsSync(sourcesJsonPath())) {
+    if (!fs.existsSync(sourcesVersionedJsonPath())) {
         return [];
     }
-    let sourceJsonContent: string | undefined;
     try {
-        sourceJsonContent = readFile(sourcesJsonPath());
-        const sourceJsonParsed = JSON.parse(sourceJsonContent);
-
-        if (Array.isArray(sourceJsonParsed)) {
-            return sourceJsonParsed;
-        }
-        if (sourceJsonParsed != null && typeof sourceJsonParsed === 'object') {
-            return convertFromOldSourceJsonFormat(sourceJsonParsed);
-        }
-
-        throw new Error('Unable to parse `source.json`.');
+        return readSchemedJsonFile(
+            sourcesVersionedJsonPath(),
+            sourcesVersionedSchema
+        ).v1;
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
             'No sources besides the official and the local one will be shown. ' +
                 'Also apps from other sources will be hidden.\n\nError: ' +
-                `${describeError(err)}\n\n` +
-                `Content of \`source.json\`+ \`${sourceJsonContent}\``
+                `${describeError(err)}`
         );
+        return [];
     }
-    return [];
+};
+
+export const writeSourcesFile = (allSources: Source[]) => {
+    writeSchemedJsonFile(sourcesVersionedJsonPath(), sourcesVersionedSchema, {
+        v1: allSources,
+    });
 };
 
 const saveAllSources = () => {
     ensureSourcesAreLoaded();
 
-    writeJsonFile(sourcesJsonPath(), convertToOldSourceJsonFormat(sources));
+    writeSourcesFile(sources);
 };
 
 export const removeFromSourceList = (
@@ -108,7 +102,7 @@ export const addToSourceList = (sourceToAdd: Source, doSave = true) => {
     }
 };
 
-export const ensureSourcesAreLoaded = () => {
+const ensureSourcesAreLoaded = () => {
     if (!sourcesAreLoaded) {
         sourcesAreLoaded = true;
 
@@ -136,23 +130,27 @@ const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
 
 export const downloadSourceJson = (sourceUrl: SourceUrl) =>
-    downloadToJson<SourceJson>(sourceUrl, true);
+    downloadToJson<SourceJson>(sourceUrl);
 
 const downloadSourceJsonToFile = async (source: Source) => {
     const sourceJson = await downloadSourceJson(source.url);
-    writeJsonFile(getSourceJsonPath(source), sourceJson);
+    writeSourceJson(source, sourceJson);
 
     return sourceJson;
 };
 
 const readSourceJson = (source: Source) =>
-    readJsonFile<SourceJson>(getSourceJsonPath(source), {
+    readSchemedJsonFile(getSourceJsonPath(source), sourceJsonSchema, {
         name: source.name,
         apps: [],
     });
 
 export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
-    writeJsonFile(getSourceJsonPath(source), sourceJson);
+    writeSchemedJsonFile(
+        getSourceJsonPath(source),
+        sourceJsonSchema,
+        sourceJson
+    );
 
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
@@ -168,12 +166,17 @@ const getWithdrawnJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'withdrawn.json');
 
 const readWithdrawnJson = (source: Source) =>
-    readJsonFile<WithdrawnJson>(getWithdrawnJsonPath(source), []);
+    readSchemedJsonFile(getWithdrawnJsonPath(source), withdrawnJsonSchema, []);
 
 export const writeWithdrawnJson = (
     source: Source,
     withdrawnJson: WithdrawnJson
-) => writeJsonFile(getWithdrawnJsonPath(source), withdrawnJson);
+) =>
+    writeSchemedJsonFile(
+        getWithdrawnJsonPath(source),
+        withdrawnJsonSchema,
+        withdrawnJson
+    );
 
 export const isInListOfWithdrawnApps = (
     source: SourceName,

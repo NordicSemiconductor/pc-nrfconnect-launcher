@@ -319,8 +319,9 @@ exports[`AppList should render a message without any apps after some time 1`] = 
           The list of apps is not yet loaded from
            
           <a
+            class="tw-preflight tw-text-nordicBlue hover:tw-underline"
             href="https://developer.nordicsemi.com"
-            rel="noreferrer"
+            rel="noreferrer noopener"
             target="_blank"
           >
             https://developer.nordicsemi.com

@@ -11,15 +11,15 @@ import {
 import fs from 'fs-extra';
 import path from 'path';
 
-import { Source } from '../../ipc/sources';
-import { getAppsRootDir, getNodeModulesDir } from '../config';
-import { readFile, readJsonFile } from '../fileUtil';
-import { installedAppPath, writeAppInfo } from './app';
+import { Source } from '../../../ipc/sources';
+import { getAppsRootDir, getNodeModulesDir } from '../../config';
+import { readFile, readJsonFile } from '../../fileUtil';
+import { installedAppPath, writeAppInfo } from '../app';
 import {
     sourceJsonExistsLocally,
     writeSourceJson,
     writeWithdrawnJson,
-} from './sources';
+} from '../sources';
 
 type AppName = `pc-nrfconnect-${string}`;
 
@@ -96,7 +96,7 @@ export const createNewAppInfo = (
     };
 };
 
-export const createNewAppInfoForWithdrawnApp = (
+const createNewAppInfoForWithdrawnApp = (
     source: Source,
     appName: AppName,
     packageJson: PackageJsonLegacyApp,

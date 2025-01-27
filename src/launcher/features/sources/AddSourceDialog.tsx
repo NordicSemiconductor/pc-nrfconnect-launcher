@@ -43,11 +43,13 @@ export default () => {
             <p>
                 Enter the URL of a source&rsquo;s <code>source.json</code> file:
             </p>
-            <Form.Control
-                ref={ref}
-                value={url}
-                onChange={event => setUrl(event.target.value)}
-            />
+            <Form onSubmit={maybeAddSource}>
+                <Form.Control
+                    ref={ref}
+                    value={url}
+                    onChange={event => setUrl(event.target.value)}
+                />
+            </Form>
         </ConfirmationDialog>
     );
 };

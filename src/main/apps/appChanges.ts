@@ -239,7 +239,10 @@ const download = async (app: AppSpec, version?: string) => {
     const packageFilePath = path.join(getAppsRootDir(app.source), fileName);
 
     await Promise.all([
-        downloadToFile(tarballUrl, packageFilePath, true, app),
+        downloadToFile(tarballUrl, packageFilePath, {
+            enableProxyLogin: true,
+            app,
+        }),
         ...assertPreparedNrfutilModules(app, versionToInstall.nrfutilModules),
     ]);
     await verifyShasum(packageFilePath, versionToInstall.shasum);

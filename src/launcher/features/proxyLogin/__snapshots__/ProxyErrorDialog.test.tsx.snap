@@ -49,8 +49,9 @@ exports[`ProxyErrorDialog is displayed after users canceled the login 1`] = `
             If you are unable to resolve the issue, then go to Settings and disable "Check for updates at startup". Then restart nRF Connect for Desktop and install apps manually by following the instructions at
              
             <a
+              class="tw-preflight tw-text-nordicBlue hover:tw-underline"
               href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher"
-              rel="noreferrer"
+              rel="noreferrer noopener"
               target="_blank"
             >
               https://github.com/NordicSemiconductor/pc-nrfconnect-launcher

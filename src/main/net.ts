@@ -6,10 +6,13 @@
 
 import { net, session } from 'electron';
 import fs from 'fs-extra';
+import { z } from 'zod';
 
 import type { AppSpec } from '../ipc/apps';
+import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { inRenderer as proxyLogin } from '../ipc/proxyLogin';
+import { retrieveToken } from './artifactoryTokenStorage';
 import { storeProxyLoginRequest } from './proxyLogins';
 
 // Using the same session name as electron-updater, so that proxy credentials
@@ -28,19 +31,31 @@ const reportInstallProgress = (
     });
 };
 
+const determineBearer = (url: string) =>
+    url.startsWith('https://files.nordicsemi.com/')
+        ? retrieveToken()
+        : undefined;
+
 export type NetError = Error & { statusCode?: number };
 
-const downloadToBuffer = (
-    url: string,
-    enableProxyLogin: boolean,
-    app: AppSpec | undefined = undefined
-) =>
+type DownloadOptions = {
+    enableProxyLogin: boolean;
+    app?: AppSpec;
+    bearer?: string;
+};
+
+const downloadToBuffer = (url: string, options: DownloadOptions) =>
     new Promise<Buffer>((resolve, reject) => {
         const request = net.request({
             url,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
+
+        const bearer = options.bearer ?? determineBearer(url);
+        if (bearer) {
+            request.setHeader('Authorization', `Bearer ${bearer}`);
+        }
 
         request.on('response', response => {
             const { statusCode } = response;
@@ -64,8 +79,8 @@ const downloadToBuffer = (
             response.on('data', data => {
                 addToBuffer(data);
                 progress += data.length;
-                if (app) {
-                    reportInstallProgress(app, progress, downloadSize);
+                if (options.app != null) {
+                    reportInstallProgress(options.app, progress, downloadSize);
                 }
             });
             response.on('end', () => resolve(Buffer.concat(buffer)));
@@ -73,8 +88,16 @@ const downloadToBuffer = (
                 reject(new Error(`Error when reading ${url}: ${error.message}`))
             );
         });
-        if (enableProxyLogin) {
+        if (options.enableProxyLogin) {
             request.on('login', (authInfo, callback) => {
+                if (
+                    authInfo.isProxy === false &&
+                    authInfo.host === 'files.nordicsemi.com'
+                ) {
+                    callback();
+                    return;
+                }
+
                 const requestId = storeProxyLoginRequest(callback);
                 proxyLogin.requestProxyLogin(requestId, authInfo);
             });
@@ -87,15 +110,28 @@ const downloadToBuffer = (
 
 export const downloadToJson = async <T>(
     url: string,
-    enableProxyLogin: boolean
-) => <T>JSON.parse((await downloadToBuffer(url, enableProxyLogin)).toString());
+    options: DownloadOptions = { enableProxyLogin: true }
+) => <T>JSON.parse((await downloadToBuffer(url, options)).toString());
 
 export const downloadToFile = async (
     url: string,
     filePath: string,
-    enableProxyLogin: boolean | undefined = false,
-    app: AppSpec | undefined = undefined
+    options: DownloadOptions = { enableProxyLogin: false }
 ) => {
-    const buffer = await downloadToBuffer(url, enableProxyLogin, app);
+    const buffer = await downloadToBuffer(url, options);
     await fs.writeFile(filePath, buffer);
 };
+
+const tokenInformationSchema = z.object({
+    token_id: z.string(),
+    expiry: z.number().optional().describe('In seconds since epoch'),
+    description: z.string().optional(),
+});
+
+export const getArtifactoryTokenInformation = async (token: string) =>
+    tokenInformationSchema.parse(
+        await downloadToJson<TokenInformation>(
+            'https://files.nordicsemi.com/access/api/v1/tokens/me',
+            { enableProxyLogin: true, bearer: token }
+        )
+    );

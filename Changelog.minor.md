@@ -9,9 +9,16 @@ release the new version.
 
 ## Unreleased
 
+### Added
+
+-   #1066: Support for Artifactory tokens.
+
 ### Changed
 
 -   #1057: Show J-Link warning also for local apps.
+-   #1063: Download J-Link from Artifactory.
+-   #1071: Use `ExternalLink` from shared.
+-   #1071: Simplified option passing in low-level net functions.
 
 ## 5.1.0
 
