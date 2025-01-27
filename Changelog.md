@@ -3,6 +3,7 @@
 ### Changed
 
 -   Layout of the changelog modal.
+-   Improved installation animation contrast.
 
 ## 5.1.0 - 2024-11-11
 
