@@ -20,6 +20,11 @@ release the new version.
 -   #1071: Use `ExternalLink` from shared.
 -   #1071: Simplified option passing in low-level net functions.
 
+### Fixed
+
+-   #1058: Warning icon white background does not overlap outside of parent
+    boundaries.
+
 ## 5.1.0
 
 ### Fixed
