@@ -320,11 +320,11 @@ exports[`AppList should render a message without any apps after some time 1`] = 
            
           <a
             class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-            href="https://developer.nordicsemi.com"
+            href="https://files.nordicsemi.com"
             rel="noreferrer noopener"
             target="_blank"
           >
-            https://developer.nordicsemi.com
+            https://files.nordicsemi.com
           </a>
           .
         </p>
