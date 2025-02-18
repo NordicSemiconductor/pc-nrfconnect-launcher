@@ -73,7 +73,7 @@ const NotLoadedYet = () => {
         <Box>
             <p>
                 The list of apps is not yet loaded from{' '}
-                <ExternalLink href="https://developer.nordicsemi.com" />.
+                <ExternalLink href="https://files.nordicsemi.com" />.
             </p>
             <p>Make sure you can reach that server.</p>
         </Box>

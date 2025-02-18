@@ -33,7 +33,7 @@ let sources: Source[] = [];
 
 const officialSource = {
     name: OFFICIAL,
-    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
+    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
 };
 
 export const sourcesVersionedJsonPath = () =>
