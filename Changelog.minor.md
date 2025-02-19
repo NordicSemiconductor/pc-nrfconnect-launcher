@@ -22,7 +22,7 @@ release the new version.
 
 ### Fixed
 
--   #1058: Warning icon white background does not overlap outside of parent
+-   #1058: Warning icon white background does not overlap outside of the parent
     boundaries.
 
 ## 5.1.0
