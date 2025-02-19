@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+@use "sass:color";
 @import '@nordicsemiconductor/pc-nrfconnect-shared/styles';
 
 .highlight {
@@ -12,7 +13,7 @@
 
 @keyframes appWasInstalled {
     0% {
-        background-color: $primary;
+        background-color: color.scale($primary, $lightness: 90%);
     }
     100% {
         background-color: white;
