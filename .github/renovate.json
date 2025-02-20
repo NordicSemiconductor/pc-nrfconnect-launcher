@@ -4,10 +4,8 @@
     "labels": ["doc not required", "ui not required"],
     "packageRules": [
         {
-            "excludePackageNames": [
-                "@nordicsemiconductor/pc-nrfconnect-shared"
-            ],
-            "enabled": false
+            "enabled": false,
+            "matchPackageNames": ["!@nordicsemiconductor/pc-nrfconnect-shared"]
         }
     ]
 }
