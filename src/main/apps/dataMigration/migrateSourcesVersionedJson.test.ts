@@ -5,10 +5,12 @@
  */
 
 import {
+    getAllSources,
     type SourcesVersionedJson,
     writeSourcesVersionedJson,
 } from '../sources';
 import {
+    migrateAllURLsInJSON,
     migrateSourcesVersionedJson,
     migrateURL,
 } from './migrateSourcesVersionedJson';
@@ -67,11 +69,45 @@ describe('converting URLs from developer.nordicsemi.com to files.nordicsemi.com'
     });
 });
 
+test('migrateAllURLsInJSON', () => {
+    expect(
+        migrateAllURLsInJSON(`{
+  "homepage": "https://github.com/NordicPlayground/pc-nrfconnect-boilerplate",
+  "iconUrl": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/pc-nrfconnect-boilerplate.svg",
+  "releaseNotesUrl": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/3.7-apps/pc-nrfconnect-boilerplate-Changelog.md",
+  "versions": {
+    "1.0.0": {
+      "tarballUrl": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/directionfinding/pc-nrfconnect-npm-1.0.0.tgz"
+    },
+    "2.0.0": {
+      "tarballUrl": "https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/secret/pc-nrfconnect-npm-2.0.0.tgz"
+    }
+  }
+}`)
+    ).toBe(
+        `{
+  "homepage": "https://github.com/NordicPlayground/pc-nrfconnect-boilerplate",
+  "iconUrl": "https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/pc-nrfconnect-boilerplate.svg",
+  "releaseNotesUrl": "https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/3.7-apps/pc-nrfconnect-boilerplate-Changelog.md",
+  "versions": {
+    "1.0.0": {
+      "tarballUrl": "https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential/ncd/apps/directionfinding/pc-nrfconnect-npm-1.0.0.tgz"
+    },
+    "2.0.0": {
+      "tarballUrl": "https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/secret/pc-nrfconnect-npm-2.0.0.tgz"
+    }
+  }
+}`
+    );
+});
+
 describe('migrating sources-versioned.json from V1 to V2', () => {
     const mockedReadV1SourcesFile = jest.mocked(readV1SourcesFile);
 
     beforeEach(() => {
         jest.resetAllMocks();
+
+        jest.mocked(getAllSources).mockReturnValue([]);
     });
 
     it('updates sources to use files.nordicsemi.com', () => {
@@ -144,6 +180,7 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
         migrateSourcesVersionedJson();
 
         expect(writeSourcesVersionedJson).not.toBeCalled();
+        expect(getAllSources).not.toBeCalled();
     });
 
     it('does nothing if there already is a v2', () => {
@@ -152,5 +189,6 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
         migrateSourcesVersionedJson();
 
         expect(writeSourcesVersionedJson).not.toBeCalled();
+        expect(getAllSources).not.toBeCalled();
     });
 });

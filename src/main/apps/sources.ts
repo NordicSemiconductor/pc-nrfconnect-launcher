@@ -141,7 +141,10 @@ const ensureSourcesAreLoaded = () => {
     }
 };
 
-export const getAllSources = () => [...sources];
+export const getAllSources = () => {
+    ensureSourcesAreLoaded();
+    return [...sources];
+};
 
 export const initialise = (source: Source) =>
     ensureDirExists(getNodeModulesDir(source.name));
