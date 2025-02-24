@@ -19,6 +19,14 @@ release the new version.
 -   #1063: Download J-Link from Artifactory.
 -   #1071: Use `ExternalLink` from shared.
 -   #1071: Simplified option passing in low-level net functions.
+-   #1079: Switch from developer.nordicsemi.com to files.nordicsemi.com for all
+    app downloads. Usage of sources from developer.nordicsemi.com is
+    automatically migrated to files.nordicsemi.com on the first run.
+
+    When running this version and then going back to an older version of the
+    launcher, the older version will show apps installed from
+    developer.nordicsemi.com as being withdrawn. But going forward to this
+    version again, the app will look fine again.
 
 ### Fixed
 
