@@ -6,6 +6,9 @@
 
 import type { Source } from '../ipc/sources';
 
+export const isLegacyUrl = (url: string) =>
+    url.match(/^https?:\/\/developer\.nordicsemi\.com\//);
+
 export const migrateURL = (url: string) =>
     url
         .replace(
