@@ -36,6 +36,7 @@ interface Schema {
         nameFilter: string;
         shownStates: ShownStates;
     };
+    doNotShowAppleSiliconWarning?: boolean;
     encryptedArtifactoryToken?: string;
     artifactoryTokenInformation?: TokenInformation;
 }
