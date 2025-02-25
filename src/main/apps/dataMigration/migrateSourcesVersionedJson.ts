@@ -6,32 +6,11 @@
 
 import path from 'node:path';
 
+import { migrateAllURLsInJSON, migrateURL } from '../../../ipc/legacySource';
 import { getAppsRootDir } from '../../config';
 import { listFiles, readFile, writeFile } from '../../fileUtil';
 import { getAllSources, writeSourcesVersionedJson } from '../sources';
 import { readV1SourcesFile } from './sourcesVersionedJsonV1';
-
-export const migrateURL = (url: string) =>
-    url
-        .replace(
-            /https:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/(3\.\d+-apps)\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/$1/$2'
-        )
-        .replace(
-            /https:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/directionfinding\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential/ncd/apps/directionfinding/$1'
-        )
-        .replace(
-            /https:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/([^/]+)\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/$1/$2'
-        )
-        .replace(
-            /https:\/\/developer.nordicsemi.com\/\.pc-tools\/nrfconnect-apps\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/$1'
-        );
-
-export const migrateAllURLsInJSON = (json: string) =>
-    json.replace(/"https?:[^"]*"/g, migrateURL);
 
 const migrateOtherJsonFiles = () => {
     getAllSources().forEach(({ name }) => {
