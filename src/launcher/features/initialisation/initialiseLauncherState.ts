@@ -26,7 +26,11 @@ import {
     setArtifactoryTokenInformation,
 } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
-import { setSources } from '../sources/sourcesSlice';
+import {
+    getSources,
+    setSources,
+    showDeprecatedSources,
+} from '../sources/sourcesSlice';
 import {
     checkTelemetrySetting,
     sendEnvInfo,
@@ -103,15 +107,46 @@ const checkForLauncherUpdateAtStartup =
         }
     };
 
-export default (): AppThunk => async dispatch => {
+const initialiseLauncherStateStage1 = (): AppThunk => async dispatch => {
     dispatch(checkTelemetrySetting());
 
     await dispatch(loadSources());
     await dispatch(loadApps());
 
     dispatch(loadTokenInformation());
+};
+
+export const initialiseLauncherStateStage2 = (): AppThunk => dispatch => {
     dispatch(downloadLatestAppInfoAtStartup());
     dispatch(checkForLauncherUpdateAtStartup());
 
     sendEnvInfo();
+};
+
+const deprecatedSourceURLs = [
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/toolchain-manager/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/3.8-release-test/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/neutrino-external/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/neutrino-internal/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/crasher/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/internal/source.json',
+    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json',
+];
+
+const checkForDeprecatedSources = (): AppThunk => (dispatch, getState) => {
+    const deprecatedSources = getSources(getState()).filter(source =>
+        deprecatedSourceURLs.includes(source.url)
+    );
+
+    if (deprecatedSources.length === 0) {
+        dispatch(initialiseLauncherStateStage2());
+    } else {
+        dispatch(showDeprecatedSources(deprecatedSources));
+    }
+};
+
+export default (): AppThunk => async dispatch => {
+    await dispatch(initialiseLauncherStateStage1());
+
+    dispatch(checkForDeprecatedSources());
 };

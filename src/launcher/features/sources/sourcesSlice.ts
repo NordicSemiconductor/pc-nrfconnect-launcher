@@ -14,12 +14,14 @@ export type State = {
     sources: Source[];
     isAddSourceVisible: boolean;
     sourceToRemove: null | SourceName;
+    deprecatedSources: Source[];
 };
 
 const initialState: State = {
     sources: [],
     isAddSourceVisible: false,
     sourceToRemove: null,
+    deprecatedSources: [],
 };
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
@@ -63,6 +65,15 @@ const slice = createSlice({
         hideRemoveSource(state) {
             state.sourceToRemove = null;
         },
+        showDeprecatedSources(
+            state,
+            { payload: sources }: PayloadAction<Source[]>
+        ) {
+            state.deprecatedSources = [...sources];
+        },
+        hideDeprecatedSources(state) {
+            state.deprecatedSources = [];
+        },
     },
 });
 
@@ -76,6 +87,8 @@ export const {
     hideAddSource,
     showRemoveSource,
     hideRemoveSource,
+    showDeprecatedSources,
+    hideDeprecatedSources,
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
@@ -85,3 +98,5 @@ export const getIsRemoveSourceVisible = (state: RootState) =>
     state.sources.sourceToRemove != null;
 export const getSourceToRemove = (state: RootState) =>
     state.sources.sourceToRemove;
+export const getDeprecatedSources = (state: RootState) =>
+    state.sources.deprecatedSources;
