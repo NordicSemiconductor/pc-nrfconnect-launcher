@@ -28,6 +28,11 @@ release the new version.
     developer.nordicsemi.com as being withdrawn. But going forward to this
     version again, the app will look fine again.
 
+-   #1080: If folks have one of the sources toolchain-manager, 3.8-release-test,
+    neutrino-external, neutrino-internal, crasher, internal, or experimental,
+    show a warning dialog that those were removed and suggest to also remove
+    them locally.
+
 ### Fixed
 
 -   #1058: Warning icon white background does not overlap outside of the parent
