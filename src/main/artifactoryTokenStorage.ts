@@ -9,7 +9,7 @@ import { safeStorage } from 'electron';
 import {
     getEncryptedArtifactoryToken,
     setEncryptedArtifactoryToken,
-} from '../ipc/persistedStore';
+} from '../common/persistedStore';
 
 export const retrieveToken = () => {
     const encryptedToken = getEncryptedArtifactoryToken();

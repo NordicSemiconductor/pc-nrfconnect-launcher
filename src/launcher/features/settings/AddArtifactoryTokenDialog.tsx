@@ -14,8 +14,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import {
     getArtifactoryTokenInformation,

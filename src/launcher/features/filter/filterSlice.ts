@@ -7,7 +7,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { App, isInstalled } from '../../../ipc/apps';
 import {
     getHiddenSources as getPersistedHiddenSources,
     getNameFilter as getPersistedNameFilter,
@@ -16,7 +15,8 @@ import {
     setNameFilter as setPersistedNameFilter,
     setShownStates as setPersistedShownStates,
     type ShownStates,
-} from '../../../ipc/persistedStore';
+} from '../../../common/persistedStore';
+import { App, isInstalled } from '../../../ipc/apps';
 import { SourceName } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 

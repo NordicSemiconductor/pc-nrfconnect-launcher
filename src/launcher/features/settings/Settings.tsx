@@ -20,11 +20,11 @@ import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging
 import formatDate from 'date-fns/format';
 import { clipboard } from 'electron';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import {
     inMain as artifactoryToken,
     type TokenInformation,
 } from '../../../ipc/artifactoryToken';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { OFFICIAL } from '../../../ipc/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';

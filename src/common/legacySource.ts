@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import type { Source } from './sources';
+import type { Source } from '../ipc/sources';
 
 export const migrateURL = (url: string) =>
     url

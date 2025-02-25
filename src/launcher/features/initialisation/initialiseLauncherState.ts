@@ -10,10 +10,10 @@ import {
     launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
+import { isDeprecatedSource } from '../../../common/legacySource';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
-import { isDeprecatedSource } from '../../../ipc/legacySource';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import {

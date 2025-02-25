@@ -7,8 +7,8 @@
 import Store from 'electron-store';
 
 import packageJson from '../../package.json';
-import type { TokenInformation } from './artifactoryToken';
-import type { SourceName } from './sources';
+import type { TokenInformation } from '../ipc/artifactoryToken';
+import type { SourceName } from '../ipc/sources';
 
 type WindowState = {
     x?: number;

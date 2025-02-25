@@ -9,6 +9,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { mean } from 'lodash';
 
 import {
+    getLastUpdateCheckDate,
+    setLastUpdateCheckDate,
+} from '../../../common/persistedStore';
+import {
     App,
     AppSpec,
     DownloadableApp,
@@ -21,10 +25,6 @@ import {
     LocalApp,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
-import {
-    getLastUpdateCheckDate,
-    setLastUpdateCheckDate,
-} from '../../../ipc/persistedStore';
 import {
     allStandardSourceNames,
     OFFICIAL,

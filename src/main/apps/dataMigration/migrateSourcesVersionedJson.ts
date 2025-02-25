@@ -6,7 +6,7 @@
 
 import path from 'node:path';
 
-import { migrateAllURLsInJSON, migrateURL } from '../../../ipc/legacySource';
+import { migrateAllURLsInJSON, migrateURL } from '../../../common/legacySource';
 import { getAppsRootDir } from '../../config';
 import { listFiles, readFile, writeFile } from '../../fileUtil';
 import { getAllSources, writeSourcesVersionedJson } from '../sources';

@@ -6,7 +6,7 @@
 
 import { telemetry } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { setDoNotShowAppleSiliconWarning } from '../../../ipc/persistedStore';
+import { setDoNotShowAppleSiliconWarning } from '../../../common/persistedStore';
 import type { AppThunk } from '../../store';
 import { hideAppleSiliconDialog } from './appleSiliconSlice';
 
