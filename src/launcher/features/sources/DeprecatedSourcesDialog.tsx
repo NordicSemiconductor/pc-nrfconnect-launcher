@@ -10,7 +10,11 @@ import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { initialiseLauncherStateStage2 } from '../initialisation/initialiseLauncherState';
 import { removeSource } from './sourcesEffects';
-import { getDeprecatedSources, hideDeprecatedSources } from './sourcesSlice';
+import {
+    doNotRemindDeprecatedSources,
+    getDeprecatedSources,
+    hideDeprecatedSources,
+} from './sourcesSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
@@ -22,6 +26,7 @@ export default () => {
             isVisible={isVisible}
             title="Remove deprecated sources"
             cancelLabel="Ignore"
+            optionalLabel="Do not remind me again"
             confirmLabel="Yes, remove"
             onConfirm={async () => {
                 dispatch(hideDeprecatedSources());
@@ -32,6 +37,12 @@ export default () => {
                     )
                 );
                 dispatch(initialiseLauncherStateStage2());
+            }}
+            onOptional={() => {
+                dispatch(hideDeprecatedSources());
+                dispatch(initialiseLauncherStateStage2());
+
+                dispatch(doNotRemindDeprecatedSources());
             }}
             onCancel={() => {
                 dispatch(hideDeprecatedSources());

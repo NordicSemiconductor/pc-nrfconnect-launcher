@@ -7,6 +7,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import {
+    getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
+    setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
+} from '../../../ipc/persistedStore';
 import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
@@ -15,6 +19,7 @@ export type State = {
     isAddSourceVisible: boolean;
     sourceToRemove: null | SourceName;
     deprecatedSources: Source[];
+    doNotRemindDeprecatedSources: boolean;
 };
 
 const initialState: State = {
@@ -22,6 +27,7 @@ const initialState: State = {
     isAddSourceVisible: false,
     sourceToRemove: null,
     deprecatedSources: [],
+    doNotRemindDeprecatedSources: getPersistedDoNotRemindDeprecatedSources(),
 };
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
@@ -74,6 +80,10 @@ const slice = createSlice({
         hideDeprecatedSources(state) {
             state.deprecatedSources = [];
         },
+        doNotRemindDeprecatedSources(state) {
+            state.doNotRemindDeprecatedSources = true;
+            setPersistedDoNotRemindDeprecatedSources();
+        },
     },
 });
 
@@ -89,6 +99,7 @@ export const {
     hideRemoveSource,
     showDeprecatedSources,
     hideDeprecatedSources,
+    doNotRemindDeprecatedSources,
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
@@ -100,3 +111,5 @@ export const getSourceToRemove = (state: RootState) =>
     state.sources.sourceToRemove;
 export const getDeprecatedSources = (state: RootState) =>
     state.sources.deprecatedSources;
+export const getDoNotRemindDeprecatedSources = (state: RootState) =>
+    state.sources.doNotRemindDeprecatedSources;

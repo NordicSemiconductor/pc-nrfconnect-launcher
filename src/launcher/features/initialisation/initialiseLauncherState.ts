@@ -27,6 +27,7 @@ import {
 } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
+    getDoNotRemindDeprecatedSources,
     getSources,
     setSources,
     showDeprecatedSources,
@@ -138,7 +139,10 @@ const checkForDeprecatedSources = (): AppThunk => (dispatch, getState) => {
         deprecatedSourceURLs.includes(source.url)
     );
 
-    if (deprecatedSources.length === 0) {
+    if (
+        deprecatedSources.length === 0 ||
+        getDoNotRemindDeprecatedSources(getState())
+    ) {
         dispatch(initialiseLauncherStateStage2());
     } else {
         dispatch(showDeprecatedSources(deprecatedSources));
