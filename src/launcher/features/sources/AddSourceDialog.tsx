@@ -37,9 +37,9 @@ export default () => {
             dispatch(hideAddSource());
             setUrl('');
         } else if (effectiveUrl.length > 0) {
-            dispatch(addSource(effectiveUrl));
             dispatch(hideAddSource());
             setUrl('');
+            dispatch(addSource(effectiveUrl));
         }
     };
 

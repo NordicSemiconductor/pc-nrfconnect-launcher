@@ -24,8 +24,8 @@ export default () => {
             isVisible={isVisible}
             title="Adding a legacy source"
             onConfirm={() => {
-                dispatch(addSource(correctedUrl));
                 dispatch(clearSourceToAdd());
+                dispatch(addSource(correctedUrl));
             }}
             onCancel={() => {
                 dispatch(clearSourceToAdd());
