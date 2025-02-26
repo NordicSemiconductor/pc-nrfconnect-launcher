@@ -8,15 +8,11 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import {
     ConfirmationDialog,
-    ErrorDialogActions,
     ExternalLink,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
 
-import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
-import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { setArtifactoryTokenInformation } from '../settings/settingsSlice';
+import { setArtifactoryToken } from '../settings/settingsEffects';
 import { addSource } from './sourcesEffects';
 import {
     getSourceToWarnAbout,
@@ -30,7 +26,7 @@ export default () => {
 
     const [token, setToken] = React.useState('');
 
-    const confirm = async () => {
+    const storeTokenAndAddSource = async () => {
         if (token.trim() === '') {
             return;
         }
@@ -38,20 +34,11 @@ export default () => {
         dispatch(hideWarningAboutMissingToken());
         setToken('');
 
-        let tokenInformation;
         try {
-            tokenInformation = await artifactoryToken.setToken(token.trim());
+            await dispatch(setArtifactoryToken(token.trim()));
         } catch (error) {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Token got rejected. Check if you entered a wrong or expired token.`,
-                    undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
-            );
             return;
         }
-        dispatch(setArtifactoryTokenInformation(tokenInformation));
 
         dispatch(addSource(sourceToAdd!)); // eslint-disable-line @typescript-eslint/no-non-null-assertion -- If sourceToAdd is null, the whole dialog would not be visible
     };
@@ -61,7 +48,7 @@ export default () => {
             isVisible={isVisible}
             title="Missing token"
             confirmLabel="Set token"
-            onConfirm={confirm}
+            onConfirm={storeTokenAndAddSource}
             onCancel={() => {
                 dispatch(hideWarningAboutMissingToken());
                 setToken('');
@@ -80,7 +67,7 @@ export default () => {
                 Nordic contact for an account if you are eligible.
             </p>
             <p className="tw-m-0">Paste the token here:</p>
-            <Form onSubmit={confirm} className="tw-pb-4">
+            <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">
                 <Form.Control
                     value={token}
                     onChange={event => setToken(event.target.value)}

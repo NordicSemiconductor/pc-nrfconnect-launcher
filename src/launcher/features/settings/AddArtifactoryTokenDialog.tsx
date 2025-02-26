@@ -8,20 +8,16 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import {
     ConfirmationDialog,
-    ErrorDialogActions,
     ExternalLink,
     useFocusedOnVisible,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
 
-import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
-import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { setArtifactoryToken } from './settingsEffects';
 import {
     getArtifactoryTokenInformation,
     getIsAddArtifactoryTokenVisible,
     hideAddArtifactoryToken,
-    setArtifactoryTokenInformation,
 } from './settingsSlice';
 
 export default () => {
@@ -34,25 +30,13 @@ export default () => {
     const hideDialog = () => dispatch(hideAddArtifactoryToken());
 
     const storeToken = async () => {
+        setEnteredToken('');
+        hideDialog();
+
         try {
-            const tokenInformation = await artifactoryToken.setToken(
-                enteredToken
-            );
-
-            setEnteredToken('');
-            dispatch(setArtifactoryTokenInformation(tokenInformation));
-            hideDialog();
+            await dispatch(setArtifactoryToken(enteredToken));
         } catch (error) {
-            setEnteredToken('');
-            hideDialog();
-
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Token got rejected. Check if you entered a wrong or expired token.`,
-                    undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
-            );
+            /* No further error handling than already is done in setArtifactoryToken */
         }
     };
 
