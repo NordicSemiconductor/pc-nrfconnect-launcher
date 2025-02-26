@@ -20,6 +20,7 @@ export type State = {
     sourceToRemove: null | SourceName;
     deprecatedSources: Source[];
     doNotRemindDeprecatedSources: boolean;
+    sourceToAdd: null | SourceUrl;
 };
 
 const initialState: State = {
@@ -28,6 +29,7 @@ const initialState: State = {
     sourceToRemove: null,
     deprecatedSources: [],
     doNotRemindDeprecatedSources: getPersistedDoNotRemindDeprecatedSources(),
+    sourceToAdd: null,
 };
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
@@ -84,6 +86,12 @@ const slice = createSlice({
             state.doNotRemindDeprecatedSources = true;
             setPersistedDoNotRemindDeprecatedSources();
         },
+        warnAddLegacySource(state, { payload: url }: PayloadAction<SourceUrl>) {
+            state.sourceToAdd = url;
+        },
+        clearSourceToAdd(state) {
+            state.sourceToAdd = null;
+        },
     },
 });
 
@@ -100,6 +108,8 @@ export const {
     showDeprecatedSources,
     hideDeprecatedSources,
     doNotRemindDeprecatedSources,
+    warnAddLegacySource,
+    clearSourceToAdd,
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
@@ -113,3 +123,4 @@ export const getDeprecatedSources = (state: RootState) =>
     state.sources.deprecatedSources;
 export const getDoNotRemindDeprecatedSources = (state: RootState) =>
     state.sources.doNotRemindDeprecatedSources;
+export const getSourceToAdd = (state: RootState) => state.sources.sourceToAdd;

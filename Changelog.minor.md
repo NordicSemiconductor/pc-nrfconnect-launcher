@@ -32,6 +32,8 @@ release the new version.
     neutrino-external, neutrino-internal, crasher, internal, or experimental,
     show a warning dialog that those were removed and suggest to also remove
     them locally.
+-   #1082: Warn when adding sources from `developer.nordicsemi.com` and offer to
+    instead add the corresponding source from `files.nordicsemi.com`.
 
 ### Fixed
 
