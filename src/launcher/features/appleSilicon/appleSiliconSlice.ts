@@ -7,7 +7,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import os from 'os';
 
-import { getDoNotShowAppleSiliconWarning } from '../../../ipc/persistedStore';
+import { getDoNotShowAppleSiliconWarning } from '../../../common/persistedStore';
 import type { RootState } from '../../store';
 
 export type State = {

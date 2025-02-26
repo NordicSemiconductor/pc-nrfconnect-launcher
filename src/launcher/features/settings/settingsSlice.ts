@@ -7,7 +7,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { TokenInformation } from '../../../ipc/artifactoryToken';
 import {
     getArtifactoryTokenInformation as getPersistedArtifactoryTokenInformation,
     getCheckForUpdatesAtStartup as getPersistedCheckForUpdatesAtStartup,
@@ -16,7 +15,8 @@ import {
     setArtifactoryTokenInformation as setPersistedArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup as setPersistedCheckForUpdatesAtStartup,
     setQuickStartInfoWasShown as setPersistedQuickStartInfoWasShown,
-} from '../../../ipc/persistedStore';
+} from '../../../common/persistedStore';
+import type { TokenInformation } from '../../../ipc/artifactoryToken';
 import type { RootState } from '../../store';
 
 export type State = {

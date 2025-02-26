@@ -10,7 +10,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
     getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
-} from '../../../ipc/persistedStore';
+} from '../../../common/persistedStore';
 import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 

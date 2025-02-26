@@ -10,9 +10,10 @@ import {
     launcherConfig,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
+import { isDeprecatedSource } from '../../../common/legacySource';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import {
@@ -124,20 +125,8 @@ export const initialiseLauncherStateStage2 = (): AppThunk => dispatch => {
     sendEnvInfo();
 };
 
-const deprecatedSourceURLs = [
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/toolchain-manager/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/3.8-release-test/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/neutrino-external/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/neutrino-internal/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/crasher/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/internal/source.json',
-    'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json',
-];
-
 const checkForDeprecatedSources = (): AppThunk => (dispatch, getState) => {
-    const deprecatedSources = getSources(getState()).filter(source =>
-        deprecatedSourceURLs.includes(source.url)
-    );
+    const deprecatedSources = getSources(getState()).filter(isDeprecatedSource);
 
     if (
         deprecatedSources.length === 0 ||

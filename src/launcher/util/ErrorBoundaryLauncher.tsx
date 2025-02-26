@@ -12,7 +12,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import pkgJson from '../../../package.json';
-import { resetStore } from '../../ipc/persistedStore';
+import { resetStore } from '../../common/persistedStore';
 
 const ErrorBoundaryLauncher: React.FC = ({ children }) => {
     const restoreDefaults = () => {

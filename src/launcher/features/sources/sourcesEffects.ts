@@ -7,8 +7,8 @@
 import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { SourceWithError } from '../../../ipc/apps';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
 import {
     AddSourceError,
     inMain as sources,

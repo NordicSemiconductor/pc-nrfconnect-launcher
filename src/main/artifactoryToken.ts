@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { removeEncryptedArtifactoryToken } from '../common/persistedStore';
 import type { TokenInformation } from '../ipc/artifactoryToken';
-import { removeEncryptedArtifactoryToken } from '../ipc/persistedStore';
 import { retrieveToken, storeToken } from './artifactoryTokenStorage';
 import { getArtifactoryTokenInformation } from './net';
 

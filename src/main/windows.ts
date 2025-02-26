@@ -20,12 +20,15 @@ import { join } from 'path';
 
 import packageJson from '../../package.json';
 import {
+    getLastWindowState,
+    setLastWindowState,
+} from '../common/persistedStore';
+import {
     AppSpec,
     isInstalled,
     isQuickStartApp,
     LaunchableApp,
 } from '../ipc/apps';
-import { getLastWindowState, setLastWindowState } from '../ipc/persistedStore';
 import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import argv, { appArguments, mergeAppArguments } from './argv';

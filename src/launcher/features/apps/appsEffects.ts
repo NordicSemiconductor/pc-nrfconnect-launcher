@@ -13,6 +13,7 @@ import {
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import {
     AppSpec,
     AppWithError,
@@ -21,7 +22,6 @@ import {
     isInstalled,
     LaunchableApp,
 } from '../../../ipc/apps';
-import { cleanIpcErrorMessage } from '../../../ipc/error';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
 import { quickStartInfoWasShown } from '../settings/settingsSlice';

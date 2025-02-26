@@ -13,7 +13,7 @@ import path from 'path';
 import {
     getBundledAppInstalled,
     setBundledAppInstalled,
-} from '../ipc/persistedStore';
+} from '../common/persistedStore';
 import { ensureBundledAppExists } from './apps/appBundler';
 import { installAllLocalAppArchives } from './apps/appChanges';
 import {
