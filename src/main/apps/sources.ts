@@ -33,20 +33,43 @@ let sources: Source[] = [];
 
 const officialSource = {
     name: OFFICIAL,
-    url: 'https://developer.nordicsemi.com/.pc-tools/nrfconnect-apps/source.json',
+    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
 };
 
 export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-const sourcesVersionedSchema = z.object({
-    v1: z.array(
-        z.object({
-            name: z.string(),
-            url: z.string().url(),
-        })
-    ),
+const sourcesSchema = z.array(
+    z.object({
+        name: z.string(),
+        url: z.string().url(),
+    })
+);
+
+export const sourcesVersionedJsonSchema = z.object({
+    v1: sourcesSchema.optional(),
+    v2: sourcesSchema,
 });
+
+export type SourcesVersionedJson = z.infer<typeof sourcesVersionedJsonSchema>;
+
+const readSourcesVersionedJson = () => {
+    if (!fs.existsSync(sourcesVersionedJsonPath())) {
+        return { v2: [] };
+    }
+
+    return readSchemedJsonFile(
+        sourcesVersionedJsonPath(),
+        sourcesVersionedJsonSchema
+    );
+};
+
+export const writeSourcesVersionedJson = (data: SourcesVersionedJson) =>
+    writeSchemedJsonFile(
+        sourcesVersionedJsonPath(),
+        sourcesVersionedJsonSchema,
+        data
+    );
 
 const loadAllSources = () => {
     if (!fs.existsSync(sourcesVersionedJsonPath())) {
@@ -55,8 +78,8 @@ const loadAllSources = () => {
     try {
         return readSchemedJsonFile(
             sourcesVersionedJsonPath(),
-            sourcesVersionedSchema
-        ).v1;
+            sourcesVersionedJsonSchema
+        ).v2;
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
@@ -69,9 +92,16 @@ const loadAllSources = () => {
 };
 
 export const writeSourcesFile = (allSources: Source[]) => {
-    writeSchemedJsonFile(sourcesVersionedJsonPath(), sourcesVersionedSchema, {
-        v1: allSources,
-    });
+    const previousContent = readSourcesVersionedJson();
+
+    writeSchemedJsonFile(
+        sourcesVersionedJsonPath(),
+        sourcesVersionedJsonSchema,
+        {
+            ...previousContent,
+            v2: allSources,
+        }
+    );
 };
 
 const saveAllSources = () => {
@@ -111,7 +141,10 @@ const ensureSourcesAreLoaded = () => {
     }
 };
 
-export const getAllSources = () => [...sources];
+export const getAllSources = () => {
+    ensureSourcesAreLoaded();
+    return [...sources];
+};
 
 export const initialise = (source: Source) =>
     ensureDirExists(getNodeModulesDir(source.name));
