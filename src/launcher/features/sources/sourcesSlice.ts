@@ -7,6 +7,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import {
+    getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
+    setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
+} from '../../../ipc/persistedStore';
 import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
@@ -14,12 +18,16 @@ export type State = {
     sources: Source[];
     isAddSourceVisible: boolean;
     sourceToRemove: null | SourceName;
+    deprecatedSources: Source[];
+    doNotRemindDeprecatedSources: boolean;
 };
 
 const initialState: State = {
     sources: [],
     isAddSourceVisible: false,
     sourceToRemove: null,
+    deprecatedSources: [],
+    doNotRemindDeprecatedSources: getPersistedDoNotRemindDeprecatedSources(),
 };
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
@@ -63,6 +71,19 @@ const slice = createSlice({
         hideRemoveSource(state) {
             state.sourceToRemove = null;
         },
+        showDeprecatedSources(
+            state,
+            { payload: sources }: PayloadAction<Source[]>
+        ) {
+            state.deprecatedSources = [...sources];
+        },
+        hideDeprecatedSources(state) {
+            state.deprecatedSources = [];
+        },
+        doNotRemindDeprecatedSources(state) {
+            state.doNotRemindDeprecatedSources = true;
+            setPersistedDoNotRemindDeprecatedSources();
+        },
     },
 });
 
@@ -76,6 +97,9 @@ export const {
     hideAddSource,
     showRemoveSource,
     hideRemoveSource,
+    showDeprecatedSources,
+    hideDeprecatedSources,
+    doNotRemindDeprecatedSources,
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
@@ -85,3 +109,7 @@ export const getIsRemoveSourceVisible = (state: RootState) =>
     state.sources.sourceToRemove != null;
 export const getSourceToRemove = (state: RootState) =>
     state.sources.sourceToRemove;
+export const getDeprecatedSources = (state: RootState) =>
+    state.sources.deprecatedSources;
+export const getDoNotRemindDeprecatedSources = (state: RootState) =>
+    state.sources.doNotRemindDeprecatedSources;

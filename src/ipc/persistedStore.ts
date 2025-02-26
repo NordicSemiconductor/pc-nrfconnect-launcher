@@ -36,8 +36,10 @@ interface Schema {
         nameFilter: string;
         shownStates: ShownStates;
     };
+    doNotShowAppleSiliconWarning?: boolean;
     encryptedArtifactoryToken?: string;
     artifactoryTokenInformation?: TokenInformation;
+    doNotRemindDeprecatedSources?: boolean;
 }
 
 const store = new Store<Schema>();
@@ -115,3 +117,8 @@ export const setArtifactoryTokenInformation = (
 ) => store.set('artifactoryTokenInformation', tokenInformation);
 export const removeArtifactoryTokenInformation = () =>
     store.delete('artifactoryTokenInformation');
+
+export const getDoNotRemindDeprecatedSources = () =>
+    store.get('doNotRemindDeprecatedSources', false);
+export const setDoNotRemindDeprecatedSources = () =>
+    store.set('doNotRemindDeprecatedSources', true);

@@ -73,7 +73,7 @@ export const addSource =
 
 export const removeSource =
     (name: SourceName): AppThunk =>
-    dispatch => {
+    dispatch =>
         sources
             .removeSource(name)
             .then(() => {
@@ -91,7 +91,6 @@ export const removeSource =
                     )
                 )
             );
-    };
 
 const showProblemWithOfficialSource = (source: Source, reason?: string) =>
     ErrorDialogActions.showDialog(

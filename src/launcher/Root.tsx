@@ -23,6 +23,7 @@ import ProxyErrorDialog from './features/proxyLogin/ProxyErrorDialog';
 import ProxyLoginDialog from './features/proxyLogin/ProxyLoginDialog';
 import QuickStartDialog from './features/quickstart/QuickstartDialog';
 import Settings from './features/settings/Settings';
+import DeprecatedSourcesDialog from './features/sources/DeprecatedSourcesDialog';
 import TelemetryDialog from './features/telemetry/TelemetryDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
 
@@ -96,6 +97,7 @@ export default () => {
             <ProxyErrorDialog />
             <AppleSiliconDialog />
             <QuickStartDialog />
+            <DeprecatedSourcesDialog />
         </ErrorBoundaryLauncher>
     );
 };
