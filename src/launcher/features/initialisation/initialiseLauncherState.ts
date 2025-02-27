@@ -85,6 +85,24 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     }
 };
 
+const checkForDeprecatedSources =
+    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
+    (dispatch, getState) => {
+        const deprecatedSources = getSources(getState()).filter(
+            isDeprecatedSource
+        );
+
+        if (
+            !(
+                deprecatedSources.length === 0 ||
+                getDoNotRemindDeprecatedSources(getState())
+            )
+        ) {
+            dispatch(showDeprecatedSources(deprecatedSources));
+            return INTERRUPT_INITIALISATION;
+        }
+    };
+
 const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
@@ -109,37 +127,34 @@ const checkForLauncherUpdateAtStartup =
         }
     };
 
-const initialiseLauncherStateStage1 = (): AppThunk => async dispatch => {
-    dispatch(checkTelemetrySetting());
+const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
 
-    await dispatch(loadSources());
-    await dispatch(loadApps());
+const initialisationActions = [
+    checkTelemetrySetting,
+    loadSources,
+    loadApps,
+    loadTokenInformation,
+    checkForDeprecatedSources,
+    downloadLatestAppInfoAtStartup,
+    checkForLauncherUpdateAtStartup,
+    sendEnvInfo,
+];
 
-    dispatch(loadTokenInformation());
-};
+const runRemainingInitialisationActionsSequentially =
+    (): AppThunk => async dispatch => {
+        while (initialisationActions.length > 0) {
+            const action = initialisationActions.shift() as () => AppThunk<
+                undefined | typeof INTERRUPT_INITIALISATION
+            >;
 
-export const initialiseLauncherStateStage2 = (): AppThunk => dispatch => {
-    dispatch(downloadLatestAppInfoAtStartup());
-    dispatch(checkForLauncherUpdateAtStartup());
+            const result = await dispatch(action()); // eslint-disable-line no-await-in-loop -- Must be awaited because some actions are asynchronous
 
-    sendEnvInfo();
-};
+            if (result === INTERRUPT_INITIALISATION) {
+                return;
+            }
+        }
+    };
 
-const checkForDeprecatedSources = (): AppThunk => (dispatch, getState) => {
-    const deprecatedSources = getSources(getState()).filter(isDeprecatedSource);
-
-    if (
-        deprecatedSources.length === 0 ||
-        getDoNotRemindDeprecatedSources(getState())
-    ) {
-        dispatch(initialiseLauncherStateStage2());
-    } else {
-        dispatch(showDeprecatedSources(deprecatedSources));
-    }
-};
-
-export default (): AppThunk => async dispatch => {
-    await dispatch(initialiseLauncherStateStage1());
-
-    dispatch(checkForDeprecatedSources());
+export default (): AppThunk => dispatch => {
+    dispatch(runRemainingInitialisationActionsSequentially());
 };

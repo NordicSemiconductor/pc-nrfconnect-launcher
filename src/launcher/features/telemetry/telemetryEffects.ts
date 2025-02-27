@@ -59,7 +59,7 @@ export const checkTelemetrySetting = (): AppThunk => dispatch => {
     dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
 };
 
-export const sendEnvInfo = () => {
+export const sendEnvInfo = (): AppThunk => () => {
     telemetry.sendEvent(EventAction.REPORT_LAUNCHER_INFO, {
         version: pkgJson.version,
         isDevelopment,
