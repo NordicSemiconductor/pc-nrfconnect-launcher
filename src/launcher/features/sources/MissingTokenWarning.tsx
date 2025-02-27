@@ -12,35 +12,51 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import initialiseLauncherState from '../initialisation/initialiseLauncherState';
 import { setArtifactoryToken } from '../settings/settingsEffects';
 import { addSource } from './sourcesEffects';
 import {
-    getSourceToWarnAbout,
+    getMissingTokenWarning,
     hideWarningAboutMissingToken,
+    isWarningAboutMissingTokenOnAddSource,
+    isWarningAboutMissingTokenOnMigratingSources,
 } from './sourcesSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const sourceToAdd = useLauncherSelector(getSourceToWarnAbout);
-    const isVisible = sourceToAdd != null;
+    const missingTokenWarning = useLauncherSelector(getMissingTokenWarning);
+    const isVisible = missingTokenWarning.isVisible;
 
     const [token, setToken] = React.useState('');
 
-    const storeTokenAndAddSource = async () => {
-        if (token.trim() === '') {
+    const hideDialog = ({ doContinue } = { doContinue: true }) => {
+        dispatch(hideWarningAboutMissingToken());
+        setToken('');
+
+        if (!doContinue) {
             return;
         }
 
-        dispatch(hideWarningAboutMissingToken());
-        setToken('');
+        if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
+            dispatch(addSource(missingTokenWarning.sourceToAdd));
+
+        if (isWarningAboutMissingTokenOnMigratingSources(missingTokenWarning))
+            dispatch(initialiseLauncherState());
+    };
+
+    const storeTokenAndAddSource = async () => {
+        if (token.trim() === '' || !missingTokenWarning.isVisible) {
+            return;
+        }
 
         try {
             await dispatch(setArtifactoryToken(token.trim()));
         } catch (error) {
+            hideDialog({ doContinue: false });
             return;
         }
 
-        dispatch(addSource(sourceToAdd!)); // eslint-disable-line @typescript-eslint/no-non-null-assertion -- If sourceToAdd is null, the whole dialog would not be visible
+        hideDialog();
     };
 
     return (
@@ -49,16 +65,34 @@ export default () => {
             title="Missing token"
             confirmLabel="Set token"
             onConfirm={storeTokenAndAddSource}
-            onCancel={() => {
-                dispatch(hideWarningAboutMissingToken());
-                setToken('');
-            }}
+            onCancel={() => hideDialog()}
         >
-            <p>
-                For accessing the source at the URL <code>{sourceToAdd}</code>{' '}
-                an Artifactory token is required but you have not set one yet.
-                Without providing a token, using the source will fail.
-            </p>
+            {isWarningAboutMissingTokenOnAddSource(missingTokenWarning) && (
+                <p>
+                    For accessing the source at the URL{' '}
+                    <code>{missingTokenWarning.sourceToAdd}</code> an
+                    Artifactory token is required but you have not set one yet.
+                    Without providing a token, using the source will fail.
+                </p>
+            )}
+            {isWarningAboutMissingTokenOnMigratingSources(
+                missingTokenWarning
+            ) && (
+                <>
+                    <p>
+                        For accessing the following sources, an Artifactory
+                        token is now required. Without providing a token, using
+                        the source will fail.
+                    </p>
+                    <ul>
+                        {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
+                            source => (
+                                <li key={source.url}>{source.name}</li>
+                            )
+                        )}
+                    </ul>
+                </>
+            )}
             <p>
                 To get a token, go to{' '}
                 <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />

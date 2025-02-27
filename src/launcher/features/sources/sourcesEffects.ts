@@ -25,7 +25,7 @@ import { getArtifactoryTokenInformation } from '../settings/settingsSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
-    warnAboutMissingToken,
+    warnAboutMissingTokenOnAddSource,
 } from './sourcesSlice';
 
 const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
@@ -48,7 +48,7 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
     }
 };
 
-const hasRestrictedAccessLevel = (url: SourceUrl) =>
+export const hasRestrictedAccessLevel = (url: SourceUrl) =>
     url.match(
         /https?:\/\/files\.nordicsemi\.com\/ui\/api\/v1\/download\?isNativeBrowsing=false&repoKey=swtools&path=(internal|external-confidential)/
     ) != null;
@@ -59,7 +59,7 @@ export const addSource =
         const noToken = getArtifactoryTokenInformation(getState()) == null;
 
         if (hasRestrictedAccessLevel(url) && noToken) {
-            dispatch(warnAboutMissingToken(url));
+            dispatch(warnAboutMissingTokenOnAddSource(url));
             return;
         }
 

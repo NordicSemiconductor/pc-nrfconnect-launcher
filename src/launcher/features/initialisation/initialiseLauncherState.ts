@@ -12,6 +12,10 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isDeprecatedSource } from '../../../common/legacySource';
+import {
+    setWarnedOnMissingTokenAndMigratedSources,
+    wasWarnedOnMissingTokenAndMigratedSources,
+} from '../../../common/persistedStore';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -23,15 +27,20 @@ import {
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
+    getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
     setArtifactoryTokenInformation,
 } from '../settings/settingsSlice';
-import { handleSourcesWithErrors } from '../sources/sourcesEffects';
+import {
+    handleSourcesWithErrors,
+    hasRestrictedAccessLevel,
+} from '../sources/sourcesEffects';
 import {
     getDoNotRemindDeprecatedSources,
     getSources,
     setSources,
     showDeprecatedSources,
+    warnAboutMissingTokenOnMigratingSources,
 } from '../sources/sourcesSlice';
 import {
     checkTelemetrySetting,
@@ -103,6 +112,27 @@ const checkForDeprecatedSources =
         }
     };
 
+const checkForMissingTokenAndMigratedSources =
+    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
+    (dispatch, getState) => {
+        if (wasWarnedOnMissingTokenAndMigratedSources()) return;
+        setWarnedOnMissingTokenAndMigratedSources();
+
+        const token = getArtifactoryTokenInformation(getState());
+        const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
+            source => hasRestrictedAccessLevel(source.url)
+        );
+
+        if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
+            dispatch(
+                warnAboutMissingTokenOnMigratingSources(
+                    sourcesWithRestrictedAccessLevel
+                )
+            );
+            return INTERRUPT_INITIALISATION;
+        }
+    };
+
 const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
@@ -135,6 +165,7 @@ const initialisationActions = [
     loadApps,
     loadTokenInformation,
     checkForDeprecatedSources,
+    checkForMissingTokenAndMigratedSources,
     downloadLatestAppInfoAtStartup,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,
