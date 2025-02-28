@@ -4,24 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import {
-    SourceJson,
-    sourceJsonSchema,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path from 'path';
 
 import { SourceWithError } from '../../ipc/apps';
-import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
+import { OFFICIAL, Source, SourceName } from '../../ipc/sources';
 import {
     getAppsRootDir,
     getBundledResourcesDir,
     getNodeModulesDir,
 } from '../config';
 import describeError from '../describeError';
-import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
-import { downloadToJson } from '../net';
+import { downloadSourceJsonToFile, readSourceJson } from './sourceJson';
 import { loadAllSources, writeSourcesFile } from './sourcesVersionedJson';
 import {
     newWithdrawnJson,
@@ -92,41 +87,12 @@ export const getSource = (name: SourceName) => {
     return sources.find(source => source.name === name);
 };
 
-const getSourceJsonPath = (source: Source) =>
-    path.join(getAppsRootDir(source.name), 'source.json');
-
-export const downloadSourceJson = (sourceUrl: SourceUrl) =>
-    downloadToJson<SourceJson>(sourceUrl);
-
-const downloadSourceJsonToFile = async (source: Source) => {
-    const sourceJson = await downloadSourceJson(source.url);
-    writeSourceJson(source, sourceJson);
-
-    return sourceJson;
-};
-
-const readSourceJson = (source: Source) =>
-    readSchemedJsonFile(getSourceJsonPath(source), sourceJsonSchema, {
-        name: source.name,
-        apps: [],
-    });
-
-export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
-    writeSchemedJsonFile(
-        getSourceJsonPath(source),
-        sourceJsonSchema,
-        sourceJson
-    );
-
 export const getAppUrls = (source: Source) => readSourceJson(source).apps;
 
 export const getAllAppUrls = (source: Source) => [
     ...readSourceJson(source).apps,
     ...readWithdrawnJson(source),
 ];
-
-export const sourceJsonExistsLocally = (source: Source) =>
-    fs.existsSync(getSourceJsonPath(source));
 
 export const downloadAllSources = async () => {
     const successful: Source[] = [];
