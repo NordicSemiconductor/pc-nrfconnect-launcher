@@ -11,14 +11,9 @@ import {
     useFocusedOnVisible,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { isLegacyUrl } from '../../../common/legacySource';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { addSource } from './sourcesEffects';
-import {
-    getIsAddSourceVisible,
-    hideAddSource,
-    warnAddLegacySource,
-} from './sourcesSlice';
+import { getIsAddSourceVisible, hideAddSource } from './sourcesSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
@@ -30,16 +25,10 @@ export default () => {
     const cancel = () => dispatch(hideAddSource());
 
     const maybeAddSource = () => {
-        const effectiveUrl = url.trim();
-
-        if (isLegacyUrl(effectiveUrl)) {
-            dispatch(warnAddLegacySource(effectiveUrl));
+        if (url.trim().length > 0) {
+            dispatch(addSource(url.trim()));
             dispatch(hideAddSource());
             setUrl('');
-        } else if (effectiveUrl.length > 0) {
-            dispatch(hideAddSource());
-            setUrl('');
-            dispatch(addSource(effectiveUrl));
         }
     };
 

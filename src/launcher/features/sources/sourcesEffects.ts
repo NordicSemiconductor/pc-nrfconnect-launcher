@@ -8,6 +8,7 @@ import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
+import { isLegacyUrl } from '../../../common/legacySource';
 import { SourceWithError } from '../../../ipc/apps';
 import {
     AddSourceError,
@@ -26,6 +27,7 @@ import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
     warnAboutMissingTokenOnAddSource,
+    warnAddLegacySource,
 } from './sourcesSlice';
 
 const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
@@ -56,8 +58,12 @@ export const hasRestrictedAccessLevel = (url: SourceUrl) =>
 export const addSource =
     (url: SourceUrl): AppThunk =>
     (dispatch, getState) => {
-        const noToken = getArtifactoryTokenInformation(getState()) == null;
+        if (isLegacyUrl(url)) {
+            dispatch(warnAddLegacySource(url));
+            return;
+        }
 
+        const noToken = getArtifactoryTokenInformation(getState()) == null;
         if (hasRestrictedAccessLevel(url) && noToken) {
             dispatch(warnAboutMissingTokenOnAddSource(url));
             return;
