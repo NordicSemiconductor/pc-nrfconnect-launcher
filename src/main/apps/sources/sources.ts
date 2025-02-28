@@ -87,12 +87,13 @@ export const getSource = (name: SourceName) => {
     return sources.find(source => source.name === name);
 };
 
-export const getAppUrls = (source: Source) => readSourceJson(source).apps;
-
-export const getAllAppUrls = (source: Source) => [
-    ...readSourceJson(source).apps,
-    ...readWithdrawnJson(source),
-];
+export const getAppUrls = (
+    source: Source,
+    options = { includeWithdrawnApps: false }
+) =>
+    options.includeWithdrawnApps
+        ? readSourceJson(source).apps
+        : [...readSourceJson(source).apps, ...readWithdrawnJson(source)];
 
 export const downloadAllSources = async () => {
     const successful: Source[] = [];
