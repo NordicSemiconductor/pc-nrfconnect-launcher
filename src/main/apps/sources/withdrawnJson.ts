@@ -11,9 +11,9 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import path from 'path';
 
-import { Source } from '../../ipc/sources';
-import { getAppsRootDir } from '../config';
-import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
+import { Source } from '../../../ipc/sources';
+import { getAppsRootDir } from '../../config';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 
 const getWithdrawnJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'withdrawn.json');

@@ -22,8 +22,8 @@ import { LOCAL, Source, SourceName } from '../../ipc/sources';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from '../config';
 import { ifExists, readFile, readJsonFile, writeJsonFile } from '../fileUtil';
 import { appResourceProperties } from './appResource';
-import { getSource } from './sources';
-import { isInListOfWithdrawnApps } from './withdrawnJson';
+import { getSource } from './sources/sources';
+import { isInListOfWithdrawnApps } from './sources/withdrawnJson';
 
 export const localApp = (appName: string): AppSpec => ({
     source: LOCAL,

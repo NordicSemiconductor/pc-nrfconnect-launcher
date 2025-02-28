@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getAllSources } from '../sources';
+import { getAllSources } from '../sources/sources';
 import {
     type SourcesVersionedJson,
     writeSourcesVersionedJson,
-} from '../sourcesVersionedJson';
+} from '../sources/sourcesVersionedJson';
 import { migrateSourcesVersionedJson } from './migrateSourcesVersionedJson';
 import { readV1SourcesFile } from './sourcesVersionedJsonV1';
 
 jest.mock('./sourcesVersionedJsonV1');
-jest.mock('../sourcesVersionedJson');
-jest.mock('../sources');
+jest.mock('../sources/sourcesVersionedJson');
+jest.mock('../sources/sources');
 
 describe('migrating sources-versioned.json from V1 to V2', () => {
     const mockedReadV1SourcesFile = jest.mocked(readV1SourcesFile);

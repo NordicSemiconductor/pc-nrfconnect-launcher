@@ -7,15 +7,15 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import { SourceWithError } from '../../ipc/apps';
-import { OFFICIAL, Source, SourceName } from '../../ipc/sources';
+import { SourceWithError } from '../../../ipc/apps';
+import { OFFICIAL, Source, SourceName } from '../../../ipc/sources';
 import {
     getAppsRootDir,
     getBundledResourcesDir,
     getNodeModulesDir,
-} from '../config';
-import describeError from '../describeError';
-import { ensureDirExists } from '../mkdir';
+} from '../../config';
+import describeError from '../../describeError';
+import { ensureDirExists } from '../../mkdir';
 import { downloadSourceJsonToFile, readSourceJson } from './sourceJson';
 import { loadAllSources, writeSourcesFile } from './sourcesVersionedJson';
 import {

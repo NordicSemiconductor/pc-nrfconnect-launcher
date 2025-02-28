@@ -9,10 +9,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import { z } from 'zod';
 
-import { Source } from '../../ipc/sources';
-import { getAppsExternalDir } from '../config';
-import describeError from '../describeError';
-import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
+import { Source } from '../../../ipc/sources';
+import { getAppsExternalDir } from '../../config';
+import describeError from '../../describeError';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 
 export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');

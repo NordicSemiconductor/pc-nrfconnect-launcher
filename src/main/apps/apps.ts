@@ -39,7 +39,7 @@ import {
     getAllAppUrls,
     getAllSources,
     getAppUrls,
-} from './sources';
+} from './sources/sources';
 
 const defined = <X>(item?: X): item is X => item != null;
 

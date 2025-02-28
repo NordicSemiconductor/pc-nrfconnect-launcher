@@ -34,7 +34,7 @@ import {
     readAppInfoFile,
     writeAppInfo,
 } from './app';
-import { getSource } from './sources';
+import { getSource } from './sources/sources';
 
 const getTmpFilename = (basename: string) =>
     path.join(electronApp.getPath('temp'), `${basename}-${uuid()}`);

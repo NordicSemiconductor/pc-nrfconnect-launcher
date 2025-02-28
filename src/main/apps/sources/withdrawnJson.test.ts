@@ -7,7 +7,7 @@
 import { newWithdrawnJson } from './withdrawnJson';
 
 jest.mock('fs');
-jest.mock('../fileUtil');
+jest.mock('../../fileUtil');
 
 test('computing the new list of withdrawn apps', () => {
     const oldWithdrawnJson = [

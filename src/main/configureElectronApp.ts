@@ -19,7 +19,7 @@ import { installAllLocalAppArchives } from './apps/appChanges';
 import {
     ensureBundledSourceExists,
     initialiseAllSources,
-} from './apps/sources';
+} from './apps/sources/sources';
 import argv, { appArguments, getStartupApp } from './argv';
 import {
     getAppsExternalDir,

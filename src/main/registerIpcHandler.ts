@@ -40,8 +40,8 @@ import {
     getLocalApps,
 } from './apps/apps';
 import createDesktopShortcut from './apps/createDesktopShortcut';
-import { addSource, removeSource } from './apps/sourceChanges';
-import { getAllSources } from './apps/sources';
+import { addSource, removeSource } from './apps/sources/sourceChanges';
+import { getAllSources } from './apps/sources/sources';
 import argv from './argv';
 import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';

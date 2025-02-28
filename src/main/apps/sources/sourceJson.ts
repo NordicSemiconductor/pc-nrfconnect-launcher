@@ -11,10 +11,10 @@ import {
 import fs from 'fs-extra';
 import path from 'path';
 
-import { Source, SourceUrl } from '../../ipc/sources';
-import { getAppsRootDir } from '../config';
-import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
-import { downloadToJson } from '../net';
+import { Source, SourceUrl } from '../../../ipc/sources';
+import { getAppsRootDir } from '../../config';
+import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
+import { downloadToJson } from '../../net';
 
 const getSourceJsonPath = (source: Source) =>
     path.join(getAppsRootDir(source.name), 'source.json');
