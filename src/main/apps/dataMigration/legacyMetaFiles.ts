@@ -15,11 +15,8 @@ import { Source } from '../../../ipc/sources';
 import { getAppsRootDir, getNodeModulesDir } from '../../config';
 import { readFile, readJsonFile } from '../../fileUtil';
 import { installedAppPath, writeAppInfo } from '../app';
-import {
-    sourceJsonExistsLocally,
-    writeSourceJson,
-    writeWithdrawnJson,
-} from '../sources';
+import { sourceJsonExistsLocally, writeSourceJson } from '../sources';
+import { writeWithdrawnJson } from '../withdrawnJson';
 
 type AppName = `pc-nrfconnect-${string}`;
 

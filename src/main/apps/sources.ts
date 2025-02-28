@@ -7,8 +7,6 @@
 import {
     SourceJson,
     sourceJsonSchema,
-    WithdrawnJson,
-    withdrawnJsonSchema,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 import path from 'path';
@@ -25,6 +23,11 @@ import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
 import { downloadToJson } from '../net';
 import { loadAllSources, writeSourcesFile } from './sourcesVersionedJson';
+import {
+    newWithdrawnJson,
+    readWithdrawnJson,
+    writeWithdrawnJson,
+} from './withdrawnJson';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
@@ -124,53 +127,6 @@ export const getAllAppUrls = (source: Source) => [
 
 export const sourceJsonExistsLocally = (source: Source) =>
     fs.existsSync(getSourceJsonPath(source));
-
-const getWithdrawnJsonPath = (source: Source) =>
-    path.join(getAppsRootDir(source.name), 'withdrawn.json');
-
-const readWithdrawnJson = (source: Source) =>
-    readSchemedJsonFile(getWithdrawnJsonPath(source), withdrawnJsonSchema, []);
-
-export const writeWithdrawnJson = (
-    source: Source,
-    withdrawnJson: WithdrawnJson
-) =>
-    writeSchemedJsonFile(
-        getWithdrawnJsonPath(source),
-        withdrawnJsonSchema,
-        withdrawnJson
-    );
-
-export const isInListOfWithdrawnApps = (
-    source: SourceName,
-    appinfoFilename: string
-) =>
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    readWithdrawnJson(getSource(source)!).find(appUrl =>
-        appUrl.endsWith(`/${appinfoFilename}`)
-    ) != null;
-
-const without = <T>(arr1: T[], arr2: T[]) =>
-    arr1.filter(element => !arr2.includes(element));
-
-const stillWithdrawnApps = (
-    oldWithdrawnJson: WithdrawnJson,
-    newSourceJson: SourceJson
-) => without(oldWithdrawnJson, newSourceJson.apps);
-
-const freshlyWithdrawnApps = (
-    oldSourceJson: SourceJson,
-    newSourceJson: SourceJson
-) => without(oldSourceJson.apps, newSourceJson.apps);
-
-export const newWithdrawnJson = (
-    oldWithdrawnJson: WithdrawnJson,
-    oldSourceJson: SourceJson,
-    newSourceJson: SourceJson
-) => [
-    ...stillWithdrawnApps(oldWithdrawnJson, newSourceJson),
-    ...freshlyWithdrawnApps(oldSourceJson, newSourceJson),
-];
 
 export const downloadAllSources = async () => {
     const successful: Source[] = [];

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { newWithdrawnJson } from './sources';
+import { newWithdrawnJson } from './withdrawnJson';
 
 jest.mock('fs');
 jest.mock('../fileUtil');
