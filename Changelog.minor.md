@@ -34,6 +34,9 @@ release the new version.
     them locally.
 -   #1082: Warn when adding sources from `developer.nordicsemi.com` and offer to
     instead add the corresponding source from `files.nordicsemi.com`.
+-   #1083: Added dialogs about a required token for sources with a restricted
+    access level, either when they come in through a migration from
+    `developer.nordicsemi.com` or when they are added later.
 
 ### Fixed
 

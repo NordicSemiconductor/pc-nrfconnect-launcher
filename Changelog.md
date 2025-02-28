@@ -1,5 +1,10 @@
 ## 5.1.1 - unreleased
 
+### Added
+
+-   Possibility to authenticate, when accessing sources on
+    `files.nordicsemi.com` with a restricted access.
+
 ### Changed
 
 -   Layout of the changelog modal.
