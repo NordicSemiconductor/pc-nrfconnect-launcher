@@ -10,15 +10,12 @@ import {
     WithdrawnJson,
     withdrawnJsonSchema,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import { dialog } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-import { z } from 'zod';
 
 import { SourceWithError } from '../../ipc/apps';
 import { OFFICIAL, Source, SourceName, SourceUrl } from '../../ipc/sources';
 import {
-    getAppsExternalDir,
     getAppsRootDir,
     getBundledResourcesDir,
     getNodeModulesDir,
@@ -27,6 +24,7 @@ import describeError from '../describeError';
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../fileUtil';
 import { ensureDirExists } from '../mkdir';
 import { downloadToJson } from '../net';
+import { loadAllSources, writeSourcesFile } from './sourcesVersionedJson';
 
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
@@ -34,74 +32,6 @@ let sources: Source[] = [];
 const officialSource = {
     name: OFFICIAL,
     url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
-};
-
-export const sourcesVersionedJsonPath = () =>
-    path.join(getAppsExternalDir(), 'sources-versioned.json');
-
-const sourcesSchema = z.array(
-    z.object({
-        name: z.string(),
-        url: z.string().url(),
-    })
-);
-
-export const sourcesVersionedJsonSchema = z.object({
-    v1: sourcesSchema.optional(),
-    v2: sourcesSchema,
-});
-
-export type SourcesVersionedJson = z.infer<typeof sourcesVersionedJsonSchema>;
-
-const readSourcesVersionedJson = () => {
-    if (!fs.existsSync(sourcesVersionedJsonPath())) {
-        return { v2: [] };
-    }
-
-    return readSchemedJsonFile(
-        sourcesVersionedJsonPath(),
-        sourcesVersionedJsonSchema
-    );
-};
-
-export const writeSourcesVersionedJson = (data: SourcesVersionedJson) =>
-    writeSchemedJsonFile(
-        sourcesVersionedJsonPath(),
-        sourcesVersionedJsonSchema,
-        data
-    );
-
-const loadAllSources = () => {
-    if (!fs.existsSync(sourcesVersionedJsonPath())) {
-        return [];
-    }
-    try {
-        return readSchemedJsonFile(
-            sourcesVersionedJsonPath(),
-            sourcesVersionedJsonSchema
-        ).v2;
-    } catch (err) {
-        dialog.showErrorBox(
-            'Could not load list of locally known sources',
-            'No sources besides the official and the local one will be shown. ' +
-                'Also apps from other sources will be hidden.\n\nError: ' +
-                `${describeError(err)}`
-        );
-        return [];
-    }
-};
-
-export const writeSourcesFile = (allSources: Source[]) => {
-    const previousContent = readSourcesVersionedJson();
-
-    writeSchemedJsonFile(
-        sourcesVersionedJsonPath(),
-        sourcesVersionedJsonSchema,
-        {
-            ...previousContent,
-            v2: allSources,
-        }
-    );
 };
 
 const saveAllSources = () => {

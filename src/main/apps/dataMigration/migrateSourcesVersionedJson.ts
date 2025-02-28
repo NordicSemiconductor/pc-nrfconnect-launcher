@@ -9,7 +9,8 @@ import path from 'node:path';
 import { migrateAllURLsInJSON, migrateURL } from '../../../common/legacySource';
 import { getAppsRootDir } from '../../config';
 import { listFiles, readFile, writeFile } from '../../fileUtil';
-import { getAllSources, writeSourcesVersionedJson } from '../sources';
+import { getAllSources } from '../sources';
+import { writeSourcesVersionedJson } from '../sourcesVersionedJson';
 import { readV1SourcesFile } from './sourcesVersionedJsonV1';
 
 const migrateOtherJsonFiles = () => {
