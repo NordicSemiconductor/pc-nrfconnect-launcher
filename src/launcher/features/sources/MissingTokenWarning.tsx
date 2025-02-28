@@ -38,7 +38,11 @@ export default () => {
         }
 
         if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
-            dispatch(addSource(missingTokenWarning.sourceToAdd));
+            dispatch(
+                addSource(missingTokenWarning.sourceToAdd, {
+                    warnOnMissingToken: false,
+                })
+            );
 
         if (isWarningAboutMissingTokenOnMigratingSources(missingTokenWarning))
             dispatch(initialiseLauncherState());

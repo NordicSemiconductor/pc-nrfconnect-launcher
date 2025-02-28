@@ -56,7 +56,10 @@ export const hasRestrictedAccessLevel = (url: SourceUrl) =>
     ) != null;
 
 export const addSource =
-    (url: SourceUrl): AppThunk =>
+    (
+        url: SourceUrl,
+        { warnOnMissingToken } = { warnOnMissingToken: true }
+    ): AppThunk =>
     (dispatch, getState) => {
         if (isLegacyUrl(url)) {
             dispatch(warnAddLegacySource(url));
@@ -64,7 +67,7 @@ export const addSource =
         }
 
         const noToken = getArtifactoryTokenInformation(getState()) == null;
-        if (hasRestrictedAccessLevel(url) && noToken) {
+        if (hasRestrictedAccessLevel(url) && noToken && warnOnMissingToken) {
             dispatch(warnAboutMissingTokenOnAddSource(url));
             return;
         }
