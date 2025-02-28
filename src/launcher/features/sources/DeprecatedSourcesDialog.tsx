@@ -25,8 +25,6 @@ export default () => {
         <ConfirmationDialog
             isVisible={isVisible}
             title="Remove deprecated sources"
-            cancelLabel="Ignore"
-            optionalLabel="Do not remind me again"
             confirmLabel="Yes, remove"
             onConfirm={async () => {
                 dispatch(hideDeprecatedSources());
@@ -38,12 +36,14 @@ export default () => {
                 );
                 dispatch(initialiseLauncherState());
             }}
+            optionalLabel="Do not remind me again"
             onOptional={() => {
                 dispatch(hideDeprecatedSources());
                 dispatch(initialiseLauncherState());
 
                 dispatch(doNotRemindDeprecatedSources());
             }}
+            cancelLabel="Ignore"
             onCancel={() => {
                 dispatch(hideDeprecatedSources());
                 dispatch(initialiseLauncherState());
