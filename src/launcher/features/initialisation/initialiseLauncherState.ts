@@ -12,6 +12,10 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isDeprecatedSource } from '../../../common/legacySource';
+import {
+    setWarnedOnMissingTokenAndMigratedSources,
+    wasWarnedOnMissingTokenAndMigratedSources,
+} from '../../../common/persistedStore';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -23,15 +27,20 @@ import {
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
+    getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
     setArtifactoryTokenInformation,
 } from '../settings/settingsSlice';
-import { handleSourcesWithErrors } from '../sources/sourcesEffects';
+import {
+    handleSourcesWithErrors,
+    hasRestrictedAccessLevel,
+} from '../sources/sourcesEffects';
 import {
     getDoNotRemindDeprecatedSources,
     getSources,
     setSources,
     showDeprecatedSources,
+    warnAboutMissingTokenOnMigratingSources,
 } from '../sources/sourcesSlice';
 import {
     checkTelemetrySetting,
@@ -85,6 +94,45 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     }
 };
 
+const checkForDeprecatedSources =
+    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
+    (dispatch, getState) => {
+        const deprecatedSources = getSources(getState()).filter(
+            isDeprecatedSource
+        );
+
+        if (
+            !(
+                deprecatedSources.length === 0 ||
+                getDoNotRemindDeprecatedSources(getState())
+            )
+        ) {
+            dispatch(showDeprecatedSources(deprecatedSources));
+            return INTERRUPT_INITIALISATION;
+        }
+    };
+
+const checkForMissingTokenAndMigratedSources =
+    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
+    (dispatch, getState) => {
+        if (wasWarnedOnMissingTokenAndMigratedSources()) return;
+        setWarnedOnMissingTokenAndMigratedSources();
+
+        const token = getArtifactoryTokenInformation(getState());
+        const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
+            source => hasRestrictedAccessLevel(source.url)
+        );
+
+        if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
+            dispatch(
+                warnAboutMissingTokenOnMigratingSources(
+                    sourcesWithRestrictedAccessLevel
+                )
+            );
+            return INTERRUPT_INITIALISATION;
+        }
+    };
+
 const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
@@ -109,37 +157,35 @@ const checkForLauncherUpdateAtStartup =
         }
     };
 
-const initialiseLauncherStateStage1 = (): AppThunk => async dispatch => {
-    dispatch(checkTelemetrySetting());
+const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
 
-    await dispatch(loadSources());
-    await dispatch(loadApps());
+const initialisationActions = [
+    checkTelemetrySetting,
+    loadSources,
+    loadApps,
+    loadTokenInformation,
+    checkForDeprecatedSources,
+    checkForMissingTokenAndMigratedSources,
+    downloadLatestAppInfoAtStartup,
+    checkForLauncherUpdateAtStartup,
+    sendEnvInfo,
+];
 
-    dispatch(loadTokenInformation());
-};
+const runRemainingInitialisationActionsSequentially =
+    (): AppThunk => async dispatch => {
+        while (initialisationActions.length > 0) {
+            const action = initialisationActions.shift() as () => AppThunk<
+                undefined | typeof INTERRUPT_INITIALISATION
+            >;
 
-export const initialiseLauncherStateStage2 = (): AppThunk => dispatch => {
-    dispatch(downloadLatestAppInfoAtStartup());
-    dispatch(checkForLauncherUpdateAtStartup());
+            const result = await dispatch(action()); // eslint-disable-line no-await-in-loop -- Must be awaited because some actions are asynchronous
 
-    sendEnvInfo();
-};
+            if (result === INTERRUPT_INITIALISATION) {
+                return;
+            }
+        }
+    };
 
-const checkForDeprecatedSources = (): AppThunk => (dispatch, getState) => {
-    const deprecatedSources = getSources(getState()).filter(isDeprecatedSource);
-
-    if (
-        deprecatedSources.length === 0 ||
-        getDoNotRemindDeprecatedSources(getState())
-    ) {
-        dispatch(initialiseLauncherStateStage2());
-    } else {
-        dispatch(showDeprecatedSources(deprecatedSources));
-    }
-};
-
-export default (): AppThunk => async dispatch => {
-    await dispatch(initialiseLauncherStateStage1());
-
-    dispatch(checkForDeprecatedSources());
+export default (): AppThunk => dispatch => {
+    dispatch(runRemainingInitialisationActionsSequentially());
 };

@@ -14,6 +14,32 @@ import {
 import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
 import type { RootState } from '../../store';
 
+type Hidden = typeof hidden;
+const hidden = { isVisible: false } as const;
+
+type WarnAboutMissingTokenOnAddSource = {
+    isVisible: true;
+    sourceToAdd: SourceUrl;
+};
+export const isWarningAboutMissingTokenOnAddSource = (
+    warning: MissingTokenWarning
+): warning is WarnAboutMissingTokenOnAddSource =>
+    warning.isVisible && 'sourceToAdd' in warning;
+
+type WarnAboutMissingTokenOnMigratingSources = {
+    isVisible: true;
+    sourcesWithRestrictedAccessLevel: Source[];
+};
+export const isWarningAboutMissingTokenOnMigratingSources = (
+    warning: MissingTokenWarning
+): warning is WarnAboutMissingTokenOnMigratingSources =>
+    warning.isVisible && 'sourcesWithRestrictedAccessLevel' in warning;
+
+type MissingTokenWarning =
+    | Hidden
+    | WarnAboutMissingTokenOnAddSource
+    | WarnAboutMissingTokenOnMigratingSources;
+
 export type State = {
     sources: Source[];
     isAddSourceVisible: boolean;
@@ -21,6 +47,7 @@ export type State = {
     deprecatedSources: Source[];
     doNotRemindDeprecatedSources: boolean;
     sourceToAdd: null | SourceUrl;
+    missingTokenWarning: MissingTokenWarning;
 };
 
 const initialState: State = {
@@ -30,6 +57,7 @@ const initialState: State = {
     deprecatedSources: [],
     doNotRemindDeprecatedSources: getPersistedDoNotRemindDeprecatedSources(),
     sourceToAdd: null,
+    missingTokenWarning: hidden,
 };
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
@@ -38,7 +66,7 @@ const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
     );
 
 const slice = createSlice({
-    name: 'settings',
+    name: 'sources',
     initialState,
     reducers: {
         setSources(state, { payload: sources }: PayloadAction<Source[]>) {
@@ -92,6 +120,27 @@ const slice = createSlice({
         clearSourceToAdd(state) {
             state.sourceToAdd = null;
         },
+        warnAboutMissingTokenOnAddSource(
+            state,
+            { payload: sourceToAdd }: PayloadAction<SourceUrl>
+        ) {
+            state.missingTokenWarning = {
+                isVisible: true,
+                sourceToAdd,
+            };
+        },
+        warnAboutMissingTokenOnMigratingSources(
+            state,
+            { payload: sources }: PayloadAction<Source[]>
+        ) {
+            state.missingTokenWarning = {
+                isVisible: true,
+                sourcesWithRestrictedAccessLevel: [...sources],
+            };
+        },
+        hideWarningAboutMissingToken(state) {
+            state.missingTokenWarning = hidden;
+        },
     },
 });
 
@@ -110,6 +159,9 @@ export const {
     doNotRemindDeprecatedSources,
     warnAddLegacySource,
     clearSourceToAdd,
+    warnAboutMissingTokenOnAddSource,
+    warnAboutMissingTokenOnMigratingSources,
+    hideWarningAboutMissingToken,
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
@@ -124,3 +176,5 @@ export const getDeprecatedSources = (state: RootState) =>
 export const getDoNotRemindDeprecatedSources = (state: RootState) =>
     state.sources.doNotRemindDeprecatedSources;
 export const getSourceToAdd = (state: RootState) => state.sources.sourceToAdd;
+export const getMissingTokenWarning = (state: RootState) =>
+    state.sources.missingTokenWarning;

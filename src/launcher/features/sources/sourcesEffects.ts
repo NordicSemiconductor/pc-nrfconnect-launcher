@@ -8,6 +8,7 @@ import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
+import { isLegacyUrl } from '../../../common/legacySource';
 import { SourceWithError } from '../../../ipc/apps';
 import {
     AddSourceError,
@@ -21,9 +22,12 @@ import type { AppThunk } from '../../store';
 import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
 import { hideSource, showSource } from '../filter/filterSlice';
 import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLoginSlice';
+import { getArtifactoryTokenInformation } from '../settings/settingsSlice';
 import {
     addSource as addSourceAction,
     removeSource as removeSourceAction,
+    warnAboutMissingTokenOnAddSource,
+    warnAddLegacySource,
 } from './sourcesSlice';
 
 const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
@@ -46,9 +50,28 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
     }
 };
 
+export const hasRestrictedAccessLevel = (url: SourceUrl) =>
+    url.match(
+        /https?:\/\/files\.nordicsemi\.com\/ui\/api\/v1\/download\?isNativeBrowsing=false&repoKey=swtools&path=(internal|external-confidential)/
+    ) != null;
+
 export const addSource =
-    (url: SourceUrl): AppThunk =>
-    dispatch => {
+    (
+        url: SourceUrl,
+        { warnOnMissingToken } = { warnOnMissingToken: true }
+    ): AppThunk =>
+    (dispatch, getState) => {
+        if (isLegacyUrl(url)) {
+            dispatch(warnAddLegacySource(url));
+            return;
+        }
+
+        const noToken = getArtifactoryTokenInformation(getState()) == null;
+        if (hasRestrictedAccessLevel(url) && noToken && warnOnMissingToken) {
+            dispatch(warnAboutMissingTokenOnAddSource(url));
+            return;
+        }
+
         sources
             .addSource(url)
             .then(result => {

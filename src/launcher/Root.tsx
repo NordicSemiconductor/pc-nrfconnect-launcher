@@ -25,6 +25,7 @@ import QuickStartDialog from './features/quickstart/QuickstartDialog';
 import Settings from './features/settings/Settings';
 import AddLegacySourceWarning from './features/sources/AddLegacySourceWarning';
 import DeprecatedSourcesDialog from './features/sources/DeprecatedSourcesDialog';
+import MissingTokenWarning from './features/sources/MissingTokenWarning';
 import TelemetryDialog from './features/telemetry/TelemetryDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
 
@@ -100,6 +101,7 @@ export default () => {
             <QuickStartDialog />
             <DeprecatedSourcesDialog />
             <AddLegacySourceWarning />
+            <MissingTokenWarning />
         </ErrorBoundaryLauncher>
     );
 };

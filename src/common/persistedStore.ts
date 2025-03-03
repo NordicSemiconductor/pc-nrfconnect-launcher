@@ -40,6 +40,7 @@ interface Schema {
     encryptedArtifactoryToken?: string;
     artifactoryTokenInformation?: TokenInformation;
     doNotRemindDeprecatedSources?: boolean;
+    wasWarnedOnMissingTokenAndMigratedSources?: boolean;
 }
 
 const store = new Store<Schema>();
@@ -122,3 +123,8 @@ export const getDoNotRemindDeprecatedSources = () =>
     store.get('doNotRemindDeprecatedSources', false);
 export const setDoNotRemindDeprecatedSources = () =>
     store.set('doNotRemindDeprecatedSources', true);
+
+export const wasWarnedOnMissingTokenAndMigratedSources = () =>
+    store.get('wasWarnedOnMissingTokenAndMigratedSources', false);
+export const setWarnedOnMissingTokenAndMigratedSources = () =>
+    store.set('wasWarnedOnMissingTokenAndMigratedSources', true);
