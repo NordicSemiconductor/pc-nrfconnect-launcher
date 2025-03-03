@@ -7,13 +7,8 @@ on:
             - labeled
             - unlabeled
             - synchronize
-        branches:
-            - main
 
 jobs:
     check_labels:
         uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/labels.yml@main
         secrets: inherit
-
-
-

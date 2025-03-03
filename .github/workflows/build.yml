@@ -8,8 +8,6 @@ on:
                 default: false
                 required: true
     pull_request:
-        branches:
-            - main
         paths-ignore:
             - 'doc/**'
     push:
