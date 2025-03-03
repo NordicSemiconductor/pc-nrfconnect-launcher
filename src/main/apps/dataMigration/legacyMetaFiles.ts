@@ -18,8 +18,8 @@ import { installedAppPath, writeAppInfo } from '../app';
 import {
     sourceJsonExistsLocally,
     writeSourceJson,
-    writeWithdrawnJson,
-} from '../sources';
+} from '../sources/sourceJson';
+import { writeWithdrawnJson } from '../sources/withdrawnJson';
 
 type AppName = `pc-nrfconnect-${string}`;
 

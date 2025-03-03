@@ -14,18 +14,17 @@ import {
     Source,
     SourceName,
     SourceUrl,
-} from '../../ipc/sources';
-import { getAppsRootDir } from '../config';
-import describeError from '../describeError';
-import { addDownloadAppData } from './app';
-import { downloadAppInfos } from './apps';
+} from '../../../ipc/sources';
+import { getAppsRootDir } from '../../config';
+import describeError from '../../describeError';
+import { addDownloadAppData } from '../app';
+import { downloadAppInfos } from '../apps';
+import { downloadSourceJson, writeSourceJson } from './sourceJson';
 import {
     addToSourceList,
-    downloadSourceJson,
     getSource,
     initialise,
     removeFromSourceList,
-    writeSourceJson,
 } from './sources';
 
 const downloadSource = async (

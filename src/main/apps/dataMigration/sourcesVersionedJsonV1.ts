@@ -11,7 +11,7 @@ import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 import {
     sourcesVersionedJsonPath,
     sourcesVersionedJsonSchema,
-} from '../sources';
+} from '../sources/sourcesVersionedJson';
 
 const sourcesVersionedJsonV1Schema = sourcesVersionedJsonSchema.partial();
 

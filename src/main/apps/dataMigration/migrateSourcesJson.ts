@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 import { getAppsExternalDir } from '../../config';
 import { readSchemedJsonFile } from '../../fileUtil';
-import { sourcesVersionedJsonPath } from '../sources';
+import { sourcesVersionedJsonPath } from '../sources/sourcesVersionedJson';
 import { writeV1SourcesFile } from './sourcesVersionedJsonV1';
 
 export const oldSourcesJsonPath = () =>

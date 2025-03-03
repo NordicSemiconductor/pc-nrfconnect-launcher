@@ -22,7 +22,8 @@ import { LOCAL, Source, SourceName } from '../../ipc/sources';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from '../config';
 import { ifExists, readFile, readJsonFile, writeJsonFile } from '../fileUtil';
 import { appResourceProperties } from './appResource';
-import { getSource, isInListOfWithdrawnApps } from './sources';
+import { getSource } from './sources/sources';
+import { isInListOfWithdrawnApps } from './sources/withdrawnJson';
 
 export const localApp = (appName: string): AppSpec => ({
     source: LOCAL,
@@ -97,7 +98,7 @@ export const addDownloadAppData =
 
             source,
             isWithdrawn: isInListOfWithdrawnApps(
-                source,
+                getSource(source)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
                 basename(appInfoFile(appSpec))
             ),
         } as DownloadableApp;

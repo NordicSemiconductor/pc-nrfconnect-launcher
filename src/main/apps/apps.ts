@@ -36,10 +36,9 @@ import { downloadAppResources } from './appResource';
 import { maybeMigrateLegacyMetaFiles } from './dataMigration/legacyMetaFiles';
 import {
     downloadAllSources,
-    getAllAppUrls,
     getAllSources,
     getAppUrls,
-} from './sources';
+} from './sources/sources';
 
 const defined = <X>(item?: X): item is X => item != null;
 
@@ -102,7 +101,7 @@ export const getDownloadableApps = () => {
 
             // FIXME later: Change addInstalledAppDatas so that it can be part of the map chain
             const result = addInstalledAppDatas(
-                getAllAppUrls(source)
+                getAppUrls(source, { includeWithdrawnApps: true })
                     .map(getAppSpec(source))
                     .filter(appInfoExists)
                     .map(readAppInfo)
