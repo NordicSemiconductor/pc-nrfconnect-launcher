@@ -177,6 +177,65 @@ exports[`SettingsView should render check for updates completed, with everything
                   <div
                     class="card-title h5"
                   >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Usage statistics
                   </div>
                 </div>
@@ -439,6 +498,65 @@ exports[`SettingsView should render check for updates completed, with updates av
                    
                   and set it here.
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
               </div>
             </div>
           </div>
@@ -742,6 +860,65 @@ exports[`SettingsView should render the token information 1`] = `
                   <div
                     class="card-title h5"
                   >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Usage statistics
                   </div>
                 </div>
@@ -954,6 +1131,65 @@ exports[`SettingsView should render when checking for updates 1`] = `
                    
                   and set it here.
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
               </div>
             </div>
           </div>
@@ -1201,6 +1437,65 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   <div
                     class="card-title h5"
                   >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
                     Usage statistics
                   </div>
                 </div>
@@ -1412,6 +1707,65 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                    
                   and set it here.
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
               </div>
             </div>
           </div>
@@ -1645,6 +1999,65 @@ exports[`SettingsView should render with last update check date 1`] = `
                    
                   and set it here.
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card"
+          >
+            <div
+              class="card-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="card-title h5"
+                  >
+                    Chinese app server
+                  </div>
+                </div>
+              </div>
+              <p
+                class="small text-muted"
+              >
+                For all publicly available apps, use the Chinese server
+                 
+                <a
+                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                  href="https://files.nordicsemi.cn/"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  https://files.nordicsemi.cn/
+                </a>
+                , which has a better connection in China.
+              </p>
+              <div
+                class="toggle"
+              >
+                <label>
+                  <span
+                    class="toggle-label"
+                  >
+                    Use Chinese app server
+                  </span>
+                  <div
+                    class="toggle-bar toggle-bar-primary"
+                  >
+                    <input
+                      aria-checked="false"
+                      type="checkbox"
+                    />
+                    <span
+                      class="toggle-handle toggle-handle-primary"
+                      style="background-color: white;"
+                    />
+                  </div>
+                </label>
               </div>
             </div>
           </div>

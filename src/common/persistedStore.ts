@@ -41,6 +41,7 @@ interface Schema {
     artifactoryTokenInformation?: TokenInformation;
     doNotRemindDeprecatedSources?: boolean;
     wasWarnedOnMissingTokenAndMigratedSources?: boolean;
+    useChineseAppServer?: boolean;
 }
 
 const store = new Store<Schema>();
@@ -128,3 +129,8 @@ export const wasWarnedOnMissingTokenAndMigratedSources = () =>
     store.get('wasWarnedOnMissingTokenAndMigratedSources', false);
 export const setWarnedOnMissingTokenAndMigratedSources = () =>
     store.set('wasWarnedOnMissingTokenAndMigratedSources', true);
+
+export const getUseChineseAppServer = () =>
+    store.get('useChineseAppServer', false);
+export const setUseChineseAppServer = (useChineseAppServer: boolean) =>
+    store.set('useChineseAppServer', useChineseAppServer);

@@ -12,6 +12,7 @@ import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
 import AddArtifactoryTokenDialog from './AddArtifactoryTokenDialog';
 import AppSources from './Cards/AppSources';
 import ArtifactoryToken from './Cards/ArtifactoryToken';
+import ChineseAppServer from './Cards/ChineseAppServer';
 import Updates from './Cards/Updates';
 import UsageStatistics from './Cards/UsageStatistics';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
@@ -22,6 +23,7 @@ export default () => (
             <Updates />
             <AppSources />
             <ArtifactoryToken />
+            <ChineseAppServer />
             <UsageStatistics />
 
             <UpdateCheckCompleteDialog />
