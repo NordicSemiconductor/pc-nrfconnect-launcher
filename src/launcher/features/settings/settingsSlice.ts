@@ -11,10 +11,12 @@ import {
     getArtifactoryTokenInformation as getPersistedArtifactoryTokenInformation,
     getCheckForUpdatesAtStartup as getPersistedCheckForUpdatesAtStartup,
     getIsQuickStartInfoShownBefore as getPersistedIsQuickStartInfoShownBefore,
+    getUseChineseAppServer as getPersistedUseChineseAppServer,
     removeArtifactoryTokenInformation as removePersistedArtifactoryTokenInformation,
     setArtifactoryTokenInformation as setPersistedArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup as setPersistedCheckForUpdatesAtStartup,
     setQuickStartInfoWasShown as setPersistedQuickStartInfoWasShown,
+    setUseChineseAppServer as setPersistedUseChineseAppServer,
 } from '../../../common/persistedStore';
 import type { TokenInformation } from '../../../ipc/artifactoryToken';
 import type { RootState } from '../../store';
@@ -25,6 +27,7 @@ export type State = {
     isQuickStartInfoShownBefore: boolean;
     isAddArtifactoryTokenVisible: boolean;
     artifactoryTokenInformation?: TokenInformation;
+    useChineseAppServer: boolean;
 };
 
 const initialState: State = {
@@ -33,6 +36,7 @@ const initialState: State = {
     isQuickStartInfoShownBefore: getPersistedIsQuickStartInfoShownBefore(),
     isAddArtifactoryTokenVisible: false,
     artifactoryTokenInformation: getPersistedArtifactoryTokenInformation(),
+    useChineseAppServer: getPersistedUseChineseAppServer(),
 };
 
 const slice = createSlice({
@@ -73,6 +77,13 @@ const slice = createSlice({
             state.artifactoryTokenInformation = undefined;
             removePersistedArtifactoryTokenInformation();
         },
+        setUseChineseAppServer(
+            state,
+            { payload: useChineseAppServer }: PayloadAction<boolean>
+        ) {
+            state.useChineseAppServer = useChineseAppServer;
+            setPersistedUseChineseAppServer(useChineseAppServer);
+        },
     },
 });
 
@@ -87,6 +98,7 @@ export const {
     setCheckForUpdatesAtStartup,
     showAddArtifactoryToken,
     showUpdateCheckComplete,
+    setUseChineseAppServer,
 } = slice.actions;
 
 export const getShouldCheckForUpdatesAtStartup = (state: RootState) =>
@@ -99,3 +111,5 @@ export const getArtifactoryTokenInformation = (state: RootState) =>
     state.settings.artifactoryTokenInformation;
 export const getIsAddArtifactoryTokenVisible = (state: RootState) =>
     state.settings.isAddArtifactoryTokenVisible;
+export const getUseChineseAppServer = (state: RootState) =>
+    state.settings.useChineseAppServer;

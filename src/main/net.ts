@@ -8,6 +8,7 @@ import { net, session } from 'electron';
 import fs from 'fs-extra';
 import { z } from 'zod';
 
+import { getUseChineseAppServer } from '../common/persistedStore';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
@@ -44,15 +45,27 @@ type DownloadOptions = {
     bearer?: string;
 };
 
+const isPublicUrl = (url: string) =>
+    url.startsWith(
+        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
+    );
+
+const determineEffectiveUrl = (url: string) =>
+    isPublicUrl(url) && getUseChineseAppServer()
+        ? url.replace('//files.nordicsemi.com/', '//files.nordicsemi.cn/')
+        : url;
+
 const downloadToBuffer = (url: string, options: DownloadOptions) =>
     new Promise<Buffer>((resolve, reject) => {
+        const effectiveUrl = determineEffectiveUrl(url);
+
         const request = net.request({
-            url,
+            url: effectiveUrl,
             session: session.fromPartition(NET_SESSION_NAME),
         });
         request.setHeader('pragma', 'no-cache');
 
-        const bearer = options.bearer ?? determineBearer(url);
+        const bearer = options.bearer ?? determineBearer(effectiveUrl);
         if (bearer) {
             request.setHeader('Authorization', `Bearer ${bearer}`);
         }
@@ -61,7 +74,7 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
             const { statusCode } = response;
             if (statusCode >= 400) {
                 const error: NetError = new Error(
-                    `Unable to download ${url}. Got status code ${statusCode}`
+                    `Unable to download ${effectiveUrl}. Got status code ${statusCode}`
                 );
                 error.statusCode = statusCode;
                 // https://github.com/electron/electron/issues/24948
@@ -85,7 +98,11 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
             });
             response.on('end', () => resolve(Buffer.concat(buffer)));
             response.on('error', (error: Error) =>
-                reject(new Error(`Error when reading ${url}: ${error.message}`))
+                reject(
+                    new Error(
+                        `Error when reading ${effectiveUrl}: ${error.message}`
+                    )
+                )
             );
         });
         if (options.enableProxyLogin) {
@@ -103,7 +120,11 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
             });
         }
         request.on('error', error =>
-            reject(new Error(`Unable to download ${url}: ${error.message}`))
+            reject(
+                new Error(
+                    `Unable to download ${effectiveUrl}: ${error.message}`
+                )
+            )
         );
         request.end();
     });

@@ -4,6 +4,8 @@
 
 -   Possibility to authenticate, when accessing sources on
     `files.nordicsemi.com` with a restricted access.
+-   Possibility to use an Chinese app server for downloads for all publicly
+    available apps.
 
 ### Changed
 
