@@ -11,7 +11,7 @@ import AddSourceDialog from '../sources/AddSourceDialog';
 import ConfirmRemoveSourceDialog from '../sources/ConfirmRemoveSourceDialog';
 import AddArtifactoryTokenDialog from './AddArtifactoryTokenDialog';
 import AppSources from './Cards/AppSources';
-import ArtifactoryToken from './Cards/ArtifactoryToken';
+import Authentication from './Cards/Authentication';
 import ChineseAppServer from './Cards/ChineseAppServer';
 import Updates from './Cards/Updates';
 import UsageStatistics from './Cards/UsageStatistics';
@@ -22,7 +22,7 @@ export default () => (
         <div className="settings-pane-container">
             <Updates />
             <AppSources />
-            <ArtifactoryToken />
+            <Authentication />
             <ChineseAppServer />
             <UsageStatistics />
 
