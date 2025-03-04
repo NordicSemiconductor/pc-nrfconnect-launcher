@@ -69,7 +69,7 @@ export default () => {
         <Card body id="app-sources">
             <Row>
                 <Col>
-                    <Card.Title>Artifactory token</Card.Title>
+                    <Card.Title>Authentication</Card.Title>
                 </Col>
                 <Col xs="auto">
                     <Button
@@ -98,7 +98,7 @@ export default () => {
                                 variant="outline-secondary"
                                 size="sm"
                                 onClick={forgetToken}
-                                title="Forget Artifactory token"
+                                title="Forget identity token"
                             >
                                 Forget
                             </Button>
