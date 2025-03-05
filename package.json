@@ -81,11 +81,13 @@
         },
         "win": {
             "target": "nsis",
-            "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico",
-            "endpoint": "https://weu.codesigning.azure.net",
-            "certificateProfileName": "aztsapcert01",
-            "codeSigningAccountName": "aztsawe01"
+            "azureSignOptions": {
+                "publisherName": "Nordic Semiconductor ASA",
+                "endpoint": "https://weu.codesigning.azure.net",
+                "certificateProfileName": "aztsapcert01",
+                "codeSigningAccountName": "aztsawe01"
+            }
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
