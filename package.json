@@ -83,10 +83,9 @@
             "target": "nsis",
             "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico",
-            "sign": "./build/winSign.js",
-            "signingHashAlgorithms": [
-                "sha256"
-            ]
+            "endpoint": "https://weu.codesigning.azure.net",
+            "certificateProfileName": "aztsapcert01",
+            "codeSigningAccountName": "aztsawe01"
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
