@@ -29,7 +29,6 @@ jobs:
               uses: ./.github/actions/build-action
 
             - name: Run Electron Builder
-              shell: pwsh
               run: |
                   npx electron-builder -p never --windows nsis:x64
               if: github.event_name != 'pull_request'
