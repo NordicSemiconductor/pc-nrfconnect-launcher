@@ -83,7 +83,7 @@
             "target": "nsis",
             "icon": "resources/icon.ico",
             "azureSignOptions": {
-                "publisherName": "Nordic Semiconductor ASA",
+                "publisherName": "Nordic Semiconductor",
                 "endpoint": "https://weu.codesigning.azure.net",
                 "certificateProfileName": "aztsapcert01",
                 "codeSigningAccountName": "aztsawe01"
