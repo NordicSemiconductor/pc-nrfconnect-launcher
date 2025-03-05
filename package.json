@@ -38,7 +38,7 @@
     "license": "Proprietary",
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
-        "productName": "nRF Connect for Desktop",
+        "productName": "nrfconnect",
         "npmRebuild": false,
         "files": [
             "dist/",
