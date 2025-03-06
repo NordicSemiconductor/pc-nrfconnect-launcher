@@ -35,9 +35,9 @@ export default () => {
                 </Col>
             </Row>
             <p className="small text-muted">
-                For all publicly available apps, use the Chinese server{' '}
+                For all publicly available apps, use the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" />, which has
-                a better connection in China.
+                a better connection in the Peoples Republic of China.
             </p>
             <Toggle
                 label="Use Chinese app server"
