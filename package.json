@@ -38,7 +38,7 @@
     "license": "Proprietary",
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
-        "productName": "nrfconnect",
+        "productName": "nRF Connect for Desktop",
         "npmRebuild": false,
         "files": [
             "dist/",
@@ -109,7 +109,7 @@
         "asar": "3.0.3",
         "cli-truncate": "2.1.0",
         "cross-env": "7.0.3",
-        "electron-builder": "^25.1.8",
+        "electron-builder": "^26.0.10",
         "electron-devtools-installer": "3.2.0",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"
