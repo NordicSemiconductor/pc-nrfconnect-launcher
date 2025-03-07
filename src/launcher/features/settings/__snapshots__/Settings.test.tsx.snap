@@ -184,7 +184,7 @@ exports[`SettingsView should render check for updates completed, with everything
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -194,7 +194,7 @@ exports[`SettingsView should render check for updates completed, with everything
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -523,7 +523,7 @@ exports[`SettingsView should render check for updates completed, with updates av
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -533,7 +533,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -867,7 +867,7 @@ exports[`SettingsView should render the token information 1`] = `
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -877,7 +877,7 @@ exports[`SettingsView should render the token information 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1156,7 +1156,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1166,7 +1166,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1444,7 +1444,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1454,7 +1454,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1732,7 +1732,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1742,7 +1742,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
@@ -2024,7 +2024,7 @@ exports[`SettingsView should render with last update check date 1`] = `
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the Chinese server
+                For all publicly available apps, use the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -2034,7 +2034,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in China.
+                , which has a better connection in the Peoples Republic of China.
               </p>
               <div
                 class="toggle"
