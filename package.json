@@ -1,6 +1,6 @@
 {
     "name": "nrfconnect",
-    "version": "5.1.1",
+    "version": "5.2.0",
     "description": "nRF Connect for Desktop",
     "repository": {
         "type": "git",
@@ -81,12 +81,13 @@
         },
         "win": {
             "target": "nsis",
-            "publisherName": "Nordic Semiconductor ASA",
             "icon": "resources/icon.ico",
-            "sign": "./build/winSign.js",
-            "signingHashAlgorithms": [
-                "sha256"
-            ]
+            "azureSignOptions": {
+                "publisherName": "Nordic Semiconductor ASA",
+                "endpoint": "https://weu.codesigning.azure.net",
+                "certificateProfileName": "aztsapcert01",
+                "codeSigningAccountName": "aztsawe01"
+            }
         },
         "nsis": {
             "menuCategory": "Nordic Semiconductor",
@@ -108,7 +109,7 @@
         "asar": "3.0.3",
         "cli-truncate": "2.1.0",
         "cross-env": "7.0.3",
-        "electron-builder": "^24.9.1",
+        "electron-builder": "^26.0.10",
         "electron-devtools-installer": "3.2.0",
         "playwright": "^1.16.3",
         "xvfb-maybe": "0.2.1"

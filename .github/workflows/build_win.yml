@@ -15,29 +15,12 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Fetch certificate file
-              shell: bash
-              env:
-                  SM_CLIENT_CERT_FILE_B64:
-                      ${{ secrets.NORDIC_SM_CLIENT_CERT_P12 }}
-              run: |
-                  echo "$SM_CLIENT_CERT_FILE_B64" | base64 --decode > /d/Certificate_pkcs12.p12
-              if:
-                  ${{ github.event_name != 'pull_request' &&
-                  inputs.sign_windows}}
-
             - name: Set variables
               shell: bash
               run: |
-                  echo "SM_HOST=${{ secrets.NORDIC_SM_HOST }}" >> "$GITHUB_ENV"
-                  echo "SM_API_KEY=${{ secrets.NORDIC_SM_API_KEY }}" >> "$GITHUB_ENV"
-                  echo "SM_KEYPAIR_ALIAS=${{ secrets.NORDIC_SM_KEYPAIR_ALIAS }}" >> "$GITHUB_ENV"
-                  echo "SM_CLIENT_CERT_FILE=D:\\Certificate_pkcs12.p12" >> "$GITHUB_ENV"
-                  echo "SM_CLIENT_CERT_PASSWORD=${{ secrets.NORDIC_SM_CLIENT_CERT_PASSWORD }}" >> "$GITHUB_ENV"
-                  echo "SM_CODE_SIGNING_CERT_SHA1_HASH=${{ secrets.NORDIC_SM_CERTIFICATE_SHA1_HASH }}" >> "$GITHUB_ENV"
-                  echo "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit" >> $GITHUB_PATH
-                  echo "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v10.0A\\bin\\NETFX 4.8 Tools" >> $GITHUB_PATH
-                  echo "C:\\Program Files\\DigiCert\\DigiCert One Signing Manager Tools" >> $GITHUB_PATH
+                  echo "AZURE_TENANT_ID=${{ secrets.NORDIC_AZURE_TENANT_ID }}" >> "$GITHUB_ENV"
+                  echo "AZURE_CLIENT_ID=${{ secrets.NORDIC_AZURE_CLIENT_ID }}" >> "$GITHUB_ENV"
+                  echo "AZURE_CLIENT_SECRET=${{ secrets.NORDIC_AZURE_CLIENT_SECRET }}" >> "$GITHUB_ENV"
               if:
                   ${{ github.event_name != 'pull_request' &&
                   inputs.sign_windows}}
@@ -45,31 +28,9 @@ jobs:
             - name: Build
               uses: ./.github/actions/build-action
 
-            - name: Setup signing tools
-              run: |
-                  curl -X GET  https://one.digicert.com/signingmanager/api-ui/v1/releases/smtools-windows-x64.msi/download -H "x-api-key:%SM_API_KEY%" -o smtools-windows-x64.msi
-                  msiexec /i smtools-windows-x64.msi /quiet /qn
-                  smksp_registrar.exe list
-                  smctl.exe keypair ls
-                  C:\Windows\System32\certutil.exe -csp "DigiCert Signing Manager KSP" -key -user
-                  smksp_cert_sync.exe
-              shell: cmd
-              if:
-                  ${{ github.event_name != 'pull_request' &&
-                  inputs.sign_windows}}
-
-            - name: Certificates Sync
-              run: |
-                  smctl windows certsync
-              shell: cmd
-              if:
-                  ${{ github.event_name != 'pull_request' &&
-                  inputs.sign_windows}}
-
             - name: Run Electron Builder
               run: |
                   npx electron-builder -p never --windows nsis:x64
-              shell: bash
               if: github.event_name != 'pull_request'
 
             - name: Upload
