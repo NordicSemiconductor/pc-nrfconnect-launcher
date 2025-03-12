@@ -1,10 +1,10 @@
-## 5.1.1 - unreleased
+## 5.2.0 - unreleased
 
 ### Added
 
 -   Possibility to authenticate, when accessing sources on
     `files.nordicsemi.com` with a restricted access.
--   Possibility to use an Chinese app server for downloads for all publicly
+-   Possibility to use a Chinese app server for downloads for all publicly
     available apps.
 
 ### Changed
