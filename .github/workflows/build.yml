@@ -2,11 +2,6 @@ name: Build nRF Connect for Desktop
 
 on:
     workflow_dispatch:
-        inputs:
-            sign_windows:
-                type: boolean
-                default: false
-                required: true
     pull_request:
         paths-ignore:
             - 'doc/**'

@@ -2,11 +2,6 @@ name: Build nRF Connect for Desktop for Windows x64
 
 on:
     workflow_dispatch:
-        inputs:
-            sign_windows:
-                type: boolean
-                default: false
-                required: true
     workflow_call:
 
 jobs:
@@ -22,8 +17,7 @@ jobs:
                   echo "AZURE_CLIENT_ID=${{ secrets.NORDIC_AZURE_CLIENT_ID }}" >> "$GITHUB_ENV"
                   echo "AZURE_CLIENT_SECRET=${{ secrets.NORDIC_AZURE_CLIENT_SECRET }}" >> "$GITHUB_ENV"
               if:
-                  ${{ github.event_name != 'pull_request' &&
-                  inputs.sign_windows}}
+                  ${{ github.event_name != 'pull_request' }}
 
             - name: Build
               uses: ./.github/actions/build-action
