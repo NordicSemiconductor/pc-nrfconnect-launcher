@@ -27,7 +27,7 @@ jobs:
                   CSC_LINK: ./nordic_signing_certificate.p12
                   CSC_KEY_PASSWORD: ''
                   APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
-                  APPLE_ID_PASS: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
+                  APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAMID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
               run: npx electron-builder -p never --arm64
               if: github.event_name != 'pull_request'
