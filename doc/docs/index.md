@@ -18,7 +18,7 @@ The following applications are available from nRF Connect for Desktop. All of th
 | [Quick Start](https://docs.nordicsemi.com/bundle/nrf-connect-quickstart/page/index.html) | Set up and install software when starting your work with Nordic Semiconductor devices.  | Supported |
 | [RSSI Viewer](https://docs.nordicsemi.com/bundle/nrf-connect-rssi-viewer/page/index.html)  | Visualize dBm per frequency in the 2400-2480 MHz range.   | Supported  |
 | [Serial Terminal](https://docs.nordicsemi.com/bundle/nrf-connect-serial-terminal/page/index.html)  | Cross-platform terminal emulator for serial port communications with Nordic Semiconductor devices over Universal Asynchronous Receiver/Transmitter (UART).  | Supported |
-| [Toolchain Manager](https://docs.nordicsemi.com/bundle/ncs-2.9.1/page/nrf/installation/install_ncs.html#installation_with_toolchain_manager)  | Install and manage tools to develop with the nRF Connect SDK v2.9.1 or earlier.  | Deprecated: does not support the nRF Connect SDK v3.0.0 and later.   |
+| [Toolchain Manager](https://docs.nordicsemi.com/bundle/ncs-2.9.1/page/nrf/installation/install_ncs.html#installation_with_toolchain_manager)  | Install and manage tools to develop with the nRF Connect SDK v2.9.1 or earlier.  | Deprecated: does not support the nRF Connect SDK v3.0.0 and later. Use [nRF Connect for Visual Studio Code or command line](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/installation/install_ncs.html) instead.   |
 
 ## Application source code
 
