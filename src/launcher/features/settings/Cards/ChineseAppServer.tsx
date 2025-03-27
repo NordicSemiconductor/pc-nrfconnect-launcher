@@ -31,7 +31,7 @@ export default () => {
         <Card body>
             <Row>
                 <Col>
-                    <Card.Title>Chinese app server</Card.Title>
+                    <Card.Title>Mainland China app server</Card.Title>
                 </Col>
             </Row>
             <p className="small text-muted">
@@ -40,7 +40,7 @@ export default () => {
                 a better connection in the Peoples Republic of China.
             </p>
             <Toggle
-                label="Use Chinese app server"
+                label="Use Mainland China app server"
                 onToggle={() =>
                     dispatch(setUseChineseAppServer(!useChineseAppServer))
                 }
