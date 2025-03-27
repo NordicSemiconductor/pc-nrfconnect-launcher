@@ -8,7 +8,7 @@ The following table lists operating systems supported by nRF Connect for Desktop
 | Windows 10                | Tier 3         | Tier 1        | Not supported |
 | Linux - Ubuntu 24.04 LTS  | Not supported  | Tier 2        | Not supported |
 | Linux - Ubuntu 22.04 LTS  | Not supported  | Tier 1        | Not supported |
-| Linux - Ubuntu 20.04 LTS  | Not supported  | Tier 2        | Not supported |
+| Linux - Ubuntu 20.04 LTS  | Not supported  | Not supported | Not supported |
 | macOS 15                  | Not applicable | Tier 3        | Tier 3        |
 | macOS 14                  | Not applicable | Tier 3        | Tier 3        |
 | macOS 13                  | Not applicable | Tier 1        | Tier 1        |
