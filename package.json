@@ -62,7 +62,7 @@
             ],
             "artifactName": "${name}-${version}-${arch}.${ext}",
             "category": "Development",
-            "icon": "resources/icon.icns"
+            "icon": "resources/icon_linux.png"
         },
         "beforePack": "build/getBundledResources.js",
         "afterSign": "build/notarize.js",

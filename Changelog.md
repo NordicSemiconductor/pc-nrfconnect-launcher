@@ -12,6 +12,10 @@
 -   Layout of the changelog modal.
 -   Improved installation animation contrast.
 
+### Fixed
+
+-   Icon size on macOS.
+
 ## 5.1.0 - 2024-11-11
 
 ### Added
