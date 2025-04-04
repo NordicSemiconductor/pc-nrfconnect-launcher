@@ -45,15 +45,32 @@ type DownloadOptions = {
     bearer?: string;
 };
 
-const isPublicUrl = (url: string) =>
-    url.startsWith(
+export const determineEffectiveUrl = (url: string) => {
+    let effectiveUrl = url;
+
+    const shortArtifactoryUrlRegex =
+        /^https:\/\/files\.nordicsemi\.(?<tld>cn|com)\/artifactory\/(?<repo>[^/]+)\/(?<path>.*)/;
+    const match = effectiveUrl.match(shortArtifactoryUrlRegex);
+    if (match != null) {
+        const {
+            groups: { tld, repo, path },
+        } = match as { groups: Record<string, string> };
+
+        effectiveUrl = `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
+    }
+
+    const isPublicUrl = effectiveUrl.startsWith(
         'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
     );
+    if (isPublicUrl && getUseChineseAppServer()) {
+        effectiveUrl = effectiveUrl.replace(
+            '//files.nordicsemi.com/',
+            '//files.nordicsemi.cn/'
+        );
+    }
 
-const determineEffectiveUrl = (url: string) =>
-    isPublicUrl(url) && getUseChineseAppServer()
-        ? url.replace('//files.nordicsemi.com/', '//files.nordicsemi.cn/')
-        : url;
+    return effectiveUrl;
+};
 
 const downloadToBuffer = (url: string, options: DownloadOptions) =>
     new Promise<Buffer>((resolve, reject) => {
