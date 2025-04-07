@@ -100,7 +100,7 @@ export default () => {
             <p>
                 To get a token, go to{' '}
                 <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
-                , log in and generate an Identity Token there. As Nordic
+                , log in and generate an identity token there. As Nordic
                 employee, you should be able to log in, otherwise ask your
                 Nordic contact for an account if you are eligible.
             </p>
