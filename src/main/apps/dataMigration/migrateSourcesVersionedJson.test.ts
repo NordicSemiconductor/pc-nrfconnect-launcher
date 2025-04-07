@@ -38,7 +38,7 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
                 },
                 {
                     name: 'Latest',
-                    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/latest/source.json',
+                    url: 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/latest/source.json',
                 },
                 {
                     name: '3rd Party',
@@ -61,7 +61,7 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
                 },
                 {
                     name: 'Latest',
-                    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/latest/source.json',
+                    url: 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/latest/source.json',
                 },
                 {
                     name: '3rd Party',
@@ -71,15 +71,15 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
             v2: [
                 {
                     name: 'official',
-                    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
+                    url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/source.json',
                 },
                 {
                     name: '3.7 compatible apps',
-                    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/3.7-apps/source.json',
+                    url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/3.7-apps/source.json',
                 },
                 {
                     name: 'Latest',
-                    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/latest/source.json',
+                    url: 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/latest/source.json',
                 },
                 {
                     name: '3rd Party',

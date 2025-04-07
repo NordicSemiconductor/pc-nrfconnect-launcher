@@ -13,19 +13,19 @@ export const migrateURL = (url: string) =>
     url
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/(3\.\d+-apps)\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/$1/$2'
+            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/$1/$2'
         )
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/directionfinding\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential/ncd/apps/directionfinding/$1'
+            'https://files.nordicsemi.com/artifactory/swtools/external-confidential/ncd/apps/directionfinding/$1'
         )
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/([^/]+)\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/$1/$2'
+            'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/$1/$2'
         )
         .replace(
             /https?:\/\/developer.nordicsemi.com\/\.pc-tools\/nrfconnect-apps\/(.+)/,
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/$1'
+            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/$1'
         );
 
 export const migrateAllURLsInJSON = (json: string) =>
@@ -43,7 +43,7 @@ const deprecatedSources = [
 
 const deprecatedSourceURLs = deprecatedSources.map(
     name =>
-        `https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/${name}/source.json`
+        `https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/${name}/source.json`
 );
 
 export const isDeprecatedSource = (url: Source) =>
