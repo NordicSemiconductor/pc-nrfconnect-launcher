@@ -74,9 +74,9 @@ export default () => {
             {isWarningAboutMissingTokenOnAddSource(missingTokenWarning) && (
                 <p>
                     For accessing the source at the URL{' '}
-                    <code>{missingTokenWarning.sourceToAdd}</code> an
-                    Artifactory token is required but you have not set one yet.
-                    Without providing a token, using the source will fail.
+                    <code>{missingTokenWarning.sourceToAdd}</code> an identity
+                    token is required but you have not set one yet. Without
+                    providing a token, using the source will fail.
                 </p>
             )}
             {isWarningAboutMissingTokenOnMigratingSources(
@@ -84,9 +84,9 @@ export default () => {
             ) && (
                 <>
                     <p>
-                        For accessing the following sources, an Artifactory
-                        token is now required. Without providing a token, using
-                        the source will fail.
+                        For accessing the following sources, an identity token
+                        is now required. Without providing a token, using the
+                        source will fail.
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
