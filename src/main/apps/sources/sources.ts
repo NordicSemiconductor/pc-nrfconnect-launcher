@@ -29,7 +29,7 @@ let sources: Source[] = [];
 
 const officialSource = {
     name: OFFICIAL,
-    url: 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
+    url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/source.json',
 };
 
 const saveAllSources = () => {

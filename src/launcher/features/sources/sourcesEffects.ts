@@ -51,9 +51,18 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
 };
 
 export const hasRestrictedAccessLevel = (url: SourceUrl) =>
-    url.match(
-        /https?:\/\/files\.nordicsemi\.com\/ui\/api\/v1\/download\?isNativeBrowsing=false&repoKey=swtools&path=(internal|external-confidential)/
-    ) != null;
+    url.startsWith(
+        'https://files.nordicsemi.com/artifactory/swtools/internal'
+    ) ||
+    url.startsWith(
+        'https://files.nordicsemi.com/artifactory/swtools/external-confidential'
+    ) ||
+    url.startsWith(
+        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal'
+    ) ||
+    url.startsWith(
+        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential'
+    );
 
 export const addSource =
     (
