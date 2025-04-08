@@ -836,10 +836,10 @@ exports[`SettingsView should render the token information 1`] = `
                 >
                   <button
                     class="btn btn-outline-secondary btn-sm"
-                    title="Forget identity token"
+                    title="Remove identity token"
                     type="button"
                   >
-                    Forget
+                    Remove
                   </button>
                 </div>
               </div>

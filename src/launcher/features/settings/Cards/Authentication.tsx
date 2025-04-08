@@ -98,9 +98,9 @@ export default () => {
                                 variant="outline-secondary"
                                 size="sm"
                                 onClick={forgetToken}
-                                title="Forget identity token"
+                                title="Remove identity token"
                             >
-                                Forget
+                                Remove
                             </Button>
                         </Col>
                     </>
