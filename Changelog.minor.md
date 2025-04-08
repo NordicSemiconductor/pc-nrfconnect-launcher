@@ -15,6 +15,7 @@ release the new version.
 
 ### Changed
 
+-   #1101: Updated J-Link version to v8.18.
 -   #1057: Show J-Link warning also for local apps.
 -   #1063: Download J-Link from Artifactory.
 -   #1071: Use `ExternalLink` from shared.

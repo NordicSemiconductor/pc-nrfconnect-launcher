@@ -54,7 +54,7 @@
   ; ===============================================================
 
   ; J-Link installer (downloaded by getJlink.js through prePack hook)
-  !define BundledJLinkVersion "V794i"
+  !define BundledJLinkVersion "V818"
 
   !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
   !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
