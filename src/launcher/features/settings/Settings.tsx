@@ -15,6 +15,7 @@ import Authentication from './Cards/Authentication';
 import ChineseAppServer from './Cards/ChineseAppServer';
 import Updates from './Cards/Updates';
 import UsageStatistics from './Cards/UsageStatistics';
+import RemoveArtifactoryTokenDialog from './RemoveArtifactoryTokenDialog';
 import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 
 export default () => (
@@ -30,6 +31,7 @@ export default () => (
             <AddSourceDialog />
             <ConfirmRemoveSourceDialog />
             <AddArtifactoryTokenDialog />
+            <RemoveArtifactoryTokenDialog />
         </div>
     </WithScrollbarContainer>
 );

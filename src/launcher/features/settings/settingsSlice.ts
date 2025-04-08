@@ -26,6 +26,7 @@ export type State = {
     isUpdateCheckCompleteVisible: boolean;
     isQuickStartInfoShownBefore: boolean;
     isAddArtifactoryTokenVisible: boolean;
+    isRemoveArtifactoryTokenVisible: boolean;
     artifactoryTokenInformation?: TokenInformation;
     useChineseAppServer: boolean;
 };
@@ -35,6 +36,7 @@ const initialState: State = {
     isUpdateCheckCompleteVisible: false,
     isQuickStartInfoShownBefore: getPersistedIsQuickStartInfoShownBefore(),
     isAddArtifactoryTokenVisible: false,
+    isRemoveArtifactoryTokenVisible: false,
     artifactoryTokenInformation: getPersistedArtifactoryTokenInformation(),
     useChineseAppServer: getPersistedUseChineseAppServer(),
 };
@@ -66,6 +68,12 @@ const slice = createSlice({
         hideAddArtifactoryToken(state) {
             state.isAddArtifactoryTokenVisible = false;
         },
+        showRemoveArtifactoryToken(state) {
+            state.isRemoveArtifactoryTokenVisible = true;
+        },
+        hideRemoveArtifactoryToken(state) {
+            state.isRemoveArtifactoryTokenVisible = false;
+        },
         setArtifactoryTokenInformation(
             state,
             { payload: tokenInformation }: PayloadAction<TokenInformation>
@@ -91,14 +99,16 @@ export default slice.reducer;
 
 export const {
     hideAddArtifactoryToken,
+    hideRemoveArtifactoryToken,
     hideUpdateCheckComplete,
     quickStartInfoWasShown,
     removeArtifactoryTokenInformation,
     setArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup,
-    showAddArtifactoryToken,
-    showUpdateCheckComplete,
     setUseChineseAppServer,
+    showAddArtifactoryToken,
+    showRemoveArtifactoryToken,
+    showUpdateCheckComplete,
 } = slice.actions;
 
 export const getShouldCheckForUpdatesAtStartup = (state: RootState) =>
@@ -111,5 +121,7 @@ export const getArtifactoryTokenInformation = (state: RootState) =>
     state.settings.artifactoryTokenInformation;
 export const getIsAddArtifactoryTokenVisible = (state: RootState) =>
     state.settings.isAddArtifactoryTokenVisible;
+export const getIsRemoveArtifactoryTokenVisible = (state: RootState) =>
+    state.settings.isRemoveArtifactoryTokenVisible;
 export const getUseChineseAppServer = (state: RootState) =>
     state.settings.useChineseAppServer;
