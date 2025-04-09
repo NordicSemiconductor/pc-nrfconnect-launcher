@@ -57,6 +57,16 @@ Here you can check for updates to both the launcher and the nRF Connect for Desk
 Use the **Add source** button to provide URL to a custom list of application.
 This can be used for example to share early versions of applications under development.
 
+### Authentication
+
+Here you can manage your identity token, which allows you to access non-external sources from Nordic Semiconductor. The token is required for accessing certain proprietary or early-access applications.
+
+For detailed information about working with authentication tokens, see [Working with authentication tokens](working_with_authentications_tokens.md).
+
+### Mainland China app server
+
+This section allows you to enable the use of a dedicated server for better connectivity in the People's Republic of China. When enabled, the launcher will use https://files.nordicsemi.cn/ to download publicly available apps, which provides improved connection speeds within mainland China.
+
 ### Usage statistics
 
 Here you can enable sharing of anonymized usage data with Nordic Semiconductor to help improve nRF Connect for Desktop applications.
