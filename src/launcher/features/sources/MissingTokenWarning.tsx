@@ -38,13 +38,6 @@ export default () => {
             return;
         }
 
-        if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
-            dispatch(
-                addSource(missingTokenWarning.sourceToAdd, {
-                    warnOnMissingToken: false,
-                })
-            );
-
         if (isWarningAboutMissingTokenOnStartup(missingTokenWarning))
             dispatch(initialiseLauncherState());
     };
@@ -61,6 +54,13 @@ export default () => {
             return;
         }
 
+        if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
+            dispatch(
+                addSource(missingTokenWarning.sourceToAdd, {
+                    warnOnMissingToken: false,
+                })
+            );
+
         hideDialog();
     };
 
@@ -69,6 +69,11 @@ export default () => {
             isVisible={isVisible}
             title="Missing token"
             confirmLabel="Set token"
+            cancelLabel={
+                isWarningAboutMissingTokenOnAddSource(missingTokenWarning)
+                    ? 'Cancel adding source'
+                    : 'Cancel'
+            }
             optionalLabel={
                 isWarningAboutMissingTokenOnStartup(missingTokenWarning)
                     ? 'Do not remind me again'
@@ -86,7 +91,7 @@ export default () => {
                     For accessing the source at the URL{' '}
                     <code>{missingTokenWarning.sourceToAdd}</code> an identity
                     token is required but you have not set one yet. Without
-                    providing a token, using the source will fail.
+                    providing a token, is it not possible to add this source.
                 </p>
             )}
             {isWarningAboutMissingTokenOnStartup(missingTokenWarning) && (
