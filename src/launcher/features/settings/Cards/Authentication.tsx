@@ -9,22 +9,14 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import {
-    ErrorDialogActions,
-    ExternalLink,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
-import describeError from '@nordicsemiconductor/pc-nrfconnect-shared/src/logging/describeError';
+import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import cleanIpcErrorMessage from '../../../../common/cleanIpcErrorMessage';
-import {
-    inMain as artifactoryToken,
-    type TokenInformation,
-} from '../../../../ipc/artifactoryToken';
+import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import {
     getArtifactoryTokenInformation,
-    removeArtifactoryTokenInformation,
     showAddArtifactoryToken,
+    showRemoveArtifactoryToken,
 } from '../settingsSlice';
 
 const Token: React.FC<{ token: TokenInformation }> = ({ token }) => (
@@ -49,21 +41,6 @@ export default () => {
     const dispatch = useLauncherDispatch();
 
     const token = useLauncherSelector(getArtifactoryTokenInformation);
-
-    const forgetToken = async () => {
-        try {
-            await artifactoryToken.removeToken();
-            dispatch(removeArtifactoryTokenInformation());
-        } catch (error) {
-            dispatch(
-                ErrorDialogActions.showDialog(
-                    `Unable to forget token.`,
-                    undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
-            );
-        }
-    };
 
     return (
         <Card body id="app-sources">
@@ -97,10 +74,12 @@ export default () => {
                             <Button
                                 variant="outline-secondary"
                                 size="sm"
-                                onClick={forgetToken}
-                                title="Forget identity token"
+                                onClick={() =>
+                                    dispatch(showRemoveArtifactoryToken())
+                                }
+                                title="Remove identity token"
                             >
-                                Forget
+                                Remove
                             </Button>
                         </Col>
                     </>

@@ -52,10 +52,14 @@ export default () => {
             onCancel={hideDialog}
         >
             <p>
-                Enter an Artifactory token to use for retrieving apps. You can
-                get an identity token from{' '}
+                Enter an identity token to use for retrieving apps. To get a
+                token, go to{' '}
                 <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
-                .
+                , log in, and generate an identity token there.
+            </p>
+            <p>
+                As Nordic employee, you are able to log in. If not a Nordic
+                employee, ask your Nordic contact for an account.
             </p>
             {hasToken && (
                 <p>The current token will be forgotten by this app.</p>

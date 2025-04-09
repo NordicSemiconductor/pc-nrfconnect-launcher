@@ -74,9 +74,9 @@ export default () => {
             {isWarningAboutMissingTokenOnAddSource(missingTokenWarning) && (
                 <p>
                     For accessing the source at the URL{' '}
-                    <code>{missingTokenWarning.sourceToAdd}</code> an
-                    Artifactory token is required but you have not set one yet.
-                    Without providing a token, using the source will fail.
+                    <code>{missingTokenWarning.sourceToAdd}</code> an identity
+                    token is required but you have not set one yet. Without
+                    providing a token, using the source will fail.
                 </p>
             )}
             {isWarningAboutMissingTokenOnMigratingSources(
@@ -84,9 +84,9 @@ export default () => {
             ) && (
                 <>
                     <p>
-                        For accessing the following sources, an Artifactory
-                        token is now required. Without providing a token, using
-                        the source will fail.
+                        For accessing the following sources, an identity token
+                        is now required. Without providing a token, using the
+                        source will fail.
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
@@ -100,9 +100,11 @@ export default () => {
             <p>
                 To get a token, go to{' '}
                 <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
-                , log in and generate an Identity Token there. As Nordic
-                employee, you should be able to log in, otherwise ask your
-                Nordic contact for an account if you are eligible.
+                , log in, and generate an identity token there.
+            </p>
+            <p>
+                As Nordic employee, you are able to log in. If not a Nordic
+                employee, ask your Nordic contact for an account.
             </p>
             <p className="tw-m-0">Paste the token here:</p>
             <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">
