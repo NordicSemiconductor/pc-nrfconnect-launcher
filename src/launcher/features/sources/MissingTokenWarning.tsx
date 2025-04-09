@@ -91,7 +91,7 @@ export default () => {
                     For accessing the source at the URL{' '}
                     <code>{missingTokenWarning.sourceToAdd}</code> an identity
                     token is required but you have not set one yet. Without
-                    providing a token, is it not possible to add this source.
+                    providing a token, it is not possible to add this source.
                 </p>
             )}
             {isWarningAboutMissingTokenOnStartup(missingTokenWarning) && (
