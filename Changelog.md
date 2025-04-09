@@ -9,6 +9,7 @@
 
 ### Changed
 
+-   Updated bundled SEGGER J-Link to v8.18 for Windows.
 -   Layout of the changelog modal.
 -   Improved installation animation contrast.
 
