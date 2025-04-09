@@ -7,8 +7,14 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import { OFFICIAL, Source, SourceName } from '../../../common/sources';
+import {
+    hasRestrictedAccessLevel,
+    OFFICIAL,
+    Source,
+    SourceName,
+} from '../../../common/sources';
 import { SourceWithError } from '../../../ipc/apps';
+import { retrieveToken } from '../../artifactoryTokenStorage';
 import {
     getAppsRootDir,
     getBundledResourcesDir,
@@ -99,8 +105,12 @@ export const downloadAllSources = async () => {
     const successful: Source[] = [];
     const erroneos: SourceWithError[] = [];
 
+    const hasToken = retrieveToken() != null;
+
     await Promise.allSettled(
         sources.map(async source => {
+            if (!hasToken && hasRestrictedAccessLevel(source.url)) return;
+
             try {
                 const oldWithdrawnJson = readWithdrawnJson(source);
                 const oldSourceJson = readSourceJson(source);
