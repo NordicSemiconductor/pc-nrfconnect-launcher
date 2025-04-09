@@ -86,7 +86,7 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     } catch (error) {
         dispatch(
             ErrorDialogActions.showDialog(
-                `Your identity token could not be validated. If you are online it may have expired.`,
+                `Your identity token could not be validated. If you are online, it may have expired.`,
                 undefined,
                 cleanIpcErrorMessage(describeError(error))
             )

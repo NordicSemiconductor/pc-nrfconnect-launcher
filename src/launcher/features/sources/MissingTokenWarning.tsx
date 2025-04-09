@@ -100,9 +100,11 @@ export default () => {
             <p>
                 To get a token, go to{' '}
                 <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
-                , log in and generate an identity token there. As Nordic
-                employee, you should be able to log in, otherwise ask your
-                Nordic contact for an account if you are eligible.
+                , log in, and generate an identity token there.
+            </p>
+            <p>
+                As Nordic employee, you are able to log in. If not a Nordic
+                employee, ask your Nordic contact for an account.
             </p>
             <p className="tw-m-0">Paste the token here:</p>
             <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">
