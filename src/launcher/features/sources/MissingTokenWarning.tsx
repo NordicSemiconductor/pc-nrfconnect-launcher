@@ -11,6 +11,7 @@ import {
     ExternalLink,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { setDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import initialiseLauncherState from '../initialisation/initialiseLauncherState';
 import { setArtifactoryToken } from '../settings/settingsEffects';
@@ -68,7 +69,16 @@ export default () => {
             isVisible={isVisible}
             title="Missing token"
             confirmLabel="Set token"
+            optionalLabel={
+                isWarningAboutMissingTokenOnStartup(missingTokenWarning)
+                    ? 'Do not remind me again'
+                    : undefined
+            }
             onConfirm={storeTokenAndAddSource}
+            onOptional={() => {
+                setDoNotRemindOnMissingToken();
+                hideDialog();
+            }}
             onCancel={() => hideDialog()}
         >
             {isWarningAboutMissingTokenOnAddSource(missingTokenWarning) && (

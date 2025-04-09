@@ -12,6 +12,7 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isDeprecatedSource } from '../../../common/legacySource';
+import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -111,6 +112,8 @@ const checkForDeprecatedSources =
 const checkForMissingToken =
     (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
     (dispatch, getState) => {
+        if (getDoNotRemindOnMissingToken()) return;
+
         const token = getArtifactoryTokenInformation(getState());
         const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
             source => hasRestrictedAccessLevel(source.url)
