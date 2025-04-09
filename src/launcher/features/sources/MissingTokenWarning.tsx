@@ -19,7 +19,7 @@ import {
     getMissingTokenWarning,
     hideWarningAboutMissingToken,
     isWarningAboutMissingTokenOnAddSource,
-    isWarningAboutMissingTokenOnMigratingSources,
+    isWarningAboutMissingTokenOnStartup,
 } from './sourcesSlice';
 
 export default () => {
@@ -44,7 +44,7 @@ export default () => {
                 })
             );
 
-        if (isWarningAboutMissingTokenOnMigratingSources(missingTokenWarning))
+        if (isWarningAboutMissingTokenOnStartup(missingTokenWarning))
             dispatch(initialiseLauncherState());
     };
 
@@ -79,14 +79,13 @@ export default () => {
                     providing a token, using the source will fail.
                 </p>
             )}
-            {isWarningAboutMissingTokenOnMigratingSources(
-                missingTokenWarning
-            ) && (
+            {isWarningAboutMissingTokenOnStartup(missingTokenWarning) && (
                 <>
                     <p>
                         For accessing the following sources, an identity token
-                        is now required. Without providing a token, using the
-                        source will fail.
+                        is required. Without providing a token, the source will
+                        not be updated, and trying to install apps from them
+                        will fail.
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(

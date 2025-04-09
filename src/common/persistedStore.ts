@@ -40,7 +40,6 @@ interface Schema {
     encryptedArtifactoryToken?: string;
     artifactoryTokenInformation?: TokenInformation;
     doNotRemindDeprecatedSources?: boolean;
-    wasWarnedOnMissingTokenAndMigratedSources?: boolean;
     useChineseAppServer?: boolean;
 }
 
@@ -124,11 +123,6 @@ export const getDoNotRemindDeprecatedSources = () =>
     store.get('doNotRemindDeprecatedSources', false);
 export const setDoNotRemindDeprecatedSources = () =>
     store.set('doNotRemindDeprecatedSources', true);
-
-export const wasWarnedOnMissingTokenAndMigratedSources = () =>
-    store.get('wasWarnedOnMissingTokenAndMigratedSources', false);
-export const setWarnedOnMissingTokenAndMigratedSources = () =>
-    store.set('wasWarnedOnMissingTokenAndMigratedSources', true);
 
 export const getUseChineseAppServer = () =>
     store.get('useChineseAppServer', false);

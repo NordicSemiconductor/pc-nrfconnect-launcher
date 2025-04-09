@@ -12,10 +12,6 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isDeprecatedSource } from '../../../common/legacySource';
-import {
-    setWarnedOnMissingTokenAndMigratedSources,
-    wasWarnedOnMissingTokenAndMigratedSources,
-} from '../../../common/persistedStore';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -40,7 +36,7 @@ import {
     getSources,
     setSources,
     showDeprecatedSources,
-    warnAboutMissingTokenOnMigratingSources,
+    warnAboutMissingTokenOnStartup,
 } from '../sources/sourcesSlice';
 import {
     checkTelemetrySetting,
@@ -112,12 +108,9 @@ const checkForDeprecatedSources =
         }
     };
 
-const checkForMissingTokenAndMigratedSources =
+const checkForMissingToken =
     (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
     (dispatch, getState) => {
-        if (wasWarnedOnMissingTokenAndMigratedSources()) return;
-        setWarnedOnMissingTokenAndMigratedSources();
-
         const token = getArtifactoryTokenInformation(getState());
         const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
             source => hasRestrictedAccessLevel(source.url)
@@ -125,9 +118,7 @@ const checkForMissingTokenAndMigratedSources =
 
         if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
             dispatch(
-                warnAboutMissingTokenOnMigratingSources(
-                    sourcesWithRestrictedAccessLevel
-                )
+                warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
             );
             return INTERRUPT_INITIALISATION;
         }
@@ -165,7 +156,7 @@ const initialisationActions = [
     loadApps,
     loadTokenInformation,
     checkForDeprecatedSources,
-    checkForMissingTokenAndMigratedSources,
+    checkForMissingToken,
     downloadLatestAppInfoAtStartup,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,
