@@ -8,13 +8,13 @@ import { SourceJson } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import fs from 'fs-extra';
 
 import {
-    AddSourceResult,
     allStandardSourceNames,
     OFFICIAL,
     Source,
     SourceName,
     SourceUrl,
-} from '../../../ipc/sources';
+} from '../../../common/sources';
+import { type AddSourceResult } from '../../../ipc/sources';
 import { getAppsRootDir } from '../../config';
 import describeError from '../../describeError';
 import { addDownloadAppData } from '../app';

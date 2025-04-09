@@ -8,7 +8,7 @@ import Store from 'electron-store';
 
 import packageJson from '../../package.json';
 import type { TokenInformation } from '../ipc/artifactoryToken';
-import type { SourceName } from '../ipc/sources';
+import type { SourceName } from './sources';
 
 type WindowState = {
     x?: number;
@@ -40,7 +40,7 @@ interface Schema {
     encryptedArtifactoryToken?: string;
     artifactoryTokenInformation?: TokenInformation;
     doNotRemindDeprecatedSources?: boolean;
-    wasWarnedOnMissingTokenAndMigratedSources?: boolean;
+    doNotRemindOnMissingToken?: boolean;
     useChineseAppServer?: boolean;
 }
 
@@ -125,10 +125,10 @@ export const getDoNotRemindDeprecatedSources = () =>
 export const setDoNotRemindDeprecatedSources = () =>
     store.set('doNotRemindDeprecatedSources', true);
 
-export const wasWarnedOnMissingTokenAndMigratedSources = () =>
-    store.get('wasWarnedOnMissingTokenAndMigratedSources', false);
-export const setWarnedOnMissingTokenAndMigratedSources = () =>
-    store.set('wasWarnedOnMissingTokenAndMigratedSources', true);
+export const getDoNotRemindOnMissingToken = () =>
+    store.get('doNotRemindOnMissingToken', false);
+export const setDoNotRemindOnMissingToken = () =>
+    store.set('doNotRemindOnMissingToken', true);
 
 export const getUseChineseAppServer = () =>
     store.get('useChineseAppServer', false);

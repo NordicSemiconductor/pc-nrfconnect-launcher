@@ -11,11 +11,11 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
-import { isDeprecatedSource } from '../../../common/legacySource';
+import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import {
-    setWarnedOnMissingTokenAndMigratedSources,
-    wasWarnedOnMissingTokenAndMigratedSources,
-} from '../../../common/persistedStore';
+    hasRestrictedAccessLevel,
+    isDeprecatedSource,
+} from '../../../common/sources';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -31,16 +31,13 @@ import {
     getShouldCheckForUpdatesAtStartup,
     setArtifactoryTokenInformation,
 } from '../settings/settingsSlice';
-import {
-    handleSourcesWithErrors,
-    hasRestrictedAccessLevel,
-} from '../sources/sourcesEffects';
+import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
     getDoNotRemindDeprecatedSources,
     getSources,
     setSources,
     showDeprecatedSources,
-    warnAboutMissingTokenOnMigratingSources,
+    warnAboutMissingTokenOnStartup,
 } from '../sources/sourcesSlice';
 import {
     checkTelemetrySetting,
@@ -112,11 +109,10 @@ const checkForDeprecatedSources =
         }
     };
 
-const checkForMissingTokenAndMigratedSources =
+const checkForMissingToken =
     (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
     (dispatch, getState) => {
-        if (wasWarnedOnMissingTokenAndMigratedSources()) return;
-        setWarnedOnMissingTokenAndMigratedSources();
+        if (getDoNotRemindOnMissingToken()) return;
 
         const token = getArtifactoryTokenInformation(getState());
         const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
@@ -125,9 +121,7 @@ const checkForMissingTokenAndMigratedSources =
 
         if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
             dispatch(
-                warnAboutMissingTokenOnMigratingSources(
-                    sourcesWithRestrictedAccessLevel
-                )
+                warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
             );
             return INTERRUPT_INITIALISATION;
         }
@@ -165,7 +159,7 @@ const initialisationActions = [
     loadApps,
     loadTokenInformation,
     checkForDeprecatedSources,
-    checkForMissingTokenAndMigratedSources,
+    checkForMissingToken,
     downloadLatestAppInfoAtStartup,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,

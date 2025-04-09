@@ -18,7 +18,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
-import { OFFICIAL } from '../../../../ipc/sources';
+import { OFFICIAL } from '../../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import {
     getSources,

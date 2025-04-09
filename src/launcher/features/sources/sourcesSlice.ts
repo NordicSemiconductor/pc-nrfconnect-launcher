@@ -11,7 +11,7 @@ import {
     getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
 } from '../../../common/persistedStore';
-import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
+import { Source, SourceName, SourceUrl } from '../../../common/sources';
 import type { RootState } from '../../store';
 
 type Hidden = typeof hidden;
@@ -26,19 +26,19 @@ export const isWarningAboutMissingTokenOnAddSource = (
 ): warning is WarnAboutMissingTokenOnAddSource =>
     warning.isVisible && 'sourceToAdd' in warning;
 
-type WarnAboutMissingTokenOnMigratingSources = {
+type WarnAboutMissingTokenOnStartup = {
     isVisible: true;
     sourcesWithRestrictedAccessLevel: Source[];
 };
-export const isWarningAboutMissingTokenOnMigratingSources = (
+export const isWarningAboutMissingTokenOnStartup = (
     warning: MissingTokenWarning
-): warning is WarnAboutMissingTokenOnMigratingSources =>
+): warning is WarnAboutMissingTokenOnStartup =>
     warning.isVisible && 'sourcesWithRestrictedAccessLevel' in warning;
 
 type MissingTokenWarning =
     | Hidden
     | WarnAboutMissingTokenOnAddSource
-    | WarnAboutMissingTokenOnMigratingSources;
+    | WarnAboutMissingTokenOnStartup;
 
 export type State = {
     sources: Source[];
@@ -129,7 +129,7 @@ const slice = createSlice({
                 sourceToAdd,
             };
         },
-        warnAboutMissingTokenOnMigratingSources(
+        warnAboutMissingTokenOnStartup(
             state,
             { payload: sources }: PayloadAction<Source[]>
         ) {
@@ -160,7 +160,7 @@ export const {
     warnAddLegacySource,
     clearSourceToAdd,
     warnAboutMissingTokenOnAddSource,
-    warnAboutMissingTokenOnMigratingSources,
+    warnAboutMissingTokenOnStartup,
     hideWarningAboutMissingToken,
 } = slice.actions;
 

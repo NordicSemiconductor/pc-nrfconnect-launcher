@@ -12,9 +12,9 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
+import { hasRestrictedAccessLevel } from '../../../common/sources';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { hasRestrictedAccessLevel } from '../sources/sourcesEffects';
 import { getSources } from '../sources/sourcesSlice';
 import {
     getIsRemoveArtifactoryTokenVisible,

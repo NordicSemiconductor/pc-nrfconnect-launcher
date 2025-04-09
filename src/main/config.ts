@@ -7,7 +7,7 @@
 import { app } from 'electron';
 import path from 'path';
 
-import { OFFICIAL, SourceName } from '../ipc/sources';
+import { OFFICIAL, SourceName } from '../common/sources';
 import argv from './argv';
 
 const appsRootDir =

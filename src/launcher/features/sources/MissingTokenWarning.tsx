@@ -11,6 +11,7 @@ import {
     ExternalLink,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { setDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import initialiseLauncherState from '../initialisation/initialiseLauncherState';
 import { setArtifactoryToken } from '../settings/settingsEffects';
@@ -19,7 +20,7 @@ import {
     getMissingTokenWarning,
     hideWarningAboutMissingToken,
     isWarningAboutMissingTokenOnAddSource,
-    isWarningAboutMissingTokenOnMigratingSources,
+    isWarningAboutMissingTokenOnStartup,
 } from './sourcesSlice';
 
 export default () => {
@@ -37,14 +38,7 @@ export default () => {
             return;
         }
 
-        if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
-            dispatch(
-                addSource(missingTokenWarning.sourceToAdd, {
-                    warnOnMissingToken: false,
-                })
-            );
-
-        if (isWarningAboutMissingTokenOnMigratingSources(missingTokenWarning))
+        if (isWarningAboutMissingTokenOnStartup(missingTokenWarning))
             dispatch(initialiseLauncherState());
     };
 
@@ -60,6 +54,13 @@ export default () => {
             return;
         }
 
+        if (isWarningAboutMissingTokenOnAddSource(missingTokenWarning))
+            dispatch(
+                addSource(missingTokenWarning.sourceToAdd, {
+                    warnOnMissingToken: false,
+                })
+            );
+
         hideDialog();
     };
 
@@ -68,7 +69,21 @@ export default () => {
             isVisible={isVisible}
             title="Missing token"
             confirmLabel="Set token"
+            cancelLabel={
+                isWarningAboutMissingTokenOnAddSource(missingTokenWarning)
+                    ? 'Cancel adding source'
+                    : 'Cancel'
+            }
+            optionalLabel={
+                isWarningAboutMissingTokenOnStartup(missingTokenWarning)
+                    ? 'Do not remind me again'
+                    : undefined
+            }
             onConfirm={storeTokenAndAddSource}
+            onOptional={() => {
+                setDoNotRemindOnMissingToken();
+                hideDialog();
+            }}
             onCancel={() => hideDialog()}
         >
             {isWarningAboutMissingTokenOnAddSource(missingTokenWarning) && (
@@ -76,17 +91,16 @@ export default () => {
                     For accessing the source at the URL{' '}
                     <code>{missingTokenWarning.sourceToAdd}</code> an identity
                     token is required but you have not set one yet. Without
-                    providing a token, using the source will fail.
+                    providing a token, it is not possible to add this source.
                 </p>
             )}
-            {isWarningAboutMissingTokenOnMigratingSources(
-                missingTokenWarning
-            ) && (
+            {isWarningAboutMissingTokenOnStartup(missingTokenWarning) && (
                 <>
                     <p>
                         For accessing the following sources, an identity token
-                        is now required. Without providing a token, using the
-                        source will fail.
+                        is required. Without providing a token, the source will
+                        not be updated, and trying to install apps from them
+                        will fail.
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(

@@ -13,6 +13,11 @@ import {
     setLastUpdateCheckDate,
 } from '../../../common/persistedStore';
 import {
+    allStandardSourceNames,
+    OFFICIAL,
+    SourceName,
+} from '../../../common/sources';
+import {
     App,
     AppSpec,
     DownloadableApp,
@@ -25,11 +30,6 @@ import {
     LocalApp,
 } from '../../../ipc/apps';
 import { Progress } from '../../../ipc/downloadProgress';
-import {
-    allStandardSourceNames,
-    OFFICIAL,
-    SourceName,
-} from '../../../ipc/sources';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 

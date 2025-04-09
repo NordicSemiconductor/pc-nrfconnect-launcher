@@ -10,7 +10,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import parseArgs from 'minimist';
 
-import { OFFICIAL } from '../ipc/sources';
+import { OFFICIAL } from '../common/sources';
 
 const helpText = `
 Supported command line arguments:
