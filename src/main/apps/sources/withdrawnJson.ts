@@ -11,7 +11,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import path from 'path';
 
-import { Source } from '../../../ipc/sources';
+import { Source } from '../../../common/sources';
 import { getAppsRootDir } from '../../config';
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 

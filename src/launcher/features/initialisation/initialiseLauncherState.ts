@@ -11,8 +11,11 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
-import { isDeprecatedSource } from '../../../common/legacySource';
 import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
+import {
+    hasRestrictedAccessLevel,
+    isDeprecatedSource,
+} from '../../../common/sources';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -28,10 +31,7 @@ import {
     getShouldCheckForUpdatesAtStartup,
     setArtifactoryTokenInformation,
 } from '../settings/settingsSlice';
-import {
-    handleSourcesWithErrors,
-    hasRestrictedAccessLevel,
-} from '../sources/sourcesEffects';
+import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
     getDoNotRemindDeprecatedSources,
     getSources,

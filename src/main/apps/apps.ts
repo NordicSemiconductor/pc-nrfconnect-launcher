@@ -8,6 +8,7 @@ import { AppInfo } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { omit } from 'lodash';
 import path, { basename } from 'path';
 
+import { Source } from '../../common/sources';
 import {
     AppWithError,
     DownloadableApp,
@@ -17,7 +18,6 @@ import {
     UninstalledDownloadableApp,
 } from '../../ipc/apps';
 import { inRenderer } from '../../ipc/showErrorDialog';
-import { Source } from '../../ipc/sources';
 import { getAppsLocalDir } from '../config';
 import describeError from '../describeError';
 import { listDirectories } from '../fileUtil';

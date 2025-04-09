@@ -11,7 +11,7 @@ import {
     getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
 } from '../../../common/persistedStore';
-import { Source, SourceName, SourceUrl } from '../../../ipc/sources';
+import { Source, SourceName, SourceUrl } from '../../../common/sources';
 import type { RootState } from '../../store';
 
 type Hidden = typeof hidden;

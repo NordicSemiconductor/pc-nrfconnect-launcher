@@ -11,8 +11,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 
+import { OFFICIAL } from '../../../../common/sources';
 import { isInstalled, isUpdatable, isWithdrawn } from '../../../../ipc/apps';
-import { OFFICIAL } from '../../../../ipc/sources';
 import formatPublishTimestamp from '../../../util/formatTimestamp';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';

@@ -6,12 +6,12 @@
 
 import { lowerCase, startCase } from 'lodash';
 
+import { LOCAL, OFFICIAL } from '../common/sources';
 import {
     InstalledDownloadableApp,
     LocalApp,
     UninstalledDownloadableApp,
 } from '../ipc/apps';
-import { LOCAL, OFFICIAL } from '../ipc/sources';
 
 const path = (appName: string) => `/path/to/${appName}`;
 // AppIcon.tsx rebuilds the path with path.sep

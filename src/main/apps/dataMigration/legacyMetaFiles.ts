@@ -11,7 +11,7 @@ import {
 import fs from 'fs-extra';
 import path from 'path';
 
-import { Source } from '../../../ipc/sources';
+import { Source } from '../../../common/sources';
 import { getAppsRootDir, getNodeModulesDir } from '../../config';
 import { readFile, readJsonFile } from '../../fileUtil';
 import { installedAppPath, writeAppInfo } from '../app';

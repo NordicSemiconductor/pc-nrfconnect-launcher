@@ -23,13 +23,13 @@ import {
     getLastWindowState,
     setLastWindowState,
 } from '../common/persistedStore';
+import { LOCAL } from '../common/sources';
 import {
     AppSpec,
     isInstalled,
     isQuickStartApp,
     LaunchableApp,
 } from '../ipc/apps';
-import { LOCAL } from '../ipc/sources';
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import argv, { appArguments, mergeAppArguments } from './argv';
 import { createWindow } from './browser';

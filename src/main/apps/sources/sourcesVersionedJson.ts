@@ -9,7 +9,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { z } from 'zod';
 
-import { Source } from '../../../ipc/sources';
+import { Source } from '../../../common/sources';
 import { getAppsExternalDir } from '../../config';
 import describeError from '../../describeError';
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';

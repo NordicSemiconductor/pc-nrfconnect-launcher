@@ -7,8 +7,8 @@
 import { AppInfo } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import path from 'path';
 
+import type { SourceName } from '../../common/sources';
 import type { AppSpec } from '../../ipc/apps';
-import type { SourceName } from '../../ipc/sources';
 import { getAppsRootDir } from '../config';
 import describeError from '../describeError';
 import { readFile } from '../fileUtil';

@@ -8,25 +8,9 @@ import {
     handle,
     invoke,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
-import {
-    allStandardSourceNames,
-    LOCAL,
-    OFFICIAL,
-    Source,
-    SourceName,
-    SourceUrl,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 
+import type { Source, SourceName, SourceUrl } from '../common/sources';
 import type { DownloadableApp } from './apps';
-
-export {
-    allStandardSourceNames,
-    LOCAL,
-    OFFICIAL,
-    type Source,
-    type SourceName,
-    type SourceUrl,
-};
 
 const channel = {
     get: 'sources:get',

@@ -9,15 +9,15 @@ import { AnyAction } from 'redux';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isLegacyUrl } from '../../../common/legacySource';
-import { SourceWithError } from '../../../ipc/apps';
 import {
-    AddSourceError,
-    inMain as sources,
+    hasRestrictedAccessLevel,
     OFFICIAL,
     Source,
     SourceName,
     SourceUrl,
-} from '../../../ipc/sources';
+} from '../../../common/sources';
+import { SourceWithError } from '../../../ipc/apps';
+import { AddSourceError, inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';
 import { hideSource, showSource } from '../filter/filterSlice';
@@ -49,20 +49,6 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
             );
     }
 };
-
-export const hasRestrictedAccessLevel = (url: SourceUrl) =>
-    url.startsWith(
-        'https://files.nordicsemi.com/artifactory/swtools/internal'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/artifactory/swtools/external-confidential'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential'
-    );
 
 export const addSource =
     (

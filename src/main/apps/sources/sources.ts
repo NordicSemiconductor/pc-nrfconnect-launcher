@@ -7,8 +7,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 
+import { OFFICIAL, Source, SourceName } from '../../../common/sources';
 import { SourceWithError } from '../../../ipc/apps';
-import { OFFICIAL, Source, SourceName } from '../../../ipc/sources';
 import {
     getAppsRootDir,
     getBundledResourcesDir,

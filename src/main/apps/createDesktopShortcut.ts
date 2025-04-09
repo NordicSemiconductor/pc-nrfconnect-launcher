@@ -9,9 +9,9 @@ import Mustache from 'mustache';
 import path from 'path';
 import { uuid } from 'short-uuid';
 
+import { OFFICIAL } from '../../common/sources';
 import { isDownloadable, LaunchableApp } from '../../ipc/apps';
 import { inRenderer } from '../../ipc/showErrorDialog';
-import { OFFICIAL } from '../../ipc/sources';
 import argv from '../argv';
 import { chmod, chmodDir, copy, readFile, untar, writeFile } from '../fileUtil';
 import { getShortcutIcon } from '../icons';

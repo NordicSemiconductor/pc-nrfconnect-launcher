@@ -11,6 +11,7 @@ import {
 import fs from 'fs-extra';
 import path, { basename } from 'path';
 
+import { LOCAL, Source, SourceName } from '../../common/sources';
 import {
     AppSpec,
     DownloadableApp,
@@ -18,7 +19,6 @@ import {
     LocalApp,
     WithdrawnApp,
 } from '../../ipc/apps';
-import { LOCAL, Source, SourceName } from '../../ipc/sources';
 import { getAppsLocalDir, getAppsRootDir, getNodeModulesDir } from '../config';
 import { ifExists, readFile, readJsonFile, writeJsonFile } from '../fileUtil';
 import { appResourceProperties } from './appResource';

@@ -11,7 +11,7 @@ import {
 import fs from 'fs-extra';
 import path from 'path';
 
-import { Source, SourceUrl } from '../../../ipc/sources';
+import { Source, SourceUrl } from '../../../common/sources';
 import { getAppsRootDir } from '../../config';
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 import { downloadToJson } from '../../net';
