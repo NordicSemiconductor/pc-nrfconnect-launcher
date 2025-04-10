@@ -35,7 +35,7 @@ Once set, your authentication information will be displayed in the **Authenticat
 - Expiration date
 
 !!! info "Tip"
-      Make sure that you also have an [app source](./overview_cfd.md#app-sources) added to see the restricted app versions.
+      Make sure that you also have an [app source](./overview_cfd.md#app-sources) added to see the restricted app versions and [filter them](overview_cfd.md#filter).
 
 ## Replacing a token
 

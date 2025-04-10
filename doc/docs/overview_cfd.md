@@ -12,7 +12,7 @@ The **Apps** tab lists all available applications and lets you manage their inst
 
 ### Filter
 
-You can use the **Filter** menu to list applications by their sources and state.
+You can use the **Filter** menu to list applications by their [sources](#app-sources) and state.
 
 ### Search
 
