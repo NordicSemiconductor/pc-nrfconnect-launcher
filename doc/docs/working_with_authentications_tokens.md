@@ -1,28 +1,34 @@
-# Working with authentication tokens
+# Working with identity tokens
 
-Authentication tokens in nRF Connect for Desktop are used to access non-external sources from Nordic Semiconductor. These tokens are required for accessing certain proprietary or early-access applications that are not publicly available.
-
-The token is an identity token that verifies your access rights to restricted Nordic Semiconductor resources. Without a valid token, you will not be able to add non-external sources or install applications from them.
+Identity tokens in nRF Connect for Desktop are used to verify your access rights to restricted Nordic Semiconductor resources. These tokens are required for accessing certain proprietary or early-access applications that are not publicly available.
 
 ## Generating a new token
 
 Complete the following steps:
 
-1. Go to [https://files.nordicsemi.com/ui/user_profile](https://files.nordicsemi.com/ui/user_profile)
-2. Log in to the account set up by Nordic Semiconductor.<br/>
+1. Log in to [https://files.nordicsemi.com/](https://files.nordicsemi.com/) using the account set up by Nordic Semiconductor.<br/>
    If you are a company employee, you can log in directly. Otherwise, you need to ask your Nordic contact for an account, for example on [DevZone](https://devzone.nordicsemi.com/).
-3. Generate an identity token.
+2. In **User Menu**, click **Edit Profile**.<br/>
+   The **User Profile** page opens.
+
+    ![Edit Profile button](./screenshots/jfrog_user_profile.png "Edit Profile button")
+
+3. Click **Generate an Identity Token**.
+4. Optionally, add description to identify the token later on.
+5. Copy the token from the **Reference Token** field.<br/>
+   This token will be used in the step 3 of the [Setting a token](#setting-a-token) procedure below.
 
 ## Setting a token
 
 Complete the following steps:
 
-1. Go to the **Settings** tab in nRF Connect for Desktop.
+1. In nRF Connect for Desktop, go to the **Settings** tab.
 2. In the **Authentication** section, click **Set token**.
-3. Paste your token in the dialog box.
+3. Paste your token in the dialog box.<br/>
+   This is the token you got in the [Generating a new token](#generating-a-new-token) procedure.
 4. Click **Set**.
 
-Once set, your token information will be displayed, including:
+Once set, your authentication information will be displayed in the **Authentication** section:
 
 - Token ID
 - Description
@@ -53,10 +59,10 @@ Complete the following steps:
 
 When you remove an identity token:
 
-- You will no longer be able to add non-external sources from Nordic Semiconductor
-- If you have existing non-external sources added, updating these sources will lead to errors
-- You will be unable to install apps from non-external sources
-- You will need to set a new token again to restore access to these features
+- You will no longer be able to add non-external sources from Nordic Semiconductor.
+- If you have existing non-external sources added, updating these sources will lead to errors.
+- You will be unable to install apps from non-external sources.
+- You will need to set a new token again to restore access to these features.
 
 ## Troubleshooting
 
