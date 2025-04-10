@@ -30,9 +30,7 @@ Complete the following steps:
 
 Once set, your authentication information will be displayed in the **Authentication** section:
 
-- Token ID
-- Description
-- Expiration date
+![Token added in the Authentication section](./screenshots/authentication_token.png "Token added in the Authentication section")
 
 !!! info "Tip"
       Make sure that you also have an [app source](./overview_cfd.md#app-sources) added to see the restricted app versions and [filter them](overview_cfd.md#filter).
