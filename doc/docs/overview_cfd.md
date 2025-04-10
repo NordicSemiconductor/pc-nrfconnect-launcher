@@ -57,6 +57,8 @@ Here you can check for updates to both the launcher and the nRF Connect for Desk
 Use the **Add source** button to provide URL to a custom list of application.
 This can be used for example to share early versions of applications under development.
 
+For some of these sources, you might need to request an identity token and add it in [Authentication](#authentication).
+
 ### Authentication
 
 Here you can manage your identity token, which allows you to access non-external sources from Nordic Semiconductor. The token is required for accessing certain proprietary or early-access applications.

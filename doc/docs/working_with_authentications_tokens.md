@@ -1,12 +1,12 @@
 # Working with identity tokens
 
-Identity tokens in nRF Connect for Desktop are used to verify your access rights to restricted Nordic Semiconductor resources. These tokens are required for accessing certain proprietary or early-access applications that are not publicly available.
+Identity tokens in nRF Connect for Desktop are used to verify your access rights to restricted Nordic Semiconductor [app sources](overview_cfd.md#app-sources). These tokens are required for accessing certain proprietary or early-access applications that are not publicly available.
 
 ## Generating a new token
 
 Complete the following steps:
 
-1. Log in to [https://files.nordicsemi.com/](https://files.nordicsemi.com/) using the account set up by Nordic Semiconductor.<br/>
+1. Log in to the [Nordic Semiconductor JFrog portal](https://files.nordicsemi.com/) using the account set up by Nordic Semiconductor.<br/>
    If you are a company employee, you can log in directly. Otherwise, you need to ask your Nordic contact for an account, for example on [DevZone](https://devzone.nordicsemi.com/).
 2. In **User Menu**, click **Edit Profile**.<br/>
    The **User Profile** page opens.
@@ -33,6 +33,9 @@ Once set, your authentication information will be displayed in the **Authenticat
 - Token ID
 - Description
 - Expiration date
+
+!!! info "Tip"
+      Make sure that you also have an [app source](./overview_cfd.md#app-sources) added to see the restricted app versions.
 
 ## Replacing a token
 
