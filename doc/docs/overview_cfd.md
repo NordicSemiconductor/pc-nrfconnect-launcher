@@ -61,13 +61,13 @@ For some of these sources, you might need to request an identity token and add i
 
 ### Authentication
 
-Here you can manage your identity token, which allows you to access non-external sources from Nordic Semiconductor. The token is required for accessing certain proprietary or early-access applications.
+Here you can manage your identity token, which allows you to access restricted app sources from Nordic Semiconductor. The token is required for accessing certain proprietary or early-access applications.
 
 For detailed information about working with authentication tokens, see [Working with authentication tokens](working_with_authentications_tokens.md).
 
 ### Mainland China app server
 
-This section allows you to enable the use of a dedicated server for better connectivity in the People's Republic of China. When enabled, the launcher will use https://files.nordicsemi.cn/ to download publicly available apps, which provides improved connection speeds within mainland China.
+This section allows you to enable the use of a dedicated server for better connectivity in the People's Republic of China. When enabled, the launcher will use https://files.nordicsemi.cn to download publicly available apps, which provides improved connection speeds within mainland China.
 
 ### Usage statistics
 
