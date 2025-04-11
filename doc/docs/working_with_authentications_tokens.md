@@ -61,12 +61,12 @@ Complete the following steps:
 When you remove an identity token:
 
 - You will no longer be able to add restricted app sources from Nordic Semiconductor.
-- If you have existing non-external sources added, updating these sources will lead to errors.
+- If you have existing restricted app sources added, updating these sources will lead to errors.
 - You will be unable to install apps from restricted app sources.
 
 ## Troubleshooting
 
-If you encounter errors when accessing non-external sources, check the following points:
+If you encounter errors when accessing restricted app sources, check the following points:
 
 * Token is valid and has not expired.
 * You have an active internet connection.
