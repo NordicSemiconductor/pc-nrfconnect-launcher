@@ -146,7 +146,7 @@ exports[`SettingsView should render check for updates completed, with everything
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -154,10 +154,9 @@ exports[`SettingsView should render check for updates completed, with everything
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -194,7 +193,7 @@ exports[`SettingsView should render check for updates completed, with everything
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -485,7 +484,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -493,10 +492,9 @@ exports[`SettingsView should render check for updates completed, with updates av
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -533,7 +531,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -877,7 +875,7 @@ exports[`SettingsView should render the token information 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1118,7 +1116,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1126,10 +1124,9 @@ exports[`SettingsView should render when checking for updates 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -1166,7 +1163,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1406,7 +1403,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1414,10 +1411,9 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -1454,7 +1450,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1694,7 +1690,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1702,10 +1698,9 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -1742,7 +1737,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1986,7 +1981,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                 <div
                   class="small text-muted col"
                 >
-                  To access non-external sources from Nordic Semiconductor, get an identity token from
+                  To access restricted app sources from Nordic Semiconductor, get an identity token from
                    
                   <a
                     class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1994,10 +1989,9 @@ exports[`SettingsView should render with last update check date 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    https://files.nordicsemi.com/ui/user_profile
+                    Nordic Semiconductor JFrog portal
                   </a>
-                   
-                  and set it here.
+                  .
                 </div>
               </div>
             </div>
@@ -2034,7 +2028,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the Peoples Republic of China.
+                , which has a better connection in the People‘s Republic of China.
               </p>
               <div
                 class="toggle"
