@@ -60,10 +60,15 @@ export default () => {
             <Row>
                 {token == null ? (
                     <Col className="small text-muted">
-                        To access non-external sources from Nordic
-                        Semiconductor, get an identity token from{' '}
-                        <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />{' '}
-                        and set it here.
+                         To access restricted app sources from Nordic
+                         Semiconductor, get an identity token from{' '}
+                         <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" label="Nordic Semiconductor JFrog portal" />.
+                        {/* if we have the docs published: */}
+                        {/*To access restricted app sources from Nordic*/}
+                        {/*Semiconductor, get an identity token from the{' '}*/}
+                        {/*<ExternalLink href="https://files.nordicsemi.com/ui/user_profile" label="Nordic Semiconductor JFrog portal" />*/}
+                        {/*. Read <ExternalLink href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html" label="Working with identity tokens"/> for*/}
+                        {/*detailed steps.*/}
                     </Col>
                 ) : (
                     <>

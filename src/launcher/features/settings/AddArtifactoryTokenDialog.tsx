@@ -51,10 +51,11 @@ export default () => {
             onConfirm={storeToken}
             onCancel={hideDialog}
         >
+            {/* Two lines can be replaced with the link to the doc if/when we publish the doc */}
             <p>
                 Enter an identity token to use for retrieving apps. To get a
                 token, go to{' '}
-                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
+                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" label="Nordic Semiconductor JFrog portal" />
                 , log in, and generate an identity token there.
             </p>
             <p>

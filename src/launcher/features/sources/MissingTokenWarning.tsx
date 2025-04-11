@@ -98,9 +98,7 @@ export default () => {
                 <>
                     <p>
                         For accessing the following sources, an identity token
-                        is required. Without providing a token, the source will
-                        not be updated, and trying to install apps from them
-                        will fail.
+                        is required:
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
@@ -109,11 +107,16 @@ export default () => {
                             )
                         )}
                     </ul>
+                    <p>
+                        Without providing a token, these sources will not be
+                        updated, and trying to install apps from them will fail.
+                    </p>
                 </>
             )}
+            {/* Next 2 paragraphs can be replaced with the link to the docs if we publish. */}
             <p>
                 To get a token, go to{' '}
-                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
+                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" label="Nordic Semiconductor JFrog portal" />
                 , log in, and generate an identity token there.
             </p>
             <p>
@@ -129,7 +132,7 @@ export default () => {
             </Form>
             <p>
                 You can also later view, remove, or set the token in the
-                settings.
+                Settings tab.
             </p>
         </ConfirmationDialog>
     );
