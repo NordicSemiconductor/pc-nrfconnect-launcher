@@ -36,8 +36,9 @@ export default () => {
                 longer supported.
             </p>
             <p>
-                For the URL you've provided {/* <code>{sourceToAdd}</code> */},
-                the app will use <code>{correctedUrl}</code> as the source.
+                For the URL you&apos;ve provided{' '}
+                {/* <code>{sourceToAdd}</code> */}, the app will use{' '}
+                <code>{correctedUrl}</code> as the source.
             </p>
         </ConfirmationDialog>
     );

@@ -37,7 +37,7 @@ export default () => {
             <p className="small text-muted">
                 For all publicly available apps, use the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" />, which has
-                a better connection in the People's Republic of China.
+                a better connection in the People&lsquo;s Republic of China.
             </p>
             <Toggle
                 label="Use Mainland China app server"

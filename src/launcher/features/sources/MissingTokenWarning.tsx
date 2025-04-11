@@ -116,7 +116,10 @@ export default () => {
             {/* Next 2 paragraphs can be replaced with the link to the docs if we publish. */}
             <p>
                 To get a token, go to{' '}
-                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" label="Nordic Semiconductor JFrog portal" />
+                <ExternalLink
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    label="Nordic Semiconductor JFrog portal"
+                />
                 , log in, and generate an identity token there.
             </p>
             <p>
