@@ -109,22 +109,17 @@ export default () => {
                     </ul>
                     <p>
                         Without providing a token, these sources will not be
-                        updated, and trying to install apps from them will fail.
+                        updated and trying to install apps from them will fail.
                     </p>
                 </>
             )}
-            {/* Next 2 paragraphs can be replaced with the link to the docs if we publish. */}
             <p>
-                To get a token, go to{' '}
+                Generating a token is described in{' '}
                 <ExternalLink
-                    href="https://files.nordicsemi.com/ui/user_profile"
-                    label="Nordic Semiconductor JFrog portal"
+                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
+                    label="the nRF Connect for Desktop documentation"
                 />
-                , log in, and generate an identity token there.
-            </p>
-            <p>
-                As Nordic employee, you are able to log in. If not a Nordic
-                employee, ask your Nordic contact for an account.
+                .
             </p>
             <p className="tw-m-0">Paste the token here:</p>
             <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">

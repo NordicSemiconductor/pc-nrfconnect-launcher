@@ -51,19 +51,14 @@ export default () => {
             onConfirm={storeToken}
             onCancel={hideDialog}
         >
-            {/* Two lines can be replaced with the link to the doc if/when we publish the doc */}
             <p>
-                Enter an identity token to use for retrieving apps. To get a
-                token, go to{' '}
+                Enter an identity token to use for retrieving apps. Generating a
+                token is described in{' '}
                 <ExternalLink
-                    href="https://files.nordicsemi.com/ui/user_profile"
-                    label="Nordic Semiconductor JFrog portal"
+                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
+                    label="the nRF Connect for Desktop documentation"
                 />
-                , log in, and generate an identity token there.
-            </p>
-            <p>
-                As Nordic employee, you are able to log in. If not a Nordic
-                employee, ask your Nordic contact for an account.
+                .
             </p>
             {hasToken && (
                 <p>The current token will be forgotten by this app.</p>
