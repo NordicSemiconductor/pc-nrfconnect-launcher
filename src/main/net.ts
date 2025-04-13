@@ -32,8 +32,13 @@ const reportInstallProgress = (
     });
 };
 
+const isPublicUrl = (url: string) =>
+    url.startsWith(
+        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
+    );
+
 const determineBearer = (url: string) =>
-    url.startsWith('https://files.nordicsemi.com/')
+    url.startsWith('https://files.nordicsemi.com/') && !isPublicUrl(url)
         ? retrieveToken()
         : undefined;
 
@@ -59,10 +64,7 @@ export const determineEffectiveUrl = (url: string) => {
         effectiveUrl = `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
     }
 
-    const isPublicUrl = effectiveUrl.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
-    );
-    if (isPublicUrl && getUseChineseAppServer()) {
+    if (isPublicUrl(effectiveUrl) && getUseChineseAppServer()) {
         effectiveUrl = effectiveUrl.replace(
             '//files.nordicsemi.com/',
             '//files.nordicsemi.cn/'
