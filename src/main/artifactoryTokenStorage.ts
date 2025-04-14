@@ -11,15 +11,22 @@ import {
     setEncryptedArtifactoryToken,
 } from '../common/persistedStore';
 
-export const retrieveToken = () => {
+export type RetrieveTokenResult =
+    | { type: 'No token set' }
+    | { type: 'Encryption not available' }
+    | { type: 'Success'; token: string };
+
+export const retrieveToken = (): RetrieveTokenResult => {
     const encryptedToken = getEncryptedArtifactoryToken();
-    if (encryptedToken == null) return;
+    if (encryptedToken == null) return { type: 'No token set' };
 
-    if (!safeStorage.isEncryptionAvailable()) {
-        throw new Error('Encryption not available');
-    }
+    if (!safeStorage.isEncryptionAvailable())
+        return { type: 'Encryption not available' };
 
-    return safeStorage.decryptString(Buffer.from(encryptedToken, 'base64'));
+    return {
+        type: 'Success',
+        token: safeStorage.decryptString(Buffer.from(encryptedToken, 'base64')),
+    };
 };
 
 export const storeToken = (token: string) => {

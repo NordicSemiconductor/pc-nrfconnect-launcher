@@ -37,10 +37,13 @@ const isPublicUrl = (url: string) =>
         'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
     );
 
-const determineBearer = (url: string) =>
-    url.startsWith('https://files.nordicsemi.com/') && !isPublicUrl(url)
-        ? retrieveToken()
-        : undefined;
+const determineBearer = (url: string) => {
+    if (!url.startsWith('https://files.nordicsemi.com/') || isPublicUrl(url))
+        return;
+
+    const tokenResult = retrieveToken();
+    return tokenResult.type === 'Success' ? tokenResult.token : undefined;
+};
 
 export type NetError = Error & { statusCode?: number };
 

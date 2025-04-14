@@ -78,8 +78,22 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     if (!shouldCheckForUpdatesAtStartup) return;
 
     try {
-        const token = await artifactoryToken.getTokenInformation();
-        if (token != null) dispatch(setArtifactoryTokenInformation(token));
+        const informationResult = await artifactoryToken.getTokenInformation();
+
+        if (informationResult.type === 'Success')
+            dispatch(
+                setArtifactoryTokenInformation(informationResult.information)
+            );
+
+        if (informationResult.type === 'Encryption not available') {
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    'You must grant nRF Connect for Desktop permission to access your Keychain. ' +
+                        'Otherwise restricted sources will not be updated and ' +
+                        'trying to install apps from them will fail.'
+                )
+            );
+        }
     } catch (error) {
         dispatch(
             ErrorDialogActions.showDialog(

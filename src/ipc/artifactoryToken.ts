@@ -22,7 +22,10 @@ export type TokenInformation = {
 };
 
 // GetInformation
-type GetTokenInformation = () => Promise<TokenInformation> | undefined;
+type GetTokenInformation = () =>
+    | { type: 'No token set' }
+    | { type: 'Encryption not available' }
+    | { type: 'Success'; information: TokenInformation };
 
 const getTokenInformation = invoke<GetTokenInformation>(channel.getInformation);
 const registerGetTokenInformation = handle<GetTokenInformation>(
