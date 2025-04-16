@@ -52,13 +52,18 @@ export default () => {
             onCancel={hideDialog}
         >
             <p>
-                Enter an identity token to use for retrieving apps. Generating a
-                token is described in{' '}
+                To access restricted app sources from Nordic Semiconductor, get
+                an identity token from the{' '}
                 <ExternalLink
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    label="the nRF Connect for Desktop documentation"
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    label="Nordic Semiconductor JFrog portal"
                 />
-                .
+                . Read{' '}
+                <ExternalLink
+                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html"
+                    label="Working with identity tokens"
+                />{' '}
+                for detailed steps.
             </p>
             {hasToken && (
                 <p>The current token will be forgotten by this app.</p>

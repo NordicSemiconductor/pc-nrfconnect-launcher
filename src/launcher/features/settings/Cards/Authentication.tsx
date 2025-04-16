@@ -65,7 +65,7 @@ export default () => {
                         token is described in{' '}
                         <ExternalLink
                             href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                            label="the nRF Connect for Desktop documentation"
+                            label="Working with identity tokens"
                         />
                         .
                     </Col>

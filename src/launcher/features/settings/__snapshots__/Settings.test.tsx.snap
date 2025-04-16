@@ -154,7 +154,7 @@ exports[`SettingsView should render check for updates completed, with everything
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
@@ -492,7 +492,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
@@ -1124,7 +1124,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
@@ -1411,7 +1411,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
@@ -1698,7 +1698,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
@@ -1989,7 +1989,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    the nRF Connect for Desktop documentation
+                    Working with identity tokens
                   </a>
                   .
                 </div>
