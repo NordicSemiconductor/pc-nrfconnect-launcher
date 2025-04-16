@@ -109,7 +109,7 @@ export default () => {
                     </ul>
                     <p>
                         Without providing a token, these sources will not be
-                        updated and trying to install apps from them will fail.
+                        updated, and trying to install apps from them will fail.
                     </p>
                 </>
             )}

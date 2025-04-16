@@ -74,8 +74,8 @@ export default () => {
                     </ul>
                     <p>
                         Until you set an identity token again, these sources
-                        will not be updated and trying to install apps from them
-                        will fail.
+                        will not be updated, and trying to install apps from
+                        them will fail.
                     </p>
                 </>
             )}
