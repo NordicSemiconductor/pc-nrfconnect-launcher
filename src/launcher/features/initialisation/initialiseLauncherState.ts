@@ -88,9 +88,12 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
         if (informationResult.type === 'Encryption not available') {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    'You must grant nRF Connect for Desktop permission to access your Keychain. ' +
-                        'Otherwise restricted sources will not be updated and ' +
-                        'trying to install apps from them will fail.'
+                    'nRF Connect for Desktop needs permission to access your Keychain. ' +
+                        "Without this permission, restricted sources won't be updated, " +
+                        'and attempts to install apps from them will fail.' +
+                        '\n\n' +
+                        'To change this, you need to restart nRF Connect for Desktop ' +
+                        'and on start allow access to your Keychain.'
                 )
             );
         }
