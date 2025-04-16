@@ -30,6 +30,8 @@ export default () => {
     const hideDialog = () => dispatch(hideAddArtifactoryToken());
 
     const storeToken = async () => {
+        if (enteredToken.trim() === '') return;
+
         setEnteredToken('');
         hideDialog();
 
