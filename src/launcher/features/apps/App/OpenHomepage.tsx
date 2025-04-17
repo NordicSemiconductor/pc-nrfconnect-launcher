@@ -6,7 +6,7 @@
 
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { openUrl } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { openWindow } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { isDownloadable } from '../../../../ipc/apps';
 import { DisplayedApp } from '../appsSlice';
@@ -18,7 +18,7 @@ const OpenHomepage: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     return (
         <Dropdown.Item
             title="Go to app website"
-            onClick={() => openUrl(homepage)}
+            onClick={() => openWindow.openUrl(homepage)}
         >
             More info
         </Dropdown.Item>

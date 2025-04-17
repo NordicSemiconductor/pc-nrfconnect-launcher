@@ -9,7 +9,7 @@ import {
     DialogButton,
     ExternalLink,
     GenericDialog,
-    openUrl,
+    openWindow,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -42,7 +42,7 @@ export default () => {
                     <DialogButton
                         variant="primary"
                         onClick={() => {
-                            openUrl(
+                            openWindow.openUrl(
                                 'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/latest'
                             );
                             dispatch(download());
