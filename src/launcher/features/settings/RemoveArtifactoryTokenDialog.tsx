@@ -58,13 +58,13 @@ export default () => {
         >
             <p>
                 After removing the identity token, you will no longer be able to
-                add non-external sources from Nordic Semiconductor, until you
-                set a token again.
+                add restricted sources from Nordic Semiconductor, until you set
+                a token again.
             </p>
             {nonPublicSources.length > 0 && (
                 <>
                     <p>
-                        You currently have the following non-external sources
+                        You currently have the following restricted sources
                         added:
                     </p>
                     <ul>
@@ -73,9 +73,9 @@ export default () => {
                         ))}
                     </ul>
                     <p>
-                        Until you set an identity token again, updating these
-                        sources will lead to errors and you will be unable to
-                        install apps from them.
+                        Until you set an identity token again, these sources
+                        will not be updated, and trying to install apps from
+                        them will fail.
                     </p>
                 </>
             )}

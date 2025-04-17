@@ -113,18 +113,18 @@ export default () => {
                     </p>
                 </>
             )}
-            {/* Next 2 paragraphs can be replaced with the link to the docs if we publish. */}
             <p>
-                To get a token, go to{' '}
+                Get an identity token from the{' '}
                 <ExternalLink
                     href="https://files.nordicsemi.com/ui/user_profile"
                     label="Nordic Semiconductor JFrog portal"
                 />
-                , log in, and generate an identity token there.
-            </p>
-            <p>
-                As Nordic employee, you are able to log in. If not a Nordic
-                employee, ask your Nordic contact for an account.
+                . Read{' '}
+                <ExternalLink
+                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
+                    label="Working with identity tokens"
+                />{' '}
+                for detailed steps.
             </p>
             <p className="tw-m-0">Paste the token here:</p>
             <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">
