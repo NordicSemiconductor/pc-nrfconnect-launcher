@@ -48,8 +48,6 @@ export const createWindow = (
     args = appArguments()
 ) => {
     const mergedOptions: BrowserWindowOptions = {
-        minWidth: 308,
-        minHeight: 499,
         show: false,
         autoHideMenuBar: true,
         webPreferences: {
