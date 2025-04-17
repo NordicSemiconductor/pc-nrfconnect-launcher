@@ -7,7 +7,7 @@
 import {
     appDetails,
     launcherConfig,
-    openWindow,
+    open,
     preventSleep,
     safeStorage,
     serialPort,
@@ -45,6 +45,7 @@ import { getAllSources } from './apps/sources/sources';
 import argv from './argv';
 import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
 import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
+import { openFile, openFileLocation, openUrl } from './open';
 import { callRegisteredCallback } from './proxyLogins';
 import {
     closeSerialPort,
@@ -109,8 +110,11 @@ export default () => {
     launcherUpdate.forRenderer.registerStartUpdate(startUpdate);
     launcherUpdate.forRenderer.registerCancelUpdate(cancelUpdate);
 
-    openWindow.forRenderer.registerOpenApp(openApp);
-    openWindow.forRenderer.registerOpenLauncher(openLauncherWindow);
+    open.forRenderer.registerOpenApp(openApp);
+    open.forRenderer.registerOpenLauncher(openLauncherWindow);
+    open.forRenderer.registerOpenFile(openFile);
+    open.forRenderer.registerOpenFileLocation(openFileLocation);
+    open.forRenderer.registerOpenUrl(openUrl);
 
     apps.forRenderer.registerDownloadLatestAppInfos(downloadLatestAppInfos);
     apps.forRenderer.registerGetLocalApps(getLocalApps);
