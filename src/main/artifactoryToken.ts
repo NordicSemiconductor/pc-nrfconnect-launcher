@@ -9,11 +9,14 @@ import type { TokenInformation } from '../ipc/artifactoryToken';
 import { retrieveToken, storeToken } from './artifactoryTokenStorage';
 import { getArtifactoryTokenInformation } from './net';
 
-export const getTokenInformation = () => {
-    const token = retrieveToken();
-    if (token == null) return;
+export const getTokenInformation = async () => {
+    const tokenResult = retrieveToken();
+    if (tokenResult.type !== 'Success') return tokenResult;
 
-    return getArtifactoryTokenInformation(token);
+    return {
+        type: 'Success',
+        information: await getArtifactoryTokenInformation(tokenResult.token),
+    } as const;
 };
 
 export const setToken = async (token: string): Promise<TokenInformation> => {

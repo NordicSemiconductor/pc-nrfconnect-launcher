@@ -105,7 +105,7 @@ export const downloadAllSources = async () => {
     const successful: Source[] = [];
     const erroneos: SourceWithError[] = [];
 
-    const hasToken = retrieveToken() != null;
+    const hasToken = retrieveToken().type === 'Success';
 
     await Promise.allSettled(
         sources.map(async source => {
