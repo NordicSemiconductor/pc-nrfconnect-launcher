@@ -23,7 +23,7 @@ export const openFile = (filePath: string) => {
     if (os.type() === 'Darwin') {
         childProcess.execSync(`open ${escapedPath}`);
     } else {
-        shell.openPath(escapedPath);
+        shell.openPath(filePath);
     }
 };
 
