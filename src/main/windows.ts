@@ -58,6 +58,8 @@ const createLauncherWindow = () => {
         icon: getNrfConnectForDesktopIcon(),
         width: 760,
         height: 600,
+        minHeight: 500,
+        minWidth: 600,
         center: true,
         splashScreen: !argv['skip-splash-screen'],
     });
