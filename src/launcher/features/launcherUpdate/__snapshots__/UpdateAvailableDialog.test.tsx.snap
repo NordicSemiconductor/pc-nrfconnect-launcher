@@ -58,7 +58,6 @@ exports[`UpdateAvailableDialog shows the new version if one becomes available  1
               href="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases"
               rel="noreferrer noopener"
               target="_blank"
-              title="https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases"
             >
               Click to see release notes
             </a>
