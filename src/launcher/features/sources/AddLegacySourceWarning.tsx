@@ -32,13 +32,12 @@ export default () => {
             }}
         >
             <p>
-                Adding sources on <code>developer.nordisemi.com</code> is no
+                Adding sources from <code>developer.nordisemi.com</code> is no
                 longer supported.
             </p>
             <p>
-                Instead of adding the source with the URL{' '}
-                <code>{sourceToAdd}</code> a source with the URL{' '}
-                <code>{correctedUrl}</code> can be added.
+                For the URL you&apos;ve provided, the app will use{' '}
+                <code>{correctedUrl}</code> as the source.
             </p>
         </ConfirmationDialog>
     );

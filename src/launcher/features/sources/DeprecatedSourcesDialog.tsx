@@ -49,19 +49,20 @@ export default () => {
                 dispatch(initialiseLauncherState());
             }}
         >
-            <p>Some sources you added are no longer supported.</p>
-            <p>
-                We recommend removing them, otherwise you will get an error
-                message each time nRF Connect for Desktop tries to update app
-                informations. If you remove them, the apps installed from them
-                will also be removed.
-            </p>
-            <p>Deprecated sources:</p>
+            <p>The following sources you added are no longer supported:</p>
             <ul>
                 {deprecatedSources.map(source => (
                     <li key={source.url}>{source.name}</li>
                 ))}
             </ul>
+            <p>
+                You will get an error message each time nRF Connect for Desktop
+                tries to update app information using these sources.
+            </p>
+            <p>
+                You can remove these sources. If you do, the apps you installed
+                from them will also be removed.
+            </p>
         </ConfirmationDialog>
     );
 };

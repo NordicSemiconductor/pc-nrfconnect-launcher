@@ -98,9 +98,7 @@ export default () => {
                 <>
                     <p>
                         For accessing the following sources, an identity token
-                        is required. Without providing a token, the source will
-                        not be updated, and trying to install apps from them
-                        will fail.
+                        is required:
                     </p>
                     <ul>
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
@@ -109,16 +107,24 @@ export default () => {
                             )
                         )}
                     </ul>
+                    <p>
+                        Without providing a token, these sources will not be
+                        updated, and trying to install apps from them will fail.
+                    </p>
                 </>
             )}
             <p>
-                To get a token, go to{' '}
-                <ExternalLink href="https://files.nordicsemi.com/ui/user_profile" />
-                , log in, and generate an identity token there.
-            </p>
-            <p>
-                As Nordic employee, you are able to log in. If not a Nordic
-                employee, ask your Nordic contact for an account.
+                Get an identity token from the{' '}
+                <ExternalLink
+                    href="https://files.nordicsemi.com/ui/user_profile"
+                    label="Nordic Semiconductor JFrog portal"
+                />
+                . Read{' '}
+                <ExternalLink
+                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
+                    label="Working with identity tokens"
+                />{' '}
+                for detailed steps.
             </p>
             <p className="tw-m-0">Paste the token here:</p>
             <Form onSubmit={storeTokenAndAddSource} className="tw-pb-4">
@@ -129,7 +135,7 @@ export default () => {
             </Form>
             <p>
                 You can also later view, remove, or set the token in the
-                settings.
+                Settings tab.
             </p>
         </ConfirmationDialog>
     );
