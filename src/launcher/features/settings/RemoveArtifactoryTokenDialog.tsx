@@ -12,10 +12,9 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
-import { hasRestrictedAccessLevel } from '../../../common/sources';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { getSources } from '../sources/sourcesSlice';
+import { getSourcesWithRestrictedAccessLevel } from '../sources/sourcesSlice';
 import {
     getIsRemoveArtifactoryTokenVisible,
     hideRemoveArtifactoryToken,
@@ -25,8 +24,8 @@ import {
 export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(getIsRemoveArtifactoryTokenVisible);
-    const nonPublicSources = useLauncherSelector(getSources).filter(source =>
-        hasRestrictedAccessLevel(source.url)
+    const nonPublicSources = useLauncherSelector(
+        getSourcesWithRestrictedAccessLevel
     );
 
     const hideDialog = () => dispatch(hideRemoveArtifactoryToken());

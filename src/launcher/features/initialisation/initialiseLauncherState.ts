@@ -12,10 +12,7 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
-import {
-    hasRestrictedAccessLevel,
-    isDeprecatedSource,
-} from '../../../common/sources';
+import { isDeprecatedSource } from '../../../common/sources';
 import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
@@ -35,6 +32,7 @@ import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import {
     getDoNotRemindDeprecatedSources,
     getSources,
+    getSourcesWithRestrictedAccessLevel,
     setSources,
     showDeprecatedSources,
     warnAboutMissingTokenOnStartup,
@@ -132,9 +130,8 @@ const checkForMissingToken =
         if (getDoNotRemindOnMissingToken()) return;
 
         const token = getArtifactoryTokenInformation(getState());
-        const sourcesWithRestrictedAccessLevel = getSources(getState()).filter(
-            source => hasRestrictedAccessLevel(source.url)
-        );
+        const sourcesWithRestrictedAccessLevel =
+            getSourcesWithRestrictedAccessLevel(getState());
 
         if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
             dispatch(

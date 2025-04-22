@@ -51,5 +51,5 @@ const deprecatedSourceURLs = deprecatedSources.map(
         `https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/${name}/source.json`
 );
 
-export const isDeprecatedSource = (url: Source) =>
-    deprecatedSourceURLs.includes(url.url);
+export const isDeprecatedSource = (source: Source) =>
+    deprecatedSourceURLs.includes(source.url);
