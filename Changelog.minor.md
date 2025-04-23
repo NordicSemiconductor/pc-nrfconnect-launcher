@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Fixed
+
+-   #1120: App windows used to increase in size on every launch.
+
+## Unreleased
+
 ### Added
 
 -   #1066: Support for Artifactory tokens.
