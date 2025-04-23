@@ -56,8 +56,8 @@ export default () => {
                 ))}
             </ul>
             <p>
-                You will get an error message each time nRF Connect for Desktop
-                tries to update app information using these sources.
+                These sources will not be updated, and trying to install apps
+                from them will fail.
             </p>
             <p>
                 You can remove these sources. If you do, the apps you installed

@@ -9,6 +9,7 @@ import path from 'path';
 
 import {
     hasRestrictedAccessLevel,
+    isDeprecatedSource,
     OFFICIAL,
     Source,
     SourceName,
@@ -110,6 +111,7 @@ export const downloadAllSources = async () => {
     await Promise.allSettled(
         sources.map(async source => {
             if (!hasToken && hasRestrictedAccessLevel(source.url)) return;
+            if (isDeprecatedSource(source)) return;
 
             try {
                 const oldWithdrawnJson = readWithdrawnJson(source);
