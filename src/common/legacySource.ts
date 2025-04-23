@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { urlWithDownloadApi } from '../main/net';
+
 export const isLegacyUrl = (url: string) =>
     url.match(/^https?:\/\/developer\.nordicsemi\.com\//);
 
@@ -27,4 +29,7 @@ export const migrateURL = (url: string) =>
         );
 
 export const migrateAllURLsInJSON = (json: string) =>
-    json.replace(/"https?:[^"]*"/g, migrateURL);
+    json.replace(
+        /"(https?:[^"]*)"/g,
+        (_, url) => `"${urlWithDownloadApi(migrateURL(url))}"`
+    );

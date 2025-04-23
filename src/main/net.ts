@@ -53,19 +53,22 @@ type DownloadOptions = {
     bearer?: string;
 };
 
-export const determineEffectiveUrl = (url: string) => {
-    let effectiveUrl = url;
-
+export const urlWithDownloadApi = (url: string) => {
     const shortArtifactoryUrlRegex =
         /^https:\/\/files\.nordicsemi\.(?<tld>cn|com)\/artifactory\/(?<repo>[^/]+)\/(?<path>.*)/;
-    const match = effectiveUrl.match(shortArtifactoryUrlRegex);
-    if (match != null) {
-        const {
-            groups: { tld, repo, path },
-        } = match as { groups: Record<string, string> };
+    const match = url.match(shortArtifactoryUrlRegex);
 
-        effectiveUrl = `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
-    }
+    if (match == null) return url;
+
+    const {
+        groups: { tld, repo, path },
+    } = match as { groups: Record<string, string> };
+
+    return `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
+};
+
+export const determineEffectiveUrl = (url: string) => {
+    let effectiveUrl = urlWithDownloadApi(url);
 
     if (isPublicUrl(effectiveUrl) && getUseChineseAppServer()) {
         effectiveUrl = effectiveUrl.replace(
