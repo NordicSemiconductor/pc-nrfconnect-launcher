@@ -89,23 +89,8 @@ const copyNrfutil = () => {
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
-    const nrfutilBundledStats = fse.statSync(nrfutilBundled);
 
-    const nrfutilInstalled = fse.existsSync(nrfutilInAppPath);
-    const installedNrfutilOlderThenBundledNrfutil =
-        nrfutilInstalled &&
-        Math.round(nrfutilBundledStats.mtimeMs) >
-            Math.round(fse.statSync(nrfutilInAppPath).mtimeMs);
-
-    if (!nrfutilInstalled || installedNrfutilOlderThenBundledNrfutil) {
-        fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
-        fse.utimes(
-            nrfutilInAppPath,
-            nrfutilBundledStats.atime,
-            nrfutilBundledStats.mtime
-        );
-        logger.info('update nrfutil exe');
-    }
+    fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
 };
 
 const copyNrfutilSandboxes = () => {
