@@ -84,7 +84,7 @@ const fatalError = (error: unknown) => {
     app.quit();
 };
 
-const initNrfutil = () => {
+const copyNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
@@ -106,7 +106,9 @@ const initNrfutil = () => {
         );
         logger.info('update nrfutil exe');
     }
+};
 
+const copyNrfutilSandboxes = () => {
     const nrfutilBundledSandboxes = path.join(
         getBundledResourcesDir(),
         'nrfutil-sandboxes'
@@ -130,6 +132,11 @@ const initNrfutil = () => {
     if (os.platform() !== 'win32') {
         execSync(`chmod -R 744 '${nrfutilBundledSandboxesDest}'`);
     }
+};
+
+const initNrfutil = () => {
+    copyNrfutil();
+    copyNrfutilSandboxes();
 };
 
 export default () => {
