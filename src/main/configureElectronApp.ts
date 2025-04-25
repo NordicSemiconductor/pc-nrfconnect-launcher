@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { execSync } from 'child_process';
 import { app, dialog, Menu } from 'electron';
-import fse from 'fs-extra';
+import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
@@ -31,6 +30,7 @@ import {
 } from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
+import { chmodDir } from './fileUtil';
 import { logger } from './log';
 import menu from './menu';
 import { ensureDirExists } from './mkdir';
@@ -90,38 +90,40 @@ const copyNrfutil = () => {
     const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
 
-    fse.copyFileSync(nrfutilBundled, nrfutilInAppPath);
+    fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
 };
 
-const copyNrfutilSandboxes = () => {
+const copyNrfutilSandboxes = async () => {
     const nrfutilBundledSandboxes = path.join(
         getBundledResourcesDir(),
         'nrfutil-sandboxes'
     );
 
-    if (!fse.existsSync(nrfutilBundledSandboxes)) return;
+    if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
     const nrfutilBundledSandboxesDest = path.join(
         getUserDataDir(),
         'nrfutil-sandboxes'
     );
 
-    if (!fse.existsSync(nrfutilBundledSandboxesDest)) {
-        fse.mkdirSync(nrfutilBundledSandboxesDest);
-    }
+    fs.mkdirSync(nrfutilBundledSandboxesDest, { recursive: true });
 
-    fse.copySync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
-        overwrite: false,
+    fs.cpSync(nrfutilBundledSandboxes, nrfutilBundledSandboxesDest, {
+        recursive: true,
+        force: false,
     });
 
     if (os.platform() !== 'win32') {
-        execSync(`chmod -R 744 '${nrfutilBundledSandboxesDest}'`);
+        await chmodDir(
+            nrfutilBundledSandboxesDest,
+            fs.constants.S_IRWXU | fs.constants.S_IRGRP | fs.constants.S_IROTH // eslint-disable-line no-bitwise
+        );
     }
 };
 
-const initNrfutil = () => {
+const initNrfutil = async () => {
     copyNrfutil();
-    copyNrfutilSandboxes();
+    await copyNrfutilSandboxes();
 };
 
 export default () => {
@@ -132,7 +134,7 @@ export default () => {
 
         try {
             await initAppsDirectory();
-            initNrfutil();
+            await initNrfutil();
             openInitialWindow();
         } catch (error) {
             fatalError(error);

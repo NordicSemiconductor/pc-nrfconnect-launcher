@@ -6,7 +6,6 @@
 
 import { ElectronApplication, expect, Page, test } from '@playwright/test';
 import fs from 'fs';
-import { removeSync } from 'fs-extra';
 import path from 'path';
 
 import { checkAppListContains } from '../assertions';
@@ -57,7 +56,10 @@ test.describe('app installation', () => {
         const appArchiveFile = `${appName}-1.2.3.tgz`;
 
         const removeAppDirFromLocal = () => {
-            removeSync(path.join(localDir, appName));
+            fs.rmSync(path.join(localDir, appName), {
+                recursive: true,
+                force: true,
+            });
         };
 
         const copyArchiveToLocal = () => {

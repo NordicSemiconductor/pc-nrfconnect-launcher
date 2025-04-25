@@ -5,7 +5,7 @@
  */
 
 import { ElectronApplication, expect } from '@playwright/test';
-import { removeSync } from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 import { _electron as electron } from 'playwright';
 
@@ -82,7 +82,7 @@ export const teardown = async ({
 
     await app.close();
     if (removeAppsRootDirAfterwards) {
-        removeSync(absoluteAppsRootDir);
+        fs.rmSync(absoluteAppsRootDir, { recursive: true, force: true });
     }
     additionalAfterEach();
 };

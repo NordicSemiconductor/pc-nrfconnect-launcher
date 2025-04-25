@@ -14,6 +14,7 @@ release the new version.
 -   #1116: Opening some files, e.g. log files, failed. E.g. on Windows and Linux
     with a space or on macOS with a semicolon in their names.
 -   #1120: App windows used to increase in size on every launch.
+-   #1122: Updated fs related code to not need fs-extra anymore.
 
 ## 5.2.0
 

@@ -204,17 +204,17 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
 
         writeFile(infoTmpPath, infoContent);
         writeFile(wflowTmpPath, wflowContent);
-        await copy(getShortcutIcon(app), icnsPath);
+        copy(getShortcutIcon(app), icnsPath);
 
         // Copy to Desktop
-        await copy(tmpAppTemplatePath, filePath);
+        copy(tmpAppTemplatePath, filePath);
 
         // Copy to Applications
         filePath = path.join(
             electronApp.getPath('home'),
             `/Applications/${fileName}.app/`
         );
-        await copy(tmpAppTemplatePath, filePath);
+        copy(tmpAppTemplatePath, filePath);
 
         // Change mode
         await chmodDir(appExecPath);
