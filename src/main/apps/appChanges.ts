@@ -5,7 +5,8 @@
  */
 
 import { app as electronApp, dialog } from 'electron';
-import fs from 'fs-extra';
+import fs from 'fs';
+import moveFile from 'move-file';
 import path from 'path';
 import shasum from 'shasum';
 import { uuid } from 'short-uuid';
@@ -47,7 +48,7 @@ const extractNpmPackage = async (
     const tmpDir = getTmpFilename(appName);
 
     await untar(tgzFile, tmpDir, 1);
-    await fs.move(tmpDir, destinationDir, { overwrite: true });
+    await moveFile(tmpDir, destinationDir);
 };
 
 /*
@@ -77,7 +78,7 @@ export const installLocalApp = async (
     const appPath = installedAppPath(localApp(appName));
 
     // Check if app exists
-    if (fs.pathExistsSync(appPath)) {
+    if (fs.existsSync(appPath)) {
         return appExists(appName, appPath);
     }
 
@@ -86,7 +87,7 @@ export const installLocalApp = async (
     try {
         await extractNpmPackage(appName, tgzFilePath, appPath);
     } catch (error) {
-        await fs.remove(appPath);
+        fs.rmSync(appPath, { recursive: true, force: true });
         return failureReadingFile(
             `Unable to extract app archive \`${tgzFilePath}\`.`,
             error
@@ -96,7 +97,7 @@ export const installLocalApp = async (
     const app = getLocalApp(appName);
 
     if (app.name !== appName) {
-        await fs.remove(appPath);
+        fs.rmSync(appPath, { recursive: true, force: true });
         return failureReadingFile(
             `According to the filename \`${tgzFilePath}\`, the app should ` +
                 `be called \`${appName}\`, but internally it is called ` +
@@ -108,14 +109,14 @@ export const installLocalApp = async (
 };
 
 export const removeLocalApp = (appName: string) =>
-    fs.remove(installedAppPath(localApp(appName)));
+    fs.rmSync(installedAppPath(localApp(appName)), {
+        recursive: true,
+        force: true,
+    });
 
-const deleteFileOnSuccess = async (
-    result: InstallResult,
-    tgzFilePath: string
-) => {
+const deleteFileOnSuccess = (result: InstallResult, tgzFilePath: string) => {
     if (result.type === 'success') {
-        await deleteFile(tgzFilePath);
+        deleteFile(tgzFilePath);
     }
 };
 
@@ -151,11 +152,11 @@ const confirmOverwritingOnExistingApp = async (
         result.errorType === 'error because app exists' &&
         shouldRemoveExistingApp(tgzFilePath, result.appPath)
     ) {
-        await fs.remove(result.appPath);
+        fs.rmSync(result.appPath, { recursive: true, force: true });
         const resultOfRetry = await installLocalApp(tgzFilePath);
 
         if (resultOfRetry.type === 'success') {
-            await deleteFile(tgzFilePath);
+            deleteFile(tgzFilePath);
         }
     }
 };
@@ -169,7 +170,7 @@ export const installAllLocalAppArchives = () => {
 
                 const result = await installLocalApp(tgzFilePath);
 
-                await deleteFileOnSuccess(result, tgzFilePath);
+                deleteFileOnSuccess(result, tgzFilePath);
                 await confirmOverwritingOnExistingApp(result, tgzFilePath);
                 showErrorOnUnreadableFile(result);
             }),
@@ -200,14 +201,14 @@ export const removeDownloadableApp = async (app: AppSpec) => {
     removeInstallMetaData(app);
 
     const tmpDir = getTmpFilename(app.name);
-    await fs.move(appPath, tmpDir);
-    return fs.remove(tmpDir);
+    await moveFile(appPath, tmpDir);
+    fs.rmSync(tmpDir, { recursive: true, force: true });
 };
 
-const verifyShasum = async (filePath: string, expectedShasum?: string) => {
-    let buffer;
+const verifyShasum = (filePath: string, expectedShasum?: string) => {
+    let buffer: Buffer;
     try {
-        buffer = await fs.readFile(filePath);
+        buffer = fs.readFileSync(filePath);
     } catch (error) {
         throw new Error(
             `Unable to read file when verifying shasum: ${filePath}`
@@ -245,7 +246,7 @@ const download = async (app: AppSpec, version?: string) => {
         }),
         ...assertPreparedNrfutilModules(app, versionToInstall.nrfutilModules),
     ]);
-    await verifyShasum(packageFilePath, versionToInstall.shasum);
+    verifyShasum(packageFilePath, versionToInstall.shasum);
 
     return {
         packageFilePath,
@@ -305,7 +306,7 @@ export const installDownloadableAppCore = async (
     const appPath = installedAppPath(app);
     await extractNpmPackage(app.name, packageFilePath, appPath);
     if (doDelete) {
-        await deleteFile(packageFilePath);
+        deleteFile(packageFilePath);
     }
 
     addInstallMetaData(app, appPath, checksum, publishTimestamp);

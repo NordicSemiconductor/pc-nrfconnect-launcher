@@ -5,7 +5,7 @@
  */
 
 import type { Source } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
-import fs from 'fs-extra';
+import fs from 'fs';
 
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 import {

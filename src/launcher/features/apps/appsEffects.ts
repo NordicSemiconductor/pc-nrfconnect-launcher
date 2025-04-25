@@ -42,7 +42,7 @@ import {
     updateDownloadableAppStarted,
 } from './appsSlice';
 
-const fs = remoteRequire('fs-extra');
+const fs = remoteRequire('fs');
 
 const buildErrorMessage = (apps: AppWithError[]) => {
     const errors = apps.map(app => `* \`${app.reason}\`\n\n`).join('');
@@ -69,7 +69,9 @@ export const handleAppsWithErrors =
 
         const recover = (invalidPaths: string[]) => () => {
             // FIXME later: Do this whole thing in the main process
-            invalidPaths.forEach(p => fs.remove(p));
+            invalidPaths.forEach(p =>
+                fs.rmSync(p, { recursive: true, force: true })
+            );
             getCurrentWindow().reload();
         };
 

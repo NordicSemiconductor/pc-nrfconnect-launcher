@@ -5,7 +5,7 @@
  */
 
 import { SourceJson } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import fs from 'fs-extra';
+import fs from 'fs/promises';
 
 import {
     allStandardSourceNames,
@@ -85,7 +85,7 @@ const isRemovableSource = (
 };
 
 const removeSourceDirectory = (sourceName: SourceName) =>
-    fs.remove(getAppsRootDir(sourceName));
+    fs.rm(getAppsRootDir(sourceName), { recursive: true, force: true });
 
 export const removeSource = async (sourceName?: SourceName) => {
     if (isRemovableSource(sourceName)) {

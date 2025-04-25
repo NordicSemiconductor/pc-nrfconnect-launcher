@@ -8,7 +8,7 @@ import {
     SourceJson,
     sourceJsonSchema,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import fs from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 
 import { Source, SourceUrl } from '../../../common/sources';

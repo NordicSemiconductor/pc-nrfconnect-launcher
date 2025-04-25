@@ -5,7 +5,7 @@
  */
 
 import chmodr from 'chmodr';
-import fs from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 import targz from 'targz';
 import { z } from 'zod';
@@ -75,9 +75,9 @@ export const listFiles = (dirPath: string, filterRegex: RegExp) =>
               .filter(file => isFile(dirPath, file))
               .filter(file => filterRegex.test(file));
 
-export const deleteFile = async (filePath: string) => {
+export const deleteFile = (filePath: string) => {
     try {
-        await fs.unlink(filePath);
+        fs.unlinkSync(filePath);
     } catch (error) {
         throw new Error(
             `Unable to delete ${filePath}: ${describeError(error)}`
@@ -85,9 +85,9 @@ export const deleteFile = async (filePath: string) => {
     }
 };
 
-export const copy = async (src: string, dest: string) => {
+export const copy = (src: string, dest: string) => {
     try {
-        await fs.copy(src, dest);
+        fs.cpSync(src, dest, { force: true, recursive: true });
     } catch (error) {
         throw new Error(`Unable to copy ${src}: ${describeError(error)}`);
     }
