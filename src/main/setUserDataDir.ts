@@ -5,7 +5,7 @@
  */
 
 import { app } from 'electron';
-import { ensureDirSync } from 'fs-extra';
+import fs from 'fs';
 
 import argv from './argv';
 
@@ -16,7 +16,7 @@ declare global {
 const userDataDir = argv['user-data-dir'] ?? process.env.NRF_USER_DATA_DIR;
 
 if (userDataDir != null) {
-    ensureDirSync(userDataDir);
+    fs.mkdirSync(userDataDir, { recursive: true });
     app.setPath('userData', userDataDir);
 }
 
