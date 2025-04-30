@@ -4,12 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import childProcess from 'child_process';
 import { shell } from 'electron';
-import fs from 'fs';
-import os from 'os';
+import childProcess from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import util from 'node:util';
 
-export const openFile = (filePath: string) => {
+const exec = util.promisify(childProcess.exec);
+
+export const openFile = async (filePath: string) => {
     const exists = fs.existsSync(filePath);
     if (!exists) {
         throw new Error(`Could not find file at path: ${filePath}`);
@@ -21,15 +24,13 @@ export const openFile = (filePath: string) => {
     // * shell.openItem works on Windows and Linux but not on OSX
     // * childProcess.execSync works on OSX but not on Windows
     if (os.type() === 'Darwin') {
-        childProcess.execSync(`open ${escapedPath}`);
+        await exec(`open ${escapedPath}`);
     } else {
-        shell.openPath(escapedPath);
+        await shell.openPath(escapedPath);
     }
 };
 
-export const openUrl = (url: string) => {
-    shell.openExternal(url);
-};
+export const openUrl = (url: string) => shell.openExternal(url);
 
 export const openFileLocation = (filePath: string) => {
     shell.showItemInFolder(filePath);

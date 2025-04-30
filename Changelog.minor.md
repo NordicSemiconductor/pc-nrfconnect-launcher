@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Fixed
+
+-   #1123: Asynchronicity of `openFile` and `openUrl`.
+
+## Unreleased
+
 ### Added
 
 -   #1066: Support for Artifactory tokens.
