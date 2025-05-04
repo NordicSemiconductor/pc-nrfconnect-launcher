@@ -90,6 +90,7 @@ const getSizeOptions = (app: LaunchableApp) => {
         return {
             width: 800,
             height: 550,
+            useContentSize: true,
             resizable: false,
         };
     }
@@ -140,7 +141,6 @@ export const openAppWindow = (app: LaunchableApp, args: string[]) => {
             url: template,
             icon: getAppIcon(app),
             show: true,
-            useContentSize: true,
             backgroundColor: '#fff',
             ...getSizeOptions(app),
         },
