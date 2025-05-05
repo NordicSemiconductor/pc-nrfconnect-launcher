@@ -14,43 +14,32 @@ const SOURCE_URL =
 
 const BUNDLE_APPS = ['pc-nrfconnect-quickstart'];
 
-const preparingSandbox = new Map();
+const alreadyPreparedSandboxes = new Set();
 
 const bundleNrfutilModule = (module, version) => {
-    if (
-        preparingSandbox.has(module) &&
-        preparingSandbox.get(module).has(version)
-    )
-        return; // Already bundled
-
-    if (!preparingSandbox.has(module)) preparingSandbox.set(module, new Set());
-
-    preparingSandbox.get(module).add(version);
+    const key = `${module}-${version}}`;
+    if (alreadyPreparedSandboxes.has(key)) return; // Already bundled
+    alreadyPreparedSandboxes.add(key);
 
     console.log(`Bundling nrfutil module ${module} version ${version}`);
 
-    const nrfutilSandboxFolder =
-        process.platform === 'darwin' && process.arch !== 'x64'
-            ? path.join('nrfutil-sandboxes', process.arch)
-            : 'nrfutil-sandboxes';
-    execSync(
-        `${path.join(
+    const nrfUtilBinary = path.join('resources', 'nrfutil');
+    const env = {
+        ...process.env,
+        NRFUTIL_HOME: path.join(
             'resources',
-            'nrfutil'
-        )} install ${module}=${version} --force`,
-        {
-            env: {
-                ...process.env,
-                NRFUTIL_HOME: path.join(
-                    'resources',
-                    nrfutilSandboxFolder,
-                    module,
-                    version
-                ),
-            },
-        }
-    );
-    console.log(`🏁 Bundled nrfutil module ${module} version ${version}:`);
+            'nrfutil-sandboxes',
+            ...(process.platform === 'darwin' && process.arch !== 'x64'
+                ? [process.arch]
+                : []),
+            module,
+            version
+        ),
+    };
+
+    execSync(`${nrfUtilBinary} install ${module}=${version} --force`, { env });
+
+    console.log(`🏁 Bundled nrfutil module ${module} version ${version}`);
 };
 
 const isAppBundled = appJSONUrl =>
@@ -83,7 +72,7 @@ const parseSourceFile = appUrls =>
                 'prefetched',
                 'appBundles'
             );
-            fs.mkdirSync(appBundlesPath);
+            fs.mkdirSync(appBundlesPath, { recursive: true });
 
             const promises = [];
             promises.push(
@@ -100,7 +89,11 @@ const parseSourceFile = appUrls =>
             if (latestVersion.nrfutilModules) {
                 Object.keys(latestVersion.nrfutilModules).forEach(module => {
                     latestVersion.nrfutilModules[module].forEach(version => {
-                        promises.push(bundleNrfutilModule(module, version));
+                        bundleNrfutilModule(
+                            module,
+                            version,
+                            latestVersion.nrfutilCore
+                        );
                     });
                 });
             }
