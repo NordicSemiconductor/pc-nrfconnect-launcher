@@ -97,7 +97,7 @@
     },
     "devDependencies": {
         "@electron/notarize": "^2.2.0",
-        "@nordicsemiconductor/pc-nrfconnect-shared": "^208.0.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#feat/specify_nrfutil_core_version",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
         "@types/chmodr": "1.0.0",

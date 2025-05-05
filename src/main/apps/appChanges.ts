@@ -243,7 +243,11 @@ const download = async (app: AppSpec, version?: string) => {
             enableProxyLogin: true,
             app,
         }),
-        ...assertPreparedNrfutilModules(app, versionToInstall.nrfutilModules),
+        ...assertPreparedNrfutilModules(
+            app,
+            versionToInstall.nrfutilModules,
+            versionToInstall.nrfutilCore
+        ),
     ]);
     await verifyShasum(packageFilePath, versionToInstall.shasum);
 
