@@ -16,12 +16,17 @@ const BUNDLE_APPS = ['pc-nrfconnect-quickstart'];
 
 const alreadyPreparedSandboxes = new Set();
 
-const bundleNrfutilModule = (module, version) => {
-    const key = `${module}-${version}}`;
+const bundleNrfutilModule = (module, version, coreVersion) => {
+    const key = `${module}-${version}-${coreVersion}`;
     if (alreadyPreparedSandboxes.has(key)) return; // Already bundled
+
     alreadyPreparedSandboxes.add(key);
 
-    console.log(`Bundling nrfutil module ${module} version ${version}`);
+    console.log(
+        `Bundling nrfutil module ${module} version ${version} and core ${
+            coreVersion ?? '(defaulting to 8.0.0)'
+        }`
+    );
 
     const nrfUtilBinary = path.join('resources', 'nrfutil');
     const env = {
@@ -32,14 +37,23 @@ const bundleNrfutilModule = (module, version) => {
             ...(process.platform === 'darwin' && process.arch !== 'x64'
                 ? [process.arch]
                 : []),
+            ...(coreVersion != null ? [coreVersion] : []),
             module,
             version
         ),
     };
 
+    execSync(
+        `${nrfUtilBinary} self-upgrade --to-version ${coreVersion ?? '8.0.0'}`,
+        { env }
+    );
     execSync(`${nrfUtilBinary} install ${module}=${version} --force`, { env });
 
-    console.log(`🏁 Bundled nrfutil module ${module} version ${version}`);
+    console.log(
+        `🏁 Bundled nrfutil module ${module} version ${version} and core ${
+            coreVersion ?? '(defaulting to 8.0.0)'
+        }`
+    );
 };
 
 const isAppBundled = appJSONUrl =>
