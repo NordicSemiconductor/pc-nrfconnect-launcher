@@ -14,6 +14,7 @@ import {
     Toggle,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { inMain } from '../../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import {
     getUseChineseAppServer,
@@ -41,9 +42,10 @@ export default () => {
             </p>
             <Toggle
                 label="Use Mainland China app server"
-                onToggle={() =>
-                    dispatch(setUseChineseAppServer(!useChineseAppServer))
-                }
+                onToggle={() => {
+                    dispatch(setUseChineseAppServer(!useChineseAppServer));
+                    inMain.setUseChineseUpdateServer(!useChineseAppServer);
+                }}
                 isToggled={useChineseAppServer}
                 variant="primary"
                 handleColor={white}

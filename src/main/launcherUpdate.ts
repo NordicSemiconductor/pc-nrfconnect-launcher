@@ -9,6 +9,7 @@ import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
 
+import { getUseChineseAppServer } from '../common/persistedStore';
 import { inRenderer } from '../ipc/launcherUpdateProgress';
 import * as showError from '../ipc/showErrorDialog';
 import { getUserDataDir } from './config';
@@ -26,8 +27,13 @@ const logger = createLogger({
     ],
 });
 
-autoUpdater.autoDownload = false;
-autoUpdater.logger = logger;
+export const setUseChineseUpdateServer = (useChineseServer: boolean) => {
+    const autoupdateDomain = useChineseServer ? 'cn' : 'com';
+
+    autoUpdater.setFeedURL(
+        `https://files.nordicsemi.${autoupdateDomain}/artifactory/swtools/external/ncd/launcher/`
+    );
+};
 
 export const checkForUpdate = async () => {
     const updateCheckResult = autoUpdater.checkForUpdates();
@@ -94,3 +100,8 @@ export const cancelUpdate = () => {
         );
     }
 };
+
+autoUpdater.autoDownload = false;
+autoUpdater.logger = logger;
+
+setUseChineseUpdateServer(getUseChineseAppServer());

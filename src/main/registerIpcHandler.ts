@@ -44,7 +44,12 @@ import { addSource, removeSource } from './apps/sources/sourceChanges';
 import { getAllSources } from './apps/sources/sources';
 import argv from './argv';
 import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
-import { cancelUpdate, checkForUpdate, startUpdate } from './launcherUpdate';
+import {
+    cancelUpdate,
+    checkForUpdate,
+    setUseChineseUpdateServer,
+    startUpdate,
+} from './launcherUpdate';
 import { openFile, openFileLocation, openUrl } from './open';
 import { callRegisteredCallback } from './proxyLogins';
 import {
@@ -109,6 +114,9 @@ export default () => {
     launcherUpdate.forRenderer.registerCheckForUpdate(checkForUpdate);
     launcherUpdate.forRenderer.registerStartUpdate(startUpdate);
     launcherUpdate.forRenderer.registerCancelUpdate(cancelUpdate);
+    launcherUpdate.forRenderer.registerSetUseChineseUpdateServer(
+        setUseChineseUpdateServer
+    );
 
     open.forRenderer.registerOpenApp(openApp);
     open.forRenderer.registerOpenLauncher(openLauncherWindow);

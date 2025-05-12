@@ -15,6 +15,7 @@ const channel = {
     checkForUpdate: 'launcher-update:check',
     startUpdate: 'launcher-update:start',
     cancelUpdate: 'launcher-update:cancel',
+    setUseChineseUpdateServer: 'launcher-update:set-use-chinese-update-server',
 };
 
 // Check
@@ -38,13 +39,24 @@ type CancelUpdate = () => void;
 const cancelUpdate = send<CancelUpdate>(channel.cancelUpdate);
 const registerCancelUpdate = on<CancelUpdate>(channel.cancelUpdate);
 
+// Set use Chinese update server
+type SetUseChineseUpdateServer = (useChineseServer: boolean) => void;
+const setUseChineseUpdateServer = send<SetUseChineseUpdateServer>(
+    channel.setUseChineseUpdateServer
+);
+const registerSetUseChineseUpdateServer = on<SetUseChineseUpdateServer>(
+    channel.setUseChineseUpdateServer
+);
+
 export const forRenderer = {
     registerCheckForUpdate,
     registerStartUpdate,
     registerCancelUpdate,
+    registerSetUseChineseUpdateServer,
 };
 export const inMain = {
     checkForUpdate,
     startUpdate,
     cancelUpdate,
+    setUseChineseUpdateServer,
 };
