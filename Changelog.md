@@ -2,8 +2,9 @@
 
 ### Changed
 
--   When updating nRF Connect for Desktop to a new version, download files from
-    files.nordicsemi.com (not from GitHub, as before).
+-   Load updates to nRF Connect for Desktop to a new version from our own CDN
+    (not from GitHub, as before): Usually use `files.nordicsemi.com`. Use
+    `files.nordicsemi.cn` if users choose to use the Chinese server.
 
 ## 5.2.0 - 2025-05-22
 
