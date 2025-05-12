@@ -1,3 +1,10 @@
+## 5.3.0 - unreleased
+
+### Changed
+
+-   When updating nRF Connect for Desktop to a new version, download files from
+    files.nordicsemi.com (not from GitHub, as before).
+
 ## 5.2.0 - 2025-05-22
 
 ### Added
