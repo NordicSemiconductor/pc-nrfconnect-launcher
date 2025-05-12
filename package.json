@@ -29,7 +29,6 @@
         "test": "jest src",
         "test-e2e": "xvfb-maybe npx playwright test test-e2e/",
         "pack": "npm run build:prod && electron-builder -p never",
-        "release": "electron-builder -p always",
         "install-devtools": "electron . --install-devtools",
         "remove-devtools": "electron . --remove-devtools",
         "postinstall": "node scripts/getNrfutil.js"
@@ -39,6 +38,10 @@
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect for Desktop",
+        "publish": {
+            "provider": "generic",
+            "url": "https://files.nordicsemi.com/artifactory/swtools/external/ncd/launcher/"
+        },
         "npmRebuild": false,
         "files": [
             "dist/",

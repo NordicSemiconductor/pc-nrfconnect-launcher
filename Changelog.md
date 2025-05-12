@@ -1,3 +1,11 @@
+## 5.3.0 - unreleased
+
+### Changed
+
+-   Load updates to nRF Connect for Desktop to a new version from our own CDN
+    (not from GitHub, as before): Usually use `files.nordicsemi.com`. Use
+    `files.nordicsemi.cn` if users choose to use the Chinese server.
+
 ## 5.2.0 - unreleased
 
 ### Added
