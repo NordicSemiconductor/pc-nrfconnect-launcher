@@ -37,14 +37,15 @@ jobs:
                   rm latest-mac-x64.yml latest-mac-arm64.yml
 
             - name: Create GitHub release
-              run: >
-                  gh release create ${{ inputs.tag }}
-                  --repo ${{ github.repository }}
-                  --title ${{ inputs.tag }}
-                  --draft
-                  --generate-notes
-                  nrfconnect-*/*.AppImage
-                  nrfconnect-*/*.exe
-                  nrfconnect-*/*.dmg
-                  nrfconnect-*/*.zip
+              if: false
+              run: |
+                  gh release create ${{ inputs.tag }} \
+                  --repo ${{ github.repository }} \
+                  --title ${{ inputs.tag }} \
+                  --draft \
+                  --generate-notes \
+                  nrfconnect-*/*.AppImage \
+                  nrfconnect-*/*.exe \
+                  nrfconnect-*/*.dmg \
+                  nrfconnect-*/*.zip \
                   nrfconnect-*/latest*.yml
