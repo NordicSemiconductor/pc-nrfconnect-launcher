@@ -19,6 +19,12 @@ jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
+            - name: Output input values
+              run: |
+                  echo "## Run inputs" >> $GITHUB_STEP_SUMMARY
+                  echo "- Workflow ID from where the artifacts are used: [${{ inputs.run_id }}](./${{ inputs.run_id }})" >> $GITHUB_STEP_SUMMARY
+                  echo "- Tag: [${{ inputs.tag }}](../../releases/tag/${{ inputs.tag }})" >> $GITHUB_STEP_SUMMARY
+
             - name: Download artifacts
               run: |
                   gh run download ${{ inputs.run_id }} --repo ${{ github.repository }}
