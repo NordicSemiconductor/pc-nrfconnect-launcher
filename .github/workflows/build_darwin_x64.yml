@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop for macOS x64
+name: Build for macOS x64
 
 on:
     workflow_dispatch:
