@@ -80,9 +80,57 @@ export const determineEffectiveUrl = (url: string) => {
     return effectiveUrl;
 };
 
+const isNordicArtifactoryUrl = (url: string) =>
+    /^https?:\/\/files\.nordicsemi\.(com|cn)\//.test(url);
+
+const shortNordicArtifactoryUrl = (url: string) => {
+    const longArtifactoryUrlRegex =
+        /^https:\/\/files\.nordicsemi\.(?<tld>com|cn)\/ui\/api\/v1\/download\?isNativeBrowsing=false&repoKey=(?<repo>[^&]+)&path=(?<path>.*)/;
+    const match = url.match(longArtifactoryUrlRegex);
+
+    if (match == null) return url;
+
+    const {
+        groups: { tld, repo, path },
+    } = match as { groups: Record<string, string> };
+
+    return `https://files.nordicsemi.${tld}/artifactory/${repo}/${path}`;
+};
+
+const getDownloadSize = async (url: string, bearer?: string) => {
+    const effectiveUrl = isNordicArtifactoryUrl(url)
+        ? shortNordicArtifactoryUrl(url)
+        : url;
+
+    try {
+        const response = await net.fetch(effectiveUrl, {
+            method: 'HEAD',
+            headers:
+                bearer != null ? { authorization: `Bearer ${bearer}` } : {},
+        });
+
+        const contentLength = response.headers.get('content-length');
+
+        if (contentLength != null) {
+            return Number(contentLength);
+        }
+    } catch (error) {
+        // Ignore errors, e.g. because the server does not support HEAD requests, in this case we just cannot determine the download size
+    }
+
+    return undefined;
+};
+
 const downloadToBuffer = (url: string, options: DownloadOptions) =>
-    new Promise<Buffer>((resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    new Promise<Buffer>(async (resolve, reject) => {
         const effectiveUrl = determineEffectiveUrl(url);
+        const bearer = options.bearer ?? determineBearer(effectiveUrl);
+
+        const downloadSize =
+            options.app != null
+                ? await getDownloadSize(effectiveUrl, bearer)
+                : undefined;
 
         const request = net.request({
             url: effectiveUrl,
@@ -90,7 +138,6 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
         });
         request.setHeader('pragma', 'no-cache');
 
-        const bearer = options.bearer ?? determineBearer(effectiveUrl);
         if (bearer) {
             request.setHeader('Authorization', `Bearer ${bearer}`);
         }
@@ -112,12 +159,11 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
             const addToBuffer = (data: Buffer) => {
                 buffer.push(data);
             };
-            const downloadSize = Number(response.headers['content-length']);
             let progress = 0;
             response.on('data', data => {
                 addToBuffer(data);
                 progress += data.length;
-                if (options.app != null) {
+                if (options.app != null && downloadSize != null) {
                     reportInstallProgress(options.app, progress, downloadSize);
                 }
             });
