@@ -53,3 +53,17 @@ const deprecatedSourceURLs = deprecatedSources.map(
 
 export const isDeprecatedSource = (source: Source) =>
     deprecatedSourceURLs.includes(source.url);
+
+export const urlWithDownloadApi = (url: string) => {
+    const shortArtifactoryUrlRegex =
+        /^https:\/\/files\.nordicsemi\.(?<tld>cn|com)\/artifactory\/(?<repo>[^/]+)\/(?<path>.*)/;
+    const match = url.match(shortArtifactoryUrlRegex);
+
+    if (match == null) return url;
+
+    const {
+        groups: { tld, repo, path },
+    } = match as { groups: Record<string, string> };
+
+    return `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
+};

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { urlWithDownloadApi } from '../main/net';
+import { urlWithDownloadApi } from './sources';
 
 export const isLegacyUrl = (url: string) =>
     url.match(/^https?:\/\/developer\.nordicsemi\.com\//);

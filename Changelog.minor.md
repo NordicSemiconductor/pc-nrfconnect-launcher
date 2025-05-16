@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Changed
+
+-   #1133: Rewrote network code to use the fetch API.
+
+## 5.2.0
+
 ### Added
 
 -   #1066: Support for Artifactory tokens.
