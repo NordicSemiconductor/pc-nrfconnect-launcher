@@ -7,10 +7,10 @@
 import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { AnyAction } from 'redux';
 
+import { needsAuthentication } from '../../../common/artifactoryUrl';
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { isLegacyUrl } from '../../../common/legacySource';
 import {
-    hasRestrictedAccessLevel,
     OFFICIAL,
     Source,
     SourceName,
@@ -62,7 +62,7 @@ export const addSource =
         }
 
         const noToken = getArtifactoryTokenInformation(getState()) == null;
-        if (hasRestrictedAccessLevel(url) && noToken && warnOnMissingToken) {
+        if (needsAuthentication(url) && noToken && warnOnMissingToken) {
             dispatch(warnAboutMissingTokenOnAddSource(url));
             return;
         }

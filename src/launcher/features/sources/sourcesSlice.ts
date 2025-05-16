@@ -7,12 +7,12 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import { needsAuthentication } from '../../../common/artifactoryUrl';
 import {
     getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
 } from '../../../common/persistedStore';
 import {
-    hasRestrictedAccessLevel,
     isDeprecatedSource,
     Source,
     SourceName,
@@ -173,8 +173,7 @@ export const {
 export const getSources = (state: RootState) => state.sources.sources;
 export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
     state.sources.sources.filter(
-        source =>
-            hasRestrictedAccessLevel(source.url) && !isDeprecatedSource(source)
+        source => needsAuthentication(source.url) && !isDeprecatedSource(source)
     );
 export const getIsAddSourceVisible = (state: RootState) =>
     state.sources.isAddSourceVisible;

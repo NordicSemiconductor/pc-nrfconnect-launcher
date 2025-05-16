@@ -12,6 +12,7 @@ release the new version.
 ### Changed
 
 -   #1133: Rewrote network code to use the fetch API.
+-   #1134: Collected knowledge about Artifactory URL in central place.
 
 ## 5.2.0
 
