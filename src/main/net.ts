@@ -9,15 +9,17 @@ import fs from 'fs/promises';
 import { z } from 'zod';
 
 import { getUseChineseAppServer } from '../common/persistedStore';
+import { urlWithDownloadApi } from '../common/sources';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { retrieveToken } from './artifactoryTokenStorage';
+import describeError from './describeError';
 import { handleLoginRequest } from './proxyLogins';
 
-// Using the same session name as electron-updater, so that proxy credentials
-// (if required) only have to be sent once.
-const NET_SESSION_NAME = 'electron-updater';
+// Sharing electron-updater's session, so that proxy credentials (if required) only have to be sent once.
+// It would be better to use autoUpdater.netSession, but I found no way to use that without breaking the tests.
+export const sharedSession = () => session.fromPartition('electron-updater');
 
 const reportInstallProgress = (
     app: AppSpec,
@@ -44,26 +46,9 @@ const determineBearer = (url: string) => {
     return tokenResult.type === 'Success' ? tokenResult.token : undefined;
 };
 
-export type NetError = Error & { statusCode?: number };
-
 type DownloadOptions = {
-    enableProxyLogin: boolean;
     app?: AppSpec;
     bearer?: string;
-};
-
-export const urlWithDownloadApi = (url: string) => {
-    const shortArtifactoryUrlRegex =
-        /^https:\/\/files\.nordicsemi\.(?<tld>cn|com)\/artifactory\/(?<repo>[^/]+)\/(?<path>.*)/;
-    const match = url.match(shortArtifactoryUrlRegex);
-
-    if (match == null) return url;
-
-    const {
-        groups: { tld, repo, path },
-    } = match as { groups: Record<string, string> };
-
-    return `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
 };
 
 export const determineEffectiveUrl = (url: string) => {
@@ -96,118 +81,99 @@ const shortNordicArtifactoryUrl = (url: string) => {
     return `https://files.nordicsemi.${tld}/artifactory/${repo}/${path}`;
 };
 
-const getDownloadSize = (url: string, bearer?: string) =>
-    new Promise<number | undefined>(resolve => {
-        const effectiveUrl = isNordicArtifactoryUrl(url)
-            ? shortNordicArtifactoryUrl(url)
-            : url;
+const getDownloadSize = async (url: string, bearer?: string) => {
+    const effectiveUrl = isNordicArtifactoryUrl(url)
+        ? shortNordicArtifactoryUrl(url)
+        : url;
 
-        const request = net.request({
-            url: effectiveUrl,
+    try {
+        const response = await sharedSession().fetch(effectiveUrl, {
             method: 'HEAD',
-            session: session.fromPartition(NET_SESSION_NAME),
+            headers:
+                bearer != null ? { authorization: `Bearer ${bearer}` } : {},
         });
-        request.setHeader('pragma', 'no-cache');
 
-        if (bearer) {
-            request.setHeader('Authorization', `Bearer ${bearer}`);
+        const contentLength = response.headers.get('content-length');
+
+        if (contentLength != null) {
+            return Number(contentLength);
         }
+    } catch (error) {
+        // Ignore errors, e.g. because the server does not support HEAD requests, in this case we just cannot determine the download size
+    }
 
-        request.on('response', response => {
-            const contentLength = response.headers['content-length'];
+    return undefined;
+};
 
-            if (contentLength != null) {
-                resolve(Number(contentLength));
-                request.abort();
-            } else {
-                resolve(undefined);
-            }
-        });
+const withProgressReported = (
+    response: Response,
+    app: AppSpec,
+    totalSize: number
+) => {
+    let progress = 0;
+    const progressStream = new TransformStream({
+        transform(chunk, controller) {
+            progress += chunk.byteLength;
 
-        request.on('login', handleLoginRequest);
-        request.on('error', () => resolve(undefined));
-        request.end();
+            if (totalSize != null)
+                reportInstallProgress(app, progress, totalSize);
+
+            controller.enqueue(chunk);
+        },
     });
+    const stream = response.body?.pipeThrough(progressStream);
 
-const downloadToBuffer = (url: string, options: DownloadOptions) =>
-    // eslint-disable-next-line no-async-promise-executor
-    new Promise<Buffer>(async (resolve, reject) => {
-        const effectiveUrl = determineEffectiveUrl(url);
-        const bearer = options.bearer ?? determineBearer(effectiveUrl);
+    return new Response(stream);
+};
 
-        const downloadSize =
-            options.app != null
-                ? await getDownloadSize(effectiveUrl, bearer)
-                : undefined;
+const request = async (url: string, { bearer, app }: DownloadOptions = {}) => {
+    await ensureNetworkIsInitialised();
 
-        const request = net.request({
-            url: effectiveUrl,
-            session: session.fromPartition(NET_SESSION_NAME),
+    const effectiveUrl = determineEffectiveUrl(url);
+    try {
+        const effectiveBearer = bearer ?? determineBearer(effectiveUrl);
+
+        const totalSize =
+            app == null ? undefined : await getDownloadSize(url, bearer);
+
+        const response = await sharedSession().fetch(effectiveUrl, {
+            headers: {
+                pragma: 'no-cache',
+                ...(effectiveBearer != null
+                    ? { authorization: `Bearer ${effectiveBearer}` }
+                    : {}),
+            },
         });
-        request.setHeader('pragma', 'no-cache');
 
-        if (bearer) {
-            request.setHeader('Authorization', `Bearer ${bearer}`);
-        }
-
-        request.on('response', response => {
-            const { statusCode } = response;
-            if (statusCode >= 400) {
-                const error: NetError = new Error(
-                    `Unable to download ${effectiveUrl}. Got status code ${statusCode}`
-                );
-                error.statusCode = statusCode;
-                // https://github.com/electron/electron/issues/24948
-                response.on('error', () => {});
-                reject(error);
-                return;
-            }
-
-            const buffer: Buffer[] = [];
-            const addToBuffer = (data: Buffer) => {
-                buffer.push(data);
-            };
-            let progress = 0;
-            response.on('data', data => {
-                addToBuffer(data);
-                progress += data.length;
-                if (options.app != null && downloadSize != null) {
-                    reportInstallProgress(options.app, progress, downloadSize);
-                }
-            });
-            response.on('end', () => resolve(Buffer.concat(buffer)));
-            response.on('error', (error: Error) =>
-                reject(
-                    new Error(
-                        `Error when reading ${effectiveUrl}: ${error.message}`
-                    )
-                )
+        if (!response.ok) {
+            throw new Error(
+                `Unable to download ${effectiveUrl}. Got status code ${response.status}`
             );
-        });
-        if (options.enableProxyLogin) {
-            request.on('login', handleLoginRequest);
         }
-        request.on('error', error =>
-            reject(
-                new Error(
-                    `Unable to download ${effectiveUrl}: ${error.message}`
-                )
-            )
+
+        return app == null || totalSize == null
+            ? response
+            : withProgressReported(response, app, totalSize);
+    } catch (error) {
+        throw new Error(
+            `Error when reading ${effectiveUrl}: ${describeError(error)}`
         );
-        request.end();
-    });
+    }
+};
 
 export const downloadToJson = async <T>(
     url: string,
-    options: DownloadOptions = { enableProxyLogin: true }
-) => <T>JSON.parse((await downloadToBuffer(url, options)).toString());
+    options?: DownloadOptions
+) => <T>(await request(url, options)).json();
 
 export const downloadToFile = async (
     url: string,
     filePath: string,
-    options: DownloadOptions = { enableProxyLogin: false }
+    options?: DownloadOptions
 ) => {
-    const buffer = await downloadToBuffer(url, options);
+    const buffer = Buffer.from(
+        await (await request(url, options)).arrayBuffer()
+    );
     await fs.writeFile(filePath, buffer);
 };
 
@@ -221,6 +187,39 @@ export const getArtifactoryTokenInformation = async (token: string) =>
     tokenInformationSchema.parse(
         await downloadToJson<TokenInformation>(
             'https://files.nordicsemi.com/access/api/v1/tokens/me',
-            { enableProxyLogin: true, bearer: token }
+            { bearer: token }
         )
     );
+
+let networkIsInitialised = false;
+const ensureNetworkIsInitialised = async () => {
+    if (networkIsInitialised) return;
+
+    await doNetworkRequestToCheckForProxyAuthentication();
+    networkIsInitialised = true;
+};
+
+/* As described in https://github.com/electron/electron/issues/44249 the login
+   event is not always emitted correctly to the electron app when using the
+   fetch API. So we first do a request to a known location and if that
+   requires a proxy login, request that from the user */
+const doNetworkRequestToCheckForProxyAuthentication = () =>
+    new Promise<void>((resolve, reject) => {
+        const req = net.request({
+            url: 'https://files.nordicsemi.com/api/system/ping',
+            session: sharedSession(),
+        });
+        req.setHeader('pragma', 'no-cache');
+
+        req.on('response', res => {
+            res.on('data', () => {
+                /* do nothing, handler is only needed to consume all data */
+            });
+            res.on('end', () => resolve());
+            res.on('error', () => reject());
+        });
+        req.on('login', handleLoginRequest);
+        req.on('error', () => reject());
+
+        req.end();
+    });
