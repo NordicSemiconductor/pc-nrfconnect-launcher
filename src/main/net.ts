@@ -12,9 +12,8 @@ import { getUseChineseAppServer } from '../common/persistedStore';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
-import { inRenderer as proxyLogin } from '../ipc/proxyLogin';
 import { retrieveToken } from './artifactoryTokenStorage';
-import { storeProxyLoginRequest } from './proxyLogins';
+import { handleLoginRequest } from './proxyLogins';
 
 // Using the same session name as electron-updater, so that proxy credentials
 // (if required) only have to be sent once.
@@ -97,29 +96,38 @@ const shortNordicArtifactoryUrl = (url: string) => {
     return `https://files.nordicsemi.${tld}/artifactory/${repo}/${path}`;
 };
 
-const getDownloadSize = async (url: string, bearer?: string) => {
-    const effectiveUrl = isNordicArtifactoryUrl(url)
-        ? shortNordicArtifactoryUrl(url)
-        : url;
+const getDownloadSize = (url: string, bearer?: string) =>
+    new Promise<number | undefined>(resolve => {
+        const effectiveUrl = isNordicArtifactoryUrl(url)
+            ? shortNordicArtifactoryUrl(url)
+            : url;
 
-    try {
-        const response = await net.fetch(effectiveUrl, {
+        const request = net.request({
+            url: effectiveUrl,
             method: 'HEAD',
-            headers:
-                bearer != null ? { authorization: `Bearer ${bearer}` } : {},
+            session: session.fromPartition(NET_SESSION_NAME),
+        });
+        request.setHeader('pragma', 'no-cache');
+
+        if (bearer) {
+            request.setHeader('Authorization', `Bearer ${bearer}`);
+        }
+
+        request.on('response', response => {
+            const contentLength = response.headers['content-length'];
+
+            if (contentLength != null) {
+                resolve(Number(contentLength));
+                request.abort();
+            } else {
+                resolve(undefined);
+            }
         });
 
-        const contentLength = response.headers.get('content-length');
-
-        if (contentLength != null) {
-            return Number(contentLength);
-        }
-    } catch (error) {
-        // Ignore errors, e.g. because the server does not support HEAD requests, in this case we just cannot determine the download size
-    }
-
-    return undefined;
-};
+        request.on('login', handleLoginRequest);
+        request.on('error', () => resolve(undefined));
+        request.end();
+    });
 
 const downloadToBuffer = (url: string, options: DownloadOptions) =>
     // eslint-disable-next-line no-async-promise-executor
@@ -177,18 +185,7 @@ const downloadToBuffer = (url: string, options: DownloadOptions) =>
             );
         });
         if (options.enableProxyLogin) {
-            request.on('login', (authInfo, callback) => {
-                if (
-                    authInfo.isProxy === false &&
-                    authInfo.host === 'files.nordicsemi.com'
-                ) {
-                    callback();
-                    return;
-                }
-
-                const requestId = storeProxyLoginRequest(callback);
-                proxyLogin.requestProxyLogin(requestId, authInfo);
-            });
+            request.on('login', handleLoginRequest);
         }
         request.on('error', error =>
             reject(
