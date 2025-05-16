@@ -13,6 +13,7 @@ release the new version.
 
 -   #1125: Handle specifying the core version of nrfutil.
 -   #1133: Rewrote network code to use the fetch API.
+-   #1134: Collected knowledge about Artifactory URL in central place.
 
 ### Fixed
 

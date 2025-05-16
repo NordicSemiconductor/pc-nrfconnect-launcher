@@ -8,8 +8,15 @@ import { net, session } from 'electron';
 import fs from 'fs/promises';
 import { z } from 'zod';
 
+import {
+    artifactoryPingUrl,
+    artifactoryTokenInformationUrl,
+    asShortNordicArtifactoryUrl,
+    determineDownloadUrl,
+    isNordicArtifactoryUrl,
+    needsAuthentication,
+} from '../common/artifactoryUrl';
 import { getUseChineseAppServer } from '../common/persistedStore';
-import { urlWithDownloadApi } from '../common/sources';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
@@ -33,14 +40,8 @@ const reportInstallProgress = (
     });
 };
 
-const isPublicUrl = (url: string) =>
-    url.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/'
-    );
-
 const determineBearer = (url: string) => {
-    if (!url.startsWith('https://files.nordicsemi.com/') || isPublicUrl(url))
-        return;
+    if (!needsAuthentication(url)) return;
 
     const tokenResult = retrieveToken();
     return tokenResult.type === 'Success' ? tokenResult.token : undefined;
@@ -51,39 +52,9 @@ type DownloadOptions = {
     bearer?: string;
 };
 
-export const determineEffectiveUrl = (url: string) => {
-    let effectiveUrl = urlWithDownloadApi(url);
-
-    if (isPublicUrl(effectiveUrl) && getUseChineseAppServer()) {
-        effectiveUrl = effectiveUrl.replace(
-            '//files.nordicsemi.com/',
-            '//files.nordicsemi.cn/'
-        );
-    }
-
-    return effectiveUrl;
-};
-
-const isNordicArtifactoryUrl = (url: string) =>
-    /^https?:\/\/files\.nordicsemi\.(com|cn)\//.test(url);
-
-const shortNordicArtifactoryUrl = (url: string) => {
-    const longArtifactoryUrlRegex =
-        /^https:\/\/files\.nordicsemi\.(?<tld>com|cn)\/ui\/api\/v1\/download\?isNativeBrowsing=false&repoKey=(?<repo>[^&]+)&path=(?<path>.*)/;
-    const match = url.match(longArtifactoryUrlRegex);
-
-    if (match == null) return url;
-
-    const {
-        groups: { tld, repo, path },
-    } = match as { groups: Record<string, string> };
-
-    return `https://files.nordicsemi.${tld}/artifactory/${repo}/${path}`;
-};
-
 const getDownloadSize = async (url: string, bearer?: string) => {
     const effectiveUrl = isNordicArtifactoryUrl(url)
-        ? shortNordicArtifactoryUrl(url)
+        ? asShortNordicArtifactoryUrl(url)
         : url;
 
     try {
@@ -129,7 +100,7 @@ const withProgressReported = (
 const request = async (url: string, { bearer, app }: DownloadOptions = {}) => {
     await ensureNetworkIsInitialised();
 
-    const effectiveUrl = determineEffectiveUrl(url);
+    const effectiveUrl = determineDownloadUrl(url, getUseChineseAppServer());
     try {
         const effectiveBearer = bearer ?? determineBearer(effectiveUrl);
 
@@ -185,10 +156,9 @@ const tokenInformationSchema = z.object({
 
 export const getArtifactoryTokenInformation = async (token: string) =>
     tokenInformationSchema.parse(
-        await downloadToJson<TokenInformation>(
-            'https://files.nordicsemi.com/access/api/v1/tokens/me',
-            { bearer: token }
-        )
+        await downloadToJson<TokenInformation>(artifactoryTokenInformationUrl, {
+            bearer: token,
+        })
     );
 
 let networkIsInitialised = false;
@@ -206,7 +176,7 @@ const ensureNetworkIsInitialised = async () => {
 const doNetworkRequestToCheckForProxyAuthentication = () =>
     new Promise<void>((resolve, reject) => {
         const req = net.request({
-            url: 'https://files.nordicsemi.com/api/system/ping',
+            url: artifactoryPingUrl,
             session: sharedSession(),
         });
         req.setHeader('pragma', 'no-cache');
