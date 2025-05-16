@@ -13,6 +13,8 @@ import {
     SourceUrl,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 
+import { asShortNordicArtifactoryUrl } from './artifactoryUrl';
+
 export {
     allStandardSourceNames,
     LOCAL,
@@ -21,20 +23,6 @@ export {
     type SourceName,
     type SourceUrl,
 };
-
-export const hasRestrictedAccessLevel = (url: SourceUrl) =>
-    url.startsWith(
-        'https://files.nordicsemi.com/artifactory/swtools/internal'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/artifactory/swtools/external-confidential'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal'
-    ) ||
-    url.startsWith(
-        'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external-confidential'
-    );
 
 const deprecatedSources = [
     'toolchain-manager',
@@ -52,18 +40,4 @@ const deprecatedSourceURLs = deprecatedSources.map(
 );
 
 export const isDeprecatedSource = (source: Source) =>
-    deprecatedSourceURLs.includes(source.url);
-
-export const urlWithDownloadApi = (url: string) => {
-    const shortArtifactoryUrlRegex =
-        /^https:\/\/files\.nordicsemi\.(?<tld>cn|com)\/artifactory\/(?<repo>[^/]+)\/(?<path>.*)/;
-    const match = url.match(shortArtifactoryUrlRegex);
-
-    if (match == null) return url;
-
-    const {
-        groups: { tld, repo, path },
-    } = match as { groups: Record<string, string> };
-
-    return `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
-};
+    deprecatedSourceURLs.includes(asShortNordicArtifactoryUrl(source.url));
