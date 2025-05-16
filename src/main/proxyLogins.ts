@@ -4,11 +4,30 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { type AuthInfo } from 'electron';
 import { uuid } from 'short-uuid';
+
+import { inRenderer as proxyLogin } from '../ipc/proxyLogin';
 
 type LoginResponse = (username?: string, password?: string) => void;
 
 const loginRequests = new Map<string, LoginResponse>();
+
+export const handleLoginRequest = (
+    authInfo: AuthInfo,
+    callback: (username?: string, password?: string) => void
+) => {
+    if (
+        authInfo.isProxy === false &&
+        authInfo.host === 'files.nordicsemi.com'
+    ) {
+        callback();
+        return;
+    }
+
+    const requestId = storeProxyLoginRequest(callback);
+    proxyLogin.requestProxyLogin(requestId, authInfo);
+};
 
 export const storeProxyLoginRequest = (callback: LoginResponse) => {
     const requestId = uuid();
