@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Fixed
+
+-   #1135: Jumpy progress bar.
+
+## Unreleased
+
 ### Added
 
 -   #1066: Support for Artifactory tokens.

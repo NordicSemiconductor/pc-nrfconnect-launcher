@@ -10,6 +10,7 @@ import path from 'path';
 import shasum from 'shasum';
 import { uuid } from 'short-uuid';
 
+import { inRenderer as appInstallProgress } from '../../ipc/appInstallProgress';
 import {
     appExists,
     AppSpec,
@@ -21,8 +22,11 @@ import {
 import { getAppsLocalDir, getAppsRootDir } from '../config';
 import { deleteFile, listFiles, untar } from '../fileUtil';
 import { mkdir } from '../mkdir';
-import { downloadToFile } from '../net';
-import { assertPreparedNrfutilModules } from '../nrfutilModules';
+import { downloadFractionName, downloadToFile } from '../net';
+import {
+    assertPreparedNrfutilModules,
+    sandboxFractionNames,
+} from '../nrfutilModules';
 import {
     addDownloadAppData,
     addInstalledAppData,
@@ -237,6 +241,11 @@ const download = async (app: AppSpec, version?: string) => {
 
     const fileName = path.basename(tarballUrl);
     const packageFilePath = path.join(getAppsRootDir(app.source), fileName);
+
+    appInstallProgress.reportAppInstallStart(app, [
+        downloadFractionName,
+        ...sandboxFractionNames(versionToInstall.nrfutilModules),
+    ]);
 
     await Promise.all([
         downloadToFile(tarballUrl, packageFilePath, {

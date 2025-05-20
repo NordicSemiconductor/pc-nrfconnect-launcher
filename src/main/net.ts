@@ -9,9 +9,9 @@ import fs from 'fs-extra';
 import { z } from 'zod';
 
 import { getUseChineseAppServer } from '../common/persistedStore';
+import { inRenderer as appInstallProgress } from '../ipc/appInstallProgress';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
-import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { retrieveToken } from './artifactoryTokenStorage';
 import { handleLoginRequest } from './proxyLogins';
 
@@ -19,15 +19,16 @@ import { handleLoginRequest } from './proxyLogins';
 // (if required) only have to be sent once.
 const NET_SESSION_NAME = 'electron-updater';
 
+export const downloadFractionName = 'download app';
 const reportInstallProgress = (
     app: AppSpec,
     progress: number,
     totalInstallSize: number
 ) => {
-    downloadProgress.reportDownloadProgress({
+    appInstallProgress.reportAppInstallProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
-        fractionName: 'tarBall',
+        fractionName: downloadFractionName,
     });
 };
 

@@ -17,6 +17,7 @@ import {
     OFFICIAL,
     SourceName,
 } from '../../../common/sources';
+import { Progress as AppInstallProgress } from '../../../ipc/appInstallProgress';
 import {
     App,
     AppSpec,
@@ -29,7 +30,6 @@ import {
     isWithdrawn,
     LocalApp,
 } from '../../../ipc/apps';
-import { Progress } from '../../../ipc/downloadProgress';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
@@ -184,10 +184,23 @@ const slice = createSlice({
             state.isDownloadingLatestAppInfo = false;
         },
 
-        // Update progress
-        updateAppProgress(
+        // App install progress
+        initialiseAppInstallProgress(
             state,
-            { payload: progress }: PayloadAction<Progress>
+            {
+                payload: { app: appSpec, fractionNames },
+            }: PayloadAction<{ app: AppSpec; fractionNames: string[] }>
+        ) {
+            updateApp(appSpec, state.downloadableApps, app => {
+                app.progress.fractions = Object.fromEntries(
+                    fractionNames.map(fractionName => [fractionName, 0])
+                );
+            });
+        },
+
+        updateAppInstallProgress(
+            state,
+            { payload: progress }: PayloadAction<AppInstallProgress>
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
                 app.progress.fractions[progress.fractionName] =
@@ -195,7 +208,10 @@ const slice = createSlice({
             });
         },
 
-        resetAppProgress(state, { payload: app }: PayloadAction<AppSpec>) {
+        resetAppInstallProgress(
+            state,
+            { payload: app }: PayloadAction<AppSpec>
+        ) {
             resetProgress(app, state.downloadableApps);
         },
 
@@ -260,18 +276,19 @@ export default slice.reducer;
 export const {
     addDownloadableApps,
     addLocalApp,
+    initialiseAppInstallProgress,
     installDownloadableAppStarted,
     removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
-    resetAppProgress,
+    resetAppInstallProgress,
     setAllLocalApps,
+    updateAppInstallProgress,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
-    updateAppProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {
