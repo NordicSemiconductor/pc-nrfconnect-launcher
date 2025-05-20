@@ -11,7 +11,13 @@ import {
     getDoNotRemindDeprecatedSources as getPersistedDoNotRemindDeprecatedSources,
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
 } from '../../../common/persistedStore';
-import { Source, SourceName, SourceUrl } from '../../../common/sources';
+import {
+    hasRestrictedAccessLevel,
+    isDeprecatedSource,
+    Source,
+    SourceName,
+    SourceUrl,
+} from '../../../common/sources';
 import type { RootState } from '../../store';
 
 type Hidden = typeof hidden;
@@ -165,6 +171,11 @@ export const {
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
+export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
+    state.sources.sources.filter(
+        source =>
+            hasRestrictedAccessLevel(source.url) && !isDeprecatedSource(source)
+    );
 export const getIsAddSourceVisible = (state: RootState) =>
     state.sources.isAddSourceVisible;
 export const getIsRemoveSourceVisible = (state: RootState) =>

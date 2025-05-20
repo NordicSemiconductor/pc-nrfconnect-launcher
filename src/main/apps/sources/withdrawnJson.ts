@@ -39,18 +39,20 @@ export const isInListOfWithdrawnApps = (
         appUrl.endsWith(`/${appinfoFilename}`)
     ) != null;
 
-const without = <T>(arr1: T[], arr2: T[]) =>
-    arr1.filter(element => !arr2.includes(element));
+const lastSegment = (url: string) => url.split('/').at(-1)!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+
+const without = (arr1: string[], arr2: string[]) =>
+    arr1.filter(element => !arr2.includes(lastSegment(element)));
 
 const stillWithdrawnApps = (
     oldWithdrawnJson: WithdrawnJson,
     newSourceJson: SourceJson
-) => without(oldWithdrawnJson, newSourceJson.apps);
+) => without(oldWithdrawnJson, newSourceJson.apps.map(lastSegment));
 
 const freshlyWithdrawnApps = (
     oldSourceJson: SourceJson,
     newSourceJson: SourceJson
-) => without(oldSourceJson.apps, newSourceJson.apps);
+) => without(oldSourceJson.apps, newSourceJson.apps.map(lastSegment));
 
 export const newWithdrawnJson = (
     oldWithdrawnJson: WithdrawnJson,

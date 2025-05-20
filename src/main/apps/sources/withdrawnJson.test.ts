@@ -27,7 +27,7 @@ test('computing the new list of withdrawn apps', () => {
         apps: [
             'http://example.org/oldAvailableApp.json',
             'http://example.org/newlyAvailableApp.json',
-            'http://example.org/revivedApp.json',
+            'http://example.org/under/new/path/revivedApp.json',
         ],
     };
 
