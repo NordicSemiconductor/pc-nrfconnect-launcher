@@ -19,6 +19,7 @@ import { handleLoginRequest } from './proxyLogins';
 // (if required) only have to be sent once.
 const NET_SESSION_NAME = 'electron-updater';
 
+export const downloadFractionName = 'download app';
 const reportInstallProgress = (
     app: AppSpec,
     progress: number,
@@ -27,7 +28,7 @@ const reportInstallProgress = (
     appInstallProgress.reportAppInstallProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
-        fractionName: 'tarBall',
+        fractionName: downloadFractionName,
     });
 };
 
