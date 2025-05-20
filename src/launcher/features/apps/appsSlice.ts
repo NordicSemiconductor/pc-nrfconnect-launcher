@@ -184,7 +184,20 @@ const slice = createSlice({
             state.isDownloadingLatestAppInfo = false;
         },
 
-        // Update app installprogress
+        // Update app install progress
+        initialiseAppInstallProgress(
+            state,
+            {
+                payload: { app: appSpec, fractionNames },
+            }: PayloadAction<{ app: AppSpec; fractionNames: string[] }>
+        ) {
+            updateApp(appSpec, state.downloadableApps, app => {
+                app.progress.fractions = Object.fromEntries(
+                    fractionNames.map(fractionName => [fractionName, 0])
+                );
+            });
+        },
+
         updateAppInstallProgress(
             state,
             { payload: progress }: PayloadAction<AppInstallProgress>
@@ -260,6 +273,7 @@ export default slice.reducer;
 export const {
     addDownloadableApps,
     addLocalApp,
+    initialiseAppInstallProgress,
     installDownloadableAppStarted,
     removeAppsOfSource,
     removeDownloadableAppStarted,
@@ -267,11 +281,11 @@ export const {
     removeLocalApp,
     resetAppProgress,
     setAllLocalApps,
+    updateAppInstallProgress,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
-    updateAppInstallProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {

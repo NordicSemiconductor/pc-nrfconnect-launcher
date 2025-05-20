@@ -120,3 +120,6 @@ export const assertPreparedNrfutilModules = (
             cachedSandbox(app, moduleName, moduleVersion, nrfutilCore) ??
             preparedSandbox(app, moduleName, moduleVersion, nrfutilCore)
     );
+
+export const sandboxFractionNames = (nrfutilModules: NrfutilModules = {}) =>
+    Object.keys(nrfutilModules);

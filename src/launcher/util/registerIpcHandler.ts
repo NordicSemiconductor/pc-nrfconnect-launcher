@@ -10,7 +10,10 @@ import * as appInstallProgress from '../../ipc/appInstallProgress';
 import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
 import * as proxyLogin from '../../ipc/proxyLogin';
 import * as showErrorDialog from '../../ipc/showErrorDialog';
-import { updateAppInstallProgress } from '../features/apps/appsSlice';
+import {
+    initialiseAppInstallProgress,
+    updateAppInstallProgress,
+} from '../features/apps/appsSlice';
 import {
     reset,
     startDownload,
@@ -22,6 +25,9 @@ import type { AppDispatch } from '../store';
 export default (dispatch: AppDispatch) => {
     appInstallProgress.forMain.registerAppInstallProgress(progress => {
         dispatch(updateAppInstallProgress(progress));
+    });
+    appInstallProgress.forMain.registerAppInstallStart((app, fractionNames) => {
+        dispatch(initialiseAppInstallProgress({ app, fractionNames }));
     });
 
     showErrorDialog.forMain.registerShowErrorDialog(errorMessage => {

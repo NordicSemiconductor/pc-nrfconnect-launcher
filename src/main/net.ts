@@ -28,6 +28,7 @@ import { handleLoginRequest } from './proxyLogins';
 // It would be better to use autoUpdater.netSession, but I found no way to use that without breaking the tests.
 export const sharedSession = () => session.fromPartition('electron-updater');
 
+export const downloadFractionName = 'download app';
 const reportInstallProgress = (
     app: AppSpec,
     progress: number,
@@ -36,7 +37,7 @@ const reportInstallProgress = (
     appInstallProgress.reportAppInstallProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
-        fractionName: 'tarBall',
+        fractionName: downloadFractionName,
     });
 };
 
