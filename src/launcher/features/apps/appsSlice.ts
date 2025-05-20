@@ -17,6 +17,7 @@ import {
     OFFICIAL,
     SourceName,
 } from '../../../common/sources';
+import { Progress as AppInstallProgress } from '../../../ipc/appInstallProgress';
 import {
     App,
     AppSpec,
@@ -29,7 +30,6 @@ import {
     isWithdrawn,
     LocalApp,
 } from '../../../ipc/apps';
-import { Progress } from '../../../ipc/downloadProgress';
 import type { RootState } from '../../store';
 import { getAppsFilter } from '../filter/filterSlice';
 
@@ -184,10 +184,10 @@ const slice = createSlice({
             state.isDownloadingLatestAppInfo = false;
         },
 
-        // Update progress
-        updateAppProgress(
+        // Update app installprogress
+        updateAppInstallProgress(
             state,
-            { payload: progress }: PayloadAction<Progress>
+            { payload: progress }: PayloadAction<AppInstallProgress>
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
                 app.progress.fractions[progress.fractionName] =
@@ -271,7 +271,7 @@ export const {
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
     updateDownloadableAppStarted,
-    updateAppProgress,
+    updateAppInstallProgress,
 } = slice.actions;
 
 export const getAllApps = (state: RootState): DisplayedApp[] => {

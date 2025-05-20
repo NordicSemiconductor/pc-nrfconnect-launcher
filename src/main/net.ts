@@ -17,9 +17,9 @@ import {
     needsAuthentication,
 } from '../common/artifactoryUrl';
 import { getUseChineseAppServer } from '../common/persistedStore';
+import { inRenderer as appInstallProgress } from '../ipc/appInstallProgress';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
-import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { retrieveToken } from './artifactoryTokenStorage';
 import describeError from './describeError';
 import { handleLoginRequest } from './proxyLogins';
@@ -33,7 +33,7 @@ const reportInstallProgress = (
     progress: number,
     totalInstallSize: number
 ) => {
-    downloadProgress.reportDownloadProgress({
+    appInstallProgress.reportAppInstallProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
         fractionName: 'tarBall',
