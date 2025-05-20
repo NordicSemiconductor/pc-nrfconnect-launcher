@@ -11,7 +11,9 @@ import {
 
 import { AppSpec } from './apps';
 
-const channel = 'download-progress';
+const channel = {
+    progress: 'app-install:progress',
+};
 
 export type Progress = {
     app: AppSpec;
@@ -21,8 +23,8 @@ export type Progress = {
 
 type DownloadProgress = (progress: Progress) => void;
 
-const reportDownloadProgress = send<DownloadProgress>(channel);
-const registerDownloadProgress = on<DownloadProgress>(channel);
+const reportAppInstallProgress = send<DownloadProgress>(channel.progress);
+const registerAppInstallProgress = on<DownloadProgress>(channel.progress);
 
-export const forMain = { registerDownloadProgress };
-export const inRenderer = { reportDownloadProgress };
+export const forMain = { registerAppInstallProgress };
+export const inRenderer = { reportAppInstallProgress };

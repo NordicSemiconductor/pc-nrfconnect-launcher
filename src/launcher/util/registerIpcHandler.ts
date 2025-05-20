@@ -6,11 +6,11 @@
 
 import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import * as downloadProgress from '../../ipc/downloadProgress';
+import * as appInstallProgress from '../../ipc/appInstallProgress';
 import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
 import * as proxyLogin from '../../ipc/proxyLogin';
 import * as showErrorDialog from '../../ipc/showErrorDialog';
-import { updateAppProgress } from '../features/apps/appsSlice';
+import { updateAppInstallProgress } from '../features/apps/appsSlice';
 import {
     reset,
     startDownload,
@@ -20,8 +20,8 @@ import { loginRequestedByServer } from '../features/proxyLogin/proxyLoginSlice';
 import type { AppDispatch } from '../store';
 
 export default (dispatch: AppDispatch) => {
-    downloadProgress.forMain.registerDownloadProgress(progress => {
-        dispatch(updateAppProgress(progress));
+    appInstallProgress.forMain.registerAppInstallProgress(progress => {
+        dispatch(updateAppInstallProgress(progress));
     });
 
     showErrorDialog.forMain.registerShowErrorDialog(errorMessage => {
