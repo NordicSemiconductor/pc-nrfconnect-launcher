@@ -35,7 +35,7 @@ import {
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
-    resetAppProgress,
+    resetAppInstallProgress,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
@@ -159,7 +159,7 @@ const install =
                 )
             );
         }
-        dispatch(resetAppProgress(app));
+        dispatch(resetAppInstallProgress(app));
     };
 
 export const installDownloadableApp =
@@ -219,7 +219,7 @@ export const removeDownloadableApp =
                 )
             );
         }
-        dispatch(resetAppProgress(app));
+        dispatch(resetAppInstallProgress(app));
     };
 
 export const launch =
