@@ -184,7 +184,7 @@ const slice = createSlice({
             state.isDownloadingLatestAppInfo = false;
         },
 
-        // Update app install progress
+        // App install progress
         initialiseAppInstallProgress(
             state,
             {
@@ -208,7 +208,10 @@ const slice = createSlice({
             });
         },
 
-        resetAppProgress(state, { payload: app }: PayloadAction<AppSpec>) {
+        resetAppInstallProgress(
+            state,
+            { payload: app }: PayloadAction<AppSpec>
+        ) {
             resetProgress(app, state.downloadableApps);
         },
 
@@ -279,7 +282,7 @@ export const {
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
     removeLocalApp,
-    resetAppProgress,
+    resetAppInstallProgress,
     setAllLocalApps,
     updateAppInstallProgress,
     updateDownloadableAppInfosFailed,
