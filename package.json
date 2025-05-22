@@ -85,6 +85,7 @@
         "win": {
             "target": "nsis",
             "icon": "resources/icon.ico",
+            "verifyUpdateCodeSignature": false,
             "azureSignOptions": {
                 "publisherName": "Nordic Semiconductor ASA",
                 "endpoint": "https://weu.codesigning.azure.net",
