@@ -1,45 +1,18 @@
-name: Release to GitHub
+name: Release
 
 on:
     workflow_dispatch:
-        inputs:
-            run_id:
-                description: 'The workflow id where the artifacts were uploaded'
-                required: true
-                type: string
-            tag:
-                description: 'Tag to be used (e.g. v8.8.8)'
-                required: true
-                type: string
-
-env:
-    GH_TOKEN: ${{ github.token }}
 
 jobs:
     release:
         runs-on: ['ubuntu-latest']
         steps:
-            - name: Download artifacts
-              run: |
-                gh run download ${{ inputs.run_id }} --repo nordicsemiconductor/pc-nrfconnect-launcher
-
-            - name: Merge latest-mac.yml
-              run: |
-                  ls -R
-                  mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
-                  cd nrfconnect-macOS-arm64
-                  yq '. *=+ load("latest-mac-x64.yml")' latest-mac-arm64.yml > latest-mac.yml
-                  rm latest-mac-x64.yml latest-mac-arm64.yml
-            
-            - name: Create Release
-              run: >
-                gh release create ${{ inputs.tag }}
-                --repo nordicsemiconductor/pc-nrfconnect-launcher
-                --title ${{ inputs.tag }}
-                --draft
-                --generate-notes
-                nrfconnect-*/*.AppImage
-                nrfconnect-*/*.exe
-                nrfconnect-*/*.dmg
-                nrfconnect-*/*.zip
-                nrfconnect-*/latest*.yml
+            - uses: jfrog/setup-jfrog-cli@v4
+              env:
+                  JF_URL: https://files.nordicsemi.com/
+                  JF_ACCESS_TOKEN:
+                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND
+                      }}
+            - run: |
+                  jf rt copy --flat swtools/external/ncd/launcher/v5.2.0/ web-assets-com_nordicsemi/external/swtools/ncd/launcher/v5.2.0/
+                  jf rt copy --flat 'swtools/external/ncd/launcher/latest*' web-assets-com_nordicsemi/external/swtools/ncd/launcher/
