@@ -1,4 +1,4 @@
-name: Build nRF Connect for Desktop
+name: Build
 
 on:
     workflow_dispatch:
