@@ -5,7 +5,7 @@
  */
 
 import { dialog } from 'electron';
-import fs from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
 

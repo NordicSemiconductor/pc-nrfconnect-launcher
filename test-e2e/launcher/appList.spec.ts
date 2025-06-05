@@ -5,7 +5,7 @@
  */
 
 import { ElectronApplication, Page, test } from '@playwright/test';
-import { removeSync } from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 
 import {
@@ -40,11 +40,12 @@ test.describe('the list of all apps', () => {
                 app,
                 appsRootDir,
             });
-            removeSync(
+            fs.rmSync(
                 path.resolve(
                     __dirname,
                     'fixtures/one-downloadable-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg'
-                )
+                ),
+                { recursive: true, force: true }
             );
         });
 

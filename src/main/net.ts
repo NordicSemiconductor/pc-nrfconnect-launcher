@@ -5,7 +5,7 @@
  */
 
 import { net, session } from 'electron';
-import fs from 'fs-extra';
+import fs from 'fs/promises';
 import { z } from 'zod';
 
 import { getUseChineseAppServer } from '../common/persistedStore';

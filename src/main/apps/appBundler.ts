@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { existsSync, readdirSync } from 'fs-extra';
+import fs from 'fs';
 import path from 'path';
 
 import { getBundledResourcesDir } from '../config';
@@ -23,10 +23,10 @@ export const ensureBundledAppExists = async () => {
         'prefetched',
         'appBundles'
     );
-    if (!existsSync(bundledAppsPath)) return;
+    if (!fs.existsSync(bundledAppsPath)) return;
 
     await Promise.allSettled(
-        readdirSync(bundledAppsPath).map(pathToTarBall => {
+        fs.readdirSync(bundledAppsPath).map(pathToTarBall => {
             const appNameRegex = /pc-nrfconnect(-[a-zA-Z]+)+/;
             const versionRegex = /[0-9]+.[0-9]+.[0-9]+/;
 
@@ -52,7 +52,7 @@ export const ensureBundledAppExists = async () => {
 
             const tarBallFullPath = path.join(bundledAppsPath, pathToTarBall);
 
-            if (appNotInstalled && existsSync(tarBallFullPath)) {
+            if (appNotInstalled && fs.existsSync(tarBallFullPath)) {
                 const appSpec = {
                     name: appName,
                     source: 'official',

@@ -8,7 +8,7 @@ import {
     AppInfo,
     parsePackageJsonLegacyApp,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import fs from 'fs-extra';
+import fs from 'fs';
 import path, { basename } from 'path';
 
 import { LOCAL, Source, SourceName } from '../../common/sources';
@@ -42,7 +42,7 @@ export const installedAppPath = (app: AppSpec) => {
 export const isInstalled = (
     app: DownloadableApp
 ): app is InstalledDownloadableApp | WithdrawnApp =>
-    fs.pathExistsSync(installedAppPath(app));
+    fs.existsSync(installedAppPath(app));
 
 // FIXME later: This should not be needed anymore. Remove it.
 const appInfoFile = (appSpec: AppSpec) =>
