@@ -9,6 +9,13 @@ release the new version.
 
 ## Unreleased
 
+### Fixed
+
+-   #1116: Opening some files, e.g. log files, failed. E.g. on Windows and Linux
+    with a space or on macOS with a semicolon in their names.
+
+## 5.2.0
+
 ### Added
 
 -   #1066: Support for Artifactory tokens.
