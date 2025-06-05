@@ -14,43 +14,46 @@ const SOURCE_URL =
 
 const BUNDLE_APPS = ['pc-nrfconnect-quickstart'];
 
-const preparingSandbox = new Map();
+const alreadyPreparedSandboxes = new Set();
 
-const bundleNrfutilModule = (module, version) => {
-    if (
-        preparingSandbox.has(module) &&
-        preparingSandbox.get(module).has(version)
-    )
-        return; // Already bundled
+const bundleNrfutilModule = (module, version, coreVersion) => {
+    const key = `${module}-${version}-${coreVersion}`;
+    if (alreadyPreparedSandboxes.has(key)) return; // Already bundled
 
-    if (!preparingSandbox.has(module)) preparingSandbox.set(module, new Set());
+    alreadyPreparedSandboxes.add(key);
 
-    preparingSandbox.get(module).add(version);
-
-    console.log(`Bundling nrfutil module ${module} version ${version}`);
-
-    const nrfutilSandboxFolder =
-        process.platform === 'darwin' && process.arch !== 'x64'
-            ? path.join('nrfutil-sandboxes', process.arch)
-            : 'nrfutil-sandboxes';
-    execSync(
-        `${path.join(
-            'resources',
-            'nrfutil'
-        )} install ${module}=${version} --force`,
-        {
-            env: {
-                ...process.env,
-                NRFUTIL_HOME: path.join(
-                    'resources',
-                    nrfutilSandboxFolder,
-                    module,
-                    version
-                ),
-            },
-        }
+    console.log(
+        `Bundling nrfutil module ${module} version ${version} and core ${
+            coreVersion ?? '(defaulting to 8.0.0)'
+        }`
     );
-    console.log(`🏁 Bundled nrfutil module ${module} version ${version}:`);
+
+    const nrfUtilBinary = path.join('resources', 'nrfutil');
+    const env = {
+        ...process.env,
+        NRFUTIL_HOME: path.join(
+            'resources',
+            'nrfutil-sandboxes',
+            ...(process.platform === 'darwin' && process.arch !== 'x64'
+                ? [process.arch]
+                : []),
+            ...(coreVersion != null ? [coreVersion] : []),
+            module,
+            version
+        ),
+    };
+
+    execSync(
+        `${nrfUtilBinary} self-upgrade --to-version ${coreVersion ?? '8.0.0'}`,
+        { env }
+    );
+    execSync(`${nrfUtilBinary} install ${module}=${version} --force`, { env });
+
+    console.log(
+        `🏁 Bundled nrfutil module ${module} version ${version} and core ${
+            coreVersion ?? '(defaulting to 8.0.0)'
+        }`
+    );
 };
 
 const isAppBundled = appJSONUrl =>
@@ -83,7 +86,7 @@ const parseSourceFile = appUrls =>
                 'prefetched',
                 'appBundles'
             );
-            fs.mkdirSync(appBundlesPath);
+            fs.mkdirSync(appBundlesPath, { recursive: true });
 
             const promises = [];
             promises.push(
@@ -100,7 +103,11 @@ const parseSourceFile = appUrls =>
             if (latestVersion.nrfutilModules) {
                 Object.keys(latestVersion.nrfutilModules).forEach(module => {
                     latestVersion.nrfutilModules[module].forEach(version => {
-                        promises.push(bundleNrfutilModule(module, version));
+                        bundleNrfutilModule(
+                            module,
+                            version,
+                            latestVersion.nrfutilCore
+                        );
                     });
                 });
             }

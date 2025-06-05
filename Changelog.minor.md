@@ -9,6 +9,10 @@ release the new version.
 
 ## Unreleased
 
+### Changed
+
+-   #1125: Handle specifying the core version of nrfutil.
+
 ### Fixed
 
 -   #1116: Opening some files, e.g. log files, failed. E.g. on Windows and Linux

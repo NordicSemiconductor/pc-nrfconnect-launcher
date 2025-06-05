@@ -166,17 +166,20 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
           );
 };
 
-const getJlinkCompatibility = memoize(async (nrfutilDeviceVersion: string) => {
-    const userDir = getUserDataDir();
-    const sandbox = await prepareSandbox(
-        userDir,
-        'device',
-        nrfutilDeviceVersion
-    );
-    const moduleVersion = await sandbox.getModuleVersion();
+const getJlinkCompatibility = memoize(
+    async (nrfutilDeviceVersion: string, nrfutilCoreVersion?: string) => {
+        const userDir = getUserDataDir();
+        const sandbox = await prepareSandbox(
+            userDir,
+            'device',
+            nrfutilDeviceVersion,
+            nrfutilCoreVersion
+        );
+        const moduleVersion = await sandbox.getModuleVersion();
 
-    return getJlinkCompatibilityFromModuleVersion(moduleVersion);
-});
+        return getJlinkCompatibilityFromModuleVersion(moduleVersion);
+    }
+);
 
 export const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp
@@ -186,12 +189,16 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
     }
 
     const deviceVersion = app.nrfutil?.device?.at(0);
+    const coreVersion = app.nrfutilCore;
 
     if (!deviceVersion) {
         return undecided;
     }
 
-    const jlinkCompatibility = await getJlinkCompatibility(deviceVersion);
+    const jlinkCompatibility = await getJlinkCompatibility(
+        deviceVersion,
+        coreVersion
+    );
 
     if (jlinkCompatibility.kind === 'No J-Link installed') {
         const { requiredJlink } = jlinkCompatibility;

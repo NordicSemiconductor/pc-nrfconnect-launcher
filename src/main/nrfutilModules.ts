@@ -9,18 +9,26 @@ import {
     NrfutilModules,
     NrfutilModuleVersion,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
-import { Progress } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
-import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
-import getSandbox, {
+import {
     NrfutilSandbox,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/sandbox';
+    prepareSandbox,
+    Progress,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
+import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
 
 import { AppSpec } from '../ipc/apps';
 import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { getUserDataDir } from './config';
 import { logger } from './log';
 
-type SandboxesCacheKeyType = `${NrfutilModuleName}-${NrfutilModuleVersion}`;
+type SandboxesCacheKeyType =
+    `${NrfutilModuleName}-${NrfutilModuleVersion}-${NrfutilModuleVersion}`;
+const cacheKey = (
+    moduleName: string,
+    moduleVersion: string,
+    nrfutilCore: NrfutilModuleVersion = 'unspecified'
+) => `${moduleName}-${moduleVersion}-${nrfutilCore}` as const;
+
 type SandboxesCacheType = {
     sandbox?: Promise<NrfutilSandbox>;
     progressCallbacks: ((progress: Progress) => void)[];
@@ -33,9 +41,11 @@ const sandboxesCache: {
 const cachedSandbox = (
     app: AppSpec,
     moduleName: string,
-    moduleVersion: NrfutilModuleVersion
+    moduleVersion: NrfutilModuleVersion,
+    nrfutilCore?: NrfutilModuleVersion
 ) => {
-    const cached = sandboxesCache[`${moduleName}-${moduleVersion}`];
+    const cached =
+        sandboxesCache[cacheKey(moduleName, moduleVersion, nrfutilCore)];
 
     if (cached) {
         const progressCallback = (progress: Progress) => {
@@ -58,11 +68,16 @@ const cachedSandbox = (
 const preparedSandbox = (
     app: AppSpec,
     moduleName: string,
-    moduleVersion: NrfutilModuleVersion
+    moduleVersion: NrfutilModuleVersion,
+    nrfutilCore?: NrfutilModuleVersion
 ) => {
     setNrfutilLogger(logger);
 
-    const key: SandboxesCacheKeyType = `${moduleName}-${moduleVersion}`;
+    const key: SandboxesCacheKeyType = cacheKey(
+        moduleName,
+        moduleVersion,
+        nrfutilCore
+    );
     sandboxesCache[key] = {
         progressCallbacks: [
             progress => {
@@ -75,10 +90,11 @@ const preparedSandbox = (
         ],
     };
 
-    const sandbox = getSandbox(
+    const sandbox = prepareSandbox(
         getUserDataDir(),
         moduleName,
         moduleVersion,
+        nrfutilCore,
         progress => {
             if (sandboxesCache[key]) {
                 sandboxesCache[key].progressCallbacks.forEach(fn =>
@@ -96,10 +112,11 @@ const preparedSandbox = (
 };
 export const assertPreparedNrfutilModules = (
     app: AppSpec,
-    nrfutilModules: NrfutilModules = {}
+    nrfutilModules: NrfutilModules = {},
+    nrfutilCore: NrfutilModuleVersion | undefined = undefined
 ) =>
     Object.entries(nrfutilModules).map(
         ([moduleName, [moduleVersion]]) =>
-            cachedSandbox(app, moduleName, moduleVersion) ??
-            preparedSandbox(app, moduleName, moduleVersion)
+            cachedSandbox(app, moduleName, moduleVersion, nrfutilCore) ??
+            preparedSandbox(app, moduleName, moduleVersion, nrfutilCore)
     );
