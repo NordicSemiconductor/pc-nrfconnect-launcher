@@ -15,6 +15,7 @@ release the new version.
     with a space or on macOS with a semicolon in their names.
 -   #1120: App windows used to increase in size on every launch.
 -   #1122: Updated fs related code to not need fs-extra anymore.
+-   #1123: Asynchronicity of `openFile` and `openUrl`.
 
 ## 5.2.0
 

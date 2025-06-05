@@ -5,19 +5,17 @@
  */
 
 import { shell } from 'electron';
-import fs from 'fs';
+import fs from 'node:fs';
 
 export const openFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) {
         throw new Error(`Could not find file at path: ${filePath}`);
     }
 
-    shell.openPath(filePath);
+    return shell.openPath(filePath);
 };
 
-export const openUrl = (url: string) => {
-    shell.openExternal(url);
-};
+export const openUrl = (url: string) => shell.openExternal(url);
 
 export const openFileLocation = (filePath: string) => {
     shell.showItemInFolder(filePath);
