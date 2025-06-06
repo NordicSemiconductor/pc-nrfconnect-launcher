@@ -63,7 +63,7 @@ For some of these sources, you might need to request an identity token and add i
 
 Here you can manage your identity token, which allows you to access restricted app sources from Nordic Semiconductor. The token is required for accessing certain proprietary or early-access applications.
 
-For detailed information about working with authentication tokens, see [Working with authentication tokens](working_with_authentications_tokens.md).
+For detailed information, see [Working with identity tokens](working_with_authentications_tokens.md).
 
 ### Mainland China app server
 

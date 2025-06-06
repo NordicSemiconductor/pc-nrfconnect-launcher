@@ -64,4 +64,4 @@ nav:
   - Overview: overview_cfd.md
   - Installing apps in nRF Connect for Desktop: installing_apps.md
   - Starting nRF Connect for Desktop with proxy settings: proxy_settings.md
-  - Working with authentication tokens: working_with_authentications_tokens.md
+  - Working with identity tokens: working_with_authentications_tokens.md
