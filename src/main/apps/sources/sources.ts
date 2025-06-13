@@ -7,8 +7,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { needsAuthentication } from '../../../common/artifactoryUrl';
 import {
-    hasRestrictedAccessLevel,
     isDeprecatedSource,
     OFFICIAL,
     Source,
@@ -110,7 +110,7 @@ export const downloadAllSources = async () => {
 
     await Promise.allSettled(
         sources.map(async source => {
-            if (!hasToken && hasRestrictedAccessLevel(source.url)) return;
+            if (!hasToken && needsAuthentication(source.url)) return;
             if (isDeprecatedSource(source)) return;
 
             try {
