@@ -12,6 +12,7 @@ release the new version.
 ### Changed
 
 -   #1125: Handle specifying the core version of nrfutil.
+-   #1133: Rewrote network code to use the fetch API.
 
 ### Fixed
 
