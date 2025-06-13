@@ -20,7 +20,7 @@ import reducer, {
     removeAppsOfSource,
     removeDownloadableAppStarted,
     removeDownloadableAppSuccess,
-    resetAppProgress,
+    resetAppInstallProgress,
     setAllLocalApps,
     State,
     updateDownloadableAppInfosFailed,
@@ -173,7 +173,7 @@ describe('appsReducer', () => {
 
         const afterFinishingInstalling = reducer(
             whileInstalling,
-            resetAppProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1)
         );
         expect(appIsInstalling(afterFinishingInstalling)).toBe(false);
     });
@@ -201,7 +201,7 @@ describe('appsReducer', () => {
 
         const afterAbortingRemoving = reducer(
             whileRemoving,
-            resetAppProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1)
         );
         expect(appIsBeingRemoved(afterAbortingRemoving)).toBe(false);
     });
@@ -223,7 +223,7 @@ describe('appsReducer', () => {
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            resetAppProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1)
         );
         expect(appIsBeingUpdated(afterFinishingUpdating)).toBe(false);
     });

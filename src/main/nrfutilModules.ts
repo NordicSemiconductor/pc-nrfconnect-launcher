@@ -16,8 +16,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
 
+import { inRenderer as appInstallProgress } from '../ipc/appInstallProgress';
 import { AppSpec } from '../ipc/apps';
-import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { getUserDataDir } from './config';
 import { logger } from './log';
 
@@ -49,7 +49,7 @@ const cachedSandbox = (
 
     if (cached) {
         const progressCallback = (progress: Progress) => {
-            downloadProgress.reportDownloadProgress({
+            appInstallProgress.reportAppInstallProgress({
                 app,
                 progressFraction: progress.totalProgressPercentage,
                 fractionName: moduleName,
@@ -81,7 +81,7 @@ const preparedSandbox = (
     sandboxesCache[key] = {
         progressCallbacks: [
             progress => {
-                downloadProgress.reportDownloadProgress({
+                appInstallProgress.reportAppInstallProgress({
                     app,
                     progressFraction: progress.totalProgressPercentage,
                     fractionName: moduleName,
@@ -120,3 +120,6 @@ export const assertPreparedNrfutilModules = (
             cachedSandbox(app, moduleName, moduleVersion, nrfutilCore) ??
             preparedSandbox(app, moduleName, moduleVersion, nrfutilCore)
     );
+
+export const sandboxFractionNames = (nrfutilModules: NrfutilModules = {}) =>
+    Object.keys(nrfutilModules);

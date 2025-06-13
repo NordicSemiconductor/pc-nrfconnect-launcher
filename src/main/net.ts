@@ -17,9 +17,9 @@ import {
     needsAuthentication,
 } from '../common/artifactoryUrl';
 import { getUseChineseAppServer } from '../common/persistedStore';
+import { inRenderer as appInstallProgress } from '../ipc/appInstallProgress';
 import type { AppSpec } from '../ipc/apps';
 import { TokenInformation } from '../ipc/artifactoryToken';
-import { inRenderer as downloadProgress } from '../ipc/downloadProgress';
 import { retrieveToken } from './artifactoryTokenStorage';
 import describeError from './describeError';
 import { handleLoginRequest } from './proxyLogins';
@@ -28,15 +28,16 @@ import { handleLoginRequest } from './proxyLogins';
 // It would be better to use autoUpdater.netSession, but I found no way to use that without breaking the tests.
 export const sharedSession = () => session.fromPartition('electron-updater');
 
+export const downloadFractionName = 'download app';
 const reportInstallProgress = (
     app: AppSpec,
     progress: number,
     totalInstallSize: number
 ) => {
-    downloadProgress.reportDownloadProgress({
+    appInstallProgress.reportAppInstallProgress({
         app,
         progressFraction: Math.floor((progress / totalInstallSize) * 100),
-        fractionName: 'tarBall',
+        fractionName: downloadFractionName,
     });
 };
 
