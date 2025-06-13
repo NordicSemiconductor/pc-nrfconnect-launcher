@@ -7,6 +7,11 @@
     `files.nordicsemi.com`. If users choose to use the Chinese server, it uses
     `files.nordicsemi.cn`.
 
+### Fixed
+
+-   Missing progress bar on app install.
+-   App install failure when a proxy required authentication.
+
 ## 5.2.0 - 2025-05-22
 
 ### Added
