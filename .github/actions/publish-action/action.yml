@@ -17,4 +17,5 @@ runs:
               name: nrfconnect-${{ inputs.suffix}}
               path: |
                   release/nrfconnect*
+                  release/changelog.md
                   release/latest*
