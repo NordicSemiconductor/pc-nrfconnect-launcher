@@ -12,15 +12,19 @@ on:
             - 'doc/**'
 
 jobs:
-    build_on_windows:
+    windows:
         uses: ./.github/workflows/build_win.yml
         secrets: inherit
-    build_on_linux:
+    linux:
         uses: ./.github/workflows/build_linux.yml
         secrets: inherit
-    build_on_darwin_x64:
-        uses: ./.github/workflows/build_darwin_x64.yml
+    darwin_x64:
+        uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
-    build_on_darwin_arm64:
-        uses: ./.github/workflows/build_darwin_arm64.yml
+        with:
+            arch: x64
+    darwin_arm64:
+        uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
+        with:
+            arch: arm64

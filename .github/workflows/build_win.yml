@@ -6,6 +6,7 @@ on:
 
 jobs:
     build:
+        name: Build Windows
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v4
@@ -16,8 +17,7 @@ jobs:
                   echo "AZURE_TENANT_ID=${{ secrets.NORDIC_AZURE_TENANT_ID }}" >> "$GITHUB_ENV"
                   echo "AZURE_CLIENT_ID=${{ secrets.NORDIC_AZURE_CLIENT_ID }}" >> "$GITHUB_ENV"
                   echo "AZURE_CLIENT_SECRET=${{ secrets.NORDIC_AZURE_CLIENT_SECRET }}" >> "$GITHUB_ENV"
-              if:
-                  ${{ github.event_name != 'pull_request' }}
+              if: ${{ github.event_name != 'pull_request' }}
 
             - name: Build
               uses: ./.github/actions/build-action
