@@ -27,15 +27,10 @@ jobs:
                   CSC_KEY_PASSWORD:
                       ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12_PASS }}
                   APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
-                  APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
+                  APPLE_APP_SPECIFIC_PASSWORD:
+                      ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAM_ID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
               run: npx electron-builder -p never --arm64
-              if: github.event_name != 'pull_request'
-
-            - name: Rename latest-mac.yml
-              run: |
-                  cd release
-                  mv latest-mac.yml latest-mac-arm64.yml
               if: github.event_name != 'pull_request'
 
             - name: Upload

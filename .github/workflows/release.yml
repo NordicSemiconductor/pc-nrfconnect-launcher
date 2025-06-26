@@ -21,25 +21,24 @@ jobs:
         steps:
             - name: Download artifacts
               run: |
-                gh run download ${{ inputs.run_id }} --repo nordicsemiconductor/pc-nrfconnect-launcher
+                  gh run download ${{ inputs.run_id }} --repo nordicsemiconductor/pc-nrfconnect-launcher
 
             - name: Merge latest-mac.yml
               run: |
                   ls -R
-                  mv nrfconnect-macOS-x64/latest-mac-x64.yml nrfconnect-macOS-arm64/
-                  cd nrfconnect-macOS-arm64
-                  yq '. *=+ load("latest-mac-x64.yml")' latest-mac-arm64.yml > latest-mac.yml
-                  rm latest-mac-x64.yml latest-mac-arm64.yml
-            
+                  yq '. *=+ load("nrfconnect-macOS-x64/latest-mac.yml")' nrfconnect-macOS-arm64/latest-mac.yml > latest-mac.yml
+                  rm nrfconnect-macOS-arm64/latest-mac.yml nrfconnect-macOS-x64/latest-mac.yml
+                  mv latest-mac.yml nrfconnect-macOS-arm64/latest-mac.yml
+
             - name: Create Release
-              run: >
-                gh release create ${{ inputs.tag }}
-                --repo nordicsemiconductor/pc-nrfconnect-launcher
-                --title ${{ inputs.tag }}
-                --draft
-                --generate-notes
-                nrfconnect-*/*.AppImage
-                nrfconnect-*/*.exe
-                nrfconnect-*/*.dmg
-                nrfconnect-*/*.zip
-                nrfconnect-*/latest*.yml
+              run: |
+                  gh release create ${{ inputs.tag }} \
+                      --repo nordicsemiconductor/pc-nrfconnect-launcher \
+                      --title ${{ inputs.tag }} \
+                      --draft \
+                      --generate-notes \
+                      nrfconnect-*/*.AppImage \
+                      nrfconnect-*/*.exe \
+                      nrfconnect-*/*.dmg \
+                      nrfconnect-*/*.zip \
+                      nrfconnect-*/latest*.yml
