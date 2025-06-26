@@ -18,4 +18,3 @@ runs:
               path: |
                   release/nrfconnect*
                   release/latest*
-              retention-days: 7
