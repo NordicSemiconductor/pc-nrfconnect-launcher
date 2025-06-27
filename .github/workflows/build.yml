@@ -2,6 +2,17 @@ name: Build
 
 on:
     workflow_dispatch:
+    workflow_call:
+        outputs:
+            build-success:
+                description: 'Whether the build completed successfully'
+                value:
+                    ${{
+                        jobs.windows.result == 'success' && 
+                        jobs.linux.result == 'success' && 
+                        jobs.darwin_x64.result == 'success' &&
+                        jobs.darwin_arm64.result == 'success'
+                    }}
     pull_request:
         paths-ignore:
             - 'doc/**'

@@ -14,7 +14,9 @@ runs:
         - name: Publish built artifact
           uses: actions/upload-artifact@v4
           with:
-              name: nrfconnect-${{ inputs.suffix}}
+              name: nrfconnect-${{ inputs.suffix }}
               path: |
                   release/nrfconnect*
-                  release/latest*
+                  release/changelog.md
+                  release/*.yml
+                  !release/builder-debug.yml

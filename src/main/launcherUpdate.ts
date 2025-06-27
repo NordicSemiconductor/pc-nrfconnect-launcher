@@ -9,7 +9,10 @@ import { autoUpdater, CancellationToken } from 'electron-updater';
 import path from 'path';
 import { createLogger, transports } from 'winston';
 
-import { getUseChineseAppServer } from '../common/persistedStore';
+import {
+    getUpdateChannel,
+    getUseChineseAppServer,
+} from '../common/persistedStore';
 import { inRenderer } from '../ipc/launcherUpdateProgress';
 import * as showError from '../ipc/showErrorDialog';
 import { getUserDataDir } from './config';
@@ -103,5 +106,6 @@ export const cancelUpdate = () => {
 
 autoUpdater.autoDownload = false;
 autoUpdater.logger = logger;
+autoUpdater.channel = getUpdateChannel() ?? null;
 
 setUseChineseUpdateServer(getUseChineseAppServer());

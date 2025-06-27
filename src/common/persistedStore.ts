@@ -42,6 +42,7 @@ interface Schema {
     doNotRemindDeprecatedSources?: boolean;
     doNotRemindOnMissingToken?: boolean;
     useChineseAppServer?: boolean;
+    updateChannel?: string;
 }
 
 const store = new Store<Schema>();
@@ -134,3 +135,5 @@ export const getUseChineseAppServer = () =>
     store.get('useChineseAppServer', false);
 export const setUseChineseAppServer = (useChineseAppServer: boolean) =>
     store.set('useChineseAppServer', useChineseAppServer);
+
+export const getUpdateChannel = () => store.get('updateChannel');
