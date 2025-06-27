@@ -28,6 +28,7 @@ import DeprecatedSourcesDialog from './features/sources/DeprecatedSourcesDialog'
 import MissingTokenWarning from './features/sources/MissingTokenWarning';
 import TelemetryDialog from './features/telemetry/TelemetryDialog';
 import ErrorBoundaryLauncher from './util/ErrorBoundaryLauncher';
+import UpdateChannelName from './util/UpdateChannelName';
 
 const blurActiveElementOnLaunch = () => {
     /* react-bootstrap 1.0.1 on macOS focusses the first nav item after a few
@@ -102,6 +103,8 @@ export default () => {
             <DeprecatedSourcesDialog />
             <AddLegacySourceWarning />
             <MissingTokenWarning />
+
+            <UpdateChannelName />
         </ErrorBoundaryLauncher>
     );
 };
