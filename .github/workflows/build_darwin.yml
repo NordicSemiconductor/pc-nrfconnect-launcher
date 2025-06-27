@@ -1,15 +1,32 @@
-name: Build for macOS x64
+name: Build for macOS
+run-name: Build for macOS ${{ inputs.arch }}
 
 on:
     workflow_dispatch:
         inputs:
+            arch:
+                description: The architecture to build for
+                required: true
+                default: arm64
+                type: choice
+                options:
+                    - arm64
+                    - x64
     workflow_call:
+        inputs:
+            arch:
+                required: true
+                default: arm64
+                type: string
 
 jobs:
     build:
-        runs-on: macos-13
+        name: Build macOS ${{ inputs.arch }}
+        # For arm64 use macos-latest, for x64 use macos-13 (See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#choosing-github-hosted-runners)
+        runs-on: ${{ inputs.arch == 'arm64' && 'macos-latest' || 'macos-13' }}
         steps:
             - uses: actions/checkout@v4
+
             - name: Build
               uses: ./.github/actions/build-action
 
@@ -28,19 +45,14 @@ jobs:
                   CSC_KEY_PASSWORD:
                       ${{ secrets.NORDIC_SIGNING_CERTIFICATE_P12_PASS }}
                   APPLE_ID: ${{ secrets.WAYLAND_APPLE_ID }}
-                  APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
+                  APPLE_APP_SPECIFIC_PASSWORD:
+                      ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAM_ID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
-              run: npx electron-builder -p never --x64
-              if: github.event_name != 'pull_request'
-
-            - name: Rename latest-mac.yml
-              run: |
-                  cd release
-                  mv latest-mac.yml latest-mac-x64.yml
+              run: npx electron-builder -p never --${{ inputs.arch }}
               if: github.event_name != 'pull_request'
 
             - name: Upload
               uses: ./.github/actions/publish-action
               with:
-                  suffix: macOS-x64
+                  suffix: macOS-${{ inputs.arch }}
               if: github.event_name != 'pull_request'

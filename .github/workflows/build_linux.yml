@@ -2,11 +2,11 @@ name: Build for Linux x64
 
 on:
     workflow_dispatch:
-        inputs:
     workflow_call:
 
 jobs:
     build:
+        name: Build Linux
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
