@@ -9,6 +9,10 @@ release the new version.
 
 ## Unreleased
 
+### Added
+
+-   #1147: Automatic release candidates.
+
 ### Changed
 
 -   #1125: Handle specifying the core version of nrfutil.

@@ -43,4 +43,12 @@ const build = async () => {
     }
 };
 
+const extractLatestChangelogEntry = () => {
+    const changelog = fs.readFileSync('Changelog.md', 'utf8');
+    const latestEntry = changelog.split(/^## .*$/m)[1].trim();
+    fs.mkdirSync('release', { recursive: true });
+    fs.writeFileSync('release/changelog.md', latestEntry);
+};
+
 build();
+extractLatestChangelogEntry();
