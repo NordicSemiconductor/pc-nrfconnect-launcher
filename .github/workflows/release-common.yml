@@ -112,8 +112,16 @@ jobs:
                   # Upload yml files for auto-update
                   jf rt upload "$CHANNEL*.yml" swtools/external/ncd/launcher/
 
+                  # Copy the production release also to the RC channel
+                  if [[ "${{ inputs.release-type }}" == "production" ]]; then
+                      jf rt copy 'swtools/external/ncd/launcher/latest(*).yml' 'swtools/external/ncd/launcher/rc{1}.yml'
+                  fi
+
                   # Clear cache
                   jf rt delete --url https://files.nordicsemi.cn/artifactory --access-token "${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}" "swtools-cache/external/ncd/launcher/$CHANNEL*.yml"
+                  if [[ "${{ inputs.release-type }}" == "production" ]]; then
+                      jf rt delete --url https://files.nordicsemi.cn/artifactory --access-token "${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}" "swtools-cache/external/ncd/launcher/rc*.yml"
+                  fi
 
                   EMOJI=":tada:"
                   if [[ $(date +%m) -eq 12 ]]; then
