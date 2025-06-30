@@ -1,6 +1,5 @@
 # nRF Connect for Desktop
 
-[![Build Status](https://dev.azure.com/NordicSemiconductor/Wayland/_apis/build/status/pc-nrfconnect-launcher?branchName=main)](https://dev.azure.com/NordicSemiconductor/Wayland/_build/latest?definitionId=8&branchName=main)
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
 nRF Connect for Desktop is a cross-platform framework for desktop apps for
