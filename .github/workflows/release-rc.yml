@@ -13,32 +13,29 @@ on:
         branches:
             - main
 
-env:
-    GH_TOKEN: ${{ github.token }}
-
 jobs:
     check-version:
         name: Check version
         runs-on: ubuntu-latest
         outputs:
             should-run: ${{ steps.check.outputs.should-run }}
-            version: ${{ steps.check.outputs.version }}
             tag: ${{ steps.check.outputs.tag }}
         steps:
             - uses: actions/checkout@v4
 
             - name: Check version and existence
               id: check
+              env:
+                  GH_TOKEN: ${{ github.token }}
               run: |
                   VERSION=$(node -p "require('./package.json').version")
-
                   TAG="v$VERSION"
                   echo "tag=$TAG" >> $GITHUB_OUTPUT
 
                   IS_RC_VERSION=true
                   RELEASE_EXISTS=false
                   if [[ "$VERSION" != *-rc* ]]; then
-                      echo "# :warning: Not running because this is not a release candidate" >> $GITHUB_STEP_SUMMARY
+                      echo "# :warning: Not running because $VERSION is not a release candidate" >> $GITHUB_STEP_SUMMARY
                       IS_RC_VERSION=false
                   elif gh release view "$TAG" --repo nordicsemiconductor/pc-nrfconnect-launcher >/dev/null 2>&1; then
                       echo "# :warning: Not running because a release with the tag $TAG already exists" >> $GITHUB_STEP_SUMMARY
@@ -51,86 +48,13 @@ jobs:
                       echo "should-run=false" >> $GITHUB_OUTPUT
                   fi
 
-    build:
-        name: Build
+    release:
+        name: Create RC
         needs: check-version
         if: needs.check-version.outputs.should-run == 'true'
-        uses: ./.github/workflows/build.yml
+        uses: ./.github/workflows/release-common.yml
+        with:
+            ref: ${{ github.sha }}
+            release-type: rc
+            tag: ${{ needs.check-version.outputs.tag }}
         secrets: inherit
-
-    create-release:
-        name: Create RC
-        needs: [check-version, build]
-        if: needs.check-version.outputs.should-run == 'true'
-        runs-on: ubuntu-latest
-        environment: RC
-        env:
-            TAG: ${{ needs.check-version.outputs.tag }}
-            CHANNEL: rc
-        steps:
-            - name: Download all artifacts
-              run: |
-                  gh run download --repo nordicsemiconductor/pc-nrfconnect-launcher
-
-            - name: Merge *-mac.yml
-              run: |
-                  ls -R
-                  yq '. *=+ load("nrfconnect-macOS-x64/${{env.CHANNEL}}-mac.yml")' "nrfconnect-macOS-arm64/$CHANNEL-mac.yml" > "$CHANNEL-mac.yml"
-                  rm "nrfconnect-macOS-arm64/$CHANNEL-mac.yml" "nrfconnect-macOS-x64/$CHANNEL-mac.yml"
-                  mv "$CHANNEL-mac.yml" "nrfconnect-macOS-arm64/$CHANNEL-mac.yml"
-
-            - name: Collect relevant files
-              run: |
-                  mkdir "$TAG"
-                  cp nrfconnect-windows-x64/changelog.md \
-                      nrfconnect-*/*.AppImage \
-                      nrfconnect-*/*.exe \
-                      nrfconnect-*/*.dmg \
-                      nrfconnect-*/*.zip \
-                      nrfconnect-*/"$CHANNEL"*.yml \
-                      "$TAG"
-
-            - name: Create GitHub Release
-              run: |
-                  gh release create "$TAG" \
-                    --repo nordicsemiconductor/pc-nrfconnect-launcher \
-                    --title "$TAG" \
-                    --prerelease \
-                    --notes-file "$TAG/changelog.md" \
-                    "$TAG"/*
-
-            - name: Generate top level *.yml
-              run: |
-                  for yaml_file in */"$CHANNEL"*.yml; do
-                    # Prepend the channel to the URL and path
-                    yq '.files[].url |= "${{env.TAG}}/" + . | .path |= "${{env.TAG}}/" + .' "$yaml_file" > "$(basename "$yaml_file")"
-                  done
-
-            - uses: jfrog/setup-jfrog-cli@v4
-              name: Setup JFrog CLI
-              env:
-                  JF_URL: https://files.nordicsemi.com/
-                  JF_ACCESS_TOKEN:
-                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND
-                      }}
-            - name: Upload to Artifactory
-              run: |
-                  jf rt upload --flat "$TAG/*" "swtools/external/ncd/launcher/$TAG/"
-
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/*" "version=$TAG"
-
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/*.AppImage" "main_download=true;platform=linux-x64"
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*mac*.zip" "platform=darwin-x64"
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*-mac-arm64.zip" "platform=darwin-arm64"
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*.dmg" "main_download=true;platform=darwin-x64"
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*-arm64.dmg" "main_download=true;platform=darwin-arm64"
-                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-setup-*x64.exe" "main_download=true;platform=win32-x64"
-
-                  jf rt upload "$CHANNEL*.yml" swtools/external/ncd/launcher/
-                  jf rt delete --url https://files.nordicsemi.cn:443/artifactory --access-token "${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}" "swtools-cache/external/ncd/launcher/$CHANNEL*.yml"
-
-                  EMOJI=":tada:"
-                  if [[ $(date +%m) -eq 12 ]]; then
-                      EMOJI=":christmas_tree:"
-                  fi
-                  echo "# $EMOJI Successfully created release candidate [$TAG](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/tag/$TAG) $EMOJI" >> $GITHUB_STEP_SUMMARY

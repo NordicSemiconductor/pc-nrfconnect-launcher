@@ -3,9 +3,13 @@ name: Build
 on:
     workflow_dispatch:
     workflow_call:
+        inputs:
+            ref:
+                description: Ref to build from
+                type: string
         outputs:
             build-success:
-                description: 'Whether the build completed successfully'
+                description: Whether the build completed successfully
                 value:
                     ${{
                         jobs.windows.result == 'success' && 
@@ -15,27 +19,33 @@ on:
                     }}
     pull_request:
         paths-ignore:
-            - 'doc/**'
+            - doc/**
     push:
         branches:
             - main
         paths-ignore:
-            - 'doc/**'
+            - doc/**
 
 jobs:
     windows:
         uses: ./.github/workflows/build_win.yml
         secrets: inherit
+        with:
+            ref: ${{ inputs.ref }}
     linux:
         uses: ./.github/workflows/build_linux.yml
         secrets: inherit
+        with:
+            ref: ${{ inputs.ref }}
     darwin_x64:
         uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
         with:
             arch: x64
+            ref: ${{ inputs.ref }}
     darwin_arm64:
         uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
         with:
             arch: arm64
+            ref: ${{ inputs.ref }}

@@ -12,11 +12,19 @@ on:
                 options:
                     - arm64
                     - x64
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to release. Default to the
+                    main branch.
+                type: string
     workflow_call:
         inputs:
             arch:
                 required: true
                 default: arm64
+                type: string
+            ref:
+                description: Ref to build from
                 type: string
 
 jobs:
@@ -26,6 +34,8 @@ jobs:
         runs-on: ${{ inputs.arch == 'arm64' && 'macos-latest' || 'macos-13' }}
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ref: ${{ inputs.ref }}
 
             - name: Build
               uses: ./.github/actions/build-action
