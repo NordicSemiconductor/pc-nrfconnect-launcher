@@ -1,0 +1,99 @@
+name: Common continue release jobs
+
+on:
+    workflow_call:
+        inputs:
+            release-type:
+                description: Type of release (production or rc)
+                required: true
+                type: string
+            tag:
+                description: The release tag to use
+                required: true
+                type: string
+
+jobs:
+    check-type:
+        name: Check release type
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check release type
+              run: |
+                  if [ "${{ inputs.release-type }}" != rc ] && [ "${{ inputs.release-type }}" != production ]; then
+                      echo "::error::release-type must be either rc or production"
+                      exit 1
+                  fi
+    continue-release:
+        name:
+            Continue ${{ inputs.release-type == 'rc' && 'RC' || 'production
+            release' }}
+        needs: check-type
+        runs-on: ubuntu-latest
+        environment: ${{ inputs.release-type == 'rc' && 'RC' || 'Production' }}
+        env:
+            TAG: ${{ inputs.tag }}
+            CHANNEL: ${{ inputs.release-type == 'rc' && 'rc' || 'latest' }}
+        steps:
+            - name: Download all artifacts
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  gh release download "$TAG" --dir "$TAG" --repo nordicsemiconductor/pc-nrfconnect-launcher
+
+            - name: Publish GitHub Release
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  gh release edit "$TAG" --draft=false --repo nordicsemiconductor/pc-nrfconnect-launcher
+
+            - name: Generate top level yml files
+              run: |
+                  for yaml_file in */"$CHANNEL"*.yml; do
+                    # Prepend the version to the URL and path
+                    yq '.files[].url |= "${{env.TAG}}/" + . | .path |= "${{env.TAG}}/" + .' "$yaml_file" > "$(basename "$yaml_file")"
+                  done
+
+            - name: Setup JFrog CLI
+              uses: jfrog/setup-jfrog-cli@v4
+              env:
+                  JF_URL: https://files.nordicsemi.com/
+                  JF_ACCESS_TOKEN:
+                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}
+
+            - name: Upload to Artifactory
+              run: |
+                  # Upload all release files to Artifactory
+                  jf rt upload --flat "$TAG/*" "swtools/external/ncd/launcher/$TAG/"
+
+                  # Set version property
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/*" "version=$TAG"
+
+                  # Set platform-specific properties
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/*.AppImage" "main_download=true;platform=linux-x64"
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*mac*.zip" "platform=darwin-x64"
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*-mac-arm64.zip" "platform=darwin-arm64"
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*.dmg" "main_download=true;platform=darwin-x64"
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-*-arm64.dmg" "main_download=true;platform=darwin-arm64"
+                  jf rt sp "swtools/external/ncd/launcher/$TAG/nrfconnect-setup-*x64.exe" "main_download=true;platform=win32-x64"
+
+                  # Upload yml files for auto-update
+                  jf rt upload "$CHANNEL*.yml" swtools/external/ncd/launcher/
+
+                  # Copy the production release also to the RC channel
+                  if [[ "${{ inputs.release-type }}" == "production" ]]; then
+                      jf rt copy 'swtools/external/ncd/launcher/latest(*).yml' 'swtools/external/ncd/launcher/rc{1}.yml'
+                  fi
+
+                  # Clear cache
+                  jf rt delete --url https://files.nordicsemi.cn/artifactory --access-token "${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}" "swtools-cache/external/ncd/launcher/$CHANNEL*.yml"
+                  if [[ "${{ inputs.release-type }}" == "production" ]]; then
+                      jf rt delete --url https://files.nordicsemi.cn/artifactory --access-token "${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}" "swtools-cache/external/ncd/launcher/rc*.yml"
+                  fi
+
+
+                  EMOJI=":tada:"
+                  if [[ $(date +%m) -eq 12 ]]; then
+                      EMOJI=":christmas_tree:"
+                  fi
+
+                  echo "# $EMOJI Successfully created release [$TAG](https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/tag/$TAG) $EMOJI" >> $GITHUB_STEP_SUMMARY
