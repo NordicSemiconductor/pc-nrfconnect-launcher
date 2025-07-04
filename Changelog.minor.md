@@ -19,6 +19,7 @@ release the new version.
 -   #1133: Rewrote network code to use the fetch API.
 -   #1134: Collected knowledge about Artifactory URL in central place.
 -   #1149: Cleaned up the build workflows.
+-   #1136: Disable signature verification on Windows.
 
 ### Fixed
 
