@@ -18,7 +18,7 @@ All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
 Running nRF Connect for Desktop has the following additional requirements:
 
-- [**SEGGER J-Link** v8.18](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) - required for all platforms.
+- [**SEGGER J-Link** v8.42](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) - required for all platforms.
 
     - On Windows, the driver comes bundled with nRF Connect for Desktop.
     - On macOS and Linux, you must install the driver manually. Download the installer for your platform from [SEGGER J-Link Software](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack).
