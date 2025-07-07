@@ -4,8 +4,7 @@ on:
     workflow_dispatch:
         inputs:
             tag:
-                description:
-                    Tag of the release to continue.
+                description: Tag of the release to continue.
                 type: string
 
 jobs:
@@ -59,9 +58,15 @@ jobs:
               env:
                   JF_URL: https://files.nordicsemi.com/
                   JF_ACCESS_TOKEN:
-                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}
+                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND
+                      }}
 
             - name: Copy to web-assets
               run: |
                   jf rt copy --flat "swtools/external/ncd/launcher/$TAG/" web-assets-com_nordicsemi/external/swtools/ncd/launcher/$TAG/
                   jf rt copy --flat "swtools/external/ncd/launcher/latest*" web-assets-com_nordicsemi/external/swtools/ncd/launcher/
+
+    publish-docs:
+        uses: ./.github/workflows/docs-publish-prod.yml
+        needs: continue-release
+        secrets: inherit
