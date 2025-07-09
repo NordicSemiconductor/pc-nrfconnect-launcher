@@ -33,7 +33,7 @@ import {
 import { getDownloadableApps, getLocalApps } from './apps/apps';
 import argv, { appArguments, mergeAppArguments } from './argv';
 import { createWindow } from './browser';
-import bundledJlinkVersion from './bundledJlinkVersion';
+import { bundledJlinkVersion } from './bundledJlink';
 import { getBundledResourcesDir } from './config';
 import { getAppIcon, getNrfConnectForDesktopIcon } from './icons';
 

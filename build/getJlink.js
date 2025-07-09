@@ -5,22 +5,13 @@
  */
 
 const path = require('path');
-const downloadFile = require('../scripts/downloadFile');
 
-const bundledJlinkVersion = require('../src/main/bundledJlinkVersion.js');
-
-const minVersion = bundledJlinkVersion.replace('.', '');
-
-const FILE_URL = `https://files.nordicsemi.com/artifactory/swtools/external/ncd/jlink/JLink_Windows_${minVersion}_x86_64.exe`;
-const DESTINATION_FILE_PATH = path.join(
-    'build',
-    `JLink_Windows_${minVersion}.exe`
-);
+const downloadJLink =
+    require('@nordicsemiconductor/nrf-jlink-js').downloadAndSaveJLink;
+const { bundledJlinkDir } = require('../src/main/bundledJlink');
 
 exports.default = () =>
-    process.platform === 'win32'
-        ? downloadFile(FILE_URL, DESTINATION_FILE_PATH, true).catch(error => {
-              console.error('\n!!! EXCEPTION', error.message);
-              process.exit(-1);
-          })
-        : undefined;
+    downloadJLink(path.join('resources', bundledJlinkDir)).catch(error => {
+        console.error('\n!!! EXCEPTION', error.message);
+        process.exit(-1);
+    });

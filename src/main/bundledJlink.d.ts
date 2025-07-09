@@ -4,6 +4,5 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-declare const bundledJlinkVersion: string;
-
-export default bundledJlinkVersion;
+export const bundledJlinkVersion: string;
+export const bundledJlinkDir: string;
