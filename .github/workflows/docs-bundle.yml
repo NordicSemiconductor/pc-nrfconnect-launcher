@@ -1,0 +1,16 @@
+name: 'Docs: Create bundle'
+
+on:
+    pull_request:
+        types: [synchronize, opened, reopened]
+        paths:
+            - .github/workflows/docs-bundle.yml
+            - doc
+    workflow_dispatch:
+    workflow_call:
+
+jobs:
+    create-doc-bundle:
+        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-bundle.yml@main
+        with:
+            bundle-name: nrf-connect-desktop

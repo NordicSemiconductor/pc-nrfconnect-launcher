@@ -1,0 +1,13 @@
+name: 'Docs: Publish to prod'
+
+on:
+    workflow_dispatch:
+    workflow_call:
+
+jobs:
+    publish-docs-bundle:
+        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-publish.yml@main
+        with:
+            bundle-name: nrf-connect-desktop
+            release-type: prod
+        secrets: inherit
