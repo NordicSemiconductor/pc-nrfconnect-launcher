@@ -120,6 +120,7 @@
     },
     "dependencies": {
         "@electron/remote": "^2.1.2",
+        "@nordicsemiconductor/nrf-jlink-js": "^0.0.10",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
