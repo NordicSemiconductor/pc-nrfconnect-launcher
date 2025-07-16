@@ -12,7 +12,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import {
     getJlinkCompatibility as getJlinkCompatibilityFromModuleVersion,
-    prepareSandbox,
+    NrfutilSandbox,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { memoize } from 'lodash';
 import semver from 'semver';
@@ -169,7 +169,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
 const getJlinkCompatibility = memoize(
     async (nrfutilDeviceVersion: string, nrfutilCoreVersion?: string) => {
         const userDir = getUserDataDir();
-        const sandbox = await prepareSandbox(
+        const sandbox = await NrfutilSandbox.create(
             userDir,
             'device',
             nrfutilDeviceVersion,

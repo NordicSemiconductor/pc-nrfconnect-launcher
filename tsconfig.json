@@ -1,8 +1,5 @@
 {
     "extends": "@nordicsemiconductor/pc-nrfconnect-shared/config/tsconfig.json",
-    "ts-node": {
-        "skipIgnore": true
-    },
     "compilerOptions": {
         "module": "CommonJS"
     }

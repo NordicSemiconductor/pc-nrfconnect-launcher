@@ -11,7 +11,6 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import {
     NrfutilSandbox,
-    prepareSandbox,
     Progress,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/nrfutilLogger';
@@ -90,7 +89,7 @@ const preparedSandbox = (
         ],
     };
 
-    const sandbox = prepareSandbox(
+    const sandbox = NrfutilSandbox.create(
         getUserDataDir(),
         moduleName,
         moduleVersion,
