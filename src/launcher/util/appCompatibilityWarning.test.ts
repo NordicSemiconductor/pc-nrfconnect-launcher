@@ -6,7 +6,7 @@
 
 import {
     getJlinkCompatibility,
-    prepareSandbox,
+    NrfutilSandbox,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { inspect } from 'util';
 
@@ -38,8 +38,6 @@ jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
     ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
     getUserDataDir: () => '',
 }));
-
-jest.mock('@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/moduleVersion');
 
 describe('check compatibility of an app with the launcher', () => {
     describe('check if the app sets an engine version', () => {
@@ -109,7 +107,7 @@ describe('check compatibility of an app with the launcher', () => {
             });
 
         it('Calls resolveModuleVersion exactly once per version of nrfutil-device', async () => {
-            jest.mocked(prepareSandbox).mockResolvedValue({
+            jest.mocked(NrfutilSandbox.create).mockResolvedValue({
                 // @ts-expect-error -- I do not understand et how to fix this TypeScript error, but this is only a test, test ¯\_(ツ)_/¯
                 getModuleVersion: () => [],
             });

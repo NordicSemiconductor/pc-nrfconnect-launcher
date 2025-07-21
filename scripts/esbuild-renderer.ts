@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 
 /*
  * Copyright (c) 2015 Nordic Semiconductor ASA
