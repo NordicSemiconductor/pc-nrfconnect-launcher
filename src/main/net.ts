@@ -13,7 +13,6 @@ import {
     artifactoryTokenInformationUrl,
     asShortNordicArtifactoryUrl,
     determineDownloadUrl,
-    isNordicArtifactoryUrl,
     needsAuthentication,
 } from '../common/artifactoryUrl';
 import { getUseChineseAppServer } from '../common/persistedStore';
@@ -53,30 +52,6 @@ type DownloadOptions = {
     bearer?: string;
 };
 
-const getDownloadSize = async (url: string, bearer?: string) => {
-    const effectiveUrl = isNordicArtifactoryUrl(url)
-        ? asShortNordicArtifactoryUrl(url)
-        : url;
-
-    try {
-        const response = await sharedSession().fetch(effectiveUrl, {
-            method: 'HEAD',
-            headers:
-                bearer != null ? { authorization: `Bearer ${bearer}` } : {},
-        });
-
-        const contentLength = response.headers.get('content-length');
-
-        if (contentLength != null) {
-            return Number(contentLength);
-        }
-    } catch (error) {
-        // Ignore errors, e.g. because the server does not support HEAD requests, in this case we just cannot determine the download size
-    }
-
-    return undefined;
-};
-
 const withProgressReported = (
     response: Response,
     app: AppSpec,
@@ -105,17 +80,20 @@ const request = async (url: string, { bearer, app }: DownloadOptions = {}) => {
     try {
         const effectiveBearer = bearer ?? determineBearer(effectiveUrl);
 
-        const totalSize =
-            app == null ? undefined : await getDownloadSize(url, bearer);
-
         const response = await sharedSession().fetch(effectiveUrl, {
             headers: {
                 pragma: 'no-cache',
+                range: 'bytes=0-',
                 ...(effectiveBearer != null
                     ? { authorization: `Bearer ${effectiveBearer}` }
                     : {}),
             },
         });
+
+        const contentLength = response.headers.get('content-length');
+        const totalSize = contentLength != null ? Number(contentLength) : null;
+        if (contentLength == null)
+            console.warn(`Unexpectedly no content-length for ${effectiveUrl}`);
 
         if (!response.ok) {
             throw new Error(
