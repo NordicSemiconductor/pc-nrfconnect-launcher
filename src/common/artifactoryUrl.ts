@@ -14,10 +14,6 @@ type ArtifactoryUrlMatch = {
     groups: ArtifactoryUrlSpec;
 } | null;
 
-export const isNordicArtifactoryUrl = (url: string) =>
-    url.startsWith('https://files.nordicsemi.com/') ||
-    url.startsWith('https://files.nordicsemi.cn/');
-
 export const shortNordicArtifactoryUrl = ({
     tld,
     repo,
