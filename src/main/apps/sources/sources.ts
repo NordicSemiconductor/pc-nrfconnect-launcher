@@ -13,8 +13,8 @@ import {
     OFFICIAL,
     Source,
     SourceName,
+    SourceWithError,
 } from '../../../common/sources';
-import { SourceWithError } from '../../../ipc/apps';
 import { retrieveToken } from '../../artifactoryTokenStorage';
 import {
     getAppsRootDir,

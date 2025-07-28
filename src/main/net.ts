@@ -11,7 +11,6 @@ import { z } from 'zod';
 import {
     artifactoryPingUrl,
     artifactoryTokenInformationUrl,
-    asShortNordicArtifactoryUrl,
     determineDownloadUrl,
     needsAuthentication,
 } from '../common/artifactoryUrl';

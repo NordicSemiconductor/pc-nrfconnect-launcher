@@ -7,9 +7,10 @@
 import {
     App,
     AppSpec,
-    AppWithError,
+    channel as sharedChannel,
     DownloadableApp,
     forRenderer as forRendererFromShared,
+    GetDownloadableAppsResult as SharedGetDownloadableAppsResult,
     inMain as inMainFromShared,
     InstalledDownloadableApp,
     isDownloadable,
@@ -18,7 +19,6 @@ import {
     isWithdrawn,
     LaunchableApp,
     LocalApp,
-    SourceWithError,
     UninstalledDownloadableApp,
     WithdrawnApp,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/apps';
@@ -27,6 +27,8 @@ import {
     invoke,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
+import type { SourceWithError } from '../common/sources';
+
 export {
     isDownloadable,
     isInstalled,
@@ -34,15 +36,18 @@ export {
     isWithdrawn,
     type App,
     type AppSpec,
-    type AppWithError,
     type DownloadableApp,
     type InstalledDownloadableApp,
     type LaunchableApp,
     type LocalApp,
-    type SourceWithError,
     type UninstalledDownloadableApp,
     type WithdrawnApp,
 };
+
+export interface AppWithError extends AppSpec {
+    reason: unknown;
+    path: string;
+}
 
 const quickStartAppName = 'pc-nrfconnect-quickstart';
 
@@ -57,11 +62,7 @@ const channel = {
 };
 
 // downloadLatestAppInfos
-type DownloadLatestAppInfos = () => {
-    apps: DownloadableApp[];
-    appsWithErrors: AppWithError[];
-    sourcesWithErrors: SourceWithError[];
-};
+type DownloadLatestAppInfos = () => GetDownloadableAppsResult;
 
 const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
     channel.downloadLatestAppInfos
@@ -129,20 +130,37 @@ const registerRemoveDownloadableApp = handle<RemoveDownloadableApp>(
     channel.removeDownloadableApp
 );
 
+// getDownloadableApps
+type GetDownloadableAppsResult = SharedGetDownloadableAppsResult & {
+    appsWithErrors: AppWithError[];
+    sourcesWithErrors: SourceWithError[];
+};
+
+type GetDownloadableApps = () => GetDownloadableAppsResult;
+
+const getDownloadableApps = invoke<GetDownloadableApps>(
+    sharedChannel.getDownloadableApps
+);
+const registerGetDownloadableApps = handle<GetDownloadableApps>(
+    sharedChannel.getDownloadableApps
+);
+
 export const forRenderer = {
     ...forRendererFromShared,
     registerDownloadLatestAppInfos,
+    registerGetDownloadableApps,
+    registerGetLocalApps,
     registerInstallLocalApp,
     registerRemoveDownloadableApp,
     registerRemoveLocalApp,
-    registerGetLocalApps,
 };
 
 export const inMain = {
     ...inMainFromShared,
     downloadLatestAppInfos,
+    getDownloadableApps,
     getLocalApps,
     installLocalApp,
-    removeLocalApp,
     removeDownloadableApp,
+    removeLocalApp,
 };
