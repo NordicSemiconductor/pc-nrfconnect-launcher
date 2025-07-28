@@ -5,17 +5,14 @@
  */
 
 import dispatchTo from '@nordicsemiconductor/pc-nrfconnect-shared/test/dispatchTo';
-import { configureStore } from '@reduxjs/toolkit';
 
 import { AppSpec } from '../../../ipc/apps';
 import {
     createDownloadableTestApp,
     createLocalTestApp,
 } from '../../../test/testFixtures';
-import { reducer as rootReducer } from '../../store';
 import reducer, {
     addDownloadableApps,
-    getAllSourceNamesSorted,
     installDownloadableAppStarted,
     removeAppsOfSource,
     removeDownloadableAppStarted,
@@ -259,26 +256,4 @@ describe('appsReducer', () => {
         ]);
         expect(state.lastUpdateCheckDate).toEqual(aDate);
     });
-});
-
-test('sortedSources sorts the sources into official, local and then the rest in alphabetical order', () => {
-    const store = configureStore({
-        reducer: rootReducer,
-        middleware: getDefaultMiddleware =>
-            getDefaultMiddleware({ serializableCheck: false }),
-    });
-    store.dispatch(
-        addDownloadableApps([
-            { ...downloadableApp1, source: 'OtherB' },
-            { ...downloadableApp1, source: 'official' },
-            { ...downloadableApp1, source: 'OtherA' },
-        ])
-    );
-
-    expect(getAllSourceNamesSorted(store.getState())).toStrictEqual([
-        'official',
-        'local',
-        'OtherA',
-        'OtherB',
-    ]);
 });

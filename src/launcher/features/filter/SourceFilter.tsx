@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { getAllSourceNamesSorted } from '../apps/appsSlice';
+import { getAllSourceNamesSorted } from '../sources/sourcesSlice';
 import { getHiddenSources, hideSource, showSource } from './filterSlice';
 
 export default () => {

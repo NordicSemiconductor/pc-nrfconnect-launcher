@@ -9,6 +9,7 @@ import dispatchTo from '@nordicsemiconductor/pc-nrfconnect-shared/test/dispatchT
 import type { RootState } from '../../store';
 import reducer, {
     addSource,
+    getAllSourceNamesSorted,
     getSources,
     removeSource,
     setSources,
@@ -70,5 +71,22 @@ describe('sourcesReducer', () => {
         ]);
 
         expect(getSources(asRootState(state))).toEqual([anotherTestSource]);
+    });
+
+    it('sorts the sources into official, local and then the rest in alphabetical order', () => {
+        const state = dispatchTo(reducer, [
+            setSources([
+                createTestSource('OtherB'),
+                createTestSource('official'),
+                createTestSource('OtherA'),
+            ]),
+        ]);
+
+        expect(getAllSourceNamesSorted(asRootState(state))).toStrictEqual([
+            'official',
+            'local',
+            'OtherA',
+            'OtherB',
+        ]);
     });
 });

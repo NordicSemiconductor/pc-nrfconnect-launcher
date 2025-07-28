@@ -13,6 +13,7 @@ import {
     setDoNotRemindDeprecatedSources as setPersistedDoNotRemindDeprecatedSources,
 } from '../../../common/persistedStore';
 import {
+    allStandardSourceNames,
     isDeprecatedSource,
     Source,
     SourceName,
@@ -184,3 +185,14 @@ export const getSourceToAdd = (state: RootState) => state.sources.sourceToAdd;
 
 export const getMissingTokenWarning = (state: RootState) =>
     state.sources.missingTokenWarning;
+
+export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
+    const namesWithoutStandardSources = getSources(state)
+        .map(({ name }) => name)
+        .filter(source => !allStandardSourceNames.includes(source));
+
+    return [
+        ...allStandardSourceNames,
+        ...namesWithoutStandardSources.sort((a, b) => a.localeCompare(b)),
+    ];
+};
