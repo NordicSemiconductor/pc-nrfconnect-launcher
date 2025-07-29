@@ -11,16 +11,20 @@ import reducer, {
     addSource,
     getAllSourceNamesSorted,
     getSources,
+    getSourcesInUse,
     removeSource,
     setSources,
     type State,
 } from './sourcesSlice';
 
-const createTestSource = (name: string) =>
+const createTestSource = (
+    name: string,
+    state: 'in use' | 'available' = 'in use'
+) =>
     ({
         name,
         url: 'https://example.org/source.json',
-        state: 'in use',
+        state,
     } as const);
 
 const aTestSource = createTestSource('test source');
@@ -88,5 +92,31 @@ describe('sourcesReducer', () => {
             'OtherA',
             'OtherB',
         ]);
+    });
+
+    describe('sources which are not in use', () => {
+        const SourceInUse = createTestSource('SourceInUse', 'in use');
+        const SourceNotInUse = createTestSource('SourceNotInUse', 'available');
+
+        const state = asRootState(
+            dispatchTo(reducer, [
+                addSource(SourceInUse),
+                addSource(SourceNotInUse),
+            ])
+        );
+
+        test('are filtered out in getAllSourceNamesSorted', () => {
+            expect(getAllSourceNamesSorted(state)).not.toContain(
+                SourceNotInUse.name
+            );
+        });
+
+        test('are filtered out in getSourcesInUse', () => {
+            expect(getSourcesInUse(state)).not.toContain(SourceNotInUse);
+        });
+
+        test('are in getSources', () => {
+            expect(getSources(state)).toContain(SourceNotInUse);
+        });
     });
 });

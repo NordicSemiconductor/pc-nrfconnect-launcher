@@ -25,6 +25,8 @@ export type Source = {
     state: 'in use' | 'available';
 };
 
+export const isInUse = (source: Source) => source.state === 'in use';
+
 export type SourceWithError = { source: Source; reason?: string };
 
 const deprecatedSources = [

@@ -21,7 +21,7 @@ import { clipboard } from 'electron';
 import { OFFICIAL } from '../../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import {
-    getSources,
+    getSourcesInUse,
     showAddSource,
     showRemoveSource,
 } from '../../sources/sourcesSlice';
@@ -29,7 +29,7 @@ import {
 export default () => {
     const dispatch = useLauncherDispatch();
 
-    const sources = useLauncherSelector(getSources);
+    const sourcesInUse = useLauncherSelector(getSourcesInUse);
 
     return (
         <Card body id="app-sources">
@@ -46,7 +46,7 @@ export default () => {
                     </Button>
                 </Col>
             </Row>
-            {sources
+            {sourcesInUse
                 .filter(source => source.name !== OFFICIAL)
                 .map(source => (
                     <Row key={source.name}>

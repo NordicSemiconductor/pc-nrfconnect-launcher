@@ -15,6 +15,7 @@ import {
 import {
     allStandardSourceNames,
     isDeprecatedSource,
+    isInUse,
     Source,
     SourceName,
     SourceUrl,
@@ -164,6 +165,8 @@ export const {
 } = slice.actions;
 
 export const getSources = (state: RootState) => state.sources.sources;
+export const getSourcesInUse = (state: RootState) =>
+    state.sources.sources.filter(isInUse);
 export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
     state.sources.sources.filter(
         source => needsAuthentication(source.url) && !isDeprecatedSource(source)
@@ -187,9 +190,9 @@ export const getMissingTokenWarning = (state: RootState) =>
     state.sources.missingTokenWarning;
 
 export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
-    const namesWithoutStandardSources = getSources(state)
+    const namesWithoutStandardSources = getSourcesInUse(state)
         .map(({ name }) => name)
-        .filter(source => !allStandardSourceNames.includes(source));
+        .filter(name => !allStandardSourceNames.includes(name));
 
     return [
         ...allStandardSourceNames,
