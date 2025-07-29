@@ -9,6 +9,7 @@ import fs from 'fs/promises';
 
 import {
     allStandardSourceNames,
+    isInUse,
     OFFICIAL,
     Source,
     SourceName,
@@ -59,7 +60,7 @@ export const addSource = async (url: SourceUrl): Promise<AddSourceResult> => {
     }
 
     const existingSource = getSource(source.name);
-    if (existingSource != null) {
+    if (existingSource != null && isInUse(existingSource)) {
         return {
             type: 'error',
             errorType: 'Source already exists',

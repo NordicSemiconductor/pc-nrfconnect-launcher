@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getAllSources } from '../sources/sources';
+import { getAllSourcesInUse } from '../sources/sources';
 import {
     type SourcesVersionedJson,
     writeSourcesVersionedJson,
@@ -22,7 +22,7 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
     beforeEach(() => {
         jest.resetAllMocks();
 
-        jest.mocked(getAllSources).mockReturnValue([]);
+        jest.mocked(getAllSourcesInUse).mockReturnValue([]);
     });
 
     it('updates sources to use files.nordicsemi.com', () => {
@@ -99,7 +99,7 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
         migrateSourcesVersionedJson();
 
         expect(writeSourcesVersionedJson).not.toBeCalled();
-        expect(getAllSources).not.toBeCalled();
+        expect(getAllSourcesInUse).not.toBeCalled();
     });
 
     it('does nothing if there already is a v2', () => {
@@ -108,6 +108,6 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
         migrateSourcesVersionedJson();
 
         expect(writeSourcesVersionedJson).not.toBeCalled();
-        expect(getAllSources).not.toBeCalled();
+        expect(getAllSourcesInUse).not.toBeCalled();
     });
 });

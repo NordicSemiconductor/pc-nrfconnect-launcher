@@ -87,7 +87,11 @@ const slice = createSlice({
             ];
         },
         removeSource(state, { payload: name }: PayloadAction<SourceName>) {
-            state.sources = sourcesWithout(state.sources, name);
+            state.sources = state.sources.map(source =>
+                source.name === name
+                    ? { ...source, state: 'available' }
+                    : source
+            );
         },
         showAddSource(state) {
             state.isAddSourceVisible = true;

@@ -10,6 +10,7 @@ import path from 'path';
 import { needsAuthentication } from '../../../common/artifactoryUrl';
 import {
     isDeprecatedSource,
+    isInUse,
     OFFICIAL,
     Source,
     SourceName,
@@ -57,7 +58,11 @@ export const removeFromSourceList = (
 ) => {
     ensureSourcesAreLoaded();
 
-    sources = sources.filter(source => source.name !== sourceNameToBeRemoved);
+    sources = sources.map(source =>
+        source.name === sourceNameToBeRemoved
+            ? { ...source, state: 'available' }
+            : source
+    );
 
     if (doSave) {
         saveAllSources();
@@ -65,8 +70,12 @@ export const removeFromSourceList = (
 };
 
 export const addToSourceList = (sourceToAdd: Source, doSave = true) => {
-    removeFromSourceList(sourceToAdd.name, doSave);
-    sources.push(sourceToAdd);
+    ensureSourcesAreLoaded();
+
+    sources = [
+        ...sources.filter(source => source.name !== sourceToAdd.name),
+        sourceToAdd,
+    ];
 
     if (doSave) {
         saveAllSources();
@@ -85,6 +94,12 @@ const ensureSourcesAreLoaded = () => {
 export const getAllSources = () => {
     ensureSourcesAreLoaded();
     return [...sources];
+};
+
+export const getAllSourcesInUse = () => {
+    ensureSourcesAreLoaded();
+
+    return sources.filter(isInUse);
 };
 
 export const initialise = (source: Source) =>
@@ -115,7 +130,7 @@ export const downloadAllSources = async () => {
     const hasToken = retrieveToken().type === 'Success';
 
     await Promise.allSettled(
-        sources.map(async source => {
+        getAllSourcesInUse().map(async source => {
             if (!hasToken && needsAuthentication(source.url)) return;
             if (isDeprecatedSource(source)) return;
 

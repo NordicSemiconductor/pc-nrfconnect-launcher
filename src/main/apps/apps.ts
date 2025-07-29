@@ -35,7 +35,7 @@ import { downloadAppResources } from './appResource';
 import { maybeMigrateLegacyMetaFiles } from './dataMigration/legacyMetaFiles';
 import {
     downloadAllSources,
-    getAllSources,
+    getAllSourcesInUse,
     getAppUrls,
 } from './sources/sources';
 
@@ -92,7 +92,7 @@ export const getDownloadableApps = () => {
     const apps: DownloadableApp[] = [];
     const appsWithErrors: AppWithError[] = [];
 
-    getAllSources().forEach(source => {
+    getAllSourcesInUse().forEach(source => {
         try {
             maybeMigrateLegacyMetaFiles(source);
 

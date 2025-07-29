@@ -61,12 +61,12 @@ describe('sources', () => {
         );
     });
 
-    it('can have a source removed', () => {
+    it('marks source as available when removed', () => {
         addToSourceList(testSource);
         removeFromSourceList(testSource.name);
 
-        const officialSource = getSource('test');
-        expect(officialSource).toBeUndefined();
+        const removedSource = getSource('test');
+        expect(removedSource?.state).toBe('available');
     });
 
     it('saves removed sources', () => {
@@ -74,7 +74,12 @@ describe('sources', () => {
         removeFromSourceList(testSource.name);
 
         expect(mockWriteSourcesFile).toHaveBeenLastCalledWith(
-            expect.not.arrayContaining([testSource])
+            expect.arrayContaining([
+                expect.objectContaining({
+                    name: 'test',
+                    state: 'available',
+                }),
+            ])
         );
     });
 });

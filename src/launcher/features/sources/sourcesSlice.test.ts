@@ -67,14 +67,15 @@ describe('sourcesReducer', () => {
         ]);
     });
 
-    it('can remove a source', () => {
+    it('marks sources as available when removed', () => {
         const state = dispatchTo(reducer, [
             addSource(aTestSource),
-            addSource(anotherTestSource),
             removeSource(aTestSource.name),
         ]);
 
-        expect(getSources(asRootState(state))).toEqual([anotherTestSource]);
+        const allSources = getSources(asRootState(state));
+
+        expect(allSources).toEqual([{ ...aTestSource, state: 'available' }]);
     });
 
     it('sorts the sources into official, local and then the rest in alphabetical order', () => {

@@ -9,12 +9,12 @@ import path from 'node:path';
 import { migrateAllURLsInJSON, migrateURL } from '../../../common/legacySource';
 import { getAppsRootDir } from '../../config';
 import { listFiles, readFile, writeFile } from '../../fileUtil';
-import { getAllSources } from '../sources/sources';
+import { getAllSourcesInUse } from '../sources/sources';
 import { writeSourcesVersionedJson } from '../sources/sourcesVersionedJson';
 import { readV1SourcesFile } from './sourcesVersionedJsonV1';
 
 const migrateOtherJsonFiles = () => {
-    getAllSources().forEach(({ name }) => {
+    getAllSourcesInUse().forEach(({ name }) => {
         const sourceRoot = getAppsRootDir(name);
         listFiles(sourceRoot, /\.json$/).forEach(file => {
             const jsonPath = path.join(sourceRoot, file);
