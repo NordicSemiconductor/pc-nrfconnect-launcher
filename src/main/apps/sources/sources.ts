@@ -34,10 +34,16 @@ import {
 let sourcesAreLoaded = false;
 let sources: Source[] = [];
 
+export const resetStateForTests = () => {
+    sourcesAreLoaded = false;
+    sources = [];
+};
+
 const officialSource = {
     name: OFFICIAL,
     url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/source.json',
-};
+    state: 'in use',
+} as const;
 
 const saveAllSources = () => {
     ensureSourcesAreLoaded();

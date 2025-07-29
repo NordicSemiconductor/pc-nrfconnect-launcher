@@ -15,7 +15,9 @@ import {
 
 const sourcesVersionedJsonV1Schema = sourcesVersionedJsonSchema.partial();
 
-export const writeV1SourcesFile = (allSources: Source[]) => {
+type SourceV1 = Omit<Source, 'state' | 'description'>;
+
+export const writeV1SourcesFile = (allSources: SourceV1[]) => {
     writeSchemedJsonFile(
         sourcesVersionedJsonPath(),
         sourcesVersionedJsonV1Schema,

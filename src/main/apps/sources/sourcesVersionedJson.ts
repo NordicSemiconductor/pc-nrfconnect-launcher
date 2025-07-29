@@ -17,15 +17,21 @@ import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 export const sourcesVersionedJsonPath = () =>
     path.join(getAppsExternalDir(), 'sources-versioned.json');
 
-const sourcesSchema = z.array(
-    z.object({
-        name: z.string(),
-        url: z.string().url(),
-    })
+const source = z.object({
+    name: z.string(),
+    url: z.string().url(),
+    description: z.string().optional(),
+    state: z.enum(['in use', 'available']).default('in use'),
+});
+
+const sourcesSchema = z.array(source);
+
+const sourcesSchemaV1 = z.array(
+    source.omit({ state: true, description: true })
 );
 
 export const sourcesVersionedJsonSchema = z.object({
-    v1: sourcesSchema.optional(),
+    v1: sourcesSchemaV1.optional(),
     v2: sourcesSchema,
 });
 

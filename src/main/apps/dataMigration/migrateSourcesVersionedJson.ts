@@ -32,10 +32,14 @@ export const migrateSourcesVersionedJson = () => {
         return;
     }
 
-    const v2 = sourcesVersionedJson.v1.map(({ name, url }) => ({
-        name,
-        url: migrateURL(url),
-    }));
+    const v2 = sourcesVersionedJson.v1.map(
+        ({ name, url }) =>
+            ({
+                name,
+                url: migrateURL(url),
+                state: 'in use',
+            } as const)
+    );
 
     writeSourcesVersionedJson({ ...sourcesVersionedJson, v2 });
 

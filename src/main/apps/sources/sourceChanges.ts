@@ -31,7 +31,12 @@ const downloadSource = async (
     url: SourceUrl
 ): Promise<{ source: Source; sourceJson: SourceJson }> => {
     const sourceJson = await downloadSourceJson(url);
-    const source: Source = { name: sourceJson.name, url };
+    const source: Source = {
+        name: sourceJson.name,
+        description: sourceJson.description,
+        url,
+        state: 'in use',
+    };
 
     return { source, sourceJson };
 };

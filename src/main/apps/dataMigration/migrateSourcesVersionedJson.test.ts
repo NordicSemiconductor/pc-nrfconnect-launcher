@@ -72,18 +72,22 @@ describe('migrating sources-versioned.json from V1 to V2', () => {
                 {
                     name: 'official',
                     url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/source.json',
+                    state: 'in use',
                 },
                 {
                     name: '3.7 compatible apps',
                     url: 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/3.7-apps/source.json',
+                    state: 'in use',
                 },
                 {
                     name: 'Latest',
                     url: 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/latest/source.json',
+                    state: 'in use',
                 },
                 {
                     name: '3rd Party',
                     url: 'https://example.org/source.json',
+                    state: 'in use',
                 },
             ],
         });

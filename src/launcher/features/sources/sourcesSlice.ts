@@ -78,15 +78,7 @@ const slice = createSlice({
         setSources(state, { payload: sources }: PayloadAction<Source[]>) {
             state.sources = [...sources];
         },
-        addSource(
-            state,
-            {
-                payload: newSource,
-            }: PayloadAction<{
-                name: SourceName;
-                url: SourceUrl;
-            }>
-        ) {
+        addSource(state, { payload: newSource }: PayloadAction<Source>) {
             state.sources = [
                 ...sourcesWithout(state.sources, newSource.name),
                 newSource,
@@ -177,14 +169,18 @@ export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
     );
 export const getIsAddSourceVisible = (state: RootState) =>
     state.sources.isAddSourceVisible;
+
 export const getIsRemoveSourceVisible = (state: RootState) =>
     state.sources.sourceToRemove != null;
 export const getSourceToRemove = (state: RootState) =>
     state.sources.sourceToRemove;
+
 export const getDeprecatedSources = (state: RootState) =>
     state.sources.deprecatedSources;
 export const getDoNotRemindDeprecatedSources = (state: RootState) =>
     state.sources.doNotRemindDeprecatedSources;
+
 export const getSourceToAdd = (state: RootState) => state.sources.sourceToAdd;
+
 export const getMissingTokenWarning = (state: RootState) =>
     state.sources.missingTokenWarning;

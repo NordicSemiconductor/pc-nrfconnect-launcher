@@ -18,7 +18,12 @@ export { LOCAL, OFFICIAL, type SourceName };
 export const allStandardSourceNames: SourceName[] = [OFFICIAL, LOCAL];
 
 export type SourceUrl = UrlString;
-export type Source = { name: SourceName; url: SourceUrl };
+export type Source = {
+    name: SourceName;
+    url: SourceUrl;
+    description?: string;
+    state: 'in use' | 'available';
+};
 
 export type SourceWithError = { source: Source; reason?: string };
 
