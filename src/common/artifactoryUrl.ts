@@ -14,11 +14,7 @@ type ArtifactoryUrlMatch = {
     groups: ArtifactoryUrlSpec;
 } | null;
 
-export const shortNordicArtifactoryUrl = ({
-    tld,
-    repo,
-    path,
-}: ArtifactoryUrlSpec) =>
+const shortNordicArtifactoryUrl = ({ tld, repo, path }: ArtifactoryUrlSpec) =>
     `https://files.nordicsemi.${tld}/artifactory/${repo}/${path}`;
 
 export const asShortNordicArtifactoryUrl = (url: string) => {
@@ -31,11 +27,7 @@ export const asShortNordicArtifactoryUrl = (url: string) => {
     return shortNordicArtifactoryUrl(match.groups);
 };
 
-export const longNordicArtifactoryUrl = ({
-    tld,
-    repo,
-    path,
-}: ArtifactoryUrlSpec) =>
+const longNordicArtifactoryUrl = ({ tld, repo, path }: ArtifactoryUrlSpec) =>
     `https://files.nordicsemi.${tld}/ui/api/v1/download?isNativeBrowsing=false&repoKey=${repo}&path=${path}`;
 
 export const asLongNordicArtifactoryUrl = (url: string) => {
