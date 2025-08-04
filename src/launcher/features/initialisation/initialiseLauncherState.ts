@@ -22,6 +22,7 @@ import {
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
+import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
 import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
     getArtifactoryTokenInformation,
@@ -165,6 +166,19 @@ const checkForLauncherUpdateAtStartup =
         }
     };
 
+const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
+    if (getShouldCheckForUpdatesAtStartup(getState())) {
+        try {
+            const updateAvailable = await dispatch(checkForJLinkUpdate());
+            if (updateAvailable) {
+                return INTERRUPT_INITIALISATION;
+            }
+        } catch (e) {
+            ErrorDialogActions.showDialog(describeError(e));
+        }
+    }
+};
+
 const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
 
 const initialisationActions = [
@@ -175,6 +189,7 @@ const initialisationActions = [
     checkForDeprecatedSources,
     checkForMissingToken,
     downloadLatestAppInfoAtStartup,
+    checkForLinkUpdate,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,
 ];
