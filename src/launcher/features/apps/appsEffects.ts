@@ -23,7 +23,9 @@ import {
     LaunchableApp,
 } from '../../../ipc/apps';
 import type { AppThunk } from '../../store';
-import appCompatibilityWarning from '../../util/appCompatibilityWarning';
+import appCompatibilityWarning, {
+    WarningKind,
+} from '../../util/appCompatibilityWarning';
 import { quickStartInfoWasShown } from '../settings/settingsSlice';
 import { handleSourcesWithErrors } from '../sources/sourcesEffects';
 import { EventAction } from '../telemetry/telemetryEffects';
@@ -240,23 +242,25 @@ export const launch =
 export const checkCompatibilityThenLaunch =
     (app: LaunchableApp, setQuickStartInfoWasShown = false): AppThunk =>
     dispatch => {
-        appCompatibilityWarning(app).then(compatibilityWarning => {
-            const launchAppWithoutWarning =
-                compatibilityWarning == null ||
-                launcherConfig().isRunningLauncherFromSource;
+        appCompatibilityWarning(app, undefined, [WarningKind.JLINK]).then(
+            compatibilityWarning => {
+                const launchAppWithoutWarning =
+                    compatibilityWarning == null ||
+                    launcherConfig().isRunningLauncherFromSource;
 
-            if (launchAppWithoutWarning) {
-                dispatch(launch(app, setQuickStartInfoWasShown));
-            } else {
-                dispatch(
-                    showConfirmLaunchDialog({
-                        app,
-                        title: compatibilityWarning.title,
-                        text: compatibilityWarning.longWarning,
-                        warningData: compatibilityWarning.warningData,
-                        setQuickStartInfoWasShown,
-                    })
-                );
+                if (launchAppWithoutWarning) {
+                    dispatch(launch(app, setQuickStartInfoWasShown));
+                } else {
+                    dispatch(
+                        showConfirmLaunchDialog({
+                            app,
+                            title: compatibilityWarning.title,
+                            text: compatibilityWarning.longWarning,
+                            warningData: compatibilityWarning.warningData,
+                            setQuickStartInfoWasShown,
+                        })
+                    );
+                }
             }
-        });
+        );
     };
