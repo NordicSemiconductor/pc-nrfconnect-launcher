@@ -40,6 +40,14 @@ jobs:
               run: |
                   gh release download "$TAG" --dir "$TAG" --repo nordicsemiconductor/pc-nrfconnect-launcher
 
+            - name: Update the Windows checksum
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  export NEW_CHECKSUM="$(openssl dgst -sha512 -binary "$TAG"/nrfconnect-setup-*-x64.exe | openssl base64 -A)"
+                  yq '(.files[].sha512, .sha512) = strenv(NEW_CHECKSUM)' -i "$TAG/$CHANNEL.yml"
+                  gh release upload "$TAG" "$TAG/$CHANNEL.yml" --clobber --repo nordicsemiconductor/pc-nrfconnect-launcher
+
             - name: Publish GitHub Release
               env:
                   GH_TOKEN: ${{ github.token }}
@@ -58,7 +66,8 @@ jobs:
               env:
                   JF_URL: https://files.nordicsemi.com/
                   JF_ACCESS_TOKEN:
-                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND }}
+                      ${{ secrets.COM_NORDICSEMI_FILES_PASSWORD_SWTOOLS_FRONTEND
+                      }}
 
             - name: Upload to Artifactory
               run: |
