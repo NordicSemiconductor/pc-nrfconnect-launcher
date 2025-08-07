@@ -174,7 +174,7 @@ const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
                 return INTERRUPT_INITIALISATION;
             }
         } catch (e) {
-            ErrorDialogActions.showDialog(describeError(e));
+            dispatch(ErrorDialogActions.showDialog(describeError(e)));
         }
     }
 };
