@@ -16,7 +16,6 @@ export type State = {
     isJLinkUpdateAvailableDialogVisible: boolean;
     isJLinkUpdateProgressDialogVisible: boolean;
     updateProgress?: JLinkUpdate;
-    error?: string;
     inStartup: boolean;
 };
 
@@ -57,9 +56,6 @@ const slice = createSlice({
         updateProgress(state, { payload: update }: PayloadAction<JLinkUpdate>) {
             state.updateProgress = update;
         },
-        setError(state, { payload: error }: PayloadAction<string>) {
-            state.error = error;
-        },
         reset() {
             return initialState;
         },
@@ -68,13 +64,8 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const {
-    updateAvailable,
-    showProgressDialog,
-    updateProgress,
-    setError,
-    reset,
-} = slice.actions;
+export const { updateAvailable, showProgressDialog, updateProgress, reset } =
+    slice.actions;
 
 export const isJLinkUpdateDialogVisible = (state: RootState) =>
     state.jlinkUpdate.isJLinkUpdateAvailableDialogVisible;
@@ -86,6 +77,5 @@ export const getJLinkVersionToBeInstalled = (state: RootState) =>
     state.jlinkUpdate.versionToBeInstalled;
 export const getInstalledJLinkVersion = (state: RootState) =>
     state.jlinkUpdate.installedVersion;
-export const getJLinkError = (state: RootState) => state.jlinkUpdate.error;
 export const ranJLinkCheckDuringStartup = (state: RootState) =>
     state.jlinkUpdate.inStartup;

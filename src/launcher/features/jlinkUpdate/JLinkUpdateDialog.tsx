@@ -8,6 +8,7 @@ import React from 'react';
 import {
     ConfirmationDialog,
     describeError,
+    ErrorDialogActions,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/installJLink';
@@ -21,7 +22,6 @@ import {
     isJLinkUpdateDialogVisible,
     ranJLinkCheckDuringStartup,
     reset,
-    setError,
     showProgressDialog,
 } from './jlinkUpdateSlice';
 
@@ -50,9 +50,16 @@ export default () => {
                             versionToBeInstalled.toLowerCase() ===
                                 bundledJlinkVersion.toLowerCase()
                         )
-                        .catch(error =>
-                            dispatch(setError(describeError(error)))
-                        );
+                        .catch(error => {
+                            dispatch(
+                                ErrorDialogActions.showDialog(
+                                    `Unable to update SEGGER J-Link: ${describeError(
+                                        error
+                                    )}`
+                                )
+                            );
+                            dispatch(reset());
+                        });
                 }
             }}
             onCancel={() => {
