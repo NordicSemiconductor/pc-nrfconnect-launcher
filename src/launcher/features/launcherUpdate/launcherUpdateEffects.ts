@@ -62,8 +62,10 @@ export const checkForAppAndLauncherUpdateManually =
                 dispatch(checkForLauncherUpdate());
             }
         } catch (error) {
-            ErrorDialogActions.showDialog(
-                `Unable to check for updates: ${describeError(error)}`
+            dispatch(
+                ErrorDialogActions.showDialog(
+                    `Unable to check for updates: ${describeError(error)}`
+                )
             );
         }
     };
