@@ -6,7 +6,6 @@
 
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { JLinkUpdate } from '@nordicsemiconductor/nrf-jlink-js';
 import {
     DialogButton,
     GenericDialog,
@@ -21,17 +20,6 @@ import {
     ranJLinkCheckDuringStartup,
     reset,
 } from './jlinkUpdateSlice';
-
-const stepToTitle = (step: JLinkUpdate['step']) => {
-    switch (step) {
-        case 'install':
-            return 'Installing';
-        case 'download':
-            return 'Downloading';
-        default:
-            return 'N/A';
-    }
-};
 
 export default () => {
     const dispatch = useLauncherDispatch();
@@ -65,15 +53,25 @@ export default () => {
                 </DialogButton>
             }
         >
-            <div className="tw-flex tw-flex-col tw-gap-1">
-                {progress
-                    ? `${stepToTitle(progress?.step)}...`
-                    : 'Preparing installation'}
-                <ProgressBar
-                    label={`${progress?.percentage || 0}%`}
-                    now={progress?.percentage || 0}
-                />
-            </div>
+            {!progress && 'Preparing installation...'}
+            {progress?.step === 'download' && (
+                <>
+                    Downloading...
+                    <ProgressBar
+                        label={`${progress?.percentage || 0}%`}
+                        now={progress?.percentage || 0}
+                    />
+                </>
+            )}
+            {progress?.step === 'install' &&
+                !finished &&
+                process.platform === 'linux' &&
+                'Installing J-Link...'}
+            {progress?.step === 'install' &&
+                !finished &&
+                process.platform !== 'linux' &&
+                'J-Link is being installed in a separate window...'}
+            {finished && 'J-Link installation completed.'}
         </GenericDialog>
     );
 };
