@@ -4,7 +4,7 @@ The following table lists operating systems supported by nRF Connect for Desktop
 
 | Operating System          | x86            | x64           | ARM64         |
 |---------------------------|----------------|---------------|---------------|
-| Windows 11                | Tier 3         | Tier 3        | Not supported |
+| Windows 11                | Not applicable | Tier 3        | Not supported |
 | Windows 10                | Tier 3         | Tier 1        | Not supported |
 | Linux - Ubuntu 24.04 LTS  | Not supported  | Tier 2        | Not supported |
 | Linux - Ubuntu 22.04 LTS  | Not supported  | Tier 1        | Not supported |
