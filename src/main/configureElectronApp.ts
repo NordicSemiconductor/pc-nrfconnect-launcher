@@ -94,10 +94,9 @@ const copyNrfutil = () => {
 };
 
 const copyNrfutilSandboxes = async () => {
-    const nrfutilBundledSandboxes = path.join(
-        getBundledResourcesDir(),
-        'nrfutil-sandboxes'
-    );
+    const nrfutilBundledSandboxes = path
+        .join(getBundledResourcesDir(), 'nrfutil-sandboxes')
+        .replace('app.asar', 'app.asar.unpacked');
 
     if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
