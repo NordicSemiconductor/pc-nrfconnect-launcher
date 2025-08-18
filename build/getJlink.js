@@ -8,10 +8,11 @@ const path = require('path');
 
 const downloadJLink =
     require('@nordicsemiconductor/nrf-jlink-js').downloadAndSaveJLink;
-const { bundledJlinkDir } = require('../src/main/bundledJlink');
 
 exports.default = () =>
-    downloadJLink(path.join('resources', bundledJlinkDir)).catch(error => {
-        console.error('\n!!! EXCEPTION', error.message);
-        process.exit(-1);
-    });
+    downloadJLink(path.join('resources', 'prefetched', 'jlink')).catch(
+        error => {
+            console.error('\n!!! EXCEPTION', error.message);
+            process.exit(-1);
+        }
+    );

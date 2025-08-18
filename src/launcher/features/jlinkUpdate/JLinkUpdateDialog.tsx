@@ -13,7 +13,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/installJLink';
-import { bundledJlinkVersion } from '../../../main/bundledJlink';
+import bundledJlinkVersion from '../../../main/bundledJlink';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import continueInitialisingLauncher from '../initialisation/initialiseLauncherState';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';

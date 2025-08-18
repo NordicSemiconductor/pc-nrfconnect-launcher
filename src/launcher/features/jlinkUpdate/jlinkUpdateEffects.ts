@@ -6,7 +6,7 @@
 
 import { getVersionToInstall } from '@nordicsemiconductor/nrf-jlink-js';
 
-import { bundledJlinkVersion } from '../../../main/bundledJlink';
+import bundledJlinkVersion from '../../../main/bundledJlink';
 import { AppThunk } from '../../store';
 import { updateAvailable } from './jlinkUpdateSlice';
 

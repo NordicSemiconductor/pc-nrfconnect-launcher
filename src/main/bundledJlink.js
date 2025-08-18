@@ -4,7 +4,4 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-const path = require('path');
-
-exports.bundledJlinkVersion = 'V8.18';
-exports.bundledJlinkDir = path.join('prefetched', 'jlink');
+module.exports = 'V8.18';
