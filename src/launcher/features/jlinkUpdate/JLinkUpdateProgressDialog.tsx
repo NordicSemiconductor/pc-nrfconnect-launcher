@@ -15,6 +15,7 @@ import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import continueInitialisingLauncher from '../initialisation/initialiseLauncherState';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
 import {
+    getInstalledJLinkVersion,
     getJLinkUpdateProgress,
     isJLinkUpdateProgressDialogVisible,
     ranJLinkCheckDuringStartup,
@@ -23,6 +24,7 @@ import {
 
 export default () => {
     const dispatch = useLauncherDispatch();
+    const isJLinkInstalled = !!useLauncherSelector(getInstalledJLinkVersion);
     const isVisible = useLauncherSelector(isJLinkUpdateProgressDialogVisible);
     const progress = useLauncherSelector(getJLinkUpdateProgress);
     const ranJlinkCheckDuringStartup = useLauncherSelector(
@@ -34,7 +36,9 @@ export default () => {
     return (
         <GenericDialog
             isVisible={isVisible}
-            title="Updating SEGGER J-Link"
+            title={`${
+                isJLinkInstalled ? 'Updating' : 'Installing'
+            } SEGGER J-Link`}
             showSpinner={!finished}
             onHide={() => dispatch(continueInitialisingLauncher())}
             footer={
