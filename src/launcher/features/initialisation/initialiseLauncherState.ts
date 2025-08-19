@@ -8,7 +8,9 @@ import {
     describeError,
     ErrorDialogActions,
     launcherConfig,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
@@ -38,10 +40,20 @@ import {
     showDeprecatedSources,
     warnAboutMissingTokenOnStartup,
 } from '../sources/sourcesSlice';
+import { sendEnvInfo } from '../telemetry/telemetryEffects';
 import {
-    checkTelemetrySetting,
-    sendEnvInfo,
-} from '../telemetry/telemetryEffects';
+    setIsSendingTelemetry,
+    showTelemetryDialog,
+} from '../telemetry/telemetrySlice';
+
+const checkTelemetrySetting = (): AppThunk => dispatch => {
+    if (getHasUserAgreedToTelemetry() == null) {
+        dispatch(showTelemetryDialog());
+        return INTERRUPT_INITIALISATION;
+    }
+
+    dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
+};
 
 const loadSources = (): AppThunk => async dispatch => {
     try {
