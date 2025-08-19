@@ -42,8 +42,8 @@ export default () => {
             isVisible={isVisible}
             title={
                 installedVersion
-                    ? 'Compatible J-Link version available'
-                    : 'Install J-Link'
+                    ? 'Compatible SEGGER J-Link version available'
+                    : 'Install SEGGER J-Link'
             }
             footer={
                 <>

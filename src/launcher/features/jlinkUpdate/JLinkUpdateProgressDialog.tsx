@@ -66,12 +66,12 @@ export default () => {
             {progress?.step === 'install' &&
                 !finished &&
                 process.platform === 'linux' &&
-                'Installing J-Link...'}
+                'Installing SEGGER J-Link...'}
             {progress?.step === 'install' &&
                 !finished &&
                 process.platform !== 'linux' &&
-                'J-Link is being installed in a separate window...'}
-            {finished && 'J-Link installation completed.'}
+                'SEGGER J-Link is being installed in a separate window...'}
+            {finished && 'SEGGER J-Link installation completed.'}
         </GenericDialog>
     );
 };
