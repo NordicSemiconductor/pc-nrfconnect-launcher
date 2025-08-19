@@ -19,19 +19,21 @@ import { getIsErrorVisible as getIsProxyErrorShown } from '../proxyLogin/proxyLo
 import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
-export const checkForLauncherUpdate = (): AppThunk => async dispatch => {
-    try {
-        const { isUpdateAvailable, newVersion } = await inMain.checkForUpdate();
+export const checkForLauncherUpdate =
+    (): AppThunk<Promise<void>> => async dispatch => {
+        try {
+            const { isUpdateAvailable, newVersion } =
+                await inMain.checkForUpdate();
 
-        if (isUpdateAvailable) {
-            dispatch(updateAvailable(newVersion));
-        } else {
-            dispatch(reset());
+            if (isUpdateAvailable) {
+                dispatch(updateAvailable(newVersion));
+            } else {
+                dispatch(reset());
+            }
+        } catch (error) {
+            logger.warn(error);
         }
-    } catch (error) {
-        logger.warn(error);
-    }
-};
+    };
 
 export const cancelDownload = (): AppThunk => dispatch => {
     inMain.cancelUpdate();
