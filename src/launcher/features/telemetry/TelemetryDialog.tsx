@@ -8,7 +8,7 @@ import React from 'react';
 import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import initialiseLauncherState from '../initialisation/initialiseLauncherState';
+import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import {
     cancelSendingTelemetry,
     confirmSendingTelemetry,
@@ -27,11 +27,11 @@ export default () => {
             cancelLabel="Decline"
             onConfirm={() => {
                 dispatch(confirmSendingTelemetry());
-                initialiseLauncherState();
+                continueLauncherInitialisation();
             }}
             onCancel={() => {
                 dispatch(cancelSendingTelemetry());
-                initialiseLauncherState();
+                continueLauncherInitialisation();
             }}
         >
             <div className="user-data-policy">
