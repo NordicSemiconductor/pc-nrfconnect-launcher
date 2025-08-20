@@ -34,7 +34,7 @@
         "postinstall": "node scripts/getNrfutil.js"
     },
     "author": "Nordic Semiconductor ASA",
-    "license": "Proprietary",
+    "license": "SEE LICENSE IN LICENSE",
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect for Desktop",
