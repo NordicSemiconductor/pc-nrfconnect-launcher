@@ -8,7 +8,9 @@ import {
     describeError,
     ErrorDialogActions,
     launcherConfig,
+    telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
@@ -22,6 +24,7 @@ import {
     handleAppsWithErrors,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
+import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
 import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
     getArtifactoryTokenInformation,
@@ -37,10 +40,20 @@ import {
     showDeprecatedSources,
     warnAboutMissingTokenOnStartup,
 } from '../sources/sourcesSlice';
+import { sendEnvInfo } from '../telemetry/telemetryEffects';
 import {
-    checkTelemetrySetting,
-    sendEnvInfo,
-} from '../telemetry/telemetryEffects';
+    setIsSendingTelemetry,
+    showTelemetryDialog,
+} from '../telemetry/telemetrySlice';
+
+const checkTelemetrySetting = (): AppThunk => dispatch => {
+    if (getHasUserAgreedToTelemetry() == null) {
+        dispatch(showTelemetryDialog());
+        return INTERRUPT_INITIALISATION;
+    }
+
+    dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
+};
 
 const loadSources = (): AppThunk => async dispatch => {
     try {
@@ -165,6 +178,19 @@ const checkForLauncherUpdateAtStartup =
         }
     };
 
+const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
+    if (getShouldCheckForUpdatesAtStartup(getState())) {
+        try {
+            const updateAvailable = await dispatch(checkForJLinkUpdate());
+            if (updateAvailable) {
+                return INTERRUPT_INITIALISATION;
+            }
+        } catch (e) {
+            dispatch(ErrorDialogActions.showDialog(describeError(e)));
+        }
+    }
+};
+
 const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
 
 const initialisationActions = [
@@ -175,6 +201,7 @@ const initialisationActions = [
     checkForDeprecatedSources,
     checkForMissingToken,
     downloadLatestAppInfoAtStartup,
+    checkForLinkUpdate,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,
 ];

@@ -125,6 +125,47 @@ const initNrfutil = async () => {
     await copyNrfutilSandboxes();
 };
 
+const getSingleFileInFolder = (folderPath: string): string | undefined => {
+    if (!fs.existsSync(folderPath)) {
+        return undefined;
+    }
+    const files = fs.readdirSync(folderPath);
+    if (files.length === 0 || files.length > 1) {
+        return undefined;
+    }
+    return path.join(folderPath, files[0]);
+};
+
+const initJLink = () => {
+    const jlinkBundledPath = path.join(
+        getBundledResourcesDir(),
+        'prefetched',
+        'jlink'
+    );
+    const jlinkInAppPath = path.join(getUserDataDir(), 'jlink');
+
+    const bundledJLink = getSingleFileInFolder(jlinkBundledPath);
+    const previouslyCopiedJLink = getSingleFileInFolder(jlinkInAppPath);
+    if (!bundledJLink) {
+        // This should never happen
+        throw new Error('Failed to find bundled J-Link installer.');
+    }
+
+    // cleanup exsting J-Link file if we provide a different one
+    if (
+        previouslyCopiedJLink &&
+        path.basename(previouslyCopiedJLink) !== path.basename(bundledJLink)
+    ) {
+        fs.rmSync(jlinkInAppPath, { recursive: true, force: true });
+    }
+
+    fs.mkdirSync(jlinkInAppPath, { recursive: true });
+    fs.copyFileSync(
+        bundledJLink,
+        path.join(jlinkInAppPath, path.basename(bundledJLink))
+    );
+};
+
 export default () => {
     app.on('ready', async () => {
         await loadDevtools();
@@ -134,6 +175,7 @@ export default () => {
         try {
             await initAppsDirectory();
             await initNrfutil();
+            initJLink();
             openInitialWindow();
         } catch (error) {
             fatalError(error);

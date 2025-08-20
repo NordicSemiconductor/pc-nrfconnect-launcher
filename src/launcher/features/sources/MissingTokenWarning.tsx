@@ -13,7 +13,7 @@ import {
 
 import { setDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import initialiseLauncherState from '../initialisation/initialiseLauncherState';
+import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { setArtifactoryToken } from '../settings/settingsEffects';
 import { addSource } from './sourcesEffects';
 import {
@@ -39,7 +39,7 @@ export default () => {
         }
 
         if (isWarningAboutMissingTokenOnStartup(missingTokenWarning))
-            dispatch(initialiseLauncherState());
+            dispatch(continueLauncherInitialisation());
     };
 
     const storeTokenAndAddSource = async () => {
