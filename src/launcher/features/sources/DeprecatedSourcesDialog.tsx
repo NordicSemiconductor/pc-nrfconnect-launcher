@@ -8,7 +8,7 @@ import React from 'react';
 import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import initialiseLauncherState from '../initialisation/initialiseLauncherState';
+import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { removeSource } from './sourcesEffects';
 import {
     doNotRemindDeprecatedSources,
@@ -34,19 +34,19 @@ export default () => {
                         dispatch(removeSource(source.name))
                     )
                 );
-                dispatch(initialiseLauncherState());
+                dispatch(continueLauncherInitialisation());
             }}
             optionalLabel="Do not remind me again"
             onOptional={() => {
                 dispatch(hideDeprecatedSources());
-                dispatch(initialiseLauncherState());
+                dispatch(continueLauncherInitialisation());
 
                 dispatch(doNotRemindDeprecatedSources());
             }}
             cancelLabel="Ignore"
             onCancel={() => {
                 dispatch(hideDeprecatedSources());
-                dispatch(initialiseLauncherState());
+                dispatch(continueLauncherInitialisation());
             }}
         >
             <p>The following sources you added are no longer supported:</p>

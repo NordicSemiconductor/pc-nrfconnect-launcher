@@ -12,7 +12,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import continueInitialisingLauncher from '../initialisation/initialiseLauncherState';
+import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
 import {
     getInstalledJLinkVersion,
@@ -40,14 +40,14 @@ export default () => {
                 isJLinkInstalled ? 'Updating' : 'Installing'
             } SEGGER J-Link`}
             showSpinner={!finished}
-            onHide={() => dispatch(continueInitialisingLauncher())}
+            onHide={() => dispatch(continueLauncherInitialisation())}
             footer={
                 <DialogButton
                     onClick={() => {
                         if (!ranJlinkCheckDuringStartup) {
                             dispatch(checkForAppAndLauncherUpdateManually());
                         } else {
-                            dispatch(continueInitialisingLauncher());
+                            dispatch(continueLauncherInitialisation());
                         }
                         dispatch(reset());
                     }}
