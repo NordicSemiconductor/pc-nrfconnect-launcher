@@ -14,18 +14,18 @@ import path from 'path';
 import { inRenderer } from '../ipc/installJLink';
 import { getUserDataDir } from './config';
 
-export default (offlineInstall = false) => {
+export default async (offlineInstall = false) => {
     if (offlineInstall) {
         const bundledDir = path.join(getUserDataDir(), 'jlink');
         const files = fs.readdirSync(bundledDir);
         if (files.length === 0 || files.length > 1) {
             throw new Error(`Failed to find bundled J-Link installer.`);
         }
-        install(
+        await install(
             path.join(bundledDir, files[0]),
             inRenderer.updateJLinkProgress
         );
     } else {
-        downloadAndInstallJLink(inRenderer.updateJLinkProgress);
+        await downloadAndInstallJLink(inRenderer.updateJLinkProgress);
     }
 };
