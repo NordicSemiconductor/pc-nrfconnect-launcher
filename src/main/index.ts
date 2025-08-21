@@ -18,10 +18,10 @@ import registerIpcHandler from './registerIpcHandler';
 import singeInstanceLock from './singeInstanceLock';
 import storeExecutablePath from './storeExecutablePath';
 
+singeInstanceLock();
 telemetry.enableTelemetry();
 
 initNrfUtilProxyEnv();
-singeInstanceLock();
 initializeElectronRemote();
 migrateSourcesJson();
 migrateSourcesVersionedJson();
