@@ -36,7 +36,11 @@ const AppIcon: React.FC<{ app: DisplayedApp }> = ({ app }) => {
 
     useEffect(() => {
         if (!isInProgress(app)) {
-            appBadge(app).then(setBadge);
+            if (app.jlinkMessage) {
+                setBadge(warning(app.jlinkMessage));
+            } else {
+                appBadge(app).then(setBadge);
+            }
         }
     }, [app]);
 

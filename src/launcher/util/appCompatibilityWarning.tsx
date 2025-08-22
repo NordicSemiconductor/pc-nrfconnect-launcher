@@ -5,24 +5,10 @@
  */
 
 import React from 'react';
-import {
-    ExternalLink,
-    getUserDataDir,
-    launcherConfig,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
-import {
-    getJlinkCompatibility as getJlinkCompatibilityFromModuleVersion,
-    NrfutilSandbox,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
-import { memoize } from 'lodash';
+import { launcherConfig } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import semver from 'semver';
 
-import {
-    isDownloadable,
-    isInstalled,
-    isWithdrawn,
-    LaunchableApp,
-} from '../../ipc/apps';
+import { isDownloadable, isWithdrawn, LaunchableApp } from '../../ipc/apps';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
 export enum WarningKind {
@@ -169,120 +155,19 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
           );
 };
 
-const getJlinkCompatibility = memoize(
-    async (nrfutilDeviceVersion: string, nrfutilCoreVersion?: string) => {
-        const userDir = getUserDataDir();
-        const sandbox = await NrfutilSandbox.create(
-            userDir,
-            'device',
-            nrfutilDeviceVersion,
-            nrfutilCoreVersion
-        );
-        const moduleVersion = await sandbox.getModuleVersion();
-
-        return getJlinkCompatibilityFromModuleVersion(moduleVersion);
-    }
-);
-
-export const checkJLinkRequirements: AppCompatibilityChecker = async (
-    app: LaunchableApp
-) => {
-    if (!isInstalled(app)) {
-        return undecided;
-    }
-
-    const deviceVersion = app.nrfutil?.device?.at(0);
-    const coreVersion = app.nrfutilCore;
-
-    if (!deviceVersion) {
-        return undecided;
-    }
-
-    const jlinkCompatibility = await getJlinkCompatibility(
-        deviceVersion,
-        coreVersion
-    );
-
-    if (jlinkCompatibility.kind === 'No J-Link installed') {
-        const { requiredJlink } = jlinkCompatibility;
-
-        return incompatible(
-            'Missing dependency',
-            `Required SEGGER J-Link not found: expected version V${requiredJlink}`,
-            <div className="tw-flex tw-flex-col tw-gap-2">
-                <div>This app requires SEGGER J-Link V{requiredJlink}.</div>
-                <div>
-                    <ExternalLink
-                        href="https://www.segger.com/downloads/jlink/"
-                        label="Download"
-                    />{' '}
-                    and install the SEGGER J-Link Software and Documentation
-                    pack V{requiredJlink}. Restart nRF Connect for Desktop
-                    afterwards.
-                </div>
-            </div>,
-            {
-                warningKind: WarningKind.JLINK,
-                app: app.name,
-                nrfutilDevice: deviceVersion,
-                ...jlinkCompatibility,
-            }
-        );
-    }
-
-    if (jlinkCompatibility.kind === 'Outdated J-Link') {
-        const { actualJlink, requiredJlink } = jlinkCompatibility;
-
-        return incompatible(
-            'Outdated dependency',
-            `Untested version V${actualJlink} of SEGGER J-Link found: ` +
-                `expected at least version V${requiredJlink}`,
-            <div className="tw-flex tw-flex-col tw-gap-2">
-                <div>
-                    This app was tested with SEGGER J-Link V{requiredJlink} but
-                    version V{actualJlink} was found on your system.
-                </div>
-                <div>This app might not work as expected!</div>
-                <div>
-                    <ExternalLink
-                        href="https://www.segger.com/downloads/jlink/"
-                        label="Download"
-                    />{' '}
-                    and install the SEGGER J-Link Software and Documentation
-                    pack V{requiredJlink}. Restart nRF Connect for Desktop
-                    afterwards.
-                </div>
-            </div>,
-            {
-                warningKind: WarningKind.JLINK,
-                app: app.name,
-                nrfutilDevice: deviceVersion,
-                ...jlinkCompatibility,
-            }
-        );
-    }
-
-    return undecided;
-};
-
 export default async (
     app: LaunchableApp,
-    providedVersionOfEngine = launcherConfig().launcherVersion,
-    ignoredCases: WarningKind[] = []
+    providedVersionOfEngine = launcherConfig().launcherVersion
 ): Promise<undefined | IncompatibilityWarning> => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
         checkEngineVersionIsSet,
         checkEngineIsSupported,
         checkMinimalRequiredAppVersions,
-        checkJLinkRequirements,
     ]) {
         // eslint-disable-next-line no-await-in-loop
         const result = await check(app, providedVersionOfEngine);
-        if (
-            result.isDecided &&
-            !ignoredCases.includes(result.warningData.warningKind)
-        ) {
+        if (result.isDecided) {
             return result;
         }
     }
