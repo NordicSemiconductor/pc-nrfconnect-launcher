@@ -10,6 +10,7 @@ import {
     launcherConfig,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
@@ -22,6 +23,7 @@ import type { AppThunk } from '../../store';
 import {
     downloadLatestAppInfos,
     handleAppsWithErrors,
+    updateJLinkCompatibilityForAllApps,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
@@ -201,6 +203,7 @@ const initialisationActions = [
     checkForDeprecatedSources,
     checkForMissingToken,
     downloadLatestAppInfoAtStartup,
+    updateJLinkCompatibilityForAllApps,
     checkForLinkUpdate,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,
