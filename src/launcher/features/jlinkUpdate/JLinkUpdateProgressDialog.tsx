@@ -12,6 +12,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { updateJLinkCompatibilityForAllApps } from '../apps/appsEffects';
 import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
 import {
@@ -50,6 +51,7 @@ export default () => {
                             dispatch(continueLauncherInitialisation());
                         }
                         dispatch(reset());
+                        dispatch(updateJLinkCompatibilityForAllApps());
                     }}
                     disabled={!finished}
                 >

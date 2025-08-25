@@ -7,31 +7,23 @@
 import {
     describeError,
     ErrorDialogActions,
-    getUserDataDir,
     launcherConfig,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import {
-    getJlinkCompatibility,
-    NrfutilSandbox,
-} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
+import {} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { getDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { isDeprecatedSource } from '../../../common/sources';
-import {
-    DownloadableApp,
-    inMain,
-    isInstalled,
-    LocalApp,
-} from '../../../ipc/apps';
+import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import {
     downloadLatestAppInfos,
     handleAppsWithErrors,
+    updateJLinkCompatibilityForAllApps,
 } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
 import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
@@ -76,63 +68,15 @@ const loadSources = (): AppThunk => async dispatch => {
         );
     }
 };
-export const checkJLinkRequirements = async <
-    T extends LocalApp | DownloadableApp
->(
-    app: T
-): Promise<T> => {
-    if (!isInstalled(app)) {
-        return app;
-    }
-
-    const deviceVersion = app.nrfutil?.device?.at(0);
-    const coreVersion = app.nrfutilCore;
-
-    if (!deviceVersion) {
-        return app;
-    }
-
-    const userDir = getUserDataDir();
-    const sandbox = await NrfutilSandbox.create(
-        userDir,
-        'device',
-        deviceVersion,
-        coreVersion
-    );
-    const moduleVersion = await sandbox.getModuleVersion();
-    const jlinkCompatibility = getJlinkCompatibility(moduleVersion);
-
-    let jlinkMessage: string | undefined;
-
-    if (jlinkCompatibility.kind === 'No J-Link installed') {
-        jlinkMessage = `Required SEGGER J-Link not found: expected version V${jlinkCompatibility.requiredJlink}`;
-    } else if (jlinkCompatibility.kind === 'Outdated J-Link') {
-        jlinkMessage = `Untested version V${jlinkCompatibility.actualJlink} of SEGGER J-Link found: expected at least version V${jlinkCompatibility.requiredJlink}`;
-    }
-
-    return {
-        ...app,
-        jlinkMessage,
-    };
-};
-
-const getAppsWithJlinkCompatibility = <T extends LocalApp | DownloadableApp>(
-    apps: T[]
-): Promise<T[]> => Promise.all(apps.map(checkJLinkRequirements));
 
 export const loadApps = (): AppThunk => async dispatch => {
     try {
-        const localAppsWithJlinkCompatibility =
-            await getAppsWithJlinkCompatibility(await inMain.getLocalApps());
-        dispatch(setAllLocalApps(localAppsWithJlinkCompatibility));
+        dispatch(setAllLocalApps(await inMain.getLocalApps()));
 
         const { apps, appsWithErrors, sourcesWithErrors } =
             await inMain.getDownloadableApps();
 
-        const appsWithJlinkCompatibility = await getAppsWithJlinkCompatibility(
-            apps
-        );
-        dispatch(addDownloadableApps(appsWithJlinkCompatibility));
+        dispatch(addDownloadableApps(apps));
         dispatch(handleAppsWithErrors(appsWithErrors));
         dispatch(handleSourcesWithErrors(sourcesWithErrors));
     } catch (error) {
@@ -259,6 +203,7 @@ const initialisationActions = [
     checkForDeprecatedSources,
     checkForMissingToken,
     downloadLatestAppInfoAtStartup,
+    updateJLinkCompatibilityForAllApps,
     checkForLinkUpdate,
     checkForLauncherUpdateAtStartup,
     sendEnvInfo,

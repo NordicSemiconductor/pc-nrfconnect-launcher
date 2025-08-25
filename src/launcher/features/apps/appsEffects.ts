@@ -8,10 +8,15 @@ import { getCurrentWindow, require as remoteRequire } from '@electron/remote';
 import {
     describeError,
     ErrorDialogActions,
+    getUserDataDir,
     launcherConfig,
     openWindow,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    getJlinkCompatibility,
+    NrfutilSandbox,
+} from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import {
@@ -21,6 +26,7 @@ import {
     inMain as appsInMain,
     isInstalled,
     LaunchableApp,
+    LocalApp,
 } from '../../../ipc/apps';
 import type { AppThunk } from '../../store';
 import appCompatibilityWarning from '../../util/appCompatibilityWarning';
@@ -36,6 +42,7 @@ import {
     removeDownloadableAppSuccess,
     removeLocalApp,
     resetAppInstallProgress,
+    setAllLocalApps,
     updateDownloadableAppInfosFailed,
     updateDownloadableAppInfosStarted,
     updateDownloadableAppInfosSuccess,
@@ -176,7 +183,8 @@ export const installDownloadableApp =
         });
 
         dispatch(installDownloadableAppStarted(app));
-        return dispatch(install(app, toVersion));
+        dispatch(install(app, toVersion));
+        dispatch(updateJLinkCompatibilityForAllApps(app));
     };
 
 export const updateDownloadableApp =
@@ -259,4 +267,79 @@ export const checkCompatibilityThenLaunch =
                 );
             }
         });
+    };
+
+const checkJLinkRequirements = async <T extends LocalApp | DownloadableApp>(
+    app: T
+): Promise<T> => {
+    if (!isInstalled(app)) {
+        return app;
+    }
+
+    const deviceVersion = app.nrfutil?.device?.at(0);
+    const coreVersion = app.nrfutilCore;
+
+    if (!deviceVersion) {
+        return app;
+    }
+
+    const userDir = getUserDataDir();
+    const sandbox = await NrfutilSandbox.create(
+        userDir,
+        'device',
+        deviceVersion,
+        coreVersion
+    );
+    const moduleVersion = await sandbox.getModuleVersion();
+    const jlinkCompatibility = getJlinkCompatibility(moduleVersion);
+
+    let jlinkMessage: string | undefined;
+
+    if (jlinkCompatibility.kind === 'No J-Link installed') {
+        jlinkMessage = `Required SEGGER J-Link not found: expected version V${jlinkCompatibility.requiredJlink}`;
+    } else if (jlinkCompatibility.kind === 'Outdated J-Link') {
+        jlinkMessage = `Untested version V${jlinkCompatibility.actualJlink} of SEGGER J-Link found: expected at least version V${jlinkCompatibility.requiredJlink}`;
+    }
+
+    return {
+        ...app,
+        jlinkMessage,
+    };
+};
+
+const getAppsWithJlinkCompatibility = <T extends LocalApp | DownloadableApp>(
+    apps: T[],
+    exclusiveApp?: LocalApp | DownloadableApp
+): Promise<T[]> =>
+    Promise.all(
+        apps.map(app =>
+            exclusiveApp && app.name === exclusiveApp.name
+                ? app
+                : checkJLinkRequirements(app)
+        )
+    );
+
+export const updateJLinkCompatibilityForAllApps =
+    (exclusiveApp?: LocalApp | DownloadableApp): AppThunk<Promise<void>> =>
+    async (dispatch, getState) => {
+        try {
+            dispatch(
+                setAllLocalApps(
+                    await getAppsWithJlinkCompatibility(
+                        getState().apps.localApps,
+                        exclusiveApp
+                    )
+                )
+            );
+
+            dispatch(
+                addDownloadableApps(
+                    await getAppsWithJlinkCompatibility(
+                        getState().apps.downloadableApps
+                    )
+                )
+            );
+        } catch (error) {
+            dispatch(ErrorDialogActions.showDialog(describeError(error)));
+        }
     };
