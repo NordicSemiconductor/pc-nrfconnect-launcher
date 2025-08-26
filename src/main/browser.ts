@@ -12,7 +12,7 @@ import {
 } from 'electron';
 
 import { appArguments } from './argv';
-import { getBundledResourcesDir } from './config';
+import { getBundledResourcePath } from './config';
 
 type BrowserWindowOptions = BrowserWindowConstructorOptions & {
     splashScreen?: boolean;
@@ -32,7 +32,7 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
         icon,
     });
     splashScreen.loadURL(
-        `file://${getBundledResourcesDir()}/splashscreen.html`
+        `file://${getBundledResourcePath()}/splashscreen.html`
     );
     splashScreen.on('closed', () => {
         splashScreen = null;

@@ -24,7 +24,7 @@ import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
-    getBundledResourcesDir,
+    getBundledResourcePath,
     getNodeModulesDir,
     getUserDataDir,
 } from './config';
@@ -87,16 +87,16 @@ const fatalError = (error: unknown) => {
 const copyNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
-    const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
+    const nrfutilBundled = getBundledResourcePath(binName);
     const nrfutilInAppPath = path.join(getUserDataDir(), binName);
 
     fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
 };
 
 const copyNrfutilSandboxes = async () => {
-    const nrfutilBundledSandboxes = path
-        .join(getBundledResourcesDir(), 'nrfutil-sandboxes')
-        .replace('app.asar', 'app.asar.unpacked');
+    const nrfutilBundledSandboxes = getBundledResourcePath(
+        'nrfutil-sandboxes'
+    ).replace('app.asar', 'app.asar.unpacked');
 
     if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
@@ -137,11 +137,7 @@ const getSingleFileInFolder = (folderPath: string): string | undefined => {
 };
 
 const initJLink = () => {
-    const jlinkBundledPath = path.join(
-        getBundledResourcesDir(),
-        'prefetched',
-        'jlink'
-    );
+    const jlinkBundledPath = getBundledResourcePath('prefetched', 'jlink');
     const jlinkInAppPath = path.join(getUserDataDir(), 'jlink');
 
     const bundledJLink = getSingleFileInFolder(jlinkBundledPath);

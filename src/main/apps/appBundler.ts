@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { getBundledResourcesDir } from '../config';
+import { getBundledResourcePath } from '../config';
 import { isInstalled, readAppInfoFile } from './app';
 import { installDownloadableAppCore } from './appChanges';
 import { getDownloadableApps } from './apps';
@@ -18,11 +18,7 @@ const getApp = (appName: string) =>
     );
 
 export const ensureBundledAppExists = async () => {
-    const bundledAppsPath = path.join(
-        getBundledResourcesDir(),
-        'prefetched',
-        'appBundles'
-    );
+    const bundledAppsPath = getBundledResourcePath('prefetched', 'appBundles');
     if (!fs.existsSync(bundledAppsPath)) return;
 
     await Promise.allSettled(
