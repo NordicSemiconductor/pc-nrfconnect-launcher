@@ -26,7 +26,7 @@ import {
     getAppsRootDir,
     getBundledResourcePath,
     getNodeModulesDir,
-    getUserDataDir,
+    getUserDataPath,
 } from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
@@ -88,7 +88,7 @@ const copyNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
     const nrfutilBundled = getBundledResourcePath(binName);
-    const nrfutilInAppPath = path.join(getUserDataDir(), binName);
+    const nrfutilInAppPath = getUserDataPath(binName);
 
     fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
 };
@@ -100,10 +100,7 @@ const copyNrfutilSandboxes = async () => {
 
     if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
-    const nrfutilBundledSandboxesDest = path.join(
-        getUserDataDir(),
-        'nrfutil-sandboxes'
-    );
+    const nrfutilBundledSandboxesDest = getUserDataPath('nrfutil-sandboxes');
 
     fs.mkdirSync(nrfutilBundledSandboxesDest, { recursive: true });
 
@@ -138,7 +135,7 @@ const getSingleFileInFolder = (folderPath: string): string | undefined => {
 
 const initJLink = () => {
     const jlinkBundledPath = getBundledResourcePath('prefetched', 'jlink');
-    const jlinkInAppPath = path.join(getUserDataDir(), 'jlink');
+    const jlinkInAppPath = getUserDataPath('jlink');
 
     const bundledJLink = getSingleFileInFolder(jlinkBundledPath);
     const previouslyCopiedJLink = getSingleFileInFolder(jlinkInAppPath);

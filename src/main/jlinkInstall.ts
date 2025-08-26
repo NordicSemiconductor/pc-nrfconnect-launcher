@@ -12,11 +12,11 @@ import fs from 'fs';
 import path from 'path';
 
 import { inRenderer } from '../ipc/installJLink';
-import { getUserDataDir } from './config';
+import { getUserDataPath } from './config';
 
 export default async (offlineInstall = false) => {
     if (offlineInstall) {
-        const bundledDir = path.join(getUserDataDir(), 'jlink');
+        const bundledDir = getUserDataPath('jlink');
         const files = fs.readdirSync(bundledDir);
         if (files.length === 0 || files.length > 1) {
             throw new Error(`Failed to find bundled J-Link installer.`);

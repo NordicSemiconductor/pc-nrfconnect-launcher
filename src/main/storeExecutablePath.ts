@@ -5,9 +5,8 @@
  */
 
 import { app } from 'electron';
-import { join } from 'path';
 
-import { getUserDataDir } from './config';
+import { getUserDataPath } from './config';
 import describeError from './describeError';
 import { writeFile } from './fileUtil';
 
@@ -20,7 +19,7 @@ export default () => {
     if (app.isPackaged) {
         try {
             writeFile(
-                join(getUserDataDir(), 'execPath'),
+                getUserDataPath('execPath'),
                 process.platform === 'linux' && process.env.APPIMAGE
                     ? process.env.APPIMAGE
                     : process.execPath

@@ -17,7 +17,7 @@ import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfu
 
 import { inRenderer as appInstallProgress } from '../ipc/appInstallProgress';
 import { AppSpec } from '../ipc/apps';
-import { getUserDataDir } from './config';
+import { getUserDataPath } from './config';
 import { logger } from './log';
 
 type SandboxesCacheKeyType =
@@ -90,7 +90,7 @@ const preparedSandbox = (
     };
 
     const sandbox = NrfutilSandbox.create(
-        getUserDataDir(),
+        getUserDataPath(),
         moduleName,
         moduleVersion,
         nrfutilCore,
