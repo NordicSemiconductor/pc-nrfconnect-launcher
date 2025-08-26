@@ -7,7 +7,6 @@
 import { app, dialog, Menu } from 'electron';
 import fs from 'fs';
 import os from 'os';
-import path from 'path';
 
 import {
     getBundledAppInstalled,
@@ -24,9 +23,10 @@ import {
     getAppsExternalDir,
     getAppsLocalDir,
     getAppsRootDir,
-    getBundledResourcesDir,
+    getBundledResourcePath,
     getNodeModulesDir,
-    getUserDataDir,
+    getUnpackedBundledResourcePath,
+    getUserDataPath,
 } from './config';
 import describeError from './describeError';
 import loadDevtools from './devtools';
@@ -87,23 +87,19 @@ const fatalError = (error: unknown) => {
 const copyNrfutil = () => {
     const binName = `nrfutil${process.platform === 'win32' ? '.exe' : ''}`;
 
-    const nrfutilBundled = path.join(getBundledResourcesDir(), binName);
-    const nrfutilInAppPath = path.join(getUserDataDir(), binName);
+    const nrfutilBundled = getBundledResourcePath(binName);
+    const nrfutilInAppPath = getUserDataPath(binName);
 
     fs.copyFileSync(nrfutilBundled, nrfutilInAppPath);
 };
 
 const copyNrfutilSandboxes = async () => {
-    const nrfutilBundledSandboxes = path
-        .join(getBundledResourcesDir(), 'nrfutil-sandboxes')
-        .replace('app.asar', 'app.asar.unpacked');
+    const nrfutilBundledSandboxes =
+        getUnpackedBundledResourcePath('nrfutil-sandboxes');
 
     if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
-    const nrfutilBundledSandboxesDest = path.join(
-        getUserDataDir(),
-        'nrfutil-sandboxes'
-    );
+    const nrfutilBundledSandboxesDest = getUserDataPath('nrfutil-sandboxes');
 
     fs.mkdirSync(nrfutilBundledSandboxesDest, { recursive: true });
 
@@ -125,47 +121,6 @@ const initNrfutil = async () => {
     await copyNrfutilSandboxes();
 };
 
-const getSingleFileInFolder = (folderPath: string): string | undefined => {
-    if (!fs.existsSync(folderPath)) {
-        return undefined;
-    }
-    const files = fs.readdirSync(folderPath);
-    if (files.length === 0 || files.length > 1) {
-        return undefined;
-    }
-    return path.join(folderPath, files[0]);
-};
-
-const initJLink = () => {
-    const jlinkBundledPath = path.join(
-        getBundledResourcesDir(),
-        'prefetched',
-        'jlink'
-    );
-    const jlinkInAppPath = path.join(getUserDataDir(), 'jlink');
-
-    const bundledJLink = getSingleFileInFolder(jlinkBundledPath);
-    const previouslyCopiedJLink = getSingleFileInFolder(jlinkInAppPath);
-    if (!bundledJLink) {
-        // This should never happen
-        throw new Error('Failed to find bundled J-Link installer.');
-    }
-
-    // cleanup exsting J-Link file if we provide a different one
-    if (
-        previouslyCopiedJLink &&
-        path.basename(previouslyCopiedJLink) !== path.basename(bundledJLink)
-    ) {
-        fs.rmSync(jlinkInAppPath, { recursive: true, force: true });
-    }
-
-    fs.mkdirSync(jlinkInAppPath, { recursive: true });
-    fs.copyFileSync(
-        bundledJLink,
-        path.join(jlinkInAppPath, path.basename(bundledJLink))
-    );
-};
-
 export default () => {
     app.on('ready', async () => {
         await loadDevtools();
@@ -175,7 +130,6 @@ export default () => {
         try {
             await initAppsDirectory();
             await initNrfutil();
-            initJLink();
             openInitialWindow();
         } catch (error) {
             fatalError(error);

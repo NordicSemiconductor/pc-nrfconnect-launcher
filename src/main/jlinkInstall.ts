@@ -12,17 +12,24 @@ import fs from 'fs';
 import path from 'path';
 
 import { inRenderer } from '../ipc/installJLink';
-import { getUserDataDir } from './config';
+import { getUnpackedBundledResourcePath } from './config';
+
+const getSingleFileInFolder = (folder: string) => {
+    const files = fs.readdirSync(folder);
+    if (files.length !== 1) {
+        throw new Error(`Failed to find bundled J-Link installer.`);
+    }
+    return path.join(folder, files[0]);
+};
 
 export default async (offlineInstall = false) => {
     if (offlineInstall) {
-        const bundledDir = path.join(getUserDataDir(), 'jlink');
-        const files = fs.readdirSync(bundledDir);
-        if (files.length === 0 || files.length > 1) {
-            throw new Error(`Failed to find bundled J-Link installer.`);
-        }
+        const bundledJLinkDir = getUnpackedBundledResourcePath(
+            'prefetched',
+            'jlink'
+        );
         await install(
-            path.join(bundledDir, files[0]),
+            getSingleFileInFolder(bundledJLinkDir),
             inRenderer.updateJLinkProgress
         );
     } else {

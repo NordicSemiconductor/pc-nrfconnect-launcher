@@ -18,7 +18,7 @@ import { SourceWithError } from '../../../ipc/apps';
 import { retrieveToken } from '../../artifactoryTokenStorage';
 import {
     getAppsRootDir,
-    getBundledResourcesDir,
+    getBundledResourcePath,
     getNodeModulesDir,
 } from '../../config';
 import describeError from '../../describeError';
@@ -148,11 +148,7 @@ export const downloadAllSources = async () => {
 };
 
 export const ensureBundledSourceExists = () => {
-    const bundledSource = path.join(
-        getBundledResourcesDir(),
-        'prefetched',
-        'source.json'
-    );
+    const bundledSource = getBundledResourcePath('prefetched', 'source.json');
 
     // we need to overwrite source json so if new apps are in it but not on the machine source file
     // bundled apps will still be shown in the list
@@ -162,11 +158,11 @@ export const ensureBundledSourceExists = () => {
     }
 
     const appFiles = fs
-        .readdirSync(path.join(getBundledResourcesDir(), 'prefetched'))
+        .readdirSync(getBundledResourcePath('prefetched'))
         .filter(p => p.match(/^(pc-nrfconnect-).*/));
 
     appFiles.forEach(file => {
-        const from = path.join(getBundledResourcesDir(), 'prefetched', file);
+        const from = getBundledResourcePath('prefetched', file);
         const to = path.join(getAppsRootDir('official'), file);
         if (fs.existsSync(from) && !fs.existsSync(to)) {
             fs.copyFileSync(from, to);
