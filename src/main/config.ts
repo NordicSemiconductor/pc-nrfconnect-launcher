@@ -24,6 +24,8 @@ export const getAppsRootDir = (sourceName: SourceName = OFFICIAL) =>
 
 export const getBundledResourcePath = (...paths: string[]) =>
     path.join(app.getAppPath(), 'resources', ...paths);
+export const getUnpackedBundledResourcePath = (...paths: string[]) =>
+    getBundledResourcePath(...paths).replace('app.asar', 'app.asar.unpacked');
 
 export const getUserDataPath = (...paths: string[]) =>
     path.join(app.getPath('userData'), ...paths);

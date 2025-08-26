@@ -26,6 +26,7 @@ import {
     getAppsRootDir,
     getBundledResourcePath,
     getNodeModulesDir,
+    getUnpackedBundledResourcePath,
     getUserDataPath,
 } from './config';
 import describeError from './describeError';
@@ -94,9 +95,8 @@ const copyNrfutil = () => {
 };
 
 const copyNrfutilSandboxes = async () => {
-    const nrfutilBundledSandboxes = getBundledResourcePath(
-        'nrfutil-sandboxes'
-    ).replace('app.asar', 'app.asar.unpacked');
+    const nrfutilBundledSandboxes =
+        getUnpackedBundledResourcePath('nrfutil-sandboxes');
 
     if (!fs.existsSync(nrfutilBundledSandboxes)) return;
 
