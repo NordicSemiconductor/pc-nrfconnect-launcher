@@ -45,17 +45,22 @@ import {
     setIsSendingTelemetry,
     showTelemetryDialog,
 } from '../telemetry/telemetrySlice';
+import {
+    INTERRUPT_PROCESS,
+    type ProcessStep,
+    runRemainingProcessStepsSequentially,
+} from './thunkProcess';
 
-const checkTelemetrySetting = (): AppThunk => dispatch => {
+const checkTelemetrySetting: ProcessStep = dispatch => {
     if (getHasUserAgreedToTelemetry() == null) {
         dispatch(showTelemetryDialog());
-        return INTERRUPT_INITIALISATION;
+        return INTERRUPT_PROCESS;
     }
 
     dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
 };
 
-const loadSources = (): AppThunk => async dispatch => {
+const loadSources: ProcessStep = async dispatch => {
     try {
         dispatch(setSources(await sources.getSources()));
     } catch (error) {
@@ -67,7 +72,7 @@ const loadSources = (): AppThunk => async dispatch => {
     }
 };
 
-export const loadApps = (): AppThunk => async dispatch => {
+export const loadApps: ProcessStep = async dispatch => {
     try {
         dispatch(setAllLocalApps(await inMain.getLocalApps()));
 
@@ -82,7 +87,7 @@ export const loadApps = (): AppThunk => async dispatch => {
     }
 };
 
-const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
+const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
     );
@@ -119,42 +124,36 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     }
 };
 
-const checkForDeprecatedSources =
-    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
-    (dispatch, getState) => {
-        const deprecatedSources = getSources(getState()).filter(
-            isDeprecatedSource
+const checkForDeprecatedSources: ProcessStep = (dispatch, getState) => {
+    const deprecatedSources = getSources(getState()).filter(isDeprecatedSource);
+
+    if (
+        !(
+            deprecatedSources.length === 0 ||
+            getDoNotRemindDeprecatedSources(getState())
+        )
+    ) {
+        dispatch(showDeprecatedSources(deprecatedSources));
+        return INTERRUPT_PROCESS;
+    }
+};
+
+const checkForMissingToken: ProcessStep = (dispatch, getState) => {
+    if (getDoNotRemindOnMissingToken()) return;
+
+    const token = getArtifactoryTokenInformation(getState());
+    const sourcesWithRestrictedAccessLevel =
+        getSourcesWithRestrictedAccessLevel(getState());
+
+    if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
+        dispatch(
+            warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
         );
+        return INTERRUPT_PROCESS;
+    }
+};
 
-        if (
-            !(
-                deprecatedSources.length === 0 ||
-                getDoNotRemindDeprecatedSources(getState())
-            )
-        ) {
-            dispatch(showDeprecatedSources(deprecatedSources));
-            return INTERRUPT_INITIALISATION;
-        }
-    };
-
-const checkForMissingToken =
-    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
-    (dispatch, getState) => {
-        if (getDoNotRemindOnMissingToken()) return;
-
-        const token = getArtifactoryTokenInformation(getState());
-        const sourcesWithRestrictedAccessLevel =
-            getSourcesWithRestrictedAccessLevel(getState());
-
-        if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
-            dispatch(
-                warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
-            );
-            return INTERRUPT_INITIALISATION;
-        }
-    };
-
-const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
+const downloadLatestAppInfoAtStartup: ProcessStep = (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
     );
@@ -164,26 +163,29 @@ const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
     }
 };
 
-const checkForLauncherUpdateAtStartup =
-    (): AppThunk => async (dispatch, getState) => {
-        const shouldCheckForUpdatesAtStartup =
-            getShouldCheckForUpdatesAtStartup(getState());
+const checkForLauncherUpdateAtStartup: ProcessStep = async (
+    dispatch,
+    getState
+) => {
+    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
+        getState()
+    );
 
-        if (
-            shouldCheckForUpdatesAtStartup &&
-            !launcherConfig().isSkipUpdateLauncher &&
-            process.env.NODE_ENV !== 'development'
-        ) {
-            await dispatch(checkForLauncherUpdate());
-        }
-    };
+    if (
+        shouldCheckForUpdatesAtStartup &&
+        !launcherConfig().isSkipUpdateLauncher &&
+        process.env.NODE_ENV !== 'development'
+    ) {
+        await dispatch(checkForLauncherUpdate());
+    }
+};
 
-const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
+const checkForLinkUpdate: ProcessStep = async (dispatch, getState) => {
     if (getShouldCheckForUpdatesAtStartup(getState())) {
         try {
             const updateAvailable = await dispatch(checkForJLinkUpdate());
             if (updateAvailable) {
-                return INTERRUPT_INITIALISATION;
+                return INTERRUPT_PROCESS;
             }
         } catch (e) {
             dispatch(ErrorDialogActions.showDialog(describeError(e)));
@@ -191,9 +193,7 @@ const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
     }
 };
 
-const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
-
-const initialisationActions = [
+const initialisationSteps = [
     checkTelemetrySetting,
     loadSources,
     loadApps,
@@ -206,21 +206,10 @@ const initialisationActions = [
     sendEnvInfo,
 ];
 
-const runRemainingInitialisationActionsSequentially =
-    (): AppThunk => async dispatch => {
-        while (initialisationActions.length > 0) {
-            const action = initialisationActions.shift() as () => AppThunk<
-                undefined | typeof INTERRUPT_INITIALISATION
-            >;
+export const startLauncherInitialisation = (): AppThunk => dispatch => {
+    dispatch(continueLauncherInitialisation());
+};
 
-            const result = await dispatch(action()); // eslint-disable-line no-await-in-loop -- Must be awaited because some actions are asynchronous
-
-            if (result === INTERRUPT_INITIALISATION) {
-                return;
-            }
-        }
-    };
-
-export default (): AppThunk => dispatch => {
-    dispatch(runRemainingInitialisationActionsSequentially());
+export const continueLauncherInitialisation = (): AppThunk => dispatch => {
+    dispatch(runRemainingProcessStepsSequentially(initialisationSteps));
 };

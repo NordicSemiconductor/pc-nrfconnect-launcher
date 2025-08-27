@@ -15,8 +15,8 @@ import {
 import { inMain } from '../../../ipc/installJLink';
 import bundledJlinkVersion from '../../../main/bundledJlink';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
+import { continueLauncherInitialisation } from '../process/initialiseLauncher';
 import {
     getInstalledJLinkVersion,
     getJLinkVersionToBeInstalled,

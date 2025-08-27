@@ -48,7 +48,7 @@ export const toggleSendingTelemetry = (): AppThunk => (dispatch, getState) => {
     dispatch(setIsSendingTelemetry(!isSendingTelemetry));
 };
 
-export const sendEnvInfo = (): AppThunk => () => {
+export const sendEnvInfo: AppThunk = () => {
     telemetry.sendEvent(EventAction.REPORT_LAUNCHER_INFO, {
         version: pkgJson.version,
         isDevelopment,

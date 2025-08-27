@@ -12,8 +12,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
 import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
+import { continueLauncherInitialisation } from '../process/initialiseLauncher';
 import {
     getInstalledJLinkVersion,
     getJLinkUpdateProgress,

@@ -13,7 +13,7 @@ import {
 
 import { setDoNotRemindOnMissingToken } from '../../../common/persistedStore';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
+import { continueLauncherInitialisation } from '../process/initialiseLauncher';
 import { setArtifactoryToken } from '../settings/settingsEffects';
 import { addSource } from './sourcesEffects';
 import {
