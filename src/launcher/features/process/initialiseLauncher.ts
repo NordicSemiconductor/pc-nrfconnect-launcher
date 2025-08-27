@@ -7,7 +7,6 @@
 import {
     describeError,
     ErrorDialogActions,
-    launcherConfig,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
@@ -158,7 +157,7 @@ const downloadLatestAppInfoAtStartup: ProcessStep = (dispatch, getState) => {
         getState()
     );
 
-    if (shouldCheckForUpdatesAtStartup && !launcherConfig().isSkipUpdateApps) {
+    if (shouldCheckForUpdatesAtStartup) {
         dispatch(downloadLatestAppInfos());
     }
 };
@@ -173,7 +172,6 @@ const checkForLauncherUpdateAtStartup: ProcessStep = async (
 
     if (
         shouldCheckForUpdatesAtStartup &&
-        !launcherConfig().isSkipUpdateLauncher &&
         process.env.NODE_ENV !== 'development'
     ) {
         await dispatch(checkForLauncherUpdate());

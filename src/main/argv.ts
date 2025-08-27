@@ -36,10 +36,6 @@ Directories
 
 Startup behaviour
 =================
---skip-update-apps      Do not download info/updates about apps.
-                        Default: false
---skip-update-launcher  Skip checking for updates for nRF Connect for Desktop.
-                        Default: false
 --skip-splash-screen    Skip the splash screen at startup.
                         Default: false
 --new-instance          Launch a new instance, independent of other, potentially
@@ -70,8 +66,6 @@ interface CommandLineArguments {
     'user-data-dir': string | undefined;
 
     'skip-splash-screen': boolean;
-    'skip-update-apps': boolean;
-    'skip-update-launcher': boolean;
 
     'install-devtools': boolean;
     'remove-devtools': boolean;
@@ -84,8 +78,6 @@ const argv = parseArgs<CommandLineArguments>(argSlice, {
     '--': true,
     boolean: [
         'skip-splash-screen',
-        'skip-update-apps',
-        'skip-update-launcher',
         'new-instance',
         'install-devtools',
         'remove-devtools',

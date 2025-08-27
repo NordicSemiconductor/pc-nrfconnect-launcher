@@ -203,7 +203,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
         coreVersion
     );
 
-    if (jlinkCompatibility.kind === 'No J-Link installed') {
+    if (jlinkCompatibility.kind === 'No SEGGER J-Link installed') {
         const { requiredJlink } = jlinkCompatibility;
 
         return incompatible(
@@ -230,7 +230,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
         );
     }
 
-    if (jlinkCompatibility.kind === 'Outdated J-Link') {
+    if (jlinkCompatibility.kind === 'Outdated SEGGER J-Link') {
         const { actualJlink, requiredJlink } = jlinkCompatibility;
 
         return incompatible(
