@@ -11,18 +11,21 @@ import { AppThunk } from '../../store';
 import { updateAvailable } from './jlinkUpdateSlice';
 
 export const checkForJLinkUpdate =
-    (inStartup = true): AppThunk<Promise<boolean>> =>
+    (inStartup = true): AppThunk<Promise<{ isUpdateAvailable: boolean }>> =>
     dispatch =>
         getVersionToInstall(bundledJlinkVersion).then(status => {
-            if (status.outdated && status.versionToBeInstalled) {
+            const isUpdateAvailable = !!(
+                status.outdated && status.versionToBeInstalled
+            );
+
+            if (isUpdateAvailable) {
                 dispatch(
                     updateAvailable({
-                        versionToBeInstalled: status.versionToBeInstalled,
+                        versionToBeInstalled: status.versionToBeInstalled!, // eslint-disable-line @typescript-eslint/no-non-null-assertion -- Must be non-null because of the check above
                         installedVersion: status.installedVersion,
                         inStartup,
                     })
                 );
-                return true;
             }
-            return false;
+            return { isUpdateAvailable };
         });

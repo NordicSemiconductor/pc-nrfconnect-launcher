@@ -20,7 +20,7 @@ import { showUpdateCheckComplete } from '../settings/settingsSlice';
 import { reset, updateAvailable } from './launcherUpdateSlice';
 
 export const checkForLauncherUpdate =
-    (): AppThunk<Promise<void>> => async dispatch => {
+    (): AppThunk<Promise<{ isUpdateAvailable: boolean }>> => async dispatch => {
         try {
             const { isUpdateAvailable, newVersion } =
                 await inMain.checkForUpdate();
@@ -30,8 +30,12 @@ export const checkForLauncherUpdate =
             } else {
                 dispatch(reset());
             }
+
+            return { isUpdateAvailable };
         } catch (error) {
             logger.warn(error);
+
+            return { isUpdateAvailable: false };
         }
     };
 

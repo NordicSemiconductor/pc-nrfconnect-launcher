@@ -181,8 +181,8 @@ const checkForLauncherUpdateAtStartup: ProcessStep = async (
 const checkForLinkUpdate: ProcessStep = async (dispatch, getState) => {
     if (getShouldCheckForUpdatesAtStartup(getState())) {
         try {
-            const updateAvailable = await dispatch(checkForJLinkUpdate());
-            if (updateAvailable) {
+            const { isUpdateAvailable } = await dispatch(checkForJLinkUpdate());
+            if (isUpdateAvailable) {
                 return INTERRUPT_PROCESS;
             }
         } catch (e) {
