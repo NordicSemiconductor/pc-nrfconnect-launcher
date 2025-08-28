@@ -12,8 +12,8 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
 import { continueLauncherInitialisation } from '../process/initialiseLauncher';
+import { continueUpdateProcess } from '../process/updateProcess';
 import {
     getInstalledJLinkVersion,
     getJLinkUpdateProgress,
@@ -45,7 +45,7 @@ export default () => {
                 <DialogButton
                     onClick={() => {
                         if (!ranJlinkCheckDuringStartup) {
-                            dispatch(checkForAppAndLauncherUpdateManually());
+                            dispatch(continueUpdateProcess());
                         } else {
                             dispatch(continueLauncherInitialisation());
                         }

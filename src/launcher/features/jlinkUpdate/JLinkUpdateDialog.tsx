@@ -15,8 +15,8 @@ import {
 import { inMain } from '../../../ipc/installJLink';
 import bundledJlinkVersion from '../../../main/bundledJlink';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
 import { continueLauncherInitialisation } from '../process/initialiseLauncher';
+import { continueUpdateProcess } from '../process/updateProcess';
 import {
     getInstalledJLinkVersion,
     getJLinkVersionToBeInstalled,
@@ -77,9 +77,7 @@ export default () => {
                             variant="secondary"
                             onClick={() => {
                                 if (!ranJlinkCheckDuringStartup) {
-                                    dispatch(
-                                        checkForAppAndLauncherUpdateManually()
-                                    );
+                                    dispatch(continueUpdateProcess());
                                 } else {
                                     dispatch(continueLauncherInitialisation());
                                 }
