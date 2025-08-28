@@ -11,8 +11,7 @@ import { AppThunk } from '../../store';
 import { updateAvailable } from './jlinkUpdateSlice';
 
 export const checkForJLinkUpdate =
-    (inStartup = true): AppThunk<Promise<{ isUpdateAvailable: boolean }>> =>
-    dispatch =>
+    (): AppThunk<Promise<{ isUpdateAvailable: boolean }>> => dispatch =>
         getVersionToInstall(bundledJlinkVersion).then(status => {
             const isUpdateAvailable = !!(
                 status.outdated && status.versionToBeInstalled
@@ -23,7 +22,6 @@ export const checkForJLinkUpdate =
                     updateAvailable({
                         versionToBeInstalled: status.versionToBeInstalled!, // eslint-disable-line @typescript-eslint/no-non-null-assertion -- Must be non-null because of the check above
                         installedVersion: status.installedVersion,
-                        inStartup,
                     })
                 );
             }
