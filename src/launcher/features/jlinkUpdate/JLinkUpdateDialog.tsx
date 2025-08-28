@@ -15,13 +15,11 @@ import {
 import { inMain } from '../../../ipc/installJLink';
 import bundledJlinkVersion from '../../../main/bundledJlink';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { continueLauncherInitialisation } from '../process/initialiseLauncher';
 import { continueUpdateProcess } from '../process/updateProcess';
 import {
     getInstalledJLinkVersion,
     getJLinkVersionToBeInstalled,
     isJLinkUpdateDialogVisible,
-    ranJLinkCheckDuringStartup,
     reset,
     showProgressDialog,
 } from './jlinkUpdateSlice';
@@ -29,9 +27,6 @@ import {
 export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(isJLinkUpdateDialogVisible);
-    const ranJlinkCheckDuringStartup = useLauncherSelector(
-        ranJLinkCheckDuringStartup
-    );
     const versionToBeInstalled = useLauncherSelector(
         getJLinkVersionToBeInstalled
     );
@@ -76,12 +71,8 @@ export default () => {
                         <DialogButton
                             variant="secondary"
                             onClick={() => {
-                                if (!ranJlinkCheckDuringStartup) {
-                                    dispatch(continueUpdateProcess());
-                                } else {
-                                    dispatch(continueLauncherInitialisation());
-                                }
                                 dispatch(reset());
+                                dispatch(continueUpdateProcess());
                             }}
                         >
                             Close

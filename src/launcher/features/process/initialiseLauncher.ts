@@ -18,13 +18,8 @@ import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
-import {
-    downloadLatestAppInfos,
-    handleAppsWithErrors,
-} from '../apps/appsEffects';
+import { handleAppsWithErrors } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
-import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
     getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
@@ -49,6 +44,7 @@ import {
     type ProcessStep,
     runRemainingProcessStepsSequentially,
 } from './thunkProcess';
+import { startUpdateProcess } from './updateProcess';
 
 const checkTelemetrySetting: ProcessStep = dispatch => {
     if (getHasUserAgreedToTelemetry() == null) {
@@ -152,45 +148,6 @@ const checkForMissingToken: ProcessStep = (dispatch, getState) => {
     }
 };
 
-const downloadLatestAppInfoAtStartup: ProcessStep = (dispatch, getState) => {
-    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
-        getState()
-    );
-
-    if (shouldCheckForUpdatesAtStartup) {
-        dispatch(downloadLatestAppInfos());
-    }
-};
-
-const checkForLauncherUpdateAtStartup: ProcessStep = async (
-    dispatch,
-    getState
-) => {
-    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
-        getState()
-    );
-
-    if (
-        shouldCheckForUpdatesAtStartup &&
-        process.env.NODE_ENV !== 'development'
-    ) {
-        await dispatch(checkForLauncherUpdate());
-    }
-};
-
-const checkForLinkUpdate: ProcessStep = async (dispatch, getState) => {
-    if (getShouldCheckForUpdatesAtStartup(getState())) {
-        try {
-            const { isUpdateAvailable } = await dispatch(checkForJLinkUpdate());
-            if (isUpdateAvailable) {
-                return INTERRUPT_PROCESS;
-            }
-        } catch (e) {
-            dispatch(ErrorDialogActions.showDialog(describeError(e)));
-        }
-    }
-};
-
 const initialisationSteps = [
     checkTelemetrySetting,
     loadSources,
@@ -198,10 +155,8 @@ const initialisationSteps = [
     loadTokenInformation,
     checkForDeprecatedSources,
     checkForMissingToken,
-    downloadLatestAppInfoAtStartup,
-    checkForLinkUpdate,
-    checkForLauncherUpdateAtStartup,
     sendEnvInfo,
+    startUpdateProcess(false),
 ];
 
 export const startLauncherInitialisation = (): AppThunk => dispatch => {
