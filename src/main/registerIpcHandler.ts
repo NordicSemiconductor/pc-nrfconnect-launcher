@@ -43,7 +43,6 @@ import {
 import createDesktopShortcut from './apps/createDesktopShortcut';
 import { addSource, removeSource } from './apps/sources/sourceChanges';
 import { getAllSources } from './apps/sources/sources';
-import argv from './argv';
 import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
 import installJLink from './jlinkInstall';
 import {
@@ -69,8 +68,6 @@ const getConfigForRenderer = () => ({
     isRunningLauncherFromSource: fs.existsSync(
         path.join(app.getAppPath(), 'README.md')
     ),
-    isSkipUpdateApps: argv['skip-update-apps'],
-    isSkipUpdateLauncher: argv['skip-update-launcher'],
     launcherVersion: packageJson.version,
     userDataDir: app.getPath('userData'),
 });

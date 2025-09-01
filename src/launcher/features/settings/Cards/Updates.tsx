@@ -14,7 +14,7 @@ import formatDate from 'date-fns/format';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import { getUpdateCheckStatus } from '../../apps/appsSlice';
-import { checkForUpdatesManually } from '../../launcherUpdate/launcherUpdateEffects';
+import { startUpdateProcess } from '../../process/updateProcess';
 import {
     getShouldCheckForUpdatesAtStartup,
     setCheckForUpdatesAtStartup,
@@ -41,7 +41,7 @@ export default () => {
                 <Col xs="auto">
                     <Button
                         variant="outline-primary"
-                        onClick={() => dispatch(checkForUpdatesManually())}
+                        onClick={() => dispatch(startUpdateProcess(true))}
                         disabled={isCheckingForUpdates}
                     >
                         {isCheckingForUpdates

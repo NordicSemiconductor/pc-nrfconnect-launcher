@@ -20,7 +20,6 @@ test.describe('app installation', () => {
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                skipUpdateApps: false,
             });
 
             page = await app.firstWindow();

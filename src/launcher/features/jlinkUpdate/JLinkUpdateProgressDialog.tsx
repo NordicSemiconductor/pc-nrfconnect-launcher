@@ -12,13 +12,11 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import continueLauncherInitialisation from '../initialisation/initialiseLauncher';
-import { checkForAppAndLauncherUpdateManually } from '../launcherUpdate/launcherUpdateEffects';
+import { continueUpdateProcess } from '../process/updateProcess';
 import {
     getInstalledJLinkVersion,
     getJLinkUpdateProgress,
     isJLinkUpdateProgressDialogVisible,
-    ranJLinkCheckDuringStartup,
     reset,
 } from './jlinkUpdateSlice';
 
@@ -27,9 +25,6 @@ export default () => {
     const isJLinkInstalled = !!useLauncherSelector(getInstalledJLinkVersion);
     const isVisible = useLauncherSelector(isJLinkUpdateProgressDialogVisible);
     const progress = useLauncherSelector(getJLinkUpdateProgress);
-    const ranJlinkCheckDuringStartup = useLauncherSelector(
-        ranJLinkCheckDuringStartup
-    );
     const finished =
         progress && progress.step === 'install' && progress.percentage === 100;
 
@@ -40,16 +35,12 @@ export default () => {
                 isJLinkInstalled ? 'Updating' : 'Installing'
             } SEGGER J-Link`}
             showSpinner={!finished}
-            onHide={() => dispatch(continueLauncherInitialisation())}
+            onHide={() => dispatch(continueUpdateProcess())}
             footer={
                 <DialogButton
                     onClick={() => {
-                        if (!ranJlinkCheckDuringStartup) {
-                            dispatch(checkForAppAndLauncherUpdateManually());
-                        } else {
-                            dispatch(continueLauncherInitialisation());
-                        }
                         dispatch(reset());
+                        dispatch(continueUpdateProcess());
                     }}
                     disabled={!finished}
                 >

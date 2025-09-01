@@ -7,7 +7,6 @@
 import {
     describeError,
     ErrorDialogActions,
-    launcherConfig,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
@@ -19,13 +18,8 @@ import { inMain } from '../../../ipc/apps';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
 import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
-import {
-    downloadLatestAppInfos,
-    handleAppsWithErrors,
-} from '../apps/appsEffects';
+import { handleAppsWithErrors } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
-import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
-import { checkForLauncherUpdate } from '../launcherUpdate/launcherUpdateEffects';
 import {
     getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
@@ -45,17 +39,23 @@ import {
     setIsSendingTelemetry,
     showTelemetryDialog,
 } from '../telemetry/telemetrySlice';
+import {
+    INTERRUPT_PROCESS,
+    type ProcessStep,
+    runRemainingProcessStepsSequentially,
+} from './thunkProcess';
+import { startUpdateProcess } from './updateProcess';
 
-const checkTelemetrySetting = (): AppThunk => dispatch => {
+const checkTelemetrySetting: ProcessStep = dispatch => {
     if (getHasUserAgreedToTelemetry() == null) {
         dispatch(showTelemetryDialog());
-        return INTERRUPT_INITIALISATION;
+        return INTERRUPT_PROCESS;
     }
 
     dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
 };
 
-const loadSources = (): AppThunk => async dispatch => {
+const loadSources: ProcessStep = async dispatch => {
     try {
         dispatch(setSources(await sources.getSources()));
     } catch (error) {
@@ -67,7 +67,7 @@ const loadSources = (): AppThunk => async dispatch => {
     }
 };
 
-export const loadApps = (): AppThunk => async dispatch => {
+export const loadApps: ProcessStep = async dispatch => {
     try {
         dispatch(setAllLocalApps(await inMain.getLocalApps()));
 
@@ -82,7 +82,7 @@ export const loadApps = (): AppThunk => async dispatch => {
     }
 };
 
-const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
+const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
     const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
         getState()
     );
@@ -119,108 +119,50 @@ const loadTokenInformation = (): AppThunk => async (dispatch, getState) => {
     }
 };
 
-const checkForDeprecatedSources =
-    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
-    (dispatch, getState) => {
-        const deprecatedSources = getSources(getState()).filter(
-            isDeprecatedSource
+const checkForDeprecatedSources: ProcessStep = (dispatch, getState) => {
+    const deprecatedSources = getSources(getState()).filter(isDeprecatedSource);
+
+    if (
+        !(
+            deprecatedSources.length === 0 ||
+            getDoNotRemindDeprecatedSources(getState())
+        )
+    ) {
+        dispatch(showDeprecatedSources(deprecatedSources));
+        return INTERRUPT_PROCESS;
+    }
+};
+
+const checkForMissingToken: ProcessStep = (dispatch, getState) => {
+    if (getDoNotRemindOnMissingToken()) return;
+
+    const token = getArtifactoryTokenInformation(getState());
+    const sourcesWithRestrictedAccessLevel =
+        getSourcesWithRestrictedAccessLevel(getState());
+
+    if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
+        dispatch(
+            warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
         );
-
-        if (
-            !(
-                deprecatedSources.length === 0 ||
-                getDoNotRemindDeprecatedSources(getState())
-            )
-        ) {
-            dispatch(showDeprecatedSources(deprecatedSources));
-            return INTERRUPT_INITIALISATION;
-        }
-    };
-
-const checkForMissingToken =
-    (): AppThunk<undefined | typeof INTERRUPT_INITIALISATION> =>
-    (dispatch, getState) => {
-        if (getDoNotRemindOnMissingToken()) return;
-
-        const token = getArtifactoryTokenInformation(getState());
-        const sourcesWithRestrictedAccessLevel =
-            getSourcesWithRestrictedAccessLevel(getState());
-
-        if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
-            dispatch(
-                warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
-            );
-            return INTERRUPT_INITIALISATION;
-        }
-    };
-
-const downloadLatestAppInfoAtStartup = (): AppThunk => (dispatch, getState) => {
-    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
-        getState()
-    );
-
-    if (shouldCheckForUpdatesAtStartup && !launcherConfig().isSkipUpdateApps) {
-        dispatch(downloadLatestAppInfos());
+        return INTERRUPT_PROCESS;
     }
 };
 
-const checkForLauncherUpdateAtStartup =
-    (): AppThunk => async (dispatch, getState) => {
-        const shouldCheckForUpdatesAtStartup =
-            getShouldCheckForUpdatesAtStartup(getState());
-
-        if (
-            shouldCheckForUpdatesAtStartup &&
-            !launcherConfig().isSkipUpdateLauncher &&
-            process.env.NODE_ENV !== 'development'
-        ) {
-            await dispatch(checkForLauncherUpdate());
-        }
-    };
-
-const checkForLinkUpdate = (): AppThunk => async (dispatch, getState) => {
-    if (getShouldCheckForUpdatesAtStartup(getState())) {
-        try {
-            const updateAvailable = await dispatch(checkForJLinkUpdate());
-            if (updateAvailable) {
-                return INTERRUPT_INITIALISATION;
-            }
-        } catch (e) {
-            dispatch(ErrorDialogActions.showDialog(describeError(e)));
-        }
-    }
-};
-
-const INTERRUPT_INITIALISATION = Symbol('interrupt initialisation');
-
-const initialisationActions = [
+const initialisationSteps = [
     checkTelemetrySetting,
     loadSources,
     loadApps,
     loadTokenInformation,
     checkForDeprecatedSources,
     checkForMissingToken,
-    downloadLatestAppInfoAtStartup,
-    checkForLinkUpdate,
-    checkForLauncherUpdateAtStartup,
     sendEnvInfo,
+    startUpdateProcess(false),
 ];
 
-const runRemainingInitialisationActionsSequentially =
-    (): AppThunk => async dispatch => {
-        while (initialisationActions.length > 0) {
-            const action = initialisationActions.shift() as () => AppThunk<
-                undefined | typeof INTERRUPT_INITIALISATION
-            >;
+export const startLauncherInitialisation = (): AppThunk => dispatch => {
+    dispatch(continueLauncherInitialisation());
+};
 
-            const result = await dispatch(action()); // eslint-disable-line no-await-in-loop -- Must be awaited because some actions are asynchronous
-
-            if (result === INTERRUPT_INITIALISATION) {
-                return;
-            }
-        }
-    };
-
-export default (): AppThunk => dispatch => {
-    dispatch(runRemainingInitialisationActionsSequentially());
+export const continueLauncherInitialisation = (): AppThunk => dispatch => {
+    dispatch(runRemainingProcessStepsSequentially(initialisationSteps));
 };

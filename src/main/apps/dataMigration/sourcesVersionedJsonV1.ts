@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import type { Source } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 import fs from 'fs';
 
+import type { Source } from '../../../common/sources';
 import { readSchemedJsonFile, writeSchemedJsonFile } from '../../fileUtil';
 import {
     sourcesVersionedJsonPath,

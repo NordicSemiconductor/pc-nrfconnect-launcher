@@ -44,7 +44,6 @@ test.describe('automatic update check', () => {
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                skipUpdateApps: false,
             });
 
             page = await app.firstWindow();
@@ -84,7 +83,6 @@ test.describe('automatic update check', () => {
         test.beforeAll(async () => {
             app = await setup({
                 appsRootDir,
-                skipUpdateApps: false,
             });
 
             page = await app.firstWindow();
@@ -125,7 +123,6 @@ test.describe('showing apps available on the server', () => {
     test.beforeAll(async () => {
         app = await setup({
             appsRootDir,
-            skipUpdateApps: false,
         });
 
         page = await app.firstWindow();
