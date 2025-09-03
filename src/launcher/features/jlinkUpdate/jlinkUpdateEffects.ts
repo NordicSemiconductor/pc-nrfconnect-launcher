@@ -11,8 +11,16 @@ import { AppThunk } from '../../store';
 import { updateAvailable } from './jlinkUpdateSlice';
 
 export const checkForJLinkUpdate =
-    (): AppThunk<Promise<{ isUpdateAvailable: boolean }>> => dispatch =>
-        getVersionToInstall(bundledJlinkVersion).then(status => {
+    ({
+        checkOnline,
+    }: {
+        checkOnline: boolean;
+    }): AppThunk<Promise<{ isUpdateAvailable: boolean }>> =>
+    dispatch =>
+        getVersionToInstall({
+            fallbackVersion: bundledJlinkVersion,
+            checkOnline,
+        }).then(status => {
             const isUpdateAvailable = !!(
                 status.outdated && status.versionToBeInstalled
             );

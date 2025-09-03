@@ -20,6 +20,7 @@ import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import { handleAppsWithErrors } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
+import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
 import {
     getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
@@ -160,11 +161,10 @@ export const startLauncherInitialisation =
             checkForDeprecatedSources,
             checkForMissingToken,
             sendEnvInfo,
+            getShouldCheckForUpdatesAtStartup(getState())
+                ? startUpdateProcess(false)
+                : checkForJLinkUpdate({ checkOnline: false }),
         ];
-
-        if (getShouldCheckForUpdatesAtStartup(getState())) {
-            currentProcessSteps.push(startUpdateProcess(false));
-        }
 
         dispatch(continueLauncherInitialisation());
     };
