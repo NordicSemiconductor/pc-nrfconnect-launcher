@@ -156,12 +156,16 @@ const initialisationSteps = [
     checkForDeprecatedSources,
     checkForMissingToken,
     sendEnvInfo,
-    startUpdateProcess(false),
 ];
 
-export const startLauncherInitialisation = (): AppThunk => dispatch => {
-    dispatch(continueLauncherInitialisation());
-};
+export const startLauncherInitialisation =
+    (): AppThunk => (dispatch, getState) => {
+        if (getShouldCheckForUpdatesAtStartup(getState())) {
+            initialisationSteps.push(startUpdateProcess(false));
+        }
+
+        dispatch(continueLauncherInitialisation());
+    };
 
 export const continueLauncherInitialisation = (): AppThunk => dispatch => {
     dispatch(runRemainingProcessStepsSequentially(initialisationSteps));
