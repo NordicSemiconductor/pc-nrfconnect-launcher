@@ -148,25 +148,27 @@ const checkForMissingToken: ProcessStep = (dispatch, getState) => {
     }
 };
 
-const initialisationSteps = [
-    checkTelemetrySetting,
-    loadSources,
-    loadApps,
-    loadTokenInformation,
-    checkForDeprecatedSources,
-    checkForMissingToken,
-    sendEnvInfo,
-];
+let currentProcessSteps: ProcessStep[] = [];
 
 export const startLauncherInitialisation =
     (): AppThunk => (dispatch, getState) => {
+        currentProcessSteps = [
+            checkTelemetrySetting,
+            loadSources,
+            loadApps,
+            loadTokenInformation,
+            checkForDeprecatedSources,
+            checkForMissingToken,
+            sendEnvInfo,
+        ];
+
         if (getShouldCheckForUpdatesAtStartup(getState())) {
-            initialisationSteps.push(startUpdateProcess(false));
+            currentProcessSteps.push(startUpdateProcess(false));
         }
 
         dispatch(continueLauncherInitialisation());
     };
 
 export const continueLauncherInitialisation = (): AppThunk => dispatch => {
-    dispatch(runRemainingProcessStepsSequentially(initialisationSteps));
+    dispatch(runRemainingProcessStepsSequentially(currentProcessSteps));
 };
