@@ -14,6 +14,7 @@ import appleSilicon from './features/appleSilicon/appleSiliconSlice';
 import appDialogs from './features/apps/appDialogsSlice';
 import apps from './features/apps/appsSlice';
 import filter from './features/filter/filterSlice';
+import jlinkUpdate from './features/jlinkUpdate/jlinkUpdateSlice';
 import launcherUpdate from './features/launcherUpdate/launcherUpdateSlice';
 import localAppInstall from './features/localAppInstall/localAppInstallSlice';
 import proxyLogin from './features/proxyLogin/proxyLoginSlice';
@@ -31,6 +32,7 @@ export const reducer = {
     errorDialog,
     filter,
     launcherUpdate,
+    jlinkUpdate,
     localAppInstall,
     proxyLogin,
     releaseNotesDialog,

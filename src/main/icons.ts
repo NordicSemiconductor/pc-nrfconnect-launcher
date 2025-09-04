@@ -7,12 +7,11 @@
 import path from 'path';
 
 import { LaunchableApp } from '../ipc/apps';
-import { getBundledResourcesDir } from './config';
+import { getBundledResourcePath } from './config';
 import { ifExists } from './fileUtil';
 
 export const getNrfConnectForDesktopIcon = () =>
-    path.join(
-        getBundledResourcesDir(),
+    getBundledResourcePath(
         process.platform === 'win32' ? 'icon.ico' : 'icon.png'
     );
 

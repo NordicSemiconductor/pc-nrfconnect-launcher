@@ -4,25 +4,23 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import type { UrlString } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/MetaFiles';
 import {
-    allStandardSourceNames,
     LOCAL,
     OFFICIAL,
-    Source,
     SourceName,
-    SourceUrl,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/sources';
 
 import { asShortNordicArtifactoryUrl } from './artifactoryUrl';
 
-export {
-    allStandardSourceNames,
-    LOCAL,
-    OFFICIAL,
-    type Source,
-    type SourceName,
-    type SourceUrl,
-};
+export { LOCAL, OFFICIAL, type SourceName };
+
+export const allStandardSourceNames: SourceName[] = [OFFICIAL, LOCAL];
+
+export type SourceUrl = UrlString;
+export type Source = { name: SourceName; url: SourceUrl };
+
+export type SourceWithError = { source: Source; reason?: string };
 
 const deprecatedSources = [
     'toolchain-manager',

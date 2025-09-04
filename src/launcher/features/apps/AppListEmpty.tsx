@@ -13,7 +13,7 @@ import React, {
 import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { checkForUpdatesManually } from '../launcherUpdate/launcherUpdateEffects';
+import { startUpdateProcess } from '../process/updateProcess';
 import { getShouldCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import { getNoAppsExist } from './appsSlice';
 
@@ -52,7 +52,7 @@ const CheckForUpdatesDisabled = () => {
             <p>
                 You can enable it there or now just{' '}
                 <InlineButton
-                    onClick={() => dispatch(checkForUpdatesManually())}
+                    onClick={() => dispatch(startUpdateProcess(true))}
                 >
                     check once for updates
                 </InlineButton>

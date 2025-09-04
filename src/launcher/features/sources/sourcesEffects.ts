@@ -15,8 +15,8 @@ import {
     Source,
     SourceName,
     SourceUrl,
+    SourceWithError,
 } from '../../../common/sources';
-import { SourceWithError } from '../../../ipc/apps';
 import { AddSourceError, inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import { addDownloadableApps, removeAppsOfSource } from '../apps/appsSlice';

@@ -11,12 +11,7 @@ import { _electron as electron } from 'playwright';
 
 const startApp = async (extraArgs: string[]) => {
     const projectPath = path.resolve(__dirname, '../');
-    const electronArgs = [
-        projectPath,
-        '--skip-update-launcher',
-        '--skip-splash-screen',
-        ...extraArgs,
-    ];
+    const electronArgs = [projectPath, '--skip-splash-screen', ...extraArgs];
 
     if (process.env.LOG_ELECTRON_ARGS) {
         console.log(
@@ -36,7 +31,6 @@ interface setupConfig {
     additionalBeforeEach?: () => void;
     openLocalApp?: string;
     openDownloadableApp?: string;
-    skipUpdateApps?: boolean;
 }
 
 export const setup = async ({
@@ -44,14 +38,12 @@ export const setup = async ({
     additionalBeforeEach = () => {},
     openLocalApp,
     openDownloadableApp,
-    skipUpdateApps = true,
 }: setupConfig) => {
     const absoluteAppsRootDir = path.resolve(__dirname, appsRootDir);
     additionalBeforeEach();
 
     const electronArgs = [
         `--apps-root-dir=${absoluteAppsRootDir}`,
-        ...(skipUpdateApps ? ['--skip-update-apps'] : []),
         ...(openLocalApp ? [`--open-local-app=${openLocalApp}`] : []),
         ...(openDownloadableApp
             ? [`--open-downloadable-app=${openDownloadableApp}`]

@@ -12,6 +12,7 @@ import {
 
 import { inMain } from '../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { continueUpdateProcess } from '../process/updateProcess';
 import { getLauncherUpdate, reset } from './launcherUpdateSlice';
 
 const releaseNotesUrl =
@@ -31,7 +32,10 @@ export default () => {
             confirmLabel="Yes"
             cancelLabel="No"
             onConfirm={() => inMain.startUpdate()}
-            onCancel={() => dispatch(reset())}
+            onCancel={() => {
+                dispatch(reset());
+                dispatch(continueUpdateProcess());
+            }}
         >
             <p>
                 A new version ({version}) of nRF Connect for Desktop is

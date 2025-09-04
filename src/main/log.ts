@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import path from 'path';
 import { createLogger, format, transports } from 'winston';
 
-import { getUserDataDir } from './config';
+import { getUserDataPath } from './config';
 
-const nrfConnectPath = path.join(getUserDataDir(), 'logs');
+const nrfConnectPath = getUserDataPath('logs');
 
 const logFormat = format.combine(
     format.timestamp(),

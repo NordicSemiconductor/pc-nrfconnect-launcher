@@ -49,30 +49,4 @@
   ; Running installer and waiting before continuing
   ExecWait '"$INSTDIR\VC_redist.x64.exe" /passive /norestart'
 
-  ; ===============================================================
-  ; Installation of J-Link
-  ; ===============================================================
-
-  ; J-Link installer (downloaded by getJlink.js through prePack hook)
-  !define BundledJLinkVersion "V818"
-
-  !define JLinkInstaller "JLink_Windows_${BundledJLinkVersion}.exe"
-  !define JlinkInstallerResPath "${BUILD_RESOURCES_DIR}\${JLinkInstaller}"
-  !define JLinkRegistryRoot "SOFTWARE\Segger\J-Link"
-
-  File ${JlinkInstallerResPath}
-
-  Var /GLOBAL LAST_JLINK_VERSION
-  EnumRegKey $LAST_JLINK_VERSION HKCU ${JLinkRegistryRoot} 0
-  ReadRegStr $3 HKCU "${JLinkRegistryRoot}\$LAST_JLINK_VERSION" "CurrentVersion"
-  ${If} $3 == ""
-    StrCpy $LAST_JLINK_VERSION ""
-  ${EndIf}
-
-  ${If} ${BundledJLinkVersion} S> $LAST_JLINK_VERSION
-    ; J-Link is older than the bundled version. Run installer.
-    StrCpy $0 "$INSTDIR\${JLinkInstaller}"
-    ${StdUtils.ExecShellWaitEx} $R0 $R1 $0 'runas' '/passive /norestart -InstUSBDriver=1'
-  ${EndIf}
-
 !macroend

@@ -38,7 +38,10 @@
     "build": {
         "appId": "com.nordicsemi.nrfconnect",
         "productName": "nRF Connect for Desktop",
-        "asarUnpack": "resources/nrfutil-sandboxes",
+        "asarUnpack": [
+            "resources/nrfutil-sandboxes",
+            "resources/prefetched/jlink"
+        ],
         "publish": {
             "provider": "generic",
             "url": "https://files.nordicsemi.com/artifactory/swtools/external/ncd/launcher/"
@@ -102,7 +105,8 @@
     },
     "devDependencies": {
         "@electron/notarize": "^2.2.0",
-        "@nordicsemiconductor/pc-nrfconnect-shared": "^221.0.0",
+        "@nordicsemiconductor/nrf-jlink-js": "^0.10.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^224.0.0",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
         "@types/chmodr": "1.0.0",

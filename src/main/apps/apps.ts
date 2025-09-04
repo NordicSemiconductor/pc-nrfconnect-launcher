@@ -8,13 +8,12 @@ import { AppInfo } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
 import { omit } from 'lodash';
 import path, { basename } from 'path';
 
-import { Source } from '../../common/sources';
+import { Source, type SourceWithError } from '../../common/sources';
 import {
     AppWithError,
     DownloadableApp,
     isWithdrawn,
     LocalApp,
-    SourceWithError,
     UninstalledDownloadableApp,
 } from '../../ipc/apps';
 import { inRenderer } from '../../ipc/showErrorDialog';

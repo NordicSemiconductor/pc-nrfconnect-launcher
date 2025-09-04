@@ -10,7 +10,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { render, telemetry } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import initialiseLauncherState from './features/initialisation/initialiseLauncherState';
+import { startLauncherInitialisation } from './features/process/initialiseLauncher';
 import Root from './Root';
 import store from './store';
 import registerIpcHandler from './util/registerIpcHandler';
@@ -27,4 +27,4 @@ render(
     </Provider>
 );
 
-dispatch(initialiseLauncherState());
+dispatch(startLauncherInitialisation());

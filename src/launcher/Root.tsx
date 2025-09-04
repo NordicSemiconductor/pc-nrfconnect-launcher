@@ -16,6 +16,8 @@ import About from './features/about/About';
 import AppleSiliconAlert from './features/appleSilicon/AppleSiliconAlert';
 import AppleSiliconDialog from './features/appleSilicon/AppleSiliconDialog';
 import AppList from './features/apps/AppList';
+import JLinkUpdateDialog from './features/jlinkUpdate/JLinkUpdateDialog';
+import JLinkUpdateProgressDialog from './features/jlinkUpdate/JLinkUpdateProgressDialog';
 import UpdateAvailableDialog from './features/launcherUpdate/UpdateAvailableDialog';
 import UpdateProgressDialog from './features/launcherUpdate/UpdateProgressDialog';
 import DropZoneForLocalApps from './features/localAppInstall/DropZoneForLocalApps';
@@ -103,6 +105,8 @@ export default () => {
             <DeprecatedSourcesDialog />
             <AddLegacySourceWarning />
             <MissingTokenWarning />
+            <JLinkUpdateDialog />
+            <JLinkUpdateProgressDialog />
 
             <UpdateChannelName />
         </ErrorBoundaryLauncher>
