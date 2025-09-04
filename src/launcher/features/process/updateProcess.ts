@@ -24,7 +24,7 @@ import {
 const checkForJLinkUpdate: ProcessStep = async dispatch => {
     try {
         const { isUpdateAvailable } = await dispatch(
-            checkForJLinkUpdateEffect()
+            checkForJLinkUpdateEffect({ checkOnline: true })
         );
 
         if (isUpdateAvailable) {

@@ -20,6 +20,7 @@ import { inMain as sources } from '../../../ipc/sources';
 import type { AppThunk } from '../../store';
 import { handleAppsWithErrors } from '../apps/appsEffects';
 import { addDownloadableApps, setAllLocalApps } from '../apps/appsSlice';
+import { checkForJLinkUpdate } from '../jlinkUpdate/jlinkUpdateEffects';
 import {
     getArtifactoryTokenInformation,
     getShouldCheckForUpdatesAtStartup,
@@ -148,21 +149,26 @@ const checkForMissingToken: ProcessStep = (dispatch, getState) => {
     }
 };
 
-const initialisationSteps = [
-    checkTelemetrySetting,
-    loadSources,
-    loadApps,
-    loadTokenInformation,
-    checkForDeprecatedSources,
-    checkForMissingToken,
-    sendEnvInfo,
-    startUpdateProcess(false),
-];
+let currentProcessSteps: ProcessStep[] = [];
 
-export const startLauncherInitialisation = (): AppThunk => dispatch => {
-    dispatch(continueLauncherInitialisation());
-};
+export const startLauncherInitialisation =
+    (): AppThunk => (dispatch, getState) => {
+        currentProcessSteps = [
+            checkTelemetrySetting,
+            loadSources,
+            loadApps,
+            loadTokenInformation,
+            checkForDeprecatedSources,
+            checkForMissingToken,
+            sendEnvInfo,
+            getShouldCheckForUpdatesAtStartup(getState())
+                ? startUpdateProcess(false)
+                : checkForJLinkUpdate({ checkOnline: false }),
+        ];
+
+        dispatch(continueLauncherInitialisation());
+    };
 
 export const continueLauncherInitialisation = (): AppThunk => dispatch => {
-    dispatch(runRemainingProcessStepsSequentially(initialisationSteps));
+    dispatch(runRemainingProcessStepsSequentially(currentProcessSteps));
 };
