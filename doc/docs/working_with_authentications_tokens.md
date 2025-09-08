@@ -22,10 +22,10 @@ Complete the following steps:
 
 Complete the following steps:
 
-1. On Linux and macOS, allow nRF Connect for Desktop to access your safe storage location.<br/>
-   This is the location where the token is kept encrypted. For more information, see [safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage) in the Electron documentation.
-2. In nRF Connect for Desktop, go to the **Settings** tab.
-3. In the **Authentication** section, click **Set token**.
+1. In nRF Connect for Desktop, go to the **Settings** tab.
+2. In the **Authentication** section, click **Set token**.
+3. If prompted about using confidential information from safe storage, allow the access.<br/>
+   Safe storage is the location where the token is kept encrypted. For more information, see [safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage) in the Electron documentation.
 4. Paste your token in the dialog box.<br/>
    This is the token you got in the [Generating a new token](#generating-a-new-token) procedure.
 5. Click **Set**.
