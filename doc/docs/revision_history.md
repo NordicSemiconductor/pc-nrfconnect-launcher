@@ -2,7 +2,7 @@
 
 | Date       | Description                                                                                                                                                                                  |
 |------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| September 2025 | Updated the [Working with identity tokens](./working_with_authentications_tokens.md) page with the information about allowing access to safe storage |
+| September 2025 | - Updated the [Additional requirements](download_cfd.md#additional-requirements) section on the [Requirements and installation](./download_cfd.md) page<br/>- Updated the [Working with identity tokens](./working_with_authentications_tokens.md) page with the information about allowing access to safe storage |
 | August 2025 | - Added Matter Cluster Editor to the [list of supported apps](./index.md#supported-apps)<br/>- Updated the list of supported operating systems on the [Supported operating systems](./os_support.md) page with Windows 11 x86 support marked as `n/a` and a new entry for macOS 26 |
 | April 2025 | Added the [Working with identity tokens](./working_with_authentications_tokens.md) page |
 | March 2025 | - Deprecated the Toolchain Manager app on the [list of supported apps](./index.md#supported-apps)<br/>- Updated the list of supported operating systems on the [Supported operating systems](./os_support.md) page |

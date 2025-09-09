@@ -16,17 +16,22 @@ All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
 ## Additional requirements
 
-Running nRF Connect for Desktop has the following additional requirements:
+Make sure you meet the following requirements for your operating system:
 
-- [**SEGGER J-Link** v8.18](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack) - required for all platforms.
+=== "Windows"
 
-    - On Windows, the driver comes bundled with nRF Connect for Desktop.
-    - On macOS and Linux, you must install the driver manually. Download the installer for your platform from [SEGGER J-Link Software](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack).
+    - [**SEGGER J-Link** v8.18](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+    - **SEGGER USB Driver for J-Link** - Required for correctly detecting the development kits from nRF52 Series, nRF53 Series, and nRF91 Series using [legacy probes](https://kb.segger.com/J-Link_Installer#USB_Driver). Install it manually from the command line together with the downloaded version of **SEGGER J-Link** installer. Use the `-InstUSBDriver=1` parameter to trigger the driver installation, for example:
 
-     If you don't install the J-Link driver, running the apps will be very limited and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
+        ```
+        JLink_Windows_V818_x86_64.exe -InstUSBDriver=1
+        ```
 
-- For Linux:
+        Make sure to use the correct J-Link installer version, and to add the J-Link executable to system path (environment variables).
 
+=== "Linux"
+
+    - [**SEGGER J-Link** v8.18](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
     - **libusb-1.0-0** - Usually comes installed with Ubuntu and you can install it with the following command:
 
         ```
@@ -39,6 +44,9 @@ Running nRF Connect for Desktop has the following additional requirements:
         sudo dpkg -i nrf-udev_1.0.1-all.deb
         ```
 
+        !!! info "Tip"
+             You can also check the installation rules for nrf-udev by running `nrfutil device --help-install-udev-rules` after you have [installed the device command](./installing_commands.md).
+
     - **libfuse2** - Required for Ubuntu v22.04 and above to run `AppImage` applications.
       You can install it with the following command:
 
@@ -47,6 +55,14 @@ Running nRF Connect for Desktop has the following additional requirements:
         sudo apt-get update
         sudo apt install libfuse2
         ```
+
+=== "macOS"
+
+    - [**SEGGER J-Link** v8.18](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+
+
+!!! note "Note"
+     If you don't install the J-Link driver, running the apps will be very limited and you will get error messages `CouldNotFindJprogDLL`, `CouldNotOpenDLL`, `JLINKARM_DLL_NOT_FOUND`, or similar.
 
 ## Using behind proxy
 
