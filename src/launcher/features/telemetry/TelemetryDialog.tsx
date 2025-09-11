@@ -8,6 +8,7 @@ import React from 'react';
 import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import { continueLauncherInitialisation } from '../process/initialiseLauncher';
 import {
     cancelSendingTelemetry,
     confirmSendingTelemetry,
@@ -24,8 +25,14 @@ export default () => {
             title="Help us improve nRF Connect for Desktop"
             confirmLabel="Accept"
             cancelLabel="Decline"
-            onConfirm={() => dispatch(confirmSendingTelemetry())}
-            onCancel={() => dispatch(cancelSendingTelemetry())}
+            onConfirm={() => {
+                dispatch(confirmSendingTelemetry());
+                continueLauncherInitialisation();
+            }}
+            onCancel={() => {
+                dispatch(cancelSendingTelemetry());
+                continueLauncherInitialisation();
+            }}
         >
             <div className="user-data-policy">
                 <p>

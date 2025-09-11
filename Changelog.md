@@ -6,6 +6,11 @@
     mechanism is now based on CDN and not GitHub. In most cases, it uses
     `files.nordicsemi.com`. If users choose to use the Chinese server, it uses
     `files.nordicsemi.cn`.
+-   SEGGER J-Link: The tool now checks on every startup if a supported version
+    of SEGGER J-Link is installed. The check takes place on all platforms. If a
+    supported version is not installed, the tool offers to install it.
+    Previously, SEGGER J-Link version would be checked and installed only on
+    Windows during the tool installation.
 
 ### Fixed
 

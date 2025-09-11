@@ -22,10 +22,13 @@ export const getAppsRootDir = (sourceName: SourceName = OFFICIAL) =>
         ? appsRootDir
         : path.join(getAppsExternalDir(), sourceName);
 
-export const getBundledResourcesDir = () =>
-    path.join(app.getAppPath(), 'resources');
+export const getBundledResourcePath = (...paths: string[]) =>
+    path.join(app.getAppPath(), 'resources', ...paths);
+export const getUnpackedBundledResourcePath = (...paths: string[]) =>
+    getBundledResourcePath(...paths).replace('app.asar', 'app.asar.unpacked');
 
-export const getUserDataDir = () => app.getPath('userData');
+export const getUserDataPath = (...paths: string[]) =>
+    path.join(app.getPath('userData'), ...paths);
 
 export const getNodeModulesDir = (sourceName?: string) =>
     path.join(getAppsRootDir(sourceName), 'node_modules');

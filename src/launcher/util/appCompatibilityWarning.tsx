@@ -25,7 +25,7 @@ import {
 } from '../../ipc/apps';
 import minimalRequiredAppVersions from './minimalRequiredAppVersions';
 
-enum WarningKind {
+export enum WarningKind {
     ENGINE_CHECK = 'Engine check',
     UNSUPPORTED_APP = 'Unsupported app',
     JLINK = 'No appropriate J-Link',
@@ -43,7 +43,10 @@ const incompatible = (
     title: string,
     warning: string,
     longWarning: React.ReactNode,
-    warningData: Record<string, unknown>
+    warningData: { app: string; warningKind: WarningKind } & Record<
+        string,
+        unknown
+    >
 ) =>
     ({
         isDecided: true,
@@ -200,7 +203,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
         coreVersion
     );
 
-    if (jlinkCompatibility.kind === 'No J-Link installed') {
+    if (jlinkCompatibility.kind === 'No SEGGER J-Link installed') {
         const { requiredJlink } = jlinkCompatibility;
 
         return incompatible(
@@ -227,7 +230,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
         );
     }
 
-    if (jlinkCompatibility.kind === 'Outdated J-Link') {
+    if (jlinkCompatibility.kind === 'Outdated SEGGER J-Link') {
         const { actualJlink, requiredJlink } = jlinkCompatibility;
 
         return incompatible(
@@ -264,7 +267,8 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
 
 export default async (
     app: LaunchableApp,
-    providedVersionOfEngine = launcherConfig().launcherVersion
+    providedVersionOfEngine = launcherConfig().launcherVersion,
+    ignoredCases: WarningKind[] = []
 ): Promise<undefined | IncompatibilityWarning> => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [
@@ -275,7 +279,10 @@ export default async (
     ]) {
         // eslint-disable-next-line no-await-in-loop
         const result = await check(app, providedVersionOfEngine);
-        if (result.isDecided) {
+        if (
+            result.isDecided &&
+            !ignoredCases.includes(result.warningData.warningKind)
+        ) {
             return result;
         }
     }

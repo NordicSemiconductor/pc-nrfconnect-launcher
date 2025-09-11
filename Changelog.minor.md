@@ -11,7 +11,7 @@ release the new version.
 
 ### Added
 
--   #1147: Automatic release candidates.
+-   #1147: Mechanism for automatic release candidates.
 
 ### Changed
 

@@ -8,7 +8,6 @@ import {
     isDevelopment,
     telemetry,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { getHasUserAgreedToTelemetry } from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/persistentStore';
 
 import pkgJson from '../../../../package.json';
 import type { AppThunk } from '../../store';
@@ -16,7 +15,6 @@ import {
     getIsSendingTelemetry,
     hideTelemetryDialog,
     setIsSendingTelemetry,
-    showTelemetryDialog,
 } from './telemetrySlice';
 
 export const EventAction = {
@@ -50,16 +48,7 @@ export const toggleSendingTelemetry = (): AppThunk => (dispatch, getState) => {
     dispatch(setIsSendingTelemetry(!isSendingTelemetry));
 };
 
-export const checkTelemetrySetting = (): AppThunk => dispatch => {
-    if (getHasUserAgreedToTelemetry() == null) {
-        dispatch(showTelemetryDialog());
-        return;
-    }
-
-    dispatch(setIsSendingTelemetry(telemetry.getIsSendingTelemetry()));
-};
-
-export const sendEnvInfo = (): AppThunk => () => {
+export const sendEnvInfo: AppThunk = () => {
     telemetry.sendEvent(EventAction.REPORT_LAUNCHER_INFO, {
         version: pkgJson.version,
         isDevelopment,
