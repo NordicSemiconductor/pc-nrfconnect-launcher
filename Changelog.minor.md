@@ -11,7 +11,6 @@ release the new version.
 
 ### Added
 
--   #1170: Mechanism for checking SEGGER J-Link installation update.
 -   #1147: Mechanism for automatic release candidates.
 
 ### Changed
