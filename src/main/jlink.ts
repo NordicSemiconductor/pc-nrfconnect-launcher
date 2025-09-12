@@ -6,13 +6,18 @@
 
 import {
     downloadAndInstallJLink,
+    getJLinkState as getState,
     installJLink as install,
 } from '@nordicsemiconductor/nrf-jlink-js';
 import fs from 'fs';
 import path from 'path';
 
 import { inRenderer } from '../ipc/jlinkProgress';
+import bundledJlinkVersion from './bundledJlink';
 import { getUnpackedBundledResourcePath } from './config';
+
+export const getJLinkState = ({ checkOnline }: { checkOnline: boolean }) =>
+    getState({ checkOnline, fallbackVersion: bundledJlinkVersion });
 
 const getSingleFileInFolder = (folder: string) => {
     const files = fs.readdirSync(folder);
@@ -22,7 +27,7 @@ const getSingleFileInFolder = (folder: string) => {
     return path.join(folder, files[0]);
 };
 
-export default async (offlineInstall = false) => {
+export const installJLink = async (offlineInstall = false) => {
     if (offlineInstall) {
         const bundledJLinkDir = getUnpackedBundledResourcePath(
             'prefetched',

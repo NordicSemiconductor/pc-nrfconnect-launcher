@@ -4,17 +4,24 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import type { JLinkState } from '@nordicsemiconductor/nrf-jlink-js';
 import {
     handle,
     invoke,
 } from '@nordicsemiconductor/pc-nrfconnect-shared/ipc/infrastructure/rendererToMain';
 
-const channel = 'jlink:install';
+const channel = {
+    getState: 'jlink:get-state',
+    start: 'jlink:start',
+};
+
+type GetJLinkState = (options: { checkOnline: boolean }) => JLinkState;
+const getJLinkState = invoke<GetJLinkState>(channel.getState);
+const registerGetJLinkState = handle<GetJLinkState>(channel.getState);
 
 type InstallJLink = (offlineInstall?: boolean) => void;
+const installJLink = invoke<InstallJLink>(channel.start);
+const registerInstallJLink = handle<InstallJLink>(channel.start);
 
-const installJLink = invoke<InstallJLink>(channel);
-const registerInstallJLink = handle<InstallJLink>(channel);
-
-export const forRenderer = { registerInstallJLink };
-export const inMain = { installJLink };
+export const forRenderer = { registerGetJLinkState, registerInstallJLink };
+export const inMain = { getJLinkState, installJLink };

@@ -44,7 +44,7 @@ import createDesktopShortcut from './apps/createDesktopShortcut';
 import { addSource, removeSource } from './apps/sources/sourceChanges';
 import { getAllSources } from './apps/sources/sources';
 import { getTokenInformation, removeToken, setToken } from './artifactoryToken';
-import installJLink from './jlinkInstall';
+import { getJLinkState, installJLink } from './jlink';
 import {
     cancelUpdate,
     checkForUpdate,
@@ -143,5 +143,6 @@ export default () => {
     serialPort.forRenderer.registerUpdate(update);
     serialPort.forRenderer.registerSet(set);
 
+    jlink.forRenderer.registerGetJLinkState(getJLinkState);
     jlink.forRenderer.registerInstallJLink(installJLink);
 };

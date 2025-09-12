@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getJLinkState } from '@nordicsemiconductor/nrf-jlink-js';
-
-import bundledJlinkVersion from '../../../main/bundledJlink';
+import { inMain } from '../../../ipc/jlink';
 import { AppThunk } from '../../store';
 import { updateAvailable } from './jlinkUpdateSlice';
 
@@ -17,10 +15,7 @@ export const checkForJLinkUpdate =
         checkOnline: boolean;
     }): AppThunk<Promise<{ isUpdateAvailable: boolean }>> =>
     dispatch =>
-        getJLinkState({
-            fallbackVersion: bundledJlinkVersion,
-            checkOnline,
-        }).then(s => {
+        inMain.getJLinkState({ checkOnline }).then(s => {
             const isUpdateAvailable =
                 s.status === 'not installed' ||
                 s.status === 'should be updated';
