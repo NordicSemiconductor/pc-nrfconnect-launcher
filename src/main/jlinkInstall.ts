@@ -11,7 +11,7 @@ import {
 import fs from 'fs';
 import path from 'path';
 
-import { inRenderer } from '../ipc/installJLink';
+import { inRenderer } from '../ipc/jlinkProgress';
 import { getUnpackedBundledResourcePath } from './config';
 
 const getSingleFileInFolder = (folder: string) => {

@@ -7,7 +7,7 @@
 import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import * as appInstallProgress from '../../ipc/appInstallProgress';
-import * as jlink from '../../ipc/installJLink';
+import * as installJlink from '../../ipc/jlinkProgress';
 import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
 import * as proxyLogin from '../../ipc/proxyLogin';
 import * as showErrorDialog from '../../ipc/showErrorDialog';
@@ -49,7 +49,7 @@ export default (dispatch: AppDispatch) => {
     launcherUpdateProgress.forMain.registerUpdateFinished(() => {
         dispatch(reset());
     });
-    jlink.forMain.registerUpdateJLinkProgress(update => {
+    installJlink.forMain.registerUpdateJLinkProgress(update => {
         dispatch(updateJLinkProgress(update));
     });
 };

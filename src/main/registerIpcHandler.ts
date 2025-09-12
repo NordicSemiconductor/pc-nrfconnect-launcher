@@ -25,7 +25,7 @@ import packageJson from '../../package.json';
 import * as apps from '../ipc/apps';
 import * as artifactoryToken from '../ipc/artifactoryToken';
 import * as desktopShortcut from '../ipc/createDesktopShortcut';
-import * as jlinkInstallation from '../ipc/installJLink';
+import * as jlink from '../ipc/jlink';
 import * as launcherUpdate from '../ipc/launcherUpdate';
 import * as proxyLogin from '../ipc/proxyLogin';
 import * as sources from '../ipc/sources';
@@ -143,5 +143,5 @@ export default () => {
     serialPort.forRenderer.registerUpdate(update);
     serialPort.forRenderer.registerSet(set);
 
-    jlinkInstallation.forRenderer.registerStartJLinkInstall(installJLink);
+    jlink.forRenderer.registerInstallJLink(installJLink);
 };
