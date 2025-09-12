@@ -9,10 +9,19 @@ const path = require('path');
 const downloadJLink =
     require('@nordicsemiconductor/nrf-jlink-js').downloadAndSaveJLink;
 
+const bundledJLink = require('../src/main/bundledJlink');
+
 exports.default = () =>
-    downloadJLink(path.join('resources', 'prefetched', 'jlink')).catch(
-        error => {
+    downloadJLink(path.join('resources', 'prefetched', 'jlink'))
+        .then(result => {
+            if (bundledJLink.toLowerCase() !== result.version.toLowerCase()) {
+                console.error(
+                    `\n!!! ERROR: Bundled J-Link version ${bundledJLink} does not match the downloaded version ${result.version}.`
+                );
+                process.exit(-1);
+            }
+        })
+        .catch(error => {
             console.error('\n!!! EXCEPTION', error.message);
             process.exit(-1);
-        }
-    );
+        });

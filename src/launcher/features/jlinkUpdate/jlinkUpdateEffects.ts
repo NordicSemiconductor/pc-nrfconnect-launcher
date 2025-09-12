@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { getVersionToInstall } from '@nordicsemiconductor/nrf-jlink-js';
+import { getJLinkState } from '@nordicsemiconductor/nrf-jlink-js';
 
 import bundledJlinkVersion from '../../../main/bundledJlink';
 import { AppThunk } from '../../store';
@@ -17,21 +17,25 @@ export const checkForJLinkUpdate =
         checkOnline: boolean;
     }): AppThunk<Promise<{ isUpdateAvailable: boolean }>> =>
     dispatch =>
-        getVersionToInstall({
+        getJLinkState({
             fallbackVersion: bundledJlinkVersion,
             checkOnline,
-        }).then(status => {
-            const isUpdateAvailable = !!(
-                status.outdated && status.versionToBeInstalled
-            );
+        }).then(s => {
+            const isUpdateAvailable =
+                s.status === 'not installed' ||
+                s.status === 'should be updated';
 
             if (isUpdateAvailable) {
                 dispatch(
                     updateAvailable({
-                        versionToBeInstalled: status.versionToBeInstalled!, // eslint-disable-line @typescript-eslint/no-non-null-assertion -- Must be non-null because of the check above
-                        installedVersion: status.installedVersion,
+                        versionToBeInstalled: s.versionToBeInstalled,
+                        installedVersion:
+                            s.status === 'should be updated'
+                                ? s.installedVersion
+                                : undefined,
                     })
                 );
             }
+
             return { isUpdateAvailable };
         });
