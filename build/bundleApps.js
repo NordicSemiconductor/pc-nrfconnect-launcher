@@ -24,7 +24,7 @@ const bundleNrfutilModule = (module, version, coreVersion) => {
 
     console.log(
         `Bundling nrfutil module ${module} version ${version} and core ${
-            coreVersion ?? '(defaulting to 8.0.0)'
+            coreVersion ?? '(defaulting to 8.1.1)'
         }`
     );
 
@@ -44,14 +44,14 @@ const bundleNrfutilModule = (module, version, coreVersion) => {
     };
 
     execSync(
-        `${nrfUtilBinary} self-upgrade --to-version ${coreVersion ?? '8.0.0'}`,
+        `${nrfUtilBinary} self-upgrade --to-version ${coreVersion ?? '8.1.1'}`,
         { env }
     );
     execSync(`${nrfUtilBinary} install ${module}=${version} --force`, { env });
 
     console.log(
         `🏁 Bundled nrfutil module ${module} version ${version} and core ${
-            coreVersion ?? '(defaulting to 8.0.0)'
+            coreVersion ?? '(defaulting to 8.1.1)'
         }`
     );
 };

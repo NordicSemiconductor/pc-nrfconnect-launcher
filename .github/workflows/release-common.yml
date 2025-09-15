@@ -51,21 +51,13 @@ jobs:
               run: |
                   gh run download --repo nordicsemiconductor/pc-nrfconnect-launcher
 
-            - name: Merge *-mac.yml
-              run: |
-                  yq '. *=+ load("nrfconnect-macOS-x64/${{env.CHANNEL}}-mac.yml")' "nrfconnect-macOS-arm64/$CHANNEL-mac.yml" > "$CHANNEL-mac.yml"
-                  rm "nrfconnect-macOS-arm64/$CHANNEL-mac.yml" "nrfconnect-macOS-x64/$CHANNEL-mac.yml"
-                  mv "$CHANNEL-mac.yml" "nrfconnect-macOS-arm64/$CHANNEL-mac.yml"
-
             - name: Collect release files
               run: |
                   mkdir "$TAG"
                   cp nrfconnect-windows-x64/changelog.md \
                       nrfconnect-*/*.AppImage \
-                      nrfconnect-*/*.exe \
                       nrfconnect-*/*.dmg \
                       nrfconnect-*/*.zip \
-                      nrfconnect-*/"$CHANNEL"*.yml \
                       "$TAG"
 
             - name: Create GitHub Release
