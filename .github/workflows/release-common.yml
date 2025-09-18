@@ -69,5 +69,6 @@ jobs:
                     --draft \
                     --title "$TAG" \
                     --notes-file "$TAG/changelog.md" \
-                    ${{ inputs.release-type == 'rc' && '--prerelease' || '' }} \
+                    --prerelease \
+                    --latest=false \
                     "$TAG"/*
