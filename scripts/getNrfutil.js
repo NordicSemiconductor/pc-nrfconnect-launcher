@@ -8,19 +8,34 @@ const fs = require('fs');
 const path = require('path');
 const downloadFile = require('./downloadFile');
 
+// This function is currently a copy from nrfutil/sandbox.ts in shared.
+const getTriplet = () => {
+    switch (process.platform) {
+        case 'darwin':
+            return process.arch === 'arm64'
+                ? 'aarch64-apple-darwin'
+                : 'x86_64-apple-darwin';
+        case 'linux':
+            return process.arch === 'arm64'
+                ? 'aarch64-unknown-linux-gnu'
+                : 'x86_64-unknown-linux-gnu';
+        case 'win32':
+            return 'x86_64-pc-windows-msvc';
+        default:
+            throw new Error(`Unsupported platform: ${process.platform}`);
+    }
+};
+
 const allConfigs = {
     win32: {
-        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/x86_64-pc-windows-msvc/nrfutil.exe',
         localFile: 'nrfutil.exe',
         makeFileExecutable: false,
     },
     darwin: {
-        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/universal-apple-darwin/nrfutil',
         localFile: 'nrfutil',
         makeFileExecutable: true,
     },
     linux: {
-        url: 'https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/x86_64-unknown-linux-gnu/nrfutil',
         localFile: 'nrfutil',
         makeFileExecutable: true,
     },
@@ -35,7 +50,12 @@ if (fs.existsSync(destinationFile)) {
     return;
 }
 
-downloadFile(config.url, destinationFile)
+downloadFile(
+    `https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/${getTriplet()}/${
+        config.localFile
+    }`,
+    destinationFile
+)
     .then(() => {
         if (config.makeFileExecutable) {
             fs.chmodSync(destinationFile, fs.constants.S_IRWXU);
