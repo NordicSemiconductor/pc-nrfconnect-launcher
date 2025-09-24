@@ -21,6 +21,7 @@ release the new version.
 -   #1149: Cleaned up the build workflows.
 -   #1136: Disable signature verification on Windows.
 -   #1163: Better implementation for download progress of apps.
+-   #1193: Updated electron-devtools-installer
 
 ### Fixed
 
