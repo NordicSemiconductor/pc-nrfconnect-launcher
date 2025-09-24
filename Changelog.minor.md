@@ -21,8 +21,10 @@ release the new version.
 -   #1149: Cleaned up the build workflows.
 -   #1136: Disable signature verification on Windows.
 -   #1163: Better implementation for download progress of apps.
--   #1193: Updated electron-devtools-installer
--   #1195: Bump default nrfutil-core to 8.1.1
+-   #1193: Updated electron-devtools-installer.
+-   #1195: Bump default nrfutil-core to 8.1.1.
+-   #1196: Download arch specific variant of nrfutil (before on macOS it always
+    downloaded the universal variant).
 
 ### Fixed
 
