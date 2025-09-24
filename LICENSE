@@ -1,7 +1,10 @@
+LicenseID:  LicenseRef-Nordic-4-Clause
+
+ExtractedText: <text>
+
 Copyright (c) 2015 Nordic Semiconductor ASA
 All rights reserved.
 
-SPDX-License-Identifier: Nordic-4-Clause
 
 Use in source and binary forms, redistribution in binary form only, with
 or without modification, are permitted provided that the following conditions
@@ -33,3 +36,4 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</text>

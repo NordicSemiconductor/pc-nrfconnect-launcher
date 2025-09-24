@@ -22,6 +22,7 @@ release the new version.
 -   #1136: Disable signature verification on Windows.
 -   #1163: Better implementation for download progress of apps.
 -   #1193: Updated electron-devtools-installer
+-   #1195: Bump default nrfutil-core to 8.1.1
 
 ### Fixed
 
