@@ -37,7 +37,7 @@ export default () => {
 
         try {
             await dispatch(setArtifactoryToken(enteredToken));
-        } catch (error) {
+        } catch {
             /* No further error handling than already is done in setArtifactoryToken */
         }
     };

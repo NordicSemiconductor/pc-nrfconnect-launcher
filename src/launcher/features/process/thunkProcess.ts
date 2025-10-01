@@ -9,7 +9,9 @@ import type { AppThunk } from '../../store';
 export const INTERRUPT_PROCESS = Symbol('interrupt process');
 
 export type ProcessStep = AppThunk<
-    void | typeof INTERRUPT_PROCESS | Promise<void | typeof INTERRUPT_PROCESS>
+    | unknown
+    | typeof INTERRUPT_PROCESS
+    | Promise<unknown | typeof INTERRUPT_PROCESS>
 >;
 
 export const runRemainingProcessStepsSequentially =

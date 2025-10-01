@@ -364,7 +364,7 @@ const changeOptions = (
 
 export const getOptions = (path: string) => serialPorts.get(path)?.options;
 
-export const getBaudRate = (path: string): number | void =>
+export const getBaudRate = (path: string): number | undefined =>
     serialPorts.get(path)?.serialPort.baudRate;
 
 const addSender = (path: string, sender: Renderer, openPort: OpenPort) => {
