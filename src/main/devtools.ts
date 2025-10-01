@@ -78,7 +78,7 @@ export default async () => {
     let devToolsInstaller;
     try {
         devToolsInstaller = await import('electron-devtools-installer');
-    } catch (error) {
+    } catch {
         // In the production build the module electron-devtools-installer does
         // not exist, so ignore this error
 

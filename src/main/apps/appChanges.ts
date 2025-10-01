@@ -213,7 +213,7 @@ const verifyShasum = (filePath: string, expectedShasum?: string) => {
     let buffer: Buffer;
     try {
         buffer = fs.readFileSync(filePath);
-    } catch (error) {
+    } catch {
         throw new Error(
             `Unable to read file when verifying shasum: ${filePath}`,
         );

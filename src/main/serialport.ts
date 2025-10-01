@@ -65,7 +65,7 @@ export const openOrAdd = async (
     try {
         const openPort = await openNewSerialPort(options, settingsLocked);
         addSender(path, sender, openPort);
-    } catch (error) {
+    } catch {
         throw new Error(ErrorId.FAILED);
     }
 };

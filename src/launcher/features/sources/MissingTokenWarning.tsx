@@ -49,7 +49,7 @@ export default () => {
 
         try {
             await dispatch(setArtifactoryToken(token.trim()));
-        } catch (error) {
+        } catch {
             hideDialog({ doContinue: false });
             return;
         }

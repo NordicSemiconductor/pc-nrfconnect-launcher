@@ -45,7 +45,7 @@ const readReleaseNotes = (app: AppSpec, homepage?: string) => {
         const prettyReleaseNotes = replacePrLinks(releaseNotes, homepage);
 
         return prettyReleaseNotes;
-    } catch (error) {
+    } catch {
         // We assume an error here means that the release notes just were not downloaded yet.
         return undefined;
     }
