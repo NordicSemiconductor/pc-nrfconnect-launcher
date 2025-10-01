@@ -104,6 +104,7 @@ const preparedSandbox = (
         },
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- FIXME later: It would be better to use a Map for sandboxesCache, but for now I want to ignore this, so this change doesn't get even bigger.
     sandbox.finally(() => delete sandboxesCache[key]);
     sandboxesCache[key].sandbox = sandbox;
 
