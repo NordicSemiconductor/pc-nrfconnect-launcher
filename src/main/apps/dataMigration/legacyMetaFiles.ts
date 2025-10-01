@@ -51,7 +51,7 @@ const legacyMetaFilesExist = (source: Source) =>
 const getSource = (appsJson: AppsJson) => appsJson._source ?? 'official'; // eslint-disable-line no-underscore-dangle
 
 const isAppEntry = (
-    appInfo: [string, LegacyAppInfo]
+    appInfo: [string, LegacyAppInfo],
 ): appInfo is [AppName, LegacyAppInfo] => !appInfo[0].startsWith('_');
 
 const appEntries = (appsJson: AppsJson) =>
@@ -66,7 +66,7 @@ export const createNewAppInfo = (
     appName: AppName,
     appsJson: AppsJson,
     updatesJson: UpdatesJson,
-    packageJson: PackageJsonLegacyApp | null
+    packageJson: PackageJsonLegacyApp | null,
 ) => {
     const appInfo = appsJson[appName];
 
@@ -100,7 +100,7 @@ const createNewAppInfoForWithdrawnApp = (
     source: Source,
     appName: AppName,
     packageJson: PackageJsonLegacyApp,
-    oldAppUrl: string
+    oldAppUrl: string,
 ) => ({
     name: appName,
     displayName: packageJson.displayName,
@@ -121,7 +121,7 @@ const createNewAppInfoForWithdrawnApp = (
 const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     const packageJsonFile = path.join(
         installedAppPath({ name: withdrawnAppName, source: source.name }),
-        'package.json'
+        'package.json',
     );
     if (!fs.existsSync(path.join(packageJsonFile))) {
         return;
@@ -131,7 +131,7 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
     writeWithdrawnJson(source, [`${oldAppUrl}.json`]);
 
     const packageJsonResult = parsePackageJsonLegacyApp(
-        readFile(packageJsonFile)
+        readFile(packageJsonFile),
     );
 
     if (!packageJsonResult.success) {
@@ -143,9 +143,9 @@ const createWithDrawnAppFiles = (withdrawnAppName: AppName, source: Source) => {
             source,
             withdrawnAppName,
             packageJsonResult.data,
-            oldAppUrl
+            oldAppUrl,
         ),
-        source
+        source,
     );
 };
 
@@ -163,12 +163,12 @@ const migrateLegacyMetaFiles = (source: Source) => {
         const packageJsonFile = path.join(
             getNodeModulesDir(source.name),
             appName,
-            'package.json'
+            'package.json',
         );
 
         if (fs.existsSync(packageJsonFile)) {
             const packageJsonResult = parsePackageJsonLegacyApp(
-                readFile(packageJsonFile)
+                readFile(packageJsonFile),
             );
 
             const packageJson = packageJsonResult.success
@@ -177,7 +177,7 @@ const migrateLegacyMetaFiles = (source: Source) => {
 
             writeAppInfo(
                 createNewAppInfo(appName, appsJson, updatesJson, packageJson),
-                source
+                source,
             );
         }
     });

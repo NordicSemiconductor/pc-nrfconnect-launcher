@@ -38,7 +38,7 @@ const slice = createSlice({
             }: PayloadAction<{
                 versionToBeInstalled: string;
                 installedVersion: string | undefined;
-            }>
+            }>,
         ) {
             state.isJLinkUpdateAvailableDialogVisible = true;
             state.versionToBeInstalled = availableVersion;

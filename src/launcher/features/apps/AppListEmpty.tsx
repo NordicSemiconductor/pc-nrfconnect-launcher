@@ -82,7 +82,7 @@ const NotLoadedYet = () => {
 
 const NoApps = () => {
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
-        getShouldCheckForUpdatesAtStartup
+        getShouldCheckForUpdatesAtStartup,
     );
 
     return shouldCheckForUpdatesAtStartup ? (

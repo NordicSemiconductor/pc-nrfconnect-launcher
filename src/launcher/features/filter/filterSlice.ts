@@ -50,7 +50,7 @@ const slice = createSlice({
         },
         setShownStates(
             state,
-            { payload: shownStates }: PayloadAction<ShownStates>
+            { payload: shownStates }: PayloadAction<ShownStates>,
         ) {
             state.shownStates = { ...shownStates };
             setPersistedShownStates(shownStates);

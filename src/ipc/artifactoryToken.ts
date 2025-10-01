@@ -29,7 +29,7 @@ type GetTokenInformation = () =>
 
 const getTokenInformation = invoke<GetTokenInformation>(channel.getInformation);
 const registerGetTokenInformation = handle<GetTokenInformation>(
-    channel.getInformation
+    channel.getInformation,
 );
 
 // Set

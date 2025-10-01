@@ -22,7 +22,7 @@ const slice = createSlice({
     reducers: {
         show(
             state,
-            { payload }: PayloadAction<{ name: string; source: string }>
+            { payload }: PayloadAction<{ name: string; source: string }>,
         ) {
             state.name = payload.name;
             state.source = payload.source;

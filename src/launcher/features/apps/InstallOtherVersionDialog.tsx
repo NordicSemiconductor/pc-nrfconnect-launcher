@@ -38,7 +38,7 @@ const VersionList = ({
                 label: v,
                 value: v,
             })),
-        [app]
+        [app],
     );
 
     const selectedVersionToInstall =
@@ -59,7 +59,7 @@ const VersionList = ({
 export default () => {
     const dispatch = useLauncherDispatch();
     const installOtherVersionDialog = useLauncherSelector(
-        getInstallOtherVersionDialog
+        getInstallOtherVersionDialog,
     );
     const [versionToInstall, setVersionToInstall] = useState<string>();
     useEffect(() => {
@@ -81,15 +81,15 @@ export default () => {
             onConfirm={() => {
                 if (!installOtherVersionDialog.isVisible) {
                     throw new Error(
-                        'Should be impossible to invoke a disabled button'
+                        'Should be impossible to invoke a disabled button',
                     );
                 }
 
                 dispatch(
                     installDownloadableApp(
                         installOtherVersionDialog.app,
-                        versionToInstall
-                    )
+                        versionToInstall,
+                    ),
                 );
                 dispatch(hideInstallOtherVersionDialog());
                 setVersionToInstall(undefined);

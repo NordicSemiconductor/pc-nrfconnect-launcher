@@ -24,7 +24,7 @@ registerIpcHandler(dispatch);
 render(
     <Provider store={store}>
         <Root />
-    </Provider>
+    </Provider>,
 );
 
 dispatch(startLauncherInitialisation());

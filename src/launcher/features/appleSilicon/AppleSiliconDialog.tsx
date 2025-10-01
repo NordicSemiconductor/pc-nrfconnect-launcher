@@ -20,11 +20,11 @@ import { getIsAppleSiliconDialogVisible } from './appleSiliconSlice';
 export default () => {
     const dispatch = useLauncherDispatch();
     const isAppleSiliconDialogVisible = useLauncherSelector(
-        getIsAppleSiliconDialogVisible
+        getIsAppleSiliconDialogVisible,
     );
 
     const isTelemetryDialogVisible = useLauncherSelector(
-        getIsTelemetryDialogVisible
+        getIsTelemetryDialogVisible,
     );
 
     const isVisible = !isTelemetryDialogVisible && isAppleSiliconDialogVisible;
@@ -43,7 +43,7 @@ export default () => {
                         variant="primary"
                         onClick={() => {
                             openWindow.openUrl(
-                                'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/latest'
+                                'https://github.com/NordicSemiconductor/pc-nrfconnect-launcher/releases/latest',
                             );
                             dispatch(download());
                         }}

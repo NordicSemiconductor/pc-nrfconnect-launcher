@@ -54,7 +54,7 @@ downloadFile(
     `https://files.nordicsemi.com/artifactory/swtools/external/nrfutil/executables/${getTriplet()}/${
         config.localFile
     }`,
-    destinationFile
+    destinationFile,
 )
     .then(() => {
         if (config.makeFileExecutable) {

@@ -58,7 +58,7 @@ export default () => {
             dispatch(
                 addSource(missingTokenWarning.sourceToAdd, {
                     warnOnMissingToken: false,
-                })
+                }),
             );
 
         hideDialog();
@@ -104,7 +104,7 @@ export default () => {
                         {missingTokenWarning.sourcesWithRestrictedAccessLevel.map(
                             source => (
                                 <li key={source.url}>{source.name}</li>
-                            )
+                            ),
                         )}
                     </ul>
                     <p>

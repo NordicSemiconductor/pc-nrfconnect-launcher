@@ -13,7 +13,7 @@ const sleep = (millis: number) =>
 
 const waitForSecondWindow = async (
     app: ElectronApplication,
-    currentCount: number
+    currentCount: number,
 ) => {
     for (let retry = 0; retry < 5; retry += 1) {
         // eslint-disable-next-line no-await-in-loop

@@ -16,7 +16,7 @@ exports.default = () =>
         .then(result => {
             if (bundledJLink.toLowerCase() !== result.version.toLowerCase()) {
                 console.error(
-                    `\n!!! ERROR: Bundled J-Link version ${bundledJLink} does not match the downloaded version ${result.version}.`
+                    `\n!!! ERROR: Bundled J-Link version ${bundledJLink} does not match the downloaded version ${result.version}.`,
                 );
                 process.exit(-1);
             }

@@ -47,7 +47,7 @@ const slice = createSlice({
     reducers: {
         setCheckForUpdatesAtStartup(
             state,
-            { payload: checkForUpdatesAtStartup }: PayloadAction<boolean>
+            { payload: checkForUpdatesAtStartup }: PayloadAction<boolean>,
         ) {
             state.shouldCheckForUpdatesAtStartup = checkForUpdatesAtStartup;
             setPersistedCheckForUpdatesAtStartup(checkForUpdatesAtStartup);
@@ -76,7 +76,7 @@ const slice = createSlice({
         },
         setArtifactoryTokenInformation(
             state,
-            { payload: tokenInformation }: PayloadAction<TokenInformation>
+            { payload: tokenInformation }: PayloadAction<TokenInformation>,
         ) {
             state.artifactoryTokenInformation = tokenInformation;
             setPersistedArtifactoryTokenInformation(tokenInformation);
@@ -87,7 +87,7 @@ const slice = createSlice({
         },
         setUseChineseAppServer(
             state,
-            { payload: useChineseAppServer }: PayloadAction<boolean>
+            { payload: useChineseAppServer }: PayloadAction<boolean>,
         ) {
             state.useChineseAppServer = useChineseAppServer;
             setPersistedUseChineseAppServer(useChineseAppServer);

@@ -30,7 +30,7 @@ export const downloadFractionName = 'download app';
 const reportInstallProgress = (
     app: AppSpec,
     progress: number,
-    totalInstallSize: number
+    totalInstallSize: number,
 ) => {
     appInstallProgress.reportAppInstallProgress({
         app,
@@ -54,7 +54,7 @@ type DownloadOptions = {
 const withProgressReported = (
     response: Response,
     app: AppSpec,
-    totalSize: number
+    totalSize: number,
 ) => {
     let progress = 0;
     const progressStream = new TransformStream({
@@ -96,7 +96,7 @@ const request = async (url: string, { bearer, app }: DownloadOptions = {}) => {
 
         if (!response.ok) {
             throw new Error(
-                `Unable to download ${effectiveUrl}. Got status code ${response.status}`
+                `Unable to download ${effectiveUrl}. Got status code ${response.status}`,
             );
         }
 
@@ -105,23 +105,23 @@ const request = async (url: string, { bearer, app }: DownloadOptions = {}) => {
             : withProgressReported(response, app, totalSize);
     } catch (error) {
         throw new Error(
-            `Error when reading ${effectiveUrl}: ${describeError(error)}`
+            `Error when reading ${effectiveUrl}: ${describeError(error)}`,
         );
     }
 };
 
 export const downloadToJson = async <T>(
     url: string,
-    options?: DownloadOptions
+    options?: DownloadOptions,
 ) => <T>(await request(url, options)).json();
 
 export const downloadToFile = async (
     url: string,
     filePath: string,
-    options?: DownloadOptions
+    options?: DownloadOptions,
 ) => {
     const buffer = Buffer.from(
-        await (await request(url, options)).arrayBuffer()
+        await (await request(url, options)).arrayBuffer(),
     );
     await fs.writeFile(filePath, buffer);
 };
@@ -136,7 +136,7 @@ export const getArtifactoryTokenInformation = async (token: string) =>
     tokenInformationSchema.parse(
         await downloadToJson<TokenInformation>(artifactoryTokenInformationUrl, {
             bearer: token,
-        })
+        }),
     );
 
 let networkIsInitialised = false;

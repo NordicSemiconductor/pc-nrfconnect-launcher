@@ -28,7 +28,7 @@ type WarnAboutMissingTokenOnAddSource = {
     sourceToAdd: SourceUrl;
 };
 export const isWarningAboutMissingTokenOnAddSource = (
-    warning: MissingTokenWarning
+    warning: MissingTokenWarning,
 ): warning is WarnAboutMissingTokenOnAddSource =>
     warning.isVisible && 'sourceToAdd' in warning;
 
@@ -37,7 +37,7 @@ type WarnAboutMissingTokenOnStartup = {
     sourcesWithRestrictedAccessLevel: Source[];
 };
 export const isWarningAboutMissingTokenOnStartup = (
-    warning: MissingTokenWarning
+    warning: MissingTokenWarning,
 ): warning is WarnAboutMissingTokenOnStartup =>
     warning.isVisible && 'sourcesWithRestrictedAccessLevel' in warning;
 
@@ -68,7 +68,7 @@ const initialState: State = {
 
 const sourcesWithout = (sources: Source[], sourceNameToBeRemoved: SourceName) =>
     sources.filter(
-        existingSource => existingSource.name !== sourceNameToBeRemoved
+        existingSource => existingSource.name !== sourceNameToBeRemoved,
     );
 
 const slice = createSlice({
@@ -85,7 +85,7 @@ const slice = createSlice({
             }: PayloadAction<{
                 name: SourceName;
                 url: SourceUrl;
-            }>
+            }>,
         ) {
             state.sources = [
                 ...sourcesWithout(state.sources, newSource.name),
@@ -109,7 +109,7 @@ const slice = createSlice({
         },
         showDeprecatedSources(
             state,
-            { payload: sources }: PayloadAction<Source[]>
+            { payload: sources }: PayloadAction<Source[]>,
         ) {
             state.deprecatedSources = [...sources];
         },
@@ -128,7 +128,7 @@ const slice = createSlice({
         },
         warnAboutMissingTokenOnAddSource(
             state,
-            { payload: sourceToAdd }: PayloadAction<SourceUrl>
+            { payload: sourceToAdd }: PayloadAction<SourceUrl>,
         ) {
             state.missingTokenWarning = {
                 isVisible: true,
@@ -137,7 +137,7 @@ const slice = createSlice({
         },
         warnAboutMissingTokenOnStartup(
             state,
-            { payload: sources }: PayloadAction<Source[]>
+            { payload: sources }: PayloadAction<Source[]>,
         ) {
             state.missingTokenWarning = {
                 isVisible: true,
@@ -173,7 +173,8 @@ export const {
 export const getSources = (state: RootState) => state.sources.sources;
 export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
     state.sources.sources.filter(
-        source => needsAuthentication(source.url) && !isDeprecatedSource(source)
+        source =>
+            needsAuthentication(source.url) && !isDeprecatedSource(source),
     );
 export const getIsAddSourceVisible = (state: RootState) =>
     state.sources.isAddSourceVisible;

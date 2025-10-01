@@ -33,7 +33,7 @@ describe('ProxyLoginDialog', () => {
         expect(
             render(<ProxyLoginDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -42,7 +42,7 @@ describe('ProxyLoginDialog', () => {
             render(<ProxyLoginDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
                 changeUserName('new username'),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -51,7 +51,7 @@ describe('ProxyLoginDialog', () => {
             render(<ProxyLoginDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
                 loginCancelledByUser(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -60,7 +60,7 @@ describe('ProxyLoginDialog', () => {
             render(<ProxyLoginDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
                 loginRequestSent(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

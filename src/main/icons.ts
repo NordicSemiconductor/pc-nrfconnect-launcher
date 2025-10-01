@@ -12,7 +12,7 @@ import { ifExists } from './fileUtil';
 
 export const getNrfConnectForDesktopIcon = () =>
     getBundledResourcePath(
-        process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+        process.platform === 'win32' ? 'icon.ico' : 'icon.png',
     );
 
 const resourceFile = (app: LaunchableApp, filename: string) =>

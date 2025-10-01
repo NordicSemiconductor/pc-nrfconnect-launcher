@@ -47,7 +47,7 @@ const getTmpFilename = (basename: string) =>
 const extractNpmPackage = async (
     appName: string,
     tgzFile: string,
-    destinationDir: string
+    destinationDir: string,
 ) => {
     const tmpDir = getTmpFilename(appName);
 
@@ -69,14 +69,14 @@ export const getNameFromNpmPackage = (tgzFile: string) => {
 };
 
 export const installLocalApp = async (
-    tgzFilePath: string
+    tgzFilePath: string,
 ): Promise<InstallResult> => {
     // Determine app name and path
     const appName = getNameFromNpmPackage(tgzFilePath);
     if (!appName) {
         return failureReadingFile(
             `Unable to get app name from archive: \`${tgzFilePath}\`. ` +
-                `Expected file name format: \`{name}-{version}.tgz.\``
+                `Expected file name format: \`{name}-{version}.tgz.\``,
         );
     }
     const appPath = installedAppPath(localApp(appName));
@@ -94,7 +94,7 @@ export const installLocalApp = async (
         fs.rmSync(appPath, { recursive: true, force: true });
         return failureReadingFile(
             `Unable to extract app archive \`${tgzFilePath}\`.`,
-            error
+            error,
         );
     }
 
@@ -105,7 +105,7 @@ export const installLocalApp = async (
         return failureReadingFile(
             `According to the filename \`${tgzFilePath}\`, the app should ` +
                 `be called \`${appName}\`, but internally it is called ` +
-                `\`${app.name}\`.`
+                `\`${app.name}\`.`,
         );
     }
 
@@ -149,7 +149,7 @@ const shouldRemoveExistingApp = (tgzFilePath: string, appPath: string) => {
 
 const confirmOverwritingOnExistingApp = async (
     result: InstallResult,
-    tgzFilePath: string
+    tgzFilePath: string,
 ) => {
     if (
         result.type === 'failure' &&
@@ -178,7 +178,7 @@ export const installAllLocalAppArchives = () => {
                 await confirmOverwritingOnExistingApp(result, tgzFilePath);
                 showErrorOnUnreadableFile(result);
             }),
-        Promise.resolve<unknown>(undefined)
+        Promise.resolve<unknown>(undefined),
     );
 };
 
@@ -188,7 +188,7 @@ const removeInstallMetaData = (app: AppSpec) => {
 
     writeAppInfo(
         appInfo,
-        getSource(app.source)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        getSource(app.source)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     );
 };
 
@@ -198,7 +198,7 @@ export const removeDownloadableApp = async (app: AppSpec) => {
         throw new Error(
             'Sanity check failed when trying ' +
                 `to remove app directory ${appPath}. The directory does not ` +
-                'have node_modules in its path.'
+                'have node_modules in its path.',
         );
     }
 
@@ -215,7 +215,7 @@ const verifyShasum = (filePath: string, expectedShasum?: string) => {
         buffer = fs.readFileSync(filePath);
     } catch (error) {
         throw new Error(
-            `Unable to read file when verifying shasum: ${filePath}`
+            `Unable to read file when verifying shasum: ${filePath}`,
         );
     }
 
@@ -223,7 +223,7 @@ const verifyShasum = (filePath: string, expectedShasum?: string) => {
     if (expectedShasum != null && expectedShasum !== computedShasum) {
         throw new Error(
             `Shasum verification failed for ${filePath}. Expected ` +
-                `'${expectedShasum}', but got '${computedShasum}'.`
+                `'${expectedShasum}', but got '${computedShasum}'.`,
         );
     }
 };
@@ -234,7 +234,7 @@ const download = async (app: AppSpec, version?: string) => {
 
     if (versionToInstall == null) {
         return Promise.reject(
-            new Error(`No tarball found for ${app.name}@${version}`)
+            new Error(`No tarball found for ${app.name}@${version}`),
         );
     }
 
@@ -253,7 +253,7 @@ const download = async (app: AppSpec, version?: string) => {
         ...assertPreparedNrfutilModules(
             app,
             versionToInstall.nrfutilModules,
-            versionToInstall.nrfutilCore
+            versionToInstall.nrfutilCore,
         ),
     ]);
     verifyShasum(packageFilePath, versionToInstall.shasum);
@@ -269,24 +269,24 @@ const addInstallMetaData = (
     app: AppSpec,
     appPath: string,
     checksum?: string,
-    publishTimestamp?: string
+    publishTimestamp?: string,
 ) => {
     writeAppInfo(
         {
             ...readAppInfo(app),
             installed: { path: appPath, shasum: checksum, publishTimestamp },
         },
-        getSource(app.source)! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        getSource(app.source)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
     );
 };
 
 export const installDownloadableApp = async (
     app: DownloadableApp,
-    version?: string
+    version?: string,
 ): Promise<DownloadableApp> => {
     const { packageFilePath, checksum, publishTimestamp } = await download(
         app,
-        version
+        version,
     );
 
     if (isInstalled(app)) {
@@ -297,12 +297,12 @@ export const installDownloadableApp = async (
         app,
         packageFilePath,
         checksum,
-        publishTimestamp
+        publishTimestamp,
     );
 
     return addInstalledAppData(
         // @ts-expect-error -- Because the property `installed` was added above it must be there, I just do not know yet how to convince TypeScript of that
-        addDownloadAppData(app.source)(readAppInfo(app))
+        addDownloadAppData(app.source)(readAppInfo(app)),
     );
 };
 
@@ -311,7 +311,7 @@ export const installDownloadableAppCore = async (
     packageFilePath: string,
     checksum: string | undefined,
     publishTimestamp?: string,
-    doDelete = true
+    doDelete = true,
 ) => {
     const appPath = installedAppPath(app);
     await extractNpmPackage(app.name, packageFilePath, appPath);

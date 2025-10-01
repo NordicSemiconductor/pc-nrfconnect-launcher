@@ -52,7 +52,7 @@ describe('DropZoneForLocalApps', () => {
         expect(inMain.installLocalApp).toHaveBeenCalledWith(path);
 
         await waitFor(() =>
-            expect(getAllApps(store.getState())).toContain(installedApp)
+            expect(getAllApps(store.getState())).toContain(installedApp),
         );
     });
 
@@ -85,7 +85,7 @@ describe('DropZoneForLocalApps', () => {
         });
         await waitFor(() => {
             expect(getAllApps(store.getState())).toEqual(
-                expect.arrayContaining([installedApp, anotherInstalledApp])
+                expect.arrayContaining([installedApp, anotherInstalledApp]),
             );
         });
     });
@@ -100,7 +100,7 @@ describe('DropZoneForLocalApps', () => {
             <>
                 <DropZoneForLocalApps />
                 <RootErrorDialog />
-            </>
+            </>,
         );
 
         drop(['testapp-1.2.3.tgz']);
@@ -118,7 +118,7 @@ describe('DropZoneForLocalApps', () => {
             <>
                 <DropZoneForLocalApps />
                 <RootErrorDialog />
-            </>
+            </>,
         );
 
         drop([path]);
@@ -126,7 +126,7 @@ describe('DropZoneForLocalApps', () => {
         // The real string we search for is 'A local app `testapp` already exists. Overwrite it with the content of `testapp-1.2.3.tgz`?'
         // I did not manage to write a single check for that, because `testapp` and `testapp-1.2.3.tgz` are in sub elements. ¯\_(ツ)_/¯
         await screen.findByText(
-            'A local app already exists. Overwrite it with the content of ?'
+            'A local app already exists. Overwrite it with the content of ?',
         );
         await screen.findByText('testapp');
         await screen.findByText('testapp-1.2.3.tgz');
@@ -157,7 +157,7 @@ describe('DropZoneForLocalApps', () => {
             testrenderer(
                 <DropZoneForLocalApps>
                     <div data-testid="some-child" />
-                </DropZoneForLocalApps>
+                </DropZoneForLocalApps>,
             );
 
             fireEvent.dragEnter(screen.getByTestId('app-install-drop-zone'));
@@ -170,7 +170,7 @@ describe('DropZoneForLocalApps', () => {
             testrenderer(
                 <DropZoneForLocalApps>
                     <div data-testid="some-child" />
-                </DropZoneForLocalApps>
+                </DropZoneForLocalApps>,
             );
 
             fireEvent.dragEnter(screen.getByTestId('app-install-drop-zone'));

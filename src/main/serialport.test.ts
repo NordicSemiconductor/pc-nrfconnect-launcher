@@ -82,7 +82,7 @@ describe('Single renderer', () => {
 
         expect(renderer.send).toHaveBeenCalledWith(
             `serialport:on-data_${defaultOptions.path}`,
-            Buffer.from('OK')
+            Buffer.from('OK'),
         );
     });
 
@@ -90,10 +90,10 @@ describe('Single renderer', () => {
         const openPromise = openOrAdd(
             renderer,
             defaultOptions,
-            defaultOverwriteOptions
+            defaultOverwriteOptions,
         );
         expect(() => writeToSerialport(testPortPath, 'Test')).toThrow(
-            'PORT_NOT_OPEN'
+            'PORT_NOT_OPEN',
         );
         // Must wait for the port to actually open, in order to again close it.
         await openPromise;
@@ -111,11 +111,11 @@ describe('Two renderers', () => {
 
     test('opening one serialport with two renderers should work', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBeUndefined();
 
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBeUndefined();
 
         await closeSerialPort(rendererOne, testPortPath);
@@ -133,17 +133,17 @@ describe('Two renderers', () => {
         // Closing the same port when it has been deleted throws an error.
         await expect(
             // eslint-disable-next-line no-return-await -- We want to wrap this in async/await to simulate the way this will be turned into a promise anyhow when invoked by IPC
-            async () => await closeSerialPort(rendererTwo, testPortPath)
+            async () => await closeSerialPort(rendererTwo, testPortPath),
         ).rejects.toThrow('PORT_NOT_FOUND');
     });
 
     test('baudRate may be updated whilst port is open, and is renderer-independent', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBeUndefined();
 
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBeUndefined();
 
         const baudRatesToTest = [
@@ -155,7 +155,7 @@ describe('Two renderers', () => {
         for (const rate of baudRatesToTest) {
             expect(
                 // eslint-disable-next-line no-await-in-loop
-                await update(testPortPath, { baudRate: rate } as UpdateOptions)
+                await update(testPortPath, { baudRate: rate } as UpdateOptions),
             ).toBeUndefined();
             expect(getBaudRate(testPortPath)).toBe(rate);
         }
@@ -165,10 +165,10 @@ describe('Two renderers', () => {
         const promise = openOrAdd(
             rendererOne,
             defaultOptions,
-            defaultOverwriteOptions
+            defaultOverwriteOptions,
         );
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions),
         ).rejects.toThrow('PORT_IS_ALREADY_BEING_OPENED');
 
         // Wait for the first open to finish.
@@ -177,15 +177,15 @@ describe('Two renderers', () => {
 
     test('with the second renderer providing the overwrite flag decides if the port options should be overwritten', async () => {
         await expect(
-            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererOne, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBeUndefined();
 
         await expect(
             openOrAdd(
                 rendererTwo,
                 { path: testPortPath, baudRate: 9600 },
-                defaultOverwriteOptions
-            )
+                defaultOverwriteOptions,
+            ),
         ).rejects.toThrow('FAILED_DIFFERENT_SETTINGS');
 
         // remove property (xon) is also different
@@ -193,16 +193,16 @@ describe('Two renderers', () => {
             openOrAdd(
                 rendererTwo,
                 { path: testPortPath, baudRate: 115200 },
-                defaultOverwriteOptions
-            )
+                defaultOverwriteOptions,
+            ),
         ).rejects.toThrow('FAILED_DIFFERENT_SETTINGS');
 
         await expect(
             openOrAdd(
                 rendererTwo,
                 { path: testPortPath, baudRate: 9600 },
-                { overwrite: true, settingsLocked: false }
-            )
+                { overwrite: true, settingsLocked: false },
+            ),
         ).resolves.toBeUndefined();
     });
 
@@ -216,15 +216,15 @@ describe('Two renderers', () => {
             openOrAdd(
                 rendererTwo,
                 { ...defaultOptions, stopBits: 2 },
-                defaultOverwriteOptions
-            )
+                defaultOverwriteOptions,
+            ),
         ).rejects.toThrow('FAILED_SETTINGS_LOCKED');
         await expect(
             openOrAdd(
                 rendererTwo,
                 { ...defaultOptions, stopBits: 2, parity: 'odd' },
-                { ...defaultOverwriteOptions, overwrite: true }
-            )
+                { ...defaultOverwriteOptions, overwrite: true },
+            ),
         ).rejects.toThrow('FAILED_SETTINGS_LOCKED');
     });
 
@@ -235,14 +235,14 @@ describe('Two renderers', () => {
         });
 
         await expect(
-            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions)
+            openOrAdd(rendererTwo, defaultOptions, defaultOverwriteOptions),
         ).resolves.toBe(undefined);
 
         await expect(
             openOrAdd(rendererTwo, defaultOptions, {
                 ...defaultOverwriteOptions,
                 overwrite: true,
-            })
+            }),
         ).resolves.toBe(undefined);
     });
 
@@ -256,11 +256,11 @@ describe('Two renderers', () => {
 
         expect(rendererOne.send).toHaveBeenCalledWith(
             `serialport:on-write_${defaultOptions.path}`,
-            terminalData
+            terminalData,
         );
         expect(rendererTwo.send).toHaveBeenCalledWith(
             `serialport:on-write_${defaultOptions.path}`,
-            terminalData
+            terminalData,
         );
     });
 

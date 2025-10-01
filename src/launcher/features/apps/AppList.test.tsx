@@ -97,7 +97,7 @@ describe('AppList', () => {
     it('should render without any apps and disabled update check', () => {
         expect(
             render(<AppList />, [setCheckForUpdatesAtStartup(false)])
-                .baseElement
+                .baseElement,
         ).toMatchSnapshot();
     });
 
@@ -106,7 +106,7 @@ describe('AppList', () => {
             render(<AppList />, [
                 setAllLocalApps([localApp]),
                 hideSource(LOCAL),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -119,7 +119,7 @@ describe('AppList', () => {
                     updatableApp,
                 ]),
                 setAllLocalApps([localApp]),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -128,7 +128,7 @@ describe('AppList', () => {
             render(<AppList />, [
                 addDownloadableApps([uninstalledApp]),
                 installDownloadableAppStarted(uninstalledApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -137,7 +137,7 @@ describe('AppList', () => {
             render(<AppList />, [
                 addDownloadableApps([installedApp]),
                 removeDownloadableAppStarted(installedApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -146,7 +146,7 @@ describe('AppList', () => {
             render(<AppList />, [
                 addDownloadableApps([updatableApp]),
                 updateDownloadableAppStarted(updatableApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -159,14 +159,14 @@ describe('AppList', () => {
                 store={preparedStore([addDownloadableApps([uninstalledApp])])}
             >
                 <AppList />
-            </Provider>
+            </Provider>,
         );
         await user.click(
-            screen.getByTitle(`Install ${uninstalledApp.displayName}`)
+            screen.getByTitle(`Install ${uninstalledApp.displayName}`),
         );
 
         expect(installDownloadableApp).toHaveBeenCalledWith(
-            expect.objectContaining(uninstalledApp)
+            expect.objectContaining(uninstalledApp),
         );
     });
 
@@ -179,19 +179,19 @@ describe('AppList', () => {
                 store={preparedStore([addDownloadableApps([installedApp])])}
             >
                 <AppList />
-            </Provider>
+            </Provider>,
         );
 
         // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         const el = container.getElementsByClassName('dropdown-toggle').item(0);
         await user.click(el!);
         await user.click(
-            screen.getByTitle(`Remove ${installedApp.displayName}`)
+            screen.getByTitle(`Remove ${installedApp.displayName}`),
         );
 
         expect(removeDownloadableApp).toHaveBeenCalledWith(
             expect.objectContaining(installedApp),
-            '4.5.6'
+            '4.5.6',
         );
     });
 
@@ -204,13 +204,13 @@ describe('AppList', () => {
                 store={preparedStore([addDownloadableApps([installedApp])])}
             >
                 <AppList />
-            </Provider>
+            </Provider>,
         );
 
         await user.click(screen.getByTitle(`Open ${installedApp.displayName}`));
 
         expect(checkCompatibilityThenLaunch).toHaveBeenCalledWith(
-            expect.objectContaining(installedApp)
+            expect.objectContaining(installedApp),
         );
     });
 });

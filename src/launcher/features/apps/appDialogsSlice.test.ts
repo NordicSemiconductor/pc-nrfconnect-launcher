@@ -24,7 +24,7 @@ describe('app dialogs slice', () => {
         it('signals when the dialog is shown', () => {
             const initialState = dispatchTo(reducer);
             expect(getConfirmLaunchDialog(initialState).isVisible).toEqual(
-                false
+                false,
             );
 
             const dialogIsShown = dispatchTo(reducer, [
@@ -37,15 +37,15 @@ describe('app dialogs slice', () => {
                 }),
             ]);
             expect(getConfirmLaunchDialog(dialogIsShown).isVisible).toEqual(
-                true
+                true,
             );
 
             const dialogIsClosed = reducer(
                 dialogIsShown,
-                hideConfirmLaunchDialog()
+                hideConfirmLaunchDialog(),
             );
             expect(getConfirmLaunchDialog(dialogIsClosed).isVisible).toEqual(
-                false
+                false,
             );
         });
 

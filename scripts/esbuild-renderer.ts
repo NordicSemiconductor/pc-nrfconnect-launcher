@@ -31,5 +31,5 @@ build(
         entryPoints: ['./src/app'],
         outfile: './dist/app.js',
     },
-    { externalReact: true } // Needed to run older apps (e.g. RSSI@1.4.5) which do not yet bundle their version of React.
+    { externalReact: true }, // Needed to run older apps (e.g. RSSI@1.4.5) which do not yet bundle their version of React.
 );

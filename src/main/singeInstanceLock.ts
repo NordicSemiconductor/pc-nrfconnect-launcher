@@ -25,7 +25,7 @@ export default () => {
         });
     } else {
         console.log(
-            'Other instance already running. Bringing that to the front.'
+            'Other instance already running. Bringing that to the front.',
         );
         app.quit();
         process.exit();

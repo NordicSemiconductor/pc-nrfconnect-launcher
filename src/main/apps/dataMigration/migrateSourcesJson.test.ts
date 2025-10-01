@@ -35,7 +35,7 @@ describe('migrating sources.json', () => {
 
         // Arrange
         mockedExistsSync.mockImplementation(
-            path => path === oldSourcesJsonPath()
+            path => path === oldSourcesJsonPath(),
         );
         mockedReadSchemedJsonFile.mockReturnValue(oldSourceJsonContent);
 
@@ -46,7 +46,7 @@ describe('migrating sources.json', () => {
         expect(mockedWriteSchemedJsonFile).toBeCalledWith(
             expect.anything(),
             expect.anything(),
-            newSourceVersionedJsonContent
+            newSourceVersionedJsonContent,
         );
     });
 

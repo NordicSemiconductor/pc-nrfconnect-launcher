@@ -33,7 +33,7 @@ export const checkForJLinkUpdate =
                             s.status === 'should be updated'
                                 ? s.installedVersion
                                 : undefined,
-                    })
+                    }),
                 );
             }
 

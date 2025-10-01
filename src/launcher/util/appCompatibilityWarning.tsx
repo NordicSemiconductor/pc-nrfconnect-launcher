@@ -46,7 +46,7 @@ const incompatible = (
     warningData: { app: string; warningKind: WarningKind } & Record<
         string,
         unknown
-    >
+    >,
 ) =>
     ({
         isDecided: true,
@@ -55,14 +55,14 @@ const incompatible = (
         warning,
         longWarning,
         warningData,
-    } as const);
+    }) as const;
 
 type Undecided = typeof undecided;
 type Incompatible = ReturnType<typeof incompatible>;
 
 type AppCompatibilityChecker = (
     app: LaunchableApp,
-    providedVersionOfEngine: string
+    providedVersionOfEngine: string,
 ) => Promise<Undecided | Incompatible> | Undecided | Incompatible;
 
 export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
@@ -79,7 +79,7 @@ export const checkEngineVersionIsSet: AppCompatibilityChecker = app =>
                   warningKind: WarningKind.ENGINE_CHECK,
                   app: app.name,
                   requestedEngine: 'not specified',
-              }
+              },
           );
 
 const replaceCaretWithGreaterEqual = (engineVersion: string) =>
@@ -89,11 +89,11 @@ const replaceCaretWithGreaterEqual = (engineVersion: string) =>
 
 export const checkEngineIsSupported: AppCompatibilityChecker = (
     app,
-    providedVersionOfEngine
+    providedVersionOfEngine,
 ) => {
     const isSupportedEngine = semver.satisfies(
         semver.coerce(providedVersionOfEngine) ?? '0.0.0',
-        replaceCaretWithGreaterEqual(app.engineVersion!) // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
+        replaceCaretWithGreaterEqual(app.engineVersion!), // eslint-disable-line @typescript-eslint/no-non-null-assertion -- checkEngineVersionIsSet above already checks that this is defined
     );
 
     return isSupportedEngine
@@ -111,7 +111,7 @@ export const checkEngineIsSupported: AppCompatibilityChecker = (
                   app: app.name,
                   requestedEngine: app.engineVersion,
                   providedEngine: providedVersionOfEngine,
-              }
+              },
           );
 };
 
@@ -129,7 +129,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
                 app: app.name,
                 appVersion: app.currentVersion,
                 minimalAppVersion: 'none',
-            }
+            },
         );
     }
 
@@ -165,7 +165,7 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
                   app: app.name,
                   appVersion: app.currentVersion,
                   minimalAppVersion: minimalRequiredAppVersions[app.name],
-              }
+              },
           );
 };
 
@@ -176,16 +176,16 @@ const getJlinkCompatibility = memoize(
             userDir,
             'device',
             nrfutilDeviceVersion,
-            nrfutilCoreVersion
+            nrfutilCoreVersion,
         );
         const moduleVersion = await sandbox.getModuleVersion();
 
         return getJlinkCompatibilityFromModuleVersion(moduleVersion);
-    }
+    },
 );
 
 export const checkJLinkRequirements: AppCompatibilityChecker = async (
-    app: LaunchableApp
+    app: LaunchableApp,
 ) => {
     if (!isInstalled(app)) {
         return undecided;
@@ -200,7 +200,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
 
     const jlinkCompatibility = await getJlinkCompatibility(
         deviceVersion,
-        coreVersion
+        coreVersion,
     );
 
     if (jlinkCompatibility.kind === 'No SEGGER J-Link installed') {
@@ -226,7 +226,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
                 app: app.name,
                 nrfutilDevice: deviceVersion,
                 ...jlinkCompatibility,
-            }
+            },
         );
     }
 
@@ -258,7 +258,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
                 app: app.name,
                 nrfutilDevice: deviceVersion,
                 ...jlinkCompatibility,
-            }
+            },
         );
     }
 
@@ -268,7 +268,7 @@ export const checkJLinkRequirements: AppCompatibilityChecker = async (
 export default async (
     app: LaunchableApp,
     providedVersionOfEngine = launcherConfig().launcherVersion,
-    ignoredCases: WarningKind[] = []
+    ignoredCases: WarningKind[] = [],
 ): Promise<undefined | IncompatibilityWarning> => {
     // eslint-disable-next-line no-restricted-syntax -- because here a loop is simpler than an array iteration function
     for (const check of [

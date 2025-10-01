@@ -25,7 +25,7 @@ const bundleNrfutilModule = (module, version, coreVersion) => {
     console.log(
         `Bundling nrfutil module ${module} version ${version} and core ${
             coreVersion ?? '(defaulting to 8.1.1)'
-        }`
+        }`,
     );
 
     const nrfUtilBinary = path.join('resources', 'nrfutil');
@@ -39,20 +39,20 @@ const bundleNrfutilModule = (module, version, coreVersion) => {
                 : []),
             ...(coreVersion != null ? [coreVersion] : []),
             module,
-            version
+            version,
         ),
     };
 
     execSync(
         `${nrfUtilBinary} self-upgrade --to-version ${coreVersion ?? '8.1.1'}`,
-        { env }
+        { env },
     );
     execSync(`${nrfUtilBinary} install ${module}=${version} --force`, { env });
 
     console.log(
         `🏁 Bundled nrfutil module ${module} version ${version} and core ${
             coreVersion ?? '(defaulting to 8.1.1)'
-        }`
+        }`,
     );
 };
 
@@ -73,7 +73,7 @@ const parseSourceFile = appUrls =>
                 downloadFile(
                     appJSON.releaseNotesUrl,
                     dstPath(appJSON.releaseNotesUrl),
-                    false
+                    false,
                 ),
             ]);
 
@@ -84,7 +84,7 @@ const parseSourceFile = appUrls =>
             const appBundlesPath = path.join(
                 'resources',
                 'prefetched',
-                'appBundles'
+                'appBundles',
             );
             fs.mkdirSync(appBundlesPath, { recursive: true });
 
@@ -94,10 +94,10 @@ const parseSourceFile = appUrls =>
                     latestVersion.tarballUrl,
                     path.join(
                         appBundlesPath,
-                        path.basename(latestVersion.tarballUrl)
+                        path.basename(latestVersion.tarballUrl),
                     ),
-                    false
-                )
+                    false,
+                ),
             );
 
             if (latestVersion.nrfutilModules) {
@@ -106,25 +106,25 @@ const parseSourceFile = appUrls =>
                         bundleNrfutilModule(
                             module,
                             version,
-                            latestVersion.nrfutilCore
+                            latestVersion.nrfutilCore,
                         );
                     });
                 });
             }
 
             await Promise.allSettled(promises);
-        })
+        }),
     );
 
 exports.default = async () => {
     await downloadFile(
         SOURCE_URL,
         `resources/prefetched/${path.basename(SOURCE_URL)}`,
-        false
+        false,
     );
 
     const appUrls = JSON.parse(
-        fs.readFileSync(`./resources/prefetched/${path.basename(SOURCE_URL)}`)
+        fs.readFileSync(`./resources/prefetched/${path.basename(SOURCE_URL)}`),
     );
 
     await parseSourceFile(appUrls);

@@ -45,7 +45,7 @@ const useHighlightOnInstallation = (app: DisplayedApp) => {
             itemRef.current.classList.add(styles.highlight);
             timeout = setTimeout(
                 () => itemRef.current?.classList.remove(styles.highlight),
-                3000
+                3000,
             );
         }
         appIsInstalled.current = isInstalled(app);
@@ -82,7 +82,7 @@ const App = ({ app }: { app: DisplayedApp }) => {
                         {isInstalled(app) && app.source !== OFFICIAL && (
                             <>
                                 {formatPublishTimestamp(
-                                    app.installed.publishTimestamp
+                                    app.installed.publishTimestamp,
                                 )}
                             </>
                         )}

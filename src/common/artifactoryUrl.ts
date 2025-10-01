@@ -51,26 +51,29 @@ export const asLongNordicArtifactoryUrl = (url: string) => {
 
 const isPublicUrl = (url: string) =>
     asShortNordicArtifactoryUrl(url).startsWith(
-        'https://files.nordicsemi.com/artifactory/swtools/external/'
+        'https://files.nordicsemi.com/artifactory/swtools/external/',
     );
 
 export const needsAuthentication = (url: string) =>
     asShortNordicArtifactoryUrl(url).startsWith(
-        'https://files.nordicsemi.com/artifactory/'
+        'https://files.nordicsemi.com/artifactory/',
     ) && !isPublicUrl(url);
 
-const maybeUseChineseServer = (url: string, prefersChineseAppServer: boolean) =>
+const maybeUseChineseServer = (
+    url: string,
+    prefersChineseAppServer: boolean,
+) =>
     isPublicUrl(url) && prefersChineseAppServer
         ? url.replace('//files.nordicsemi.com/', '//files.nordicsemi.cn/')
         : url;
 
 export const determineDownloadUrl = (
     url: string,
-    prefersChineseAppServer: boolean
+    prefersChineseAppServer: boolean,
 ) =>
     maybeUseChineseServer(
         asLongNordicArtifactoryUrl(url),
-        prefersChineseAppServer
+        prefersChineseAppServer,
     );
 
 export const artifactoryTokenInformationUrl =
