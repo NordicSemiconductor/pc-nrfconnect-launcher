@@ -53,6 +53,11 @@ const quickStartAppName = 'pc-nrfconnect-quickstart';
 
 export const isQuickStartApp = (app: App) => app.name === quickStartAppName;
 
+type AppWithFixedSize = LaunchableApp &
+    Required<Pick<LaunchableApp, 'fixedSize'>>;
+export const hasFixedSize = (app: App): app is AppWithFixedSize =>
+    isInstalled(app) && app.fixedSize != null;
+
 const channel = {
     downloadLatestAppInfos: 'apps:download-latest-app-infos',
     getLocalApps: 'apps:get-local-apps',

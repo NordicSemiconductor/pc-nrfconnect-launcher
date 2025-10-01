@@ -12,6 +12,18 @@ release the new version.
 ### Added
 
 -   #1147: Mechanism for automatic release candidates.
+-   #1199: Support for fixed size apps. Before, the fixed size of the Quick
+    Start app was hard coded. With this, every app can specify its own fixed
+    size by adding something like this to its package.json:
+
+    ```json
+    "nrfConnectForDesktop": {
+        "fixedSize": {
+            "width": 800,
+            "height": 600
+        }
+    }
+    ```
 
 ### Changed
 
