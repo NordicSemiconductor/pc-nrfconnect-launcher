@@ -26,6 +26,7 @@ import {
 import { LOCAL } from '../common/sources';
 import {
     AppSpec,
+    hasFixedSize,
     isInstalled,
     isQuickStartApp,
     LaunchableApp,
@@ -86,10 +87,19 @@ export const hideLauncherWindow = () => {
 };
 
 const getSizeOptions = (app: LaunchableApp) => {
+    // Legacy, this should be kept for at least two more versions after NCD 5.2.0, so it keeps on working with versions of the Quick Start app which do not yet have the property fixedSize.
     if (isQuickStartApp(app)) {
         return {
             width: 800,
             height: 550,
+            useContentSize: true,
+            resizable: false,
+        };
+    }
+
+    if (hasFixedSize(app)) {
+        return {
+            ...app.fixedSize,
             useContentSize: true,
             resizable: false,
         };

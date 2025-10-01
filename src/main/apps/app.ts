@@ -142,6 +142,7 @@ export const addInstalledAppData = (
         homepage: packageJson.homepage ?? app.homepage,
         repositoryUrl: packageJson.repository?.url,
         html: packageJson.nrfConnectForDesktop?.html,
+        fixedSize: packageJson.nrfConnectForDesktop?.fixedSize,
 
         nrfutil: packageJson.nrfConnectForDesktop?.nrfutil,
         nrfutilCore: packageJson.nrfConnectForDesktop?.nrfutilCore,
