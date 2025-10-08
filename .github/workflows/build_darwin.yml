@@ -30,8 +30,8 @@ on:
 jobs:
     build:
         name: Build macOS ${{ inputs.arch }}
-        # For arm64 use macos-latest, for x64 use macos-15 (See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#choosing-github-hosted-runners)
-        runs-on: ${{ inputs.arch == 'arm64' && 'macos-latest' || 'macos-15' }}
+        # For arm64 use macos-latest, for x64 use macos-15-intel (See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#choosing-github-hosted-runners)
+        runs-on: ${{ inputs.arch == 'arm64' && 'macos-latest' || 'macos-15-intel' }}
         steps:
             - uses: actions/checkout@v4
               with:
