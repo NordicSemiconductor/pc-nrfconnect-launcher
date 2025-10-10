@@ -62,8 +62,8 @@ const loadSources: ProcessStep = async dispatch => {
     } catch (error) {
         dispatch(
             ErrorDialogActions.showDialog(
-                `Unable to load settings: ${describeError(error)}`
-            )
+                `Unable to load settings: ${describeError(error)}`,
+            ),
         );
     }
 };
@@ -84,9 +84,8 @@ export const loadApps: ProcessStep = async dispatch => {
 };
 
 const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
-    const shouldCheckForUpdatesAtStartup = getShouldCheckForUpdatesAtStartup(
-        getState()
-    );
+    const shouldCheckForUpdatesAtStartup =
+        getShouldCheckForUpdatesAtStartup(getState());
     if (!shouldCheckForUpdatesAtStartup) return;
 
     try {
@@ -94,7 +93,7 @@ const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
 
         if (informationResult.type === 'Success')
             dispatch(
-                setArtifactoryTokenInformation(informationResult.information)
+                setArtifactoryTokenInformation(informationResult.information),
             );
 
         if (informationResult.type === 'Encryption not available') {
@@ -105,8 +104,8 @@ const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
                         'and attempts to install apps from them will fail.' +
                         '\n\n' +
                         'To change this, you need to restart nRF Connect for Desktop ' +
-                        'and on start allow access to your Keychain.'
-                )
+                        'and on start allow access to your Keychain.',
+                ),
             );
         }
     } catch (error) {
@@ -114,8 +113,8 @@ const loadTokenInformation: ProcessStep = async (dispatch, getState) => {
             ErrorDialogActions.showDialog(
                 `Your identity token could not be validated. If you are online, it may have expired.`,
                 undefined,
-                cleanIpcErrorMessage(describeError(error))
-            )
+                cleanIpcErrorMessage(describeError(error)),
+            ),
         );
     }
 };
@@ -143,7 +142,7 @@ const checkForMissingToken: ProcessStep = (dispatch, getState) => {
 
     if (token == null && sourcesWithRestrictedAccessLevel.length > 0) {
         dispatch(
-            warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel)
+            warnAboutMissingTokenOnStartup(sourcesWithRestrictedAccessLevel),
         );
         return INTERRUPT_PROCESS;
     }

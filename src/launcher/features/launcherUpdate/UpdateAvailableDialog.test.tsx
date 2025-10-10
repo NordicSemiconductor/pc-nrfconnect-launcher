@@ -18,7 +18,7 @@ describe('UpdateAvailableDialog', () => {
     it('shows the new version if one becomes available ', () => {
         expect(
             render(<UpdateAvailableDialog />, [updateAvailable('1.2.3')])
-                .baseElement
+                .baseElement,
         ).toMatchSnapshot();
     });
 });

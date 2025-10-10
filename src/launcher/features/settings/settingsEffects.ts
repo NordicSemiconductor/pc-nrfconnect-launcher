@@ -25,8 +25,8 @@ export const setArtifactoryToken =
                 ErrorDialogActions.showDialog(
                     `Token got rejected. Check if you entered a wrong or expired token.`,
                     undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
+                    cleanIpcErrorMessage(describeError(error)),
+                ),
             );
             throw error;
         }

@@ -31,15 +31,15 @@ export default () => {
             onConfirm={() => {
                 if (!confirmationDialog.isVisible) {
                     throw new Error(
-                        'Should be impossible to invoke a button on an invisible dialog'
+                        'Should be impossible to invoke a button on an invisible dialog',
                     );
                 }
 
                 dispatch(
                     launch(
                         confirmationDialog.app,
-                        confirmationDialog.setQuickStartInfoWasShown
-                    )
+                        confirmationDialog.setQuickStartInfoWasShown,
+                    ),
                 );
                 telemetry.sendEvent(EventAction.LAUNCH_APP_WARNING, {
                     warningIgnored: true,

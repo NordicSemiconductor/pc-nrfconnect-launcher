@@ -39,7 +39,7 @@ export const writeSourceJson = (source: Source, sourceJson: SourceJson) =>
     writeSchemedJsonFile(
         getSourceJsonPath(source),
         sourceJsonSchema,
-        sourceJson
+        sourceJson,
     );
 
 export const sourceJsonExistsLocally = (source: Source) =>

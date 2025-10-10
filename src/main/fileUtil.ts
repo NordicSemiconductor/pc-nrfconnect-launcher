@@ -37,7 +37,7 @@ export const readJsonFile = <T>(filePath: string, defaultValue?: T) => {
 export const readSchemedJsonFile = <T extends z.ZodTypeAny>(
     filePath: string,
     schema: T,
-    defaultValue?: z.infer<T>
+    defaultValue?: z.infer<T>,
 ): z.infer<T> => {
     try {
         const content = readJsonFile(filePath);
@@ -80,7 +80,7 @@ export const deleteFile = (filePath: string) => {
         fs.unlinkSync(filePath);
     } catch (error) {
         throw new Error(
-            `Unable to delete ${filePath}: ${describeError(error)}`
+            `Unable to delete ${filePath}: ${describeError(error)}`,
         );
     }
 };
@@ -111,13 +111,13 @@ export const untar = (src: string, dest: string, stripComponents: number) => {
                 if (error) {
                     reject(
                         new Error(
-                            `Unable to extract ${src}: ${describeError(error)}`
-                        )
+                            `Unable to extract ${src}: ${describeError(error)}`,
+                        ),
                     );
                 } else {
                     resolve();
                 }
-            }
+            },
         );
     });
 };
@@ -140,9 +140,9 @@ export const chmodDir = (src: string, mode: fs.Mode = defaultMode) =>
                 reject(
                     new Error(
                         `Unable to change mode to ${src}: ${describeError(
-                            error
-                        )}`
-                    )
+                            error,
+                        )}`,
+                    ),
                 );
             } else {
                 resolve();
@@ -164,14 +164,14 @@ export const writeJsonFile = (filePath: string, jsonData: unknown) =>
 export const writeSchemedJsonFile = <T extends z.ZodTypeAny>(
     filePath: string,
     schema: T,
-    jsonData: z.infer<T>
+    jsonData: z.infer<T>,
 ) => {
     const parsed = schema.safeParse(jsonData);
     if (parsed.success) {
         writeJsonFile(filePath, parsed.data);
     } else {
         throw new Error(
-            `Malformed data, not written to ${filePath}: ${parsed.error}`
+            `Malformed data, not written to ${filePath}: ${parsed.error}`,
         );
     }
 };

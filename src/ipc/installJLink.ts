@@ -20,7 +20,7 @@ type StartJLinkInstall = (offlineInstall?: boolean) => void;
 
 const startJLinkInstall = invoke<StartJLinkInstall>(startJLinkInstallChannel);
 const registerStartJLinkInstall = handle<StartJLinkInstall>(
-    startJLinkInstallChannel
+    startJLinkInstallChannel,
 );
 
 const jlinkUpdateProgressChannel = 'jlink-update-progress';
@@ -28,10 +28,10 @@ const jlinkUpdateProgressChannel = 'jlink-update-progress';
 type UpdateJLinkProgress = (update: JLinkUpdate) => void;
 
 const updateJLinkProgress = send<UpdateJLinkProgress>(
-    jlinkUpdateProgressChannel
+    jlinkUpdateProgressChannel,
 );
 const registerUpdateJLinkProgress = on<UpdateJLinkProgress>(
-    jlinkUpdateProgressChannel
+    jlinkUpdateProgressChannel,
 );
 
 export const forMain = {

@@ -33,7 +33,7 @@ export const setUseChineseUpdateServer = (useChineseServer: boolean) => {
     const autoupdateDomain = useChineseServer ? 'cn' : 'com';
 
     autoUpdater.setFeedURL(
-        `https://files.nordicsemi.${autoupdateDomain}/artifactory/swtools/external/ncd/launcher/`
+        `https://files.nordicsemi.${autoupdateDomain}/artifactory/swtools/external/ncd/launcher/`,
     );
 };
 
@@ -42,7 +42,7 @@ export const checkForUpdate = async () => {
     if (!updateCheckResult) {
         logger.warn(
             'Not checking for nRF Connect for Desktop updates. ' +
-                'Auto update is not yet supported for this platform.'
+                'Auto update is not yet supported for this platform.',
         );
         throw new Error('Auto update not supported');
     }
@@ -61,7 +61,7 @@ export const startUpdate = () => {
     if (installCancellationToken !== undefined) {
         showError.inRenderer.showErrorDialog(
             'Download was requested but another download operation is ' +
-                'already in progress.'
+                'already in progress.',
         );
         return;
     }
@@ -98,7 +98,7 @@ export const cancelUpdate = () => {
         installCancellationToken = undefined;
     } else {
         showError.inRenderer.showErrorDialog(
-            'Unable to cancel. No download is in progress.'
+            'Unable to cancel. No download is in progress.',
         );
     }
 };

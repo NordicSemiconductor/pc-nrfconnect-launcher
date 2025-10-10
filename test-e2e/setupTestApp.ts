@@ -15,7 +15,7 @@ const startApp = async (extraArgs: string[]) => {
 
     if (process.env.LOG_ELECTRON_ARGS) {
         console.log(
-            `Electron is run with these args: ${electronArgs.join(' ')}`
+            `Electron is run with these args: ${electronArgs.join(' ')}`,
         );
     }
 

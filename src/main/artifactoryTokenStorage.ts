@@ -35,6 +35,6 @@ export const storeToken = (token: string) => {
     }
 
     setEncryptedArtifactoryToken(
-        safeStorage.encryptString(token).toString('base64')
+        safeStorage.encryptString(token).toString('base64'),
     );
 };

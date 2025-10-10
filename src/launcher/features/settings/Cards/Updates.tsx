@@ -26,7 +26,7 @@ export default () => {
     const dispatch = useLauncherDispatch();
 
     const shouldCheckForUpdatesAtStartup = useLauncherSelector(
-        getShouldCheckForUpdatesAtStartup
+        getShouldCheckForUpdatesAtStartup,
     );
 
     const { isCheckingForUpdates, lastUpdateCheckDate } =
@@ -64,8 +64,8 @@ export default () => {
                 onToggle={() =>
                     dispatch(
                         setCheckForUpdatesAtStartup(
-                            !shouldCheckForUpdatesAtStartup
-                        )
+                            !shouldCheckForUpdatesAtStartup,
+                        ),
                     )
                 }
                 isToggled={shouldCheckForUpdatesAtStartup}

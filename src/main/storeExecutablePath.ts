@@ -22,7 +22,7 @@ export default () => {
                 getUserDataPath('execPath'),
                 process.platform === 'linux' && process.env.APPIMAGE
                     ? process.env.APPIMAGE
-                    : process.execPath
+                    : process.execPath,
             );
         } catch (error) {
             console.log(describeError(error));

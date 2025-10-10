@@ -84,7 +84,7 @@ const addApp = (apps: DownloadableAppWithProgress[], app: DownloadableApp) => {
 
 const overwriteApp = (
     apps: DownloadableAppWithProgress[],
-    app: DownloadableApp
+    app: DownloadableApp,
 ) => {
     const existingAppIndex = apps.findIndex(equalsSpec(app));
     apps[existingAppIndex] = {
@@ -96,7 +96,7 @@ const overwriteApp = (
 const updateApp = <AppType extends App>(
     specOfAppToUpdate: AppSpec,
     apps: AppType[],
-    update: (app: AppType) => void
+    update: (app: AppType) => void,
 ) => {
     const appToUpdate = apps.find(equalsSpec(specOfAppToUpdate));
 
@@ -104,14 +104,14 @@ const updateApp = <AppType extends App>(
         update(appToUpdate);
     } else {
         console.error(
-            `No app ${appToUpdate} found in the existing downloadable apps though there is supposed to be one.`
+            `No app ${appToUpdate} found in the existing downloadable apps though there is supposed to be one.`,
         );
     }
 };
 
 const resetProgress = (
     specOfAppToUpdate: AppSpec,
-    apps: DownloadableAppWithProgress[]
+    apps: DownloadableAppWithProgress[],
 ) => {
     updateApp(specOfAppToUpdate, apps, app => {
         app.progress = notInProgress();
@@ -125,7 +125,7 @@ const slice = createSlice({
         // Local apps
         setAllLocalApps(
             state,
-            { payload: localApps }: PayloadAction<LocalApp[]>
+            { payload: localApps }: PayloadAction<LocalApp[]>,
         ) {
             state.localApps = [...localApps];
         },
@@ -136,14 +136,14 @@ const slice = createSlice({
 
         removeLocalApp(state, { payload: appName }: PayloadAction<string>) {
             state.localApps = state.localApps.filter(
-                app => app.name !== appName
+                app => app.name !== appName,
             );
         },
 
         // Downloadable apps
         addDownloadableApps(
             state,
-            { payload: apps }: PayloadAction<DownloadableApp[]>
+            { payload: apps }: PayloadAction<DownloadableApp[]>,
         ) {
             apps.forEach(app => {
                 const appIsKnown = state.downloadableApps.some(equalsSpec(app));
@@ -158,10 +158,10 @@ const slice = createSlice({
 
         removeAppsOfSource(
             state,
-            { payload: sourceName }: PayloadAction<SourceName>
+            { payload: sourceName }: PayloadAction<SourceName>,
         ) {
             state.downloadableApps = state.downloadableApps.filter(
-                app => app.source !== sourceName
+                app => app.source !== sourceName,
             );
         },
 
@@ -189,18 +189,18 @@ const slice = createSlice({
             state,
             {
                 payload: { app: appSpec, fractionNames },
-            }: PayloadAction<{ app: AppSpec; fractionNames: string[] }>
+            }: PayloadAction<{ app: AppSpec; fractionNames: string[] }>,
         ) {
             updateApp(appSpec, state.downloadableApps, app => {
                 app.progress.fractions = Object.fromEntries(
-                    fractionNames.map(fractionName => [fractionName, 0])
+                    fractionNames.map(fractionName => [fractionName, 0]),
                 );
             });
         },
 
         updateAppInstallProgress(
             state,
-            { payload: progress }: PayloadAction<AppInstallProgress>
+            { payload: progress }: PayloadAction<AppInstallProgress>,
         ) {
             updateApp(progress.app, state.downloadableApps, app => {
                 app.progress.fractions[progress.fractionName] =
@@ -210,7 +210,7 @@ const slice = createSlice({
 
         resetAppInstallProgress(
             state,
-            { payload: app }: PayloadAction<AppSpec>
+            { payload: app }: PayloadAction<AppSpec>,
         ) {
             resetProgress(app, state.downloadableApps);
         },
@@ -218,7 +218,7 @@ const slice = createSlice({
         // Install downloadable app
         installDownloadableAppStarted(
             state,
-            { payload: appToInstall }: PayloadAction<AppSpec>
+            { payload: appToInstall }: PayloadAction<AppSpec>,
         ) {
             updateApp(appToInstall, state.downloadableApps, app => {
                 app.progress.isInstalling = true;
@@ -228,7 +228,7 @@ const slice = createSlice({
         // Update downloadable app
         updateDownloadableAppStarted(
             state,
-            { payload: appToUpdate }: PayloadAction<AppSpec>
+            { payload: appToUpdate }: PayloadAction<AppSpec>,
         ) {
             updateApp(appToUpdate, state.downloadableApps, app => {
                 app.progress.isUpdating = true;
@@ -238,7 +238,7 @@ const slice = createSlice({
         // Remove downloadable app
         removeDownloadableAppStarted(
             state,
-            { payload: appToRemove }: PayloadAction<AppSpec>
+            { payload: appToRemove }: PayloadAction<AppSpec>,
         ) {
             updateApp(appToRemove, state.downloadableApps, app => {
                 app.progress.isRemoving = true;
@@ -246,14 +246,14 @@ const slice = createSlice({
         },
         removeDownloadableAppSuccess(
             state,
-            { payload: removedApp }: PayloadAction<AppSpec>
+            { payload: removedApp }: PayloadAction<AppSpec>,
         ) {
             const appToBeRemoved = state.downloadableApps.find(
-                equalsSpec(removedApp)
+                equalsSpec(removedApp),
             );
             if (appToBeRemoved != null && isWithdrawn(appToBeRemoved)) {
                 state.downloadableApps = state.downloadableApps.filter(
-                    notEqualsSpec(removedApp)
+                    notEqualsSpec(removedApp),
                 );
             } else {
                 resetProgress(removedApp, state.downloadableApps);
@@ -307,7 +307,7 @@ export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
     ];
 
     const withoutStandardSources = allSources.filter(
-        source => !allStandardSourceNames.includes(source)
+        source => !allStandardSourceNames.includes(source),
     );
 
     return [
@@ -320,7 +320,7 @@ export const getDownloadableApp =
     ({ source, name }: { name?: string; source?: SourceName }) =>
     (state: RootState) =>
         state.apps.downloadableApps.find(
-            x => x.source === source && x.name === name
+            x => x.source === source && x.name === name,
         );
 
 export const isAppUpdateAvailable = (state: RootState) =>
@@ -332,7 +332,7 @@ export const getUpdateCheckStatus = (state: RootState) => ({
 });
 
 export const getUpdatableVisibleApps = (
-    state: RootState
+    state: RootState,
 ): InstalledDownloadableApp[] =>
     state.apps.downloadableApps
         .filter(getAppsFilter(state))
@@ -340,7 +340,7 @@ export const getUpdatableVisibleApps = (
         .filter(isUpdatable);
 
 export const isInProgress = (
-    app: DisplayedApp
+    app: DisplayedApp,
 ): app is DownloadableAppWithProgress =>
     isDownloadable(app) &&
     (app.progress.isInstalling ||

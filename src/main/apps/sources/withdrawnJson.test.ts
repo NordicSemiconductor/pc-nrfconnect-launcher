@@ -32,7 +32,7 @@ test('computing the new list of withdrawn apps', () => {
     };
 
     expect(
-        newWithdrawnJson(oldWithdrawnJson, oldSourceJson, newSourceJson)
+        newWithdrawnJson(oldWithdrawnJson, oldSourceJson, newSourceJson),
     ).toEqual([
         'http://example.org/oldWithdrawnApp.json',
         'http://example.org/newlyWithdrawnApp.json',

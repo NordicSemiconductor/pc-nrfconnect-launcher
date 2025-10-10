@@ -22,14 +22,14 @@ import { getIsTelemetryDialogVisible } from '../telemetry/telemetrySlice';
 
 export default () => {
     const isQuickStartInfoShownBefore = useLauncherSelector(
-        getIsQuickStartInfoShownBefore
+        getIsQuickStartInfoShownBefore,
     );
     const isTelemetryDialogVisible = useLauncherSelector(
-        getIsTelemetryDialogVisible
+        getIsTelemetryDialogVisible,
     );
 
     const isAppleSiliconDialogVisible = useLauncherSelector(
-        getIsAppleSiliconDialogVisible
+        getIsAppleSiliconDialogVisible,
     );
 
     const quickStartApp = useLauncherSelector(getOfficialQuickStartApp);
@@ -55,15 +55,15 @@ export default () => {
                         onClick={() => {
                             if (quickStartApp == null) {
                                 throw new Error(
-                                    'Dialog must not be visible if Quick Start app is not available.'
+                                    'Dialog must not be visible if Quick Start app is not available.',
                                 );
                             }
 
                             dispatch(
                                 checkCompatibilityThenLaunch(
                                     quickStartApp,
-                                    true
-                                )
+                                    true,
+                                ),
                             );
                         }}
                     >

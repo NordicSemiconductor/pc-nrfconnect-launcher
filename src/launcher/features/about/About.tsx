@@ -9,10 +9,11 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { app } from '@electron/remote';
 
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 
-const appVersion = require('@electron/remote').app.getVersion();
+const appVersion = app.getVersion();
 
 export default () => (
     <WithScrollbarContainer>

@@ -13,7 +13,7 @@ const WithScrollbarContainer: React.FC<{
     <div
         className={classNames(
             'with-scrollbar',
-            hasFilter && 'filter-adjusted-height'
+            hasFilter && 'filter-adjusted-height',
         )}
     >
         <div className="content-container">{children}</div>

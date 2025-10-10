@@ -28,7 +28,7 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(isJLinkUpdateDialogVisible);
     const versionToBeInstalled = useLauncherSelector(
-        getJLinkVersionToBeInstalled
+        getJLinkVersionToBeInstalled,
     );
     const installedVersion = useLauncherSelector(getInstalledJLinkVersion);
 
@@ -50,15 +50,15 @@ export default () => {
                                 inMain
                                     .startJLinkInstall(
                                         versionToBeInstalled.toLowerCase() ===
-                                            bundledJlinkVersion.toLowerCase()
+                                            bundledJlinkVersion.toLowerCase(),
                                     )
                                     .catch(error => {
                                         dispatch(
                                             ErrorDialogActions.showDialog(
                                                 `Unable to update SEGGER J-Link: ${describeError(
-                                                    error
-                                                )}`
-                                            )
+                                                    error,
+                                                )}`,
+                                            ),
                                         );
                                         dispatch(reset());
                                     });

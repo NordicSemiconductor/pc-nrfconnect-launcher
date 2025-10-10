@@ -34,18 +34,18 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
     switch (addSourceError.errorType) {
         case 'Official sources cannot be added':
             return ErrorDialogActions.showDialog(
-                `The url \`${url}\` points to the official source and that cannot be added again.`
+                `The url \`${url}\` points to the official source and that cannot be added again.`,
             );
         case 'Source already exists':
             return ErrorDialogActions.showDialog(
-                `No source added because there already is one with the name “${addSourceError.existingSource.name}”.`
+                `No source added because there already is one with the name “${addSourceError.existingSource.name}”.`,
             );
 
         case 'Unable to retrieve source.json':
             return ErrorDialogActions.showDialog(
                 `Unable to retrieve a valid \`source.json\` under the URL \`${url}\`. No source was added.`,
                 undefined,
-                cleanIpcErrorMessage(addSourceError.message)
+                cleanIpcErrorMessage(addSourceError.message),
             );
     }
 };
@@ -53,7 +53,7 @@ const showError = (url: string, addSourceError: AddSourceError): AnyAction => {
 export const addSource =
     (
         url: SourceUrl,
-        { warnOnMissingToken } = { warnOnMissingToken: true }
+        { warnOnMissingToken } = { warnOnMissingToken: true },
     ): AppThunk =>
     (dispatch, getState) => {
         if (isLegacyUrl(url)) {
@@ -83,9 +83,9 @@ export const addSource =
                     ErrorDialogActions.showDialog(
                         'Unknown error. No source was added.',
                         undefined,
-                        cleanIpcErrorMessage(error.message)
-                    )
-                )
+                        cleanIpcErrorMessage(error.message),
+                    ),
+                ),
             );
     };
 
@@ -104,10 +104,10 @@ export const removeSource =
                     ErrorDialogActions.showDialog(
                         cleanIpcErrorMessage(
                             error.message,
-                            `Error while trying to remove the source '${name}': `
-                        )
-                    )
-                )
+                            `Error while trying to remove the source '${name}': `,
+                        ),
+                    ),
+                ),
             );
 
 const showProblemWithOfficialSource = (source: Source, reason?: string) =>
@@ -116,7 +116,7 @@ const showProblemWithOfficialSource = (source: Source, reason?: string) =>
             'This is usually caused by a missing internet connection. ' +
             'Without retrieving that file, official apps cannot be installed. ',
         undefined,
-        reason
+        reason,
     );
 
 const showProblemWithExtraSource =
@@ -137,8 +137,8 @@ const showProblemWithExtraSource =
                         dispatch(ErrorDialogActions.hideDialog());
                     },
                 },
-                reason
-            )
+                reason,
+            ),
         );
     };
 

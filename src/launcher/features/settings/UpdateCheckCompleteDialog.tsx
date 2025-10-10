@@ -23,7 +23,7 @@ export default () => {
     const isVisible = useLauncherSelector(getIsUpdateCheckCompleteVisible);
 
     const isAppUpdateAvailable = useLauncherSelector(
-        isAppUpdateAvailableSelector
+        isAppUpdateAvailableSelector,
     );
 
     const hideDialog = () => dispatch(hideUpdateCheckComplete());

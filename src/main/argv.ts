@@ -134,7 +134,7 @@ export const getStartupApp = (arg: typeof argv): StartupApp | undefined => {
     if (officialApp != null) {
         console.warn(
             'Using the command line switch --open-official-app is deprecated,\n' +
-                'use --open-downloadable-app instead.'
+                'use --open-downloadable-app instead.',
         );
 
         return {
@@ -160,7 +160,7 @@ const removeArguments = (args: string[], argumentsToRemove: string[]) => {
 };
 
 const convertToArguments = (
-    device: { serialNumber: string } | { serialPortPath: string }
+    device: { serialNumber: string } | { serialPortPath: string },
 ) =>
     isOpenAppOptionsDeviceSN(device)
         ? ['--deviceSerial', device.serialNumber]
@@ -168,7 +168,7 @@ const convertToArguments = (
 
 export const mergeAppArguments = (
     args: string[],
-    openAppOptions?: OpenAppOptions
+    openAppOptions?: OpenAppOptions,
 ) => {
     if (openAppOptions?.device == null) {
         return args;

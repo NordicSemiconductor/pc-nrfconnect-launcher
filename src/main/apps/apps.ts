@@ -51,7 +51,7 @@ const getAppSpec = (source: Source) => (appUrl: string) => ({
    `installed` property in the app meta file, even though it is not installed.
    So we remove it from the object. */
 const withoutInstalledProp = (
-    app: UninstalledDownloadableApp & { installed?: unknown }
+    app: UninstalledDownloadableApp & { installed?: unknown },
 ): UninstalledDownloadableApp => omit(app, 'installed');
 
 const addInstalledAppDatas = (downloadableApps: DownloadableApp[]) => {
@@ -105,7 +105,7 @@ export const getDownloadableApps = () => {
                     .filter(appInfoExists)
                     .map(readAppInfo)
                     .filter(hasValidAppInfo)
-                    .map(addDownloadAppData(source.name))
+                    .map(addDownloadAppData(source.name)),
             );
 
             apps.push(...result.apps);
@@ -135,7 +135,7 @@ export const getLocalApps = (consistencyCheck = true) => {
                 inRenderer.showErrorDialog(
                     `The local app at the path \`${app.installed.path}\` has the name ` +
                         `\`${app.name}\`, which does not match the directory. ` +
-                        `Not showing this app.`
+                        `Not showing this app.`,
                 );
             });
     }
@@ -147,7 +147,7 @@ export const downloadLatestAppInfos = async () => {
     const { sources, sourcesWithErrors } = await downloadAllSources();
 
     const downloadableAppsPromises = sources.map(async source =>
-        (await downloadAppInfos(source)).map(addDownloadAppData(source.name))
+        (await downloadAppInfos(source)).map(addDownloadAppData(source.name)),
     );
     const downloadableApps = (
         await Promise.all(downloadableAppsPromises)
@@ -171,7 +171,7 @@ export const downloadAppInfos = async (source: Source) => {
                 inRenderer.showErrorDialog(
                     `At \`${appUrl}\` an app is found ` +
                         `by the name \`${appInfo.name}\`, which does ` +
-                        `not match the URL. This app will be ignored.`
+                        `not match the URL. This app will be ignored.`,
                 );
                 return undefined;
             }
@@ -183,7 +183,7 @@ export const downloadAppInfos = async (source: Source) => {
             await downloadAppResources(appInfo, source.name);
 
             return mergedAppinfo;
-        })
+        }),
     );
 
     return downloadableApps.filter(defined);

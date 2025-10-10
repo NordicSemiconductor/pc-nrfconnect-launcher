@@ -13,23 +13,23 @@ export const migrateURL = (url: string) =>
     url
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/(3\.\d+-apps)\/(.+)/,
-            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/$1/$2'
+            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/$1/$2',
         )
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/directionfinding\/(.+)/,
-            'https://files.nordicsemi.com/artifactory/swtools/external-confidential/ncd/apps/directionfinding/$1'
+            'https://files.nordicsemi.com/artifactory/swtools/external-confidential/ncd/apps/directionfinding/$1',
         )
         .replace(
             /https?:\/\/developer\.nordicsemi\.com\/\.pc-tools\/nrfconnect-apps\/([^/]+)\/(.+)/,
-            'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/$1/$2'
+            'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/$1/$2',
         )
         .replace(
             /https?:\/\/developer.nordicsemi.com\/\.pc-tools\/nrfconnect-apps\/(.+)/,
-            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/$1'
+            'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/$1',
         );
 
 export const migrateAllURLsInJSON = (json: string) =>
     json.replace(
         /"(https?:[^"]*)"/g,
-        (_, url) => `"${asLongNordicArtifactoryUrl(migrateURL(url))}"`
+        (_, url) => `"${asLongNordicArtifactoryUrl(migrateURL(url))}"`,
     );

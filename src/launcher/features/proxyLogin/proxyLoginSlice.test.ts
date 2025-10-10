@@ -25,7 +25,7 @@ const authInfo = {
     realm: 'realm',
 };
 
-const asRootState = (proxyLogin: State) => ({ proxyLogin } as RootState);
+const asRootState = (proxyLogin: State) => ({ proxyLogin }) as RootState;
 
 describe('proxy login', () => {
     it('shows login dialog when requested', () => {
@@ -34,7 +34,7 @@ describe('proxy login', () => {
         ]);
 
         const { isVisible, host, realm } = getProxyLoginRequest(
-            asRootState(state)
+            asRootState(state),
         );
 
         expect(isVisible).toBe(true);

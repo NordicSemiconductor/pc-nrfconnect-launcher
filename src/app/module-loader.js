@@ -54,7 +54,7 @@ const lazy = {
 function requireFromResources(file) {
     if (file === 'react.js') {
         console.warn(
-            'This version of nRF Connect for Desktop still provides React 16 to this app. But the next version of nRF Connect for Desktop will stop that and either provide React 18 or none at all. Update your app for that!'
+            'This version of nRF Connect for Desktop still provides React 16 to this app. But the next version of nRF Connect for Desktop will stop that and either provide React 18 or none at all. Update your app for that!',
         );
     }
 
@@ -62,6 +62,6 @@ function requireFromResources(file) {
         electronRemote.app.getAppPath(),
         'resources',
         'react',
-        file
+        file,
     );
 }

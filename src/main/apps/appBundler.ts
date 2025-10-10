@@ -14,7 +14,7 @@ import { getDownloadableApps } from './apps';
 
 const getApp = (appName: string) =>
     getDownloadableApps().apps.find(
-        ({ name, source }) => name === appName && source === 'official'
+        ({ name, source }) => name === appName && source === 'official',
     );
 
 export const ensureBundledAppExists = async () => {
@@ -35,7 +35,7 @@ export const ensureBundledAppExists = async () => {
                 .match(versionRegex);
             if (!matchAppName || !matchVersion) {
                 console.log(
-                    `Could not determine app name or version. Skipping ${pathToTarBall}`
+                    `Could not determine app name or version. Skipping ${pathToTarBall}`,
                 );
                 return Promise.resolve();
             }
@@ -60,11 +60,11 @@ export const ensureBundledAppExists = async () => {
                     tarBallFullPath,
                     shasum,
                     publishTimestamp,
-                    false
+                    false,
                 );
             }
 
             return Promise.resolve();
-        })
+        }),
     );
 };

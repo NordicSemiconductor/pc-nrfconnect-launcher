@@ -26,7 +26,7 @@ const downloadResource = async (url: string, filePath: string) => {
     } catch (e) {
         console.debug(
             'Unable to fetch resource, ignoring this as non-critical.',
-            describeError(e)
+            describeError(e),
         );
     }
 };
@@ -36,7 +36,7 @@ const replacePrLinks = (releaseNotes: string, homepage?: string) =>
         ? releaseNotes
         : releaseNotes.replace(
               /#(\d+)/g,
-              (match, pr) => `[${match}](${homepage}/pull/${pr})`
+              (match, pr) => `[${match}](${homepage}/pull/${pr})`,
           );
 
 const readReleaseNotes = (app: AppSpec, homepage?: string) => {
@@ -45,7 +45,7 @@ const readReleaseNotes = (app: AppSpec, homepage?: string) => {
         const prettyReleaseNotes = replacePrLinks(releaseNotes, homepage);
 
         return prettyReleaseNotes;
-    } catch (error) {
+    } catch {
         // We assume an error here means that the release notes just were not downloaded yet.
         return undefined;
     }

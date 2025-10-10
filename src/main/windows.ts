@@ -112,7 +112,7 @@ const getSizeOptions = (app: LaunchableApp) => {
 
     if (x && y) {
         const { bounds } = screen.getDisplayMatching(
-            lastWindowState as Rectangle
+            lastWindowState as Rectangle,
         );
         const left = Math.max(x, bounds.x);
         const top = Math.max(y, bounds.y);
@@ -139,10 +139,10 @@ export const openAppWindow = (app: LaunchableApp, args: string[]) => {
     const template = app.html
         ? `file://${join(
               app.installed.path,
-              app.html
+              app.html,
           )}?launcherPath=${encodeURIComponent(electronApp.getAppPath())}`
         : `file://${getBundledResourcePath()}/app.html?appPath=${encodeURIComponent(
-              app.installed.path
+              app.installed.path,
           )}`;
 
     const appWindow = createWindow(
@@ -154,7 +154,7 @@ export const openAppWindow = (app: LaunchableApp, args: string[]) => {
             backgroundColor: '#fff',
             ...getSizeOptions(app),
         },
-        args
+        args,
     );
 
     appWindows.push({
@@ -185,7 +185,7 @@ export const openAppWindow = (app: LaunchableApp, args: string[]) => {
 
     appWindow.on('closed', () => {
         const index = appWindows.findIndex(
-            appWin => appWin.browserWindow === appWindow
+            appWin => appWin.browserWindow === appWindow,
         );
         if (index > -1) {
             appWindows.splice(index, 1);
@@ -232,14 +232,14 @@ export const openApp = (app: AppSpec, openAppOptions?: OpenAppOptions) => {
 
 export const openDownloadableAppWindow = (appSpec: AppSpec, args: string[]) => {
     const downloadableApp = getDownloadableApps().apps.find(
-        app => app.name === appSpec.name && app.source === appSpec.source
+        app => app.name === appSpec.name && app.source === appSpec.source,
     );
 
     if (downloadableApp != null && isInstalled(downloadableApp)) {
         openAppWindow(downloadableApp, args);
     } else {
         throw new Error(
-            `Tried to open app ${appSpec.name} from source ${appSpec.source}, but it is not installed`
+            `Tried to open app ${appSpec.name} from source ${appSpec.source}, but it is not installed`,
         );
     }
 };
@@ -251,7 +251,7 @@ export const openLocalAppWindow = (appName: string, args: string[]) => {
         openAppWindow(localApp, args);
     } else {
         throw new Error(
-            `Tried to open local app ${appName}, but it is not installed`
+            `Tried to open local app ${appName}, but it is not installed`,
         );
     }
 };
@@ -266,7 +266,7 @@ export const getAppDetails = (webContents: WebContents) => {
 
     if (appWindow == null) {
         throw new Error(
-            `No app window found for webContents '${webContents.getTitle()}' ${webContents.getURL()}`
+            `No app window found for webContents '${webContents.getTitle()}' ${webContents.getURL()}`,
         );
     }
 

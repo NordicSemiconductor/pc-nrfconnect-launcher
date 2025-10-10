@@ -45,18 +45,21 @@ describe('check compatibility of an app with the launcher', () => {
             expect(
                 checkEngineVersionIsSet(
                     requiringEngine(undefined),
-                    'irrelevant'
-                )
+                    'irrelevant',
+                ),
             ).toMatchObject(
                 failingCheck(
-                    'The app does not specify which nRF Connect for Desktop versions it supports'
-                )
+                    'The app does not specify which nRF Connect for Desktop versions it supports',
+                ),
             );
         });
 
         it('is undecided if any engine version is set', () => {
             expect(
-                checkEngineVersionIsSet(requiringEngine('^1.0.0'), 'irrelevant')
+                checkEngineVersionIsSet(
+                    requiringEngine('^1.0.0'),
+                    'irrelevant',
+                ),
             ).toMatchObject(undecidedCheck);
         });
     });
@@ -64,19 +67,19 @@ describe('check compatibility of an app with the launcher', () => {
     describe('check if the engine version is what the app requires', () => {
         it('is undecided if the app requires a lower version', () => {
             expect(
-                checkEngineIsSupported(requiringEngine('^1.0.0'), '1.2.3')
+                checkEngineIsSupported(requiringEngine('^1.0.0'), '1.2.3'),
             ).toMatchObject(undecidedCheck);
         });
 
         it('treats caret ranges as greater-equal', () => {
             expect(
-                checkEngineIsSupported(requiringEngine('^1.0.0'), '2.0.0')
+                checkEngineIsSupported(requiringEngine('^1.0.0'), '2.0.0'),
             ).toMatchObject(undecidedCheck);
         });
 
         it('is undecided if the app requires the same version', () => {
             expect(
-                checkEngineIsSupported(requiringEngine('^1.2.3'), '1.2.3')
+                checkEngineIsSupported(requiringEngine('^1.2.3'), '1.2.3'),
             ).toMatchObject(undecidedCheck);
         });
 
@@ -84,18 +87,18 @@ describe('check compatibility of an app with the launcher', () => {
             expect(
                 checkEngineIsSupported(
                     requiringEngine('^1.2.3'),
-                    '1.2.3-alpha.0'
-                )
+                    '1.2.3-alpha.0',
+                ),
             ).toMatchObject(undecidedCheck);
         });
 
         it('fails if the app requires a higher version', () => {
             expect(
-                checkEngineIsSupported(requiringEngine('^2.0.0'), '1.2.3')
+                checkEngineIsSupported(requiringEngine('^2.0.0'), '1.2.3'),
             ).toMatchObject(
                 failingCheck(
-                    'The app only supports nRF Connect for Desktop ^2.0.0, which does not match your currently installed version'
-                )
+                    'The app only supports nRF Connect for Desktop ^2.0.0, which does not match your currently installed version',
+                ),
             );
         });
     });
@@ -150,17 +153,17 @@ describe('check compatibility of an app with the launcher', () => {
                     const engineSpec = providedVersionOfEngine;
 
                     it(`${description}, with app spec ${inspect(
-                        appSpec
+                        appSpec,
                     )} and engine spec ${inspect(engineSpec)}`, async () => {
                         const compatibilityWarning =
                             await appCompatibilityWarning(
                                 appSpec,
-                                providedVersionOfEngine
+                                providedVersionOfEngine,
                             );
                         expect(compatibilityWarning?.warning).toBeDefined();
                         expect(compatibilityWarning?.longWarning).toBeDefined();
                     });
-                }
+                },
             );
 
             it('The app version is too old according to the list of minimal required versions', async () => {
@@ -169,7 +172,7 @@ describe('check compatibility of an app with the launcher', () => {
                         currentVersion: '2.0.3',
                         engineVersion: '1.0.0',
                     }),
-                    '1.0.0'
+                    '1.0.0',
                 );
                 expect(compatibilityWarning?.warning).toBeDefined();
                 expect(compatibilityWarning?.longWarning).toBeDefined();
@@ -198,16 +201,16 @@ describe('check compatibility of an app with the launcher', () => {
                     const engineSpec = providedVersionOfEngine;
 
                     it(`${description}, with app spec ${inspect(
-                        appSpec
+                        appSpec,
                     )} and engine spec ${inspect(engineSpec)}`, async () => {
                         expect(
                             await appCompatibilityWarning(
                                 appSpec,
-                                providedVersionOfEngine
-                            )
+                                providedVersionOfEngine,
+                            ),
                         ).toBeUndefined();
                     });
-                }
+                },
             );
         });
     });

@@ -49,7 +49,7 @@ test.describe('app installation', () => {
             __dirname,
             fixtureDir,
             '.nrfconnect-apps',
-            'local'
+            'local',
         );
         const appName = 'pc-nrfconnect-foo';
         const appArchiveFile = `${appName}-1.2.3.tgz`;
@@ -70,7 +70,7 @@ test.describe('app installation', () => {
         const appsRootDir = path.join(
             'launcher',
             fixtureDir,
-            '.nrfconnect-apps'
+            '.nrfconnect-apps',
         );
         let app: ElectronApplication;
         let page: Page;

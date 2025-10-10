@@ -53,7 +53,7 @@ const slice = createSlice({
                 text: React.ReactNode;
                 warningData: Record<string, unknown>;
                 setQuickStartInfoWasShown: boolean;
-            }>
+            }>,
         ) {
             state.confirmLaunch = {
                 isVisible: true,
@@ -65,7 +65,7 @@ const slice = createSlice({
         },
         showInstallOtherVersionDialog(
             state,
-            { payload: app }: PayloadAction<DownloadableApp>
+            { payload: app }: PayloadAction<DownloadableApp>,
         ) {
             state.installOtherVersion = { isVisible: true, app };
         },

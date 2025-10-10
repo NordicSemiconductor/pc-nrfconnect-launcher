@@ -32,7 +32,7 @@ export default () => {
 
     const login = useCallback(() => {
         requestIds.forEach(id =>
-            proxyLogin.answerProxyLoginRequest(id, host, username, password)
+            proxyLogin.answerProxyLoginRequest(id, host, username, password),
         );
         dispatch(loginRequestSent());
         setPassword('');
@@ -40,7 +40,7 @@ export default () => {
 
     const inputIsValid = useMemo(
         () => username !== '' && password !== '',
-        [password, username]
+        [password, username],
     );
 
     const submitOnEnter: React.KeyboardEventHandler = useCallback(
@@ -49,7 +49,7 @@ export default () => {
                 login();
             }
         },
-        [inputIsValid, login]
+        [inputIsValid, login],
     );
 
     return (

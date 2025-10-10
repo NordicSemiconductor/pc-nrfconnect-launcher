@@ -24,7 +24,7 @@ import {
 const checkForJLinkUpdate: ProcessStep = async dispatch => {
     try {
         const { isUpdateAvailable } = await dispatch(
-            checkForJLinkUpdateEffect({ checkOnline: true })
+            checkForJLinkUpdateEffect({ checkOnline: true }),
         );
 
         if (isUpdateAvailable) {
@@ -38,7 +38,7 @@ const checkForJLinkUpdate: ProcessStep = async dispatch => {
 const checkForLauncherUpdate: ProcessStep = async dispatch => {
     if (process.env.NODE_ENV !== 'development') {
         const { isUpdateAvailable } = await dispatch(
-            checkForLauncherUpdateEffect()
+            checkForLauncherUpdateEffect(),
         );
 
         if (isUpdateAvailable) {
@@ -58,8 +58,8 @@ const downloadLatestAppInfo =
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    `Unable to check for updates: ${describeError(error)}`
-                )
+                    `Unable to check for updates: ${describeError(error)}`,
+                ),
             );
         }
     };

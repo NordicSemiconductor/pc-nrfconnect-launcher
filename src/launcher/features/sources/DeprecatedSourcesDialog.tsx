@@ -31,8 +31,8 @@ export default () => {
 
                 await Promise.all(
                     deprecatedSources.map(source =>
-                        dispatch(removeSource(source.name))
-                    )
+                        dispatch(removeSource(source.name)),
+                    ),
                 );
                 dispatch(continueLauncherInitialisation());
             }}

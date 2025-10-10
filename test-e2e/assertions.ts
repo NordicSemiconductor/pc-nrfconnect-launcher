@@ -16,7 +16,7 @@ const getTitleOfWindow = (app: ElectronApplication, page: Page) =>
 
 export const checkTitleOfWindow = async (
     app: ElectronApplication,
-    titleString: string
+    titleString: string,
 ) => {
     const window = await app.firstWindow();
     await expect(getTitleOfWindow(app, window)).resolves.toContain(titleString);
@@ -24,11 +24,11 @@ export const checkTitleOfWindow = async (
 
 export const checkTitleOfLastWindow = async (
     app: ElectronApplication,
-    titleString: string
+    titleString: string,
 ) => {
     const windows = await app.windows();
     await expect(
-        getTitleOfWindow(app, windows[windows.length - 1])
+        getTitleOfWindow(app, windows[windows.length - 1]),
     ).resolves.toContain(titleString);
 };
 
@@ -36,15 +36,15 @@ export const checkAppListContains = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
     await expect(
         page.$$eval('.list-group-item .h8', apps =>
-            apps.map(app => app.textContent)
-        )
+            apps.map(app => app.textContent),
+        ),
     ).resolves.toContain(appName);
 };
 
 export const checkHasInstallButton = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
     await expect(
-        page.$(`[title="Install ${appName}"]`)
+        page.$(`[title="Install ${appName}"]`),
     ).resolves.not.toBeNull();
 };
 
@@ -61,11 +61,11 @@ export const checkHasNoLaunchButton = async (page: Page, appName: string) => {
 export const checkShowsAppUpdate = async (
     page: Page,
     appName: string,
-    availableVersion: string
+    availableVersion: string,
 ) => {
     await page.waitForSelector(`[title="Update ${appName}"]`);
     expect(page.locator(`.list-group-item`)).toContainText(
-        `${availableVersion} available`
+        `${availableVersion} available`,
     );
 };
 
@@ -73,7 +73,7 @@ export const checkShowsNoAppUpdate = async (page: Page, appName: string) => {
     await page.waitForSelector('.list-group-item');
     await expect(page.$(`[title="Update ${appName}"]`)).resolves.toBeNull();
     await expect(
-        page.$(`.list-group-item:has-text("available")`)
+        page.$(`.list-group-item:has-text("available")`),
     ).resolves.toBeNull();
 };
 

@@ -43,9 +43,9 @@ test.describe('the list of all apps', () => {
             fs.rmSync(
                 path.resolve(
                     __dirname,
-                    'fixtures/one-downloadable-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg'
+                    'fixtures/one-downloadable-app-not-installed/.nrfconnect-apps/pc-nrfconnect-ble.svg',
                 ),
-                { recursive: true, force: true }
+                { recursive: true, force: true },
             );
         });
 

@@ -15,7 +15,7 @@ const loginRequests = new Map<string, LoginResponse>();
 
 export const handleLoginRequest = (
     authInfo: AuthInfo,
-    callback: (username?: string, password?: string) => void
+    callback: (username?: string, password?: string) => void,
 ) => {
     if (
         authInfo.isProxy === false &&
@@ -40,7 +40,7 @@ export const callRegisteredCallback = (
     requestId: string,
     host: string,
     username?: string,
-    password?: string
+    password?: string,
 ) => {
     const callback = loginRequests.get(requestId);
 

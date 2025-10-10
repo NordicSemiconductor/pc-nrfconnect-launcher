@@ -28,7 +28,7 @@ describe('ProxyErrorDialog', () => {
         expect(
             render(<ProxyErrorDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -37,7 +37,7 @@ describe('ProxyErrorDialog', () => {
             render(<ProxyErrorDialog />, [
                 loginRequestedByServer({ requestId, authInfo }),
                 loginCancelledByUser(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -47,7 +47,7 @@ describe('ProxyErrorDialog', () => {
                 loginRequestedByServer({ requestId, authInfo }),
                 loginCancelledByUser(),
                 loginErrorDialogClosed(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

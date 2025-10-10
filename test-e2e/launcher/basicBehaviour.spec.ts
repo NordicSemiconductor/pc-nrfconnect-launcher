@@ -62,11 +62,11 @@ test.describe('automatic update check', () => {
 
             const appsJsonFile = path.join(
                 __dirname,
-                'fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps/apps.json'
+                'fixtures/check-for-updates-at-startup-enabled/.nrfconnect-apps/apps.json',
             );
 
             const appsJson = JSON.parse(
-                fs.readFileSync(appsJsonFile).toString()
+                fs.readFileSync(appsJsonFile).toString(),
             );
             const appNames = Object.keys(appsJson);
 
@@ -99,16 +99,16 @@ test.describe('automatic update check', () => {
         test('populates not apps.json in .nrfconnect-apps', async () => {
             await page.waitForSelector('#launcher-tabpane-apps');
             await expect(
-                page.$('button[title*="Install"]')
+                page.$('button[title*="Install"]'),
             ).resolves.toBeNull();
 
             const appsJsonFile = path.join(
                 __dirname,
-                'fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps/apps.json'
+                'fixtures/check-for-updates-at-startup-disabled/.nrfconnect-apps/apps.json',
             );
 
             const appsJson = JSON.parse(
-                fs.readFileSync(appsJsonFile).toString()
+                fs.readFileSync(appsJsonFile).toString(),
             );
 
             expect(appsJson).toEqual({});
@@ -136,7 +136,7 @@ test.describe('showing apps available on the server', () => {
         await page.waitForSelector('.list-group-item');
 
         await expect(
-            page.$('button[title*="Install"]')
+            page.$('button[title*="Install"]'),
         ).resolves.not.toBeNull();
     });
 });

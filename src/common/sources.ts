@@ -34,7 +34,7 @@ const deprecatedSources = [
 
 const deprecatedSourceURLs = deprecatedSources.map(
     name =>
-        `https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/${name}/source.json`
+        `https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/${name}/source.json`,
 );
 
 export const isDeprecatedSource = (source: Source) =>

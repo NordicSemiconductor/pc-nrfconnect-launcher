@@ -98,7 +98,7 @@ const officialSource = {
                     os.homedir(),
                     '.nrfconnect-apps',
                     'node_modules',
-                    'pc-nrfconnect-rssi'
+                    'pc-nrfconnect-rssi',
                 ),
             },
         },
@@ -154,13 +154,13 @@ const releaseTestSource = {
 describe('Conversion of apps.json to source.json', () => {
     test('official source', () => {
         expect(convertAppsJsonToSourceJson(officialSource.appsJson)).toEqual(
-            officialSource.sourceJson
+            officialSource.sourceJson,
         );
     });
 
     test('additional source', () => {
         expect(convertAppsJsonToSourceJson(releaseTestSource.appsJson)).toEqual(
-            releaseTestSource.sourceJson
+            releaseTestSource.sourceJson,
         );
     });
 });
@@ -172,8 +172,8 @@ describe('Creating of new app info files', () => {
                 'pc-nrfconnect-rssi',
                 officialSource.appsJson,
                 officialSource.updatesJson,
-                officialSource.packageJsons['pc-nrfconnect-rssi']
-            )
+                officialSource.packageJsons['pc-nrfconnect-rssi'],
+            ),
         ).toEqual(officialSource.appInfos['pc-nrfconnect-rssi']);
     });
 
@@ -183,8 +183,8 @@ describe('Creating of new app info files', () => {
                 'pc-nrfconnect-ppk',
                 officialSource.appsJson,
                 officialSource.updatesJson,
-                null
-            )
+                null,
+            ),
         ).toEqual(officialSource.appInfos['pc-nrfconnect-ppk']);
     });
 });

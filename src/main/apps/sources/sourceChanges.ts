@@ -28,7 +28,7 @@ import {
 } from './sources';
 
 const downloadSource = async (
-    url: SourceUrl
+    url: SourceUrl,
 ): Promise<{ source: Source; sourceJson: SourceJson }> => {
     const sourceJson = await downloadSourceJson(url);
     const source: Source = { name: sourceJson.name, url };
@@ -68,14 +68,14 @@ export const addSource = async (url: SourceUrl): Promise<AddSourceResult> => {
     addToSourceList(source);
 
     const apps = (await downloadAppInfos(source)).map(
-        addDownloadAppData(source.name)
+        addDownloadAppData(source.name),
     );
 
     return { type: 'success', source, apps };
 };
 
 const isRemovableSource = (
-    sourceName?: SourceName
+    sourceName?: SourceName,
 ): sourceName is SourceName => {
     if (!sourceName || allStandardSourceNames.includes(sourceName)) {
         throw new Error('The official or local source shall not be removed.');

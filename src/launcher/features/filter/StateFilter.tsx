@@ -29,7 +29,7 @@ export default () => {
                         setShownStates({
                             installed: target.checked,
                             downloadable,
-                        })
+                        }),
                     );
                 }}
             />
@@ -44,7 +44,7 @@ export default () => {
                         setShownStates({
                             installed,
                             downloadable: target.checked,
-                        })
+                        }),
                     );
                 }}
             />

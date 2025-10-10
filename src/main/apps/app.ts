@@ -40,7 +40,7 @@ export const installedAppPath = (app: AppSpec) => {
 };
 
 export const isInstalled = (
-    app: DownloadableApp
+    app: DownloadableApp,
 ): app is InstalledDownloadableApp | WithdrawnApp =>
     fs.existsSync(installedAppPath(app));
 
@@ -61,7 +61,7 @@ export const readAppInfo = (appSpec: AppSpec) => {
     const source = getSource(appSpec.source);
     if (source == null) {
         throw new Error(
-            `Unable to find source \`${appSpec.source}\` for app \`${appSpec.name}\``
+            `Unable to find source \`${appSpec.source}\` for app \`${appSpec.name}\``,
         );
     }
 
@@ -71,7 +71,7 @@ export const readAppInfo = (appSpec: AppSpec) => {
 export const writeAppInfo = (
     appInfo: AppInfo,
     source: Source,
-    { keepInstallInfo = false } = {}
+    { keepInstallInfo = false } = {},
 ) => {
     const appSpec = { name: appInfo.name, source: source.name };
     const mergedContent = { ...appInfo };
@@ -99,7 +99,7 @@ export const addDownloadAppData =
             source,
             isWithdrawn: isInListOfWithdrawnApps(
                 getSource(source)!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-                basename(appInfoFile(appSpec))
+                basename(appInfoFile(appSpec)),
             ),
         } as DownloadableApp;
     };
@@ -108,13 +108,13 @@ export const addInstalledAppData = (
     app: Omit<
         InstalledDownloadableApp | WithdrawnApp,
         'currentVersion' | 'path' | 'iconPath'
-    >
+    >,
 ): InstalledDownloadableApp | WithdrawnApp => {
     const appPath = installedAppPath(app);
     const resourcesPath = path.join(appPath, 'resources');
 
     const packageJsonResult = parsePackageJsonLegacyApp(
-        readFile(path.join(appPath, 'package.json'))
+        readFile(path.join(appPath, 'package.json')),
     );
 
     if (!packageJsonResult.success) {

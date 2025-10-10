@@ -41,7 +41,7 @@ const slice = createSlice({
             state,
             {
                 payload: { authInfo, requestId },
-            }: PayloadAction<{ requestId: string; authInfo: AuthInfo }>
+            }: PayloadAction<{ requestId: string; authInfo: AuthInfo }>,
         ) {
             state.loginRequest.requestIds.push(requestId);
             state.loginRequest.host = `${authInfo.host}:${authInfo.port}`;

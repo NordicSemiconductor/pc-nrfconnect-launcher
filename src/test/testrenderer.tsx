@@ -25,12 +25,13 @@ export const preparedStore = (actions: Action[] = []) => {
     return store;
 };
 
-const preparedProvider = (store: Store) => (props: object) =>
-    <Provider store={store} {...props} />;
+const preparedProvider = (store: Store) => (props: object) => (
+    <Provider store={store} {...props} />
+);
 
 export default (
     element: React.ReactElement,
-    actionsOrStore?: Action[] | Store
+    actionsOrStore?: Action[] | Store,
 ) => {
     const store =
         actionsOrStore === undefined || Array.isArray(actionsOrStore)

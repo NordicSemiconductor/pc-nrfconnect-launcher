@@ -25,7 +25,7 @@ export default () => {
     const dispatch = useLauncherDispatch();
     const isVisible = useLauncherSelector(getIsRemoveArtifactoryTokenVisible);
     const nonPublicSources = useLauncherSelector(
-        getSourcesWithRestrictedAccessLevel
+        getSourcesWithRestrictedAccessLevel,
     );
 
     const hideDialog = () => dispatch(hideRemoveArtifactoryToken());
@@ -41,8 +41,8 @@ export default () => {
                 ErrorDialogActions.showDialog(
                     `Unable to remove token.`,
                     undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
+                    cleanIpcErrorMessage(describeError(error)),
+                ),
             );
         }
     };

@@ -23,20 +23,20 @@ export const readWithdrawnJson = (source: Source) =>
 
 export const writeWithdrawnJson = (
     source: Source,
-    withdrawnJson: WithdrawnJson
+    withdrawnJson: WithdrawnJson,
 ) =>
     writeSchemedJsonFile(
         getWithdrawnJsonPath(source),
         withdrawnJsonSchema,
-        withdrawnJson
+        withdrawnJson,
     );
 
 export const isInListOfWithdrawnApps = (
     source: Source,
-    appinfoFilename: string
+    appinfoFilename: string,
 ) =>
     readWithdrawnJson(source).find(appUrl =>
-        appUrl.endsWith(`/${appinfoFilename}`)
+        appUrl.endsWith(`/${appinfoFilename}`),
     ) != null;
 
 const lastSegment = (url: string) => url.split('/').at(-1)!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
@@ -46,18 +46,18 @@ const without = (arr1: string[], arr2: string[]) =>
 
 const stillWithdrawnApps = (
     oldWithdrawnJson: WithdrawnJson,
-    newSourceJson: SourceJson
+    newSourceJson: SourceJson,
 ) => without(oldWithdrawnJson, newSourceJson.apps.map(lastSegment));
 
 const freshlyWithdrawnApps = (
     oldSourceJson: SourceJson,
-    newSourceJson: SourceJson
+    newSourceJson: SourceJson,
 ) => without(oldSourceJson.apps, newSourceJson.apps.map(lastSegment));
 
 export const newWithdrawnJson = (
     oldWithdrawnJson: WithdrawnJson,
     oldSourceJson: SourceJson,
-    newSourceJson: SourceJson
+    newSourceJson: SourceJson,
 ) => [
     ...stillWithdrawnApps(oldWithdrawnJson, newSourceJson),
     ...freshlyWithdrawnApps(oldSourceJson, newSourceJson),

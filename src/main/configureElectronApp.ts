@@ -111,7 +111,7 @@ const copyNrfutilSandboxes = async () => {
     if (os.platform() !== 'win32') {
         await chmodDir(
             nrfutilBundledSandboxesDest,
-            fs.constants.S_IRWXU | fs.constants.S_IRGRP | fs.constants.S_IROTH // eslint-disable-line no-bitwise
+            fs.constants.S_IRWXU | fs.constants.S_IRGRP | fs.constants.S_IROTH, // eslint-disable-line no-bitwise
         );
     }
 };

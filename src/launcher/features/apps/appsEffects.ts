@@ -72,7 +72,7 @@ export const handleAppsWithErrors =
         const recover = (invalidPaths: string[]) => () => {
             // FIXME later: Do this whole thing in the main process
             invalidPaths.forEach(p =>
-                fs.rmSync(p, { recursive: true, force: true })
+                fs.rmSync(p, { recursive: true, force: true }),
             );
             getCurrentWindow().reload();
         };
@@ -81,7 +81,7 @@ export const handleAppsWithErrors =
             ErrorDialogActions.showDialog(buildErrorMessage(apps), {
                 Recover: recover(apps.map(app => app.path)),
                 Close: () => dispatch(ErrorDialogActions.hideDialog()),
-            })
+            }),
         );
     };
 
@@ -99,8 +99,8 @@ export const downloadLatestAppInfos = (): AppThunk => async dispatch => {
         dispatch(updateDownloadableAppInfosFailed());
         dispatch(
             ErrorDialogActions.showDialog(
-                `Unable to download latest app info: ${describeError(error)}`
-            )
+                `Unable to download latest app info: ${describeError(error)}`,
+            ),
         );
     }
 };
@@ -114,8 +114,8 @@ export const installLocalApp =
         } else if (installResult.errorType === 'error reading file') {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    `Error while installing local app:\n\n${installResult.errorMessage}`
-                )
+                    `Error while installing local app:\n\n${installResult.errorMessage}`,
+                ),
             );
             if (installResult.error != null) {
                 console.warn(describeError(installResult.error));
@@ -129,7 +129,7 @@ export const installLocalApp =
                         Overwrite: async () => {
                             dispatch(ErrorDialogActions.hideDialog());
                             await appsInMain.removeLocalApp(
-                                installResult.appName
+                                installResult.appName,
                             );
                             dispatch(removeLocalApp(installResult.appName));
                             dispatch(installLocalApp(appPackagePath));
@@ -137,8 +137,8 @@ export const installLocalApp =
                         Cancel: () => {
                             dispatch(ErrorDialogActions.hideDialog());
                         },
-                    }
-                )
+                    },
+                ),
             );
         }
     };
@@ -149,7 +149,7 @@ const install =
         try {
             const installedApp = await appsInMain.installDownloadableApp(
                 app,
-                version
+                version,
             );
             dispatch(addDownloadableApps([installedApp]));
         } catch (error) {
@@ -157,8 +157,8 @@ const install =
                 ErrorDialogActions.showDialog(
                     `Unable to install downloadable app.`,
                     undefined,
-                    cleanIpcErrorMessage(describeError(error))
-                )
+                    cleanIpcErrorMessage(describeError(error)),
+                ),
             );
         }
         dispatch(resetAppInstallProgress(app));
@@ -217,8 +217,8 @@ export const removeDownloadableApp =
         } catch (error) {
             dispatch(
                 ErrorDialogActions.showDialog(
-                    `Unable to remove: ${(error as Error).message}`
-                )
+                    `Unable to remove: ${(error as Error).message}`,
+                ),
             );
         }
         dispatch(resetAppInstallProgress(app));
@@ -258,9 +258,9 @@ export const checkCompatibilityThenLaunch =
                             text: compatibilityWarning.longWarning,
                             warningData: compatibilityWarning.warningData,
                             setQuickStartInfoWasShown,
-                        })
+                        }),
                     );
                 }
-            }
+            },
         );
     };

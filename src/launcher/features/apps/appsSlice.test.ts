@@ -43,7 +43,7 @@ const findApp = (appToFind: AppSpec, state: State) => {
     const foundApp = state.downloadableApps.find(
         app =>
             app.name === downloadableApp1.name &&
-            app.source === downloadableApp1.source
+            app.source === downloadableApp1.source,
     );
 
     if (foundApp == null) {
@@ -167,13 +167,13 @@ describe('appsReducer', () => {
 
         const whileInstalling = reducer(
             initialState,
-            installDownloadableAppStarted(downloadableApp1)
+            installDownloadableAppStarted(downloadableApp1),
         );
         expect(appIsInstalling(whileInstalling)).toBe(true);
 
         const afterFinishingInstalling = reducer(
             whileInstalling,
-            resetAppInstallProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1),
         );
         expect(appIsInstalling(afterFinishingInstalling)).toBe(false);
     });
@@ -189,19 +189,19 @@ describe('appsReducer', () => {
 
         const whileRemoving = reducer(
             initialState,
-            removeDownloadableAppStarted(downloadableApp1)
+            removeDownloadableAppStarted(downloadableApp1),
         );
         expect(appIsBeingRemoved(whileRemoving)).toBe(true);
 
         const afterFinishingRemoving = reducer(
             whileRemoving,
-            removeDownloadableAppSuccess(downloadableApp1)
+            removeDownloadableAppSuccess(downloadableApp1),
         );
         expect(appIsBeingRemoved(afterFinishingRemoving)).toBe(false);
 
         const afterAbortingRemoving = reducer(
             whileRemoving,
-            resetAppInstallProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1),
         );
         expect(appIsBeingRemoved(afterAbortingRemoving)).toBe(false);
     });
@@ -217,13 +217,13 @@ describe('appsReducer', () => {
 
         const whileUpdating = reducer(
             initialState,
-            updateDownloadableAppStarted(downloadableApp1)
+            updateDownloadableAppStarted(downloadableApp1),
         );
         expect(appIsBeingUpdated(whileUpdating)).toBe(true);
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            resetAppInstallProgress(downloadableApp1)
+            resetAppInstallProgress(downloadableApp1),
         );
         expect(appIsBeingUpdated(afterFinishingUpdating)).toBe(false);
     });
@@ -234,19 +234,19 @@ describe('appsReducer', () => {
 
         const whileUpdating = reducer(
             initialState,
-            updateDownloadableAppInfosStarted()
+            updateDownloadableAppInfosStarted(),
         );
         expect(whileUpdating.isDownloadingLatestAppInfo).toBe(true);
 
         const afterFinishingUpdating = reducer(
             whileUpdating,
-            updateDownloadableAppInfosSuccess()
+            updateDownloadableAppInfosSuccess(),
         );
         expect(afterFinishingUpdating.isDownloadingLatestAppInfo).toBe(false);
 
         const afterAbortingUpdating = reducer(
             whileUpdating,
-            updateDownloadableAppInfosFailed()
+            updateDownloadableAppInfosFailed(),
         );
         expect(afterAbortingUpdating.isDownloadingLatestAppInfo).toBe(false);
     });
@@ -272,7 +272,7 @@ test('sortedSources sorts the sources into official, local and then the rest in 
             { ...downloadableApp1, source: 'OtherB' },
             { ...downloadableApp1, source: 'official' },
             { ...downloadableApp1, source: 'OtherA' },
-        ])
+        ]),
     );
 
     expect(getAllSourceNamesSorted(store.getState())).toStrictEqual([

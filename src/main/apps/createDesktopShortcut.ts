@@ -40,7 +40,7 @@ const arg = (name: string, argument: string) => [`--${name}`, `"${argument}"`];
 const appNameArg = (app: LaunchableApp) =>
     arg(
         isDownloadable(app) ? 'open-downloadable-app' : 'open-local-app',
-        app.name
+        app.name,
     );
 
 const sourceArg = (app: LaunchableApp) => arg('source', app.source);
@@ -89,7 +89,7 @@ const createShortcutForWindows = (app: LaunchableApp) => {
         }
     } else {
         inRenderer.showErrorDialog(
-            'Fail to create desktop: Unable to determine an icon'
+            'Fail to create desktop: Unable to determine an icon',
         );
     }
 };
@@ -102,7 +102,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         '.local',
         'share',
         'applications',
-        `${fileName}.desktop`
+        `${fileName}.desktop`,
     );
 
     const args = getArgs(app);
@@ -127,7 +127,7 @@ const createShortcutForLinux = (app: LaunchableApp) => {
         chmod(applicationsFilePath);
     } catch (err) {
         inRenderer.showErrorDialog(
-            `Fail to create desktop shortcut on Linux with error: ${err}`
+            `Fail to create desktop shortcut on Linux with error: ${err}`,
         );
     }
 };
@@ -148,17 +148,17 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
     const templateName = `template-${uuid()}.app`;
     const appTemplateTarPath = path.join(
         electronApp.getAppPath(),
-        '/resources/mac/template.tar.gz'
+        '/resources/mac/template.tar.gz',
     );
     const tmpAppPath = path.join(
         electronApp.getPath('temp'),
-        'com.nordicsemi.nrfconnect'
+        'com.nordicsemi.nrfconnect',
     );
     const tmpAppTemplatePath = path.join(tmpAppPath, templateName);
     const appExecPath = path.join(filePath, '/Contents/MacOS/Application Stub');
     const icnsPath = path.join(
         tmpAppTemplatePath,
-        '/Contents/Resources/icon.icns'
+        '/Contents/Resources/icon.icns',
     );
 
     try {
@@ -169,7 +169,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         // Create Info.plist
         const infoTmpPath = path.join(
             tmpAppTemplatePath,
-            '/Contents/Info.plist'
+            '/Contents/Info.plist',
         );
         const identifier = `com.nordicsemi.nrfconnect.${app.name}${
             isDownloadable(app) ? '' : '-local'
@@ -185,12 +185,12 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         // Create document.wflow
         const wflowTmpPath = path.join(
             tmpAppTemplatePath,
-            '/Contents/document.wflow'
+            '/Contents/document.wflow',
         );
         // In MacOS spaces should be replaced
         const shortcutCMD = `${getElectronExePath().replace(
             / /g,
-            '\\ '
+            '\\ ',
         )} ${getArgs(app)}`;
         const wflowContentSource = readFile(wflowTmpPath);
         Mustache.parse(wflowContentSource);
@@ -199,7 +199,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         };
         const wflowContent = Mustache.render(
             wflowContentSource,
-            wflowContentData
+            wflowContentData,
         );
 
         writeFile(infoTmpPath, infoContent);
@@ -212,7 +212,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         // Copy to Applications
         filePath = path.join(
             electronApp.getPath('home'),
-            `/Applications/${fileName}.app/`
+            `/Applications/${fileName}.app/`,
         );
         copy(tmpAppTemplatePath, filePath);
 
@@ -220,7 +220,7 @@ const createShortcutForMacOS = async (app: LaunchableApp) => {
         await chmodDir(appExecPath);
     } catch (error) {
         inRenderer.showErrorDialog(
-            `Error occured while creating desktop shortcut on MacOS with error: ${error}`
+            `Error occured while creating desktop shortcut on MacOS with error: ${error}`,
         );
     }
 };
@@ -238,7 +238,7 @@ export default (app: LaunchableApp) => {
             break;
         default:
             inRenderer.showErrorDialog(
-                'Your operating system is neither Windows, Linux, nor macOS'
+                'Your operating system is neither Windows, Linux, nor macOS',
             );
     }
 };

@@ -16,8 +16,8 @@ const logFormat = format.combine(
         ({ timestamp, level, message, ...extra }) =>
             `${timestamp} ${level.toUpperCase()} ${message} ${
                 extra.length > 0 ? JSON.stringify(extra) : ''
-            }`
-    )
+            }`,
+    ),
 );
 
 export const logger = createLogger({

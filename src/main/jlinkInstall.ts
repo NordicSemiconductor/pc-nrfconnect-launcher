@@ -26,11 +26,11 @@ export default async (offlineInstall = false) => {
     if (offlineInstall) {
         const bundledJLinkDir = getUnpackedBundledResourcePath(
             'prefetched',
-            'jlink'
+            'jlink',
         );
         await install(
             getSingleFileInFolder(bundledJLinkDir),
-            inRenderer.updateJLinkProgress
+            inRenderer.updateJLinkProgress,
         );
     } else {
         await downloadAndInstallJLink(inRenderer.updateJLinkProgress);

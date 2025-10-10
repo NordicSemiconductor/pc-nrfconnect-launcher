@@ -47,7 +47,7 @@ const saveAllSources = () => {
 
 export const removeFromSourceList = (
     sourceNameToBeRemoved: SourceName,
-    doSave = true
+    doSave = true,
 ) => {
     ensureSourcesAreLoaded();
 
@@ -96,7 +96,7 @@ export const getSource = (name: SourceName) => {
 
 export const getAppUrls = (
     source: Source,
-    options = { includeWithdrawnApps: false }
+    options = { includeWithdrawnApps: false },
 ) =>
     options.includeWithdrawnApps
         ? readSourceJson(source).apps
@@ -124,8 +124,8 @@ export const downloadAllSources = async () => {
                     newWithdrawnJson(
                         oldWithdrawnJson,
                         oldSourceJson,
-                        newSourceJson
-                    )
+                        newSourceJson,
+                    ),
                 );
 
                 successful.push(source);
@@ -138,7 +138,7 @@ export const downloadAllSources = async () => {
                             : describeError(error),
                 });
             }
-        })
+        }),
     );
 
     return {
