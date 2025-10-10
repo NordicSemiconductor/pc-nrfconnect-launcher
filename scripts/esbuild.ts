@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { node as nodeVersion } from '@nordicsemiconductor/pc-nrfconnect-shared/scripts/versions';
 import esbuild, { BuildOptions } from 'esbuild';
 import * as fs from 'node:fs';
 
@@ -30,6 +31,7 @@ const options = {
         'process.env.PACKAGE_JSON': JSON.stringify(packageJson),
     },
     minify: process.argv.includes('--prod'),
+    target: [`node${nodeVersion}`],
 } satisfies BuildOptions;
 
 const build = async () => {

@@ -42,6 +42,8 @@ release the new version.
 - #1205: Using `macos-15-intel` as GitHub Actions runner for building the Intel
   macOS binaries.
 - #1208: Use new nrfutil-core install mechanism (coming with shared 232).
+- #1208: Use the correct build target versions for Node and Chrome according to
+  the used Electron version.
 
 ### Fixed
 
