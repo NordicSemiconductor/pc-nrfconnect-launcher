@@ -22,7 +22,7 @@ const DropZoneForLocalApps: React.FC = ({ children }) => {
         event.preventDefault();
 
         [...event.dataTransfer.files].forEach(file =>
-            dispatch(installLocalApp(webUtils.getPathForFile(file)))
+            dispatch(installLocalApp(webUtils.getPathForFile(file))),
         );
 
         enterCounter.current = 0;

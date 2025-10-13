@@ -30,7 +30,7 @@ const slice = createSlice({
         },
         setIsSendingTelemetry(
             state,
-            { payload: isSendingTelemetry }: PayloadAction<boolean>
+            { payload: isSendingTelemetry }: PayloadAction<boolean>,
         ) {
             state.isSendingTelemetry = isSendingTelemetry;
         },

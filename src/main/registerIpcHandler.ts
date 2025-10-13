@@ -66,7 +66,7 @@ import { getAppDetails, openApp, openLauncherWindow } from './windows';
 
 const getConfigForRenderer = () => ({
     isRunningLauncherFromSource: fs.existsSync(
-        path.join(app.getAppPath(), 'README.md')
+        path.join(app.getAppPath(), 'README.md'),
     ),
     launcherVersion: packageJson.version,
     userDataDir: app.getPath('userData'),
@@ -80,7 +80,7 @@ export default () => {
     Store.initRenderer();
 
     artifactoryToken.forRenderer.registerGetTokenInformation(
-        getTokenInformation
+        getTokenInformation,
     );
     artifactoryToken.forRenderer.registerSetToken(setToken);
     artifactoryToken.forRenderer.registerRemoveToken(removeToken);
@@ -90,31 +90,31 @@ export default () => {
     launcherConfig.forRenderer.registerGetConfig(getConfigForRenderer());
 
     desktopShortcut.forRenderer.registerCreateDesktopShortcut(
-        createDesktopShortcut
+        createDesktopShortcut,
     );
 
     preventSleep.forRenderer.registerStart(startPreventingSleep);
     preventSleep.forRenderer.registerEnd(endPreventingSleep);
 
     safeStorage.forRenderer.registerEncryptionAvailable(
-        safeStorageElectron.isEncryptionAvailable
+        safeStorageElectron.isEncryptionAvailable,
     );
     safeStorage.forRenderer.registerDecryptString(
-        safeStorageElectron.decryptString
+        safeStorageElectron.decryptString,
     );
     safeStorage.forRenderer.registerEncryptString(
-        safeStorageElectron.encryptString
+        safeStorageElectron.encryptString,
     );
 
     proxyLogin.forRenderer.registerAnswerProxyLoginRequest(
-        callRegisteredCallback
+        callRegisteredCallback,
     );
 
     launcherUpdate.forRenderer.registerCheckForUpdate(checkForUpdate);
     launcherUpdate.forRenderer.registerStartUpdate(startUpdate);
     launcherUpdate.forRenderer.registerCancelUpdate(cancelUpdate);
     launcherUpdate.forRenderer.registerSetUseChineseUpdateServer(
-        setUseChineseUpdateServer
+        setUseChineseUpdateServer,
     );
 
     open.forRenderer.registerOpenApp(openApp);

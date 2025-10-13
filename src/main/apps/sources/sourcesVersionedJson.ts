@@ -21,7 +21,7 @@ const sourcesSchema = z.array(
     z.object({
         name: z.string(),
         url: z.string().url(),
-    })
+    }),
 );
 
 export const sourcesVersionedJsonSchema = z.object({
@@ -38,7 +38,7 @@ const readSourcesVersionedJson = () => {
 
     return readSchemedJsonFile(
         sourcesVersionedJsonPath(),
-        sourcesVersionedJsonSchema
+        sourcesVersionedJsonSchema,
     );
 };
 
@@ -46,7 +46,7 @@ export const writeSourcesVersionedJson = (data: SourcesVersionedJson) =>
     writeSchemedJsonFile(
         sourcesVersionedJsonPath(),
         sourcesVersionedJsonSchema,
-        data
+        data,
     );
 
 export const loadAllSources = () => {
@@ -56,14 +56,14 @@ export const loadAllSources = () => {
     try {
         return readSchemedJsonFile(
             sourcesVersionedJsonPath(),
-            sourcesVersionedJsonSchema
+            sourcesVersionedJsonSchema,
         ).v2;
     } catch (err) {
         dialog.showErrorBox(
             'Could not load list of locally known sources',
             'No sources besides the official and the local one will be shown. ' +
                 'Also apps from other sources will be hidden.\n\nError: ' +
-                `${describeError(err)}`
+                `${describeError(err)}`,
         );
         return [];
     }
@@ -78,6 +78,6 @@ export const writeSourcesFile = (allSources: Source[]) => {
         {
             ...previousContent,
             v2: allSources,
-        }
+        },
     );
 };

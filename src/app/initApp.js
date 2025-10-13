@@ -30,7 +30,7 @@ const loadApp = appDir => {
     // FIXME later: Do not do a file operation in the renderer process
     if (!fs.existsSync(moduleManifest)) {
         console.log(
-            `Trying to load module, but package.json is missing in ${appDir}.`
+            `Trying to load module, but package.json is missing in ${appDir}.`,
         );
         return null;
     }

@@ -21,7 +21,7 @@ export const writeV1SourcesFile = (allSources: Source[]) => {
         sourcesVersionedJsonV1Schema,
         {
             v1: allSources,
-        }
+        },
     );
 };
 
@@ -32,6 +32,6 @@ export const readV1SourcesFile = () => {
 
     return readSchemedJsonFile(
         sourcesVersionedJsonPath(),
-        sourcesVersionedJsonV1Schema
+        sourcesVersionedJsonV1Schema,
     );
 };

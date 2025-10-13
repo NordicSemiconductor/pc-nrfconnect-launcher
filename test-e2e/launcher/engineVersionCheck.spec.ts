@@ -40,13 +40,13 @@ test.describe('checks the version of the engine against what the app declares', 
 
             await expect(
                 page.$(
-                    '[title*="The app does not specify which nRF Connect for Desktop versions it supports"]'
-                )
+                    '[title*="The app does not specify which nRF Connect for Desktop versions it supports"]',
+                ),
             ).resolves.toBeNull();
             await expect(
                 page.$(
-                    '[title*="The app only supports nRF Connect for Desktop"]'
-                )
+                    '[title*="The app only supports nRF Connect for Desktop"]',
+                ),
             ).resolves.toBeNull();
         });
     });
@@ -77,15 +77,15 @@ test.describe('checks the version of the engine against what the app declares', 
             await page.waitForSelector('.list-group-item');
             await expect(
                 page.$(
-                    '[title*="The app only supports nRF Connect for Desktop 1.x"]'
-                )
+                    '[title*="The app only supports nRF Connect for Desktop 1.x"]',
+                ),
             ).resolves.not.toBeNull();
         });
 
         test('shows a warning dialog when launching the app', async () => {
             await launchFirstApp(app, false);
             await expect(
-                page.$('button:has-text("Launch anyway")')
+                page.$('button:has-text("Launch anyway")'),
             ).resolves.not.toBeNull();
         });
 
@@ -132,15 +132,15 @@ test.describe('checks the version of the engine against what the app declares', 
 
             await expect(
                 page.$(
-                    'span[title*="The app does not specify which nRF Connect for Desktop versions it supports"]'
-                )
+                    'span[title*="The app does not specify which nRF Connect for Desktop versions it supports"]',
+                ),
             ).resolves.not.toBeNull();
         });
 
         test('shows a warning dialog when launching the app', async () => {
             await launchFirstApp(app, false);
             await expect(
-                page.$('button:has-text("Launch anyway")')
+                page.$('button:has-text("Launch anyway")'),
             ).resolves.not.toBeNull();
         });
 

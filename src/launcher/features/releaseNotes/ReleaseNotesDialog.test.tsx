@@ -34,7 +34,7 @@ describe('ReleaseNotesDialog', () => {
         expect(
             render(<ReleaseNotesDialog />, [
                 addDownloadableApps(downloadableApps),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -43,7 +43,7 @@ describe('ReleaseNotesDialog', () => {
             render(<ReleaseNotesDialog />, [
                 addDownloadableApps(downloadableApps),
                 show(uninstalledApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -52,7 +52,7 @@ describe('ReleaseNotesDialog', () => {
             render(<ReleaseNotesDialog />, [
                 addDownloadableApps(downloadableApps),
                 show(installedApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -61,7 +61,7 @@ describe('ReleaseNotesDialog', () => {
             render(<ReleaseNotesDialog />, [
                 addDownloadableApps(downloadableApps),
                 show(updatableApp),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -71,7 +71,7 @@ describe('ReleaseNotesDialog', () => {
                 addDownloadableApps(downloadableApps),
                 show(uninstalledApp),
                 hide(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

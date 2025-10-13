@@ -11,10 +11,10 @@ describe('determineDownloadUrl', () => {
         expect(
             determineDownloadUrl(
                 'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
-                false
-            )
+                false,
+            ),
         ).toBe(
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json'
+            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
         );
     });
 
@@ -22,8 +22,8 @@ describe('determineDownloadUrl', () => {
         expect(
             determineDownloadUrl(
                 'https://example.org/artifactory/this/that',
-                true
-            )
+                true,
+            ),
         ).toBe('https://example.org/artifactory/this/that');
     });
 
@@ -31,10 +31,10 @@ describe('determineDownloadUrl', () => {
         expect(
             determineDownloadUrl(
                 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/experimental/source.json',
-                false
-            )
+                false,
+            ),
         ).toBe(
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json'
+            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json',
         );
     });
 
@@ -42,10 +42,10 @@ describe('determineDownloadUrl', () => {
         expect(
             determineDownloadUrl(
                 'https://files.nordicsemi.com/artifactory/swtools/external/ncd/apps/official/source.json',
-                true
-            )
+                true,
+            ),
         ).toBe(
-            'https://files.nordicsemi.cn/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json'
+            'https://files.nordicsemi.cn/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=external/ncd/apps/official/source.json',
         );
     });
 
@@ -53,10 +53,10 @@ describe('determineDownloadUrl', () => {
         expect(
             determineDownloadUrl(
                 'https://files.nordicsemi.com/artifactory/swtools/internal/ncd/apps/experimental/source.json',
-                true
-            )
+                true,
+            ),
         ).toBe(
-            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json'
+            'https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=false&repoKey=swtools&path=internal/ncd/apps/experimental/source.json',
         );
     });
 });

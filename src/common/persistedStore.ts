@@ -116,7 +116,7 @@ export const removeEncryptedArtifactoryToken = () =>
 export const getArtifactoryTokenInformation = () =>
     store.get('artifactoryTokenInformation');
 export const setArtifactoryTokenInformation = (
-    tokenInformation: TokenInformation
+    tokenInformation: TokenInformation,
 ) => store.set('artifactoryTokenInformation', tokenInformation);
 export const removeArtifactoryTokenInformation = () =>
     store.delete('artifactoryTokenInformation');

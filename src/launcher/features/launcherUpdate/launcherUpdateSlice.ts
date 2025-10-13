@@ -38,7 +38,7 @@ const slice = createSlice({
     reducers: {
         updateAvailable(
             state,
-            { payload: availableVersion }: PayloadAction<string>
+            { payload: availableVersion }: PayloadAction<string>,
         ) {
             state.isUpdateAvailableDialogVisible = true;
             state.latestVersion = availableVersion;
@@ -56,7 +56,7 @@ const slice = createSlice({
                       isProgressSupported?: boolean;
                   }
                 | undefined
-            >
+            >,
         ) {
             state.isUpdateAvailableDialogVisible = false;
             state.isUpdateProgressDialogVisible = true;

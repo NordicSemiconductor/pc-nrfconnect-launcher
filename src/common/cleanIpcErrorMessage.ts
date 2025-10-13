@@ -7,5 +7,5 @@
 export default (message: string, replacecment = '') =>
     message.replace(
         /Error invoking remote method '.*?': *(Error:)? */,
-        replacecment
+        replacecment,
     );

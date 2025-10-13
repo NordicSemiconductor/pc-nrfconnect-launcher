@@ -70,10 +70,10 @@ const channel = {
 type DownloadLatestAppInfos = () => GetDownloadableAppsResult;
 
 const downloadLatestAppInfos = invoke<DownloadLatestAppInfos>(
-    channel.downloadLatestAppInfos
+    channel.downloadLatestAppInfos,
 );
 const registerDownloadLatestAppInfos = handle<DownloadLatestAppInfos>(
-    channel.downloadLatestAppInfos
+    channel.downloadLatestAppInfos,
 );
 
 // getLocalApps
@@ -89,7 +89,7 @@ export const successfulInstall = (app: LocalApp) =>
     ({
         type: 'success',
         app,
-    } as const);
+    }) as const;
 
 export const failureReadingFile = (errorMessage: string, error?: unknown) =>
     ({
@@ -97,7 +97,7 @@ export const failureReadingFile = (errorMessage: string, error?: unknown) =>
         errorType: 'error reading file',
         errorMessage,
         error,
-    } as const);
+    }) as const;
 
 export const appExists = (appName: string, appPath: string) =>
     ({
@@ -105,7 +105,7 @@ export const appExists = (appName: string, appPath: string) =>
         errorType: 'error because app exists',
         appName,
         appPath,
-    } as const);
+    }) as const;
 
 export type InstallResult =
     | ReturnType<typeof successfulInstall>
@@ -116,7 +116,7 @@ type InstallLocalApp = (path: string) => InstallResult;
 
 const installLocalApp = invoke<InstallLocalApp>(channel.installLocalApp);
 const registerInstallLocalApp = handle<InstallLocalApp>(
-    channel.installLocalApp
+    channel.installLocalApp,
 );
 
 // removeLocalApp
@@ -129,10 +129,10 @@ const registerRemoveLocalApp = handle<RemoveLocalApp>(channel.removeLocalApp);
 type RemoveDownloadableApp = (app: AppSpec) => void;
 
 const removeDownloadableApp = invoke<RemoveDownloadableApp>(
-    channel.removeDownloadableApp
+    channel.removeDownloadableApp,
 );
 const registerRemoveDownloadableApp = handle<RemoveDownloadableApp>(
-    channel.removeDownloadableApp
+    channel.removeDownloadableApp,
 );
 
 // getDownloadableApps
@@ -144,10 +144,10 @@ type GetDownloadableAppsResult = SharedGetDownloadableAppsResult & {
 type GetDownloadableApps = () => GetDownloadableAppsResult;
 
 const getDownloadableApps = invoke<GetDownloadableApps>(
-    sharedChannel.getDownloadableApps
+    sharedChannel.getDownloadableApps,
 );
 const registerGetDownloadableApps = handle<GetDownloadableApps>(
-    sharedChannel.getDownloadableApps
+    sharedChannel.getDownloadableApps,
 );
 
 export const forRenderer = {

@@ -50,7 +50,7 @@ const slice = createSlice({
         },
         setShownStates(
             state,
-            { payload: shownStates }: PayloadAction<ShownStates>
+            { payload: shownStates }: PayloadAction<ShownStates>,
         ) {
             state.shownStates = { ...shownStates };
             setPersistedShownStates(shownStates);
@@ -76,7 +76,7 @@ const matchesNameFilter = (app: App, state: RootState) => {
 
     try {
         return new RegExp(filter, 'i').test(app.displayName);
-    } catch (_) {
+    } catch {
         // Ignore faulty regexps
     }
     return app.displayName?.includes(filter);

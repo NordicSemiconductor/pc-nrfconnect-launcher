@@ -34,21 +34,21 @@ describe('SettingsView', () => {
     it('should render with check for updates enabled', () => {
         expect(
             render(<Settings />, [setCheckForUpdatesAtStartup(true)])
-                .baseElement
+                .baseElement,
         ).toMatchSnapshot();
     });
 
     it('should render with check for updates disabled', () => {
         expect(
             render(<Settings />, [setCheckForUpdatesAtStartup(false)])
-                .baseElement
+                .baseElement,
         ).toMatchSnapshot();
     });
 
     it('should render when checking for updates', () => {
         expect(
             render(<Settings />, [updateDownloadableAppInfosStarted()])
-                .baseElement
+                .baseElement,
         ).toMatchSnapshot();
     });
 
@@ -56,9 +56,9 @@ describe('SettingsView', () => {
         expect(
             render(<Settings />, [
                 updateDownloadableAppInfosSuccess(
-                    new Date(2017, 1, 3, 13, 41, 36)
+                    new Date(2017, 1, 3, 13, 41, 36),
                 ),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -72,7 +72,7 @@ describe('SettingsView', () => {
                         latestVersion: '1.2.3',
                     }),
                 ]),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -81,7 +81,7 @@ describe('SettingsView', () => {
             render(<Settings />, [
                 showUpdateCheckComplete(),
                 addDownloadableApps([createDownloadableTestApp()]),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -93,7 +93,7 @@ describe('SettingsView', () => {
                     expiry: 100,
                     token_id: 'an_id',
                 }),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

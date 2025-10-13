@@ -32,7 +32,7 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
         icon,
     });
     splashScreen.loadURL(
-        `file://${getBundledResourcePath()}/splashscreen.html`
+        `file://${getBundledResourcePath()}/splashscreen.html`,
     );
     splashScreen.on('closed', () => {
         splashScreen = null;
@@ -45,7 +45,7 @@ const createSplashScreen = (icon: BrowserWindowOptions['icon']) => {
 
 export const createWindow = (
     options: BrowserWindowOptions,
-    args = appArguments()
+    args = appArguments(),
 ) => {
     const mergedOptions: BrowserWindowOptions = {
         show: false,

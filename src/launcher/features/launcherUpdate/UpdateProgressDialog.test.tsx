@@ -29,7 +29,7 @@ describe('UpdateProgressDialog', () => {
                     isProgressSupported: true,
                 }),
                 updateDownloading(42),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -42,7 +42,7 @@ describe('UpdateProgressDialog', () => {
                     isProgressSupported: false,
                 }),
                 updateDownloading(42),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -55,7 +55,7 @@ describe('UpdateProgressDialog', () => {
                     isProgressSupported: true,
                 }),
                 cancelDownload(),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -68,7 +68,7 @@ describe('UpdateProgressDialog', () => {
                     isProgressSupported: true,
                 }),
                 updateDownloading(100),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

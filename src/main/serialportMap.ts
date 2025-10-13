@@ -39,7 +39,7 @@ class SerialPortMap {
 
     hasEqualOptions = (
         path: string,
-        options: SerialPortOpenOptions<AutoDetectTypes>
+        options: SerialPortOpenOptions<AutoDetectTypes>,
     ) => {
         const oldOptions = this.get(path)?.options;
         if (

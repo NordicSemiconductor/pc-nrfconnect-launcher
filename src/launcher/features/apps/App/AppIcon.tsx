@@ -50,7 +50,7 @@ const AppIcon: React.FC<{ app: DisplayedApp }> = ({ app }) => {
                             // Don't encode Windows `<drive>:`
                             process.platform === 'win32' && index === 0
                                 ? val
-                                : encodeURIComponent(val)
+                                : encodeURIComponent(val),
                         )
                         .join(path.sep)}
                     alt=""

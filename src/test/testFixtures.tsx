@@ -21,7 +21,7 @@ const iconPath = (appName: string) => `${appName}.png`;
 
 export const createLocalTestApp = (
     appName = 'dummy',
-    additonalProps: Partial<LocalApp> = {}
+    additonalProps: Partial<LocalApp> = {},
 ): LocalApp => ({
     name: appName,
     source: LOCAL,
@@ -41,7 +41,7 @@ export const createLocalTestApp = (
 
 export const createDownloadableTestApp = (
     appName = 'dummy',
-    additonalProps: Partial<InstalledDownloadableApp> = {}
+    additonalProps: Partial<InstalledDownloadableApp> = {},
 ): InstalledDownloadableApp => ({
     name: appName,
     source: OFFICIAL,
@@ -63,7 +63,7 @@ export const createDownloadableTestApp = (
 
 export const createUninstalledTestApp = (
     appName = 'dummy',
-    additonalProps: Partial<UninstalledDownloadableApp> = {}
+    additonalProps: Partial<UninstalledDownloadableApp> = {},
 ): UninstalledDownloadableApp => ({
     name: appName,
     source: OFFICIAL,

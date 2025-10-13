@@ -28,13 +28,13 @@ export const migrateSourcesJson = () => {
 
     const oldSourcesJson = readSchemedJsonFile(
         oldSourcesJsonPath(),
-        oldSourcesJsonSchema
+        oldSourcesJsonSchema,
     );
     const migratedSources = Object.entries(oldSourcesJson).map(
         ([name, url]) => ({
             name,
             url: url.replace(/apps\.json$/, 'source.json'),
-        })
+        }),
     );
 
     writeV1SourcesFile(migratedSources);

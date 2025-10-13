@@ -13,7 +13,7 @@ import { showRemoveSource } from './sourcesSlice';
 describe('ConfirmRemoveSourceDialog', () => {
     it('is initially invisible', () => {
         expect(
-            render(<ConfirmRemoveSourceDialog />).baseElement
+            render(<ConfirmRemoveSourceDialog />).baseElement,
         ).toMatchSnapshot();
     });
 
@@ -21,7 +21,7 @@ describe('ConfirmRemoveSourceDialog', () => {
         expect(
             render(<ConfirmRemoveSourceDialog />, [
                 showRemoveSource('the source to remove'),
-            ]).baseElement
+            ]).baseElement,
         ).toMatchSnapshot();
     });
 });

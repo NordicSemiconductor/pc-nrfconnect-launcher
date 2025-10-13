@@ -42,10 +42,10 @@ const registerCancelUpdate = on<CancelUpdate>(channel.cancelUpdate);
 // Set use Chinese update server
 type SetUseChineseUpdateServer = (useChineseServer: boolean) => void;
 const setUseChineseUpdateServer = send<SetUseChineseUpdateServer>(
-    channel.setUseChineseUpdateServer
+    channel.setUseChineseUpdateServer,
 );
 const registerSetUseChineseUpdateServer = on<SetUseChineseUpdateServer>(
-    channel.setUseChineseUpdateServer
+    channel.setUseChineseUpdateServer,
 );
 
 export const forRenderer = {

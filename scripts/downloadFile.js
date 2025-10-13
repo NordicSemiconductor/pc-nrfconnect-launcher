@@ -16,7 +16,7 @@ const downloadChecksum = async fileUrl => {
         const { status, data } = await axios.get(fileUrl);
         if (status !== 200) {
             throw new Error(
-                `Unable to download ${fileUrl}. Got status code ${status}`
+                `Unable to download ${fileUrl}. Got status code ${status}`,
             );
         }
         return data;
@@ -34,7 +34,7 @@ module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
     });
     if (status !== 200) {
         throw new Error(
-            `Unable to download ${fileUrl}. Got status code ${status}`
+            `Unable to download ${fileUrl}. Got status code ${status}`,
         );
     }
     await mkdir(path.dirname(destinationFile), { recursive: true });
@@ -50,7 +50,7 @@ module.exports = async (fileUrl, destinationFile, useChecksum = false) => {
                 if (useChecksum) {
                     const calculatedChecksum = hash.digest('hex');
                     const expectedChecksum = await downloadChecksum(
-                        `${fileUrl}.sha256`
+                        `${fileUrl}.sha256`,
                     );
 
                     if (calculatedChecksum !== expectedChecksum) {

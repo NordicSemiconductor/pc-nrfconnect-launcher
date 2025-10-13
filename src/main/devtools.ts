@@ -37,7 +37,7 @@ const extensionPath = (extension: ExtensionReference) =>
     path.join(
         session.defaultSession.getStoragePath() as string,
         'extensions',
-        extension.id
+        extension.id,
     );
 
 const removeDevtools = (extensions: Extensions) => {
@@ -68,7 +68,7 @@ const loadInstalledDevtools = (extensions: Extensions) => {
     } catch (err) {
         console.log(
             'An error occurred while loading installed devtools: ',
-            err
+            err,
         );
         exit(1);
     }
@@ -78,7 +78,7 @@ export default async () => {
     let devToolsInstaller;
     try {
         devToolsInstaller = await import('electron-devtools-installer');
-    } catch (error) {
+    } catch {
         // In the production build the module electron-devtools-installer does
         // not exist, so ignore this error
 

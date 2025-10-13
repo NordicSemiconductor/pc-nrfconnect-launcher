@@ -16,10 +16,10 @@ describe('mergeAppArguments', () => {
         const args = ['--deviceSerial', '001122', '--otherArg'];
 
         expect(
-            mergeAppArguments(args, { device: { serialNumber: '334455' } })
+            mergeAppArguments(args, { device: { serialNumber: '334455' } }),
         ).toEqual(['--otherArg', '--deviceSerial', '334455']);
         expect(
-            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } })
+            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } }),
         ).toEqual(['--otherArg', '--comPort', 'COM0']);
     });
 
@@ -27,10 +27,10 @@ describe('mergeAppArguments', () => {
         const args = ['--comPort', 'COM2', '--otherArg'];
 
         expect(
-            mergeAppArguments(args, { device: { serialNumber: '334455' } })
+            mergeAppArguments(args, { device: { serialNumber: '334455' } }),
         ).toEqual(['--otherArg', '--deviceSerial', '334455']);
         expect(
-            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } })
+            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } }),
         ).toEqual(['--otherArg', '--comPort', 'COM0']);
     });
 
@@ -38,10 +38,10 @@ describe('mergeAppArguments', () => {
         const args = ['--comPort', 'COM2', '--deviceSerial'];
 
         expect(
-            mergeAppArguments(args, { device: { serialNumber: '334455' } })
+            mergeAppArguments(args, { device: { serialNumber: '334455' } }),
         ).toEqual(['--deviceSerial', '334455']);
         expect(
-            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } })
+            mergeAppArguments(args, { device: { serialPortPath: 'COM0' } }),
         ).toEqual(['--comPort', 'COM0']);
     });
 });

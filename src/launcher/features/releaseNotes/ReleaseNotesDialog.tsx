@@ -26,7 +26,7 @@ import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
 const canBeInstalledOrUpdated = (
-    app?: App
+    app?: App,
 ): app is InstalledDownloadableApp | UninstalledDownloadableApp =>
     isDownloadable(app) && (!isInstalled(app) || isUpdatable(app));
 

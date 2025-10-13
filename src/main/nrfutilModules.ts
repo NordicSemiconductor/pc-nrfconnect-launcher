@@ -25,7 +25,7 @@ type SandboxesCacheKeyType =
 const cacheKey = (
     moduleName: string,
     moduleVersion: string,
-    nrfutilCore: NrfutilModuleVersion = 'unspecified'
+    nrfutilCore: NrfutilModuleVersion = 'unspecified',
 ) => `${moduleName}-${moduleVersion}-${nrfutilCore}` as const;
 
 type SandboxesCacheType = {
@@ -41,7 +41,7 @@ const cachedSandbox = (
     app: AppSpec,
     moduleName: string,
     moduleVersion: NrfutilModuleVersion,
-    nrfutilCore?: NrfutilModuleVersion
+    nrfutilCore?: NrfutilModuleVersion,
 ) => {
     const cached =
         sandboxesCache[cacheKey(moduleName, moduleVersion, nrfutilCore)];
@@ -68,14 +68,14 @@ const preparedSandbox = (
     app: AppSpec,
     moduleName: string,
     moduleVersion: NrfutilModuleVersion,
-    nrfutilCore?: NrfutilModuleVersion
+    nrfutilCore?: NrfutilModuleVersion,
 ) => {
     setNrfutilLogger(logger);
 
     const key: SandboxesCacheKeyType = cacheKey(
         moduleName,
         moduleVersion,
-        nrfutilCore
+        nrfutilCore,
     );
     sandboxesCache[key] = {
         progressCallbacks: [
@@ -97,13 +97,14 @@ const preparedSandbox = (
         progress => {
             if (sandboxesCache[key]) {
                 sandboxesCache[key].progressCallbacks.forEach(fn =>
-                    fn(progress)
+                    fn(progress),
                 );
                 sandboxesCache[key].lastProgress = progress;
             }
-        }
+        },
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- FIXME later: It would be better to use a Map for sandboxesCache, but for now I want to ignore this, so this change doesn't get even bigger.
     sandbox.finally(() => delete sandboxesCache[key]);
     sandboxesCache[key].sandbox = sandbox;
 
@@ -112,12 +113,12 @@ const preparedSandbox = (
 export const assertPreparedNrfutilModules = (
     app: AppSpec,
     nrfutilModules: NrfutilModules = {},
-    nrfutilCore: NrfutilModuleVersion | undefined = undefined
+    nrfutilCore: NrfutilModuleVersion | undefined = undefined,
 ) =>
     Object.entries(nrfutilModules).map(
         ([moduleName, [moduleVersion]]) =>
             cachedSandbox(app, moduleName, moduleVersion, nrfutilCore) ??
-            preparedSandbox(app, moduleName, moduleVersion, nrfutilCore)
+            preparedSandbox(app, moduleName, moduleVersion, nrfutilCore),
     );
 
 export const sandboxFractionNames = (nrfutilModules: NrfutilModules = {}) =>
