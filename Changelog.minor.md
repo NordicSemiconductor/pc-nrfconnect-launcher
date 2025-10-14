@@ -37,6 +37,10 @@ release the new version.
 - #1195: Bump default nrfutil-core to 8.1.1.
 - #1196: Download arch specific variant of nrfutil (before on macOS it always
   downloaded the universal variant).
+- #1192, #1203: Update bundled J-Link to V8.66.
+- #1202: Updated Prettier, typescript-eslint, and TypeScript.
+- #1205: Using `macos-15-intel` as GitHub Actions runner for building the Intel
+  macOS binaries.
 
 ### Fixed
 
