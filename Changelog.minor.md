@@ -41,6 +41,7 @@ release the new version.
 - #1202: Updated Prettier, typescript-eslint, and TypeScript.
 - #1205: Using `macos-15-intel` as GitHub Actions runner for building the Intel
   macOS binaries.
+- #1208: Use new nrfutil-core install mechanism (coming with shared 232).
 
 ### Fixed
 
