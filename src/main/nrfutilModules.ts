@@ -29,13 +29,12 @@ const cacheKey = (
 ) => `${moduleName}-${moduleVersion}-${nrfutilCore}` as const;
 
 type SandboxesCacheType = {
-    sandbox?: Promise<NrfutilSandbox>;
+    promisedSandbox?: Promise<NrfutilSandbox>;
     progressCallbacks: ((progress: Progress) => void)[];
     lastProgress?: Progress;
 };
-const sandboxesCache: {
-    [index: SandboxesCacheKeyType]: SandboxesCacheType;
-} = {};
+
+const sandboxesCache = new Map<SandboxesCacheKeyType, SandboxesCacheType>();
 
 const cachedSandbox = (
     app: AppSpec,
@@ -43,8 +42,9 @@ const cachedSandbox = (
     moduleVersion: NrfutilModuleVersion,
     nrfutilCore?: NrfutilModuleVersion,
 ) => {
-    const cached =
-        sandboxesCache[cacheKey(moduleName, moduleVersion, nrfutilCore)];
+    const cached = sandboxesCache.get(
+        cacheKey(moduleName, moduleVersion, nrfutilCore),
+    );
 
     if (cached) {
         const progressCallback = (progress: Progress) => {
@@ -60,7 +60,7 @@ const cachedSandbox = (
         }
 
         cached.progressCallbacks.push(progressCallback);
-        return cached.sandbox;
+        return cached.promisedSandbox;
     }
 };
 
@@ -77,7 +77,8 @@ const preparedSandbox = (
         moduleVersion,
         nrfutilCore,
     );
-    sandboxesCache[key] = {
+
+    const cached: SandboxesCacheType = {
         progressCallbacks: [
             progress => {
                 appInstallProgress.reportAppInstallProgress({
@@ -89,26 +90,25 @@ const preparedSandbox = (
         ],
     };
 
-    const sandbox = NrfutilSandbox.create(
+    sandboxesCache.set(key, cached);
+
+    const promisedSandbox = NrfutilSandbox.create(
         getUserDataPath(),
         moduleName,
         moduleVersion,
         nrfutilCore,
         progress => {
-            if (sandboxesCache[key]) {
-                sandboxesCache[key].progressCallbacks.forEach(fn =>
-                    fn(progress),
-                );
-                sandboxesCache[key].lastProgress = progress;
+            if (sandboxesCache.has(key)) {
+                cached.progressCallbacks.forEach(fn => fn(progress));
+                cached.lastProgress = progress;
             }
         },
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- FIXME later: It would be better to use a Map for sandboxesCache, but for now I want to ignore this, so this change doesn't get even bigger.
-    sandbox.finally(() => delete sandboxesCache[key]);
-    sandboxesCache[key].sandbox = sandbox;
+    promisedSandbox.finally(() => sandboxesCache.delete(key));
+    cached.promisedSandbox = promisedSandbox;
 
-    return sandbox;
+    return promisedSandbox;
 };
 export const assertPreparedNrfutilModules = (
     app: AppSpec,
