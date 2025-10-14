@@ -44,6 +44,7 @@ release the new version.
 - #1208: Use new nrfutil-core install mechanism (coming with shared 232).
 - #1208: Use the correct build target versions for Node and Chrome according to
   the used Electron version.
+- #1210: Made launcher more robust against nrfutil failures.
 
 ### Fixed
 

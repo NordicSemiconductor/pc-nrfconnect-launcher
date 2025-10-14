@@ -6,9 +6,11 @@
 
 import React from 'react';
 import {
+    describeError,
     ExternalLink,
     getUserDataDir,
     launcherConfig,
+    logger,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import {
     getJlinkCompatibility as getJlinkCompatibilityFromModuleVersion,
@@ -171,16 +173,23 @@ const checkMinimalRequiredAppVersions: AppCompatibilityChecker = app => {
 
 const getJlinkCompatibility = memoize(
     async (nrfutilDeviceVersion: string, nrfutilCoreVersion?: string) => {
-        const userDir = getUserDataDir();
-        const sandbox = await NrfutilSandbox.create(
-            userDir,
-            'device',
-            nrfutilDeviceVersion,
-            nrfutilCoreVersion,
-        );
-        const moduleVersion = await sandbox.getModuleVersion();
+        try {
+            const userDir = getUserDataDir();
+            const sandbox = await NrfutilSandbox.create(
+                userDir,
+                'device',
+                nrfutilDeviceVersion,
+                nrfutilCoreVersion,
+            );
+            const moduleVersion = await sandbox.getModuleVersion();
 
-        return getJlinkCompatibilityFromModuleVersion(moduleVersion);
+            return getJlinkCompatibilityFromModuleVersion(moduleVersion);
+        } catch (e) {
+            logger.warn(
+                `Could not determine J-Link compatibility: ${describeError(e)}`,
+            );
+            return { kind: 'Unknown' } as const;
+        }
     },
 );
 
