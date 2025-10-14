@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { app as electronApp, dialog } from 'electron';
+import { createDisposableTempDir } from '@nordicsemiconductor/pc-nrfconnect-shared/main';
+import { dialog } from 'electron';
 import fs from 'fs';
 import moveFile from 'move-file';
 import path from 'path';
 import shasum from 'shasum';
-import { uuid } from 'short-uuid';
 
 import { inRenderer as appInstallProgress } from '../../ipc/appInstallProgress';
 import {
@@ -41,18 +41,16 @@ import {
 } from './app';
 import { getSource } from './sources/sources';
 
-const getTmpFilename = (basename: string) =>
-    path.join(electronApp.getPath('temp'), `${basename}-${uuid()}`);
-
 const extractNpmPackage = async (
     appName: string,
     tgzFile: string,
     destinationDir: string,
 ) => {
-    const tmpDir = getTmpFilename(appName);
+    using tempDir = createDisposableTempDir();
+    const appDir = path.join(tempDir.path, appName);
 
-    await untar(tgzFile, tmpDir, 1);
-    await moveFile(tmpDir, destinationDir);
+    await untar(tgzFile, appDir, 1);
+    await moveFile(appDir, destinationDir);
 };
 
 /*
@@ -204,9 +202,8 @@ export const removeDownloadableApp = async (app: AppSpec) => {
 
     removeInstallMetaData(app);
 
-    const tmpDir = getTmpFilename(app.name);
-    await moveFile(appPath, tmpDir);
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+    using tempDir = createDisposableTempDir();
+    await moveFile(appPath, path.join(tempDir.path, 'to-be-deleted'));
 };
 
 const verifyShasum = (filePath: string, expectedShasum?: string) => {
