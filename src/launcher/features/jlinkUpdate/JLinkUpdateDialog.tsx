@@ -12,7 +12,7 @@ import {
     GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { inMain } from '../../../ipc/installJLink';
+import { inMain } from '../../../ipc/jlink';
 import bundledJlinkVersion from '../../../main/bundledJlink';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { continueUpdateProcess } from '../process/updateProcess';
@@ -48,7 +48,7 @@ export default () => {
                             if (versionToBeInstalled) {
                                 dispatch(showProgressDialog());
                                 inMain
-                                    .startJLinkInstall(
+                                    .installJLink(
                                         versionToBeInstalled.toLowerCase() ===
                                             bundledJlinkVersion.toLowerCase(),
                                     )
