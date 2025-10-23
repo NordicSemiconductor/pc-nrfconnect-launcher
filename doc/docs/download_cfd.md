@@ -26,18 +26,18 @@ Make sure you meet the following requirements for your operating system:
 
 === "Windows"
 
-    - [**SEGGER J-Link** v8.66](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+    - [**SEGGER J-Link** v8.76](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
     - **SEGGER USB Driver for J-Link** - Required for correctly detecting the development kits from nRF52 Series, nRF53 Series, and nRF91 Series using [legacy probes](https://kb.segger.com/J-Link_Installer#USB_Driver). Install it manually from the command line together with the downloaded version of **SEGGER J-Link** installer. Use the `-InstUSBDriver=1` parameter to trigger the driver installation, for example:
 
         ```
-        JLink_Windows_V866_x86_64.exe -InstUSBDriver=1
+        JLink_Windows_V876_x86_64.exe -InstUSBDriver=1
         ```
 
         Make sure to use the correct J-Link installer version, and to add the J-Link executable to system path (environment variables).
 
 === "Linux"
 
-    - [**SEGGER J-Link** v8.66](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+    - [**SEGGER J-Link** v8.76](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
     - **libusb-1.0-0** - Usually comes installed with Ubuntu and you can install it with the following command:
 
         ```
@@ -64,7 +64,7 @@ Make sure you meet the following requirements for your operating system:
 
 === "macOS"
 
-    - [**SEGGER J-Link** v8.66](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+    - [**SEGGER J-Link** v8.76](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
 
 
 !!! note "Note"
