@@ -55,6 +55,7 @@ release the new version.
 - #1122: Updated fs related code to not need fs-extra anymore.
 - #1123: Asynchronicity of `openFile` and `openUrl`.
 - #1135: Jumpy progress bar.
+- #1215: Sources without apps did not appear in the filter.
 
 ## 5.2.0
 

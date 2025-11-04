@@ -12,11 +12,7 @@ import {
     getLastUpdateCheckDate,
     setLastUpdateCheckDate,
 } from '../../../common/persistedStore';
-import {
-    allStandardSourceNames,
-    OFFICIAL,
-    SourceName,
-} from '../../../common/sources';
+import { OFFICIAL, SourceName } from '../../../common/sources';
 import { Progress as AppInstallProgress } from '../../../ipc/appInstallProgress';
 import {
     App,
@@ -300,21 +296,6 @@ export const getAllApps = (state: RootState): DisplayedApp[] => {
 export const getNoAppsExist = (state: RootState) =>
     state.apps.localApps.length === 0 &&
     state.apps.downloadableApps.length === 0;
-
-export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
-    const allSources = [
-        ...new Set(getAllApps(state).map(({ source }) => source)),
-    ];
-
-    const withoutStandardSources = allSources.filter(
-        source => !allStandardSourceNames.includes(source),
-    );
-
-    return [
-        ...allStandardSourceNames,
-        ...withoutStandardSources.sort((a, b) => a.localeCompare(b)),
-    ];
-};
 
 export const getDownloadableApp =
     ({ source, name }: { name?: string; source?: SourceName }) =>
