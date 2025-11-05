@@ -46,6 +46,7 @@ release the new version.
   the used Electron version.
 - #1210: Made launcher more robust against nrfutil failures.
 - #1213: Telemetry: Stop sending dependency events.
+- #1216: Remove capitalisation of source names.
 
 ### Fixed
 

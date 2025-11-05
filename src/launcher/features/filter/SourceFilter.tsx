@@ -7,6 +7,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import { capitalize } from 'lodash';
 
 import { allStandardSourceNames } from '../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
@@ -19,7 +20,10 @@ export default () => {
     const externalSourceNames = useLauncherSelector(
         getExternalSourcesSorted,
     ).map(({ name }) => name);
-    const allSourceNames = [...allStandardSourceNames, ...externalSourceNames];
+    const allSourceNames = [
+        ...allStandardSourceNames.map(capitalize),
+        ...externalSourceNames,
+    ];
 
     const hiddenSources = useLauncherSelector(getHiddenSources);
 
@@ -34,7 +38,7 @@ export default () => {
                         label={sourceName}
                         id={`cb-${sourceName}`}
                         key={`cb-${i + 1}`}
-                        className="text-capitalize mx-3 px-4 py-1"
+                        className="mx-3 px-4 py-1"
                         custom
                         checked={isShown}
                         onChange={() => {

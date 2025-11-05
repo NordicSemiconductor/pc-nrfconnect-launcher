@@ -50,9 +50,7 @@ export default () => {
                 .filter(source => source.name !== OFFICIAL)
                 .map(source => (
                     <Row key={source.name}>
-                        <Col className="item-name text-capitalize">
-                            {source.name}
-                        </Col>
+                        <Col className="item-name">{source.name}</Col>
                         <Col xs="auto">
                             <ButtonToolbar>
                                 <Button
