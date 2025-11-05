@@ -18,10 +18,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
-import { OFFICIAL } from '../../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import {
-    getSources,
+    getExternalSourcesSorted,
     showAddSource,
     showRemoveSource,
 } from '../../sources/sourcesSlice';
@@ -29,7 +28,7 @@ import {
 export default () => {
     const dispatch = useLauncherDispatch();
 
-    const sources = useLauncherSelector(getSources);
+    const sources = useLauncherSelector(getExternalSourcesSorted);
 
     return (
         <Card body id="app-sources">
@@ -46,37 +45,33 @@ export default () => {
                     </Button>
                 </Col>
             </Row>
-            {sources
-                .filter(source => source.name !== OFFICIAL)
-                .map(source => (
-                    <Row key={source.name}>
-                        <Col className="item-name">{source.name}</Col>
-                        <Col xs="auto">
-                            <ButtonToolbar>
-                                <Button
-                                    variant="outline-secondary"
-                                    size="sm"
-                                    onClick={() =>
-                                        clipboard.writeText(source.url)
-                                    }
-                                    title="Copy URL to clipboard"
-                                >
-                                    Copy URL
-                                </Button>
-                                <Button
-                                    variant="outline-secondary"
-                                    size="sm"
-                                    onClick={() =>
-                                        dispatch(showRemoveSource(source.name))
-                                    }
-                                    title="Remove source and associated apps"
-                                >
-                                    Remove
-                                </Button>
-                            </ButtonToolbar>
-                        </Col>
-                    </Row>
-                ))}
+            {sources.map(source => (
+                <Row key={source.name}>
+                    <Col className="item-name">{source.name}</Col>
+                    <Col xs="auto">
+                        <ButtonToolbar>
+                            <Button
+                                variant="outline-secondary"
+                                size="sm"
+                                onClick={() => clipboard.writeText(source.url)}
+                                title="Copy URL to clipboard"
+                            >
+                                Copy URL
+                            </Button>
+                            <Button
+                                variant="outline-secondary"
+                                size="sm"
+                                onClick={() =>
+                                    dispatch(showRemoveSource(source.name))
+                                }
+                                title="Remove source and associated apps"
+                            >
+                                Remove
+                            </Button>
+                        </ButtonToolbar>
+                    </Col>
+                </Row>
+            ))}
         </Card>
     );
 };
