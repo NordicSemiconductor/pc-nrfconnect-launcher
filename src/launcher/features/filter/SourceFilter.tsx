@@ -8,13 +8,19 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+import { allStandardSourceNames } from '../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { getAllSourceNamesSorted } from '../sources/sourcesSlice';
+import { getExternalSourcesSorted } from '../sources/sourcesSlice';
 import { getHiddenSources, hideSource, showSource } from './filterSlice';
 
 export default () => {
     const dispatch = useLauncherDispatch();
-    const allSourceNames = useLauncherSelector(getAllSourceNamesSorted);
+
+    const externalSourceNames = useLauncherSelector(
+        getExternalSourcesSorted,
+    ).map(({ name }) => name);
+    const allSourceNames = [...allStandardSourceNames, ...externalSourceNames];
+
     const hiddenSources = useLauncherSelector(getHiddenSources);
 
     return (

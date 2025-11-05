@@ -178,16 +178,10 @@ export const getSourcesWithRestrictedAccessLevel = (state: RootState) =>
             needsAuthentication(source.url) && !isDeprecatedSource(source),
     );
 
-export const getAllSourceNamesSorted = (state: RootState): SourceName[] => {
-    const withoutStandardSources = getSources(state)
-        .map(source => source.name)
-        .filter(source => !allStandardSourceNames.includes(source));
-
-    return [
-        ...allStandardSourceNames,
-        ...withoutStandardSources.sort((a, b) => a.localeCompare(b)),
-    ];
-};
+export const getExternalSourcesSorted = (state: RootState): Source[] =>
+    getSources(state)
+        .filter(source => !allStandardSourceNames.includes(source.name))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
 export const getIsAddSourceVisible = (state: RootState) =>
     state.sources.isAddSourceVisible;
