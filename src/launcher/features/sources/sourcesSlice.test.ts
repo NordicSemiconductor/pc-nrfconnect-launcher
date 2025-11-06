@@ -8,38 +8,42 @@ import dispatchTo from '@nordicsemiconductor/pc-nrfconnect-shared/test/dispatchT
 import { combineReducers } from 'redux';
 
 import { reducer as rootReducer } from '../../store';
-import { getAllSourceNamesSorted, setSources } from './sourcesSlice';
+import { getExternalSourcesSorted, setSources } from './sourcesSlice';
 
 const reducer = combineReducers(rootReducer);
 
 describe('sourcesSlice', () => {
-    describe('getAllSourceNamesSorted', () => {
-        it('returns standard sources (official and local) when no custom sources are added', () => {
+    describe('getExternalSourcesSorted', () => {
+        it('is empty when no custom sources are added', () => {
             const state = dispatchTo(reducer);
 
-            expect(getAllSourceNamesSorted(state)).toStrictEqual([
-                'official',
-                'local',
-            ]);
+            expect(getExternalSourcesSorted(state)).toEqual([]);
         });
 
-        it('returns standard sources first, followed by custom sources in alphabetical order', () => {
+        it('filters out standard sources', () => {
             const state = dispatchTo(reducer, [
                 setSources([
-                    { url: 'mocked', name: 'other-A' },
-                    { url: 'mocked', name: 'Other-B' },
                     { url: 'mocked', name: 'official' },
                     { url: 'mocked', name: 'local' },
-                    { url: 'mocked', name: 'other-C' },
                 ]),
             ]);
 
-            expect(getAllSourceNamesSorted(state)).toStrictEqual([
-                'official',
-                'local',
-                'other-A',
-                'Other-B',
-                'other-C',
+            expect(getExternalSourcesSorted(state)).toStrictEqual([]);
+        });
+
+        it('sorts', () => {
+            const state = dispatchTo(reducer, [
+                setSources([
+                    { url: 'mocked', name: 'other-A' },
+                    { url: 'mocked', name: 'other-C' },
+                    { url: 'mocked', name: 'Other-B' },
+                ]),
+            ]);
+
+            expect(getExternalSourcesSorted(state)).toStrictEqual([
+                { url: 'mocked', name: 'other-A' },
+                { url: 'mocked', name: 'Other-B' },
+                { url: 'mocked', name: 'other-C' },
             ]);
         });
     });
