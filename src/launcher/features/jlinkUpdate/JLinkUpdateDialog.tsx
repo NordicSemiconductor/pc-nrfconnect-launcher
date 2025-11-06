@@ -32,6 +32,27 @@ export default () => {
     );
     const installedVersion = useLauncherSelector(getInstalledJLinkVersion);
 
+    const doInstallJLink = () => {
+        if (versionToBeInstalled) {
+            dispatch(showProgressDialog());
+            inMain
+                .installJLink(
+                    versionToBeInstalled.toLowerCase() ===
+                        bundledJlinkVersion.toLowerCase(),
+                )
+                .catch(error => {
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to update SEGGER J-Link: ${describeError(
+                                error,
+                            )}`,
+                        ),
+                    );
+                    dispatch(reset());
+                });
+        }
+    };
+
     return (
         <GenericDialog
             isVisible={isVisible}
@@ -42,29 +63,7 @@ export default () => {
             }
             footer={
                 <>
-                    <DialogButton
-                        variant="primary"
-                        onClick={() => {
-                            if (versionToBeInstalled) {
-                                dispatch(showProgressDialog());
-                                inMain
-                                    .installJLink(
-                                        versionToBeInstalled.toLowerCase() ===
-                                            bundledJlinkVersion.toLowerCase(),
-                                    )
-                                    .catch(error => {
-                                        dispatch(
-                                            ErrorDialogActions.showDialog(
-                                                `Unable to update SEGGER J-Link: ${describeError(
-                                                    error,
-                                                )}`,
-                                            ),
-                                        );
-                                        dispatch(reset());
-                                    });
-                            }
-                        }}
-                    >
+                    <DialogButton variant="primary" onClick={doInstallJLink}>
                         Install
                     </DialogButton>
                     {installedVersion && (
