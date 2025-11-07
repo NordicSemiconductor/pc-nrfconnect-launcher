@@ -6,10 +6,9 @@
 
 import React from 'react';
 import {
+    ConfirmationDialog,
     describeError,
-    DialogButton,
     ErrorDialogActions,
-    GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/jlink';
@@ -54,35 +53,28 @@ export default () => {
     };
 
     return (
-        <GenericDialog
+        <ConfirmationDialog
             isVisible={isVisible}
             title={
                 installedVersion
                     ? 'Compatible SEGGER J-Link version available'
                     : 'Install SEGGER J-Link'
             }
-            footer={
-                <>
-                    <DialogButton variant="primary" onClick={doInstallJLink}>
-                        Install
-                    </DialogButton>
-                    {installedVersion && (
-                        <DialogButton
-                            variant="secondary"
-                            onClick={() => {
-                                dispatch(reset());
-                                dispatch(continueUpdateProcess());
-                            }}
-                        >
-                            Close
-                        </DialogButton>
-                    )}
-                </>
+            confirmLabel="Install"
+            onConfirm={doInstallJLink}
+            cancelLabel="Close"
+            onCancel={
+                installedVersion
+                    ? () => {
+                          dispatch(reset());
+                          dispatch(continueUpdateProcess());
+                      }
+                    : undefined
             }
         >
             {installedVersion
                 ? `Nordic Semiconductor recommends using version ${versionToBeInstalled} of SEGGER J-Link. You currently have version ${installedVersion} installed. Would you like to install the recommended version now?`
                 : `nRF Connect for Desktop requires SEGGER J-Link. The recommended version ${versionToBeInstalled} is available for installation. Click "Install" to start.`}
-        </GenericDialog>
+        </ConfirmationDialog>
     );
 };
