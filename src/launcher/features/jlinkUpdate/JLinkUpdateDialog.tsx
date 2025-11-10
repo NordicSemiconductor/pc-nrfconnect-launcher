@@ -6,10 +6,9 @@
 
 import React from 'react';
 import {
+    ConfirmationDialog,
     describeError,
-    DialogButton,
     ErrorDialogActions,
-    GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { inMain } from '../../../ipc/jlink';
@@ -32,58 +31,50 @@ export default () => {
     );
     const installedVersion = useLauncherSelector(getInstalledJLinkVersion);
 
+    const doInstallJLink = () => {
+        if (versionToBeInstalled) {
+            dispatch(showProgressDialog());
+            inMain
+                .installJLink(
+                    versionToBeInstalled.toLowerCase() ===
+                        bundledJlinkVersion.toLowerCase(),
+                )
+                .catch(error => {
+                    dispatch(
+                        ErrorDialogActions.showDialog(
+                            `Unable to update SEGGER J-Link: ${describeError(
+                                error,
+                            )}`,
+                        ),
+                    );
+                    dispatch(reset());
+                });
+        }
+    };
+
     return (
-        <GenericDialog
+        <ConfirmationDialog
             isVisible={isVisible}
             title={
                 installedVersion
                     ? 'Compatible SEGGER J-Link version available'
                     : 'Install SEGGER J-Link'
             }
-            footer={
-                <>
-                    <DialogButton
-                        variant="primary"
-                        onClick={() => {
-                            if (versionToBeInstalled) {
-                                dispatch(showProgressDialog());
-                                inMain
-                                    .installJLink(
-                                        versionToBeInstalled.toLowerCase() ===
-                                            bundledJlinkVersion.toLowerCase(),
-                                    )
-                                    .catch(error => {
-                                        dispatch(
-                                            ErrorDialogActions.showDialog(
-                                                `Unable to update SEGGER J-Link: ${describeError(
-                                                    error,
-                                                )}`,
-                                            ),
-                                        );
-                                        dispatch(reset());
-                                    });
-                            }
-                        }}
-                    >
-                        Install
-                    </DialogButton>
-                    {installedVersion && (
-                        <DialogButton
-                            variant="secondary"
-                            onClick={() => {
-                                dispatch(reset());
-                                dispatch(continueUpdateProcess());
-                            }}
-                        >
-                            Close
-                        </DialogButton>
-                    )}
-                </>
+            confirmLabel="Install"
+            onConfirm={doInstallJLink}
+            cancelLabel="Close"
+            onCancel={
+                installedVersion
+                    ? () => {
+                          dispatch(reset());
+                          dispatch(continueUpdateProcess());
+                      }
+                    : undefined
             }
         >
             {installedVersion
                 ? `Nordic Semiconductor recommends using version ${versionToBeInstalled} of SEGGER J-Link. You currently have version ${installedVersion} installed. Would you like to install the recommended version now?`
                 : `nRF Connect for Desktop requires SEGGER J-Link. The recommended version ${versionToBeInstalled} is available for installation. Click "Install" to start.`}
-        </GenericDialog>
+        </ConfirmationDialog>
     );
 };
