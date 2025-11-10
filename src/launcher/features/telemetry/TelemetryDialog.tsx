@@ -27,11 +27,11 @@ export default () => {
             cancelLabel="Decline"
             onConfirm={() => {
                 dispatch(confirmSendingTelemetry());
-                continueLauncherInitialisation();
+                dispatch(continueLauncherInitialisation());
             }}
             onCancel={() => {
                 dispatch(cancelSendingTelemetry());
-                continueLauncherInitialisation();
+                dispatch(continueLauncherInitialisation());
             }}
         >
             <div className="user-data-policy">
