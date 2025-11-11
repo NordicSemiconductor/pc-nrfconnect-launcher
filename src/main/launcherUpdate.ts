@@ -105,6 +105,10 @@ export const cancelUpdate = () => {
 
 autoUpdater.autoDownload = false;
 autoUpdater.logger = logger;
-autoUpdater.channel = getUpdateChannel() ?? null;
+
+const updateChannel = getUpdateChannel();
+if (updateChannel != null) {
+    autoUpdater.channel = updateChannel;
+}
 
 setUseChineseUpdateServer(getUseChineseAppServer());
