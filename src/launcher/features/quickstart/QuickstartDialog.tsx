@@ -47,6 +47,7 @@ export default () => {
             isVisible={isVisible}
             closeOnEsc
             closeOnUnfocus
+            onHide={() => dispatch(quickStartInfoWasShown())}
             title="Quick Start"
             footer={
                 <>

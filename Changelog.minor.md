@@ -58,6 +58,7 @@ release the new version.
 - #1123: Asynchronicity of `openFile` and `openUrl`.
 - #1135: Jumpy progress bar.
 - #1215: Sources without apps did not appear in the filter.
+- #1221: The quickstart dialog did not close on Esc.
 
 ## 5.2.0
 
