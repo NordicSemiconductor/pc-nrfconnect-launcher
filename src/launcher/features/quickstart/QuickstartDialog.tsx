@@ -5,10 +5,7 @@
  */
 
 import React from 'react';
-import {
-    DialogButton,
-    GenericDialog,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { ConfirmationDialog } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getIsAppleSiliconDialogVisible } from '../appleSilicon/appleSiliconSlice';
@@ -43,44 +40,26 @@ export default () => {
         quickStartApp != null;
 
     return (
-        <GenericDialog
+        <ConfirmationDialog
             isVisible={isVisible}
-            closeOnEsc
-            closeOnUnfocus
             title="Quick Start"
-            footer={
-                <>
-                    <DialogButton
-                        variant="primary"
-                        onClick={() => {
-                            if (quickStartApp == null) {
-                                throw new Error(
-                                    'Dialog must not be visible if Quick Start app is not available.',
-                                );
-                            }
+            confirmLabel="Open Quick Start app"
+            onConfirm={() => {
+                if (quickStartApp == null) {
+                    throw new Error(
+                        'Dialog must not be visible if Quick Start app is not available.',
+                    );
+                }
 
-                            dispatch(
-                                checkCompatibilityThenLaunch(
-                                    quickStartApp,
-                                    true,
-                                ),
-                            );
-                        }}
-                    >
-                        Open Quick Start app
-                    </DialogButton>
-                    <DialogButton
-                        onClick={() => dispatch(quickStartInfoWasShown())}
-                    >
-                        Close
-                    </DialogButton>
-                </>
-            }
+                dispatch(checkCompatibilityThenLaunch(quickStartApp, true));
+            }}
+            cancelLabel="Close"
+            onCancel={() => dispatch(quickStartInfoWasShown())}
         >
             <p>
                 Do you have a new development kit? Use the Quick Start app to
                 get up and running as fast as possible.
             </p>
-        </GenericDialog>
+        </ConfirmationDialog>
     );
 };
