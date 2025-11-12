@@ -20,10 +20,7 @@ export default () => {
     const externalSourceNames = useLauncherSelector(
         getExternalSourcesSorted,
     ).map(({ name }) => name);
-    const allSourceNames = [
-        ...allStandardSourceNames.map(capitalize),
-        ...externalSourceNames,
-    ];
+    const allSourceNames = [...allStandardSourceNames, ...externalSourceNames];
 
     const hiddenSources = useLauncherSelector(getHiddenSources);
 
@@ -35,7 +32,11 @@ export default () => {
 
                 return (
                     <Form.Check
-                        label={sourceName}
+                        label={
+                            allStandardSourceNames.includes(sourceName)
+                                ? capitalize(sourceName)
+                                : sourceName
+                        }
                         id={`cb-${sourceName}`}
                         key={`cb-${i + 1}`}
                         className="mx-3 px-4 py-1"
