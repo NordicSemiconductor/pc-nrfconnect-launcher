@@ -46,7 +46,7 @@ release the new version.
   the used Electron version.
 - #1210: Made launcher more robust against nrfutil failures.
 - #1213: Telemetry: Stop sending dependency events.
-- #1216: Remove capitalisation of source names.
+- #1216, #1225: Remove capitalisation of source names.
 - #1216: Sort sources in settings view.
 - #1223: Create log for messages from the renderer process in
   `nrfconnect/logs/renderer.log`.
