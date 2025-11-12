@@ -48,6 +48,8 @@ release the new version.
 - #1213: Telemetry: Stop sending dependency events.
 - #1216: Remove capitalisation of source names.
 - #1216: Sort sources in settings view.
+- #1223: Create log for messages from the renderer process in
+  `nrfconnect/logs/renderer.log`.
 
 ### Fixed
 

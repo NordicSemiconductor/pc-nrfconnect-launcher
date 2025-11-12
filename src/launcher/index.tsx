@@ -8,7 +8,12 @@ import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, telemetry } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    logger,
+    render,
+    telemetry,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { setNrfutilLogger } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 
 import { startLauncherInitialisation } from './features/process/initialiseLauncher';
 import Root from './Root';
@@ -16,6 +21,10 @@ import store from './store';
 import registerIpcHandler from './util/registerIpcHandler';
 
 import '../../resources/css/launcher.scss';
+
+logger.initialise();
+setNrfutilLogger(logger);
+telemetry.setLogger(logger);
 
 telemetry.enableTelemetry();
 const { dispatch } = store;
