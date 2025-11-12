@@ -9,7 +9,7 @@ The following applications are available from nRF Connect for Desktop. All of th
 | Application           | Purpose                                                                          | Status |
 | --------------------- | -------------------------------------------------------------------------------- | ------ |
 | [Bluetooth Low Energy](https://docs.nordicsemi.com/bundle/nrf-connect-ble/page/index.html) | Configure and test Bluetooth Low Energy devices.   | Supported  |
-| [Board Configurator](https://docs.nordicsemi.com/bundle/nrf-connect-board-configurator/page/index.html) | Update the board configuration on Nordic Development kits.   | Experimental  |
+| [Board Configurator](https://docs.nordicsemi.com/bundle/nrf-connect-board-configurator/page/index.html) | Update the board configuration on Nordic Development kits.   | Supported  |
 | [Cellular Monitor](https://docs.nordicsemi.com/bundle/nrf-connect-cellularmonitor/page/index.html) | Cross-platform tool for Nordic Semiconductor nRF91 Series devices. It is used for capturing and analyzing modem traces to evaluate communication and view network parameters. Cellular Monitor replaced LTE Link Monitor and Trace Collector apps.  | Supported |
 | [Direct Test Mode](https://docs.nordicsemi.com/bundle/nrf-connect-direct-test-mode/page/index.html)  | Perform RF PHY testing of Bluetooth Low Energy devices with the Bluetooth specified Direct Test Mode. | Supported |
 | [Matter Cluster Editor](https://docs.nordicsemi.com/bundle/nrf-connect-matter-cluster-editor/page/index.html) | Create and edit Matter clusters, cluster extensions, and device types in accordance with the Matter Data Model.   | Supported  |
