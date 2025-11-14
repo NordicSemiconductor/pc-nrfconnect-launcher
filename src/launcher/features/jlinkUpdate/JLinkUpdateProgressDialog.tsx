@@ -26,7 +26,7 @@ export default () => {
     const isVisible = useLauncherSelector(isJLinkUpdateProgressDialogVisible);
     const progress = useLauncherSelector(getJLinkUpdateProgress);
     const finished =
-        progress && progress.step === 'install' && progress.percentage === 100;
+        progress?.step === 'install' && progress.percentage === 100;
 
     return (
         <GenericDialog
