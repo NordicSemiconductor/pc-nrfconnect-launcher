@@ -48,6 +48,7 @@ export default () => {
                         ),
                     );
                     dispatch(reset());
+                    dispatch(continueUpdateProcess());
                 });
         }
     };
