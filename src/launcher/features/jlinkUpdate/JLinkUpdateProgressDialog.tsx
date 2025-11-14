@@ -35,7 +35,6 @@ export default () => {
                 isJLinkInstalled ? 'Updating' : 'Installing'
             } SEGGER J-Link`}
             showSpinner={!finished}
-            onHide={() => dispatch(continueUpdateProcess())}
             footer={
                 <DialogButton
                     onClick={() => {
