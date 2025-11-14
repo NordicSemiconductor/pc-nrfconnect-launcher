@@ -25,8 +25,13 @@ export default () => {
     const isJLinkInstalled = !!useLauncherSelector(getInstalledJLinkVersion);
     const isVisible = useLauncherSelector(isJLinkUpdateProgressDialogVisible);
     const progress = useLauncherSelector(getJLinkUpdateProgress);
+    // Currently, windows installation is expected to always fail and we therefore only detect that the installation process was started
+    const finishedWindows =
+        process.platform === 'win32' && progress && progress.step === 'install';
     const finished =
         progress?.step === 'install' && progress.percentage === 100;
+
+    console.log(progress, finished, finishedWindows);
 
     return (
         <GenericDialog
@@ -34,14 +39,15 @@ export default () => {
             title={`${
                 isJLinkInstalled ? 'Updating' : 'Installing'
             } SEGGER J-Link`}
-            showSpinner={!finished}
+            showSpinner={!finished && !finishedWindows}
+            onHide={() => dispatch(continueUpdateProcess())}
             footer={
                 <DialogButton
                     onClick={() => {
                         dispatch(reset());
                         dispatch(continueUpdateProcess());
                     }}
-                    disabled={!finished}
+                    disabled={!finished && !finishedWindows}
                 >
                     Close
                 </DialogButton>
@@ -63,8 +69,15 @@ export default () => {
                 'Installing SEGGER J-Link...'}
             {progress?.step === 'install' &&
                 !finished &&
-                process.platform !== 'linux' &&
-                'SEGGER J-Link is being installed in a separate window...'}
+                process.platform !== 'linux' && (
+                    <div>
+                        SEGGER J-Link is being installed in a separate window...
+                        <br />
+                        To remove potential warnings about outdated SEGGER
+                        J-Link versions, restart the app after finishing the
+                        install.
+                    </div>
+                )}
             {finished && 'SEGGER J-Link installation completed.'}
         </GenericDialog>
     );

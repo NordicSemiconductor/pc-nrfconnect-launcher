@@ -40,14 +40,18 @@ export default () => {
                         bundledJlinkVersion.toLowerCase(),
                 )
                 .catch(error => {
-                    dispatch(
-                        ErrorDialogActions.showDialog(
-                            `Unable to update SEGGER J-Link: ${describeError(
-                                error,
-                            )}`,
-                        ),
-                    );
-                    dispatch(reset());
+                    // Don't run this for Windows J-Link installation
+                    // since it kills process due to installing for all users
+                    if (process.platform !== 'win32') {
+                        dispatch(
+                            ErrorDialogActions.showDialog(
+                                `Unable to update SEGGER J-Link: ${describeError(
+                                    error,
+                                )}`,
+                            ),
+                        );
+                        dispatch(reset());
+                    }
                     dispatch(continueUpdateProcess());
                 });
         }
