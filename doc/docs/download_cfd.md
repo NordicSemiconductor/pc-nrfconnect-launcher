@@ -14,6 +14,12 @@ See the [Launcher overview](overview_cfd.md) and [Installing nRF Connect for Des
 
 All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
+!!! info "Tip"
+
+    You can enable the use of Nordic Semiconductor's https://files.nordicsemi.cn/ for installing and updating nRF Connect for Desktop and its apps.
+    This server has a better connection in the People's Republic of China.
+    Go to the [Settings tab](overview_cfd.md#mainland-china-app-server) in nRF Connect for Desktop to enable this option.
+
 ## Additional requirements
 
 Make sure you meet the following requirements for your operating system:

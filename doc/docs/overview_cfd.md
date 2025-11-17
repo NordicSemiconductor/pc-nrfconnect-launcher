@@ -67,9 +67,8 @@ For detailed information, see [Working with identity tokens](working_with_authen
 
 ### Mainland China server
 
-This section allows you to enable the use of https://files.nordicsemi.cn/ for
-installing and updating nRF Connect for Desktop and its apps. This server has
-a better connection in the People&apos;s Republic of China.
+This section allows you to enable the use of https://files.nordicsemi.cn/ for installing and updating nRF Connect for Desktop and its apps.
+This server has a better connection in the People's Republic of China.
 
 ### Usage statistics
 
