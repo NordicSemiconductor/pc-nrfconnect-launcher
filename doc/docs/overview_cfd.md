@@ -65,9 +65,11 @@ Here you can manage your identity token, which allows you to access restricted a
 
 For detailed information, see [Working with identity tokens](working_with_authentications_tokens.md).
 
-### Mainland China app server
+### Mainland China server
 
-This section allows you to enable the use of a dedicated server for better connectivity in the People's Republic of China. When enabled, the launcher will use https://files.nordicsemi.cn to download publicly available apps, which provides improved connection speeds within mainland China.
+This section allows you to enable the use of https://files.nordicsemi.cn/ for
+installing and updating nRF Connect for Desktop and its apps. This server has
+a better connection in the People&apos;s Republic of China.
 
 ### Usage statistics
 
