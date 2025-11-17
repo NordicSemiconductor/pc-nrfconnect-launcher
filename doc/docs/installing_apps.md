@@ -6,6 +6,12 @@ All applications available from nRF Connect for Desktop share the same installat
 
 Before you can install any of the apps, [download and install](download_cfd.md) nRF Connect for Desktop (version 4.1 or later).
 
+!!! info "Tip"
+
+    You can enable the use of Nordic Semiconductor's https://files.nordicsemi.cn/ for installing and updating nRF Connect for Desktop and its apps.
+    This server has a better connection in the People's Republic of China.
+    Go to the [Settings tab](overview_cfd.md#mainland-china-app-server) in nRF Connect for Desktop to enable this option.
+
 ## Installing an app
 
 To install any of the apps in nRF Connect for Desktop:

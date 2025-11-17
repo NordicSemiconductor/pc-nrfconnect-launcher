@@ -32,16 +32,18 @@ export default () => {
         <Card body>
             <Row>
                 <Col>
-                    <Card.Title>Mainland China app server</Card.Title>
+                    <Card.Title>Mainland China server</Card.Title>
                 </Col>
             </Row>
             <p className="small text-muted">
-                For all publicly available apps, use the server{' '}
-                <ExternalLink href="https://files.nordicsemi.cn/" />, which has
-                a better connection in the People&apos;s Republic of China.
+                You can enable the server{' '}
+                <ExternalLink href="https://files.nordicsemi.cn/" /> for
+                installing and updating nRF Connect for Desktop and its apps.
+                This server has a better connection in the People&apos;s
+                Republic of China.
             </p>
             <Toggle
-                label="Use Mainland China app server"
+                label="Use Mainland China server"
                 onToggle={() => {
                     dispatch(setUseChineseAppServer(!useChineseAppServer));
                     inMain.setUseChineseUpdateServer(!useChineseAppServer);
