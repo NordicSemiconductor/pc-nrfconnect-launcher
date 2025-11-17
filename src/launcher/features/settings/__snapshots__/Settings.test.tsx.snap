@@ -177,14 +177,14 @@ exports[`SettingsView should render check for updates completed, with everything
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -194,7 +194,7 @@ exports[`SettingsView should render check for updates completed, with everything
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -203,7 +203,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -516,14 +516,14 @@ exports[`SettingsView should render check for updates completed, with updates av
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -533,7 +533,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -542,7 +542,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -860,14 +860,14 @@ exports[`SettingsView should render the token information 1`] = `
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -877,7 +877,7 @@ exports[`SettingsView should render the token information 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -886,7 +886,7 @@ exports[`SettingsView should render the token information 1`] = `
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -1149,14 +1149,14 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1166,7 +1166,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1175,7 +1175,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -1437,14 +1437,14 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1454,7 +1454,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1463,7 +1463,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -1725,14 +1725,14 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -1742,7 +1742,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -1751,7 +1751,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
@@ -2017,14 +2017,14 @@ exports[`SettingsView should render with last update check date 1`] = `
                   <div
                     class="card-title h5"
                   >
-                    Mainland China app server
+                    Mainland China server
                   </div>
                 </div>
               </div>
               <p
                 class="small text-muted"
               >
-                For all publicly available apps, use the server
+                You can enable the server
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
@@ -2034,7 +2034,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                 >
                   https://files.nordicsemi.cn/
                 </a>
-                , which has a better connection in the People's Republic of China.
+                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
               </p>
               <div
                 class="toggle"
@@ -2043,7 +2043,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   <span
                     class="toggle-label"
                   >
-                    Use Mainland China app server
+                    Use Mainland China server
                   </span>
                   <div
                     class="toggle-bar toggle-bar-primary"
