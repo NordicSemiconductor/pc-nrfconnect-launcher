@@ -9,7 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { isDownloadable, isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
-import { removeDownloadableApp } from '../appsEffects';
+import { removeDownloadableAppQuickly } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
@@ -22,7 +22,7 @@ const UninstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             title={`Remove ${app.displayName}`}
             disabled={isInProgress(app)}
             onClick={() =>
-                dispatch(removeDownloadableApp(app, app.currentVersion))
+                dispatch(removeDownloadableAppQuickly(app, app.currentVersion))
             }
         >
             {app.progress.isRemoving ? 'Uninstalling...' : 'Uninstall'}

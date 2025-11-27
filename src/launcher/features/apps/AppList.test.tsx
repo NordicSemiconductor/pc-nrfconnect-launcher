@@ -23,7 +23,7 @@ import AppList from './AppList';
 import {
     checkCompatibilityThenLaunch,
     installDownloadableAppQuickly,
-    removeDownloadableApp,
+    removeDownloadableAppQuickly,
 } from './appsEffects';
 import {
     addDownloadableApps,
@@ -171,7 +171,7 @@ describe('AppList', () => {
     });
 
     it('should invoke removeDownloadableApp with app name and source when remove button is clicked', async () => {
-        mockThunk(removeDownloadableApp);
+        mockThunk(removeDownloadableAppQuickly);
         const user = userEvent.setup();
 
         const { container } = render(
@@ -189,7 +189,7 @@ describe('AppList', () => {
             screen.getByTitle(`Remove ${installedApp.displayName}`),
         );
 
-        expect(removeDownloadableApp).toHaveBeenCalledWith(
+        expect(removeDownloadableAppQuickly).toHaveBeenCalledWith(
             expect.objectContaining(installedApp),
             '4.5.6',
         );

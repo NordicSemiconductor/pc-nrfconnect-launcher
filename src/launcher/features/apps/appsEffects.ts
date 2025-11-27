@@ -198,7 +198,7 @@ export const updateDownloadableAppQuickly =
         return dispatch(install(app));
     };
 
-export const removeDownloadableApp =
+export const removeDownloadableAppQuickly =
     (app: AppSpec, currentVersion: string): AppThunk =>
     async dispatch => {
         telemetry.sendEvent(EventAction.APP_MANAGEMENT, {
