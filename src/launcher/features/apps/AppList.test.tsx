@@ -22,7 +22,7 @@ import { setCheckForUpdatesAtStartup } from '../settings/settingsSlice';
 import AppList from './AppList';
 import {
     checkCompatibilityThenLaunch,
-    installDownloadableApp,
+    installDownloadableAppQuickly,
     removeDownloadableApp,
 } from './appsEffects';
 import {
@@ -152,7 +152,7 @@ describe('AppList', () => {
 
     it('should invoke installDownloadableApp with app name and source when install button is clicked', async () => {
         const user = userEvent.setup();
-        mockThunk(installDownloadableApp);
+        mockThunk(installDownloadableAppQuickly);
 
         render(
             <Provider
@@ -165,7 +165,7 @@ describe('AppList', () => {
             screen.getByTitle(`Install ${uninstalledApp.displayName}`),
         );
 
-        expect(installDownloadableApp).toHaveBeenCalledWith(
+        expect(installDownloadableAppQuickly).toHaveBeenCalledWith(
             expect.objectContaining(uninstalledApp),
         );
     });

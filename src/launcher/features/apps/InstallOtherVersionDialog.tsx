@@ -17,7 +17,7 @@ import {
     getInstallOtherVersionDialog,
     hideInstallOtherVersionDialog,
 } from './appDialogsSlice';
-import { installDownloadableApp } from './appsEffects';
+import { installDownloadableAppQuickly } from './appsEffects';
 
 import styles from './installOtherVersionDialog.module.scss';
 
@@ -86,7 +86,7 @@ export default () => {
                 }
 
                 dispatch(
-                    installDownloadableApp(
+                    installDownloadableAppQuickly(
                         installOtherVersionDialog.app,
                         versionToInstall,
                     ),

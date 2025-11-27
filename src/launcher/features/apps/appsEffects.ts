@@ -164,7 +164,7 @@ const install =
         dispatch(resetAppInstallProgress(app));
     };
 
-export const installDownloadableApp =
+export const installDownloadableAppQuickly =
     (app: DownloadableApp, toVersion?: string): AppThunk =>
     dispatch => {
         telemetry.sendEvent(EventAction.APP_MANAGEMENT, {
