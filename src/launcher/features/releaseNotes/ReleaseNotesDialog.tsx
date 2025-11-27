@@ -21,7 +21,7 @@ import {
     UninstalledDownloadableApp,
 } from '../../../ipc/apps';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { updateDownloadableApp } from '../apps/appsEffects';
+import { updateDownloadableAppQuickly } from '../apps/appsEffects';
 import { getDownloadableApp } from '../apps/appsSlice';
 import { getReleaseNotesDialog, hide } from './releaseNotesDialogSlice';
 
@@ -57,7 +57,7 @@ export default () => {
                         <DialogButton
                             variant="primary"
                             onClick={() => {
-                                dispatch(updateDownloadableApp(app));
+                                dispatch(updateDownloadableAppQuickly(app));
                                 hideDialog();
                             }}
                         >

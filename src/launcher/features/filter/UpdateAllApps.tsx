@@ -8,7 +8,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
-import { updateDownloadableApp } from '../apps/appsEffects';
+import { updateDownloadableAppQuickly } from '../apps/appsEffects';
 import { getUpdatableVisibleApps } from '../apps/appsSlice';
 
 export default () => {
@@ -17,7 +17,7 @@ export default () => {
 
     const updateAllApps = () =>
         updatableApps.forEach(app => {
-            dispatch(updateDownloadableApp(app));
+            dispatch(updateDownloadableAppQuickly(app));
         });
 
     if (updatableApps.length === 0) return null;
