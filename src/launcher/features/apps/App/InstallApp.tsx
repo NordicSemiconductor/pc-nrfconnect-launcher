@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 
 import { isInstalled, isWithdrawn } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
-import { installDownloadableApp } from '../appsEffects';
+import { installDownloadableAppQuickly } from '../appsEffects';
 import { DisplayedApp, isInProgress } from '../appsSlice';
 
 const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
@@ -21,7 +21,7 @@ const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             variant="outline-secondary"
             title={`Install ${app.displayName}`}
             disabled={isInProgress(app)}
-            onClick={() => dispatch(installDownloadableApp(app))}
+            onClick={() => dispatch(installDownloadableAppQuickly(app))}
         >
             {app.progress.isInstalling ? 'Installing...' : 'Install'}
         </Button>
