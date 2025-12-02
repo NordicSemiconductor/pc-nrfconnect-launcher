@@ -13,6 +13,7 @@ import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import formatDate from 'date-fns/format';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import NrfCard from '../../../util/NrfCard';
 import { getUpdateCheckStatus } from '../../apps/appsSlice';
 import { startUpdateProcess } from '../../process/updateProcess';
 import {
@@ -33,7 +34,7 @@ export default () => {
         useLauncherSelector(getUpdateCheckStatus);
 
     return (
-        <Card body>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>Updates</Card.Title>
@@ -72,6 +73,6 @@ export default () => {
                 variant="primary"
                 handleColor={white}
             />
-        </Card>
+        </NrfCard>
     );
 };

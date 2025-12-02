@@ -19,6 +19,7 @@ import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import NrfCard from '../../../util/NrfCard';
 import {
     getExternalSourcesSorted,
     showAddSource,
@@ -31,7 +32,7 @@ export default () => {
     const sources = useLauncherSelector(getExternalSourcesSorted);
 
     return (
-        <Card body>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>App sources</Card.Title>
@@ -74,6 +75,6 @@ export default () => {
                     </Col>
                 </Row>
             ))}
-        </Card>
+        </NrfCard>
     );
 };
