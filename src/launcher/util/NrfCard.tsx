@@ -7,6 +7,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 
-const NrfCard: React.FC = ({ children }) => <Card body>{children}</Card>;
+const NrfCard: React.FC = ({ children }) => (
+    <Card body className="tw-mt-4 first:tw-mt-0">
+        {children}
+    </Card>
+);
 
 export default NrfCard;
