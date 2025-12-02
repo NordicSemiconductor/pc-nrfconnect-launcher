@@ -27,6 +27,7 @@ import * as artifactoryToken from '../ipc/artifactoryToken';
 import * as desktopShortcut from '../ipc/createDesktopShortcut';
 import * as jlink from '../ipc/jlink';
 import * as launcherUpdate from '../ipc/launcherUpdate';
+import * as prototypeAccount from '../ipc/prototypeAccount';
 import * as proxyLogin from '../ipc/proxyLogin';
 import * as sources from '../ipc/sources';
 import {
@@ -52,6 +53,7 @@ import {
     startUpdate,
 } from './launcherUpdate';
 import { openFile, openFileLocation, openUrl } from './open';
+import { logIn } from './prototypeAccount';
 import { callRegisteredCallback } from './proxyLogins';
 import {
     closeSerialPort,
@@ -78,6 +80,8 @@ const endPreventingSleep = (id: number) => powerSaveBlocker.stop(id);
 
 export default () => {
     Store.initRenderer();
+
+    prototypeAccount.forRenderer.registerLogIn(logIn);
 
     artifactoryToken.forRenderer.registerGetTokenInformation(
         getTokenInformation,

@@ -19,6 +19,7 @@ import {
     setUseChineseAppServer as setPersistedUseChineseAppServer,
 } from '../../../common/persistedStore';
 import type { TokenInformation } from '../../../ipc/artifactoryToken';
+import type { PrototypeAccountInformation } from '../../../ipc/prototypeAccount';
 import type { RootState } from '../../store';
 
 export type State = {
@@ -28,6 +29,7 @@ export type State = {
     isAddArtifactoryTokenVisible: boolean;
     isRemoveArtifactoryTokenVisible: boolean;
     artifactoryTokenInformation?: TokenInformation;
+    prototypeAccountInformation?: PrototypeAccountInformation;
     useChineseAppServer: boolean;
 };
 
@@ -74,6 +76,7 @@ const slice = createSlice({
         hideRemoveArtifactoryToken(state) {
             state.isRemoveArtifactoryTokenVisible = false;
         },
+
         setArtifactoryTokenInformation(
             state,
             { payload: tokenInformation }: PayloadAction<TokenInformation>,
@@ -85,6 +88,16 @@ const slice = createSlice({
             state.artifactoryTokenInformation = undefined;
             removePersistedArtifactoryTokenInformation();
         },
+
+        setPrototypeAccountInformation(
+            state,
+            {
+                payload: prototypeAccountInformation,
+            }: PayloadAction<PrototypeAccountInformation>,
+        ) {
+            state.prototypeAccountInformation = prototypeAccountInformation;
+        },
+
         setUseChineseAppServer(
             state,
             { payload: useChineseAppServer }: PayloadAction<boolean>,
@@ -105,6 +118,7 @@ export const {
     removeArtifactoryTokenInformation,
     setArtifactoryTokenInformation,
     setCheckForUpdatesAtStartup,
+    setPrototypeAccountInformation,
     setUseChineseAppServer,
     showAddArtifactoryToken,
     showRemoveArtifactoryToken,
@@ -115,13 +129,19 @@ export const getShouldCheckForUpdatesAtStartup = (state: RootState) =>
     state.settings.shouldCheckForUpdatesAtStartup;
 export const getIsUpdateCheckCompleteVisible = (state: RootState) =>
     state.settings.isUpdateCheckCompleteVisible;
+
 export const getIsQuickStartInfoShownBefore = (state: RootState) =>
     state.settings.isQuickStartInfoShownBefore;
+
 export const getArtifactoryTokenInformation = (state: RootState) =>
     state.settings.artifactoryTokenInformation;
 export const getIsAddArtifactoryTokenVisible = (state: RootState) =>
     state.settings.isAddArtifactoryTokenVisible;
 export const getIsRemoveArtifactoryTokenVisible = (state: RootState) =>
     state.settings.isRemoveArtifactoryTokenVisible;
+
+export const getPrototypeAccountInformation = (state: RootState) =>
+    state.settings.prototypeAccountInformation;
+
 export const getUseChineseAppServer = (state: RootState) =>
     state.settings.useChineseAppServer;

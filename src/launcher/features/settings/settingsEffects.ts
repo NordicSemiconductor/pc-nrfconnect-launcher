@@ -11,8 +11,12 @@ import {
 
 import cleanIpcErrorMessage from '../../../common/cleanIpcErrorMessage';
 import { inMain as artifactoryToken } from '../../../ipc/artifactoryToken';
+import { inMain as prototypeAccount } from '../../../ipc/prototypeAccount';
 import type { AppThunk } from '../../store';
-import { setArtifactoryTokenInformation } from './settingsSlice';
+import {
+    setArtifactoryTokenInformation,
+    setPrototypeAccountInformation,
+} from './settingsSlice';
 
 export const setArtifactoryToken =
     (token: string): AppThunk =>
@@ -32,3 +36,20 @@ export const setArtifactoryToken =
         }
         dispatch(setArtifactoryTokenInformation(tokenInformation));
     };
+
+export const logInProtype = (): AppThunk => async dispatch => {
+    let prototypeAccountInformation;
+    try {
+        prototypeAccountInformation = await prototypeAccount.logIn();
+    } catch (error) {
+        dispatch(
+            ErrorDialogActions.showDialog(
+                `Login failed.`,
+                undefined,
+                cleanIpcErrorMessage(describeError(error)),
+            ),
+        );
+        throw error;
+    }
+    dispatch(setPrototypeAccountInformation(prototypeAccountInformation));
+};

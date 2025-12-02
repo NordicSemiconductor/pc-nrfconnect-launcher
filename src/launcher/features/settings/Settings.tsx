@@ -13,6 +13,7 @@ import AddArtifactoryTokenDialog from './AddArtifactoryTokenDialog';
 import AppSources from './Cards/AppSources';
 import Authentication from './Cards/Authentication';
 import ChineseAppServer from './Cards/ChineseAppServer';
+import PrototypeLogin from './Cards/PrototypeLogin';
 import Updates from './Cards/Updates';
 import UsageStatistics from './Cards/UsageStatistics';
 import RemoveArtifactoryTokenDialog from './RemoveArtifactoryTokenDialog';
@@ -21,6 +22,7 @@ import UpdateCheckCompleteDialog from './UpdateCheckCompleteDialog';
 export default () => (
     <WithScrollbarContainer>
         <div className="settings-pane-container">
+            <PrototypeLogin />
             <Updates />
             <AppSources />
             <Authentication />
