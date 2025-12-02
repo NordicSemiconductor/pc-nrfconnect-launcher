@@ -31,7 +31,7 @@ export default () => {
     const sources = useLauncherSelector(getExternalSourcesSorted);
 
     return (
-        <Card body id="app-sources">
+        <Card body>
             <Row>
                 <Col>
                     <Card.Title>App sources</Card.Title>
@@ -46,8 +46,10 @@ export default () => {
                 </Col>
             </Row>
             {sources.map(source => (
-                <Row key={source.name}>
-                    <Col className="item-name">{source.name}</Col>
+                <Row key={source.name} className="tw-mt-4">
+                    <Col className="tw-text-md tw-font-medium">
+                        {source.name}
+                    </Col>
                     <Col xs="auto">
                         <ButtonToolbar>
                             <Button

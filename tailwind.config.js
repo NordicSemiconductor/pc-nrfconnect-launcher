@@ -6,6 +6,10 @@
 
 const baseConfig = require('@nordicsemiconductor/pc-nrfconnect-shared/config/tailwind.config.js');
 
-module.exports = {
+const config = {
     ...baseConfig,
 };
+
+config.theme.extend.fontSize.md = '0.9rem'; // 14.4px
+
+module.exports = config;
