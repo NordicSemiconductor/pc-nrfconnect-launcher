@@ -43,8 +43,8 @@ export default () => {
     const token = useLauncherSelector(getArtifactoryTokenInformation);
 
     return (
-        <Card body id="app-sources">
-            <Row>
+        <Card body>
+            <Row className="tw-mb-4">
                 <Col>
                     <Card.Title>Authentication</Card.Title>
                 </Col>

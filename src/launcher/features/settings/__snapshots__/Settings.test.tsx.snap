@@ -111,13 +111,12 @@ exports[`SettingsView should render check for updates completed, with everything
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -450,13 +449,12 @@ exports[`SettingsView should render check for updates completed, with updates av
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -787,13 +785,12 @@ exports[`SettingsView should render the token information 1`] = `
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -1083,13 +1080,12 @@ exports[`SettingsView should render when checking for updates 1`] = `
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -1371,13 +1367,12 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -1659,13 +1654,12 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
@@ -1951,13 +1945,12 @@ exports[`SettingsView should render with last update check date 1`] = `
           </div>
           <div
             class="card"
-            id="app-sources"
           >
             <div
               class="card-body"
             >
               <div
-                class="row"
+                class="tw-mb-4 row"
               >
                 <div
                   class="col"
