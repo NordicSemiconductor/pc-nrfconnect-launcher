@@ -13,6 +13,7 @@ import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import NrfCard from '../../../util/NrfCard';
 import {
     getArtifactoryTokenInformation,
     showAddArtifactoryToken,
@@ -43,8 +44,8 @@ export default () => {
     const token = useLauncherSelector(getArtifactoryTokenInformation);
 
     return (
-        <Card body id="app-sources">
-            <Row>
+        <NrfCard>
+            <Row className="tw-mb-4">
                 <Col>
                     <Card.Title>Authentication</Card.Title>
                 </Col>
@@ -89,6 +90,6 @@ export default () => {
                     </>
                 )}
             </Row>
-        </Card>
+        </NrfCard>
     );
 };

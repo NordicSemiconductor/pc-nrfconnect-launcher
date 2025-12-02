@@ -11,21 +11,22 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { app } from '@electron/remote';
 
+import NrfCard from '../../util/NrfCard';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 
 const appVersion = app.getVersion();
 
 export default () => (
     <WithScrollbarContainer>
-        <Card body>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>Version</Card.Title>
                 </Col>
             </Row>
             <p>nRF Connect for Desktop v{appVersion}</p>
-        </Card>
-        <Card body>
+        </NrfCard>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>Documentation</Card.Title>
@@ -38,8 +39,8 @@ export default () => (
             >
                 Open documentation
             </Button>
-        </Card>
-        <Card body>
+        </NrfCard>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>License</Card.Title>
@@ -106,6 +107,6 @@ export default () => (
                 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
                 THE POSSIBILITY OF SUCH DAMAGE.
             </p>
-        </Card>
+        </NrfCard>
     </WithScrollbarContainer>
 );

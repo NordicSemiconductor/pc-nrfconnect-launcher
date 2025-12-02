@@ -16,6 +16,7 @@ import {
 
 import { inMain } from '../../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import NrfCard from '../../../util/NrfCard';
 import {
     getUseChineseAppServer,
     setUseChineseAppServer,
@@ -29,7 +30,7 @@ export default () => {
     const useChineseAppServer = useLauncherSelector(getUseChineseAppServer);
 
     return (
-        <Card body>
+        <NrfCard>
             <Row>
                 <Col>
                     <Card.Title>Mainland China server</Card.Title>
@@ -52,6 +53,6 @@ export default () => {
                 variant="primary"
                 handleColor={white}
             />
-        </Card>
+        </NrfCard>
     );
 };

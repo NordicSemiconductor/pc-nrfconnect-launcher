@@ -51,13 +51,13 @@ exports[`ReleaseNotesDialog is displayed for an uninstalled app 1`] = `
           class="tw-preflight tw-flex tw-flex-row-reverse tw-justify-start tw-gap-2 tw-border-none tw-p-4 modal-footer"
         >
           <button
-            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-transparent tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
             type="button"
           >
             Install
           </button>
           <button
-            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700 active:enabled:tw-bg-gray-50 "
             type="button"
           >
             Close
@@ -120,7 +120,7 @@ exports[`ReleaseNotesDialog is displayed for an up-to-date installed app 1`] = `
           class="tw-preflight tw-flex tw-flex-row-reverse tw-justify-start tw-gap-2 tw-border-none tw-p-4 modal-footer"
         >
           <button
-            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700 active:enabled:tw-bg-gray-50 "
             type="button"
           >
             Close
@@ -183,13 +183,13 @@ exports[`ReleaseNotesDialog is displayed for an updatable app 1`] = `
           class="tw-preflight tw-flex tw-flex-row-reverse tw-justify-start tw-gap-2 tw-border-none tw-p-4 modal-footer"
         >
           <button
-            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-transparent tw-bg-nordicBlue tw-text-white active:enabled:tw-bg-nordicBlue-700 "
             type="button"
           >
             Update to latest version
           </button>
           <button
-            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700  active:enabled:tw-bg-gray-50 "
+            class="tw-preflight tw-h-8 tw-px-4 tw-text-sm tw-border tw-border-gray-700 tw-bg-white tw-text-gray-700 active:enabled:tw-bg-gray-50 "
             type="button"
           >
             Close

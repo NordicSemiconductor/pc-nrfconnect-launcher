@@ -164,19 +164,6 @@ body {
     white-space: nowrap;
 }
 
-.card + .card {
-    margin-top: 1rem;
-}
-
-#app-sources .row + .row {
-    margin-top: 1rem;
-}
-
-#app-sources .item-name {
-    font-weight: 500;
-    font-size: 90%;
-}
-
 .modal-title {
     font-size: 120%;
 }
