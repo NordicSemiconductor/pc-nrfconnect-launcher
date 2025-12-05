@@ -6,9 +6,6 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import formatDate from 'date-fns/format';
 
@@ -33,24 +30,18 @@ export default () => {
     const { isCheckingForUpdates, lastUpdateCheckDate } =
         useLauncherSelector(getUpdateCheckStatus);
 
+    const updateButton = (
+        <Button
+            variant="outline-primary"
+            onClick={() => dispatch(startUpdateProcess(true))}
+            disabled={isCheckingForUpdates}
+        >
+            {isCheckingForUpdates ? 'Checking...' : 'Check for updates'}
+        </Button>
+    );
+
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Updates</Card.Title>
-                </Col>
-                <Col xs="auto">
-                    <Button
-                        variant="outline-primary"
-                        onClick={() => dispatch(startUpdateProcess(true))}
-                        disabled={isCheckingForUpdates}
-                    >
-                        {isCheckingForUpdates
-                            ? 'Checking...'
-                            : 'Check for updates'}
-                    </Button>
-                </Col>
-            </Row>
+        <NrfCard title="Updates" titleButton={updateButton}>
             <p className="small text-muted">
                 {lastUpdateCheckDate != null && (
                     <>

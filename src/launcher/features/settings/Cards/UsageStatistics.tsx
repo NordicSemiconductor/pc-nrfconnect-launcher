@@ -6,7 +6,6 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
@@ -27,12 +26,7 @@ export default () => {
     const isSendingTelemetry = useLauncherSelector(getIsSendingTelemetry);
 
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Usage statistics</Card.Title>
-                </Col>
-            </Row>
+        <NrfCard title="Usage statistics">
             <Row>
                 <Col>
                     <Toggle

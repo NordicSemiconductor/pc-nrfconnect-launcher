@@ -5,9 +5,6 @@
  */
 
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import {
     colors,
     ExternalLink,
@@ -30,12 +27,7 @@ export default () => {
     const useChineseAppServer = useLauncherSelector(getUseChineseAppServer);
 
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Mainland China server</Card.Title>
-                </Col>
-            </Row>
+        <NrfCard title="Mainland China server">
             <p className="small text-muted">
                 You can enable the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" /> for

@@ -6,7 +6,6 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
@@ -43,22 +42,18 @@ export default () => {
 
     const token = useLauncherSelector(getArtifactoryTokenInformation);
 
+    const setToken = (
+        <Button
+            variant="outline-primary"
+            onClick={() => dispatch(showAddArtifactoryToken())}
+        >
+            {token ? 'Replace' : 'Set'} token
+        </Button>
+    );
+
     return (
-        <NrfCard>
-            <Row className="tw-mb-4">
-                <Col>
-                    <Card.Title>Authentication</Card.Title>
-                </Col>
-                <Col xs="auto">
-                    <Button
-                        variant="outline-primary"
-                        onClick={() => dispatch(showAddArtifactoryToken())}
-                    >
-                        {token ? 'Replace' : 'Set'} token
-                    </Button>
-                </Col>
-            </Row>
-            <Row>
+        <NrfCard title="Authentication" titleButton={setToken}>
+            <Row className="tw-mt-4">
                 {token == null ? (
                     <Col className="small text-muted">
                         To access restricted app sources from Nordic
