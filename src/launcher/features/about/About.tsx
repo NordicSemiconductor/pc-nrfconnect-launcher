@@ -8,8 +8,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { app } from '@electron/remote';
 
-import NrfCard from '../../util/NrfCard';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
+import NrfCard from '../layout/NrfCard';
 
 const appVersion = app.getVersion();
 

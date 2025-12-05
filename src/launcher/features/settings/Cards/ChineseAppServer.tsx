@@ -13,7 +13,7 @@ import {
 
 import { inMain } from '../../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import NrfCard from '../../layout/NrfCard';
 import {
     getUseChineseAppServer,
     setUseChineseAppServer,

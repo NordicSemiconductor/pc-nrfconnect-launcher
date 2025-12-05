@@ -12,7 +12,7 @@ import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import NrfCard from '../../layout/NrfCard';
 import {
     getArtifactoryTokenInformation,
     showAddArtifactoryToken,

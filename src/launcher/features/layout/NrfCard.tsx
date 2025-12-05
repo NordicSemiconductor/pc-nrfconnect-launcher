@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2015 Nordic Semiconductor ASA
+ * Copyright (c) 2025 Nordic Semiconductor ASA
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+
+import Col from './Col';
+import Row from './Row';
 
 const NrfCard: React.FC<{ title: string; titleButton?: React.ReactNode }> = ({
     title,
@@ -19,7 +20,7 @@ const NrfCard: React.FC<{ title: string; titleButton?: React.ReactNode }> = ({
             <Col>
                 <Card.Title>{title}</Card.Title>
             </Col>
-            {titleButton && <Col xs="auto">{titleButton}</Col>}
+            {titleButton && <Col fixedSize>{titleButton}</Col>}
         </Row>
 
         {children}

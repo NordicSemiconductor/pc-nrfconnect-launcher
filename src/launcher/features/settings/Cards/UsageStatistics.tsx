@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import NrfCard from '../../layout/NrfCard';
 import { toggleSendingTelemetry } from '../../telemetry/telemetryEffects';
 import {
     getIsSendingTelemetry,

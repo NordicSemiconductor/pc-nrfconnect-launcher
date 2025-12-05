@@ -18,7 +18,7 @@ import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import NrfCard from '../../layout/NrfCard';
 import {
     getExternalSourcesSorted,
     showAddSource,

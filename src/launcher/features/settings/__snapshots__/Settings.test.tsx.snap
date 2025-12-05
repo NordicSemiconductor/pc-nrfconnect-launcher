@@ -24,10 +24,10 @@ exports[`SettingsView should render check for updates completed, with everything
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -36,7 +36,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -84,10 +84,10 @@ exports[`SettingsView should render check for updates completed, with everything
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -96,7 +96,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -115,10 +115,10 @@ exports[`SettingsView should render check for updates completed, with everything
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -127,7 +127,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -167,10 +167,10 @@ exports[`SettingsView should render check for updates completed, with everything
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -226,10 +226,10 @@ exports[`SettingsView should render check for updates completed, with everything
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -361,10 +361,10 @@ exports[`SettingsView should render check for updates completed, with updates av
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -373,7 +373,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -421,10 +421,10 @@ exports[`SettingsView should render check for updates completed, with updates av
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -433,7 +433,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -452,10 +452,10 @@ exports[`SettingsView should render check for updates completed, with updates av
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -464,7 +464,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -504,10 +504,10 @@ exports[`SettingsView should render check for updates completed, with updates av
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -563,10 +563,10 @@ exports[`SettingsView should render check for updates completed, with updates av
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -696,10 +696,10 @@ exports[`SettingsView should render the token information 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -708,7 +708,7 @@ exports[`SettingsView should render the token information 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -756,10 +756,10 @@ exports[`SettingsView should render the token information 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -768,7 +768,7 @@ exports[`SettingsView should render the token information 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -787,10 +787,10 @@ exports[`SettingsView should render the token information 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -799,7 +799,7 @@ exports[`SettingsView should render the token information 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -846,10 +846,10 @@ exports[`SettingsView should render the token information 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -905,10 +905,10 @@ exports[`SettingsView should render the token information 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -989,10 +989,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1001,7 +1001,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1050,10 +1050,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1062,7 +1062,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1081,10 +1081,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1093,7 +1093,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1133,10 +1133,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1192,10 +1192,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1276,10 +1276,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1288,7 +1288,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1336,10 +1336,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1348,7 +1348,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1367,10 +1367,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1379,7 +1379,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1419,10 +1419,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1478,10 +1478,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1562,10 +1562,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1574,7 +1574,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1622,10 +1622,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1634,7 +1634,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1653,10 +1653,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1665,7 +1665,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1705,10 +1705,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1764,10 +1764,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1848,10 +1848,10 @@ exports[`SettingsView should render with last update check date 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1860,7 +1860,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1912,10 +1912,10 @@ exports[`SettingsView should render with last update check date 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1924,7 +1924,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1943,10 +1943,10 @@ exports[`SettingsView should render with last update check date 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -1955,7 +1955,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1995,10 +1995,10 @@ exports[`SettingsView should render with last update check date 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"
@@ -2054,10 +2054,10 @@ exports[`SettingsView should render with last update check date 1`] = `
               class="card-body"
             >
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="card-title h5"

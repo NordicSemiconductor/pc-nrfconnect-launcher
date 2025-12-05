@@ -10,8 +10,8 @@ import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import formatDate from 'date-fns/format';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
 import { getUpdateCheckStatus } from '../../apps/appsSlice';
+import NrfCard from '../../layout/NrfCard';
 import { startUpdateProcess } from '../../process/updateProcess';
 import {
     getShouldCheckForUpdatesAtStartup,
