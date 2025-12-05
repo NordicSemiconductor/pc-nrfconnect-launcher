@@ -6,12 +6,12 @@
 
 import React from 'react';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import { capitalize } from 'lodash';
 
 import { allStandardSourceNames } from '../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { getExternalSourcesSorted } from '../sources/sourcesSlice';
+import CheckboxFilterEntry from './CheckboxFilterEntry';
 import { getHiddenSources, hideSource, showSource } from './filterSlice';
 
 export default () => {
@@ -31,16 +31,13 @@ export default () => {
                 const isShown = !hiddenSources.has(sourceName);
 
                 return (
-                    <Form.Check
+                    <CheckboxFilterEntry
                         label={
                             allStandardSourceNames.includes(sourceName)
                                 ? capitalize(sourceName)
                                 : sourceName
                         }
-                        id={`cb-${sourceName}`}
                         key={`cb-${i + 1}`}
-                        className="mx-3 px-4 py-1"
-                        custom
                         checked={isShown}
                         onChange={() => {
                             if (isShown) {

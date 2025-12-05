@@ -6,9 +6,9 @@
 
 import React from 'react';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import CheckboxFilterEntry from './CheckboxFilterEntry';
 import { getShownStates, setShownStates } from './filterSlice';
 
 export default () => {
@@ -18,11 +18,8 @@ export default () => {
     return (
         <Col className="pl-0 pr-4">
             <div className="border-bottom mx-3 mb-2 py-1">State</div>
-            <Form.Check
+            <CheckboxFilterEntry
                 label="Installed"
-                id="cb-installed"
-                className="mx-3 px-4 py-1"
-                custom
                 checked={installed}
                 onChange={({ target }) => {
                     dispatch(
@@ -33,11 +30,8 @@ export default () => {
                     );
                 }}
             />
-            <Form.Check
+            <CheckboxFilterEntry
                 label="Downloadable"
-                id="cb-downloadable"
-                className="mx-3 px-4 py-1"
-                custom
                 checked={downloadable}
                 onChange={({ target }) => {
                     dispatch(
