@@ -15,7 +15,7 @@ const CheckboxFilterEntry: React.FC<{
     <Form.Check
         label={label}
         id={`cb-${label.toLowerCase()}`}
-        className="mx-3 px-4 py-1"
+        className="tw-mx-4 tw-px-6 tw-py-1"
         custom
         checked={checked}
         onChange={onChange}

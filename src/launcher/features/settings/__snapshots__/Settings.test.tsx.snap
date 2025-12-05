@@ -139,10 +139,10 @@ exports[`SettingsView should render check for updates completed, with everything
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -180,7 +180,7 @@ exports[`SettingsView should render check for updates completed, with everything
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -239,10 +239,10 @@ exports[`SettingsView should render check for updates completed, with everything
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -272,7 +272,7 @@ exports[`SettingsView should render check for updates completed, with everything
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -476,10 +476,10 @@ exports[`SettingsView should render check for updates completed, with updates av
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -517,7 +517,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -576,10 +576,10 @@ exports[`SettingsView should render check for updates completed, with updates av
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -609,7 +609,7 @@ exports[`SettingsView should render check for updates completed, with updates av
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -811,10 +811,10 @@ exports[`SettingsView should render the token information 1`] = `
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm"
                 >
                   ID: 
                   an_id
@@ -826,7 +826,7 @@ exports[`SettingsView should render the token information 1`] = `
                   1970-01-01T00:01:40.000Z
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-secondary btn-sm"
@@ -859,7 +859,7 @@ exports[`SettingsView should render the token information 1`] = `
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -918,10 +918,10 @@ exports[`SettingsView should render the token information 1`] = `
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -951,7 +951,7 @@ exports[`SettingsView should render the token information 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1105,10 +1105,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -1146,7 +1146,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -1205,10 +1205,10 @@ exports[`SettingsView should render when checking for updates 1`] = `
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -1238,7 +1238,7 @@ exports[`SettingsView should render when checking for updates 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1391,10 +1391,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -1432,7 +1432,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -1491,10 +1491,10 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -1524,7 +1524,7 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1677,10 +1677,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -1718,7 +1718,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -1777,10 +1777,10 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -1810,7 +1810,7 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"
@@ -1967,10 +1967,10 @@ exports[`SettingsView should render with last update check date 1`] = `
                 </div>
               </div>
               <div
-                class="tw-mt-4 row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
               >
                 <div
-                  class="small text-muted col"
+                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
                 >
                   To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                    
@@ -2008,7 +2008,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                 </div>
               </div>
               <p
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 You can enable the server
                  
@@ -2067,10 +2067,10 @@ exports[`SettingsView should render with last update check date 1`] = `
                 </div>
               </div>
               <div
-                class="row"
+                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
               >
                 <div
-                  class="col"
+                  class="tw-flex-1 tw-px-4"
                 >
                   <div
                     class="toggle"
@@ -2100,7 +2100,7 @@ exports[`SettingsView should render with last update check date 1`] = `
                   </div>
                 </div>
                 <div
-                  class="col-auto"
+                  class="tw-w-auto tw-flex-none tw-px-4"
                 >
                   <button
                     class="btn btn-outline-primary"

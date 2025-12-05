@@ -5,13 +5,14 @@
  */
 
 import React from 'react';
-import Col from 'react-bootstrap/Col';
 import { capitalize } from 'lodash';
 
 import { allStandardSourceNames } from '../../../common/sources';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import Col from '../layout/Col';
 import { getExternalSourcesSorted } from '../sources/sourcesSlice';
 import CheckboxFilterEntry from './CheckboxFilterEntry';
+import FilterDropdownHeading from './FilterDropdownHeading';
 import { getHiddenSources, hideSource, showSource } from './filterSlice';
 
 export default () => {
@@ -25,8 +26,8 @@ export default () => {
     const hiddenSources = useLauncherSelector(getHiddenSources);
 
     return (
-        <Col className="pl-4 pr-0">
-            <div className="border-bottom mx-3 mb-2 py-1">Sources</div>
+        <Col className="tw-pl-6 tw-pr-0">
+            <FilterDropdownHeading label="Sources" />
             {allSourceNames.map((sourceName, i) => {
                 const isShown = !hiddenSources.has(sourceName);
 

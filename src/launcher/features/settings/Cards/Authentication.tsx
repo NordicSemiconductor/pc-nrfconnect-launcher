@@ -6,13 +6,13 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import Col from '../../layout/Col';
 import NrfCard from '../../layout/NrfCard';
+import Row from '../../layout/Row';
 import {
     getArtifactoryTokenInformation,
     showAddArtifactoryToken,
@@ -55,7 +55,7 @@ export default () => {
         <NrfCard title="Authentication" titleButton={setToken}>
             <Row className="tw-mt-4">
                 {token == null ? (
-                    <Col className="small text-muted">
+                    <Col className="tw-text-sm tw-text-gray-600">
                         To access restricted app sources from Nordic
                         Semiconductor, you need an identity token. Generating a
                         token is described in{' '}
@@ -67,10 +67,10 @@ export default () => {
                     </Col>
                 ) : (
                     <>
-                        <Col className="small">
+                        <Col className="tw-text-sm">
                             <Token token={token} />
                         </Col>
-                        <Col xs="auto">
+                        <Col fixedSize>
                             <Button
                                 variant="outline-secondary"
                                 size="sm"

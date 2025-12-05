@@ -28,7 +28,7 @@ export default () => {
 
     return (
         <NrfCard title="Mainland China server">
-            <p className="small text-muted">
+            <p className="tw-text-sm tw-text-gray-600">
                 You can enable the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" /> for
                 installing and updating nRF Connect for Desktop and its apps.

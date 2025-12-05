@@ -6,14 +6,14 @@
 
 import React, { useEffect, useRef } from 'react';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Col from 'react-bootstrap/Col';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row';
 
 import { OFFICIAL } from '../../../../common/sources';
 import { isInstalled, isUpdatable, isWithdrawn } from '../../../../ipc/apps';
 import formatPublishTimestamp from '../../../util/formatTimestamp';
+import Col from '../../layout/Col';
+import Row from '../../layout/Row';
 import { DisplayedApp } from '../appsSlice';
 import AppIcon from './AppIcon';
 import AppProgress from './AppProgress';
@@ -69,14 +69,20 @@ const App = ({ app }: { app: DisplayedApp }) => {
 
     return (
         <ListGroup.Item ref={itemRef}>
-            <Row noGutters className="py-1">
-                <Col xs="auto" className="d-flex align-items-start my-2 mr-3">
+            <Row noGutters className="tw-flex-nowrap tw-py-1">
+                <Col
+                    fixedSize
+                    noPadding
+                    className="tw-my-2 tw-mr-4 tw-flex tw-items-start"
+                >
                     <AppIcon app={app} />
                 </Col>
-                <Col>
-                    <div className="h8">{app.displayName || app.name}</div>
-                    <div className="small text-muted">{app.description}</div>
-                    <div className="small text-muted-more">
+                <Col noPadding className="tw-w-full tw-flex-initial">
+                    <div>{app.displayName || app.name}</div>
+                    <div className="tw-text-sm tw-text-gray-600">
+                        {app.description}
+                    </div>
+                    <div className="tw-text-sm tw-text-gray-200">
                         {app.source}
                         {isInstalled(app) && <>, v{app.currentVersion}</>}
                         {isInstalled(app) && app.source !== OFFICIAL && (
@@ -99,8 +105,8 @@ const App = ({ app }: { app: DisplayedApp }) => {
                     </div>
                 </Col>
                 <Col
-                    xs="auto"
-                    className="d-flex align-items-center my-3 ml-auto pl-3"
+                    fixedSize
+                    className="tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
                 >
                     <ButtonToolbar className="wide-btns">
                         <UpdateApp app={app} />

@@ -5,10 +5,11 @@
  */
 
 import React from 'react';
-import Col from 'react-bootstrap/Col';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
+import Col from '../layout/Col';
 import CheckboxFilterEntry from './CheckboxFilterEntry';
+import FilterDropdownHeading from './FilterDropdownHeading';
 import { getShownStates, setShownStates } from './filterSlice';
 
 export default () => {
@@ -16,8 +17,8 @@ export default () => {
     const { installed, downloadable } = useLauncherSelector(getShownStates);
 
     return (
-        <Col className="pl-0 pr-4">
-            <div className="border-bottom mx-3 mb-2 py-1">State</div>
+        <Col className="tw-pl-0 tw-pr-6">
+            <FilterDropdownHeading label="State" />
             <CheckboxFilterEntry
                 label="Installed"
                 checked={installed}

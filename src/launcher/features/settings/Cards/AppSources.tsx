@@ -4,21 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/*
- * Copyright (c) 2015 Nordic Semiconductor ASA
- *
- * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
- */
-
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import Col from '../../layout/Col';
 import NrfCard from '../../layout/NrfCard';
+import Row from '../../layout/Row';
 import {
     getExternalSourcesSorted,
     showAddSource,
@@ -46,7 +40,7 @@ export default () => {
                     <Col className="tw-text-md tw-font-medium">
                         {source.name}
                     </Col>
-                    <Col xs="auto">
+                    <Col fixedSize>
                         <ButtonToolbar>
                             <Button
                                 variant="outline-secondary"

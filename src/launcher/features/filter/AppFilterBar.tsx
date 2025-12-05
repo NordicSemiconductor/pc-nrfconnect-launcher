@@ -6,8 +6,8 @@
 
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Row from 'react-bootstrap/Row';
 
+import Row from '../layout/Row';
 import NameFilter from './NameFilter';
 import SourceFilter from './SourceFilter';
 import StateFilter from './StateFilter';
@@ -23,7 +23,7 @@ const FilterDropdown = () => {
                 Filter
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Row className="flex-nowrap">
+                <Row className="tw-ml-0 tw-flex-nowrap">
                     <SourceFilter />
                     <StateFilter />
                 </Row>
@@ -33,10 +33,10 @@ const FilterDropdown = () => {
 };
 
 export default () => (
-    <div className="filterbox w-100 d-inline-flex">
+    <div className="filterbox tw-inline-flex tw-w-full">
         <FilterDropdown />
         <NameFilter />
-        <div className="flex-fill" />
+        <div className="tw-flex-auto" />
         <UpdateAllApps />
     </div>
 );

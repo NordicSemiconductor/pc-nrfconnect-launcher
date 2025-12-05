@@ -7,10 +7,15 @@
 import React from 'react';
 import { classNames } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-const Row: React.FC<{ className?: string }> = ({ children, className }) => (
+const Row: React.FC<{ className?: string; noGutters?: boolean }> = ({
+    children,
+    className,
+    noGutters,
+}) => (
     <div
         className={classNames(
-            'tw--mx-4 tw-flex tw-flex-row tw-flex-wrap',
+            noGutters || 'tw--mx-4',
+            'tw-flex tw-flex-row tw-flex-wrap',
             className,
         )}
     >
