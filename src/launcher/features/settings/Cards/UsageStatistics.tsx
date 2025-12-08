@@ -6,13 +6,12 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import Card from '../../layout/Card';
+import Col from '../../layout/Col';
+import Row from '../../layout/Row';
 import { toggleSendingTelemetry } from '../../telemetry/telemetryEffects';
 import {
     getIsSendingTelemetry,
@@ -27,12 +26,7 @@ export default () => {
     const isSendingTelemetry = useLauncherSelector(getIsSendingTelemetry);
 
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Usage statistics</Card.Title>
-                </Col>
-            </Row>
+        <Card title="Usage statistics">
             <Row>
                 <Col>
                     <Toggle
@@ -44,7 +38,7 @@ export default () => {
                         handleColor={white}
                     />
                 </Col>
-                <Col xs="auto">
+                <Col fixedSize>
                     <Button
                         variant="outline-primary"
                         onClick={() => dispatch(showTelemetryDialog())}
@@ -53,6 +47,6 @@ export default () => {
                     </Button>
                 </Col>
             </Row>
-        </NrfCard>
+        </Card>
     );
 };

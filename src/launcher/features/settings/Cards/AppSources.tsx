@@ -4,22 +4,15 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-/*
- * Copyright (c) 2015 Nordic Semiconductor ASA
- *
- * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
- */
-
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import Card from '../../layout/Card';
+import Col from '../../layout/Col';
+import Row from '../../layout/Row';
 import {
     getExternalSourcesSorted,
     showAddSource,
@@ -31,27 +24,23 @@ export default () => {
 
     const sources = useLauncherSelector(getExternalSourcesSorted);
 
+    const addSource = (
+        <Button
+            variant="outline-primary"
+            onClick={() => dispatch(showAddSource())}
+        >
+            Add source
+        </Button>
+    );
+
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>App sources</Card.Title>
-                </Col>
-                <Col xs="auto">
-                    <Button
-                        variant="outline-primary"
-                        onClick={() => dispatch(showAddSource())}
-                    >
-                        Add source
-                    </Button>
-                </Col>
-            </Row>
+        <Card title="App sources" titleButton={addSource}>
             {sources.map(source => (
                 <Row key={source.name} className="tw-mt-4">
                     <Col className="tw-text-md tw-font-medium">
                         {source.name}
                     </Col>
-                    <Col xs="auto">
+                    <Col fixedSize>
                         <ButtonToolbar>
                             <Button
                                 variant="outline-secondary"
@@ -75,6 +64,6 @@ export default () => {
                     </Col>
                 </Row>
             ))}
-        </NrfCard>
+        </Card>
     );
 };

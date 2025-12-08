@@ -6,14 +6,13 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import Card from '../../layout/Card';
+import Col from '../../layout/Col';
+import Row from '../../layout/Row';
 import {
     getArtifactoryTokenInformation,
     showAddArtifactoryToken,
@@ -43,24 +42,20 @@ export default () => {
 
     const token = useLauncherSelector(getArtifactoryTokenInformation);
 
+    const setToken = (
+        <Button
+            variant="outline-primary"
+            onClick={() => dispatch(showAddArtifactoryToken())}
+        >
+            {token ? 'Replace' : 'Set'} token
+        </Button>
+    );
+
     return (
-        <NrfCard>
-            <Row className="tw-mb-4">
-                <Col>
-                    <Card.Title>Authentication</Card.Title>
-                </Col>
-                <Col xs="auto">
-                    <Button
-                        variant="outline-primary"
-                        onClick={() => dispatch(showAddArtifactoryToken())}
-                    >
-                        {token ? 'Replace' : 'Set'} token
-                    </Button>
-                </Col>
-            </Row>
-            <Row>
+        <Card title="Authentication" titleButton={setToken}>
+            <Row className="tw-mt-4">
                 {token == null ? (
-                    <Col className="small text-muted">
+                    <Col className="tw-text-sm tw-text-gray-600">
                         To access restricted app sources from Nordic
                         Semiconductor, you need an identity token. Generating a
                         token is described in{' '}
@@ -72,10 +67,10 @@ export default () => {
                     </Col>
                 ) : (
                     <>
-                        <Col className="small">
+                        <Col className="tw-text-sm">
                             <Token token={token} />
                         </Col>
-                        <Col xs="auto">
+                        <Col fixedSize>
                             <Button
                                 variant="outline-secondary"
                                 size="sm"
@@ -90,6 +85,6 @@ export default () => {
                     </>
                 )}
             </Row>
-        </NrfCard>
+        </Card>
     );
 };

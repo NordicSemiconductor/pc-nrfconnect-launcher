@@ -5,9 +5,6 @@
  */
 
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import {
     colors,
     ExternalLink,
@@ -16,7 +13,7 @@ import {
 
 import { inMain } from '../../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../../util/NrfCard';
+import Card from '../../layout/Card';
 import {
     getUseChineseAppServer,
     setUseChineseAppServer,
@@ -30,13 +27,8 @@ export default () => {
     const useChineseAppServer = useLauncherSelector(getUseChineseAppServer);
 
     return (
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Mainland China server</Card.Title>
-                </Col>
-            </Row>
-            <p className="small text-muted">
+        <Card title="Mainland China server">
+            <p className="tw-text-sm tw-text-gray-600">
                 You can enable the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" /> for
                 installing and updating nRF Connect for Desktop and its apps.
@@ -53,6 +45,6 @@ export default () => {
                 variant="primary"
                 handleColor={white}
             />
-        </NrfCard>
+        </Card>
     );
 };

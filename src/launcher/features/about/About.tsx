@@ -6,32 +6,19 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { app } from '@electron/remote';
 
-import NrfCard from '../../util/NrfCard';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
+import Card from '../layout/Card';
 
 const appVersion = app.getVersion();
 
 export default () => (
     <WithScrollbarContainer>
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Version</Card.Title>
-                </Col>
-            </Row>
+        <Card title="Version">
             <p>nRF Connect for Desktop v{appVersion}</p>
-        </NrfCard>
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>Documentation</Card.Title>
-                </Col>
-            </Row>
+        </Card>
+        <Card title="Documentation">
             <Button
                 href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html"
                 target="_blank"
@@ -39,13 +26,8 @@ export default () => (
             >
                 Open documentation
             </Button>
-        </NrfCard>
-        <NrfCard>
-            <Row>
-                <Col>
-                    <Card.Title>License</Card.Title>
-                </Col>
-            </Row>
+        </Card>
+        <Card title="License">
             <p>Copyright (c) 2015-2024 Nordic Semiconductor ASA</p>
             <p>All rights reserved.</p>
             <p>SPDX-License-Identifier: Nordic-4-Clause</p>
@@ -107,6 +89,6 @@ export default () => (
                 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
                 THE POSSIBILITY OF SUCH DAMAGE.
             </p>
-        </NrfCard>
+        </Card>
     </WithScrollbarContainer>
 );

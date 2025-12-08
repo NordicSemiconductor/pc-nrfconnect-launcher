@@ -14,10 +14,10 @@ exports[`AppList should disable buttons and display "Installing..." button text 
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -30,20 +30,18 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Uninstalled Uninstalled Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The uninstalled uninstalled test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -51,7 +49,7 @@ exports[`AppList should disable buttons and display "Installing..." button text 
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -112,10 +110,10 @@ exports[`AppList should disable buttons and display "Updating..." while updating
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -128,20 +126,18 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Downloadable Updatable Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The downloadable updatable test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -152,7 +148,7 @@ exports[`AppList should disable buttons and display "Updating..." while updating
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -221,10 +217,10 @@ exports[`AppList should disable buttons while removing an app 1`] = `
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -237,20 +233,18 @@ exports[`AppList should disable buttons while removing an app 1`] = `
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Downloadable Installed Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The downloadable installed test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -258,7 +252,7 @@ exports[`AppList should disable buttons while removing an app 1`] = `
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -352,10 +346,10 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -368,20 +362,18 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Downloadable Installed Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The downloadable installed test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -389,7 +381,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -420,10 +412,10 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -436,20 +428,18 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Downloadable Updatable Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The downloadable updatable test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -460,7 +450,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -498,10 +488,10 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -514,20 +504,18 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Local Dummy Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The local dummy test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 local
                 , v
@@ -535,7 +523,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"
@@ -566,10 +554,10 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
           class="list-group-item"
         >
           <div
-            class="py-1 row no-gutters"
+            class="tw-flex tw-flex-row tw-flex-wrap tw-flex-nowrap tw-py-1"
           >
             <div
-              class="d-flex align-items-start my-2 mr-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-my-2 tw-mr-4 tw-flex tw-items-start"
             >
               <div
                 class="core-app-icon"
@@ -582,20 +570,18 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="col"
+              class="tw-flex-1 tw-w-full tw-flex-initial"
             >
-              <div
-                class="h8"
-              >
+              <div>
                 Uninstalled Uninstalled Test App
               </div>
               <div
-                class="small text-muted"
+                class="tw-text-sm tw-text-gray-600"
               >
                 The uninstalled uninstalled test app
               </div>
               <div
-                class="small text-muted-more"
+                class="tw-text-sm tw-text-gray-200"
               >
                 official
                 , v
@@ -603,7 +589,7 @@ exports[`AppList should render local, not-installed, installed, and updatable ap
               </div>
             </div>
             <div
-              class="d-flex align-items-center my-3 ml-auto pl-3 col-auto"
+              class="tw-w-auto tw-flex-none tw-px-4 tw-my-4 tw-ml-auto tw-flex tw-items-center tw-pr-0"
             >
               <div
                 class="wide-btns btn-toolbar"

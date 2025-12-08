@@ -50,7 +50,7 @@ release the new version.
 - #1216: Sort sources in settings view.
 - #1223: Create log for messages from the renderer process in
   `nrfconnect/logs/renderer.log`.
-- #1235: Move some styling to use Tailwind.
+- #1235, #1236: Move some styling to use Tailwind.
 
 ### Fixed
 
