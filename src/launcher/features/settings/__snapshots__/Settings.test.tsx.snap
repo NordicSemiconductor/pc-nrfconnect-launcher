@@ -18,269 +18,249 @@ exports[`SettingsView should render check for updates completed, with everything
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -355,269 +335,249 @@ exports[`SettingsView should render check for updates completed, with updates av
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -690,276 +650,256 @@ exports[`SettingsView should render the token information 1`] = `
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Replace
+                   token
+                </button>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
+            >
+              <div
+                class="tw-flex-1 tw-px-4 tw-text-sm"
+              >
+                ID: 
+                an_id
+                <br />
+                Description: 
+                a token
+                <br />
+                Expires: 
+                1970-01-01T00:01:40.000Z
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  title="Remove identity token"
+                  type="button"
+                >
+                  Remove
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Replace
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm"
-                >
-                  ID: 
-                  an_id
-                  <br />
-                  Description: 
-                  a token
-                  <br />
-                  Expires: 
-                  1970-01-01T00:01:40.000Z
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-secondary btn-sm"
-                    title="Remove identity token"
-                    type="button"
-                  >
-                    Remove
-                  </button>
-                </div>
+                  Mainland China server
+                </h5>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
+            <p
+              class="tw-text-sm tw-text-gray-600"
             >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
               >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle-bar toggle-bar-primary"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
-                 
-                <a
-                  class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
-                  rel="noreferrer noopener"
-                  target="_blank"
-                >
-                  https://files.nordicsemi.cn/
-                </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
-              </div>
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Usage statistics
-                  </div>
-                </div>
+                  Usage statistics
+                </h5>
               </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="toggle"
+                  <label
+                    for="checkForShare"
                   >
-                    <label
-                      for="checkForShare"
+                    <span
+                      class="toggle-label"
                     >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
                       <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -983,270 +923,250 @@ exports[`SettingsView should render when checking for updates 1`] = `
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    disabled=""
-                    type="button"
-                  >
-                    Checking...
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  disabled=""
+                  type="button"
                 >
+                  Checking...
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -1270,269 +1190,249 @@ exports[`SettingsView should render with check for updates disabled 1`] = `
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -1556,269 +1456,249 @@ exports[`SettingsView should render with check for updates enabled 1`] = `
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              />
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            />
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>
@@ -1842,273 +1722,253 @@ exports[`SettingsView should render with last update check date 1`] = `
           class="settings-pane-container"
         >
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    Updates
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Check for updates
-                  </button>
-                </div>
+                  Updates
+                </h5>
               </div>
-              <p
-                class="small text-muted"
-              >
-                Last update check performed:
-                 
-                2017-02-03 13:41:36
-              </p>
               <div
-                class="toggle"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <label
-                  for="checkForUpdates"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
+                  Check for updates
+                </button>
+              </div>
+            </div>
+            <p
+              class="small text-muted"
+            >
+              Last update check performed:
+               
+              2017-02-03 13:41:36
+            </p>
+            <div
+              class="toggle"
+            >
+              <label
+                for="checkForUpdates"
+              >
+                <span
+                  class="toggle-label"
+                >
+                  Check for updates at startup
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary-toggled"
+                >
+                  <input
+                    aria-checked="true"
+                    checked=""
+                    id="checkForUpdates"
+                    type="checkbox"
+                  />
                   <span
-                    class="toggle-label"
-                  >
-                    Check for updates at startup
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary-toggled"
-                  >
-                    <input
-                      aria-checked="true"
-                      checked=""
-                      id="checkForUpdates"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
-                    />
-                  </div>
-                </label>
+                    class="toggle-handle toggle-handle-toggled toggle-handle-primary-toggled"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  App sources
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                >
+                  Add source
+                </button>
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <h5
+                  class="tw-mb-3 tw-font-normal"
                 >
-                  <div
-                    class="card-title h5"
-                  >
-                    App sources
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
+                  Authentication
+                </h5>
+              </div>
+              <div
+                class="tw-w-auto tw-flex-none tw-px-4"
+              >
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Add source
-                  </button>
-                </div>
+                  Set
+                   token
+                </button>
               </div>
             </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Authentication
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Set
-                     token
-                  </button>
-                </div>
-              </div>
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap tw-mt-4"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4 tw-text-sm tw-text-gray-600"
-                >
-                  To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
-                   
-                  <a
-                    class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                    href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
-                  >
-                    Working with identity tokens
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tw-mt-4 first:tw-mt-0 card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
-              >
-                <div
-                  class="tw-flex-1 tw-px-4"
-                >
-                  <div
-                    class="card-title h5"
-                  >
-                    Mainland China server
-                  </div>
-                </div>
-              </div>
-              <p
-                class="tw-text-sm tw-text-gray-600"
-              >
-                You can enable the server
+                To access restricted app sources from Nordic Semiconductor, you need an identity token. Generating a token is described in
                  
                 <a
                   class="tw-preflight tw-text-nordicBlue hover:tw-underline"
-                  href="https://files.nordicsemi.cn/"
+                  href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                   rel="noreferrer noopener"
                   target="_blank"
+                  title="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/working_with_authentications_tokens.html#generating-a-new-token"
                 >
-                  https://files.nordicsemi.cn/
+                  Working with identity tokens
                 </a>
-                 for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
-              </p>
-              <div
-                class="toggle"
-              >
-                <label>
-                  <span
-                    class="toggle-label"
-                  >
-                    Use Mainland China server
-                  </span>
-                  <div
-                    class="toggle-bar toggle-bar-primary"
-                  >
-                    <input
-                      aria-checked="false"
-                      type="checkbox"
-                    />
-                    <span
-                      class="toggle-handle toggle-handle-primary"
-                      style="background-color: white;"
-                    />
-                  </div>
-                </label>
+                .
               </div>
             </div>
           </div>
           <div
-            class="tw-mt-4 first:tw-mt-0 card"
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
           >
             <div
-              class="card-body"
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
             >
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Mainland China server
+                </h5>
+              </div>
+            </div>
+            <p
+              class="tw-text-sm tw-text-gray-600"
+            >
+              You can enable the server
+               
+              <a
+                class="tw-preflight tw-text-nordicBlue hover:tw-underline"
+                href="https://files.nordicsemi.cn/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                https://files.nordicsemi.cn/
+              </a>
+               for installing and updating nRF Connect for Desktop and its apps. This server has a better connection in the People's Republic of China.
+            </p>
+            <div
+              class="toggle"
+            >
+              <label>
+                <span
+                  class="toggle-label"
+                >
+                  Use Mainland China server
+                </span>
+                <div
+                  class="toggle-bar toggle-bar-primary"
+                >
+                  <input
+                    aria-checked="false"
+                    type="checkbox"
+                  />
+                  <span
+                    class="toggle-handle toggle-handle-primary"
+                    style="background-color: white;"
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            class="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0"
+          >
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
+              >
+                <h5
+                  class="tw-mb-3 tw-font-normal"
+                >
+                  Usage statistics
+                </h5>
+              </div>
+            </div>
+            <div
+              class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+            >
+              <div
+                class="tw-flex-1 tw-px-4"
               >
                 <div
-                  class="tw-flex-1 tw-px-4"
+                  class="toggle"
                 >
-                  <div
-                    class="card-title h5"
+                  <label
+                    for="checkForShare"
                   >
-                    Usage statistics
-                  </div>
+                    <span
+                      class="toggle-label"
+                    >
+                      Collect anonymous usage data
+                    </span>
+                    <div
+                      class="toggle-bar toggle-bar-primary"
+                    >
+                      <input
+                        aria-checked="false"
+                        id="checkForShare"
+                        type="checkbox"
+                      />
+                      <span
+                        class="toggle-handle toggle-handle-primary"
+                        style="background-color: white;"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
               <div
-                class="tw--mx-4 tw-flex tw-flex-row tw-flex-wrap"
+                class="tw-w-auto tw-flex-none tw-px-4"
               >
-                <div
-                  class="tw-flex-1 tw-px-4"
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
-                  <div
-                    class="toggle"
-                  >
-                    <label
-                      for="checkForShare"
-                    >
-                      <span
-                        class="toggle-label"
-                      >
-                        Collect anonymous usage data
-                      </span>
-                      <div
-                        class="toggle-bar toggle-bar-primary"
-                      >
-                        <input
-                          aria-checked="false"
-                          id="checkForShare"
-                          type="checkbox"
-                        />
-                        <span
-                          class="toggle-handle toggle-handle-primary"
-                          style="background-color: white;"
-                        />
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="tw-w-auto tw-flex-none tw-px-4"
-                >
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                  >
-                    Show agreement
-                  </button>
-                </div>
+                  Show agreement
+                </button>
               </div>
             </div>
           </div>

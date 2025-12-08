@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import BootstrapCard from 'react-bootstrap/Card';
 
 import Col from './Col';
 import Row from './Row';
@@ -15,16 +14,16 @@ const Card: React.FC<{ title: string; titleButton?: React.ReactNode }> = ({
     titleButton,
     children,
 }) => (
-    <BootstrapCard body className="tw-mt-4 first:tw-mt-0">
+    <div className="tw-mt-4 tw-border tw-border-solid tw-border-black/10 tw-bg-white tw-p-5 first:tw-mt-0">
         <Row>
             <Col>
-                <BootstrapCard.Title>{title}</BootstrapCard.Title>
+                <h5 className="tw-mb-3 tw-font-normal">{title}</h5>
             </Col>
             {titleButton && <Col fixedSize>{titleButton}</Col>}
         </Row>
 
         {children}
-    </BootstrapCard>
+    </div>
 );
 
 export default Card;
