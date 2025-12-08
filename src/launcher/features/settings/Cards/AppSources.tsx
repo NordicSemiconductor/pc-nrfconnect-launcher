@@ -10,8 +10,8 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import Card from '../../layout/Card';
 import Col from '../../layout/Col';
-import NrfCard from '../../layout/NrfCard';
 import Row from '../../layout/Row';
 import {
     getExternalSourcesSorted,
@@ -34,7 +34,7 @@ export default () => {
     );
 
     return (
-        <NrfCard title="App sources" titleButton={addSource}>
+        <Card title="App sources" titleButton={addSource}>
             {sources.map(source => (
                 <Row key={source.name} className="tw-mt-4">
                     <Col className="tw-text-md tw-font-medium">
@@ -64,6 +64,6 @@ export default () => {
                     </Col>
                 </Row>
             ))}
-        </NrfCard>
+        </Card>
     );
 };

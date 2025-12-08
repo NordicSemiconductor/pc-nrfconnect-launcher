@@ -10,8 +10,8 @@ import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import Card from '../../layout/Card';
 import Col from '../../layout/Col';
-import NrfCard from '../../layout/NrfCard';
 import Row from '../../layout/Row';
 import {
     getArtifactoryTokenInformation,
@@ -52,7 +52,7 @@ export default () => {
     );
 
     return (
-        <NrfCard title="Authentication" titleButton={setToken}>
+        <Card title="Authentication" titleButton={setToken}>
             <Row className="tw-mt-4">
                 {token == null ? (
                     <Col className="tw-text-sm tw-text-gray-600">
@@ -85,6 +85,6 @@ export default () => {
                     </>
                 )}
             </Row>
-        </NrfCard>
+        </Card>
     );
 };

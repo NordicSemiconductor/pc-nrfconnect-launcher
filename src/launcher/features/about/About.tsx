@@ -9,16 +9,16 @@ import Button from 'react-bootstrap/Button';
 import { app } from '@electron/remote';
 
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
-import NrfCard from '../layout/NrfCard';
+import Card from '../layout/Card';
 
 const appVersion = app.getVersion();
 
 export default () => (
     <WithScrollbarContainer>
-        <NrfCard title="Version">
+        <Card title="Version">
             <p>nRF Connect for Desktop v{appVersion}</p>
-        </NrfCard>
-        <NrfCard title="Documentation">
+        </Card>
+        <Card title="Documentation">
             <Button
                 href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html"
                 target="_blank"
@@ -26,8 +26,8 @@ export default () => (
             >
                 Open documentation
             </Button>
-        </NrfCard>
-        <NrfCard title="License">
+        </Card>
+        <Card title="License">
             <p>Copyright (c) 2015-2024 Nordic Semiconductor ASA</p>
             <p>All rights reserved.</p>
             <p>SPDX-License-Identifier: Nordic-4-Clause</p>
@@ -89,6 +89,6 @@ export default () => (
                 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
                 THE POSSIBILITY OF SUCH DAMAGE.
             </p>
-        </NrfCard>
+        </Card>
     </WithScrollbarContainer>
 );

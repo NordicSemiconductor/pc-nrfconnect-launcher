@@ -9,8 +9,8 @@ import Button from 'react-bootstrap/Button';
 import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
+import Card from '../../layout/Card';
 import Col from '../../layout/Col';
-import NrfCard from '../../layout/NrfCard';
 import Row from '../../layout/Row';
 import { toggleSendingTelemetry } from '../../telemetry/telemetryEffects';
 import {
@@ -26,7 +26,7 @@ export default () => {
     const isSendingTelemetry = useLauncherSelector(getIsSendingTelemetry);
 
     return (
-        <NrfCard title="Usage statistics">
+        <Card title="Usage statistics">
             <Row>
                 <Col>
                     <Toggle
@@ -47,6 +47,6 @@ export default () => {
                     </Button>
                 </Col>
             </Row>
-        </NrfCard>
+        </Card>
     );
 };

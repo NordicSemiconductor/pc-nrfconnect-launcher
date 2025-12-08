@@ -13,7 +13,7 @@ import {
 
 import { inMain } from '../../../../ipc/launcherUpdate';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
-import NrfCard from '../../layout/NrfCard';
+import Card from '../../layout/Card';
 import {
     getUseChineseAppServer,
     setUseChineseAppServer,
@@ -27,7 +27,7 @@ export default () => {
     const useChineseAppServer = useLauncherSelector(getUseChineseAppServer);
 
     return (
-        <NrfCard title="Mainland China server">
+        <Card title="Mainland China server">
             <p className="tw-text-sm tw-text-gray-600">
                 You can enable the server{' '}
                 <ExternalLink href="https://files.nordicsemi.cn/" /> for
@@ -45,6 +45,6 @@ export default () => {
                 variant="primary"
                 handleColor={white}
             />
-        </NrfCard>
+        </Card>
     );
 };

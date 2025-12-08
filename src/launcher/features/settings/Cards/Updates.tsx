@@ -11,7 +11,7 @@ import formatDate from 'date-fns/format';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import { getUpdateCheckStatus } from '../../apps/appsSlice';
-import NrfCard from '../../layout/NrfCard';
+import Card from '../../layout/Card';
 import { startUpdateProcess } from '../../process/updateProcess';
 import {
     getShouldCheckForUpdatesAtStartup,
@@ -41,7 +41,7 @@ export default () => {
     );
 
     return (
-        <NrfCard title="Updates" titleButton={updateButton}>
+        <Card title="Updates" titleButton={updateButton}>
             <p className="small text-muted">
                 {lastUpdateCheckDate != null && (
                     <>
@@ -64,6 +64,6 @@ export default () => {
                 variant="primary"
                 handleColor={white}
             />
-        </NrfCard>
+        </Card>
     );
 };
