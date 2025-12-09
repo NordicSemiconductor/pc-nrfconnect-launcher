@@ -1,4 +1,5 @@
 name: Build for Linux x64
+run-name: "Build for Linux x64: ${{ inputs.ref || github.ref_name }}"
 
 on:
     workflow_dispatch:

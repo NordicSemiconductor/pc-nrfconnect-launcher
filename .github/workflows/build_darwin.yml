@@ -1,5 +1,5 @@
 name: Build for macOS
-run-name: Build for macOS ${{ inputs.arch }}
+run-name: "Build for macOS: arch ${{ inputs.arch }} | ref ${{ inputs.ref || github.ref_name }}"
 
 on:
     workflow_dispatch:

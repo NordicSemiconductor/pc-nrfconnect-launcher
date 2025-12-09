@@ -1,7 +1,14 @@
 name: Build
+run-name: "Build: ${{ inputs.ref || github.ref_name }}"
 
 on:
     workflow_dispatch:
+        inputs:
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to build.
+                    Defaults to the ref of the workflow.
+                type: string
     workflow_call:
         inputs:
             ref:
@@ -12,8 +19,8 @@ on:
                 description: Whether the build completed successfully
                 value:
                     ${{
-                        jobs.windows.result == 'success' && 
-                        jobs.linux.result == 'success' && 
+                        jobs.windows.result == 'success' &&
+                        jobs.linux.result == 'success' &&
                         jobs.darwin_x64.result == 'success' &&
                         jobs.darwin_arm64.result == 'success'
                     }}
