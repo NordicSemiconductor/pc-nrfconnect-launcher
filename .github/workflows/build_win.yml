@@ -5,8 +5,8 @@ on:
         inputs:
             ref:
                 description:
-                    Ref (Tag, branch, commit SHA) to release. Default to the
-                    main branch.
+                    Ref (Tag, branch, commit SHA) to release.
+                    Defaults to the ref of the workflow.
                 type: string
     workflow_call:
         inputs:
