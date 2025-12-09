@@ -16,7 +16,7 @@ jobs:
               id: check
               env:
                   GH_TOKEN: ${{ github.token }}
-                  TAG: ${{ github.event.inputs.tag }}
+                  TAG: ${{ inputs.tag }}
               run: |
                   if [[ "$TAG" != *-rc* ]]; then
                       echo "::error::Not running because $TAG is not a release candidate version"
@@ -34,5 +34,5 @@ jobs:
         uses: ./.github/workflows/continue-release-common.yml
         with:
             release-type: rc
-            tag: ${{ github.event.inputs.tag }}
+            tag: ${{ inputs.tag }}
         secrets: inherit
