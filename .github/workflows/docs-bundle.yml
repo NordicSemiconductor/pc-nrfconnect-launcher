@@ -7,10 +7,16 @@ on:
             - .github/workflows/docs-bundle.yml
             - doc
     workflow_dispatch:
-    workflow_call:
+        inputs:
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to publish the docs from.
+                    Defaults to the main branch.
+                type: string
 
 jobs:
     create-doc-bundle:
         uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-bundle.yml@main
         with:
             bundle-name: nrf-connect-desktop
+            ref: ${{ inputs.ref }}

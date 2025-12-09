@@ -6,6 +6,7 @@ on:
             tag:
                 description: Tag of the release to continue.
                 type: string
+                required: true
 
 jobs:
     check-version:
@@ -16,7 +17,7 @@ jobs:
               id: check
               env:
                   GH_TOKEN: ${{ github.token }}
-                  TAG: ${{ github.event.inputs.tag }}
+                  TAG: ${{ inputs.tag }}
               run: |
                   # Check if this is a release version (not RC)
                   if [[ "$TAG" == *-rc* ]]; then
@@ -43,7 +44,7 @@ jobs:
         uses: ./.github/workflows/continue-release-common.yml
         with:
             release-type: production
-            tag: ${{ github.event.inputs.tag }}
+            tag: ${{ inputs.tag }}
         secrets: inherit
 
     copy-to-web-assets:
@@ -51,7 +52,7 @@ jobs:
         needs: [check-version, continue-release]
         runs-on: ubuntu-latest
         env:
-            TAG: ${{ github.event.inputs.tag }}
+            TAG: ${{ inputs.tag }}
         steps:
             - name: Setup JFrog CLI
               uses: jfrog/setup-jfrog-cli@v4
@@ -68,5 +69,7 @@ jobs:
 
     publish-docs:
         uses: ./.github/workflows/docs-publish-prod.yml
+        with:
+            ref: ${{ inputs.tag }}
         needs: continue-release
         secrets: inherit

@@ -8,6 +8,12 @@ on:
             - doc
             - .github/workflows/docs-*.yml
     workflow_dispatch:
+        inputs:
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to publish the docs from.
+                    Defaults to the main branch.
+                type: string
 
 jobs:
     publish-docs-bundle:
@@ -15,4 +21,5 @@ jobs:
         with:
             bundle-name: nrf-connect-desktop
             release-type: dev
+            ref: ${{ inputs.ref }}
         secrets: inherit
