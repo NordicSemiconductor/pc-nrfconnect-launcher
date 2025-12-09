@@ -5,6 +5,7 @@ on:
         inputs:
             tag:
                 description: Tag of the release to continue.
+                required: true
                 type: string
 
 jobs:

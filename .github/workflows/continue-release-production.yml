@@ -6,6 +6,7 @@ on:
             tag:
                 description: Tag of the release to continue.
                 type: string
+                required: true
 
 jobs:
     check-version:
@@ -68,5 +69,7 @@ jobs:
 
     publish-docs:
         uses: ./.github/workflows/docs-publish-prod.yml
+        with:
+            ref: ${{ inputs.tag }}
         needs: continue-release
         secrets: inherit

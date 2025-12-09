@@ -2,7 +2,16 @@ name: 'Docs: Publish to prod'
 
 on:
     workflow_dispatch:
+        inputs:
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to publish the docs from.
+                    Defaults to the main branch.
+                type: string
     workflow_call:
+        inputs:
+            ref:
+                type: string
 
 jobs:
     publish-docs-bundle:
@@ -10,4 +19,5 @@ jobs:
         with:
             bundle-name: nrf-connect-desktop
             release-type: prod
+            ref: ${{ inputs.ref }}
         secrets: inherit
