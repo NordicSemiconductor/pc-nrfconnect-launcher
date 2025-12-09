@@ -1,3 +1,9 @@
+## 5.2.1 - 2025-12-10
+
+### Changed
+
+-   Updated bundled SEGGER J-Link to v8.76 for Windows.
+
 ## 5.2.0 - 2025-05-19
 
 ### Added
