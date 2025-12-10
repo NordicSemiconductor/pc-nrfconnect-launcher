@@ -22,7 +22,7 @@
 
 ### Changed
 
--   Updated bundled SEGGER J-Link to v8.76 for Windows.
+- Updated bundled SEGGER J-Link to v8.76 for Windows.
 
 ## 5.2.0 - 2025-05-22
 
