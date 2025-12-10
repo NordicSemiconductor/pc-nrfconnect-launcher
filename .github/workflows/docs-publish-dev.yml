@@ -16,6 +16,20 @@ on:
                 type: string
 
 jobs:
+    echo-inputs:
+        runs-on: ubuntu-latest
+        name: Inputs
+        steps:
+            - uses: actions/github-script@v8
+              if: github.event_name == 'workflow_dispatch'
+              env:
+                  REF: ${{ inputs.ref }}
+                  FALLBACK_REF: ${{ github.ref_name }}
+              with:
+                  script: |
+                      core.summary.addHeading('Workflow inputs', '2');
+                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.write();
     publish-docs-bundle:
         uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-publish.yml@main
         with:

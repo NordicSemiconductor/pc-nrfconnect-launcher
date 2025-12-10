@@ -13,6 +13,21 @@ on:
                 type: string
 
 jobs:
+    echo-inputs:
+        runs-on: ubuntu-latest
+        name: Inputs
+        steps:
+            - uses: actions/github-script@v8
+              env:
+                  RELEASE_TYPE: ${{ inputs.release-type }}
+                  TAG: ${{ inputs.tag }}
+              with:
+                  script: |
+                      core.summary.addHeading('Workflow inputs', '2');
+                      core.summary.addTable([
+                          ['Release Type', `<code>${process.env.RELEASE_TYPE}</code>`],
+                          ['Tag', `<code>${process.env.TAG}</code>`]]);
+                      core.summary.write();
     check-type:
         name: Check release type
         runs-on: ubuntu-latest
