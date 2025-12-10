@@ -14,7 +14,7 @@ on:
                     - x64
             ref:
                 description:
-                    Ref (Tag, branch, commit SHA) to release.
+                    Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
     workflow_call:
