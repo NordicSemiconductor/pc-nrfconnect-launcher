@@ -18,6 +18,12 @@
 - Missing progress bar on app install.
 - App install failure when a proxy required authentication.
 
+## 5.2.1 - 2025-12-11
+
+### Changed
+
+- Updated bundled SEGGER J-Link to v8.76 for Windows.
+
 ## 5.2.0 - 2025-05-22
 
 ### Added
