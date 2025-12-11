@@ -8,17 +8,35 @@ on:
                     Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
+            echo-inputs:
+                description: Print the workflow inputs.
+                type: boolean
+                default: true
     workflow_call:
         inputs:
             ref:
                 description: Ref to build from
                 type: string
+            echo-inputs:
+                type: boolean
+                default: false
 
 jobs:
     build:
         name: Build Linux
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/github-script@v8
+              if: inputs.echo-inputs
+              env:
+                  REF: ${{ inputs.ref }}
+                  FALLBACK_REF: ${{ github.ref_name }}
+              with:
+                  script: |
+                      core.summary.addHeading('Workflow inputs', '2');
+                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.write();
+
             - uses: actions/checkout@v4
               with:
                   ref: ${{ inputs.ref }}
