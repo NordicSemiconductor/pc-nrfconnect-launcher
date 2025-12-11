@@ -51,6 +51,10 @@ jobs:
               run: |
                   gh run download --repo nordicsemiconductor/pc-nrfconnect-launcher
 
+            # === DEBUG STEP ===
+            - name: Debug - List files
+              run: ls -R
+
             - name: Merge *-mac.yml
               run: |
                   yq '. *=+ load("nrfconnect-macOS-x64/${{env.CHANNEL}}-mac.yml")' "nrfconnect-macOS-arm64/$CHANNEL-mac.yml" > "$CHANNEL-mac.yml"
@@ -60,7 +64,7 @@ jobs:
             - name: Collect release files
               run: |
                   mkdir "$TAG"
-                  cp nrfconnect-windows-x64/changelog.md \
+                  cp nrfconnect-windows-x64/Сhangelog.md \
                       nrfconnect-*/*.AppImage \
                       nrfconnect-*/*.exe \
                       nrfconnect-*/*.dmg \
