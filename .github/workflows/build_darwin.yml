@@ -14,9 +14,13 @@ on:
                     - x64
             ref:
                 description:
-                    Ref (Tag, branch, commit SHA) to release.
+                    Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
+            echo-inputs:
+                description: Print the workflow inputs.
+                type: boolean
+                default: true
     workflow_call:
         inputs:
             arch:
@@ -26,6 +30,9 @@ on:
             ref:
                 description: Ref to build from
                 type: string
+            echo-inputs:
+                type: boolean
+                default: false
 
 jobs:
     build:
@@ -33,6 +40,17 @@ jobs:
         # For arm64 use macos-latest, for x64 use macos-15-intel (See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#choosing-github-hosted-runners)
         runs-on: ${{ inputs.arch == 'arm64' && 'macos-latest' || 'macos-15-intel' }}
         steps:
+            - uses: actions/github-script@v8
+              if: inputs.echo-inputs
+              env:
+                  REF: ${{ inputs.ref }}
+                  FALLBACK_REF: ${{ github.ref_name }}
+              with:
+                  script: |
+                      core.summary.addHeading('Workflow inputs', '2');
+                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.write();
+
             - uses: actions/checkout@v4
               with:
                   ref: ${{ inputs.ref }}

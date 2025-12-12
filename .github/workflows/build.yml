@@ -2,6 +2,12 @@ name: Build
 
 on:
     workflow_dispatch:
+        inputs:
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to build.
+                    Defaults to the ref of the workflow.
+                type: string
     workflow_call:
         inputs:
             ref:
@@ -12,8 +18,8 @@ on:
                 description: Whether the build completed successfully
                 value:
                     ${{
-                        jobs.windows.result == 'success' && 
-                        jobs.linux.result == 'success' && 
+                        jobs.windows.result == 'success' &&
+                        jobs.linux.result == 'success' &&
                         jobs.darwin_x64.result == 'success' &&
                         jobs.darwin_arm64.result == 'success'
                     }}
@@ -27,6 +33,19 @@ on:
             - doc/**
 
 jobs:
+    echo-inputs:
+        runs-on: ubuntu-latest
+        name: Inputs
+        steps:
+            - uses: actions/github-script@v8
+              env:
+                  REF: ${{ inputs.ref }}
+                  FALLBACK_REF: ${{ github.ref_name }}
+              with:
+                  script: |
+                      core.summary.addHeading('Workflow inputs', '2');
+                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.write();
     windows:
         uses: ./.github/workflows/build_win.yml
         secrets: inherit
