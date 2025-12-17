@@ -1,4 +1,4 @@
-site_name: nRF Connect for Desktop launcher documentation
+site_name: nRF Connect for Desktop documentation
 site_url:
 use_directory_urls: false
 
@@ -20,6 +20,8 @@ theme:
     - content.tooltips
     - content.tabs.link
     - navigation.indexes
+    - navigation.path
+    - navigation.sections
     - navigation.top
     - navigation.tracking
     - search.highlight
@@ -53,17 +55,30 @@ markdown_extensions:
 plugins:
   - macros
   - search
+  - monorepo
 
 
 extra:
   test: This is a test abbreviation snippet
 
 nav:
-  - Home: index.md
-  - Supported operating systems: os_support.md
-  - Requirements and installation: download_cfd.md
-  - Overview: overview_cfd.md
-  - Installing apps in nRF Connect for Desktop: installing_apps.md
-  - Starting nRF Connect for Desktop with proxy settings: proxy_settings.md
-  - Working with identity tokens: working_with_authentications_tokens.md
-  - Revision history: revision_history.md
+  - Launcher:
+    - Home: index.md
+    - Supported operating systems: os_support.md
+    - Requirements and installation: download_cfd.md
+    - Overview: overview_cfd.md
+    - Installing apps in nRF Connect for Desktop: installing_apps.md
+    - Starting nRF Connect for Desktop with proxy settings: proxy_settings.md
+    - Working with identity tokens: working_with_authentications_tokens.md
+    - Revision history: revision_history.md
+  - Quick Start: '!include ./submodules/pc-nrfconnect-quickstart/mkdocs.yml'
+  - Board Configurator: '!include ./submodules/pc-nrfconnect-board-configurator/mkdocs.yml'
+  - Cellular Monitor: '!include ./submodules/pc-nrfconnect-cellularmonitor/mkdocs.yml'
+  - Direct Test Mode: '!include ./submodules/pc-nrfconnect-dtm/mkdocs.yml'
+  - Matter Cluster Editor: '!include ./submodules/pc-nrfconnect-matter-cluster-editor/mkdocs.yml'
+  - Matter Quick Start: '!include ./submodules/pc-nrfconnect-matter-quickstart/mkdocs.yml'
+  - nPM PowerUP: '!include ./submodules/pc-nrfconnect-npm/mkdocs.yml'
+  - Power Profiler: '!include ./submodules/pc-nrfconnect-ppk/mkdocs.yml'
+  - Programmer: '!include ./submodules/pc-nrfconnect-programmer/mkdocs.yml'
+  - Serial Terminal: '!include ./submodules/pc-nrfconnect-serial-terminal/mkdocs.yml'
+  - RSSI Viewer: '!include ./submodules/pc-nrfconnect-rssi/mkdocs.yml'

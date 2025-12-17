@@ -1,0 +1,36 @@
+[submodule "doc/submodules/pc-nrfconnect-quickstart"]
+	path = doc/submodules/pc-nrfconnect-quickstart
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-quickstart.git
+[submodule "doc/submodules/pc-nrfconnect-board-configurator"]
+	path = doc/submodules/pc-nrfconnect-board-configurator
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-board-configurator.git
+[submodule "doc/submodules/pc-nrfconnect-ble"]
+	path = doc/submodules/pc-nrfconnect-ble
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-ble.git
+[submodule "doc/submodules/pc-nrfconnect-cellularmonitor"]
+	path = doc/submodules/pc-nrfconnect-cellularmonitor
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-cellularmonitor.git
+[submodule "doc/submodules/pc-nrfconnect-dtm"]
+	path = doc/submodules/pc-nrfconnect-dtm
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-dtm.git
+[submodule "doc/submodules/pc-nrfconnect-matter-cluster-editor"]
+	path = doc/submodules/pc-nrfconnect-matter-cluster-editor
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-matter-cluster-editor.git
+[submodule "doc/submodules/pc-nrfconnect-matter-quickstart"]
+	path = doc/submodules/pc-nrfconnect-matter-quickstart
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-matter-quickstart.git
+[submodule "doc/submodules/pc-nrfconnect-npm"]
+	path = doc/submodules/pc-nrfconnect-npm
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-npm.git
+[submodule "doc/submodules/pc-nrfconnect-ppk"]
+	path = doc/submodules/pc-nrfconnect-ppk
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-ppk.git
+[submodule "doc/submodules/pc-nrfconnect-programmer"]
+	path = doc/submodules/pc-nrfconnect-programmer
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-programmer.git
+[submodule "doc/submodules/pc-nrfconnect-serial-terminal"]
+	path = doc/submodules/pc-nrfconnect-serial-terminal
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-serial-terminal.git
+[submodule "doc/submodules/pc-nrfconnect-rssi"]
+	path = doc/submodules/pc-nrfconnect-rssi
+	url = https://github.com/NordicSemiconductor/pc-nrfconnect-rssi.git
