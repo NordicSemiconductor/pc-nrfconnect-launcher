@@ -11,6 +11,7 @@ import { useLauncherSelector } from '../../util/hooks';
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import AppFilterBar from '../filter/AppFilterBar';
 import { getAppsFilter } from '../filter/filterSlice';
+import Notifications from '../notifications/Notifications';
 import ReleaseNotesDialog from '../releaseNotes/ReleaseNotesDialog';
 import App from './App/App';
 import AppListEmpty from './AppListEmpty';
@@ -44,6 +45,7 @@ export default () => {
 
     return (
         <>
+            <Notifications />
             <AppFilterBar />
             {apps.length === 0 ? <AppListEmpty /> : <Apps apps={apps} />}
             <ConfirmLaunchDialog />

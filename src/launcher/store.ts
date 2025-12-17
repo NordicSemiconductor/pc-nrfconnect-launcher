@@ -17,6 +17,7 @@ import filter from './features/filter/filterSlice';
 import jlinkUpdate from './features/jlinkUpdate/jlinkUpdateSlice';
 import launcherUpdate from './features/launcherUpdate/launcherUpdateSlice';
 import localAppInstall from './features/localAppInstall/localAppInstallSlice';
+import notifications from './features/notifications/notificationsSlice';
 import proxyLogin from './features/proxyLogin/proxyLoginSlice';
 import releaseNotesDialog from './features/releaseNotes/releaseNotesDialogSlice';
 import settings from './features/settings/settingsSlice';
@@ -26,14 +27,15 @@ import telemetry from './features/telemetry/telemetrySlice';
 enableMapSet();
 
 export const reducer = {
+    appDialogs,
     appleSilicon,
     apps,
-    appDialogs,
     errorDialog,
     filter,
-    launcherUpdate,
     jlinkUpdate,
+    launcherUpdate,
     localAppInstall,
+    notifications,
     proxyLogin,
     releaseNotesDialog,
     settings,

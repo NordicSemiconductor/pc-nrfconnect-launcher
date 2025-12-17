@@ -9,6 +9,7 @@ import { ErrorDialogActions } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import * as appInstallProgress from '../../ipc/appInstallProgress';
 import * as installJlink from '../../ipc/jlinkProgress';
 import * as launcherUpdateProgress from '../../ipc/launcherUpdateProgress';
+import * as prototypeAccountReport from '../../ipc/prototypeAccountReport';
 import * as proxyLogin from '../../ipc/proxyLogin';
 import * as showErrorDialog from '../../ipc/showErrorDialog';
 import {
@@ -21,6 +22,7 @@ import {
     startDownload,
     updateDownloading,
 } from '../features/launcherUpdate/launcherUpdateSlice';
+import { setNotifications } from '../features/notifications/notificationsSlice';
 import { loginRequestedByServer } from '../features/proxyLogin/proxyLoginSlice';
 import type { AppDispatch } from '../store';
 
@@ -52,4 +54,9 @@ export default (dispatch: AppDispatch) => {
     installJlink.forMain.registerUpdateJLinkProgress(update => {
         dispatch(updateJLinkProgress(update));
     });
+    prototypeAccountReport.forMain.registerReportNotifications(
+        notifications => {
+            dispatch(setNotifications(notifications));
+        },
+    );
 };

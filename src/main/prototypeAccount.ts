@@ -7,18 +7,29 @@
 import { net } from 'electron';
 import { z } from 'zod';
 
-import { removeEncryptedArtifactoryToken } from '../common/persistedStore';
 import type { PrototypeAccountInformation } from '../ipc/prototypeAccount';
-import { retrieveToken, storeToken } from './artifactoryTokenStorage';
-import { getArtifactoryTokenInformation } from './net';
+import { inRenderer, notificationsSchema } from '../ipc/prototypeAccountReport';
 
-export const getTokenInformation = async () => {
-    // const tokenResult = retrieveToken();
-    // if (tokenResult.type !== 'Success') return tokenResult;
-    // return {
-    //     type: 'Success',
-    //     information: await getArtifactoryTokenInformation(tokenResult.token),
-    // } as const;
+const dashboardSchema = z.object({
+    success: z.literal(true),
+    error: z.null(),
+    data: notificationsSchema,
+});
+
+const fetchNotifications = async (accessToken: string) => {
+    const { CENS_DASHBOARD_URL } = process.env;
+    if (!CENS_DASHBOARD_URL)
+        throw new Error('Env variable CENS_DASHBOARD_URL ust be set');
+
+    const response = await net.fetch(CENS_DASHBOARD_URL, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    const notifications = dashboardSchema.parse(await response.json());
+
+    console.log('Prototype notifications:', notifications.data);
+
+    inRenderer.reportNotifications(notifications.data);
 };
 
 export const logIn = (): Promise<PrototypeAccountInformation> => {
@@ -45,7 +56,6 @@ export const logIn = (): Promise<PrototypeAccountInformation> => {
     }
 
     const request = net.request({
-        // url: CENS_LOGIN_URL,
         url:
             `${CENS_LOGIN_URL}` +
             `?grant_type=${encodeURIComponent(CENS_GRANT_TYPE)}` +
@@ -57,7 +67,6 @@ export const logIn = (): Promise<PrototypeAccountInformation> => {
         method: 'GET',
         // headers: { contentType: 'application/x-www-form-urlencoded' },
     });
-    // request.end();
     request.end(
         `grant_type=${encodeURIComponent(CENS_GRANT_TYPE)}` +
             `&client_id=${encodeURIComponent(CENS_CLIENT_ID)}` +
@@ -90,19 +99,28 @@ export const logIn = (): Promise<PrototypeAccountInformation> => {
                 //     ),
                 // );
 
-                const accessToken = JSON.parse(chunk.toString()).access_token;
-                const { exp, name } = JSON.parse(
-                    atob(accessToken.split('.')[1]),
+                const responseSchema = z.object({
+                    access_token: z.string(),
+                });
+                const accessToken = responseSchema.parse(
+                    JSON.parse(chunk.toString()),
+                ).access_token;
+
+                const accessTokenSchema = z.object({
+                    exp: z.number(),
+                    name: z.string(),
+                });
+                const { exp, name } = accessTokenSchema.parse(
+                    JSON.parse(atob(accessToken.split('.')[1])),
                 );
 
                 console.log(accessToken);
-                // console.log({ expires: new Date(exp * 1000), name });
-
-                // console.log('XXX end');
 
                 // storeToken(token);
 
                 resolve({ expires: new Date(exp * 1000), name });
+
+                fetchNotifications(accessToken);
             });
 
             // response.on('end', () => {
@@ -110,23 +128,4 @@ export const logIn = (): Promise<PrototypeAccountInformation> => {
             // });
         });
     });
-
-    // const response = await fetch(
-    //     new URL(
-    //         `${CENS_LOGIN_URL}?${new URLSearchParams({
-    //             grant_type: encodeURIComponent(CENS_GRANT_TYPE),
-    //             client_id: encodeURIComponent(CENS_CLIENT_ID),
-    //             client_secret: encodeURIComponent(CENS_CLIENT_SECRET),
-    //             scope: encodeURIComponent(CENS_SCOPE),
-    //             username: encodeURIComponent(CENS_USERNAME),
-    //             password: encodeURIComponent(CENS_PASSWORD),
-    //         }).toString()}`,
-    //     ),
-    // );
-
-    // const x = await response.json();
-    // console.log(x);
-    // const tokenInformation = await getArtifactoryTokenInformation(token);
-
-    // storeToken(token);
 };
