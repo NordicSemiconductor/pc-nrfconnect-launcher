@@ -70,8 +70,8 @@ jobs:
                   # Copy resolved mkdocs.yml to mkdocs.yml for bundle
                   cp mkdocs.resolved.yml mkdocs.yml
 
-                  # Create zip with main docs and resolved mkdocs.yml
-                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml
+                  # Create zip with main docs, resolved mkdocs.yml, and zoomin directory
+                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml zoomin/
 
                   # Add all submodule mkdocs.yml files (now in docs/submodules/)
                   echo "Adding submodule mkdocs.yml files..."
