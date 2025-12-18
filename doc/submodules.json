@@ -1,6 +1,5 @@
 {
   "repos": [
-    "pc-nrfconnect-quickstart",
     "pc-nrfconnect-ble",
     "pc-nrfconnect-board-configurator",
     "pc-nrfconnect-cellularmonitor",
@@ -11,7 +10,7 @@
     "pc-nrfconnect-ppk",
     "pc-nrfconnect-programmer",
     "pc-nrfconnect-serial-terminal",
-    "pc-nrfconnect-rssi"
+    "pc-nrfconnect-rssi",
+    "pc-nrfconnect-quickstart"
   ]
 }
-

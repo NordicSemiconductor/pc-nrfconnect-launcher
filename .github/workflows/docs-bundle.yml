@@ -77,12 +77,12 @@ jobs:
                   echo "Adding submodule mkdocs.yml files..."
                   find docs/submodules -name "mkdocs.yml" -print -exec zip -r "../nrf-connect-desktop.zip" {} \;
 
-                  # Add all submodule docs directories recursively
-                  echo "Adding submodule docs directories..."
-                  for docs_dir in docs/submodules/*/docs; do
-                      if [ -d "$docs_dir" ]; then
-                          echo "Adding $docs_dir"
-                          zip -r "../nrf-connect-desktop.zip" "$docs_dir"
+                  # Add all submodule doc directories recursively (note: doc/, not docs/)
+                  echo "Adding submodule doc directories..."
+                  for doc_dir in docs/submodules/*/doc; do
+                      if [ -d "$doc_dir" ]; then
+                          echo "Adding $doc_dir"
+                          zip -r "../nrf-connect-desktop.zip" "$doc_dir"
                       fi
                   done
 

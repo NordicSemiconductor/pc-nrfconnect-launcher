@@ -64,7 +64,7 @@ function parseIncludedMkdocs(filePath) {
 }
 
 /**
- * Adjust paths in nav section to be relative to submodules/<app_name>/docs/
+ * Adjust paths in nav section to be relative to submodules/<app_name>/doc/
  */
 function adjustNavPaths(navContent, appName) {
     const lines = navContent.split('\n');
@@ -91,8 +91,8 @@ function adjustNavPaths(navContent, appName) {
                 continue;
             }
 
-            // Adjust path - ensure it's relative to submodules/<app_name>/docs/
-            const newPath = `submodules/${appName}/docs/${pathPart}`;
+            // Adjust path - ensure it's relative to submodules/<app_name>/doc/
+            const newPath = `submodules/${appName}/doc/${pathPart}`;
             adjusted.push(`${indent}${title}: ${newPath}`);
         } else {
             adjusted.push(line);
