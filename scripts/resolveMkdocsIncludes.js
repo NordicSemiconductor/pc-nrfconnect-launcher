@@ -73,34 +73,37 @@ function adjustNavPaths(navContent, appName) {
     for (const line of lines) {
         // Match navigation items - need to handle titles with colons
         // Pattern: "  - Title: filename.md" or "  - Title:91 firmware: filename.md"
-        // Match the last colon that's followed by a file path (ends with .md or similar)
-        // Use a regex that finds the last colon before what looks like a file path
-        const filePathMatch = line.match(/:([^\s:]+\.md\S*|\S+)$/);
-        if (filePathMatch) {
-            const pathPart = filePathMatch[1].trim();
-            const beforePath = line.substring(0, line.lastIndexOf(':'));
-            const navMatch = beforePath.match(/^(\s*-\s+)(.+)$/);
-            if (navMatch) {
-                const indent = navMatch[1];
-                const title = navMatch[2].trim();
-                let finalPathPart = pathPart;
+        // Strategy: Find the last colon and check if what follows is a file path
+        const lastColonIndex = line.lastIndexOf(':');
+        if (lastColonIndex > 0) {
+            // Extract everything after the last colon
+            const afterLastColon = line.substring(lastColonIndex + 1).trim();
+            // Check if it looks like a file path (ends with .md and contains no colons)
+            if (afterLastColon.endsWith('.md') && !afterLastColon.includes(':')) {
+                const beforeLastColon = line.substring(0, lastColonIndex);
+                const navMatch = beforeLastColon.match(/^(\s*-\s+)(.+)$/);
+                if (navMatch) {
+                    const indent = navMatch[1];
+                    const title = navMatch[2].trim();
+                    let finalPathPart = afterLastColon;
 
-                // Remove quotes if present
-                if ((finalPathPart.startsWith("'") && finalPathPart.endsWith("'")) ||
-                    (finalPathPart.startsWith('"') && finalPathPart.endsWith('"'))) {
-                    finalPathPart = finalPathPart.slice(1, -1);
-                }
+                    // Remove quotes if present
+                    if ((finalPathPart.startsWith("'") && finalPathPart.endsWith("'")) ||
+                        (finalPathPart.startsWith('"') && finalPathPart.endsWith('"'))) {
+                        finalPathPart = finalPathPart.slice(1, -1);
+                    }
 
-                // Skip if already has submodules/ prefix or is an include statement
-                if (finalPathPart.startsWith('submodules/') || finalPathPart.startsWith('!include')) {
-                    adjusted.push(line);
+                    // Skip if already has submodules/ prefix or is an include statement
+                    if (finalPathPart.startsWith('submodules/') || finalPathPart.startsWith('!include')) {
+                        adjusted.push(line);
+                        continue;
+                    }
+
+                    // Adjust path - ensure it's relative to submodules/<app_name>/doc/
+                    const newPath = `submodules/${appName}/doc/${finalPathPart}`;
+                    adjusted.push(`${indent}${title}: ${newPath}`);
                     continue;
                 }
-
-                // Adjust path - ensure it's relative to submodules/<app_name>/doc/
-                const newPath = `submodules/${appName}/doc/${finalPathPart}`;
-                adjusted.push(`${indent}${title}: ${newPath}`);
-                continue;
             }
         }
 
