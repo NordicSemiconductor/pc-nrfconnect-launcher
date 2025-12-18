@@ -30,7 +30,54 @@ jobs:
                       core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
                       core.summary.write();
     create-doc-bundle:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-bundle.yml@main
-        with:
-            bundle-name: nrf-connect-desktop
-            ref: ${{ inputs.ref }}
+        name: Create documentation bundle
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ inputs.ref }}
+                  submodules: recursive
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Initialize submodules
+              run: |
+                  if [ -f doc/submodules.json ]; then
+                      npm run submodules:init
+                  fi
+
+            - name: Create zip file with all doc sources
+              run: |
+                  cd doc/
+                  # Create zip with main docs and mkdocs.yml
+                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml
+
+                  # Add all submodule mkdocs.yml files
+                  echo "Adding submodule mkdocs.yml files..."
+                  find submodules -name "mkdocs.yml" -print -exec zip -r "../nrf-connect-desktop.zip" {} \;
+
+                  # Add all submodule docs directories recursively
+                  echo "Adding submodule docs directories..."
+                  for docs_dir in submodules/*/docs; do
+                      if [ -d "$docs_dir" ]; then
+                          echo "Adding $docs_dir"
+                          zip -r "../nrf-connect-desktop.zip" "$docs_dir"
+                      fi
+                  done
+
+                  # List contents of zip for verification
+                  echo "Zip file contents:"
+                  unzip -l "../nrf-connect-desktop.zip" | head -50
+
+            - name: Upload documentation artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: nrf-connect-desktop
+                  path: nrf-connect-desktop.zip
+                  retention-days: 7
