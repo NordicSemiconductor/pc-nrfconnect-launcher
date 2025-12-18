@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ORG = 'NordicSemiconductor';
-const SUBMODULES_DIR = path.join(__dirname, '..', 'doc', 'submodules');
+const SUBMODULES_DIR = path.join(__dirname, '..', 'doc', 'docs', 'submodules');
 const CONFIG_FILE = path.join(__dirname, '..', 'doc', 'submodules.json');
 const DEBUG_LOG = path.join(__dirname, '..', '.cursor', 'debug.log');
 
@@ -49,6 +49,59 @@ function writeConfig(config) {
 
 function getRepoUrl(repoName) {
     return `https://github.com/${ORG}/${repoName}.git`;
+}
+
+/**
+ * Get the git-tracked path from .gitmodules
+ */
+function getGitSubmodulePath(repoName) {
+    const gitmodulesPath = path.join(__dirname, '..', '.gitmodules');
+    if (!fs.existsSync(gitmodulesPath)) {
+        return null;
+    }
+
+    const content = fs.readFileSync(gitmodulesPath, 'utf8');
+    const lines = content.split('\n');
+    let inSubmodule = false;
+    let submodulePath = null;
+
+    for (const line of lines) {
+        const trimmed = line.trim();
+
+        // Check for submodule section header
+        if (trimmed.startsWith('[submodule')) {
+            // Extract path from [submodule "path"]
+            const match = trimmed.match(/\[submodule\s+"([^"]+)"\]/);
+            if (match) {
+                const modulePath = match[1];
+                // Check if this submodule matches our repo name
+                if (modulePath.endsWith(repoName) || modulePath.includes(`/${repoName}`) || modulePath.includes(`\\${repoName}`)) {
+                    inSubmodule = true;
+                    submodulePath = modulePath;
+                } else {
+                    inSubmodule = false;
+                    submodulePath = null;
+                }
+            }
+        } else if (inSubmodule && trimmed.startsWith('path')) {
+            // Found path = value line for our submodule
+            const match = trimmed.match(/path\s*=\s*(.+)/);
+            if (match) {
+                const actualPath = match[1].trim();
+                return path.resolve(__dirname, '..', actualPath);
+            }
+        } else if (trimmed.startsWith('[') && inSubmodule) {
+            // Hit next section, stop looking
+            break;
+        }
+    }
+
+    // Fallback: if we found a submodule path but no path= line, use the section name
+    if (submodulePath) {
+        return path.resolve(__dirname, '..', submodulePath);
+    }
+
+    return null;
 }
 
 function getSubmodulePath(repoName) {
@@ -106,28 +159,36 @@ function moveDocContentsUp(submodulePath) {
         return;
     }
 
-    // Move all contents from doc/ to the submodule root
+    // Only copy docs/ directory and mkdocs.yml file, skip zoomin/
     const files = fs.readdirSync(docPath);
     for (const file of files) {
+        // Skip zoomin directory
+        if (file === 'zoomin') {
+            continue;
+        }
+
         const src = path.join(docPath, file);
         const dest = path.join(submodulePath, file);
-        if (fs.existsSync(dest)) {
-            // If destination exists, merge directories or skip
-            const srcStat = fs.statSync(src);
-            const destStat = fs.statSync(dest);
-            if (srcStat.isDirectory() && destStat.isDirectory()) {
-                // Merge directories
-                const subFiles = fs.readdirSync(src);
-                for (const subFile of subFiles) {
-                    const subSrc = path.join(src, subFile);
-                    const subDest = path.join(dest, subFile);
-                    if (!fs.existsSync(subDest)) {
-                        fs.renameSync(subSrc, subDest);
-                    }
+
+        // Only copy docs/ directory and mkdocs.yml file
+        if (file === 'docs' || file === 'mkdocs.yml') {
+            if (fs.existsSync(dest)) {
+                // If destination exists, remove it first
+                const destStat = fs.statSync(dest);
+                if (destStat.isDirectory()) {
+                    fs.rmSync(dest, { recursive: true, force: true });
+                } else {
+                    fs.unlinkSync(dest);
                 }
             }
-        } else {
-            fs.renameSync(src, dest);
+            const srcStat = fs.statSync(src);
+            if (srcStat.isDirectory()) {
+                // Copy directory recursively
+                fs.cpSync(src, dest, { recursive: true });
+            } else {
+                // Copy file
+                fs.copyFileSync(src, dest);
+            }
         }
     }
 
@@ -141,7 +202,8 @@ function moveDocContentsUp(submodulePath) {
 
 function initSubmodule(repoName) {
     const repoUrl = getRepoUrl(repoName);
-    const submodulePath = getSubmodulePath(repoName);
+    const newSubmodulePath = getSubmodulePath(repoName);
+    const gitTrackedPath = getGitSubmodulePath(repoName);
 
     // Get repository root for computing relative paths
     const cwd = process.cwd();
@@ -151,47 +213,94 @@ function initSubmodule(repoName) {
     } catch (e) {
         repoRoot = cwd; // Fallback to current directory
     }
-    const relativePathForGit = path.relative(repoRoot || cwd, submodulePath).replace(/\\/g, '/');
 
     // #region agent log
-    const relativePath = path.relative(repoRoot || cwd, submodulePath);
-    debugLog({location:'manageSubmodules.js:142',message:'initSubmodule entry',data:{repoName,repoUrl,submodulePath,isAbsolute:path.isAbsolute(submodulePath),cwd,repoRoot,relativePath,relativePathForGit,pathUsesBackslashes:submodulePath.includes('\\')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'});
+    const relativePath = path.relative(repoRoot || cwd, newSubmodulePath);
+    debugLog({location:'manageSubmodules.js:142',message:'initSubmodule entry',data:{repoName,repoUrl,newSubmodulePath,gitTrackedPath,isAbsolute:path.isAbsolute(newSubmodulePath),cwd,repoRoot,relativePath,pathUsesBackslashes:newSubmodulePath.includes('\\')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,C'});
     // #endregion
 
     console.log(`Initializing submodule: ${repoName}`);
 
-    // Check if submodule already exists
-    if (fs.existsSync(submodulePath)) {
+    // Check if submodule already exists at either old or new location
+    const existsAtOldPath = gitTrackedPath && fs.existsSync(gitTrackedPath);
+    const existsAtNewPath = fs.existsSync(newSubmodulePath);
+
+    if (existsAtOldPath || existsAtNewPath) {
         console.log(`Submodule ${repoName} already exists, updating...`);
-        exec(`git submodule update --init --recursive ${submodulePath}`);
+        // Use git-tracked path for git operations if it exists
+        const pathForGit = gitTrackedPath || newSubmodulePath;
+        const relativePathForGit = path.relative(repoRoot || cwd, pathForGit).replace(/\\/g, '/');
+        exec(`git submodule update --init --recursive "${relativePathForGit}"`);
+
+        // Use the actual existing path for post-processing
+        const actualPath = existsAtOldPath ? gitTrackedPath : newSubmodulePath;
+        configureSparseCheckout(actualPath);
+        moveDocContentsUp(actualPath);
+
+        // Migrate if needed
+        if (existsAtOldPath && gitTrackedPath !== newSubmodulePath) {
+            console.log(`Migrating submodule from ${gitTrackedPath} to ${newSubmodulePath}...`);
+            const newDir = path.dirname(newSubmodulePath);
+            if (!fs.existsSync(newDir)) {
+                fs.mkdirSync(newDir, { recursive: true });
+            }
+            if (fs.existsSync(newSubmodulePath)) {
+                fs.rmSync(newSubmodulePath, { recursive: true, force: true });
+            }
+            fs.renameSync(gitTrackedPath, newSubmodulePath);
+
+            // Update .gitmodules
+            const gitmodulesPath = path.join(__dirname, '..', '.gitmodules');
+            let gitmodulesContent = fs.readFileSync(gitmodulesPath, 'utf8');
+            const oldRelativePath = path.relative(repoRoot || cwd, gitTrackedPath).replace(/\\/g, '/');
+            const newRelativePath = path.relative(repoRoot || cwd, newSubmodulePath).replace(/\\/g, '/');
+            gitmodulesContent = gitmodulesContent.replace(
+                new RegExp(`(path\\s*=\\s*)${oldRelativePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g'),
+                `$1${newRelativePath}`
+            );
+            fs.writeFileSync(gitmodulesPath, gitmodulesContent);
+
+            // Update git index
+            exec(`git add .gitmodules`);
+            exec(`git rm --cached "${oldRelativePath}"`);
+            exec(`git add "${newRelativePath}"`);
+        }
     } else {
         // Ensure submodules directory exists
         if (!fs.existsSync(SUBMODULES_DIR)) {
             fs.mkdirSync(SUBMODULES_DIR, { recursive: true });
         }
 
+        const relativePathForGit = path.relative(repoRoot || cwd, newSubmodulePath).replace(/\\/g, '/');
+
         // #region agent log
         const gitCommand = `git submodule add ${repoUrl} ${relativePathForGit}`;
-        debugLog({location:'manageSubmodules.js:170',message:'Before git submodule add',data:{gitCommand,submodulePath,relativePathForGit,repoRoot,cwd},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'A,B,C,D'});
+        debugLog({location:'manageSubmodules.js:170',message:'Before git submodule add',data:{gitCommand,newSubmodulePath,relativePathForGit,repoRoot,cwd},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'A,B,C,D'});
         // #endregion
 
         // Add submodule using relative path (Git requires relative paths)
-        exec(`git submodule add ${repoUrl} ${relativePathForGit}`);
+        exec(`git submodule add ${repoUrl} "${relativePathForGit}"`);
+
+        // Configure sparse-checkout
+        configureSparseCheckout(newSubmodulePath);
+
+        // Move doc contents up one level
+        moveDocContentsUp(newSubmodulePath);
     }
-
-    // Configure sparse-checkout
-    configureSparseCheckout(submodulePath);
-
-    // Move doc contents up one level
-    moveDocContentsUp(submodulePath);
 
     console.log(`✓ Submodule ${repoName} initialized successfully`);
 }
 
 function updateSubmodule(repoName) {
-    const submodulePath = getSubmodulePath(repoName);
+    // Get git-tracked path (may be old path) and new desired path
+    const gitTrackedPath = getGitSubmodulePath(repoName);
+    const newSubmodulePath = getSubmodulePath(repoName);
 
-    if (!fs.existsSync(submodulePath)) {
+    // Check if submodule exists at either old or new location
+    const existsAtOldPath = gitTrackedPath && fs.existsSync(gitTrackedPath);
+    const existsAtNewPath = fs.existsSync(newSubmodulePath);
+
+    if (!existsAtOldPath && !existsAtNewPath) {
         console.log(`Submodule ${repoName} does not exist, initializing...`);
         initSubmodule(repoName);
         return;
@@ -199,14 +308,65 @@ function updateSubmodule(repoName) {
 
     console.log(`Updating submodule: ${repoName}`);
 
+    // Get repository root for computing relative paths
+    const cwd = process.cwd();
+    let repoRoot = '';
+    try {
+        repoRoot = execSync('git rev-parse --show-toplevel', { encoding: 'utf8', stdio: 'pipe' }).trim();
+    } catch (e) {
+        repoRoot = cwd;
+    }
+
+    // Use git-tracked path for git operations (git needs to know about it)
+    const pathForGit = gitTrackedPath || newSubmodulePath;
+    const relativePathForGit = path.relative(repoRoot || cwd, pathForGit).replace(/\\/g, '/');
+
     // Update submodule to the commit referenced by the parent repo
-    exec(`git submodule update --init --recursive ${submodulePath}`);
+    exec(`git submodule update --init --recursive "${relativePathForGit}"`);
+
+    // Determine which path to use for post-processing
+    const actualPath = existsAtOldPath ? gitTrackedPath : newSubmodulePath;
 
     // Re-apply sparse-checkout after update
-    configureSparseCheckout(submodulePath);
+    configureSparseCheckout(actualPath);
 
     // Move doc contents up one level
-    moveDocContentsUp(submodulePath);
+    moveDocContentsUp(actualPath);
+
+    // If submodule is at old path, migrate it to new path
+    if (existsAtOldPath && gitTrackedPath && gitTrackedPath !== newSubmodulePath) {
+        console.log(`Migrating submodule from ${gitTrackedPath} to ${newSubmodulePath}...`);
+
+        // Ensure new directory exists
+        const newDir = path.dirname(newSubmodulePath);
+        if (!fs.existsSync(newDir)) {
+            fs.mkdirSync(newDir, { recursive: true });
+        }
+
+        // Move the submodule directory
+        if (fs.existsSync(newSubmodulePath)) {
+            fs.rmSync(newSubmodulePath, { recursive: true, force: true });
+        }
+        fs.renameSync(gitTrackedPath, newSubmodulePath);
+
+        // Update .gitmodules to reflect new path
+        const gitmodulesPath = path.join(__dirname, '..', '.gitmodules');
+        let gitmodulesContent = fs.readFileSync(gitmodulesPath, 'utf8');
+        const oldRelativePath = path.relative(repoRoot || cwd, gitTrackedPath).replace(/\\/g, '/');
+        const newRelativePath = path.relative(repoRoot || cwd, newSubmodulePath).replace(/\\/g, '/');
+        gitmodulesContent = gitmodulesContent.replace(
+            new RegExp(`(path\\s*=\\s*)${oldRelativePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g'),
+            `$1${newRelativePath}`
+        );
+        fs.writeFileSync(gitmodulesPath, gitmodulesContent);
+
+        // Update git index
+        exec(`git add .gitmodules`);
+        exec(`git rm --cached "${oldRelativePath}"`);
+        exec(`git add "${newRelativePath}"`);
+
+        console.log(`✓ Submodule migrated to new location`);
+    }
 
     console.log(`✓ Submodule ${repoName} updated successfully`);
 }
@@ -240,17 +400,35 @@ function removeSubmodule(repoName) {
         return;
     }
 
-    const submodulePath = getSubmodulePath(repoName);
+    // Get both old and new paths
+    const gitTrackedPath = getGitSubmodulePath(repoName);
+    const newSubmodulePath = getSubmodulePath(repoName);
 
-    // Remove from git
-    if (fs.existsSync(submodulePath)) {
-        exec(`git submodule deinit -f ${submodulePath}`);
-        exec(`git rm -f ${submodulePath}`);
+    // Get relative paths for git commands
+    const cwd = process.cwd();
+    let repoRoot = '';
+    try {
+        repoRoot = execSync('git rev-parse --show-toplevel', { encoding: 'utf8', stdio: 'pipe' }).trim();
+    } catch (e) {
+        repoRoot = cwd;
+    }
+
+    // Remove from git using git-tracked path if it exists
+    const pathToRemove = gitTrackedPath || newSubmodulePath;
+    if (pathToRemove && fs.existsSync(pathToRemove)) {
+        const relativePath = path.relative(repoRoot || cwd, pathToRemove).replace(/\\/g, '/');
+        exec(`git submodule deinit -f "${relativePath}"`);
+        exec(`git rm -f "${relativePath}"`);
 
         // Remove directory if it still exists
-        if (fs.existsSync(submodulePath)) {
-            fs.rmSync(submodulePath, { recursive: true, force: true });
+        if (fs.existsSync(pathToRemove)) {
+            fs.rmSync(pathToRemove, { recursive: true, force: true });
         }
+    }
+
+    // Also remove from new location if different
+    if (gitTrackedPath && newSubmodulePath && gitTrackedPath !== newSubmodulePath && fs.existsSync(newSubmodulePath)) {
+        fs.rmSync(newSubmodulePath, { recursive: true, force: true });
     }
 
     // Remove from config
