@@ -13,6 +13,15 @@ on:
                     Ref (Tag, branch, commit SHA) to publish the docs from.
                     Defaults to the main branch.
                 type: string
+    workflow_call:
+        inputs:
+            bundle-name:
+                type: string
+                required: true
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to publish the docs from.
+                type: string
 
 jobs:
     echo-inputs:
@@ -35,7 +44,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  ref: ${{ inputs.ref }}
+                  ref: ${{ inputs.ref || github.ref }}
                   submodules: recursive
 
             - uses: actions/setup-node@v4
