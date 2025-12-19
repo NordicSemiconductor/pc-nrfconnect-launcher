@@ -205,6 +205,29 @@ function resolveIncludes() {
             const indent = line.match(/^(\s*)/)[1];
             const navLines = adjustedNav.split('\n');
 
+            // #region agent log
+            fetch('http://127.0.0.1:7244/ingest/9bd55aea-12bb-457a-bf26-2aca8d192c8e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'resolveMkdocsIncludes.js:205',message:'Processing include',data:{title,indentLength:indent.length,appName},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+            // #endregion
+
+            // Find base indent of included nav (first nav item's indent)
+            let baseNavIndent = 0;
+            for (let k = 0; k < navLines.length; k++) {
+                const testLine = navLines[k];
+                const testTrimmed = testLine.trim();
+                if (testTrimmed === 'nav:') {
+                    continue;
+                }
+                if (testTrimmed.startsWith('-')) {
+                    const testIndent = testLine.match(/^(\s*)/)[1];
+                    baseNavIndent = testIndent.length;
+                    break;
+                }
+            }
+
+            // #region agent log
+            fetch('http://127.0.0.1:7244/ingest/9bd55aea-12bb-457a-bf26-2aca8d192c8e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'resolveMkdocsIncludes.js:220',message:'Base nav indent detected',data:{baseNavIndent,title},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+            // #endregion
+
             // Skip the "nav:" line and process the actual nav items
             let foundNavItems = false;
             for (let j = 0; j < navLines.length; j++) {
@@ -225,14 +248,37 @@ function resolveIncludes() {
                     }
                     // Add nav item with proper indentation (one level deeper than title)
                     const itemIndent = navLine.match(/^(\s*)/)[1];
+                    const itemIndentLength = itemIndent.length;
+                    const relativeIndent = itemIndentLength - baseNavIndent;
+
+                    // #region agent log
+                    fetch('http://127.0.0.1:7244/ingest/9bd55aea-12bb-457a-bf26-2aca8d192c8e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'resolveMkdocsIncludes.js:240',message:'Processing nav item - BEFORE fix',data:{navLine:trimmed.substring(0,50),itemIndentLength,baseNavIndent,relativeIndent,baseIndentLength:indent.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                    // #endregion
+
                     // Remove the original indent and add our indent + 2 spaces
                     const navContent = navLine.substring(itemIndent.length);
-                    resolved.push(indent + '  ' + navContent);
+                    const originalFinalIndent = indent + '  ';
+
+                    // #region agent log
+                    fetch('http://127.0.0.1:7244/ingest/9bd55aea-12bb-457a-bf26-2aca8d192c8e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'resolveMkdocsIncludes.js:250',message:'Original final indent calculation',data:{originalFinalIndentLength:originalFinalIndent.length,relativeIndent,baseIndentLength:indent.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+                    // #endregion
+
+                    // Calculate correct final indent preserving relative indentation
+                    const finalIndent = indent + '  '.repeat(1 + Math.max(0, relativeIndent / 2));
+
+                    // #region agent log
+                    fetch('http://127.0.0.1:7244/ingest/9bd55aea-12bb-457a-bf26-2aca8d192c8e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'resolveMkdocsIncludes.js:256',message:'Fixed final indent calculation',data:{finalIndentLength:finalIndent.length,relativeIndent,baseIndentLength:indent.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                    // #endregion
+
+                    resolved.push(finalIndent + navContent);
                 } else if (trimmed && foundNavItems) {
                     // Continuation of nav structure
                     const itemIndent = navLine.match(/^(\s*)/)[1];
+                    const itemIndentLength = itemIndent.length;
+                    const relativeIndent = itemIndentLength - baseNavIndent;
                     const navContent = navLine.substring(itemIndent.length);
-                    resolved.push(indent + '  ' + navContent);
+                    const finalIndent = indent + '  '.repeat(1 + Math.max(0, relativeIndent / 2));
+                    resolved.push(finalIndent + navContent);
                 }
             }
 
