@@ -73,16 +73,13 @@ jobs:
                   # Create zip with main docs, resolved mkdocs.yml, and zoomin directory
                   zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml zoomin/
 
-                  # Add all submodule mkdocs.yml files (now in docs/submodules/)
-                  echo "Adding submodule mkdocs.yml files..."
-                  find docs/submodules -name "mkdocs.yml" -print -exec zip -r "../nrf-connect-desktop.zip" {} \;
-
                   # Add all submodule doc directories recursively (note: doc/, not docs/)
+                  # Exclude .git files from submodules
                   echo "Adding submodule doc directories..."
                   for doc_dir in docs/submodules/*/doc; do
                       if [ -d "$doc_dir" ]; then
                           echo "Adding $doc_dir"
-                          zip -r "../nrf-connect-desktop.zip" "$doc_dir"
+                          zip -r "../nrf-connect-desktop.zip" "$doc_dir" -x "*/.git/*" -x "*/.git"
                       fi
                   done
 
