@@ -64,6 +64,11 @@ jobs:
             - name: Resolve mkdocs.yml includes
               run: node scripts/resolveMkdocsIncludes.js
 
+            - name: Copy zoomin properties
+              run: |
+                  cp doc/zoomin/custom.properties doc/ \
+                  && cp doc/zoomin/tags.yml doc/
+
             - name: Create zip file with all doc sources
               run: |
                   cd doc/
@@ -76,10 +81,10 @@ jobs:
                   echo "[DEBUG] $LOG_ENTRY"
                   # #endregion
 
-                  # Create zip with main docs, resolved mkdocs.yml, and zoomin directory
+                  # Create zip with main docs, resolved mkdocs.yml, and zoomin properties files
                   # Exclude submodule mkdocs.yml files and .git directories
                   # Note: zip exclusion patterns are relative to current directory and use shell globbing
-                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml zoomin/ \
+                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml custom.properties tags.yml \
                       -x "docs/submodules/*/mkdocs.yml" \
                       -x "docs/submodules/*/.git/*" \
                       -x "docs/submodules/*/.git" \
