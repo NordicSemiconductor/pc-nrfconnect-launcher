@@ -15,7 +15,6 @@ The following table lists operating systems supported by nRF Connect for Desktop
 | macOS 13                  | Not applicable | Tier 3        | Tier 3        |
 
 To download and install nRF Connect for Desktop, see [Requirements and installation](./download_cfd.md).
-Linux and macOS have [additional installation requirements](download_cfd.md#requirements).
 
 !!! info "Tier definitions"
     **Tier 1**: The tools will always work. The automated build and automated testing ensure that the tools build and successfully complete tests after each change.

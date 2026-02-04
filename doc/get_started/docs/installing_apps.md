@@ -10,7 +10,7 @@ Before you can install any of the apps, [download and install](download_cfd.md) 
 
     You can enable the use of Nordic Semiconductor's https://files.nordicsemi.cn/ for installing and updating nRF Connect for Desktop and its apps.
     This server has a better connection in the People's Republic of China.
-    Go to the [Settings tab](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html#mainland-china-app-server) in nRF Connect for Desktop to enable this option.
+    Go to the [Settings tab](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html#mainland-china-server) in nRF Connect for Desktop to enable this option.
 
 ## Installing an app
 
