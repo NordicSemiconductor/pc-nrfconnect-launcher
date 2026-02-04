@@ -1,10 +1,10 @@
 # Launcher overview
 
-After [installing and starting the launcher](download_cfd.md), you see the list of apps available for installation.
+After [installing and starting the launcher](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/download_cfd.html), you see the list of apps available for installation.
 
 ![nRF Connect for Desktop after installation](./screenshots/cfd_overview_install.png "nRF Connect for Desktop after installation")
 
-For information how to install the apps, see [Installing and updating nRF Connect for Desktop apps](installing_apps.md).
+For information how to install the apps, see [Installing and updating nRF Connect for Desktop apps](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html).
 
 ## Apps tab
 
@@ -24,7 +24,7 @@ For each of the applications, you have the following options available from the 
 
 - **More info** - Opens the repository of the app on GitHub.
 - **Release notes** - Opens the changelog of the app on GitHub.
-- **Install other version** - Lets you [install](installing_apps.md) an earlier version of the app.
+- **Install other version** - Lets you [install](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html) an earlier version of the app.
 
 ### Post-installation options
 
