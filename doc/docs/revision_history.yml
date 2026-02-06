@@ -1,0 +1,50 @@
+tool:
+- name: nRF Connect for Desktop
+  link: true
+sections:
+- name: December 2025
+  entries:
+  - "Updated the required version of SEGGER J-Link to v8.76 on the [Requirements and installation](./download_cfd.md) page."
+- name: November 2025
+  entries:
+  - "Updated the [Supported operating systems](./os_support.md) page: Windows 11 is now Tier 1, Windows 10 is now Tier 3, macOS 15 is now Tier 1, and macOS 13 is now Tier 3."
+  - "Added notes about the [Mainland China server](overview_cfd.md#mainland-china-server) to the pages about [Requirements and installation](download_cfd.md) and [Installing apps in nRF Connect for Desktop](./installing_apps.md)."
+- name: September 2025
+  entries:
+  - "Updated the [Additional requirements](download_cfd.md#additional-requirements) section on the [Requirements and installation](./download_cfd.md) page"
+  - "Updated the [Working with identity tokens](./working_with_authentications_tokens.md) page with the information about allowing access to safe storage"
+- name: August 2025
+  entries:
+  - "Added Matter Cluster Editor to the [list of supported apps](./index.md)"
+  - "Updated the list of supported operating systems on the [Supported operating systems](./os_support.md) page with Windows 11 x86 support marked as `n/a` and a new entry for macOS 26"
+- name: April 2025
+  entries:
+  - "Added the [Working with identity tokens](./working_with_authentications_tokens.md) page"
+- name: March 2025
+  entries:
+  - "Deprecated the Toolchain Manager app on the [list of supported apps](./index.md)"
+  - "Updated the list of supported operating systems on the [Supported operating systems](./os_support.md) page"
+- name: January 2025
+  entries:
+  - "Added the [Application source code](./index.md#application-source-code) section on the [Home](./index.md) page"
+- name: October 2024
+  entries:
+  - "Added libfuse2 as one of the Linux additional requirements on the [Requirements and installation](./download_cfd.md) page"
+- name: September 2024
+  entries:
+  - "Updated the list of supported operating systems on the [Supported operating systems](./os_support.md) page"
+- name: August 2024
+  entries:
+  - "Edited installation steps on the [Requirements and installation](./download_cfd.md) page"
+- name: April 2024
+  entries:
+  - "Removed LTE Link Monitor and Trace Collector apps from the [list of supported apps](./index.md); Cellular Monitor replaced them"
+- name: February 2024
+  entries:
+  - "Updated [Supported operating systems](./os_support.md)"
+- name: January 2024
+  entries:
+  - "Added the following pages: [Requirements and installation](./download_cfd.md), [Overview](./overview_cfd.md), [Supported operating systems](./os_support.md), [Installing apps in nRF Connect for Desktop](./installing_apps.md), [Starting nRF Connect for Desktop with proxy settings](./proxy_settings.md)"
+- name: December 2023
+  entries:
+  - "First release of the current documentation set"
