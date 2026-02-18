@@ -1,10 +1,10 @@
 # nRF Connect for Desktop launcher
 
-nRF Connect for Desktop is a cross-platform framework for development applications, available for [Windows, Linux, and macOS](os_support.md).
+nRF Connect for Desktop is a cross-platform framework for development applications, available for [Windows, Linux, and macOS](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/os_support.html).
 
 nRF Connect for Desktop is designed to be used with Nordic Semiconductor development kits and dongles. The apps will detect which kit you connected to your computer and upload the needed firmware.
 
-The following applications are available from nRF Connect for Desktop. All of them share [OS requirements](os_support.md) and [installation instructions](installing_apps.md).
+The following applications are available from nRF Connect for Desktop. All of them share [OS requirements](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/os_support.html) and [installation instructions](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html).
 
 | Application           | Purpose                                                                          | Status |
 | --------------------- | -------------------------------------------------------------------------------- | ------ |
