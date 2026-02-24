@@ -6,6 +6,7 @@ sections:
   entries:
   - "Updated the [Requirements and installation](./download_cfd.md) page to list requirements in a table."
   - "Removed the version requirement from SEGGER J-Link requirement on the [Requirements and installation](./download_cfd.md) page. nRF Connect for Desktop now automatically checks the version required and suggests installing the latest recommended one."
+  - "Reworked the structure of the documentation set pages. The Home page is now moved higher up in the hierarchy."
 - name: December 2025
   entries:
   - "Updated the required version of SEGGER J-Link to v8.76 on the [Requirements and installation](./download_cfd.md) page."

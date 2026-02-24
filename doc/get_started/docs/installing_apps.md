@@ -16,7 +16,11 @@ Before you can install any of the apps, [download and install](download_cfd.md) 
 
 To install any of the apps in nRF Connect for Desktop:
 
-1. Open nRF Connect for Desktop.
+1. Open nRF Connect for Desktop.<br/>
+   The list of available apps appears.
+
+    ![nRF Connect for Desktop after installation](./screenshots/cfd_overview_install.png "nRF Connect for Desktop after installation")
+
 2. Find the app on the list.
 3. Use one of the following options:
 
