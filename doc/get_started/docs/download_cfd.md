@@ -10,7 +10,7 @@ To install nRF Connect for Desktop, complete the following steps:
 5. Run the executable to install and start the launcher.
 
 You will then see the list of available apps.
-See the [Launcher overview](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html) and [Installing nRF Connect for Desktop apps](installing_apps.md) pages for more information.
+See [Installing nRF Connect for Desktop apps](installing_apps.md) and [Launcher overview](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html) for more information.
 
 All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
