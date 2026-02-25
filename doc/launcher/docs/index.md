@@ -4,7 +4,7 @@ The nRF Connect for Desktop launcher is the starting application for installing 
 
 ## Installing the launcher
 
-See [nRF Connect for Desktop requirements and installation](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/download_cfd.html) for information about how to install the launcher.
+See [nRF Connect for Desktop requirements and installation](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/download_cfd.html) for information about how to install the launcher.
 
 ## Application source code
 
