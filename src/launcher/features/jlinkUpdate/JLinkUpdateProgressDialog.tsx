@@ -11,6 +11,7 @@ import {
     GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { resetJlinkCompatibilityCache } from '../../util/appCompatibilityWarning';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { continueUpdateProcess } from '../process/updateProcess';
 import {
@@ -39,6 +40,7 @@ export default () => {
                 <DialogButton
                     onClick={() => {
                         dispatch(reset());
+                        resetJlinkCompatibilityCache();
                         dispatch(continueUpdateProcess());
                     }}
                     disabled={!finished}

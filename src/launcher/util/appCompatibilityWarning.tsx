@@ -193,6 +193,10 @@ const getJlinkCompatibility = memoize(
     },
 );
 
+export const resetJlinkCompatibilityCache = () => {
+    getJlinkCompatibility.cache.clear?.();
+};
+
 export const checkJLinkRequirements: AppCompatibilityChecker = async (
     app: LaunchableApp,
 ) => {
