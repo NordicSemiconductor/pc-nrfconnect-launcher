@@ -9,6 +9,8 @@ import path from 'path';
 
 import { type App, isInstalled } from '../../../../ipc/apps';
 import appCompatibilityWarning from '../../../util/appCompatibilityWarning';
+import { useLauncherSelector } from '../../../util/hooks';
+import { isJLinkFinishedInstalling } from '../../jlinkUpdate/jlinkUpdateSlice';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
 const warning = (altText: string) => (
@@ -33,12 +35,14 @@ const appBadge = async (app: App) => {
 const AppIcon: React.FC<{ app: DisplayedApp }> = ({ app }) => {
     const [badge, setBadge] =
         useState<Awaited<ReturnType<typeof appBadge>>>(null);
+    const jlinkInstalled = useLauncherSelector(isJLinkFinishedInstalling);
 
     useEffect(() => {
         if (!isInProgress(app)) {
             appBadge(app).then(setBadge);
         }
-    }, [app]);
+        // Trigger this once more after JLink was successfully installed or updated
+    }, [app, jlinkInstalled]);
 
     return (
         <div className="core-app-icon">

@@ -11,11 +11,13 @@ import {
     GenericDialog,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { resetJlinkCompatibilityCache } from '../../util/appCompatibilityWarning';
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { continueUpdateProcess } from '../process/updateProcess';
 import {
     getInstalledJLinkVersion,
     getJLinkUpdateProgress,
+    isJLinkFinishedInstalling,
     isJLinkUpdateProgressDialogVisible,
     reset,
 } from './jlinkUpdateSlice';
@@ -25,8 +27,7 @@ export default () => {
     const isJLinkInstalled = !!useLauncherSelector(getInstalledJLinkVersion);
     const isVisible = useLauncherSelector(isJLinkUpdateProgressDialogVisible);
     const progress = useLauncherSelector(getJLinkUpdateProgress);
-    const finished =
-        progress?.step === 'install' && progress.percentage === 100;
+    const finished = useLauncherSelector(isJLinkFinishedInstalling);
 
     return (
         <GenericDialog
@@ -39,6 +40,7 @@ export default () => {
                 <DialogButton
                     onClick={() => {
                         dispatch(reset());
+                        resetJlinkCompatibilityCache();
                         dispatch(continueUpdateProcess());
                     }}
                     disabled={!finished}
