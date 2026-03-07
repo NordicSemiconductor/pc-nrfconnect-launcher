@@ -8,5 +8,9 @@ const defaultEslintrc = require('@nordicsemiconductor/pc-nrfconnect-shared/confi
 
 module.exports = {
     ...defaultEslintrc,
-    ignorePatterns: [...defaultEslintrc.ignorePatterns, 'doc/docs'],
+    ignorePatterns: [
+        ...defaultEslintrc.ignorePatterns,
+        'doc/docs',
+        'doc/*/docs',
+    ],
 };
