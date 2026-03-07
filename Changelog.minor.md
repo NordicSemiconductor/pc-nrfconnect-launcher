@@ -9,6 +9,12 @@ release the new version.
 
 ## Unreleased
 
+### Changed
+
+-   #1153: Enable signature verification on Windows again.
+
+## Unreleased
+
 ### Added
 
 - #1147: Mechanism for automatic release candidates.
