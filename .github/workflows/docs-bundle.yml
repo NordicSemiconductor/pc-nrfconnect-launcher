@@ -13,6 +13,15 @@ on:
                     Ref (Tag, branch, commit SHA) to publish the docs from.
                     Defaults to the main branch.
                 type: string
+    workflow_call:
+        inputs:
+            bundle-name:
+                type: string
+                required: true
+            ref:
+                description:
+                    Ref (Tag, branch, commit SHA) to publish the docs from.
+                type: string
 
 jobs:
     echo-inputs:
@@ -30,7 +39,101 @@ jobs:
                       core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
                       core.summary.write();
     create-doc-bundle:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-bundle.yml@main
-        with:
-            bundle-name: nrf-connect-desktop
-            ref: ${{ inputs.ref }}
+        name: Create documentation bundle
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ inputs.ref || github.ref }}
+                  submodules: recursive
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Initialize submodules
+              run: |
+                  if [ -f doc/submodules.json ]; then
+                      npm run submodules:init
+                  fi
+
+            - name: Resolve mkdocs.yml includes
+              run: node scripts/resolveMkdocsIncludes.js
+
+            - name: Copy zoomin properties
+              run: |
+                  cp doc/zoomin/custom.properties doc/ \
+                  && cp doc/zoomin/tags.yml doc/
+
+            - name: Create zip file with all doc sources
+              run: |
+                  cd doc/
+                  # Copy resolved mkdocs.yml to mkdocs.yml for bundle
+                  cp mkdocs.resolved.yml mkdocs.yml
+
+                  # #region agent log
+                  LOG_ENTRY="{\"location\":\"docs-bundle.yml:73\",\"message\":\"Before initial zip\",\"data\":{\"currentDir\":\"$(pwd)\",\"docsExists\":\"$([ -d docs ] && echo true || echo false)\",\"submoduleMkdocs\":\"$(find docs/submodules -name 'mkdocs.yml' 2>/dev/null | wc -l)\",\"submoduleGit\":\"$(find docs/submodules -type d -name '.git' 2>/dev/null | wc -l)\"},\"timestamp\":$(date +%s000),\"sessionId\":\"debug-session\",\"runId\":\"run1\",\"hypothesisId\":\"A\"}"
+                  echo "$LOG_ENTRY" >> ../.cursor/debug.log
+                  echo "[DEBUG] $LOG_ENTRY"
+                  # #endregion
+
+                  # Create zip with main docs, resolved mkdocs.yml, and zoomin properties files
+                  # Exclude submodule mkdocs.yml files and .git directories
+                  # Note: zip exclusion patterns are relative to current directory and use shell globbing
+                  zip -r "../nrf-connect-desktop.zip" docs/ mkdocs.yml custom.properties tags.yml \
+                      -x "docs/submodules/*/mkdocs.yml" \
+                      -x "docs/submodules/*/.git/*" \
+                      -x "docs/submodules/*/.git" \
+                      -x "docs/submodules/*/.git/**"
+
+                  # #region agent log
+                  MKDOCS_IN_ZIP=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | grep -c 'mkdocs.yml' || echo 0)
+                  GIT_IN_ZIP=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | grep -c '/\.git' || echo 0)
+                  LOG_ENTRY="{\"location\":\"docs-bundle.yml:85\",\"message\":\"After initial zip\",\"data\":{\"zipCreated\":\"$([ -f ../nrf-connect-desktop.zip ] && echo true || echo false)\",\"mkdocsInZip\":\"$MKDOCS_IN_ZIP\",\"gitInZip\":\"$GIT_IN_ZIP\"},\"timestamp\":$(date +%s000),\"sessionId\":\"debug-session\",\"runId\":\"run1\",\"hypothesisId\":\"B\"}"
+                  echo "$LOG_ENTRY" >> ../.cursor/debug.log
+                  echo "[DEBUG] $LOG_ENTRY"
+                  # #endregion
+
+                  # Add all submodule doc directories recursively (note: doc/, not docs/)
+                  # Exclude .git files from submodules
+                  echo "Adding submodule doc directories..."
+                  for doc_dir in docs/submodules/*/doc; do
+                      if [ -d "$doc_dir" ]; then
+                          # #region agent log
+                          GIT_COUNT=$(find "$doc_dir" -type d -name '.git' 2>/dev/null | wc -l)
+                          LOG_ENTRY="{\"location\":\"docs-bundle.yml:92\",\"message\":\"Processing submodule doc dir\",\"data\":{\"docDir\":\"$doc_dir\",\"gitInDir\":\"$GIT_COUNT\"},\"timestamp\":$(date +%s000),\"sessionId\":\"debug-session\",\"runId\":\"run1\",\"hypothesisId\":\"C\"}"
+                          echo "$LOG_ENTRY" >> ../.cursor/debug.log
+                          echo "[DEBUG] $LOG_ENTRY"
+                          # #endregion
+                          echo "Adding $doc_dir"
+                          zip -r "../nrf-connect-desktop.zip" "$doc_dir" \
+                              -x "*/.git/*" \
+                              -x "*/.git" \
+                              -x "*/.git/**"
+                      fi
+                  done
+
+                  # #region agent log
+                  TOTAL_FILES=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | tail -1 | awk '{print $2}' || echo 0)
+                  MKDOCS_FILES=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | grep -c 'mkdocs.yml' || echo 0)
+                  GIT_FILES=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | grep -c '/\.git' || echo 0)
+                  SUBMODULE_MKDOCS=$(unzip -l ../nrf-connect-desktop.zip 2>/dev/null | grep -c 'submodules.*mkdocs.yml' || echo 0)
+                  LOG_ENTRY="{\"location\":\"docs-bundle.yml:104\",\"message\":\"Final zip contents check\",\"data\":{\"totalFiles\":\"$TOTAL_FILES\",\"mkdocsFiles\":\"$MKDOCS_FILES\",\"submoduleMkdocs\":\"$SUBMODULE_MKDOCS\",\"gitFiles\":\"$GIT_FILES\"},\"timestamp\":$(date +%s000),\"sessionId\":\"debug-session\",\"runId\":\"run1\",\"hypothesisId\":\"D\"}"
+                  echo "$LOG_ENTRY" >> ../.cursor/debug.log
+                  echo "[DEBUG] $LOG_ENTRY"
+                  # #endregion
+
+                  # List contents of zip for verification
+                  echo "Zip file contents:"
+                  unzip -l "../nrf-connect-desktop.zip" | head -50
+
+            - name: Upload documentation artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: nrf-connect-desktop
+                  path: nrf-connect-desktop.zip
+                  retention-days: 7

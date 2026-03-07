@@ -1,4 +1,5 @@
 name: 'Docs: Publish to dev'
+run-name: 'Docs: Publish docs to dev'
 
 on:
     push:
@@ -30,10 +31,36 @@ jobs:
                       core.summary.addHeading('Workflow inputs', '2');
                       core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
                       core.summary.write();
-    publish-docs-bundle:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-publish.yml@main
+    create-doc-bundle:
+        name: Create doc bundle
+        uses: './.github/workflows/docs-bundle.yml'
         with:
             bundle-name: nrf-connect-desktop
-            release-type: dev
             ref: ${{ inputs.ref }}
-        secrets: inherit
+    publish-zoomin-bundle:
+        name: Publish Zoomin bundle to dev
+        needs: create-doc-bundle
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get bundle
+              uses: actions/download-artifact@v4
+              with:
+                  name: nrf-connect-desktop
+            - name: Upload documentation
+              env:
+                  FOLDER: nordic-be-dev.zoominsoftware.io
+              run: |
+                  # trust server
+                  mkdir -p ~/.ssh
+                  ssh-keyscan upload-v1.zoominsoftware.io >> ~/.ssh/known_hosts
+
+                  # prepare key
+                  echo "${{ secrets.ZOOMIN_KEY }}" > zoomin_key
+                  chmod 600 zoomin_key
+
+                  # upload bundle:
+                  sftp -v -i zoomin_key nordic@upload-v1.zoominsoftware.io <<EOF
+                  cd /${FOLDER}/markdown/incoming
+                  put "nrf-connect-desktop.zip"
+                  quit
+                  EOF
