@@ -5,13 +5,15 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import { app } from '@electron/remote';
+import { app, shell } from '@electron/remote';
+import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import Card from '../layout/Card';
 
 const appVersion = app.getVersion();
+const docLink =
+    'https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html';
 
 export default () => (
     <WithScrollbarContainer>
@@ -20,9 +22,9 @@ export default () => (
         </Card>
         <Card title="Documentation">
             <Button
-                href="https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html"
-                target="_blank"
-                variant="outline-primary"
+                variant="link-button"
+                size="xl"
+                onClick={() => shell.openExternal(docLink)}
             >
                 Open documentation
             </Button>
