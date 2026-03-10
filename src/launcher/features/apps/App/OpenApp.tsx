@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { isInstalled } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
@@ -19,6 +19,8 @@ const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
 
     return (
         <Button
+            variant="primary"
+            size="xl"
             title={`Open ${app.displayName}`}
             disabled={isInProgress(app)}
             onClick={() => dispatch(checkCompatibilityThenLaunch(app))}

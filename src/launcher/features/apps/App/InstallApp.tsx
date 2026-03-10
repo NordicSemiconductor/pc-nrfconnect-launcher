@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { isInstalled, isWithdrawn } from '../../../../ipc/apps';
 import { useLauncherDispatch } from '../../../util/hooks';
@@ -18,12 +18,13 @@ const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
 
     return (
         <Button
-            variant="outline-secondary"
+            variant="secondary"
+            size="xl"
             title={`Install ${app.displayName}`}
             disabled={isInProgress(app)}
             onClick={() => dispatch(installDownloadableApp(app))}
         >
-            {app.progress.isInstalling ? 'Installing...' : 'Install'}
+            {app.progress.isInstalling ? 'Installing…' : 'Install'}
         </Button>
     );
 };
