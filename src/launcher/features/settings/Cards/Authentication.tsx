@@ -5,8 +5,10 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import { ExternalLink } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    Button,
+    ExternalLink,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { type TokenInformation } from '../../../../ipc/artifactoryToken';
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
@@ -44,7 +46,8 @@ export default () => {
 
     const setToken = (
         <Button
-            variant="outline-primary"
+            variant="primary-outline"
+            size="xl"
             onClick={() => dispatch(showAddArtifactoryToken())}
         >
             {token ? 'Replace' : 'Set'} token
@@ -72,8 +75,8 @@ export default () => {
                         </Col>
                         <Col fixedSize>
                             <Button
-                                variant="outline-secondary"
-                                size="sm"
+                                variant="secondary"
+                                size="xl"
                                 onClick={() =>
                                     dispatch(showRemoveArtifactoryToken())
                                 }

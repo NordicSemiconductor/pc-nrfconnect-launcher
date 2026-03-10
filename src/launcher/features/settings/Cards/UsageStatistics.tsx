@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    Button,
+    colors,
+    Toggle,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
 import Card from '../../layout/Card';
@@ -40,7 +43,8 @@ export default () => {
                 </Col>
                 <Col fixedSize>
                     <Button
-                        variant="outline-primary"
+                        variant="primary-outline"
+                        size="xl"
                         onClick={() => dispatch(showTelemetryDialog())}
                     >
                         Show agreement

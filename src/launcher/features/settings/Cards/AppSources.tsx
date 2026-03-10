@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { clipboard } from 'electron';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
@@ -26,7 +26,8 @@ export default () => {
 
     const addSource = (
         <Button
-            variant="outline-primary"
+            variant="primary-outline"
+            size="xl"
             onClick={() => dispatch(showAddSource())}
         >
             Add source
@@ -43,16 +44,16 @@ export default () => {
                     <Col fixedSize>
                         <ButtonToolbar>
                             <Button
-                                variant="outline-secondary"
-                                size="sm"
+                                variant="secondary"
+                                size="xl"
                                 onClick={() => clipboard.writeText(source.url)}
                                 title="Copy URL to clipboard"
                             >
                                 Copy URL
                             </Button>
                             <Button
-                                variant="outline-secondary"
-                                size="sm"
+                                variant="secondary"
+                                size="xl"
                                 onClick={() =>
                                     dispatch(showRemoveSource(source.name))
                                 }

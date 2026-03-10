@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import { colors, Toggle } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    Button,
+    colors,
+    Toggle,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import formatDate from 'date-fns/format';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../../util/hooks';
@@ -32,11 +35,12 @@ export default () => {
 
     const updateButton = (
         <Button
-            variant="outline-primary"
+            variant="primary-outline"
+            size="xl"
             onClick={() => dispatch(startUpdateProcess(true))}
             disabled={isCheckingForUpdates}
         >
-            {isCheckingForUpdates ? 'Checking...' : 'Check for updates'}
+            {isCheckingForUpdates ? 'Checking…' : 'Check for updates'}
         </Button>
     );
 
