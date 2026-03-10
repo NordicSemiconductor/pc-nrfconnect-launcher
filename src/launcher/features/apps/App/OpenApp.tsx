@@ -12,7 +12,12 @@ import { useLauncherDispatch } from '../../../util/hooks';
 import { checkCompatibilityThenLaunch } from '../appsEffects';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
-const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
+export interface OpenAppProps {
+    app: DisplayedApp;
+    className?: string;
+}
+
+const OpenApp: React.FC<OpenAppProps> = ({ app, className }) => {
     const dispatch = useLauncherDispatch();
 
     if (!isInstalled(app)) return null;
@@ -22,6 +27,7 @@ const OpenApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             variant="primary"
             size="xl"
             title={`Open ${app.displayName}`}
+            className={className}
             disabled={isInProgress(app)}
             onClick={() => dispatch(checkCompatibilityThenLaunch(app))}
         >

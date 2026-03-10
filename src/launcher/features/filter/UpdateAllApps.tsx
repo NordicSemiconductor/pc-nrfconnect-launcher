@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
@@ -23,7 +23,7 @@ export default () => {
     if (updatableApps.length === 0) return null;
 
     return (
-        <Button variant="outline-secondary" onClick={updateAllApps}>
+        <Button variant="secondary" size="xl" onClick={updateAllApps}>
             Update all apps
         </Button>
     );

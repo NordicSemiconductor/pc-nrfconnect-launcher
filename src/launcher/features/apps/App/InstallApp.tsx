@@ -12,7 +12,12 @@ import { useLauncherDispatch } from '../../../util/hooks';
 import { installDownloadableApp } from '../appsEffects';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
-const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
+export interface InstallAppProps {
+    app: DisplayedApp;
+    className?: string;
+}
+
+const InstallApp: React.FC<InstallAppProps> = ({ app, className }) => {
     const dispatch = useLauncherDispatch();
     if (isInstalled(app) || isWithdrawn(app)) return null;
 
@@ -21,6 +26,7 @@ const InstallApp: React.FC<{ app: DisplayedApp }> = ({ app }) => {
             variant="secondary"
             size="xl"
             title={`Install ${app.displayName}`}
+            className={className}
             disabled={isInProgress(app)}
             onClick={() => dispatch(installDownloadableApp(app))}
         >
