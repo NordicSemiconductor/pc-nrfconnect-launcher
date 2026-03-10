@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
-import { app, shell } from '@electron/remote';
-import { Button } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { app } from '@electron/remote';
+import { Button, openUrl } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import WithScrollbarContainer from '../../util/WithScrollbarContainer';
 import Card from '../layout/Card';
@@ -24,7 +24,7 @@ export default () => (
             <Button
                 variant="link-button"
                 size="xl"
-                onClick={() => shell.openExternal(docLink)}
+                onClick={() => openUrl(docLink)}
             >
                 Open documentation
             </Button>
