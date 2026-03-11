@@ -10,7 +10,7 @@ To install nRF Connect for Desktop, complete the following steps:
 5. Run the executable to install and start the launcher.
 
 You will then see the list of available apps.
-See the [Launcher overview](overview_cfd.md) and [Installing nRF Connect for Desktop apps](installing_apps.md) pages for more information.
+See [Installing nRF Connect for Desktop apps](installing_apps.md) and [Launcher overview](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html) for more information.
 
 All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
@@ -18,7 +18,7 @@ All nRF Connect for Desktop applications require the launcher v4.1.0 or later.
 
     You can enable the use of Nordic Semiconductor's https://files.nordicsemi.cn/ for installing and updating nRF Connect for Desktop and its apps.
     This server has a better connection in the People's Republic of China.
-    Go to the [Settings tab](overview_cfd.md#mainland-china-server) in nRF Connect for Desktop to enable this option.
+    Go to the [Settings tab](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/overview_cfd.html#mainland-china-server) in nRF Connect for Desktop to enable this option.
 
 ## Additional requirements
 
@@ -38,4 +38,4 @@ nRF Connect for Desktop has the following additional requirements:
 ## Using behind proxy
 
 To use nRF Connect for Desktop and its applications behind a proxy, see the
-[Starting nRF Connect for Desktop with proxy settings](./proxy_settings.md) page.
+[Starting nRF Connect for Desktop with proxy settings](https://docs.nordicsemi.com/bundle/nrf-connect-launcher/page/proxy_settings.html) page.
