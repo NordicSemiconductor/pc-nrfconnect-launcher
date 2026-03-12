@@ -9,7 +9,8 @@ import {
     getJLinkState as getState,
     installJLink as install,
 } from '@nordicsemiconductor/nrf-jlink-js';
-import fs from 'fs';
+import fs, { copyFileSync, mkdirSync, rmSync } from 'fs';
+import os from 'os';
 import path from 'path';
 
 import { inRenderer } from '../ipc/jlinkProgress';
@@ -27,16 +28,43 @@ const getSingleFileInFolder = (folder: string) => {
     return path.join(folder, files[0]);
 };
 
+const moveFileToTmp = (filePath: string) => {
+    const baseDir = os.tmpdir();
+    const fileName = path.basename(filePath);
+    const destinationFile = path.join(baseDir, fileName);
+    try {
+        mkdirSync(path.dirname(destinationFile), { recursive: true });
+        copyFileSync(filePath, destinationFile);
+        return destinationFile;
+    } catch (e) {
+        throw new Error(
+            `Unable to write file to ${destinationFile}. Error: ${e}`,
+        );
+    }
+};
+
 export const installJLink = async (offlineInstall = false) => {
     if (offlineInstall) {
         const bundledJLinkDir = getUnpackedBundledResourcePath(
             'prefetched',
             'jlink',
         );
-        await install(
-            getSingleFileInFolder(bundledJLinkDir),
-            inRenderer.updateJLinkProgress,
-        );
+        const moveBundledJlinkBeforeInstall = process.platform === 'linux';
+        let bundledJLink: string = getSingleFileInFolder(bundledJLinkDir);
+        // The bundled file resides in a user-created folder from which the root user will be blocked to run applications
+        if (moveBundledJlinkBeforeInstall) {
+            bundledJLink = moveFileToTmp(bundledJLink);
+        }
+
+        await install(bundledJLink, inRenderer.updateJLinkProgress);
+
+        if (moveBundledJlinkBeforeInstall) {
+            try {
+                rmSync(bundledJLink);
+            } catch {
+                // Ignore error, it's a temporary file
+            }
+        }
     } else {
         await downloadAndInstallJLink(inRenderer.updateJLinkProgress);
     }
