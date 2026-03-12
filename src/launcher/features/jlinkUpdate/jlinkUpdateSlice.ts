@@ -72,3 +72,6 @@ export const getJLinkVersionToBeInstalled = (state: RootState) =>
     state.jlinkUpdate.versionToBeInstalled;
 export const getInstalledJLinkVersion = (state: RootState) =>
     state.jlinkUpdate.installedVersion;
+export const isJLinkFinishedInstalling = (state: RootState) =>
+    state.jlinkUpdate.updateProgress?.step === 'install' &&
+    state.jlinkUpdate.updateProgress?.percentage === 100;
