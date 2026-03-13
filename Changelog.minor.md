@@ -11,6 +11,7 @@ release the new version.
 
 ### Added
 
+- #1162: Update bundled J-Link to V9.24a.
 - #1147: Mechanism for automatic release candidates.
 - #1199: Support for fixed size apps. Before, the fixed size of the Quick Start
   app was hard coded. With this, every app can specify its own fixed size by
