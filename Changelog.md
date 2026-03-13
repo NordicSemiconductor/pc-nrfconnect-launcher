@@ -6,7 +6,7 @@
 
 ### Changed
 
-- Updated bundled SEGGER J-Link to v8.76 for Windows.
+- Updated bundled SEGGER J-Link to v9.24a.
 - Logic for loading updates to nRF Connect for Desktop to a new version. The
   mechanism is now based on CDN and not GitHub. In most cases, it uses
   `files.nordicsemi.com`. If users choose to use the Chinese server, it uses
