@@ -11,7 +11,14 @@ import { useLauncherDispatch, useLauncherSelector } from '../../util/hooks';
 import { updateDownloadableApp } from '../apps/appsEffects';
 import { getUpdatableVisibleApps } from '../apps/appsSlice';
 
-export default () => {
+type PickedUpdateAllAppsProps = 'ref' | 'className';
+
+type UpdateAllAppsProps = Pick<
+    React.ComponentPropsWithRef<'button'>,
+    PickedUpdateAllAppsProps
+>;
+
+const UpdateAllApps: React.FC<UpdateAllAppsProps> = ({ ...attrs }) => {
     const dispatch = useLauncherDispatch();
     const updatableApps = useLauncherSelector(getUpdatableVisibleApps);
 
@@ -23,8 +30,15 @@ export default () => {
     if (updatableApps.length === 0) return null;
 
     return (
-        <Button variant="secondary" size="xl" onClick={updateAllApps}>
+        <Button
+            variant="secondary"
+            size="xl"
+            onClick={updateAllApps}
+            {...attrs}
+        >
             Update all apps
         </Button>
     );
 };
+
+export default UpdateAllApps;

@@ -12,12 +12,14 @@ import { useLauncherDispatch } from '../../../util/hooks';
 import { checkCompatibilityThenLaunch } from '../appsEffects';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
-export interface OpenAppProps {
+type PickedOpenAppProps = 'ref' | 'className';
+
+interface OpenAppProps
+    extends Pick<React.ComponentPropsWithRef<'button'>, PickedOpenAppProps> {
     app: DisplayedApp;
-    className?: string;
 }
 
-const OpenApp: React.FC<OpenAppProps> = ({ app, className }) => {
+const OpenApp: React.FC<OpenAppProps> = ({ app, ...attrs }) => {
     const dispatch = useLauncherDispatch();
 
     if (!isInstalled(app)) return null;
@@ -27,9 +29,9 @@ const OpenApp: React.FC<OpenAppProps> = ({ app, className }) => {
             variant="primary"
             size="xl"
             title={`Open ${app.displayName}`}
-            className={className}
             disabled={isInProgress(app)}
             onClick={() => dispatch(checkCompatibilityThenLaunch(app))}
+            {...attrs}
         >
             Open
         </Button>

@@ -12,12 +12,14 @@ import { useLauncherDispatch } from '../../../util/hooks';
 import { installDownloadableApp } from '../appsEffects';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
-export interface InstallAppProps {
+type PickedInstallAppProps = 'ref' | 'className';
+
+interface InstallAppProps
+    extends Pick<React.ComponentPropsWithRef<'button'>, PickedInstallAppProps> {
     app: DisplayedApp;
-    className?: string;
 }
 
-const InstallApp: React.FC<InstallAppProps> = ({ app, className }) => {
+const InstallApp: React.FC<InstallAppProps> = ({ app, ...attrs }) => {
     const dispatch = useLauncherDispatch();
     if (isInstalled(app) || isWithdrawn(app)) return null;
 
@@ -26,9 +28,9 @@ const InstallApp: React.FC<InstallAppProps> = ({ app, className }) => {
             variant="secondary"
             size="xl"
             title={`Install ${app.displayName}`}
-            className={className}
             disabled={isInProgress(app)}
             onClick={() => dispatch(installDownloadableApp(app))}
+            {...attrs}
         >
             {app.progress.isInstalling ? 'Installing…' : 'Install'}
         </Button>

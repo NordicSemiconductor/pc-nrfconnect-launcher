@@ -12,12 +12,14 @@ import { useLauncherDispatch } from '../../../util/hooks';
 import { show as showReleaseNotes } from '../../releaseNotes/releaseNotesDialogSlice';
 import { type DisplayedApp, isInProgress } from '../appsSlice';
 
-export interface UpdateAppProps {
+type PickedUpdateAppProps = 'ref' | 'className';
+
+interface UpdateAppProps
+    extends Pick<React.ComponentPropsWithRef<'button'>, PickedUpdateAppProps> {
     app: DisplayedApp;
-    className?: string;
 }
 
-const UpdateApp: React.FC<UpdateAppProps> = ({ app, className }) => {
+const UpdateApp: React.FC<UpdateAppProps> = ({ app, ...attrs }) => {
     const dispatch = useLauncherDispatch();
 
     if (!isUpdatable(app)) return null;
@@ -27,9 +29,9 @@ const UpdateApp: React.FC<UpdateAppProps> = ({ app, className }) => {
             variant="primary-outline"
             size="xl"
             title={`Update ${app.displayName}`}
-            className={className}
             disabled={isInProgress(app)}
             onClick={() => dispatch(showReleaseNotes(app))}
+            {...attrs}
         >
             {app.progress.isUpdating ? 'Updating…' : 'Update'}
         </Button>
