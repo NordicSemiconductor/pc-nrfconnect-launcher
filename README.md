@@ -11,11 +11,11 @@ built-in libraries in order to create end-user tools.
 ## Documentation
 
 Read the
-[nRF Connect for Desktop launcher](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html)
+[nRF Connect for Desktop launcher](https://docs.nordicsemi.com/bundle/swtools_docs/page/app/nrf-connect-desktop/index.html)
 official documentation, which includes information about
-[installation](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/download_cfd.html),
+[installation](https://docs.nordicsemi.com/bundle/swtools_docs/page/app/nrf-connect-desktop/installing_apps.html),
 supported operating systems,
-[available applications](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html),
+[available applications](https://docs.nordicsemi.com/bundle/swtools_docs/page/app/nrf-connect-desktop/index.html),
 and more.
 
 ## Development
