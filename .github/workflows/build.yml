@@ -8,6 +8,12 @@ on:
                     Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
+            jlink-version:
+                description:
+                    Which J-Link version is bundled with the launcher, e.g. v8.76.
+                    Only version available on files.nordicsemi.com can be used.
+                    Use this only for testing purposes.
+                type: string
     workflow_call:
         inputs:
             ref:
@@ -41,30 +47,38 @@ jobs:
               env:
                   REF: ${{ inputs.ref }}
                   FALLBACK_REF: ${{ github.ref_name }}
+                  JLINK_VERSION: ${{ inputs.jlink-version }}
               with:
                   script: |
                       core.summary.addHeading('Workflow inputs', '2');
-                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.addTable([
+                          ['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`],
+                          ['J-Link version', process.env.JLINK_VERSION ? `<code>${process.env.JLINK_VERSION}</code>` : `not set`],
+                      ]);
                       core.summary.write();
     windows:
         uses: ./.github/workflows/build_win.yml
         secrets: inherit
         with:
             ref: ${{ inputs.ref }}
+            jlink-version: ${{ inputs.jlink-version }}
     linux:
         uses: ./.github/workflows/build_linux.yml
         secrets: inherit
         with:
             ref: ${{ inputs.ref }}
+            jlink-version: ${{ inputs.jlink-version }}
     darwin_x64:
         uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
         with:
             arch: x64
             ref: ${{ inputs.ref }}
+            jlink-version: ${{ inputs.jlink-version }}
     darwin_arm64:
         uses: ./.github/workflows/build_darwin.yml
         secrets: inherit
         with:
             arch: arm64
             ref: ${{ inputs.ref }}
+            jlink-version: ${{ inputs.jlink-version }}

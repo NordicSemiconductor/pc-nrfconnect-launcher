@@ -8,6 +8,12 @@ on:
                     Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
+            jlink-version:
+                description:
+                    Which J-Link version is bundled with the launcher, e.g. v8.76.
+                    Only version available on files.nordicsemi.com can be used.
+                    Use this only for testing purposes.
+                type: string
             echo-inputs:
                 description: Print the workflow inputs.
                 type: boolean
@@ -16,6 +22,8 @@ on:
         inputs:
             ref:
                 description: Ref to build from
+                type: string
+            jlink-version:
                 type: string
             echo-inputs:
                 type: boolean
@@ -31,10 +39,14 @@ jobs:
               env:
                   REF: ${{ inputs.ref }}
                   FALLBACK_REF: ${{ github.ref_name }}
+                  JLINK_VERSION: ${{ inputs.jlink-version }}
               with:
                   script: |
                       core.summary.addHeading('Workflow inputs', '2');
-                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.addTable([
+                          ['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`],
+                          ['J-Link version', process.env.JLINK_VERSION ? `<code>${process.env.JLINK_VERSION}</code>` : `not set`],
+                      ]);
                       core.summary.write();
 
             - uses: actions/checkout@v4
@@ -50,9 +62,13 @@ jobs:
               if: ${{ github.event_name != 'pull_request' }}
 
             - name: Build
+              env:
+                  OVERRIDE_JLINK_VERSION: ${{ inputs.jlink-version }}
               uses: ./.github/actions/build-action
 
             - name: Run Electron Builder
+              env:
+                  OVERRIDE_JLINK_VERSION: ${{ inputs.jlink-version }}
               run: |
                   npx electron-builder -p never --windows nsis:x64
               if: github.event_name != 'pull_request'
