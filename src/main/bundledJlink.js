@@ -4,4 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-module.exports = 'V9.24a';
+module.exports = process.env.OVERRIDE_JLINK_VERSION
+    ? process.env.OVERRIDE_JLINK_VERSION
+    : 'V9.24a';

@@ -29,6 +29,9 @@ const options = {
         }"`,
         'process.env.APPLICATIONINSIGHTS_CONFIGURATION_CONTENT': '"{}"', // Needed because of https://github.com/microsoft/ApplicationInsights-node.js/issues/1226
         'process.env.PACKAGE_JSON': JSON.stringify(packageJson),
+        'process.env.OVERRIDE_JLINK_VERSION': JSON.stringify(
+            process.env.OVERRIDE_JLINK_VERSION ?? '',
+        ),
     },
     minify: process.argv.includes('--prod'),
     target: [`node${nodeVersion}`],
