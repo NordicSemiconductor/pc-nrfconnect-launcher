@@ -17,6 +17,12 @@ on:
                     Ref (Tag, branch, commit SHA) to build.
                     Defaults to the ref of the workflow.
                 type: string
+            jlink-version:
+                description:
+                    Which J-Link version is bundled with the launcher, e.g. v8.76.
+                    Only version available on files.nordicsemi.com can be used.
+                    Use this only for testing purposes.
+                type: string
             echo-inputs:
                 description: Print the workflow inputs.
                 type: boolean
@@ -29,6 +35,8 @@ on:
                 type: string
             ref:
                 description: Ref to build from
+                type: string
+            jlink-version:
                 type: string
             echo-inputs:
                 type: boolean
@@ -45,10 +53,16 @@ jobs:
               env:
                   REF: ${{ inputs.ref }}
                   FALLBACK_REF: ${{ github.ref_name }}
+                  ARCH: ${{ inputs.arch }}
+                  JLINK_VERSION: ${{ inputs.jlink-version }}
               with:
                   script: |
                       core.summary.addHeading('Workflow inputs', '2');
-                      core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
+                      core.summary.addTable([
+                          ['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`],
+                          ['Arch', `<code>${process.env.ARCH}</code>`],
+                          ['J-Link version', process.env.JLINK_VERSION ? `<code>${process.env.JLINK_VERSION}</code>` : `not set`],
+                      ]);
                       core.summary.write();
 
             - uses: actions/checkout@v4
@@ -56,6 +70,8 @@ jobs:
                   ref: ${{ inputs.ref }}
 
             - name: Build
+              env:
+                  OVERRIDE_JLINK_VERSION: ${{ inputs.jlink-version }}
               uses: ./.github/actions/build-action
 
             - name: Fetch certificate file
@@ -76,6 +92,7 @@ jobs:
                   APPLE_APP_SPECIFIC_PASSWORD:
                       ${{ secrets.WAYLAND_APPLE_APP_SPECIFIC_PASS }}
                   APPLE_TEAM_ID: ${{ secrets.WAYLAND_APPLE_TEAMID }}
+                  OVERRIDE_JLINK_VERSION: ${{ inputs.jlink-version }}
               run: npx electron-builder -p never --${{ inputs.arch }}
               if: github.event_name != 'pull_request'
 

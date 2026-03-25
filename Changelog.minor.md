@@ -52,6 +52,7 @@ release the new version.
 - #1223: Create log for messages from the renderer process in
   `nrfconnect/logs/renderer.log`.
 - #1235, #1236: Move some styling to use Tailwind.
+- #1265: For testing allow to specify a J-Link installer version to be bundled.
 
 ### Fixed
 

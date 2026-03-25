@@ -23,6 +23,9 @@ build({
     define: {
         'process.env.PACKAGE_JSON': JSON.stringify(packageJson),
         'process.env.APPLICATIONINSIGHTS_CONFIGURATION_CONTENT': '"{}"', // Needed because of https://github.com/microsoft/ApplicationInsights-node.js/issues/1226
+        'process.env.OVERRIDE_JLINK_VERSION': JSON.stringify(
+            process.env.OVERRIDE_JLINK_VERSION ?? '',
+        ),
     },
 });
 
