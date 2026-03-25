@@ -13,7 +13,19 @@ const downloadJLink =
 const bundledJLink = require('../src/main/bundledJlink');
 const downloadFile = require('../scripts/downloadFile');
 
+const assertValidVersion = version => {
+    const match = version.match(/^v(\d+\.\d+[a-z]?)$/i);
+
+    if (match == null) {
+        throw new Error(
+            'OVERRIDE_JLINK_VERSION must match v<major>.<minor><suffix>, for example v8.76, V9.24a, or v5.00.',
+        );
+    }
+};
+
 const downloadSpecificJLink = version => {
+    assertValidVersion(version);
+
     const platform = {
         win32: 'Windows',
         darwin: 'MacOSX',
@@ -26,7 +38,7 @@ const downloadSpecificJLink = version => {
         linux: 'deb',
     }[os.platform()];
 
-    const filename = `JLink_${platform}_V${version.replace('.', '').replace(/^v/, '')}_${arch}.${fileExtension}`;
+    const filename = `JLink_${platform}_V${version.replace('.', '').replace(/^v/i, '')}_${arch}.${fileExtension}`;
 
     const url = `https://files.nordicsemi.com/ui/api/v1/download?isNativeBrowsing=true&repoKey=swtools&path=external/ncd/jlink/${filename}`;
 
