@@ -164,10 +164,10 @@ const doNetworkRequestToCheckForProxyAuthentication = () =>
                 /* do nothing, handler is only needed to consume all data */
             });
             res.on('end', () => resolve());
-            res.on('error', () => reject());
+            res.on('error', () => reject(new Error('We seem to be offline')));
         });
         req.on('login', handleLoginRequest);
-        req.on('error', () => reject());
+        req.on('error', () => reject(new Error('We seem to be offline')));
 
         req.end();
     });
