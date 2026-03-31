@@ -119,7 +119,6 @@ const App = ({ app }: { app: DisplayedApp }) => {
                                     : 'outline-secondary'
                             }
                             title=""
-                            alignRight
                         >
                             <OpenHomepage app={app} />
                             <ShowReleaseNotes app={app} />

@@ -14,8 +14,10 @@ import { type DisplayedApp, isInProgress } from '../appsSlice';
 
 type PickedOpenAppProps = 'ref' | 'className';
 
-interface OpenAppProps
-    extends Pick<React.ComponentPropsWithRef<'button'>, PickedOpenAppProps> {
+interface OpenAppProps extends Pick<
+    React.ComponentPropsWithRef<'button'>,
+    PickedOpenAppProps
+> {
     app: DisplayedApp;
 }
 

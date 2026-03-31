@@ -14,8 +14,10 @@ import { type DisplayedApp, isInProgress } from '../appsSlice';
 
 type PickedInstallAppProps = 'ref' | 'className';
 
-interface InstallAppProps
-    extends Pick<React.ComponentPropsWithRef<'button'>, PickedInstallAppProps> {
+interface InstallAppProps extends Pick<
+    React.ComponentPropsWithRef<'button'>,
+    PickedInstallAppProps
+> {
     app: DisplayedApp;
 }
 
