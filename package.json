@@ -106,6 +106,7 @@
     "devDependencies": {
         "@electron/notarize": "^2.2.0",
         "@nordicsemiconductor/nrf-jlink-js": "^0.16.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "github:nordicsemi/pc-nrfconnect-shared#upgrade/react-types",
         "@playwright/test": "^1.16.3",
         "@testing-library/user-event": "^14.4.3",
         "@types/chmodr": "1.0.0",
@@ -124,7 +125,6 @@
     },
     "dependencies": {
         "@electron/remote": "^2.1.2",
-        "@nordicsemiconductor/pc-nrfconnect-shared": "github:nordicsemi/pc-nrfconnect-shared#upgrade/react-types",
         "axios": "0.22.0",
         "chmodr": "1.2.0",
         "electron-store": "8.1.0",
