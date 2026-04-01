@@ -10,5 +10,5 @@ on:
 
 jobs:
     check_labels:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/labels.yml@main
+        uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/labels.yml@main
         secrets: inherit
