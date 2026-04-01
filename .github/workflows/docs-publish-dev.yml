@@ -31,7 +31,7 @@ jobs:
                       core.summary.addTable([['Ref', process.env.REF ? `<code>${process.env.REF}</code>` : `not set explicitly, using ref <code>${process.env.FALLBACK_REF}</code>`]]);
                       core.summary.write();
     publish-docs-bundle:
-        uses: NordicSemiconductor/pc-nrfconnect-shared/.github/workflows/docs-publish.yml@main
+        uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/docs-publish.yml@main
         with:
             bundle-name: nrf-connect-desktop
             release-type: dev
