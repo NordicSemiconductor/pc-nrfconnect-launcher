@@ -7,7 +7,9 @@
 import chmodr from 'chmodr';
 import fs from 'fs';
 import path from 'path';
-import targz from 'targz';
+import { pipeline } from 'stream/promises';
+import { extract } from 'tar-fs';
+import { createGunzip } from 'zlib';
 import { type z } from 'zod';
 
 import describeError from './describeError';
@@ -93,33 +95,26 @@ export const copy = (src: string, dest: string) => {
     }
 };
 
-export const untar = (src: string, dest: string, stripComponents: number) => {
-    const pattern = new RegExp(`(.*?/){${stripComponents}}`);
-    return new Promise<void>((resolve, reject) => {
-        targz.decompress(
-            {
-                src,
-                dest,
-                tar: {
-                    map: header => ({
-                        ...header,
-                        name: header.name.replace(pattern, ''),
-                    }),
-                },
-            },
-            error => {
-                if (error) {
-                    reject(
-                        new Error(
-                            `Unable to extract ${src}: ${describeError(error)}`,
-                        ),
-                    );
-                } else {
-                    resolve();
-                }
-            },
-        );
+const stripPathComponents = (entryPath: string, count: number) =>
+    entryPath.split('/').slice(count).join('/');
+
+export const untar = async (
+    src: string,
+    dest: string,
+    stripComponents: number,
+) => {
+    const extraction = extract(dest, {
+        map: header => ({
+            ...header,
+            name: stripPathComponents(header.name, stripComponents),
+        }),
     });
+
+    try {
+        await pipeline(fs.createReadStream(src), createGunzip(), extraction);
+    } catch (e) {
+        throw new Error(`Unable to extract ${src}: ${describeError(e)}`);
+    }
 };
 
 const defaultMode =
