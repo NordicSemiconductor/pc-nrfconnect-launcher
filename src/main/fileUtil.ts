@@ -98,16 +98,29 @@ export const copy = (src: string, dest: string) => {
 const stripPathComponents = (entryPath: string, count: number) =>
     entryPath.split('/').slice(count).join('/');
 
+const isUnsafeName = (name: string) =>
+    path.posix.isAbsolute(name) ||
+    path.win32.isAbsolute(name) ||
+    /^[a-zA-Z]:/.test(name) ||
+    name.split(/[\\/]/).includes('..');
+
 export const untar = async (
     src: string,
     dest: string,
     stripComponents: number,
 ) => {
     const extraction = extract(dest, {
-        map: header => ({
-            ...header,
-            name: stripPathComponents(header.name, stripComponents),
-        }),
+        map: header => {
+            const name = stripPathComponents(header.name, stripComponents);
+
+            if (isUnsafeName(header.name) || isUnsafeName(name)) {
+                extraction.destroy(
+                    new Error(`Unsafe path in archive: ${header.name}`),
+                );
+            }
+
+            return { ...header, name };
+        },
     });
 
     try {
